@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.CustomerApiMapper">
+
+    <resultMap type="CustomerApi" id="CustomerApi_Api_ApiVendor">
+        <id column="id" property="id"/>
+        <result column="apiId" property="apiId"/>
+        <result column="customerId" property="customerId"/>
+        <result column="price" property="price"/>
+        <result column="enabled" property="enabled"/>
+        <association property="api" javaType="Api">
+            <result column="apiName" property="name"/>
+        </association>
+        <association property="apiVendor" javaType="ApiVendor">
+            <result column="apiVendorName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap type="Api" id="Api-ApiVendor">
+        <id column="id" property="id"/>
+        <result column="apiName" property="name"/>
+        <association property="apiVendor" javaType="ApiVendor">
+            <result column="apiVendorName" property="name"/>
+        </association>
+    </resultMap>
+
+
+    <!--查询所有供应商Api-->
+    <select id="findAllApi" resultMap="Api-ApiVendor">
+      select a.id,a.name apiName,av.name apiVendorName
+      from qydata.Api a,qydata.ApiVendor av
+      where a.vendorId=av.id
+    </select>
+
+    <!--插入-->
+    <insert id="insertCustomerApi" parameterType="CustomerApi" useGeneratedKeys="true" keyProperty="id">
+        insert into qydata.CustomerApi(apiId,customerId,price,enabled,createTime)
+        values(#{apiId},#{customerId},#{price},#{enabled},sysdate())
+    </insert>
+    <!--根据客户Id查找指定客户的所有CustomerApi-->
+    <select id="findAllByCustomerId" parameterType="Map" resultMap="CustomerApi_Api_ApiVendor">
+        select c.id,c.apiId,c.customerId,c.price,c.enabled,c.createTime,aat.apiName,aat.apiVendorName
+        from qydata.CustomerApi c,(select a.id,a.name apiName,avd.name apiVendorName
+                                    from qydata.Api a,qydata.ApiVendor avd
+                                    where a.vendorId=avd.id
+                                    ) aat
+        where c.apiId=aat.id and c.customerId=#{customerId}
+        order by c.createTime desc
+        limit #{beginIndex},#{lineSize}
+    </select>
+    <!--根据客户Id统计全部数据量-->
+    <select id="getAllCountByCustomerId" parameterType="Map" resultType="Integer">
+        select count(id) from qydata.CustomerApi where customerId=#{customerId}
+    </select>
+    <!--根据Id查找-->
+    <select id="findById" parameterType="Integer" resultMap="CustomerApi_Api_ApiVendor">
+        select ca.id,ca.apiId,ca.customerId,ca.price,ca.enabled,a.name apiName,qvt.name apiVendorName
+        from qydata.CustomerApi ca,qydata.Api a,qydata.ApiVendor qvt
+        where ca.apiId=a.id and a.vendorId=qvt.id and ca.id=#{id}
+    </select>
+    <!--根据Id修改-->
+    <update id="updateCustomerApiById" parameterType="CustomerApi">
+        update qydata.CustomerApi set apiId=#{apiId},price=#{price},enabled=#{enabled} where id=#{id}
+    </update>
+
+</mapper>

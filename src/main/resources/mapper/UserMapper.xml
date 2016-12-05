@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.UserMapper">
+
+
+    <resultMap type="User" id="userMap">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="username" property="username"/>
+        <result column="tel" property="tel"/>
+        <result column="status" property="status"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <resultMap type="User" id="userDeptMap" extends="userMap">
+        <collection property="dept" ofType="Dept">
+            <result column="deptNo" property="deptNo"/>
+            <result column="deptName" property="deptName"/>
+        </collection>
+    </resultMap>
+
+    <!-- 是进行登录认证使用的，即，根据身份信息取得密码进行认证 -->
+    <select id="findById" parameterType="String" resultType="User">
+        SELECT username,password
+        FROM qyauth.User
+        WHERE username=#{username} and status=0
+    </select>
+    <!-- 根据用户名查询出该用户对用的所有角色的标记名称（千万不要用中文） -->
+    <select id="findAllRoleByUser" parameterType="String" resultType="String">
+        SELECT flag
+        FROM qyauth.Role
+        WHERE id IN (
+                      SELECT roleId
+                      FROM qyauth.RoleUser
+                      WHERE username=#{username})
+    </select>
+    <!-- 查询出一个用户对应的所有权限数据 -->
+    <select id="findAllActionByUser" parameterType="String" resultType="String">
+        SELECT flag
+        FROM qyauth.Action
+        WHERE id IN (
+                        SELECT actionId
+                        FROM qyauth.RoleAction
+                        WHERE roleId IN (
+                                      SELECT roleId
+                                      FROM qyauth.RoleUser
+                                      WHERE username=#{username}))
+    </select>
+    <!--添加管理员-->
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.User(name,username,tel,status,createTime)
+        values(#{name},#{username},'123456',#{tel},#{status},sysdate())
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <!--根据用户名和旧密码修改密码-->
+    <update id="updatePassword" parameterType="String">
+        update qyauth.User set password=#{param3}
+        where username=#{param1} and password=#{param2}
+    </update>
+    <!--重置密码-->
+   <update id="resetPassword" parameterType="String">
+       update qyauth.User set password='123456'
+       where username=#{username}
+   </update>
+    <!--查找全部用户-->
+    <select id="findAllUser" parameterType="java.util.Map" resultMap="userDeptMap">
+        select u.id,u.name,u.username,u.tel,u.status,u.createTime,d.deptNo,d.deptName
+        from qyauth.User u left join qyauth.UserDept ud on u.id=ud.userId left join qyauth.Dept d on
+        ud.deptNo=d.deptNo
+        <where>
+            <if test="deptNo!=null and deptNo!=''">
+                and d.deptNo=#{deptNo}
+            </if>
+        </where>
+        order by u.createTime desc
+        limit #{beginIndex},#{lineSize}
+    </select>
+    <!--统计数据量-->
+    <select id="getAllCount" resultType="java.lang.Integer">
+        select count(id) from qyauth.UserDept
+        <where>
+            <if test="deptNo!=null and deptNo!=''">
+                and deptNo=#{deptNo}
+            </if>
+        </where>
+    </select>
+    <!--根据用户名查找指定用户信息-->
+    <select id="findUserByUsername" parameterType="String" resultMap="userDeptMap">
+        select u.id,u.name,u.username,u.tel,u.status,u.createTime,d.deptNo,d.deptName
+        from qyauth.User u left join qyauth.UserDept ud on u.id=ud.userId left join qyauth.Dept d on
+        ud.deptNo=d.deptNo
+        where u.username=#{username}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--&lt;!&ndash;分配角色&ndash;&gt;-->
+    <!--<insert id="addRoleAdmin" parameterType="RoleAdmin" useGeneratedKeys="true" keyProperty="id">-->
+        <!--insert into qyauth.RoleAdmin(roleId,loginName,createTime)-->
+        <!--values(#{roleId},#{loginName},sysdate())-->
+    <!--</insert>-->
+    <!--&lt;!&ndash;查找全部管理员&ndash;&gt;-->
+    <!--<select id="findAllAdmin" parameterType="java.util.Map" resultMap="Admin_Dept_Role">-->
+        <!--select a.id,a.name,a.loginName,a.password,a.tel,a.deptNo,a.status,a.createTime,d.deptName,r.name rname-->
+        <!--from qyauth.Admin a,qyauth.Dept d,(SELECT qr.name,qra.loginName-->
+                                            <!--FROM qyauth.Role qr,qyauth.RoleAdmin qra-->
+                                            <!--WHERE qr.id=qra.roleId) r-->
+        <!--where a.deptNo=d.deptNo and a.loginName=r.loginName-->
+        <!--order by a.createTime desc-->
+        <!--limit #{beginIndex},#{line}-->
+    <!--</select>-->
+    <!--&lt;!&ndash;统计数据量&ndash;&gt;-->
+
+    <!--&lt;!&ndash;启动账号&ndash;&gt;-->
+    <!--<update id="updateStatusStart" parameterType="java.lang.String">-->
+        <!--update qyauth.Admin set status=0 where loginName=#{value}-->
+    <!--</update>-->
+    <!--&lt;!&ndash;禁用账号&ndash;&gt;-->
+    <!--<update id="updateStatusforbid" parameterType="java.lang.String">-->
+        <!--update qyauth.Admin set status=1 where loginName=#{value}-->
+    <!--</update>-->
+    <!--&lt;!&ndash;模糊搜索&ndash;&gt;-->
+    <!--<select id="findByColumn" parameterType="java.util.Map" resultMap="Admin_Dept_Role">-->
+        <!--select a.id,a.name,a.loginName,a.password,a.tel,a.deptNo,a.status,a.createTime,d.deptName,r.name rname-->
+        <!--from qyauth.Admin a,qyauth.Dept d,(SELECT qr.name,qra.loginName-->
+                                            <!--FROM qyauth.Role qr,qyauth.RoleAdmin qra-->
+                                            <!--WHERE qr.id=qra.roleId) r-->
+        <!--where a.deptNo=d.deptNo and a.loginName=r.loginName and (a.name like '%${content}%' or a.loginName like '%${content}%'-->
+        <!--or d.deptName like '%${content}%' or a.tel like '%${content}%' or r.name like '%${content}%')-->
+        <!--order by a.createTime desc-->
+        <!--limit #{beginIndex},#{line}-->
+    <!--</select>-->
+    <!--&lt;!&ndash;模糊搜索总数据量&ndash;&gt;-->
+    <!--<select id="getCountColumn" parameterType="java.util.Map" resultType="java.lang.Integer">-->
+        <!--select count(a.id)-->
+        <!--from qyauth.Admin a,qyauth.Dept d,(SELECT qr.name,qra.loginName-->
+                                            <!--FROM qyauth.Role qr,qyauth.RoleAdmin qra-->
+                                            <!--WHERE qr.id=qra.roleId) r-->
+        <!--where a.deptNo=d.deptNo and a.loginName=r.loginName and (a.name like '%${content}%' or a.loginName like '%${content}%'-->
+        <!--or d.deptName like '%${content}%' or a.tel like '%${content}%' or r.name like '%${content}%')-->
+        <!--order by a.createTime desc-->
+    <!--</select>-->
+
+</mapper>

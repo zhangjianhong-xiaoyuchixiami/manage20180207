@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.CustomerMapper">
+
+    <resultMap type="Customer" id="Customer_CustomerType_CustomerStatus_User">
+        <result column="id" property="id"/>
+        <result column="typeId" property="typeId"/>
+        <result column="name" property="name"/>
+        <result column="authId" property="authId"/>
+        <result column="authPass" property="authPass"/>
+        <result column="balance" property="balance"/>
+        <result column="status" property="status"/>
+        <result column="createTime" property="createTime"/>
+        <association property="customerType" javaType="CustomerType">
+            <result column="qctname" property="name"/>
+        </association>
+        <association property="customerStatus" javaType="CustomerStatus">
+            <result column="qcsname" property="name"/>
+        </association>
+        <association property="user" javaType="User">
+            <result column="userName" property="name"/>
+        </association>
+        <association property="dept" javaType="Dept">
+            <result column="deptName" property="deptName"/>
+        </association>
+    </resultMap>
+    <!--查询指定客户信息-->
+    <select id="findByAuthId" parameterType="java.lang.String" resultType="Customer">
+        SELECT id,typeId,name,authId,authPass,balance,createTime,timestamp,status
+        FROM qydata.Customer WHERE authId=#{authId}
+    </select>
+    <!--插入新客户真是账号-->
+    <insert id="insertCustomer" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
+        insert into qydata.Customer(typeId,name,authId,authPass,balance,createTime,status)
+        values(1,#{name},#{authId},uuid(),0.0,sysdate(),0)
+
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <!--插入新客户测试账号-->
+    <insert id="insertCustomerTest" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
+        insert into qydata.Customer(typeId,name,authId,authPass,balance,createTime,status)
+        values(2,#{name},#{authId},uuid(),100000000,sysdate(),0)
+
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+
+    <!--查询当前登录着可见的客户信息并分页显示-->
+    <select id="findAllCustomer" parameterType="Map" resultMap="Customer_CustomerType_CustomerStatus_User">
+        select c.id,c.typeId,c.name,c.authId,c.authPass,c.balance,c.createTime,c.qctname,c.qcsname,u.name userName,d.deptName
+        from qyauth.CustomerDeptUser cda,qyauth.User u,qyauth.Dept d,(select qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.status,qct.name qctname,qcs.name qcsname
+                                                          from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
+                                                          where qc.typeId=qct.id and qc.status=qcs.id
+                                                          ) c
+        where cda.customerId=c.id and cda.createId=u.id and cda.deptNo=d.deptNo
+            <if test="deptNoList!=null and deptNoList.size()!=0">
+              and cda.deptNo in
+                <foreach collection="deptNoList" item="deptNo"
+                         index="index" open="(" close=")" separator=",">
+                    #{deptNo}
+                </foreach>
+            </if>
+        order by c.createTime desc
+        limit #{beginIndex},#{lineSize}
+    </select>
+    <!--统计当前登陆者可见客户的所有数据-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id)
+        from qydata.Customer
+        where id in (
+                        select customerId
+                        from qyauth.CustomerDeptUser
+                          <where>
+                              <if test="deptNoList!=null and deptNoList.size()!=0">
+                                  and deptNo in
+                                  <foreach collection="deptNoList" item="deptNo"
+                                           index="index" open="(" close=")" separator=",">
+                                      #{deptNo}
+                                  </foreach>
+                              </if>
+                          </where>
+                      )
+    </select>
+    <!--根据字段模糊搜索-->
+    <select id="findCustomerInfoByColumn" parameterType="java.util.Map" resultMap="Customer_CustomerType_CustomerStatus_User">
+        select c.id,c.typeId,c.name,c.authId,c.authPass,c.balance,c.status,c.createTime,c.qctname,c.qcsname,a.name adminName
+        from qyauth.CustomerDeptAdmin cda,qyauth.Admin a,(select qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.timestamp,qc.status,qct.name qctname,qcs.name qcsname
+        from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
+        where qc.typeId=qct.id and qc.status=qcs.id and qc.id in
+        (
+        select customerId
+        from qyauth.CustomerDeptAdmin
+        <where>
+            <if test="adminId!=null and adminId!=''">
+                and adminId=#{adminId}
+            </if>
+            <if test="deptNo!=null and deptNo!=''">
+                and deptNo=#{deptNo}
+            </if>
+        </where>
+        )) c
+        where cda.customerId=c.id and cda.adminId=a.id and (c.name like '%${content}%' or c.authId like '%${content}%'
+        or c.status like '%${content}%' or a.name like '%${content}%')
+        <if test="adminId!=null and adminId!=''">
+            and cda.adminId=#{adminId}
+        </if>
+        <if test="deptNo!=null and deptNo!=''">
+            and cda.deptNo=#{deptNo}
+        </if>
+        order by c.createTime desc
+        limit #{beginIndex},#{line}
+    </select>
+    <!--根据字段模糊统计总数据量-->
+    <select id="getAllCountByColumn" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(c.id)
+        from qyauth.CustomerDeptAdmin cda,qyauth.Admin a,(select qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.timestamp,qc.status,qct.name qctname,qcs.name qcsname
+        from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
+        where qc.typeId=qct.id and qc.status=qcs.id and qc.id in
+        (
+        select customerId
+        from qyauth.CustomerDeptAdmin
+        <where>
+            <if test="adminId!=null and adminId!=''">
+                and adminId=#{adminId}
+            </if>
+            <if test="deptNo!=null and deptNo!=''">
+                and deptNo=#{deptNo}
+            </if>
+        </where>
+        )) c
+        where cda.customerId=c.id and cda.adminId=a.id and (c.name like '%${content}%' or c.authId like '%${content}%'
+        or c.status like '%${content}%' or a.name like '%${content}%')
+        <if test="adminId!=null and adminId!=''">
+            and cda.adminId=#{adminId}
+        </if>
+        <if test="deptNo!=null and deptNo!=''">
+            and cda.deptNo=#{deptNo}
+        </if>
+    </select>
+
+</mapper>
