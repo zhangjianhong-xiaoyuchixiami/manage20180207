@@ -13,16 +13,29 @@
     <meta content="width=device-width, height=device-height, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
+
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
     <link href="/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css"/>
+
     <link href="/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+
     <link href="/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+
     <link href="/css/style-metro.css" rel="stylesheet" type="text/css"/>
+
     <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+
     <link href="/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+
     <link href="/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+
     <link href="/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" type="text/css" href="/css/select2_metro.css" />
+
     <link rel="stylesheet" href="/css/DT_bootstrap.css" />
+
     <link rel="shortcut icon" href="/image/favicon.ico" />
 </head>
 
@@ -540,7 +553,7 @@
 
                     <!-- 搜索框结束 -->
                 </li>
-                <#--客户管理-->
+            <#--客户管理-->
                 <li>
                     <a class="active" href="javascript:;">
 
@@ -561,14 +574,14 @@
                         </li>
 
                         <li>
-                            <a href="/customer/findAllCustomerByDeptNo">
+                            <a href="/customer/findAllCustomer">
                                 客户信息
                             </a>
                         </li>
 
                     </ul>
                 </li>
-                <#--财务管理-->
+            <#--财务管理-->
                 <li>
                     <a class="active" href="javascript:;">
 
@@ -591,7 +604,7 @@
                     </ul>
 
                 </li>
-                <#--用户管理-->
+            <#--用户管理-->
                 <li>
                     <a class="active" href="javascript:;">
 
@@ -606,12 +619,12 @@
                     <ul class="sub-menu">
 
                         <li>
-                            <a href="#">
+                            <a href="/user/addUserView">
                                 新增用户
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="/user/findAllUser">
                                 用户信息
                             </a>
                         </li>
@@ -619,7 +632,7 @@
                     </ul>
 
                 </li>
-                <#--部门管理-->
+            <#--部门管理-->
                 <li>
                     <a class="active" href="javascript:;">
 
@@ -707,7 +720,19 @@
 
 <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
 
+<script type="text/javascript" src="/js/select2.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+
+<!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+
 <script src="/js/app.js"></script>
+
+<script src="/js/table-managed.js"></script>
 
 <script>
 
@@ -743,6 +768,35 @@
 
     });
 
+</script>
+
+<script>
+
+    $(document).ready(function(){
+        //jquery获取复选框值
+        var deptNo_no =[];//定义一个数组
+        var userId_id =[];
+        $('input[name="deptNo"]:checked').each(function(){
+            deptNo_no.push($.trim($(this).val()));
+        });
+        $('input[name="userId"]:checked').each(function(){
+            userId_id.push($.trim($(this).val()));
+        });
+        var indata = {userId:userId_id, deptNo:deptNo_no};
+        $('#save').on("click",function(){
+
+            $.ajax({
+                type:'post',
+                url:"/dept/allotDeptAction",
+                data:indata,
+                dataType:'json',
+                success:function(data){
+
+                }
+            })
+
+        });
+    });
 </script>
 </body>
 </html>

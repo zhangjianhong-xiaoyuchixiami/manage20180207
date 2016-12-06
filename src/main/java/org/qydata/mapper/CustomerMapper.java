@@ -43,19 +43,7 @@ public interface CustomerMapper {
      * @return
      */
     public Integer getAllCount(Map<String,Object> map);
-    /**
-     * 根据字段模糊搜索
-     * @param map
-     * @return
-     */
-    public List<Customer> findCustomerByColumn(Map<String,Object> map);
 
-    /**
-     *根据字段模糊统计总数据量
-     * @param map
-     * @return
-     */
-    public Integer getCountByColumn(Map<String,Object> map);
 
 
 

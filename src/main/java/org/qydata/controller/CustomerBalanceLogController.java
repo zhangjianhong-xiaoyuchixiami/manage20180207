@@ -47,7 +47,14 @@ public class CustomerBalanceLogController {
             model.addFlashAttribute("msg","操作失败！");
             return "redirect:/customerBalance/customerBalanceChangeView";
         }
-        return "";
+        return "redirect:/customer/changeBalanceSuccess";
+    }
+
+    @RequestMapping(value = "/demoView")
+    public String demoView(Model model){
+        Integer msg = 2;
+        model.addAttribute("msg",msg);
+        return "/customer/demo";
     }
 
 }

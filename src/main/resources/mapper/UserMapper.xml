@@ -11,6 +11,7 @@
         <result column="tel" property="tel"/>
         <result column="status" property="status"/>
         <result column="createTime" property="createTime"/>
+        <result column="typeId" property="typeId"/>
     </resultMap>
 
     <resultMap type="User" id="userDeptMap" extends="userMap">
@@ -32,7 +33,7 @@
         FROM qyauth.Role
         WHERE id IN (
                       SELECT roleId
-                      FROM qyauth.RoleUser
+                      FROM qyauth.UserRole
                       WHERE username=#{username})
     </select>
     <!-- 查询出一个用户对应的所有权限数据 -->
@@ -44,13 +45,13 @@
                         FROM qyauth.RoleAction
                         WHERE roleId IN (
                                       SELECT roleId
-                                      FROM qyauth.RoleUser
+                                      FROM qyauth.UserRole
                                       WHERE username=#{username}))
     </select>
     <!--添加管理员-->
     <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        insert into qyauth.User(name,username,tel,status,createTime)
-        values(#{name},#{username},'123456',#{tel},#{status},sysdate())
+        insert into qyauth.User(name,username,tel,status,typeId,createTime)
+        values(#{name},#{username},'123456',#{tel},#{status},#{typeId},sysdate())
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             select LAST_INSERT_ID()
         </selectKey>
@@ -66,30 +67,50 @@
        where username=#{username}
    </update>
     <!--查找全部用户-->
-    <select id="findAllUser" parameterType="java.util.Map" resultMap="userDeptMap">
+    <select id="findAllUser" parameterType="Map" resultMap="userDeptMap">
         select u.id,u.name,u.username,u.tel,u.status,u.createTime,d.deptNo,d.deptName
         from qyauth.User u left join qyauth.UserDept ud on u.id=ud.userId left join qyauth.Dept d on
         ud.deptNo=d.deptNo
         <where>
-            <if test="deptNo!=null and deptNo!=''">
-                and d.deptNo=#{deptNo}
+            <if test="deptNoList!=null and deptNoList.size()!=0">
+                and d.deptNo in
+                <foreach collection="deptNoList" item="deptNo"
+                         index="index" open="(" close=")" separator=",">
+                    #{deptNo}
+                </foreach>
+            </if>
+            <if test="content!=null and content!=''">
+                and (u.name like '%${content}%' or u.username like '%${content}%'
+                or u.tel like '%${content}%' or u.status like '%${content}%'
+                or d.deptNo like '%${content}%' or d.deptName like '%${content}%')
             </if>
         </where>
         order by u.createTime desc
         limit #{beginIndex},#{lineSize}
     </select>
     <!--统计数据量-->
-    <select id="getAllCount" resultType="java.lang.Integer">
-        select count(id) from qyauth.UserDept
+    <select id="getAllCount" parameterType="Map" resultType="Integer">
+        select count(u.id)
+        from qyauth.User u left join qyauth.UserDept ud on u.id=ud.userId left join qyauth.Dept d on
+        ud.deptNo=d.deptNo
         <where>
-            <if test="deptNo!=null and deptNo!=''">
-                and deptNo=#{deptNo}
+            <if test="deptNoList!=null and deptNoList.size()!=0">
+                and d.deptNo in
+                <foreach collection="deptNoList" item="deptNo"
+                         index="index" open="(" close=")" separator=",">
+                    #{deptNo}
+                </foreach>
+            </if>
+            <if test="content!=null and content!=''">
+                and (u.name like '%${content}%' or u.username like '%${content}%'
+                or u.tel like '%${content}%' or u.status like '%${content}%'
+                or d.deptNo like '%${content}%' or d.deptName like '%${content}%')
             </if>
         </where>
     </select>
     <!--根据用户名查找指定用户信息-->
     <select id="findUserByUsername" parameterType="String" resultMap="userDeptMap">
-        select u.id,u.name,u.username,u.tel,u.status,u.createTime,d.deptNo,d.deptName
+        select u.id,u.name,u.username,u.tel,u.status,u.createTime,u.typeId,d.deptNo,d.deptName
         from qyauth.User u left join qyauth.UserDept ud on u.id=ud.userId left join qyauth.Dept d on
         ud.deptNo=d.deptNo
         where u.username=#{username}

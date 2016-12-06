@@ -64,8 +64,16 @@ public class CustomerIpController {
         PageModel<CustomerIp> pageModelOne = customerIpService.findAllIpByCustomerId(map);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("customerIpList",pageModelOne.getList());
-        model.addAttribute("totlePage",pageModelOne.getTotalpage());
-        model.addAttribute("pageSize",pageModelOne.getPageSize());
+        Integer totalPage= null;
+        Integer count = pageModelOne.getCount();
+
+        if (count%Integer.parseInt(lineSize) == 0) {
+            totalPage = (count/Integer.parseInt(lineSize));
+        } else {
+            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+        }
+        model.addAttribute("totlePage",totalPage);
+        model.addAttribute("pageSize",pageModel.getPageSize());
         return "/customerIp/customerIpList";
     }
 

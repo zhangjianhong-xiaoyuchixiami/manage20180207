@@ -21,5 +21,12 @@
     <select id="findAllDept" resultType="Dept">
         select id,deptNo,deptName from qyauth.Dept
     </select>
+    <!--批量插入用户和部门映射-->
+    <insert id="insertUserDept" parameterType="Map" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.UserDept(userId,deptNo,createTime) values
+        <foreach collection="userId" index="index" item="userId" separator=",">
+            ( #{userId}, #{item} )
+        </foreach>
+    </insert>
 
 </mapper>

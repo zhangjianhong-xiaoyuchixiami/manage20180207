@@ -20,7 +20,7 @@
     </select>
 
     <!--根据账户修改余额-->
-    <update id="updateBalanceByAuthId" parameterType="java.lang.Object">
+    <update id="updateBalanceByAuthId" parameterType="Object">
         update qydata.Customer set balance=#{param1} where authId=#{param2}
     </update>
 

@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
         PageModel<User> pageModel = new PageModel<User>();
         pageModel.setCount(userMapper.getAllCount(map));
         pageModel.setList(userMapper.findAllUser(map));
-        System.out.println(userMapper.findAllUser(map));
         return pageModel;
     }
 

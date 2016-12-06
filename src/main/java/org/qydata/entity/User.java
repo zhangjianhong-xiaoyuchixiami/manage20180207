@@ -20,6 +20,7 @@ public class User implements Serializable {
     private Integer status;
     private Timestamp createTime;
     private Timestamp timestamp;
+    private Integer typeId;
     private List<Dept> dept;
     public User() {}
 
@@ -93,6 +94,14 @@ public class User implements Serializable {
 
     public void setDept(List<Dept> dept) {
         this.dept = dept;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
     @Override

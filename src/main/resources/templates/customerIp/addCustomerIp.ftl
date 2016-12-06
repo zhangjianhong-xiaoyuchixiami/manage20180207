@@ -206,9 +206,14 @@
 
                                 <div class="tab-content">
 
-                                    <div class="form-search pull-left">
 
-                                        <a href="javaScript:;" onclick="add()"><i class="icon-plus"></i>Add</a>
+                                    <div class="btn-group">
+
+                                        <button class="btn blue" onclick="add()">
+
+                                            Add New <i class="icon-plus"></i>
+
+                                        </button>
 
                                     </div>
 

@@ -33,11 +33,6 @@ public interface CustomerService {
      */
     public PageModel<Customer> findAllCustomer(Map<String,Object> map);
 
-    /**
-     *
-     * @param map
-     * @return
-     */
-    public PageModel<Customer> findCustomerInfoByColumn(Map<String,Object> map);
+
 
 }

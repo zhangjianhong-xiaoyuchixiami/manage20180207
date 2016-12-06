@@ -190,57 +190,35 @@
                             <table class="table-bordered table-striped table-condensed cf">
                                 <thead class="cf">
                                 <tr>
-                                    <th class="numeric">起始段</th>
-                                    <th class="numeric">结束段</th>
-                                    <th class="numeric">操作</th>
+                                    <th style="width: 100px" class="numeric">部门选择</th>
+                                    <th class="numeric">部门编号</th>
+                                    <th class="numeric">部门名称</th>
+                                    <th class="numeric">用户Id</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <#if customerIpList??>
-                                        <#list customerIpList as customerIp>
-                                        <tr align="center">
-                                            <td>${customerIp.beginIpRaw}</td>
-                                            <td>${customerIp.endIpRaw}</td>
-                                            <td class="numeric" style="text-align: center">
-                                                <p>
-                                                    <a href="/customerIp/deleteIp/${customerIp.id}/${customerIp.customerId}" class="btn red" id="gritter-light"><i class="icon-trash icon-white">Delete</i></a>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                        </#list>
+                                    <#if userDeptNoList??>
+                                        <#if deptList??>
+                                            <#list userDeptNoList as userDeptNo>
+                                                <#list deptList as dept>
+                                                <tr align="center">
+
+                                                    <td><input type="checkbox" name="deptNo" <#if userDeptNo==dept.deptNo>checked="checked"</#if> value="${dept.deptNo}" /></td>
+                                                    <td>${dept.deptNo}</td>
+                                                    <td>${dept.deptName}</td>
+                                                    <td><input type="checkbox" checked="checked" name="userId" value="${userId}" /></td>
+
+                                                </tr>
+                                                </#list>
+                                            </#list>
+                                        </#if>
                                     </#if>
                                 </tbody>
 
                             </table>
-
-                            <#if (count>0)>
-
-                                <div class="row-fluid">
-
-                                    <div class="span6">
-
-                                        <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
-                                    </div>
-
-                                    <#if (totlePage>1)>
-                                        <div class="span6">
-                                            <div class="dataTables_paginate paging_bootstrap pagination">
-                                                <ul>
-                                                    <#if (lineSize>1)>
-                                                        <li class="next"><a href="/customerIp/customerIpListAction/${customerId}?pageSize=1"><span class="hidden-480">首页</span></a></li>
-                                                        <li class="next"><a href="/customerIp/customerIpListAction/${customerId}?pageSize=${pageSize-1}"><span class="hidden-480">上一页</span></a></li>
-                                                    </#if>
-                                                    <#if (lineSize<totlePage)>
-                                                        <li class="next"><a href="/customerIp/customerIpListAction/${customerId}?pageSize=${pageSize+1}"><span class="hidden-480">下一页</span></a></li>
-                                                        <li class="next"><a href="/customerIp/customerIpListAction/${customerId}?pageSize=${pageSize}"><span class="hidden-480">尾页</span></a></li>
-                                                    </#if>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </#if>
-                                </div>
-
-                            </#if>
+                            <div class="form-actions">
+                                <button type="submit" id="save" class="btn blue"><i class="icon-ok"></i> Save</button>
+                            </div>
 
                         </div>
 
@@ -257,4 +235,5 @@
     <#elseif section = "footer">
 
     </#if>
+
 </@layout>

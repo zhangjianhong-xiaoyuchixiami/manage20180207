@@ -165,7 +165,7 @@
 
                 <div class="span12">
 
-                        <form action="/user/findAllByColumn" method="post" class="form-search pull-right">
+                        <form action="/user/findAllUser" method="post" class="form-search pull-right">
 
                             <div class="input-append">
 
@@ -230,14 +230,42 @@
                                     </td>
 
                                     <#if user.status=0>
-                                        <td class="numeric">正在使用</td>
+                                        <td>正在使用</td>
                                     <#else >
-                                        <td class="numeric">被禁用</td>
+                                        <td>被禁用</td>
                                     </#if>
                                     <#if user.status=0>
-                                        <td class="numeric"><a style="color: red" href="/user/statusForbid/${user.username}">禁用</a></td>
+                                        <td class="numeric" style="text-align: center">
+
+                                            <p>
+
+                                                <a href="/user/#/" class="btn blue" id="gritter-light">禁用账号</a>
+
+                                                <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
+
+                                                <a href="/user/#/" class="btn blue" id="gritter-max">重置密码</a>
+
+                                                <a href="/user/#/" class="btn black" id="gritter-max">分配角色</a>
+
+                                            </p>
+
+                                        </td>
                                     <#else >
-                                        <td class="numeric"><a style="color: blue" href="/user/statusStart/${user.username}">启用</a></td>
+                                        <td class="numeric" style="text-align: center">
+
+                                            <p>
+
+                                                <a href="/user/#/" class="btn blue" id="gritter-light">启用账号</a>
+
+                                                <a href="/user/#/" class="btn black" id="gritter-light">分配部门</a><br/>
+
+                                                <a href="/user/#/" class="btn blue" id="gritter-max">重置密码</a>
+
+                                                <a href="/user/#/" class="btn black" id="gritter-max">分配角色</a>
+
+                                            </p>
+
+                                        </td>
                                      </#if>
                                 </tr>
                                  </#list>
@@ -252,18 +280,18 @@
                                         <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
                                     </div>
 
-                                    <#if (totlePage>1)>
+                                    <#if (totlePage>0)>
 
                                         <div class="span6">
                                             <div class="dataTables_paginate paging_bootstrap pagination">
                                                 <ul>
-                                                    <#if (lineSize>1)>
-                                                        <li class="next"><a href="/user/findAllAdmin?lineSize=1"><span class="hidden-480">首页</span></a></li>
-                                                        <li class="next"><a href="/user/findAllAdmin?lineSize=${lineSize-1}"><span class="hidden-480">上一页</span></a></li>
+                                                    <#if (pageSize>1)>
+                                                        <li class="next"><a href="/user/findAllUser?pageSize=1<#if content??>&content=${content}</#if>"><span class="hidden-480">首页</span></a></li>
+                                                        <li class="next"><a href="/user/findAllUser?pageSize=${pageSize-1}<#if content??>&content=${content}</#if>"><span class="hidden-480">上一页</span></a></li>
                                                     </#if>
-                                                    <#if (lineSize<totlePage)>
-                                                        <li class="next"><a href="/user/findAllAdmin?lineSize=${lineSize+1}"><span class="hidden-480">下一页</span></a></li>
-                                                        <li class="next"><a href="/user/findAllAdmin?lineSize=${totlePage}"><span class="hidden-480">尾页</span></a></li>
+                                                    <#if (pageSize<totlePage)>
+                                                        <li class="next"><a href="/user/findAllUser?pageSize=${pageSize+1}<#if content??>&content=${content}</#if>"><span class="hidden-480">下一页</span></a></li>
+                                                        <li class="next"><a href="/user/findAllUser?pageSize=${totlePage}<#if content??>&content=${content}</#if>"><span class="hidden-480">尾页</span></a></li>
                                                     </#if>
                                                 </ul>
                                             </div>

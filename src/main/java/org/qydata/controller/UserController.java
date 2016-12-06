@@ -1,6 +1,7 @@
 package org.qydata.controller;
 
 import org.apache.log4j.Logger;
+import org.qydata.entity.Dept;
 import org.qydata.entity.User;
 import org.qydata.service.UserService;
 import org.qydata.tools.PageModel;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,13 +28,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-//    private Integer getLineSize(String lineSize){
-//        if(lineSize==null||lineSize.trim().isEmpty()||Integer.parseInt(lineSize)<=0){
-//            return 1;
-//        }
-//        return Integer.parseInt(lineSize);
-//    }
 
     @RequestMapping(value = "/addUserView")
     public String addUserView(){
@@ -55,14 +51,27 @@ public class UserController {
     }
 
     @RequestMapping(value = "/findAllUser")
-    public String findAllAdmin(HttpServletRequest request, Model model){
+    public String findAllUser(HttpServletRequest request, Model model,String content){
+        User user = (User)request.getSession().getAttribute("userInfo");
+        List<Dept> deptList = user.getDept();
+        List deptNoList = new ArrayList();
+        for(int i =0;i<deptList.size();i++){
+            deptNoList.add(deptList.get(i).getDeptNo());
+        }
         PageModel pageModel = new PageModel();
         Map<String,Object> map = new HashMap<String,Object>();
         String pageSize = request.getParameter("pageSize");//当前页
+        String lineSize = "8";
         pageModel.setPageSize(pageSize);
+        pageModel.setLineSize(lineSize);
         map.put("beginIndex",pageModel.getBeginIndex());
         map.put("lineSize",pageModel.getLineSize());
-
+        if(user.getTypeId()==2){
+            map.put("deptNoList",deptNoList);
+        }
+        if(content!=null){
+            map.put("content",content);
+        }
 
         PageModel<User> pageModelOne = null;
         try {
@@ -71,59 +80,27 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        model.addAttribute("typeId",user.getTypeId());
+        model.addAttribute("content",content);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("userDeptList",pageModelOne.getList());
-        model.addAttribute("totlePage",pageModelOne.getTotalpage());
-        model.addAttribute("pageSize",pageModelOne.getPageSize());
-
-
-        System.out.println(pageModelOne.getCount());
-        System.out.println(pageModelOne.getLineSize());
-        System.out.println(pageModelOne.getPageSize());
-        System.out.println(pageModelOne.getTotalpage());
-        System.out.println(pageModelOne.getBeginIndex());
-        System.out.println(pageModelOne.getEndIndex());
-        System.out.println(pageModelOne.getList().size());
-
+        Integer totalPage= null;
+        Integer count = pageModelOne.getCount();
+        if (count%Integer.parseInt(lineSize) == 0) {
+            totalPage = (count/Integer.parseInt(lineSize));
+        } else {
+            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+        }
+        model.addAttribute("totlePage",totalPage);
+        model.addAttribute("pageSize",pageModel.getPageSize());
         return "/user/userList";
     }
-//
-//    @RequestMapping(value = "/findAllByColumn")
-//    public String findAllByColumn(HttpServletRequest request,Model model,String content){
-//        PageModel<User> pageModel = new PageModel<User>();
-//        Map<String,Object> map = new HashMap<String,Object>();
-//        Integer lineSize = this.getLineSize(request.getParameter("lineSize"));//当前页
-//        Integer pageSize = 5;//每页显示条数
-//        pageModel.setCpage(lineSize);
-//        pageModel.setPageSize(pageSize);
-//        map.put("beginIndex",pageModel.getBeginIndex());
-//        map.put("line",pageModel.getPageSize());
-//        map.put("content",content);
-//        PageModel<User> pageModelA;
-//        List<User> list = null;
-//        Integer count = null;
-//        Integer totlePage = null;
-//        try {
-//            pageModelA = userService.findAllByColumn(map);
-//            list =  pageModelA.getList();
-//            count = pageModelA.getRows();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        if(count%pageSize==0){
-//            totlePage=(count/pageSize);
-//        }else{
-//            totlePage=(count/pageSize)+1;
-//        }
-//        model.addAttribute("content",content);
-//        model.addAttribute("count",count);
-//        model.addAttribute("adminList",list);
-//        model.addAttribute("totlePage",totlePage);
-//        model.addAttribute("lineSize",lineSize);
-//        return "/user/adminListSerach";
-//
-//    }
-//
+
+    @RequestMapping(value = "/allotDeptView")
+    public String allotDeptView(){
+        return "dept/allotDept";
+    }
+
 //    @RequestMapping(value = "/statusStart/{loginName}")
 //    public String statusStart(@PathVariable String loginName){
 //        try {

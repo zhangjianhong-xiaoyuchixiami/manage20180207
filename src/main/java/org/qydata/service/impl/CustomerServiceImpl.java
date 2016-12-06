@@ -82,10 +82,4 @@ public class CustomerServiceImpl implements CustomerService {
         pageModel.setList(customerMapper.findAllCustomer(map));
         return pageModel;
     }
-
-    @Override
-    public PageModel<Customer> findCustomerInfoByColumn(Map<String, Object> map) {
-        return null;
-    }
-
 }

@@ -12,7 +12,7 @@ public class PageModel<T> {
     private String pageSize;//当前页
     private String lineSize;//每页条数
     private Integer count;//总条数
-    private Integer totalpage;//总页数
+    private Integer totlePage;//总页数
     private Integer beginIndex;//起始索引
     private Integer endIndex;//结束索引
     private List<T> list;//集合
@@ -26,14 +26,13 @@ public class PageModel<T> {
      *
      * @return
      */
-    public int getPageSize() {
+    public Integer getPageSize() {
         int _pageSize = STRAT_PAGESIZE;
-        if (pageSize != null) {
+        if (pageSize != null && Integer.parseInt(pageSize)>0) {
             try {
                 _pageSize = Integer.parseInt(pageSize);
             } catch (Exception ex) {
             }
-
         }
         return _pageSize;
     }
@@ -47,7 +46,7 @@ public class PageModel<T> {
      *
      * @return
      */
-    public int getLineSize() {
+    public Integer getLineSize() {
         int _lineSize = MAX_LINESIZE;
         if (lineSize != null) {
             try {
@@ -64,12 +63,12 @@ public class PageModel<T> {
      *
      * @return
      */
-    public int getBeginIndex() {
+    public Integer getBeginIndex() {
         int _beginIndex = (getPageSize() - 1) * getLineSize();
         return _beginIndex;
     }
 
-    public int getEndIndex() {
+    public Integer getEndIndex() {
 
         return getBeginIndex()+getLineSize();
 
@@ -84,7 +83,7 @@ public class PageModel<T> {
      *
      * @return
      */
-    public int getCount() {
+    public Integer getCount() {
         int _count = 0;
         if (count != null) {
             try {
@@ -100,37 +99,36 @@ public class PageModel<T> {
      *
      * @return
      */
-    public int getTotalpage() {
+    public Integer getTotlePage() {
 
-        int _totalpage = 0;
-        int count = getCount();
-        int linesize = getLineSize();
-        if (count % linesize == 0) {
-            _totalpage = count / linesize;
+        Integer totalPage= null;
+        Integer count = this.getCount();
+        Integer lineSize = this.getLineSize();
+        if (count%lineSize == 0) {
+            totalPage = (count/lineSize);
         } else {
-            _totalpage = count / linesize + 1;
+            totalPage = (count/lineSize) + 1;
         }
-        return _totalpage;
-    }
-
-    public void setBeginIndex(int beginIndex) {
-        this.beginIndex = beginIndex;
-    }
-
-    public void setEndIndex(int endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public void setList(List<T> list) {
-        this.list = list;
+        return totalPage;
     }
 
     public void setCount(Integer count) {
         this.count = count;
     }
 
-    public void setTotalpage(int totalpage) {
-        this.totalpage = totalpage;
+    public void setTotlePage(Integer totlePage) {
+        this.totlePage = totlePage;
     }
 
+    public void setBeginIndex(Integer beginIndex) {
+        this.beginIndex = beginIndex;
+    }
+
+    public void setEndIndex(Integer endIndex) {
+        this.endIndex = endIndex;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
 }

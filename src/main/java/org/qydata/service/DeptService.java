@@ -24,4 +24,12 @@ public interface DeptService {
      * @throws Exception
      */
     public List<Dept> findAllDept()throws Exception;
+    /**
+     * 批量插入用户和部门映射
+     * @param
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public boolean insertUserDept(Integer[] userId,Integer[] deptNo )throws Exception;
 }

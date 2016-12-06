@@ -166,7 +166,7 @@
                 <div class="span12">
 
                 <#--搜索框-->
-                    <form action="/customer/findByCustomerInfoByColumnThree" method="post" class="form-search pull-right">
+                    <form action="/customer/findAllCustomer" method="post" class="form-search pull-right">
 
                         <div class="input-append">
 
@@ -208,8 +208,10 @@
                                     <th class="numeric">账户</th>
                                     <th class="numeric">余额</th>
                                     <th class="numeric">状态</th>
+
                                     <th class="numeric">部门</th>
                                     <th class="numeric">创建者</th>
+
                                     <th class="numeric">创建时间</th>
                                     <th class="numeric">操作</th>
                                 </tr>
@@ -224,8 +226,10 @@
                                             <td>${customer.authId}</td>
                                             <td>${customer.balance}</td>
                                             <td>${customer.customerStatus.name}</td>
+
                                             <td>${customer.dept.deptName}</td>
                                             <td>${customer.user.name}</td>
+
                                             <td>${customer.createTime}</td>
                                             <td class="numeric" style="text-align: center">
 
@@ -242,6 +246,7 @@
                                                 </p>
 
                                             </td>
+
                                         </tr>
                                         </#list>
                                     </#if>
@@ -250,31 +255,32 @@
 
                             </table>
                             <#if (count>0)>
-                            <div class="row-fluid">
+                                <div class="row-fluid">
 
-                                <div class="span6">
-
-                                    <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
-                                </div>
-
-                                <#if (totlePage>1)>
                                     <div class="span6">
-                                        <div class="dataTables_paginate paging_bootstrap pagination">
-                                            <ul>
-                                                <#if (lineSize>1)>
-                                                    <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=1"><span class="hidden-480">首页</span></a></li>
-                                                    <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize-1}"><span class="hidden-480">上一页</span></a></li>
-                                                </#if>
-                                                <#if (lineSize<totlePage)>
-                                                    <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize+1}"><span class="hidden-480">下一页</span></a></li>
-                                                    <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${totlePage}"><span class="hidden-480">尾页</span></a></li>
-                                                </#if>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </#if>
 
-                            </div>
+                                        <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
+
+                                    </div>
+
+                                    <#if (totlePage>0)>
+                                        <div class="span6">
+                                            <div class="dataTables_paginate paging_bootstrap pagination">
+                                                <ul>
+                                                    <#if (pageSize>1)>
+                                                        <li class="next"><a href="/customer/findAllCustomer?pageSize=1<#if content??>&content=${content}</#if>"><span class="hidden-480">首页</span></a></li>
+                                                        <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize-1}<#if content??>&content=${content}</#if>"><span class="hidden-480">上一页</span></a></li>
+                                                    </#if>
+                                                    <#if (pageSize<totlePage)>
+                                                        <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize+1}<#if content??>&content=${content}</#if>"><span class="hidden-480">下一页</span></a></li>
+                                                        <li class="next"><a href="/customer/findAllCustomer?pageSize=${totlePage}<#if content??>&content=${content}</#if>"><span class="hidden-480">尾页</span></a></li>
+                                                    </#if>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </#if>
+
+                                </div>
                             </#if>
                         </div>
 
