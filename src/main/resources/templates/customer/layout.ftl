@@ -773,25 +773,27 @@
 <script>
 
     $(document).ready(function(){
-        //jquery获取复选框值
-        var deptNo_no =[];//定义一个数组
-        var userId_id =[];
-        $('input[name="deptNo"]:checked').each(function(){
-            deptNo_no.push($.trim($(this).val()));
-        });
-        $('input[name="userId"]:checked').each(function(){
-            userId_id.push($.trim($(this).val()));
-        });
-        var indata = {userId:userId_id, deptNo:deptNo_no};
+
+
         $('#save').on("click",function(){
 
+            //jquery获取复选框值
+            var deptNo_no =[];//定义一个数组
+
+            $('input[name="deptNo"]:checked').each(function(){
+                deptNo_no.push($.trim($(this).val()));
+            });
+            var userId_id = $('input[name="userId"]').val();
+
+            var indata = {"userId":userId_id, "deptNo":deptNo_no};
+            alert(userId_id);
             $.ajax({
                 type:'post',
                 url:"/dept/allotDeptAction",
                 data:indata,
                 dataType:'json',
                 success:function(data){
-
+                        alert("设置成功");
                 }
             })
 

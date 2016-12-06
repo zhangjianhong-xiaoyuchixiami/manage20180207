@@ -199,14 +199,15 @@
                                 <tbody>
                                     <#if userDeptNoList??>
                                         <#if deptList??>
-                                            <#list userDeptNoList as userDeptNo>
-                                                <#list deptList as dept>
+                                            <#list deptList as dept>
+                                                <#list userDeptNoList as userDeptNo>
+
                                                 <tr align="center">
 
                                                     <td><input type="checkbox" name="deptNo" <#if userDeptNo==dept.deptNo>checked="checked"</#if> value="${dept.deptNo}" /></td>
                                                     <td>${dept.deptNo}</td>
                                                     <td>${dept.deptName}</td>
-                                                    <td><input type="checkbox" checked="checked" name="userId" value="${userId}" /></td>
+                                                    <td><input type="text" name="userId" value="${userId}" /></td>
 
                                                 </tr>
                                                 </#list>

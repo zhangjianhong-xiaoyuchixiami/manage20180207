@@ -31,5 +31,5 @@ public interface DeptService {
      * @throws Exception
      */
     @Transactional
-    public boolean insertUserDept(Integer[] userId,Integer[] deptNo )throws Exception;
+    public boolean insertUserDept(String userId,String [] deptNo )throws Exception;
 }

@@ -1,6 +1,5 @@
 package org.qydata.controller;
 
-import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
@@ -14,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2016/12/3.
@@ -71,24 +69,20 @@ public class DeptController {
 
     @RequestMapping(value = "/allotDeptAction")
     @ResponseBody
-    public String allotDeptAction(HttpServletRequest request){
+    public void allotDeptAction(HttpServletRequest request,PrintWriter printWriter){
         String userId = request.getParameter("userId");
-        String deptNo = request.getParameter("deptNo");
-        System.out.println(userId);
-        System.out.println(deptNo);
-        Map<String, String> map = new HashMap<String, String>();
-        Gson gson = new Gson();
-        String json = null;
+        String [] deptNo = request.getParameterValues("deptNo[]");
+
         try {
-            //boolean flag = deptService.insertUserDept(userId,deptNo);
-//            if (flag){
-//                map.put("result", "ok");
-//                map.put("msg", "设置成功");
-//                json = gson.toJson(map);
-//            }
+            boolean flag = deptService.insertUserDept(userId,deptNo);
+            if (flag){
+                printWriter.write("yes");
+            }else {
+                printWriter.write("no");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return json;
+
     }
 }

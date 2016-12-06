@@ -3,6 +3,7 @@ package org.qydata.service.impl;
 import org.qydata.entity.Dept;
 import org.qydata.mapper.DeptMapper;
 import org.qydata.service.DeptService;
+import org.qydata.tools.IpTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +31,11 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public boolean insertUserDept(Integer[] userId, Integer[] deptNo) throws Exception {
+    public boolean insertUserDept(String userId, String [] deptNo) throws Exception {
+        Integer[] temp = IpTool.intArray(deptNo);
         Map<String,Object> map = new HashMap();
-        Integer usId = null;
-        for (int i=0;i<userId.length;i++){
-            usId = userId[i];
-        }
-        map.put("deptNo",deptNo);
-        map.put("usId",usId);
-        return false;
+        map.put("userId",Integer.parseInt(userId));
+        map.put("deptNo",temp);
+        return deptMapper.insertUserDept(map);
     }
 }

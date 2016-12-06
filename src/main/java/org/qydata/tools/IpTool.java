@@ -11,6 +11,14 @@ import java.util.List;
  */
 public class IpTool {
 
+    public static Integer[] intArray(String...arr){
+        Integer[] intArr = new Integer[arr.length];
+        for (int i=0; i<arr.length; i++) {
+            intArr[i] = Integer.parseInt(arr[i]);
+        }
+        return intArr;
+    }
+
     public static List<String> spiltStr(String str){
         String [] strChar = str.split(",");
         List<String> list = new ArrayList<String>();
