@@ -239,13 +239,13 @@
 
                                             <p>
 
-                                                <a href="/user/#/" class="btn blue" id="gritter-light">禁用账号</a>
+                                                <a href="/user/statusForbid/${user.username}" class="btn blue" id="gritter-light">禁用账号</a>
 
                                                 <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
 
-                                                <a href="/user/#/" class="btn blue" id="gritter-max">重置密码</a>
+                                                <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
 
-                                                <a href="/user/#/" class="btn black" id="gritter-max">分配角色</a>
+                                                <a href="/role/allotRoleView/${user.username}" class="btn black" id="gritter-max">分配角色</a>
 
                                             </p>
 
@@ -255,13 +255,13 @@
 
                                             <p>
 
-                                                <a href="/user/#/" class="btn blue" id="gritter-light">启用账号</a>
+                                                <a href="/user/statusStart/${user.username}" class="btn blue" id="gritter-light">启用账号</a>
 
-                                                <a href="/user/#/" class="btn black" id="gritter-light">分配部门</a><br/>
+                                                <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
 
-                                                <a href="/user/#/" class="btn blue" id="gritter-max">重置密码</a>
+                                                <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
 
-                                                <a href="/user/#/" class="btn black" id="gritter-max">分配角色</a>
+                                                <a href="/role/allotRoleView/${user.username}" class="btn black" id="gritter-max">分配角色</a>
 
                                             </p>
 
@@ -277,7 +277,7 @@
 
                                     <div class="span6">
 
-                                        <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
+                                        <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 </div>
                                     </div>
 
                                     <#if (totlePage>0)>

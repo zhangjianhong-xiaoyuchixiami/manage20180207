@@ -18,6 +18,7 @@ public class Dept implements Serializable {
     private Timestamp createTime;
     private  Timestamp timestamp;
     private List<User> user;
+    private List<Integer> deptNoList;
 
     public Dept() {
     }
@@ -73,6 +74,14 @@ public class Dept implements Serializable {
 
     public void setUser(List<User> user) {
         this.user = user;
+    }
+
+    public List<Integer> getDeptNoList() {
+        return deptNoList;
+    }
+
+    public void setDeptNoList(List<Integer> deptNoList) {
+        this.deptNoList = deptNoList;
     }
 
     @Override

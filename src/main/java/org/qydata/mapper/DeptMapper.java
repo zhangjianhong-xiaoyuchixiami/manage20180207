@@ -25,10 +25,35 @@ public interface DeptMapper {
     public List<Dept> findAllDept()throws Exception;
 
     /**
+     * 根据用户Id删除用户和部门映射
+     * @return
+     * @throws Exception
+     */
+    public Integer deleteUserDeptByUserId(Integer userId)throws Exception;
+
+    /**
      * 批量插入用户和部门映射
      * @param map
      * @return
      * @throws Exception
      */
     public boolean insertUserDept(Map<String,Object> map)throws Exception;
+
+    /**
+     *
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<Dept> findAll(Map<String,Object> map)throws Exception;
+
+    /**
+     *
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getAllCount(Map<String,Object> map)throws Exception;
+
+
 }

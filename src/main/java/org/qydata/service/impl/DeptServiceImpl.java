@@ -1,12 +1,17 @@
 package org.qydata.service.impl;
 
+import org.qydata.dst.AllotDept;
 import org.qydata.entity.Dept;
+import org.qydata.entity.User;
 import org.qydata.mapper.DeptMapper;
+import org.qydata.mapper.UserMapper;
 import org.qydata.service.DeptService;
 import org.qydata.tools.IpTool;
+import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +31,8 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public List<Dept> findAllDept() throws Exception {
+    public List<Dept> findAllDept(String username) throws Exception {
+
         return deptMapper.findAllDept();
     }
 
@@ -36,6 +42,15 @@ public class DeptServiceImpl implements DeptService {
         Map<String,Object> map = new HashMap();
         map.put("userId",Integer.parseInt(userId));
         map.put("deptNo",temp);
+        deptMapper.deleteUserDeptByUserId(Integer.parseInt(userId));
         return deptMapper.insertUserDept(map);
+    }
+
+    @Override
+    public PageModel<Dept> findAll(Map<String, Object> map) throws Exception {
+        PageModel<Dept> pageModel = new PageModel<>();
+        pageModel.setList(deptMapper.findAll(map));
+        pageModel.setCount(deptMapper.getAllCount(map));
+        return pageModel;
     }
 }

@@ -211,12 +211,16 @@
                                             <h3 class="block">请填写信息</h3>
 
                                             <div class="controls">
-                                                <#if msg??>
-                                                    <span><h5><font color="red">${msg}</font></h5></span>
-                                                <#else>
-                                                    <span></span>
-                                                </#if>
+
                                             </div>
+                                            <div class="controls">
+
+                                            </div>
+                                            <#if msg??>
+                                                <span><h5><font color="red">${msg}</font></h5></span>
+                                            <#else>
+                                                <span></span>
+                                            </#if>
 
                                             <div class="control-group">
 

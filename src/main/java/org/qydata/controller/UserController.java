@@ -8,6 +8,7 @@ import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -96,51 +97,58 @@ public class UserController {
         return "/user/userList";
     }
 
-    @RequestMapping(value = "/allotDeptView")
-    public String allotDeptView(){
-        return "dept/allotDept";
+    //启动账号
+    @RequestMapping(value = "/statusStart/{username}")
+    public String statusStart(@PathVariable String username){
+        try {
+            userService.updateStatusStart(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/user/findAllUser";
+    }
+    //禁用账号
+    @RequestMapping(value = "/statusForbid/{username}")
+    public String statusForbid(@PathVariable String username){
+        try {
+            userService.updateStatusForbid(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/user/findAllUser";
+    }
+    //重置密码
+    @RequestMapping(value = "/resetPassword")
+    public String resetPassword(@PathVariable String username){
+        try {
+            userService.resetPassword(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/user/findAllUser";
     }
 
-//    @RequestMapping(value = "/statusStart/{loginName}")
-//    public String statusStart(@PathVariable String loginName){
-//        try {
-//            userService.updateStatusStart(loginName);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "redirect:/user/findAllAdmin";
-//    }
-//
-//    @RequestMapping(value = "/statusForbid/{loginName}")
-//    public String statusForbid(@PathVariable String loginName){
-//        try {
-//            userService.updateStatusForbid(loginName);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "redirect:/user/findAllAdmin";
-//    }
-//
-//    @RequestMapping(value = "/updatePasswordView")
-//    public String updatePasswordView(){
-//        return "/user/updatePassword";
-//    }
-//
-//    @RequestMapping(value = "/updatePasswordAction")
-//    public String updatePasswordAction(String loginName,String password,String newPassword,RedirectAttributes model){
-//        try {
-//           boolean flag = userService.updatePassword(loginName.trim(),password.trim(),newPassword.trim());
-//           if(!flag){
-//               model.addFlashAttribute("msg","修改失败！");
-//               return "redirect:/user/updatePasswordView";
-//           }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            log.error("updatePasswordErroe:修改密码异常");
-//            model.addFlashAttribute("msg","修改失败！");
-//            return "redirect:/user/updatePasswordView";
-//        }
-//        return "redirect:/";
-//    }
+    //修改密码
+    @RequestMapping(value = "/updatePasswordView")
+    public String updatePasswordView(){
+        return "/user/updatePassword";
+    }
+
+    @RequestMapping(value = "/updatePasswordAction")
+    public String updatePasswordAction(String username,String password,String newPassword,RedirectAttributes model){
+        try {
+            boolean flag = userService.updatePassword(username.trim(),password.trim(),newPassword.trim());
+            if(!flag){
+                model.addFlashAttribute("msg","修改失败！");
+                return "redirect:/user/updatePasswordView";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("updatePasswordErroe:修改密码异常");
+            model.addFlashAttribute("msg","修改失败！");
+            return "redirect:/user/updatePasswordView";
+        }
+        return "redirect:/";
+    }
 
 }

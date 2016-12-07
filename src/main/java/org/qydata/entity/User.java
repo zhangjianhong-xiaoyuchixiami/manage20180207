@@ -22,6 +22,7 @@ public class User implements Serializable {
     private Timestamp timestamp;
     private Integer typeId;
     private List<Dept> dept;
+    private List<Role> roles;
     public User() {}
 
     public Integer getId() {
@@ -98,6 +99,14 @@ public class User implements Serializable {
 
     public Integer getTypeId() {
         return typeId;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public void setTypeId(Integer typeId) {

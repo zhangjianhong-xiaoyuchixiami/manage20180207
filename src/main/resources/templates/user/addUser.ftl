@@ -103,13 +103,7 @@
                             </div>
                         </div>
                         <div class="portlet-body form">
-                            <div class="controls">
-                                <#if msg??>
-                                    <span><h5><font color="red">${msg}</font></h5></span>
-                                <#else>
-                                    <span></span>
-                                </#if>
-                            </div>
+
                             <!-- BEGIN FORM-->
                             <form action="/user/addUserAction" method="post" id="form_sample_1" class="form-horizontal">
                                 <div class="alert alert-error hide">
@@ -119,6 +113,19 @@
                                 <div class="alert alert-success hide">
                                     <button class="close" data-dismiss="alert"></button>
                                     Your form validation is successful!
+                                </div>
+                                <div class="control-group">
+
+                                </div>
+                                <div class="control-group">
+
+                                </div>
+                                <div class="controls">
+                                    <#if msg??>
+                                        <span><h5><font color="red">${msg}</font></h5></span>
+                                    <#else>
+                                        <span></span>
+                                    </#if>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">姓名<span class="required">*</span></label>

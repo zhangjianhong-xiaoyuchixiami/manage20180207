@@ -12,7 +12,7 @@
         <result column="timestamp" property="timestamp"/>
     </resultMap>
 
-   <!--新增部门-->
+    <!--新增部门-->
     <insert id="insertDept" parameterType="Dept" useGeneratedKeys="true" keyProperty="id">
         insert into qyauth.Dept(deptName,deptNo,createTime)
         values(#{deptName},#{deptNo},sysdate())
@@ -23,13 +23,26 @@
     </select>
     <!--批量插入用户和部门映射-->
     <insert id="insertUserDept" parameterType="map" useGeneratedKeys="true" keyProperty="id">
-
         insert into qyauth.UserDept(userId,deptNo,createTime)
         values
         <foreach collection="deptNo" index="index" item="item" separator=",">
             ( #{userId},#{item},sysdate() )
         </foreach>
-
     </insert>
-
+    <!--根据用户Id删除用户和部门映射-->
+    <delete id="deleteUserDeptByUserId" parameterType="Integer">
+        delete from qyauth.UserDept where userId=#{param}
+    </delete>
+    <!---->
+    <select id="findAll" parameterType="Map" resultType="Dept">
+        select id,deptNo,deptName,createTime
+        from qyauth.Dept
+        order by createTime desc
+        limit #{beginIndex},#{lineSize}
+    </select>
+    <!---->
+    <select id="getAllCount" parameterType="Map" resultType="Integer">
+        select count(id)
+        from qyauth.Dept
+    </select>
 </mapper>

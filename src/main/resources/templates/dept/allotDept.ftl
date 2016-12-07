@@ -187,39 +187,51 @@
 
                         <div class="portlet-body no-more-tables">
 
+                            <div class="btn-group">
+
+                                <button class="btn blue" id="allotDeptSave">
+
+                                    Save <i class="m-icon-swapright m-icon-white"></i>
+
+                                </button>
+
+                            </div>
+
                             <table class="table-bordered table-striped table-condensed cf">
                                 <thead class="cf">
                                 <tr>
                                     <th style="width: 100px" class="numeric">部门选择</th>
                                     <th class="numeric">部门编号</th>
                                     <th class="numeric">部门名称</th>
-                                    <th class="numeric">用户Id</th>
+                                    <th class="numeric" style="display: none">用户Id</th>
+                                    <th class="numeric" style="display: none">用户名</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <#if userDeptNoList??>
+
                                         <#if deptList??>
                                             <#list deptList as dept>
-                                                <#list userDeptNoList as userDeptNo>
 
-                                                <tr align="center">
+                                                    <tr align="center">
+                                                        <td>
+                                                            <input type="checkbox" name="deptNo"  <#list userDeptNoList as deptNoList>
+                                                                   <#if deptNoList==dept.deptNo>checked="checked"</#if>
 
-                                                    <td><input type="checkbox" name="deptNo" <#if userDeptNo==dept.deptNo>checked="checked"</#if> value="${dept.deptNo}" /></td>
-                                                    <td>${dept.deptNo}</td>
-                                                    <td>${dept.deptName}</td>
-                                                    <td><input type="text" name="userId" value="${userId}" /></td>
+                                                                   </#list> value="${dept.deptNo}" />
+                                                        </td>
+                                                        <td>${dept.deptNo}</td>
+                                                        <td>${dept.deptName}</td>
+                                                        <td style="display: none"><input type="text" name="userId" value="${userId}" /></td>
+                                                        <td style="display: none"><input type="text" name="username" value="${username}" /></td>
+                                                    </tr>
 
-                                                </tr>
-                                                </#list>
                                             </#list>
                                         </#if>
-                                    </#if>
+
                                 </tbody>
 
                             </table>
-                            <div class="form-actions">
-                                <button type="submit" id="save" class="btn blue"><i class="icon-ok"></i> Save</button>
-                            </div>
+
 
                         </div>
 

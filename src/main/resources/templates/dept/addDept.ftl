@@ -75,14 +75,14 @@
                     <ul class="breadcrumb">
                         <li>
                             <i class="icon-home"></i>
-                            <a href="index.html">Home</a>
+                            <a href="index.html">首页</a>
                             <span class="icon-angle-right"></span>
                         </li>
                         <li>
-                            <a href="#">Form Stuff</a>
+                            <a href="#">部门管理</a>
                             <span class="icon-angle-right"></span>
                         </li>
-                        <li><a href="#">Form Validation</a></li>
+                        <li><a href="#">新增部门</a></li>
                     </ul>
                 </div>
             </div>
@@ -103,15 +103,9 @@
                             </div>
                         </div>
                         <div class="portlet-body form">
-                            <div class="controls">
-                                <#if msg??>
-                                    <span><h5><font color="red">${msg}</font></h5></span>
-                                <#else>
-                                    <span></span>
-                                </#if>
-                            </div>
+
                             <!-- BEGIN FORM-->
-                            <form action="/user/addUserAction" method="post" id="form_sample_1" class="form-horizontal">
+                            <form action="/user/addDeptAction" method="post" id="form_sample_1" class="form-horizontal">
                                 <div class="alert alert-error hide">
                                     <button class="close" data-dismiss="alert"></button>
                                     You have some form errors. Please check below.
@@ -121,43 +115,28 @@
                                     Your form validation is successful!
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">姓名<span class="required">*</span></label>
+
+                                </div>
+                                <div class="control-group">
+
+                                </div>
+                                <div class="controls">
+                                    <#if msg??>
+                                        <span><h5><font color="red">${msg}</font></h5></span>
+                                    <#else>
+                                        <span></span>
+                                    </#if>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">部门名称<span class="required">*</span></label>
                                     <div class="controls">
-                                        <input type="text" name="name" data-required="1" class="span6 m-wrap"/>
+                                        <input type="text" name="deptName" data-required="1" class="span6 m-wrap"/>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">用户名<span class="required">*</span></label>
+                                    <label class="control-label">部门编号<span class="required">*</span></label>
                                     <div class="controls">
-                                        <input name="username" type="text" class="span6 m-wrap"/>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">电话<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <input name="tel" type="text" class="span6 m-wrap"/>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">账号状态<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <select class="span6 m-wrap" name="status">
-
-                                            <option value="0">启用</option>
-                                            <option value="1">禁用</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">账号类型<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <select class="span6 m-wrap" name="typeId">
-
-                                            <option value="1">功能账号</option>
-                                            <option value="2">普通账号</option>
-
-                                        </select>
+                                        <input name="deptNo" type="text" class="span6 m-wrap"/>
                                     </div>
                                 </div>
 

@@ -211,7 +211,12 @@
                                         <!-- BEGIN FORM-->
 
                                         <form action="/customerApi/updateCustomerApiById" class="form-horizontal" method="post" onsubmit="return validateCustomerApi()">
+                                            <div class="control-group">
 
+                                            </div>
+                                            <div class="control-group">
+
+                                            </div>
                                             <div class="controls">
                                                 <#if msg??>
                                                     <span><h5><font color="red">${msg}</font></h5></span>

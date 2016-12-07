@@ -77,37 +77,19 @@ public interface UserMapper {
      */
     public User findUserByUsername(String username)throws Exception;
 
-//
-//    /**
-//     * 启动账号
-//     * @return
-//     * @throws Exception
-//     */
-//    public boolean updateStatusStart(String loginName)throws Exception;
-//
-//    /**
-//     *禁用账号
-//     * @return
-//     * @throws Exception
-//     */
-//    public boolean updateStatusforbid(String loginName)throws Exception;
-//
-//    /**
-//     * 模糊搜索
-//     * @param map
-//     * @return
-//     * @throws Exception
-//     */
-//    public List<User> findByColumn(Map<String,Object> map)throws Exception;
-//
-//    /**
-//     * 模糊搜索总数据量
-//     * @param map
-//     * @return
-//     * @throws Exception
-//     */
-//    public Integer getCountColumn(Map<String,Object> map)throws Exception;
-//
 
+    /**
+     * 启动账号
+     * @return
+     * @throws Exception
+     */
+    public boolean updateStatusStart(String username)throws Exception;
+
+    /**
+     *禁用账号
+     * @return
+     * @throws Exception
+     */
+    public boolean updateStatusforbid(String username)throws Exception;
 
 }

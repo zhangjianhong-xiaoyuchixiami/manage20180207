@@ -60,61 +60,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUserByUsername(username);
     }
 
+    @Override
+    public boolean updateStatusStart(String username) throws Exception {
+        return userMapper.updateStatusStart(username);
+    }
 
-//
-//    @Override
-//    public List<Role> findAllRole() throws Exception {
-//        return userMapper.findAllRole();
-//    }
-//
-//    @Override
-//    public List<Dept> findAllDept() throws Exception {
-//        return userMapper.findAllDept();
-//    }
-//
-//    @Override
-//    public boolean addAdminAndRole(AdminRoleInfo adminRoleInfo) throws Exception {
-//        boolean flag = false;
-//        try {
-//            userMapper.addAdmin(adminRoleInfo.getUser());
-//            RoleUser roleUser = new RoleUser();
-//            roleUser.setRoleId(adminRoleInfo.getRole().getId());
-//            roleUser.setLoginName(adminRoleInfo.getUser().getLoginName());
-//           flag = userMapper.addRoleAdmin(roleUser);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return flag;
-//    }
-//
-//    @Override
-//    public PageModel<User> findAllAdmin(Map<String,Object> map) throws Exception {
-//        PageModel<User> pageModel = new PageModel<User>();
-//        pageModel.setRows(userMapper.getAllCountAdmin());
-//        pageModel.setList(userMapper.findAllAdmin(map));
-//        return pageModel;
-//    }
-//
-//    @Override
-//    public PageModel<User> findAllByColumn(Map<String, Object> map) throws Exception {
-//        PageModel<User> pageModel = new PageModel<User>();
-//        pageModel.setRows(userMapper.getCountColumn(map));
-//        pageModel.setList(userMapper.findByColumn(map));
-//        return pageModel;
-//    }
-//
-//    @Override
-//    public boolean updateStatusStart(String longinName) throws Exception {
-//        return userMapper.updateStatusStart(longinName);
-//    }
-//
-//    @Override
-//    public boolean updateStatusForbid(String longinName) throws Exception {
-//        return userMapper.updateStatusforbid(longinName);
-//    }
-//
-//    @Override
-//    public boolean updatePassword(String loginName, String password, String newPassword) throws Exception {
-//        return userMapper.updatePassword(loginName,password,newPassword);
-//    }
+    @Override
+    public boolean updateStatusForbid(String username) throws Exception {
+        return userMapper.updateStatusforbid(username);
+    }
+
 }

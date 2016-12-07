@@ -206,9 +206,13 @@
 
                                 <div class="tab-content">
 
-                                    <div class="form-search pull-left">
+                                    <div class="btn-group">
 
-                                        <a href="javaScript:;" onclick="addCustomerApi()"><i class="icon-plus"></i>Add</a>
+                                        <button class="btn blue" onclick="addCustomerApi()">
+
+                                            Add New <i class="icon-plus"></i>
+
+                                        </button>
 
                                     </div>
 

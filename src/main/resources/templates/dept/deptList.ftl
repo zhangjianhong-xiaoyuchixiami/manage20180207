@@ -145,13 +145,13 @@
 
                         <li>
 
-                            <a href="#">客户管理</a>
+                            <a href="#">部门管理</a>
 
                             <i class="icon-angle-right"></i>
 
                         </li>
 
-                        <li><a href="#">角色管理</a></li>
+                        <li><a href="#">部门信息</a></li>
 
                     </ul>
 
@@ -185,51 +185,55 @@
 
                         </div>
 
+
                         <div class="portlet-body no-more-tables">
 
-                            <div class="btn-group">
-
-                                <button class="btn blue" id="allotRoleSave">
-
-                                    Save <i class="m-icon-swapright m-icon-white"></i>
-
-                                </button>
-
-                            </div>
 
                             <table class="table-bordered table-striped table-condensed cf">
                                 <thead class="cf">
                                 <tr>
-                                    <th style="width: 100px" class="numeric">角色选择</th>
-                                    <th class="numeric">角色编号</th>
-                                    <th class="numeric">角色名称</th>
-                                    <th class="numeric" style="display: none">用户名</th>
+                                    <th class="numeric">部门编号</th>
+                                    <th class="numeric">部门名称</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                    <#if roleList??>
-                                        <#list roleList as role>
-
-                                        <tr align="center">
-                                            <td>
-                                                <input type="checkbox" name="roleId"  <#list userRoleList as userRoleIdList>
-                                                       <#if userRoleIdList.roleId==role.id>checked="checked"</#if>
-
-                                                </#list> value="${role.id}" />
-                                            </td>
-                                            <td>${role.id}</td>
-                                            <td>${role.name}</td>
-                                            <td style="display: none"><input type="text" name="username" value="${username}" /></td>
-                                        </tr>
-
-                                        </#list>
-                                    </#if>
-
+                                <#if deptList??>
+                                    <#list deptList as dept>
+                                    <tr align="center">
+                                        <td>${dept.deptNo}</td>
+                                        <td>${dept.deptName}</td>
+                                    </tr>
+                                    </#list>
+                                </#if>
                                 </tbody>
 
                             </table>
 
+                            <div class="row-fluid">
+
+                                <div class="span6">
+
+                                    <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
+                                </div>
+
+                                <#if (totlePage>0)>
+
+                                    <div class="span6">
+                                        <div class="dataTables_paginate paging_bootstrap pagination">
+                                            <ul>
+                                                <#if (pageSize>1)>
+                                                    <li class="next"><a href="/dept/findAllDept?pageSize=1"><span class="hidden-480">首页</span></a></li>
+                                                    <li class="next"><a href="/dept/findAllDept?pageSize=${pageSize-1}"><span class="hidden-480">上一页</span></a></li>
+                                                </#if>
+                                                <#if (pageSize<totlePage)>
+                                                    <li class="next"><a href="/dept/findAllDept?pageSize=${pageSize+1}"><span class="hidden-480">下一页</span></a></li>
+                                                    <li class="next"><a href="/dept/findAllDept?pageSize=${totlePage}"><span class="hidden-480">尾页</span></a></li>
+                                                </#if>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </#if>
+                            </div>
 
                         </div>
 

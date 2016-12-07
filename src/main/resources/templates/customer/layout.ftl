@@ -32,8 +32,6 @@
 
     <link href="/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 
-    <link rel="stylesheet" type="text/css" href="/css/select2_metro.css" />
-
     <link rel="stylesheet" href="/css/DT_bootstrap.css" />
 
     <link rel="shortcut icon" href="/image/favicon.ico" />
@@ -554,8 +552,8 @@
                     <!-- 搜索框结束 -->
                 </li>
             <#--客户管理-->
-                <li>
-                    <a class="active" href="javascript:;">
+                <li class="" id="customerManage">
+                    <a href="javascript:;">
 
                         <i class="icon-sitemap"></i>
 
@@ -567,13 +565,13 @@
 
                     <ul class="sub-menu">
 
-                        <li>
+                        <li id="addCustomer">
                             <a href="/customer/addCustomerView">
                                 新增客户
                             </a>
                         </li>
 
-                        <li>
+                        <li id="customerList">
                             <a href="/customer/findAllCustomer">
                                 客户信息
                             </a>
@@ -582,8 +580,8 @@
                     </ul>
                 </li>
             <#--财务管理-->
-                <li>
-                    <a class="active" href="javascript:;">
+                <li class="">
+                    <a href="javascript:;">
 
                         <i class="icon-sitemap"></i>
 
@@ -605,8 +603,8 @@
 
                 </li>
             <#--用户管理-->
-                <li>
-                    <a class="active" href="javascript:;">
+                <li class="">
+                    <a href="javascript:;">
 
                         <i class="icon-sitemap"></i>
 
@@ -631,10 +629,10 @@
 
                     </ul>
 
-                </li>
+                </>
             <#--部门管理-->
-                <li>
-                    <a class="active" href="javascript:;">
+                <li class="">
+                    <a href="javascript:;">
 
                         <i class="icon-sitemap"></i>
 
@@ -647,12 +645,12 @@
                     <ul class="sub-menu">
 
                         <li>
-                            <a href="#">
+                            <a href="/dept/addDeptView">
                                 新增部门
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="/dept/findAllDept">
                                 部门信息
                             </a>
                         </li>
@@ -720,12 +718,6 @@
 
 <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
 
-<script type="text/javascript" src="/js/select2.min.js"></script>
-
-<script type="text/javascript" src="/js/jquery.dataTables.js"></script>
-
-<script type="text/javascript" src="/js/DT_bootstrap.js"></script>
-
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -774,29 +766,60 @@
 
     $(document).ready(function(){
 
-
-        $('#save').on("click",function(){
-
+        $('#allotDeptSave').on("click",function(){
             //jquery获取复选框值
             var deptNo_no =[];//定义一个数组
-
             $('input[name="deptNo"]:checked').each(function(){
                 deptNo_no.push($.trim($(this).val()));
             });
             var userId_id = $('input[name="userId"]').val();
-
-            var indata = {"userId":userId_id, "deptNo":deptNo_no};
-            alert(userId_id);
+            var username_id = $('input[name="username"]').val();
+            var indata = {"userId":userId_id, "deptNo":deptNo_no,"username":username_id};
             $.ajax({
                 type:'post',
                 url:"/dept/allotDeptAction",
                 data:indata,
                 dataType:'json',
                 success:function(data){
-                        alert("设置成功");
+                    if(data!=null && data.result=="ok"){
+                        alert("添加成功");
+                        window.location.href="/dept/allotDeptView/"+data.msg
+                    }else{
+                        alert("操作失败");
+                        window.location.href="/dept/allotDeptView/"+data.msg
+                    }
                 }
-            })
+            });
+        });
+    });
+</script>
+<script>
 
+    $(document).ready(function(){
+
+        $('#allotRoleSave').on("click",function(){
+            //jquery获取复选框值
+            var roleId_id =[];//定义一个数组
+            $('input[name="roleId"]:checked').each(function(){
+                roleId_id.push($.trim($(this).val()));
+            });
+            var username_id = $('input[name="username"]').val();
+            var indata = {"deptNo":deptNo_no,"username":username_id};
+            $.ajax({
+                type:'post',
+                url:"/role/allotRoleAction",
+                data:indata,
+                dataType:'json',
+                success:function(data){
+                    if(data!=null && data.result=="ok"){
+                        alert("添加成功");
+                        window.location.href="/role/allotRoleView/"+data.msg
+                    }else{
+                        alert("操作失败");
+                        window.location.href="/role/allotRoleView/"+data.msg
+                    }
+                }
+            });
         });
     });
 </script>

@@ -189,7 +189,7 @@
 
                             <!-- BEGIN FORM-->
 
-                                <form action="/customer/insertCustomer" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
+                            <form action="/customer/insertCustomer" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
 
                                 <div class="alert alert-error hide">
 
@@ -206,14 +206,20 @@
                                     Your form validation is successful!
 
                                 </div>
+                                <div class="control-group">
 
-                                    <div class="controls">
-                                        <#if msg??>
-                                            <span><h5><font color="red">${msg}</font></h5></span>
-                                        <#else>
-                                            <span></span>
-                                        </#if>
-                                    </div>
+                                </div>
+                                <div class="control-group">
+
+                                </div>
+
+                                <div class="controls">
+                                    <#if msg??>
+                                        <span><h5><font color="red">${msg}</font></h5></span>
+                                    <#else>
+                                        <span></span>
+                                    </#if>
+                                </div>
 
                                 <div class="control-group">
 
@@ -249,19 +255,19 @@
 
                                     <#if deptList??>
 
-                                    <div class="controls">
+                                        <div class="controls">
 
-                                        <select id="dept.deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
+                                            <select id="dept.deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
 
-                                            <#list deptList as dept>
+                                                <#list deptList as dept>
 
-                                                <option value="${dept.deptNo}">${dept.deptName}</option>
+                                                    <option value="${dept.deptNo}">${dept.deptName}</option>
 
-                                            </#list>
+                                                </#list>
 
-                                        </select>
+                                            </select>
 
-                                    </div>
+                                        </div>
 
                                     </#if>
 
@@ -295,5 +301,12 @@
 
     <#elseif section = "footer">
     <script src="/js/myjs/customer.js" type="text/javascript" ></script>
+
     </#if>
+<script>
+    $(document).ready(function() {
+        $('#customerManage').addClass('active');
+        $('#addCustomer').addClass('active');
+    });
+</script>
 </@layout>

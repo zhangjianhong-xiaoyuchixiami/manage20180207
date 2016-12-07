@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Created by jonhn on 2016/11/30.
  */
-public class RoleUser implements Serializable {
+public class UserRole implements Serializable {
 
     private Integer id;
     private Integer roleId;
@@ -14,7 +14,7 @@ public class RoleUser implements Serializable {
     private Timestamp createTime;
     private Timestamp timestamp;
 
-    public RoleUser() {
+    public UserRole() {
     }
 
     public Integer getId() {

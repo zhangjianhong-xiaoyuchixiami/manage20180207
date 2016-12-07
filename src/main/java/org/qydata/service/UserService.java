@@ -71,62 +71,23 @@ public interface UserService {
      */
     public User findUserByUsername(String username)throws Exception;
 
+    /**
+     * 启用
+     * @param username
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public boolean updateStatusStart(String username)throws Exception;
 
+    /**
+     * 禁用
+     * @param username
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public boolean updateStatusForbid(String username)throws Exception;
 
-
-
-//    /**
-//     * 添加管理员并分配角色
-//     * @param adminRoleInfo
-//     * @return
-//     * @throws Exception
-//     */
-//    @Transactional
-//    public boolean addAdminAndRole(AdminRoleInfo adminRoleInfo)throws Exception;
-//
-//    /**
-//     * 查找全部管理员并分页显示
-//     * @param map
-//     * @return
-//     * @throws Exception
-//     */
-//    public PageModel<User> findAllAdmin(Map<String,Object> map)throws Exception;
-//
-//    /**
-//     * 模糊搜索并分页
-//     * @param map
-//     * @return
-//     * @throws Exception
-//     */
-//    public PageModel<User> findAllByColumn(Map<String,Object> map)throws Exception;
-//
-//    /**
-//     * 启用
-//     * @param longinName
-//     * @return
-//     * @throws Exception
-//     */
-//    @Transactional
-//    public boolean updateStatusStart(String longinName)throws Exception;
-//
-//    /**
-//     * 禁用
-//     * @param longinName
-//     * @return
-//     * @throws Exception
-//     */
-//    @Transactional
-//    public boolean updateStatusForbid(String longinName)throws Exception;
-//
-//    /**
-//     * 根据用户名和旧密码修改密码
-//     * @param loginName
-//     * @param password
-//     * @return
-//     * @throws Exception
-//     */
-//    @Transactional
-//    public boolean updatePassword(String loginName,String password,String newPassword)throws Exception;
-//
 
 }

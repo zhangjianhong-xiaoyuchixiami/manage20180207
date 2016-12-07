@@ -7,4 +7,21 @@
     <select id="findAllRole" resultType="Role">
         select id,name,flag from qyauth.Role
     </select>
+    <!--根据用户名匹配所有角色-->
+    <select id="findAllRoleByUsername" resultType="UserRole">
+        select roleId,username from qyauth.UserRole where username=#{username}
+    </select>
+
+    <!--分配角色-->
+    <insert id="addRoleUser" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.UserRole(username,roleId,createTime)
+        values
+        <foreach collection="roleId" index="index" item="item" separator=",">
+            ( #{username},#{item},sysdate() )
+        </foreach>
+    </insert>
+    <!--根据用户Id删除用户和角色映射-->
+    <delete id="deleteUserRoleByUserId" parameterType="String">
+        delete from qyauth.UserRole where username=#{param}
+    </delete>
 </mapper>

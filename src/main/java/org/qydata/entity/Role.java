@@ -2,6 +2,7 @@ package org.qydata.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by jonhn on 2016/11/23.
@@ -13,6 +14,7 @@ public class Role implements Serializable {
     private String flag;
     private Timestamp createTime;
     private Timestamp timestamp;
+    private List<User> users;
 
 
     public Integer getId() {
@@ -53,6 +55,14 @@ public class Role implements Serializable {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override

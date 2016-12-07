@@ -1,9 +1,11 @@
 package org.qydata.service;
 
 import org.qydata.entity.Dept;
+import org.qydata.tools.PageModel;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/12/3.
@@ -23,7 +25,7 @@ public interface DeptService {
      * @return
      * @throws Exception
      */
-    public List<Dept> findAllDept()throws Exception;
+    public List<Dept> findAllDept(String username)throws Exception;
     /**
      * 批量插入用户和部门映射
      * @param
@@ -32,4 +34,7 @@ public interface DeptService {
      */
     @Transactional
     public boolean insertUserDept(String userId,String [] deptNo )throws Exception;
+
+    public PageModel<Dept> findAll(Map<String,Object> map)throws Exception;
+
 }
