@@ -3,6 +3,8 @@
 <@layout ; section>
     <#if section = "head">
 
+
+
     <#elseif section = "content" >
 
     <div class="page-content">
@@ -188,101 +190,101 @@
                         <div class="portlet-body form">
 
                             <!-- BEGIN FORM-->
+                            <fieldset>
+                                <form action="/customer/insertCustomer" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
 
-                            <form action="/customer/insertCustomer" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
+                                    <div class="alert alert-error hide">
 
-                                <div class="alert alert-error hide">
+                                        <button class="close" data-dismiss="alert"></button>
 
-                                    <button class="close" data-dismiss="alert"></button>
-
-                                    You have some form errors. Please check below.
-
-                                </div>
-
-                                <div class="alert alert-success hide">
-
-                                    <button class="close" data-dismiss="alert"></button>
-
-                                    Your form validation is successful!
-
-                                </div>
-                                <div class="control-group">
-
-                                </div>
-                                <div class="control-group">
-
-                                </div>
-
-                                <div class="controls">
-                                    <#if msg??>
-                                        <span><h5><font color="red">${msg}</font></h5></span>
-                                    <#else>
-                                        <span></span>
-                                    </#if>
-                                </div>
-
-                                <div class="control-group">
-
-                                    <label class="control-label">公司名称<span class="required">*</span></label>
-
-                                    <div class="controls">
-
-                                        <input type="text" id="customer.name" name="customer.name" class="span6 m-wrap"/>
-
-                                        <span id="customer.nameMsg" class="help-block"></span>
+                                        You have some form errors. Please check below.
 
                                     </div>
 
-                                </div>
+                                    <div class="alert alert-success hide">
 
-                                <div class="control-group">
+                                        <button class="close" data-dismiss="alert"></button>
 
-                                    <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+                                        Your form validation is successful!
 
-                                    <div class="controls">
+                                    </div>
+                                    <div class="control-group">
 
-                                        <input type="text" id="customer.authId" name="customer.authId" class="span6 m-wrap"/>
-
-                                        <span id="customer.authIdMsg" class="help-block"></span>
+                                    </div>
+                                    <div class="control-group">
 
                                     </div>
 
-                                </div>
+                                    <div class="controls">
+                                        <#if msg??>
+                                            <span><h5><font color="red">${msg}</font></h5></span>
+                                        <#else>
+                                            <span></span>
+                                        </#if>
+                                    </div>
 
-                                <div class="control-group">
+                                    <div class="control-group">
 
-                                    <label class="control-label">所属部门<span class="required">*</span></label>
-
-                                    <#if deptList??>
+                                        <label class="control-label">公司名称<span class="required">*</span></label>
 
                                         <div class="controls">
 
-                                            <select id="dept.deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
+                                            <input type="text" id="customer.name" name="customer.name" class="span6 m-wrap"/>
 
-                                                <#list deptList as dept>
-
-                                                    <option value="${dept.deptNo}">${dept.deptName}</option>
-
-                                                </#list>
-
-                                            </select>
+                                            <span id="customer.nameMsg" class="help-block"></span>
 
                                         </div>
 
-                                    </#if>
+                                    </div>
 
-                                </div>
+                                    <div class="control-group">
 
-                                <div class="form-actions">
+                                        <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
 
-                                    <button type="submit" class="btn blue">提交</button>
+                                        <div class="controls">
 
-                                    <button type="reset" class="btn">重置</button>
+                                            <input type="text" id="customer.authId" name="customer.authId" class="span6 m-wrap"/>
 
-                                </div>
+                                            <span id="customer.authIdMsg" class="help-block"></span>
 
-                            </form>
+                                        </div>
 
+                                    </div>
+
+                                    <div class="control-group">
+
+                                        <label class="control-label">所属部门<span class="required">*</span></label>
+
+                                        <#if deptList??>
+
+                                            <div class="controls">
+
+                                                <select id="dept.deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
+
+                                                    <#list deptList as dept>
+
+                                                        <option value="${dept.deptNo}">${dept.deptName}</option>
+
+                                                    </#list>
+
+                                                </select>
+
+                                            </div>
+
+                                        </#if>
+
+                                    </div>
+
+                                    <div class="form-actions">
+
+                                        <button type="submit" id="SubmitAddCustomer" class="btn blue">提交</button>
+
+                                        <button type="reset" class="btn">重置</button>
+
+                                    </div>
+
+                                </form>
+                            </fieldset>
                             <!-- END FORM-->
 
                         </div>
@@ -300,12 +302,14 @@
     </div>
 
     <#elseif section = "footer">
-    <script src="/js/myjs/customer.js" type="text/javascript" ></script>
 
     </#if>
+
+
 <script>
     $(document).ready(function() {
         $('#customerManage').addClass('active');
+
         $('#addCustomer').addClass('active');
     });
 </script>

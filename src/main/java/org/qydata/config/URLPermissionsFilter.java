@@ -27,6 +27,8 @@ public class URLPermissionsFilter extends PermissionsAuthorizationFilter {
 	private String getRequestUrl(ServletRequest request) {
 		HttpServletRequest req = (HttpServletRequest)request;
         String url = req.getRequestURI().substring(1).replaceAll("/",":");
-        return url;
+		System.out.println(req.getRequestURI());
+		System.out.println(url);
+		return url;
 	}
 }

@@ -250,5 +250,11 @@
     <#elseif section = "footer">
 
     </#if>
+<script>
+    $(document).ready(function() {
+        $('#deptManage').addClass('active');
 
+        $('#deptList').addClass('active');
+    });
+</script>
 </@layout>

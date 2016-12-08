@@ -32,9 +32,16 @@
 
     <link href="/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 
+    <link type="text/css" rel="stylesheet" href="/css/validator.css"/>
+
     <link rel="stylesheet" href="/css/DT_bootstrap.css" />
 
     <link rel="shortcut icon" href="/image/favicon.ico" />
+
+    <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+
+
+
 </head>
 
 <body class="page-header-fixed">
@@ -580,7 +587,7 @@
                     </ul>
                 </li>
             <#--财务管理-->
-                <li class="">
+                <li class="" id="customerBalance">
                     <a href="javascript:;">
 
                         <i class="icon-sitemap"></i>
@@ -593,7 +600,7 @@
 
                     <ul class="sub-menu">
 
-                        <li>
+                        <li id="changeCustomerBalance">
                             <a href="/customerBalance/customerBalanceChangeView">
                                 客户余额变更
                             </a>
@@ -603,7 +610,7 @@
 
                 </li>
             <#--用户管理-->
-                <li class="">
+                <li class="" id="userManage">
                     <a href="javascript:;">
 
                         <i class="icon-sitemap"></i>
@@ -616,12 +623,12 @@
 
                     <ul class="sub-menu">
 
-                        <li>
+                        <li id="addUser">
                             <a href="/user/addUserView">
                                 新增用户
                             </a>
                         </li>
-                        <li>
+                        <li id="userList">
                             <a href="/user/findAllUser">
                                 用户信息
                             </a>
@@ -631,7 +638,7 @@
 
                 </>
             <#--部门管理-->
-                <li class="">
+                <li class="" id="deptManage">
                     <a href="javascript:;">
 
                         <i class="icon-sitemap"></i>
@@ -644,12 +651,12 @@
 
                     <ul class="sub-menu">
 
-                        <li>
+                        <li id="addDept">
                             <a href="/dept/addDeptView">
                                 新增部门
                             </a>
                         </li>
-                        <li>
+                        <li id="deptList">
                             <a href="/dept/findAllDept">
                                 部门信息
                             </a>
@@ -694,7 +701,7 @@
 
 </div>
 
-<script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+
 
 <script src="/js/bootstrap.min.js" type="text/javascript" ></script>
 
@@ -726,6 +733,9 @@
 
 <script src="/js/table-managed.js"></script>
 
+
+
+
 <script>
 
     jQuery(document).ready(function() {
@@ -748,20 +758,19 @@
                     });
         });
 
-        $("#authIdAdd").blur(function(){
-            $("#authIdAddMsg").load("/customer/findCustomerByAuthId/"+$("#authIdAdd").val(),
+        $("#customer.authId").blur(function(){
+            $("#customer.authIdMsg").load("/customer/findCustomerByAuthId/"+$("#customer.authId").val(),
                     function(responseTxt){
                         if(responseTxt=="yes")
-                            $("#authIdAddMsg").html("该账户已存在！");
+                            $("#customer.authIdMsg").html("该账户已存在！");
                         if(responseTxt=="no")
-                            $("#authIdAddMsg").html("");
+                            $("#customer.authIdMsg").html("");
                     });
         });
 
     });
 
 </script>
-
 <script>
 
     $(document).ready(function(){

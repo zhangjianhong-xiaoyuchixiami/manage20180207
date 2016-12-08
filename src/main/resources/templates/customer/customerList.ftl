@@ -297,4 +297,11 @@
     <#elseif section = "footer">
 
     </#if>
+<script>
+    $(document).ready(function() {
+        $('#customerManage').addClass('active');
+
+        $('#customerList').addClass('active');
+    });
+</script>
 </@layout>

@@ -116,77 +116,12 @@
         where u.username=#{username}
     </select>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--&lt;!&ndash;分配角色&ndash;&gt;-->
-    <!--<insert id="addRoleAdmin" parameterType="RoleAdmin" useGeneratedKeys="true" keyProperty="id">-->
-        <!--insert into qyauth.RoleAdmin(roleId,loginName,createTime)-->
-        <!--values(#{roleId},#{loginName},sysdate())-->
-    <!--</insert>-->
-    <!--&lt;!&ndash;查找全部管理员&ndash;&gt;-->
-    <!--<select id="findAllAdmin" parameterType="java.util.Map" resultMap="Admin_Dept_Role">-->
-        <!--select a.id,a.name,a.loginName,a.password,a.tel,a.deptNo,a.status,a.createTime,d.deptName,r.name rname-->
-        <!--from qyauth.Admin a,qyauth.Dept d,(SELECT qr.name,qra.loginName-->
-                                            <!--FROM qyauth.Role qr,qyauth.RoleAdmin qra-->
-                                            <!--WHERE qr.id=qra.roleId) r-->
-        <!--where a.deptNo=d.deptNo and a.loginName=r.loginName-->
-        <!--order by a.createTime desc-->
-        <!--limit #{beginIndex},#{line}-->
-    <!--</select>-->
-    <!--&lt;!&ndash;统计数据量&ndash;&gt;-->
-
-    <!--&lt;!&ndash;启动账号&ndash;&gt;-->
-    <!--<update id="updateStatusStart" parameterType="java.lang.String">-->
-        <!--update qyauth.Admin set status=0 where loginName=#{value}-->
-    <!--</update>-->
-    <!--&lt;!&ndash;禁用账号&ndash;&gt;-->
-    <!--<update id="updateStatusforbid" parameterType="java.lang.String">-->
-        <!--update qyauth.Admin set status=1 where loginName=#{value}-->
-    <!--</update>-->
-    <!--&lt;!&ndash;模糊搜索&ndash;&gt;-->
-    <!--<select id="findByColumn" parameterType="java.util.Map" resultMap="Admin_Dept_Role">-->
-        <!--select a.id,a.name,a.loginName,a.password,a.tel,a.deptNo,a.status,a.createTime,d.deptName,r.name rname-->
-        <!--from qyauth.Admin a,qyauth.Dept d,(SELECT qr.name,qra.loginName-->
-                                            <!--FROM qyauth.Role qr,qyauth.RoleAdmin qra-->
-                                            <!--WHERE qr.id=qra.roleId) r-->
-        <!--where a.deptNo=d.deptNo and a.loginName=r.loginName and (a.name like '%${content}%' or a.loginName like '%${content}%'-->
-        <!--or d.deptName like '%${content}%' or a.tel like '%${content}%' or r.name like '%${content}%')-->
-        <!--order by a.createTime desc-->
-        <!--limit #{beginIndex},#{line}-->
-    <!--</select>-->
-    <!--&lt;!&ndash;模糊搜索总数据量&ndash;&gt;-->
-    <!--<select id="getCountColumn" parameterType="java.util.Map" resultType="java.lang.Integer">-->
-        <!--select count(a.id)-->
-        <!--from qyauth.Admin a,qyauth.Dept d,(SELECT qr.name,qra.loginName-->
-                                            <!--FROM qyauth.Role qr,qyauth.RoleAdmin qra-->
-                                            <!--WHERE qr.id=qra.roleId) r-->
-        <!--where a.deptNo=d.deptNo and a.loginName=r.loginName and (a.name like '%${content}%' or a.loginName like '%${content}%'-->
-        <!--or d.deptName like '%${content}%' or a.tel like '%${content}%' or r.name like '%${content}%')-->
-        <!--order by a.createTime desc-->
-    <!--</select>-->
-
+    <!--启动账号-->
+    <update id="updateStatusStart" parameterType="java.lang.String">
+        update qyauth.User set status=0 where username=#{value}
+    </update>
+    <!--禁用账号-->
+    <update id="updateStatusforbid" parameterType="java.lang.String">
+        update qyauth.User set status=1 where username=#{value}
+    </update>
 </mapper>

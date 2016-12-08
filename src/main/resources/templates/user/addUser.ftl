@@ -189,5 +189,11 @@
     <#elseif section = "footer">
 
     </#if>
+<script>
+    $(document).ready(function() {
+        $('#userManage').addClass('active');
 
+        $('#addUser').addClass('active');
+    });
+</script>
 </@layout>

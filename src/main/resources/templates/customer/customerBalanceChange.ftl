@@ -313,4 +313,11 @@
     <#elseif section = "footer">
     <script src="/js/myjs/customerbalancelog.js" type="text/javascript" ></script>
     </#if>
+<script>
+    $(document).ready(function() {
+        $('#customerBalance').addClass('active');
+
+        $('#changeCustomerBalance').addClass('active');
+    });
+</script>
 </@layout>

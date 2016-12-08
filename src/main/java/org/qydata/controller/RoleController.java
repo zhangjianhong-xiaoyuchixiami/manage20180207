@@ -58,9 +58,14 @@ public class RoleController {
             if (flag){
                 map.put("result","ok");
                 map.put("msg",username);
+            }else {
+                map.put("result","error");
+                map.put("msg",username);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            map.put("result","no");
+            map.put("msg",username);
         }
         return gson.toJson(map);
     }
