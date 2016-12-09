@@ -255,6 +255,10 @@
         $('#deptManage').addClass('active');
 
         $('#deptList').addClass('active');
+
+        $('#deptManageSelect').addClass('selected');
+
+        $('#deptManageArrow').addClass('arrow open');
     });
 </script>
 </@layout>

@@ -33,11 +33,15 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean addRoleUser(String username,String [] roleId) throws Exception {
-        Integer[] temp = IpTool.intArray(roleId);
-        Map<String,Object> map = new HashMap();
-        map.put("username",username);
-        map.put("roleId",temp);
-        roleMapper.deleteUserRoleByUserId(username);
-        return roleMapper.addRoleUser(map);
+        if (roleId != null && roleId.length>0) {
+            Integer[] temp = IpTool.intArray(roleId);
+            Map<String, Object> map = new HashMap();
+            map.put("username", username);
+            map.put("roleId", temp);
+            roleMapper.deleteUserRoleByUserId(username);
+            return roleMapper.addRoleUser(map);
+        }else {
+            return roleMapper.deleteUserRoleByUserId(username);
+        }
     }
 }

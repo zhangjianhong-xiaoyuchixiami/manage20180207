@@ -157,20 +157,20 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">账号类型<span class="required">*</span></label>
+                                    <label class="control-label">管理员类型<span class="required">*</span></label>
                                     <div class="controls">
                                         <select class="span6 m-wrap" name="typeId">
 
-                                            <option value="1">功能账号</option>
-                                            <option value="2">普通账号</option>
+                                            <option value="1">超级管理员</option>
+                                            <option value="2">普通管理员</option>
 
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="submit" class="btn blue">Save</button>
-                                    <button type="reset" class="btn">Cancel</button>
+                                    <button type="submit" class="btn blue">提交</button>
+                                    <button type="reset" class="btn">取消</button>
                                 </div>
                             </form>
                             <!-- END FORM-->
@@ -194,6 +194,10 @@
         $('#userManage').addClass('active');
 
         $('#addUser').addClass('active');
+
+        $('#userManageSelect').addClass('selected');
+
+        $('#userManageArrow').addClass('arrow open');
     });
 </script>
 </@layout>

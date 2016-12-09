@@ -253,6 +253,10 @@
         $('#userManage').addClass('active');
 
         $('#userList').addClass('active');
+
+        $('#userManageSelect').addClass('selected');
+
+        $('#userManageArrow').addClass('arrow open');
     });
 </script>
 </@layout>

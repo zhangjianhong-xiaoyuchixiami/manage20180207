@@ -39,6 +39,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements EmbeddedSer
 
     @Override
     public void customize(ConfigurableEmbeddedServletContainer configurableEmbeddedServletContainer) {
+        configurableEmbeddedServletContainer.setSessionTimeout(432000000);
         configurableEmbeddedServletContainer.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND,"/error/404"));
         configurableEmbeddedServletContainer.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR,"/error/500"));
         configurableEmbeddedServletContainer.addErrorPages(new ErrorPage(HttpStatus.BAD_REQUEST,"/error/400"));

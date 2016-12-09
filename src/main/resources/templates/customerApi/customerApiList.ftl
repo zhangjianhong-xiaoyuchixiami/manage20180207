@@ -264,4 +264,15 @@
     <#elseif section = "footer">
 
     </#if>
+<script>
+    $(document).ready(function() {
+        $('#customerManage').addClass('active');
+
+        $('#customerList').addClass('active');
+
+        $('#customerManageSelect').addClass('selected');
+
+        $('#customerManageArrow').addClass('arrow open');
+    });
+</script>
 </@layout>

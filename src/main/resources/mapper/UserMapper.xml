@@ -56,6 +56,14 @@
             select LAST_INSERT_ID()
         </selectKey>
     </insert>
+    <!--Common添加管理员-->
+    <insert id="addUserCommon" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.User(name,username,tel,status,typeId,createTime)
+        values(#{name},#{username},'123456',#{tel},#{status},2,sysdate())
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
     <!--根据用户名和旧密码修改密码-->
     <update id="updatePassword" parameterType="String">
         update qyauth.User set password=#{param3}

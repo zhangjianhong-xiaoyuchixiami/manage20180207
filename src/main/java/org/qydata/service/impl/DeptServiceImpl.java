@@ -31,19 +31,23 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public List<Dept> findAllDept(String username) throws Exception {
+    public List<Dept> findAllDept() throws Exception {
 
         return deptMapper.findAllDept();
     }
 
     @Override
     public boolean insertUserDept(String userId, String [] deptNo) throws Exception {
-        Integer[] temp = IpTool.intArray(deptNo);
-        Map<String,Object> map = new HashMap();
-        map.put("userId",Integer.parseInt(userId));
-        map.put("deptNo",temp);
-        deptMapper.deleteUserDeptByUserId(Integer.parseInt(userId));
-        return deptMapper.insertUserDept(map);
+        if (deptNo != null && deptNo.length>0) {
+            Integer[] temp = IpTool.intArray(deptNo);
+            Map<String, Object> map = new HashMap();
+            map.put("userId", Integer.parseInt(userId));
+            map.put("deptNo", temp);
+            deptMapper.deleteUserDeptByUserId(Integer.parseInt(userId));
+            return deptMapper.insertUserDept(map);
+        }else{
+            return deptMapper.deleteUserDeptByUserId(Integer.parseInt(userId));
+        }
     }
 
     @Override

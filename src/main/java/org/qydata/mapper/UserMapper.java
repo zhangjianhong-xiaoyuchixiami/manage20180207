@@ -39,6 +39,13 @@ public interface UserMapper {
      */
     public boolean addUser(User user)throws Exception;
     /**
+     * Common添加用户
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    public boolean addUserCommon(User user)throws Exception;
+    /**
      * 根据用户名和旧密码修改密码
      * @param username
      * @param password

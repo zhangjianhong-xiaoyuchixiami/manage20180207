@@ -29,7 +29,7 @@ public interface DeptMapper {
      * @return
      * @throws Exception
      */
-    public Integer deleteUserDeptByUserId(Integer userId)throws Exception;
+    public boolean deleteUserDeptByUserId(Integer userId)throws Exception;
 
     /**
      * 批量插入用户和部门映射

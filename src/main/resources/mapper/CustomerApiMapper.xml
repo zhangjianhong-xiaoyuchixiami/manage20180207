@@ -39,7 +39,7 @@
         values(#{apiId},#{customerId},#{price},#{enabled},sysdate())
     </insert>
     <!--根据客户Id查找指定客户的所有CustomerApi-->
-    <select id="findAllByCustomerId" parameterType="Map" resultMap="CustomerApi_Api_ApiVendor">
+    <select id="findAllByCustomerId" parameterType="map" resultMap="CustomerApi_Api_ApiVendor">
         select c.id,c.apiId,c.customerId,c.price,c.enabled,c.createTime,aat.apiName,aat.apiVendorName
         from qydata.CustomerApi c,(select a.id,a.name apiName,avd.name apiVendorName
                                     from qydata.Api a,qydata.ApiVendor avd
@@ -47,7 +47,12 @@
                                     ) aat
         where c.apiId=aat.id and c.customerId=#{customerId}
         order by c.createTime desc
-        limit #{beginIndex},#{lineSize}
+        <where>
+            <if test="map!=null and map.size!=0">
+                limit #{beginIndex},#{lineSize}
+            </if>
+        </where>
+
     </select>
     <!--根据客户Id统计全部数据量-->
     <select id="getAllCountByCustomerId" parameterType="Map" resultType="Integer">

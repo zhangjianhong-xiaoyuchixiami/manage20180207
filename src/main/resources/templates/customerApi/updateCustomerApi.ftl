@@ -351,4 +351,15 @@
     <#elseif section = "footer">
     <script src="/js/myjs/customerapi.js" type="text/javascript" ></script>
     </#if>
+<script>
+    $(document).ready(function() {
+        $('#customerManage').addClass('active');
+
+        $('#customerList').addClass('active');
+
+        $('#customerManageSelect').addClass('selected');
+
+        $('#customerManageArrow').addClass('arrow open');
+    });
+</script>
 </@layout>

@@ -38,6 +38,14 @@ public interface UserService {
     @Transactional
     public boolean addUser(User user)throws Exception;
     /**
+     * Common添加管理员
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public boolean addUserCommon(User user)throws Exception;
+    /**
      * 根据用户名和旧密码修改密码
      * @param username
      * @param password

@@ -34,7 +34,7 @@ public class UserController {
     public String addUserView(){
         return "/user/addUser";
     }
-
+    //super
     @RequestMapping(value = "/addUserAction")
     public String addUserAction(User user, RedirectAttributes model){
         try {
@@ -50,9 +50,61 @@ public class UserController {
         }
         return "redirect:/user/findAllUser";
     }
-
+    //common
+    @RequestMapping(value = "/addUserCommonAction")
+    public String addUserCommonAction(User user, RedirectAttributes model){
+        try {
+            boolean flag = userService.addUserCommon(user);
+            if(!flag){
+                model.addFlashAttribute("msg","很遗憾，添加失败！");
+                return "redirect:/user/addUserView";
+            }
+        } catch (Exception e) {
+            model.addFlashAttribute("msg","很遗憾，添加失败！");
+            log.error("addUserCommonAction:新增用户异常");
+            return "redirect:/user/addUserView";
+        }
+        return "redirect:/user/findAllUser";
+    }
+    //super
     @RequestMapping(value = "/findAllUser")
     public String findAllUser(HttpServletRequest request, Model model,String content){
+
+        PageModel pageModel = new PageModel();
+        Map<String,Object> map = new HashMap<String,Object>();
+        String pageSize = request.getParameter("pageSize");//当前页
+        String lineSize = "8";
+        pageModel.setPageSize(pageSize);
+        pageModel.setLineSize(lineSize);
+        map.put("beginIndex",pageModel.getBeginIndex());
+        map.put("lineSize",pageModel.getLineSize());
+        if(content!=null){
+            map.put("content",content);
+        }
+        PageModel<User> pageModelOne = null;
+        try {
+            pageModelOne = userService.findAllUser(map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("content",content);
+        model.addAttribute("count",pageModelOne.getCount());
+        model.addAttribute("userDeptList",pageModelOne.getList());
+        Integer totalPage= null;
+        Integer count = pageModelOne.getCount();
+        if (count%Integer.parseInt(lineSize) == 0) {
+            totalPage = (count/Integer.parseInt(lineSize));
+        } else {
+            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+        }
+        model.addAttribute("totlePage",totalPage);
+        model.addAttribute("pageSize",pageModel.getPageSize());
+        return "/user/userList";
+    }
+    //common
+    @RequestMapping(value = "/findAllUserCommon")
+    public String findAllUserCommon(HttpServletRequest request, Model model,String content){
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         List deptNoList = new ArrayList();
@@ -67,9 +119,8 @@ public class UserController {
         pageModel.setLineSize(lineSize);
         map.put("beginIndex",pageModel.getBeginIndex());
         map.put("lineSize",pageModel.getLineSize());
-        if(user.getTypeId()==2){
-            map.put("deptNoList",deptNoList);
-        }
+        map.put("deptNoList",deptNoList);
+
         if(content!=null){
             map.put("content",content);
         }
@@ -81,7 +132,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("typeId",user.getTypeId());
+        model.addAttribute("deptNoList",deptNoList);
         model.addAttribute("content",content);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("userDeptList",pageModelOne.getList());
@@ -118,7 +169,7 @@ public class UserController {
         return "redirect:/user/findAllUser";
     }
     //重置密码
-    @RequestMapping(value = "/resetPassword")
+    @RequestMapping(value = "/resetPassword/{username}")
     public String resetPassword(@PathVariable String username){
         try {
             userService.resetPassword(username);

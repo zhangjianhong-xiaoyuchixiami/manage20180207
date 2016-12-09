@@ -190,7 +190,7 @@
                         <div class="portlet-body form">
 
                             <!-- BEGIN FORM-->
-                            <fieldset>
+
                                 <form action="/customer/insertCustomer" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
 
                                     <div class="alert alert-error hide">
@@ -284,7 +284,7 @@
                                     </div>
 
                                 </form>
-                            </fieldset>
+
                             <!-- END FORM-->
 
                         </div>
@@ -311,6 +311,10 @@
         $('#customerManage').addClass('active');
 
         $('#addCustomer').addClass('active');
+
+        $('#customerManageSelect').addClass('selected');
+
+        $('#customerManageArrow').addClass('arrow open');
     });
 </script>
 </@layout>

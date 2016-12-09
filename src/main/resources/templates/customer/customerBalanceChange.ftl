@@ -209,80 +209,149 @@
                                     <div class="tab-pane active" id="portlet_tab1">
 
                                         <!-- BEGIN FORM-->
+                                        <@shiro.Roles name="backAdmin">
+                                            <form action="/customerBalance/customerBalanceChangeAction" class="form-horizontal" method="post" onsubmit="return validateCustomerBalanceLog()">
 
+                                                <div class="control-group">
 
+                                                </div>
+                                                <div class="control-group">
 
-                                        <form action="/customer/customerBalanceChangeAction" class="form-horizontal" method="post" onsubmit="return validateCustomerBalanceLog()">
-
-                                            <div class="control-group">
-
-                                            </div>
-                                            <div class="control-group">
-
-                                            </div>
-                                            <div class="controls">
-                                                <#if msg??>
-                                                    <span><h5><font color="red">${msg}</font></h5></span>
-                                                <#else>
-                                                    <span></span>
-                                                </#if>
-                                            </div>
-                                            <div class="control-group">
-
-                                                <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
-
+                                                </div>
                                                 <div class="controls">
+                                                    <#if msg??>
+                                                        <span><h5><font color="red">${msg}</font></h5></span>
+                                                    <#else>
+                                                        <span></span>
+                                                    </#if>
+                                                </div>
+                                                <div class="control-group">
 
-                                                    <input type="text" id="authId" name="authId" class="m-wrap medium">
+                                                    <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
 
-                                                    <span class="help-inline" id="authIdMsg"></span>
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="authIdMsg"></span>
+
+                                                    </div>
 
                                                 </div>
 
-                                            </div>
+                                                <div class="control-group">
 
-                                            <div class="control-group">
+                                                    <label class="control-label">金&nbsp;&nbsp;额<span class="required">*</span></label>
 
-                                                <label class="control-label">金&nbsp;&nbsp;额<span class="required">*</span></label>
+                                                    <div class="controls">
 
-                                                <div class="controls">
+                                                        <input type="text" id="amount" name="amount" class="m-wrap medium">
 
-                                                    <input type="text" id="amount" name="amount" class="m-wrap medium">
+                                                        <span class="help-inline" id="amountMsg"></span>
 
-                                                    <span class="help-inline" id="amountMsg"></span>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div class="control-group">
-
-                                                <label class="control-label">原&nbsp;&nbsp;因<span class="required">*</span></label>
-
-                                                <div class="controls">
-
-                                                    <select id="reasonId" name="reasonId" class="medium m-wrap" tabindex="1">
-
-                                                        <#list customerBalanceModifyReasonList as reasonList>
-
-                                                        <option value="${reasonList.id}">${reasonList.name}</option>
-
-                                                        </#list>
-
-                                                    </select>
+                                                    </div>
 
                                                 </div>
 
-                                            </div>
+                                                <div class="control-group">
 
-                                            <div class="form-actions">
-                                                <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
-                                                <button type="button" class="btn">Cancel</button>
-                                            </div>
+                                                    <label class="control-label">原&nbsp;&nbsp;因<span class="required">*</span></label>
 
-                                        </form>
+                                                    <div class="controls">
 
+                                                        <select id="reasonId" name="reasonId" class="medium m-wrap" tabindex="1">
 
+                                                            <#list customerBalanceModifyReasonList as reasonList>
+
+                                                                <option value="${reasonList.id}">${reasonList.name}</option>
+
+                                                            </#list>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-actions">
+                                                    <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                                    <button type="button" class="btn">Cancel</button>
+                                                </div>
+
+                                            </form>
+                                        </@shiro.Roles>
+
+                                        <@shiro.Roles name="sell">
+                                            <form action="/customerBalance/customerBalanceChangeActionCommon" class="form-horizontal" method="post" onsubmit="return validateCustomerBalanceLog()">
+
+                                                <div class="control-group">
+
+                                                </div>
+                                                <div class="control-group">
+
+                                                </div>
+                                                <div class="controls">
+                                                    <#if msg??>
+                                                        <span><h5><font color="red">${msg}</font></h5></span>
+                                                    <#else>
+                                                        <span></span>
+                                                    </#if>
+                                                </div>
+                                                <div class="control-group">
+
+                                                    <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="authIdMsg"></span>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"></span>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">原&nbsp;&nbsp;因<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <select id="reasonId" name="reasonId" class="medium m-wrap" tabindex="1">
+
+                                                            <#list customerBalanceModifyReasonList as reasonList>
+
+                                                                <option value="${reasonList.id}">${reasonList.name}</option>
+
+                                                            </#list>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-actions">
+                                                    <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                                    <button type="button" class="btn">Cancel</button>
+                                                </div>
+
+                                            </form>
+                                        </@shiro.Roles>
                                         <!-- END FORM-->
 
                                     </div>
@@ -318,6 +387,10 @@
         $('#customerBalance').addClass('active');
 
         $('#changeCustomerBalance').addClass('active');
+
+        $('#customerBalanceSelect').addClass('selected');
+
+        $('#customerBalanceArrow').addClass('arrow open');
     });
 </script>
 </@layout>

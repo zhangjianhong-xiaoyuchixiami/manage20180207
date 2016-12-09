@@ -31,7 +31,7 @@ public interface RoleMapper {
      * @return
      * @throws Exception
      */
-    public Integer deleteUserRoleByUserId(String userId)throws Exception;
+    public boolean deleteUserRoleByUserId(String userId)throws Exception;
 
     /**
      * 分配角色

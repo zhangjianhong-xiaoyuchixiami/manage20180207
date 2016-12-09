@@ -165,114 +165,153 @@
 
                 <div class="span12">
 
-                        <form action="/user/findAllUser" method="post" class="form-search pull-right">
+                    <form action="/user/findAllUser" method="post" class="form-search pull-right">
 
-                            <div class="input-append">
+                        <div class="input-append">
 
-                                <input class="m-wrap" type="text" name="content" placeholder="Search">
+                            <input class="m-wrap" type="text" name="content" placeholder="Search">
 
-                                <button class="btn blue" type="submit">Search</button>
+                            <button class="btn blue" type="submit">Search</button>
 
-                            </div>
+                        </div>
 
-                        </form>
+                    </form>
 
-                        <div class="portlet box blue">
+                    <div class="portlet box blue">
 
-                            <div class="portlet-title">
+                        <div class="portlet-title">
 
-                                <div class="caption"><i class="icon-cogs"></i>Table</div>
+                            <div class="caption"><i class="icon-cogs"></i>Table</div>
 
-                                <div class="tools">
+                            <div class="tools">
 
-                                    <a href="javascript:;" class="collapse"></a>
+                                <a href="javascript:;" class="collapse"></a>
 
-                                    <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
 
-                                    <a href="javascript:;" class="reload"></a>
+                                <a href="javascript:;" class="reload"></a>
 
-                                    <a href="javascript:;" class="remove"></a>
-
-                                </div>
+                                <a href="javascript:;" class="remove"></a>
 
                             </div>
 
+                        </div>
 
-                            <div class="portlet-body no-more-tables">
+
+                        <div class="portlet-body no-more-tables">
 
 
-                                <table class="table-bordered table-striped table-condensed cf">
-                                    <thead class="cf">
-                                    <tr>
-                                        <th class="numeric">姓名</th>
-
-                                        <th class="numeric">用户名</th>
-
-                                        <th class="numeric">电话</th>
-
-                                        <th class="numeric">部门</th>
-
-                                        <th class="numeric">状态</th>
-
-                                        <th class="numeric">操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                 <#list userDeptList as user>
+                            <table class="table-bordered table-striped table-condensed cf">
+                                <thead class="cf">
                                 <tr>
-                                    <td>${user.name}</td>
-                                    <td>${user.username}</td>
-                                    <td>${user.tel}</td>
-                                    <td>
-                                        <#list user.dept as dept>
-                                             ${dept.deptName}，
-                                        </#list>
-                                    </td>
+                                    <th class="numeric">姓名</th>
 
-                                    <#if user.status=0>
-                                        <td>正在使用</td>
-                                    <#else >
-                                        <td>被禁用</td>
-                                    </#if>
-                                    <#if user.status=0>
-                                        <td class="numeric" style="text-align: center">
+                                    <th class="numeric">用户名</th>
 
-                                            <p>
+                                    <th class="numeric">电话</th>
 
-                                                <a href="/user/statusForbid/${user.username}" class="btn blue" id="gritter-light">禁用账号</a>
+                                    <th class="numeric">部门</th>
 
-                                                <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
+                                    <th class="numeric">状态</th>
 
-                                                <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
-
-                                                <a href="/role/allotRoleView/${user.username}" class="btn black" id="gritter-max">分配角色</a>
-
-                                            </p>
-
-                                        </td>
-                                    <#else >
-                                        <td class="numeric" style="text-align: center">
-
-                                            <p>
-
-                                                <a href="/user/statusStart/${user.username}" class="btn blue" id="gritter-light">启用账号</a>
-
-                                                <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
-
-                                                <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
-
-                                                <a href="/role/allotRoleView/${user.username}" class="btn black" id="gritter-max">分配角色</a>
-
-                                            </p>
-
-                                        </td>
-                                     </#if>
+                                    <th class="numeric">操作</th>
                                 </tr>
-                                 </#list>
-                                    </tbody>
+                                </thead>
+                                <tbody>
+                                    <#list userDeptList as user>
+                                    <tr>
+                                        <td>${user.name}</td>
+                                        <td>${user.username}</td>
+                                        <td>${user.tel}</td>
+                                        <td>
+                                            <#list user.dept as dept>
+                                            ${dept.deptName}，
+                                            </#list>
+                                        </td>
 
-                                </table>
+                                        <#if user.status=0>
+                                            <td>正在使用</td>
+                                        <#else >
+                                            <td>被禁用</td>
+                                        </#if>
+                                        <#if user.status=0>
+                                            <td class="numeric" style="text-align: center">
 
+                                                <p>
+                                                    <@shiro.hasPermission name="user:statusForbid">
+                                                        <a href="/user/statusForbid/${user.username}" class="btn blue" id="gritter-light">禁用账号</a>
+                                                    </@shiro.hasPermission>
+
+                                                    <@shiro.hasPermission name="dept:allotDeptView">
+                                                        <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
+                                                    </@shiro.hasPermission>
+
+                                                    <@shiro.hasPermission name="user:resetPassword">
+                                                        <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
+                                                    </@shiro.hasPermission>
+
+                                                    <@shiro.hasPermission name="role:allotRoleView">
+                                                        <a href="/role/allotRoleView/${user.username}" class="btn black" id="gritter-max">分配角色</a>
+                                                    </@shiro.hasPermission>
+                                                </p>
+
+                                            </td>
+                                        <#else >
+                                            <td class="numeric" style="text-align: center">
+
+                                                <p>
+                                                    <@shiro.hasPermission name="user:statusStart">
+                                                        <a href="/user/statusStart/${user.username}" class="btn blue" id="gritter-light">启用账号</a>
+                                                    </@shiro.hasPermission>
+
+                                                    <@shiro.hasPermission name="dept:allotDeptView">
+                                                        <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
+                                                    </@shiro.hasPermission>
+
+                                                    <@shiro.hasPermission name="user:resetPassword">
+                                                        <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
+                                                    </@shiro.hasPermission>
+
+                                                    <@shiro.hasPermission name="role:allotRoleView">
+                                                        <a href="/role/allotRoleView/${user.username}" class="btn black" id="gritter-max">分配角色</a>
+                                                    </@shiro.hasPermission>
+
+                                                </p>
+
+                                            </td>
+                                        </#if>
+                                    </tr>
+                                    </#list>
+                                </tbody>
+
+                            </table>
+                            <#if deptNoList??>
+                                <div class="row-fluid">
+
+                                    <div class="span6">
+
+                                        <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 </div>
+                                    </div>
+
+                                    <#if (totlePage>0)>
+
+                                        <div class="span6">
+                                            <div class="dataTables_paginate paging_bootstrap pagination">
+                                                <ul>
+                                                    <#if (pageSize>1)>
+                                                        <li class="next"><a href="/user/findAllUserCommon?pageSize=1<#if content??>&content=${content}</#if>"><span class="hidden-480">首页</span></a></li>
+                                                        <li class="next"><a href="/user/findAllUserCommon?pageSize=${pageSize-1}<#if content??>&content=${content}</#if>"><span class="hidden-480">上一页</span></a></li>
+                                                    </#if>
+                                                    <#if (pageSize<totlePage)>
+                                                        <li class="next"><a href="/user/findAllUserCommon?pageSize=${pageSize+1}<#if content??>&content=${content}</#if>"><span class="hidden-480">下一页</span></a></li>
+                                                        <li class="next"><a href="/user/findAllUserCommon?pageSize=${totlePage}<#if content??>&content=${content}</#if>"><span class="hidden-480">尾页</span></a></li>
+                                                    </#if>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </#if>
+                                </div>
+                            <#else >
                                 <div class="row-fluid">
 
                                     <div class="span6">
@@ -298,10 +337,12 @@
                                         </div>
                                     </#if>
                                 </div>
+                            </#if>
 
-                            </div>
 
                         </div>
+
+                    </div>
 
                 </div>
 
@@ -319,6 +360,10 @@
         $('#userManage').addClass('active');
 
         $('#userList').addClass('active');
+
+        $('#userManageSelect').addClass('selected');
+
+        $('#userManageArrow').addClass('arrow open');
     });
 </script>
 </@layout>

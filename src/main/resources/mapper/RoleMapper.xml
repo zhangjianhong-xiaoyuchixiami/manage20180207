@@ -5,7 +5,7 @@
 
     <!--查询所有的角色-->
     <select id="findAllRole" resultType="Role">
-        select id,name,flag from qyauth.Role
+        select id,name,flag from qyauth.Role where id not in(3)
     </select>
     <!--根据用户名匹配所有角色-->
     <select id="findAllRoleByUsername" resultType="UserRole">

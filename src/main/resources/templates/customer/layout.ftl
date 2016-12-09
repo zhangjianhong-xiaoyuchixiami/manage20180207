@@ -474,7 +474,7 @@
 
                     <li class="dropdown user">
 
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
 
                             <img alt="" src="/image/avatar1_small.jpg" />
 
@@ -559,112 +559,144 @@
                     <!-- 搜索框结束 -->
                 </li>
             <#--客户管理-->
-                <li class="" id="customerManage">
-                    <a href="javascript:;">
 
-                        <i class="icon-sitemap"></i>
+                <@shiro.hasAnyRoles name="sell,backAdmin">
+                    <li class="" id="customerManage">
+                        <a href="javascript:;">
 
-                        <span class="title">客户管理</span>
+                            <i class="icon-sitemap"></i>
 
-                        <span class="arrow "></span>
+                            <span class="title">客户管理</span>
 
-                    </a>
+                            <span class="" id="customerManageSelect"></span>
 
-                    <ul class="sub-menu">
+                            <span class="arrow " id="customerManageArrow"></span>
 
-                        <li id="addCustomer">
-                            <a href="/customer/addCustomerView">
-                                新增客户
-                            </a>
-                        </li>
+                        </a>
 
-                        <li id="customerList">
-                            <a href="/customer/findAllCustomer">
-                                客户信息
-                            </a>
-                        </li>
+                        <ul class="sub-menu">
 
-                    </ul>
-                </li>
+                            <@shiro.hasPermission name="customer:addCustomerView">
+                                <li id="addCustomer">
+                                    <a href="/customer/addCustomerView">
+                                        新增客户
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="customerList">
+                                    <a href="/customer/findAllCustomer">
+                                        客户信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                        </ul>
+                    </li>
+                </@shiro.hasAnyRoles>
+
             <#--财务管理-->
-                <li class="" id="customerBalance">
-                    <a href="javascript:;">
+                <@shiro.hasAnyRoles name="finace,backAdmin">
+                    <li class="" id="customerBalance">
+                        <a href="javascript:;">
 
-                        <i class="icon-sitemap"></i>
+                            <i class="icon-bar-chart"></i>
 
-                        <span class="title">财务管理</span>
+                            <span class="title">财务管理</span>
 
-                        <span class="arrow "></span>
+                            <span class="" id="customerBalanceSelect"></span>
 
-                    </a>
+                            <span class="arrow " id="customerBalanceArrow"></span>
 
-                    <ul class="sub-menu">
+                        </a>
 
-                        <li id="changeCustomerBalance">
-                            <a href="/customerBalance/customerBalanceChangeView">
-                                客户余额变更
-                            </a>
-                        </li>
+                        <ul class="sub-menu">
+                            <@shiro.hasPermission name="customerBalance:customerBalanceChangeView">
+                                <li id="changeCustomerBalance">
+                                    <a href="/customerBalance/customerBalanceChangeView">
+                                        客户余额变更
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+                        </ul>
 
-                    </ul>
+                    </li>
+                </@shiro.hasAnyRoles>
 
-                </li>
             <#--用户管理-->
-                <li class="" id="userManage">
-                    <a href="javascript:;">
+                <@shiro.hasAnyRoles name="deptManage,backAdmin,technology">
+                    <li class="" id="userManage">
+                        <a href="javascript:;">
 
-                        <i class="icon-sitemap"></i>
+                            <i class="icon-user"></i>
 
-                        <span class="title">用户管理</span>
+                            <span class="title">管理员</span>
 
-                        <span class="arrow "></span>
+                            <span class="" id="userManageSelect"></span>
 
-                    </a>
+                            <span class="arrow " id="userManageArrow"></span>
 
-                    <ul class="sub-menu">
+                        </a>
 
-                        <li id="addUser">
-                            <a href="/user/addUserView">
-                                新增用户
-                            </a>
-                        </li>
-                        <li id="userList">
-                            <a href="/user/findAllUser">
-                                用户信息
-                            </a>
-                        </li>
+                        <ul class="sub-menu">
+                            <@shiro.hasPermission name="user:addUserView">
+                                <li id="addUser">
+                                    <a href="/user/addUserView">
+                                        新增管理员
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-                    </ul>
+                            <@shiro.hasPermission name="user:findAllUser">
+                                <li id="userList">
+                                    <a href="/user/findAllUser">
+                                        管理员信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-                </>
+                        </ul>
+
+                    </>
+                </@shiro.hasAnyRoles>
+
             <#--部门管理-->
-                <li class="" id="deptManage">
-                    <a href="javascript:;">
+                <@shiro.hasAnyRoles name="backAdmin,technology">
+                    <li class="" id="deptManage">
+                        <a href="javascript:;">
 
-                        <i class="icon-sitemap"></i>
+                            <i class="icon-th"></i>
 
-                        <span class="title">部门管理</span>
+                            <span class="title">部门管理</span>
 
-                        <span class="arrow "></span>
+                            <span class="" id="deptManageSelect"></span>
 
-                    </a>
+                            <span class="arrow " id="deptManageArrow"></span>
 
-                    <ul class="sub-menu">
+                        </a>
 
-                        <li id="addDept">
-                            <a href="/dept/addDeptView">
-                                新增部门
-                            </a>
-                        </li>
-                        <li id="deptList">
-                            <a href="/dept/findAllDept">
-                                部门信息
-                            </a>
-                        </li>
+                        <ul class="sub-menu">
+                            <@shiro.hasPermission name="dept:addDeptView">
+                                <li id="addDept">
+                                    <a href="/dept/addDeptView">
+                                        新增部门
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-                    </ul>
+                            <@shiro.hasPermission name="dept:findAllDept">
+                                <li id="deptList">
+                                    <a href="/dept/findAllDept">
+                                        部门信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-                </li>
+                        </ul>
+
+                    </li>
+                </@shiro.hasAnyRoles>
 
             </ul>
 
@@ -791,7 +823,7 @@
                 dataType:'json',
                 success:function(data){
                     if(data!=null && data.result=="ok"){
-                        alert("添加成功");
+                        alert("操作成功");
                         window.location.href="/dept/allotDeptView/"+data.msg
                     }else{
                         alert("操作失败");
@@ -813,7 +845,7 @@
                 roleId_id.push($.trim($(this).val()));
             });
             var username_id = $('input[name="username"]').val();
-            var indata = {"deptNo":deptNo_no,"username":username_id};
+            var indata = {"roleId":roleId_id,"username":username_id};
             $.ajax({
                 type:'post',
                 url:"/role/allotRoleAction",

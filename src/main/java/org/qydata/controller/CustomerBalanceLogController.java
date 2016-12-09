@@ -29,10 +29,7 @@ public class CustomerBalanceLogController {
         model.addAttribute("customerBalanceModifyReasonList",list);
         return "/customer/customerBalanceChange";
     }
-    @RequestMapping(value = "/changeBalanceSuccessView")
-    public String changeBalanceSuccessView(){
-        return "customer/changeBalanceSuccess";
-    }
+
     @RequestMapping(value = "/customerBalanceChangeAction")
     public String customerBalanceChangeAction(String authId, String amount, String reasonId, RedirectAttributes model){
         try {
@@ -47,14 +44,25 @@ public class CustomerBalanceLogController {
             model.addFlashAttribute("msg","操作失败！");
             return "redirect:/customerBalance/customerBalanceChangeView";
         }
-        return "redirect:/customer/changeBalanceSuccess";
+        return "redirect:/customer/findAllCustomer";
+    }
+    //Common
+    @RequestMapping(value = "/customerBalanceChangeActionCommon")
+    public String customerBalanceChangeActionCommon(String authId, String amount, String reasonId, RedirectAttributes model){
+        try {
+            boolean flag = customerBalanceLogService.changeCustomerBalance(authId,amount,reasonId);
+            if (!flag){
+                model.addFlashAttribute("msg","操作失败！");
+                return "redirect:/customerBalance/customerBalanceChangeView";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("customerBalanceChangeAction:余额变动异常");
+            model.addFlashAttribute("msg","操作失败！");
+            return "redirect:/customerBalance/customerBalanceChangeView";
+        }
+        return "redirect:/customer/findAllCustomerByDeptNo";
     }
 
-    @RequestMapping(value = "/demoView")
-    public String demoView(Model model){
-        Integer msg = 2;
-        model.addAttribute("msg",msg);
-        return "/customer/demo";
-    }
 
 }

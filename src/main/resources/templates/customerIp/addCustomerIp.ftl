@@ -309,5 +309,16 @@
         document.getElementById("addClone").appendChild(newTr);
     }
 </script>
+<script>
+    $(document).ready(function() {
+        $('#customerManage').addClass('active');
+
+        $('#customerList').addClass('active');
+
+        $('#customerManageSelect').addClass('selected');
+
+        $('#customerManageArrow').addClass('arrow open');
+    });
+</script>
 <script src="/js/myjs/customerIp.js" type="text/javascript" ></script>
 </@layout>

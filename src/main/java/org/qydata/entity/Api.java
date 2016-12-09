@@ -146,4 +146,25 @@ public class Api implements Serializable {
     public void setApiVendor(ApiVendor apiVendor) {
         this.apiVendor = apiVendor;
     }
+
+    @Override
+    public String toString() {
+        return "Api{" +
+                "id=" + id +
+                ", apiTypeId=" + apiTypeId +
+                ", vendorId=" + vendorId +
+                ", name='" + name + '\'' +
+                ", requestType=" + requestType +
+                ", url='" + url + '\'' +
+                ", testUrl='" + testUrl + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", requestClass='" + requestClass + '\'' +
+                ", responseClass='" + responseClass + '\'' +
+                ", cost=" + cost +
+                ", defaultPrice=" + defaultPrice +
+                ", createTime=" + createTime +
+                ", timestamp=" + timestamp +
+                ", apiVendor=" + apiVendor +
+                '}';
+    }
 }

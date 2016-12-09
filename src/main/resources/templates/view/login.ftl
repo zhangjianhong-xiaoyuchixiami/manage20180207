@@ -60,7 +60,7 @@
 
 <div class="logo">
 
-    <img src="/image/logo-big.png" alt="" />
+
 
 </div>
 
@@ -74,7 +74,7 @@
 
     <form action="/view/Login" method="post" onsubmit="return validateLogin()">
 
-        <h3 class="form-title">Login to your account</h3>
+        <h3 class="form-title">欢迎登录哦！</h3>
 
         <div class="alert alert-error hide">
 
@@ -138,13 +138,13 @@
 
             <label class="checkbox">
 
-                <input type="checkbox" name="remember" value="1"/> Remember me
+                <input type="checkbox" name="remember" value="1"/> 记住我
 
             </label>
 
             <button type="submit" class="btn green pull-right">
 
-                Login <i class="m-icon-swapright m-icon-white"></i>
+                登录 <i class="m-icon-swapright m-icon-white"></i>
 
             </button>
 
@@ -152,25 +152,11 @@
 
         <div class="forget-password">
 
-            <h4>Forgot your password ?</h4>
+            <p align="right">
 
-            <p>
+                <a href="javascript:;" class="" id="forget-password">忘记密码？</a>
 
-                no worries, click <a href="javascript:;" class="" id="forget-password">here</a>
-
-                to reset your password.
-
-            </p>
-
-        </div>
-
-        <div class="create-account">
-
-            <p>
-
-                Don't have an account yet ?&nbsp;
-
-                <a href="javascript:;" id="register-btn" class="">Create an account</a>
+                <a href="javascript:;" class="" id="forget-password">申请账号</a>
 
             </p>
 

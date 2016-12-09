@@ -32,15 +32,34 @@ public class CustomerApiController {
     public String addCustomerApiView(@PathVariable("customerId") String customerId, Model model){
         List<Api> apiList = null;
         try {
+            Map<String,Object> map = new HashMap();
+            map.put("customerId",customerId);
+            PageModel<CustomerApi> pageModel = customerApiService.findAllByCustomerId(map);
+            List<CustomerApi> customerApiList = pageModel.getList();
+            System.out.println(customerApiList.size());
+
             apiList = customerApiService.findAllApi();
+            System.out.println(apiList.size());
+            int sum = apiList.size();
+            System.out.println(sum);
+            for(int i=0;i<apiList.size();i++){
+                for(int j=0;j<customerApiList.size();j++){
+                    if(apiList.get(i).getId() == customerApiList.get(j).getApiId()){
+                        apiList.remove(apiList.get(i));
+                    }
+                }
+            }
+
+            System.out.println(apiList.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         model.addAttribute(customerId);
         model.addAttribute("apiList",apiList);
         return "/customerApi/addCustomerApi";
     }
-
 
     @RequestMapping(value = "/addCustomerApiAction")
     public String addCustomerApiAction(RedirectAttributes model,String price, String customerId, String apiId, String enabled){
@@ -56,6 +75,7 @@ public class CustomerApiController {
         }
         return "redirect:/customerApi/customerApiListAction/"+customerId;
     }
+
     //根据客户Id查看所对应的的所有Api
     @RequestMapping(value = "/customerApiListAction/{customerId}")
     public String customerApiListAction(HttpServletRequest request, @PathVariable("customerId") String customerId, Model model){

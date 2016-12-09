@@ -29,7 +29,7 @@ public class RoleController {
     @Autowired
     private UserService userService;
 
-    //分配部门
+    //分配角色
     @RequestMapping(value = "/allotRoleView/{username}")
     public String allotRoleView(@PathVariable String username, Model model){
         List<Role> roleList= null;
@@ -43,7 +43,7 @@ public class RoleController {
         model.addAttribute("userRoleList",userRoleList);
         model.addAttribute("roleList",roleList);
         model.addAttribute("username",username);
-        return "/user/allotRole";
+        return "/dept/allotRole";
     }
 
     @RequestMapping(value = "/allotRoleAction")

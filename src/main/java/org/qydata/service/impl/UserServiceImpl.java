@@ -36,6 +36,10 @@ public class UserServiceImpl implements UserService {
     public boolean addUser(User user) throws Exception {
         return userMapper.addUser(user);
     }
+    @Override
+    public boolean addUserCommon(User user) throws Exception {
+        return userMapper.addUserCommon(user);
+    }
 
     @Override
     public boolean updatePassword(String username, String password, String newPassword) throws Exception {

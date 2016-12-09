@@ -1,13 +1,13 @@
-
-<#include "../customer/layout.ftl">
+<#include "layout.ftl">
 
 <@layout ; section>
     <#if section = "head">
 
+
+
     <#elseif section = "content" >
 
     <div class="page-content">
-
 
         <div id="portlet-config" class="modal hide">
 
@@ -127,7 +127,7 @@
 
                     <h3 class="page-title">
 
-                        Responsive Tables <small>responsive table samples</small>
+                        新增客户
 
                     </h3>
 
@@ -151,7 +151,7 @@
 
                         </li>
 
-                        <li><a href="#">Ip列表</a></li>
+                        <li><a href="#">新增客户</a></li>
 
                     </ul>
 
@@ -165,11 +165,13 @@
 
                 <div class="span12">
 
+                    <!-- BEGIN VALIDATION STATES-->
+
                     <div class="portlet box blue">
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i>Table</div>
+                            <div class="caption"><i class="icon-reorder"></i>Basic Validation</div>
 
                             <div class="tools">
 
@@ -185,66 +187,111 @@
 
                         </div>
 
-                        <div class="portlet-body no-more-tables">
+                        <div class="portlet-body form">
 
-                            <table class="table-bordered table-striped table-condensed cf">
-                                <thead class="cf">
-                                <tr>
-                                    <th class="numeric">起始段</th>
-                                    <th class="numeric">结束段</th>
-                                    <th class="numeric">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if customerIpList??>
-                                        <#list customerIpList as customerIp>
-                                        <tr align="center">
-                                            <td>${customerIp.beginIpRaw}</td>
-                                            <td>${customerIp.endIpRaw}</td>
-                                            <td class="numeric" style="text-align: center">
-                                                <p>
-                                                    <a href="/customerIp/deleteIp/${customerIp.id}/${customerIp.customerId}" class="btn red" id="gritter-light"><i class="icon-trash icon-white">Delete</i></a>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                        </#list>
-                                    </#if>
-                                </tbody>
+                            <!-- BEGIN FORM-->
 
-                            </table>
+                                <form action="/customer/insertCustomerByDeptNo" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
 
-                            <#if (count>0)>
+                                    <div class="alert alert-error hide">
 
-                                <div class="row-fluid">
+                                        <button class="close" data-dismiss="alert"></button>
 
-                                    <div class="span6">
+                                        You have some form errors. Please check below.
 
-                                        <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
                                     </div>
 
-                                    <#if (totlePage>1)>
-                                        <div class="span6">
-                                            <div class="dataTables_paginate paging_bootstrap pagination">
-                                                <ul>
-                                                    <#if (lineSize>1)>
-                                                        <li class="next"><a href="/customerIp/customerIpListAction/${customerId}?pageSize=1"><span class="hidden-480">首页</span></a></li>
-                                                        <li class="next"><a href="/customerIp/customerIpListAction/${customerId}?pageSize=${pageSize-1}"><span class="hidden-480">上一页</span></a></li>
-                                                    </#if>
-                                                    <#if (lineSize<totlePage)>
-                                                        <li class="next"><a href="/customerIp/customerIpListAction/${customerId}?pageSize=${pageSize+1}"><span class="hidden-480">下一页</span></a></li>
-                                                        <li class="next"><a href="/customerIp/customerIpListAction/${customerId}?pageSize=${pageSize}"><span class="hidden-480">尾页</span></a></li>
-                                                    </#if>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </#if>
-                                </div>
+                                    <div class="alert alert-success hide">
 
-                            </#if>
+                                        <button class="close" data-dismiss="alert"></button>
+
+                                        Your form validation is successful!
+
+                                    </div>
+                                    <div class="control-group">
+
+                                    </div>
+                                    <div class="control-group">
+
+                                    </div>
+
+                                    <div class="controls">
+                                        <#if msg??>
+                                            <span><h5><font color="red">${msg}</font></h5></span>
+                                        <#else>
+                                            <span></span>
+                                        </#if>
+                                    </div>
+
+                                    <div class="control-group">
+
+                                        <label class="control-label">公司名称<span class="required">*</span></label>
+
+                                        <div class="controls">
+
+                                            <input type="text" id="customer.name" name="customer.name" class="span6 m-wrap"/>
+
+                                            <span id="customer.nameMsg" class="help-block"></span>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="control-group">
+
+                                        <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+
+                                        <div class="controls">
+
+                                            <input type="text" id="customer.authId" name="customer.authId" class="span6 m-wrap"/>
+
+                                            <span id="customer.authIdMsg" class="help-block"></span>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="control-group">
+
+                                        <label class="control-label">所属部门<span class="required">*</span></label>
+
+                                        <#if deptList??>
+
+                                            <div class="controls">
+
+                                                <select id="dept.deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
+
+                                                    <#list deptList as dept>
+
+                                                        <option value="${dept.deptNo}">${dept.deptName}</option>
+
+                                                    </#list>
+
+                                                </select>
+
+                                            </div>
+
+                                        </#if>
+
+                                    </div>
+
+                                    <div class="form-actions">
+
+                                        <button type="submit" id="SubmitAddCustomer" class="btn blue">提交</button>
+
+                                        <button type="reset" class="btn">重置</button>
+
+                                    </div>
+
+                                </form>
+
+                            <!-- END FORM-->
 
                         </div>
 
                     </div>
+
+                    <!-- END VALIDATION STATES-->
 
                 </div>
 
@@ -257,11 +304,13 @@
     <#elseif section = "footer">
 
     </#if>
+
+
 <script>
     $(document).ready(function() {
         $('#customerManage').addClass('active');
 
-        $('#customerList').addClass('active');
+        $('#addCustomer').addClass('active');
 
         $('#customerManageSelect').addClass('selected');
 

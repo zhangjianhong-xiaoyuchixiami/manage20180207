@@ -93,7 +93,7 @@ public class DeptController {
         List<Integer> userDeptNoList = new ArrayList();
         User user = null;
         try {
-            deptList = deptService.findAllDept(username);
+            deptList = deptService.findAllDept();
             user = userService.findUserByUsername(username);
             List<Dept> list = user.getDept();
             for(int i=0;i< list.size();i++){
