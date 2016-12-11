@@ -14,7 +14,7 @@ public interface CustomerApiMapper {
      * 查询Api所有数据
      * @return
      */
-    public List<Api> findAllApi()throws Exception;
+    public List<Api> findAllApi(Map<String,Object> map)throws Exception;
 
     /**
      * 插入一条客户Api

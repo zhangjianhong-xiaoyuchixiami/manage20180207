@@ -221,7 +221,7 @@
 
                                         <!-- BEGIN FORM-->
 
-                                        <form action="/customerIp/addCustomerIpAction" class="form-horizontal" method="post" onsubmit="return validateCustomerIp()">
+                                        <form action="/customerIp/addCustomerIpAction" class="form-horizontal" method="post">
 
                                             <div class="controls">
                                                 <#if msg??>
@@ -251,13 +251,14 @@
 
                                                         <input type="text" id="beginIp" name="beginIp" placeholder="例如：192.168.111.12" class="m-wrap medium" />
 
-                                                        <span class="help-inline" id="beginIpMsg"></span>
-
                                                         ---
 
-                                                        <input type="text" id="endIp" name="endIp" placeholder="例如：192.168.111.12" class="m-wrap medium" />
+                                                        <input type="text" id="endIp" name="endIp" placeholder="例如：192.168.111.112" class="m-wrap medium" />
 
-                                                        <span class="help-inline" id="endIpMsg"></span>
+
+                                                        <span class="help-inline" id="beginIpMsg"><#if CustomerMessageBeginIp??><font color="red">${CustomerMessageBeginIp}</font></#if></span>
+
+                                                        <span class="help-inline" id="endIpMsg"><#if CustomerMessageEndIp??><font color="red">${CustomerMessageEndIp}</font></#if></span>
 
                                                     </div>
 
@@ -266,8 +267,8 @@
                                             </div>
 
                                             <div class="form-actions">
-                                                <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
-                                                <button type="reset" class="btn">Cancel</button>
+                                                <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
+                                                <button type="button" class="btn">取消</button>
                                             </div>
 
                                         </form>
@@ -318,7 +319,15 @@
         $('#customerManageSelect').addClass('selected');
 
         $('#customerManageArrow').addClass('arrow open');
+
+        $("#beginIp").focus(function () {
+            $("#beginIpMsg").html("");
+        });
+
+        $("#endIp").focus(function () {
+            $("#endIpMsg").html("");
+        });
     });
 </script>
-<script src="/js/myjs/customerIp.js" type="text/javascript" ></script>
+
 </@layout>

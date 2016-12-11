@@ -127,7 +127,7 @@
 
                     <h3 class="page-title">
 
-                        Responsive Tables <small>responsive table samples</small>
+                        客户Api信息
 
                     </h3>
 
@@ -169,7 +169,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i>Table</div>
+                            <div class="caption"><i class="icon-cogs"></i></div>
 
                             <div class="tools">
 

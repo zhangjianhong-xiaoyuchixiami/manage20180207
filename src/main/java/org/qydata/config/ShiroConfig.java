@@ -230,48 +230,54 @@ public class ShiroConfig {
 		chains.put("/error/404", "authc");
 		chains.put("/error/500", "authc");
 		//客户管理
-//		chains.put("/customer/addCustomerView", "authc,perms");
-//		chains.put("/customer/insertCustomer", "authc,perms");
-//		chains.put("/customer/findAllCustomer", "authc,perms");
-//		//客户Api
-//		chains.put("/customerApi/addCustomerApiView/**", "authc,perms");
-//		chains.put("/customerApi/addCustomerApiAction", "authc,perms");
-//		chains.put("/customerApi/customerApiListAction/**", "authc,perms");
-//		chains.put("/customerApi/updateCustomerApiById", "authc,perms");
-//		chains.put("/customerApi/findCustomerApiById/**", "authc,perms");
-//		//客户Ip
-//		chains.put("/customerIp/addCustomerIpView/**", "authc,perms");
-//		chains.put("/customerIp/addCustomerIpAction", "authc,perms");
-//		chains.put("/customerIp/customerIpListAction/**", "authc,perms");
-//		chains.put("/customerIp/deleteIp/**", "authc,perms");
-//
-//		//余额变更
-//		chains.put("/customerBalance/customerBalanceChangeView", "authc,perms");
-//		chains.put("/customerBalance/customerBalanceChangeAction", "authc,perms");
-//		chains.put("/customerBalance/changeBalanceSuccessView", "authc,perms");
-//
-//		//dept管理
-//		chains.put("/dept/addDeptView", "authc,perms");
-//		chains.put("/dept/addDeptAction", "authc,perms");
-//		chains.put("/dept/findAllDept", "authc,perms");
-//		chains.put("/dept/allotDeptView/**", "authc,perms");
-//		chains.put("/dept/allotDeptAction", "authc,perms");
-//
-//		//角色管理
-//		chains.put("/role/allotRoleView/**", "authc,perms");
-//		chains.put("/role/allotRoleAction", "authc,perms");
-//
-//		//用户管理
-//		chains.put("/user/addUserView", "authc,perms");
-//		chains.put("/user/addUserAction", "authc,perms");
-//		chains.put("/user/findAllUser", "authc,perms");
-//		chains.put("/user/statusStart/**", "authc,perms");
-//		chains.put("/user/statusForbid/**", "authc,perms");
-//		chains.put("/user/resetPassword", "authc,perms");
-//
-//		//修改密码
-//		chains.put("/user/updatePasswordView", "authc");
-//		chains.put("/user/updatePasswordAction", "authc");
+		chains.put("/customer/addCustomerViewCommon", "authc,perms");
+		chains.put("/customer/insertCustomerCommon", "authc,perms");
+		chains.put("/customer/findAllCustomerByDeptNo", "authc,perms");
+		chains.put("/customer/addCustomerViewSuper", "authc,perms");
+		chains.put("/customer/insertCustomerSuper", "authc,perms");
+		chains.put("/customer/findAllCustomer", "authc,perms");
+		//客户Api
+		chains.put("/customerApi/addCustomerApiView/**", "authc,perms");
+		chains.put("/customerApi/addCustomerApiAction", "authc,perms");
+		chains.put("/customerApi/customerApiListAction/**", "authc,perms");
+		chains.put("/customerApi/updateCustomerApiById", "authc,perms");
+		chains.put("/customerApi/findCustomerApiById/**", "authc,perms");
+		//客户Ip
+		chains.put("/customerIp/addCustomerIpView/**", "authc,perms");
+		chains.put("/customerIp/addCustomerIpAction", "authc,perms");
+		chains.put("/customerIp/customerIpListAction/**", "authc,perms");
+		chains.put("/customerIp/deleteIp/**", "authc,perms");
+
+		//余额变更
+		chains.put("/customerBalance/customerBalanceChangeView", "authc,perms");
+		chains.put("/customerBalance/customerBalanceChangeAction", "authc,perms");
+		chains.put("/customerBalance/customerBalanceChangeSuccess", "authc,perms");
+
+		//dept管理
+		chains.put("/dept/addDeptView", "authc,perms");
+		chains.put("/dept/addDeptAction", "authc,perms");
+		chains.put("/dept/findAllDept", "authc,perms");
+		chains.put("/dept/allotDeptView/**", "authc,perms");
+		chains.put("/dept/allotDeptAction", "authc,perms");
+
+		//角色管理
+		chains.put("/role/allotRoleView/**", "authc,perms");
+		chains.put("/role/allotRoleAction", "authc,perms");
+
+		//用户管理
+		chains.put("/user/addUserViewCommon", "authc,perms");
+		chains.put("/user/addUserCommonAction", "authc,perms");
+		chains.put("/user/addUserView", "authc,perms");
+		chains.put("/user/addUserAction", "authc,perms");
+		chains.put("/user/findAllUser", "authc,perms");
+		chains.put("/user/findAllUserCommon", "authc,perms");
+		chains.put("/user/statusStart/**", "authc,perms");
+		chains.put("/user/statusForbid/**", "authc,perms");
+		chains.put("/user/resetPassword", "authc,perms");
+
+		//修改密码
+		chains.put("/user/updatePasswordView", "authc");
+		chains.put("/user/updatePasswordAction", "authc");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

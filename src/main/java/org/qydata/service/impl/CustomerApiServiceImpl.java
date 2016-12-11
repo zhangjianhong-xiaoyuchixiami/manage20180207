@@ -1,9 +1,8 @@
 package org.qydata.service.impl;
 
-import org.qydata.entity.ApiVendor;
-import org.qydata.mapper.CustomerApiMapper;
 import org.qydata.entity.Api;
 import org.qydata.entity.CustomerApi;
+import org.qydata.mapper.CustomerApiMapper;
 import org.qydata.service.CustomerApiService;
 import org.qydata.tools.IpTool;
 import org.qydata.tools.PageModel;
@@ -21,8 +20,8 @@ public class CustomerApiServiceImpl implements CustomerApiService{
     @Autowired
     private CustomerApiMapper customerApiMapper;
     @Override
-    public List<Api> findAllApi() throws Exception{
-        return customerApiMapper.findAllApi();
+    public List<Api> findAllApi(Map<String,Object> map) throws Exception{
+        return customerApiMapper.findAllApi(map);
     }
 
     @Override

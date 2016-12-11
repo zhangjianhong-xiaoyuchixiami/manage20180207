@@ -1,5 +1,5 @@
 
-<#include "../customer/layout.ftl">
+<#include "layout.ftl">
 
 <@layout ; section>
     <#if section = "head">
@@ -7,175 +7,262 @@
     <#elseif section = "content" >
 
     <div class="page-content">
-        <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+
         <div id="portlet-config" class="modal hide">
+
             <div class="modal-header">
+
                 <button data-dismiss="modal" class="close" type="button"></button>
+
                 <h3>portlet Settings</h3>
+
             </div>
+
             <div class="modal-body">
+
                 <p>Here will be a configuration form</p>
+
             </div>
+
         </div>
-        <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-        <!-- BEGIN PAGE CONTAINER-->
+
         <div class="container-fluid">
-            <!-- BEGIN PAGE HEADER-->
+
             <div class="row-fluid">
+
                 <div class="span12">
+
                     <!-- BEGIN STYLE CUSTOMIZER -->
+
                     <div class="color-panel hidden-phone">
+
                         <div class="color-mode-icons icon-color"></div>
+
                         <div class="color-mode-icons icon-color-close"></div>
+
                         <div class="color-mode">
+
                             <p>THEME COLOR</p>
+
                             <ul class="inline">
+
                                 <li class="color-black current color-default" data-style="default"></li>
+
                                 <li class="color-blue" data-style="blue"></li>
+
                                 <li class="color-brown" data-style="brown"></li>
+
                                 <li class="color-purple" data-style="purple"></li>
+
                                 <li class="color-grey" data-style="grey"></li>
+
                                 <li class="color-white color-light" data-style="light"></li>
+
                             </ul>
+
                             <label>
+
                                 <span>Layout</span>
+
                                 <select class="layout-option m-wrap small">
+
                                     <option value="fluid" selected>Fluid</option>
+
                                     <option value="boxed">Boxed</option>
+
                                 </select>
+
                             </label>
+
                             <label>
+
                                 <span>Header</span>
+
                                 <select class="header-option m-wrap small">
+
                                     <option value="fixed" selected>Fixed</option>
+
                                     <option value="default">Default</option>
+
                                 </select>
+
                             </label>
+
                             <label>
+
                                 <span>Sidebar</span>
+
                                 <select class="sidebar-option m-wrap small">
+
                                     <option value="fixed">Fixed</option>
+
                                     <option value="default" selected>Default</option>
+
                                 </select>
+
                             </label>
+
                             <label>
+
                                 <span>Footer</span>
+
                                 <select class="footer-option m-wrap small">
+
                                     <option value="fixed">Fixed</option>
+
                                     <option value="default" selected>Default</option>
+
                                 </select>
+
                             </label>
+
                         </div>
+
                     </div>
+
                     <!-- END BEGIN STYLE CUSTOMIZER -->
+
+                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+
                     <h3 class="page-title">
-                        Form Validation
-                        <small>form validation states</small>
+
+                        客户信息
+
                     </h3>
+
                     <ul class="breadcrumb">
+
                         <li>
+
                             <i class="icon-home"></i>
-                            <a href="index.html">首页</a>
-                            <span class="icon-angle-right"></span>
+
+                            <a href="/view/successUrl">首页</a>
+
+                            <i class="icon-angle-right"></i>
+
                         </li>
+
                         <li>
-                            <a href="#">部门管理</a>
-                            <span class="icon-angle-right"></span>
+
+                            <a href="#">客户管理</a>
+
+                            <i class="icon-angle-right"></i>
+
                         </li>
-                        <li><a href="#">新增部门</a></li>
+
+                        <li><a href="#">客户列表</a></li>
+
                     </ul>
+
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+
                 </div>
+
             </div>
-            <!-- END PAGE HEADER-->
-            <!-- BEGIN PAGE CONTENT-->
 
             <div class="row-fluid">
+
                 <div class="span12">
-                    <!-- BEGIN VALIDATION STATES-->
+
+                <#--表单-->
                     <div class="portlet box blue">
+
                         <div class="portlet-title">
-                            <div class="caption"><i class="icon-reorder"></i>Basic Validation</div>
+
+                            <div class="caption"><i class="icon-cogs"></i></div>
+
                             <div class="tools">
+
                                 <a href="javascript:;" class="collapse"></a>
+
                                 <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
                                 <a href="javascript:;" class="reload"></a>
+
                                 <a href="javascript:;" class="remove"></a>
+
                             </div>
+
                         </div>
-                        <div class="portlet-body form">
 
-                            <!-- BEGIN FORM-->
-                            <form action="/user/addDeptAction" method="post" id="form_sample_1" class="form-horizontal">
-                                <div class="alert alert-error hide">
-                                    <button class="close" data-dismiss="alert"></button>
-                                    You have some form errors. Please check below.
-                                </div>
-                                <div class="alert alert-success hide">
-                                    <button class="close" data-dismiss="alert"></button>
-                                    Your form validation is successful!
-                                </div>
-                                <div class="control-group">
+                        <div class="portlet-body no-more-tables">
 
-                                </div>
-                                <div class="control-group">
+                            <table class="table-bordered table-striped table-condensed cf">
+                                <thead class="cf">
+                                <tr>
+                                    <th class="numeric">公司名称</th>
+                                    <th class="numeric">账号类型</th>
+                                    <th class="numeric">账户</th>
+                                    <th class="numeric">余额</th>
+                                    <th class="numeric">状态</th>
 
-                                </div>
-                                <div class="controls">
-                                    <#if msg??>
-                                        <span><h5><font color="red">${msg}</font></h5></span>
-                                    <#else>
-                                        <span></span>
-                                    </#if>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">部门名称<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <input type="text" id="deptName" name="deptName" data-required="1" class="span6 m-wrap"/>
+                                    <th class="numeric">部门</th>
+                                    <th class="numeric">创建者</th>
 
-                                        <span class="help-inline" id="deptNameMsg"><#if DeptMessageDeptName??><font color="red">${DeptMessageDeptName}</font></#if></span>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">部门编号<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <input name="deptNo" type="text" class="span6 m-wrap"/>
-                                    </div>
-                                </div>
+                                    <th class="numeric">创建时间</th>
+                                    <th class="numeric">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
 
-                                <div class="form-actions">
-                                    <button type="submit" class="btn blue">Save</button>
-                                    <button type="reset" class="btn">Cancel</button>
-                                </div>
-                            </form>
-                            <!-- END FORM-->
+                                        <tr>
+                                            <td>${customer.name}</td>
+                                            <td>${customer.customerType.name}</td>
+                                            <td>${customer.authId}</td>
+                                            <td>${customer.balance}</td>
+                                            <td>${customer.customerStatus.name}</td>
+
+                                            <td>${customer.dept.deptName}</td>
+                                            <td>${customer.user.name}</td>
+
+                                            <td>${customer.createTime}</td>
+                                            <td class="numeric" style="text-align: center">
+
+                                                <p>
+
+                                                    <a href="/customerIp/addCustomerIpView/${customer.id}" class="btn blue" id="gritter-light">添加Ip</a>
+
+                                                    <a href="/customerApi/addCustomerApiView/${customer.id}" class="btn black" id="gritter-light">添加Api</a><br/>
+
+                                                    <a href="/customerIp/customerIpListAction/${customer.id}" class="btn blue" id="gritter-max">管理Ip</a>
+
+                                                    <a href="/customerApi/customerApiListAction/${customer.id}" class="btn black" id="gritter-max">管理Api</a>
+
+                                                </p>
+
+                                            </td>
+
+                                        </tr>
+
+                                </tbody>
+
+                            </table>
+
                         </div>
+
                     </div>
-                    <!-- END VALIDATION STATES-->
+
                 </div>
+
             </div>
 
-            <!-- END PAGE CONTENT-->
         </div>
-        <!-- END PAGE CONTAINER-->
-    </div>
 
+    </div>
 
     <#elseif section = "footer">
 
     </#if>
 <script>
     $(document).ready(function() {
-        $('#deptManage').addClass('active');
+        $('#customerManage').addClass('active');
 
-        $('#addDept').addClass('active');
+        $('#customerList').addClass('active');
 
-        $('#deptManageSelect').addClass('selected');
+        $('#customerManageSelect').addClass('selected');
 
-        $('#deptManageArrow').addClass('arrow open');
-
-        $("#deptName").focus(function () {
-            $("#deptNameMsg").html("");
-        });
+        $('#customerManageArrow').addClass('arrow open');
     });
 </script>
 </@layout>

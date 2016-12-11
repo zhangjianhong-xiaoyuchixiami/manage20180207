@@ -132,9 +132,7 @@
 
                     <h3 class="page-title">
 
-                        Form Layouts
-
-                        <small>form layouts and more</small>
+                      余额变更
 
                     </h3>
 
@@ -184,7 +182,7 @@
 
                                 <i class="icon-reorder"></i>
 
-                                <span class="hidden-480">General Layouts</span>
+                                <span class="hidden-480">请填写余额变更信息</span>
 
                             </div>
 
@@ -200,7 +198,7 @@
 
                                     <li><a href="#" data-toggle="tab">Grid</a></li>
 
-                                    <li class="active"><a href="#portlet_tab1" data-toggle="tab">Default</a></li>
+                                    <li><a href="#portlet_tab1" data-toggle="tab">Default</a></li>
 
                                 </ul>
 
@@ -209,149 +207,84 @@
                                     <div class="tab-pane active" id="portlet_tab1">
 
                                         <!-- BEGIN FORM-->
-                                        <@shiro.Roles name="backAdmin">
-                                            <form action="/customerBalance/customerBalanceChangeAction" class="form-horizontal" method="post" onsubmit="return validateCustomerBalanceLog()">
 
-                                                <div class="control-group">
+                                        <form action="/customerBalance/customerBalanceChangeAction" class="form-horizontal" method="post" >
 
-                                                </div>
-                                                <div class="control-group">
+                                            <div class="control-group">
 
-                                                </div>
+                                            </div>
+                                            <div class="control-group">
+
+                                            </div>
+                                            <div class="controls">
+                                                <#if msg??>
+                                                    <span><h5><font color="red">${msg}</font></h5></span>
+                                                <#else>
+                                                    <span></span>
+                                                </#if>
+                                            </div>
+                                            <div class="control-group">
+
+                                                <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+
                                                 <div class="controls">
-                                                    <#if msg??>
-                                                        <span><h5><font color="red">${msg}</font></h5></span>
-                                                    <#else>
-                                                        <span></span>
-                                                    </#if>
-                                                </div>
-                                                <div class="control-group">
 
-                                                    <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+                                                    <input type="text" id="authId" name="authId" <#if authId??>value="${authId}"</#if> class="m-wrap medium">
 
-                                                    <div class="controls">
+                                                    <span class="help-inline" id="authIdMsg"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
 
-                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
-
-                                                        <span class="help-inline" id="authIdMsg"></span>
-
-                                                    </div>
+                                                    <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
 
                                                 </div>
 
-                                                <div class="control-group">
+                                            </div>
 
-                                                    <label class="control-label">金&nbsp;&nbsp;额<span class="required">*</span></label>
+                                            <div class="control-group">
 
-                                                    <div class="controls">
+                                                <label class="control-label">金&nbsp;额（/：分）<span class="required">*</span></label>
 
-                                                        <input type="text" id="amount" name="amount" class="m-wrap medium">
-
-                                                        <span class="help-inline" id="amountMsg"></span>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="control-group">
-
-                                                    <label class="control-label">原&nbsp;&nbsp;因<span class="required">*</span></label>
-
-                                                    <div class="controls">
-
-                                                        <select id="reasonId" name="reasonId" class="medium m-wrap" tabindex="1">
-
-                                                            <#list customerBalanceModifyReasonList as reasonList>
-
-                                                                <option value="${reasonList.id}">${reasonList.name}</option>
-
-                                                            </#list>
-
-                                                        </select>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="form-actions">
-                                                    <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
-                                                    <button type="button" class="btn">Cancel</button>
-                                                </div>
-
-                                            </form>
-                                        </@shiro.Roles>
-
-                                        <@shiro.Roles name="sell">
-                                            <form action="/customerBalance/customerBalanceChangeActionCommon" class="form-horizontal" method="post" onsubmit="return validateCustomerBalanceLog()">
-
-                                                <div class="control-group">
-
-                                                </div>
-                                                <div class="control-group">
-
-                                                </div>
                                                 <div class="controls">
-                                                    <#if msg??>
-                                                        <span><h5><font color="red">${msg}</font></h5></span>
-                                                    <#else>
-                                                        <span></span>
-                                                    </#if>
-                                                </div>
-                                                <div class="control-group">
 
-                                                    <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+                                                    <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> class="m-wrap medium">
 
-                                                    <div class="controls">
+                                                    <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
 
-                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
-
-                                                        <span class="help-inline" id="authIdMsg"></span>
-
-                                                    </div>
+                                                    <span class="help-block">e.g：只能输入数字并且金额大于0</span>
 
                                                 </div>
 
-                                                <div class="control-group">
+                                            </div>
 
-                                                    <label class="control-label">金&nbsp;&nbsp;额<span class="required">*</span></label>
+                                            <div class="control-group">
 
-                                                    <div class="controls">
+                                                <label class="control-label">原&nbsp;&nbsp;因<span class="required">*</span></label>
 
-                                                        <input type="text" id="amount" name="amount" class="m-wrap medium">
+                                                <div class="controls">
 
-                                                        <span class="help-inline" id="amountMsg"></span>
+                                                    <select id="reasonId" name="reasonId" class="medium m-wrap" tabindex="1">
 
-                                                    </div>
+                                                        <#list customerBalanceModifyReasonList as reasonList>
 
-                                                </div>
+                                                            <option value="${reasonList.id}">${reasonList.name}</option>
 
-                                                <div class="control-group">
+                                                        </#list>
 
-                                                    <label class="control-label">原&nbsp;&nbsp;因<span class="required">*</span></label>
+                                                    </select>
 
-                                                    <div class="controls">
-
-                                                        <select id="reasonId" name="reasonId" class="medium m-wrap" tabindex="1">
-
-                                                            <#list customerBalanceModifyReasonList as reasonList>
-
-                                                                <option value="${reasonList.id}">${reasonList.name}</option>
-
-                                                            </#list>
-
-                                                        </select>
-
-                                                    </div>
+                                                    <span class="help-inline" id="reasonIdMsg"><#if CustomerMessageReasonId??><font color="red">${CustomerMessageReasonId}</font></#if></span>
 
                                                 </div>
 
-                                                <div class="form-actions">
-                                                    <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
-                                                    <button type="button" class="btn">Cancel</button>
-                                                </div>
+                                            </div>
 
-                                            </form>
-                                        </@shiro.Roles>
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
+                                                <button type="button" class="btn">取消</button>
+                                            </div>
+
+                                        </form>
+
+
                                         <!-- END FORM-->
 
                                     </div>
@@ -380,7 +313,7 @@
 
 
     <#elseif section = "footer">
-    <script src="/js/myjs/customerbalancelog.js" type="text/javascript" ></script>
+
     </#if>
 <script>
     $(document).ready(function() {
@@ -391,6 +324,28 @@
         $('#customerBalanceSelect').addClass('selected');
 
         $('#customerBalanceArrow').addClass('arrow open');
+
+        $("#authId").focus(function () {
+            $("#authIdMsg").html("");
+        });
+
+        $("#amount").focus(function () {
+            $("#amountMsg").html("");
+        });
+
+        $("#reasonId").focus(function () {
+            $("#reasonIdMsg").html("");
+        });
+
+        $("#authId").blur(function(){
+            $("#authIdMsg").load("/customer/findCustomerByAuthId/"+$("#authId").val(),
+                    function(responseTxt){
+                        if(responseTxt=="yes")
+                            $("#authIdMsg").html("");
+                        if(responseTxt=="no")
+                            $("#authIdMsg").html("<font color='red'>该账户不存在！</font>");
+                    });
+        });
     });
 </script>
 </@layout>

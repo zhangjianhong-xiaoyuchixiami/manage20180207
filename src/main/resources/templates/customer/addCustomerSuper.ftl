@@ -1,9 +1,8 @@
 <#include "layout.ftl">
 
+
 <@layout ; section>
     <#if section = "head">
-
-
 
     <#elseif section = "content" >
 
@@ -171,7 +170,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-reorder"></i>Basic Validation</div>
+                            <div class="caption"><i class="icon-reorder"></i>请填写客户信息</div>
 
                             <div class="tools">
 
@@ -191,99 +190,103 @@
 
                             <!-- BEGIN FORM-->
 
-                                <form action="/customer/insertCustomer" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
+                            <form action="/customer/insertCustomerSuper" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
 
-                                    <div class="alert alert-error hide">
+                                <div class="alert alert-error hide">
 
-                                        <button class="close" data-dismiss="alert"></button>
+                                    <button class="close" data-dismiss="alert"></button>
 
-                                        You have some form errors. Please check below.
+                                    You have some form errors. Please check below.
 
-                                    </div>
+                                </div>
 
-                                    <div class="alert alert-success hide">
+                                <div class="alert alert-success hide">
 
-                                        <button class="close" data-dismiss="alert"></button>
+                                    <button class="close" data-dismiss="alert"></button>
 
-                                        Your form validation is successful!
+                                    Your form validation is successful!
 
-                                    </div>
-                                    <div class="control-group">
+                                </div>
+                                <div class="control-group">
 
-                                    </div>
-                                    <div class="control-group">
+                                </div>
+                                <div class="control-group">
 
-                                    </div>
+                                </div>
+
+                                <div class="controls">
+                                    <#if msg??>
+                                        <span><h5><font color="red">${msg}</font></h5></span>
+                                    <#else>
+                                        <span></span>
+                                    </#if>
+                                </div>
+
+                                <div class="control-group">
+
+                                    <label class="control-label">公司名称<span class="required">*</span></label>
 
                                     <div class="controls">
-                                        <#if msg??>
-                                            <span><h5><font color="red">${msg}</font></h5></span>
-                                        <#else>
-                                            <span></span>
-                                        </#if>
+
+                                        <input type="text" id="customer_Name" name="customer.name" <#if name??>value="${name}"</#if> class="span6 m-wrap"/>
+
+                                        <span id="customer_NameMsg" class="help-inline"><#if CustomerMessageName??><font color="red">${CustomerMessageName}</font></#if></span>
+
                                     </div>
 
-                                    <div class="control-group">
+                                </div>
 
-                                        <label class="control-label">公司名称<span class="required">*</span></label>
+                                <div class="control-group">
+
+                                    <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+
+                                    <div class="controls">
+
+                                        <input type="text" id="customer_authId" name="customer.authId" <#if authId??>value="${authId}"</#if> class="span6 m-wrap"/>
+
+                                        <span id="customer_authIdMsg" class="help-inline"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
+
+                                        <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="control-group">
+
+                                    <label class="control-label">所属部门<span class="required">*</span></label>
+
+                                    <#if deptList??>
 
                                         <div class="controls">
 
-                                            <input type="text" id="customer.name" name="customer.name" class="span6 m-wrap"/>
+                                            <select id="dept_deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
 
-                                            <span id="customer.nameMsg" class="help-block"></span>
+                                                <#list deptList as dept>
 
-                                        </div>
+                                                    <option value="${dept.deptNo}">${dept.deptName}</option>
 
-                                    </div>
+                                                </#list>
 
-                                    <div class="control-group">
+                                            </select>
 
-                                        <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
-
-                                        <div class="controls">
-
-                                            <input type="text" id="customer.authId" name="customer.authId" class="span6 m-wrap"/>
-
-                                            <span id="customer.authIdMsg" class="help-block"></span>
+                                            <span id="dept_deptNoMsg" class="help-inline"><#if CustomerMessageDeptNo??><font color="red">${CustomerMessageDeptNo}</font></#if></span>
 
                                         </div>
 
-                                    </div>
+                                    </#if>
 
-                                    <div class="control-group">
+                                </div>
 
-                                        <label class="control-label">所属部门<span class="required">*</span></label>
+                                <div class="form-actions">
 
-                                        <#if deptList??>
+                                    <button type="submit" class="btn blue">提交</button>
 
-                                            <div class="controls">
+                                    <button type="reset" class="btn">重置</button>
 
-                                                <select id="dept.deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
+                                </div>
 
-                                                    <#list deptList as dept>
-
-                                                        <option value="${dept.deptNo}">${dept.deptName}</option>
-
-                                                    </#list>
-
-                                                </select>
-
-                                            </div>
-
-                                        </#if>
-
-                                    </div>
-
-                                    <div class="form-actions">
-
-                                        <button type="submit" id="SubmitAddCustomer" class="btn blue">提交</button>
-
-                                        <button type="reset" class="btn">重置</button>
-
-                                    </div>
-
-                                </form>
+                            </form>
 
                             <!-- END FORM-->
 
@@ -305,7 +308,6 @@
 
     </#if>
 
-
 <script>
     $(document).ready(function() {
         $('#customerManage').addClass('active');
@@ -315,6 +317,30 @@
         $('#customerManageSelect').addClass('selected');
 
         $('#customerManageArrow').addClass('arrow open');
+
+        $("#customer_Name").focus(function () {
+            $("#customer_NameMsg").html("");
+        });
+
+        $("#customer_authId").focus(function () {
+            $("#customer_authIdMsg").html("");
+        });
+
+        $("#dept_deptNo").focus(function () {
+            $("#dept_deptNoMsg").html("");
+        });
+
+        $("#customer_authId").blur(function(){
+            $("#customer_authIdMsg").load("/customer/findCustomerByAuthId/"+$("#customer_authId").val(),
+                    function(responseTxt){
+                        if(responseTxt=="yes")
+                            $("#customer_authIdMsg").html("<font color='red'>该账户已存在！</font>");
+                        if(responseTxt=="no")
+                            $("#customer_authIdMsg").html("");
+                    });
+        });
     });
+
 </script>
+
 </@layout>

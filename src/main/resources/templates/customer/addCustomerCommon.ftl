@@ -1,9 +1,8 @@
 <#include "layout.ftl">
 
+
 <@layout ; section>
     <#if section = "head">
-
-
 
     <#elseif section = "content" >
 
@@ -171,7 +170,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-reorder"></i>Basic Validation</div>
+                            <div class="caption"><i class="icon-reorder"></i>请填写客户信息</div>
 
                             <div class="tools">
 
@@ -191,7 +190,7 @@
 
                             <!-- BEGIN FORM-->
 
-                                <form action="/customer/insertCustomerByDeptNo" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
+                                <form action="/customer/insertCustomerCommon" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
 
                                     <div class="alert alert-error hide">
 
@@ -229,9 +228,9 @@
 
                                         <div class="controls">
 
-                                            <input type="text" id="customer.name" name="customer.name" class="span6 m-wrap"/>
+                                            <input type="text" id="customer_Name" name="customer.name" <#if name??>value="${name}"</#if> class="span6 m-wrap"/>
 
-                                            <span id="customer.nameMsg" class="help-block"></span>
+                                            <span id="customer_NameMsg" class="help-inline"><#if CustomerMessageName??><font color="red">${CustomerMessageName}</font></#if></span>
 
                                         </div>
 
@@ -243,9 +242,11 @@
 
                                         <div class="controls">
 
-                                            <input type="text" id="customer.authId" name="customer.authId" class="span6 m-wrap"/>
+                                            <input type="text" id="customer_authId" name="customer.authId" <#if authId??>value="${authId}"</#if> class="span6 m-wrap"/>
 
-                                            <span id="customer.authIdMsg" class="help-block"></span>
+                                            <span id="customer_authIdMsg" class="help-inline"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
+
+                                            <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
 
                                         </div>
 
@@ -259,7 +260,7 @@
 
                                             <div class="controls">
 
-                                                <select id="dept.deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
+                                                <select id="dept_deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
 
                                                     <#list deptList as dept>
 
@@ -269,6 +270,8 @@
 
                                                 </select>
 
+                                                <span id="dept_deptNoMsg" class="help-inline"><#if CustomerMessageDeptNo??><font color="red">${CustomerMessageDeptNo}</font></#if></span>
+
                                             </div>
 
                                         </#if>
@@ -277,7 +280,7 @@
 
                                     <div class="form-actions">
 
-                                        <button type="submit" id="SubmitAddCustomer" class="btn blue">提交</button>
+                                        <button type="submit" class="btn blue">提交</button>
 
                                         <button type="reset" class="btn">重置</button>
 
@@ -305,7 +308,6 @@
 
     </#if>
 
-
 <script>
     $(document).ready(function() {
         $('#customerManage').addClass('active');
@@ -315,6 +317,30 @@
         $('#customerManageSelect').addClass('selected');
 
         $('#customerManageArrow').addClass('arrow open');
+
+        $("#customer_Name").focus(function () {
+            $("#customer_NameMsg").html("");
+        });
+
+        $("#customer_authId").focus(function () {
+            $("#customer_authIdMsg").html("");
+        });
+
+        $("#dept_deptNo").focus(function () {
+            $("#dept_deptNoMsg").html("");
+        });
+
+        $("#customer_authId").blur(function(){
+            $("#customer_authIdMsg").load("/customer/findCustomerByAuthId/"+$("#customer_authId").val(),
+                    function(responseTxt){
+                        if(responseTxt=="yes")
+                            $("#customer_authIdMsg").html("<font color='red'>该账户已存在！</font>");
+                        if(responseTxt=="no")
+                            $("#customer_authIdMsg").html("");
+                    });
+        });
     });
+
 </script>
+
 </@layout>

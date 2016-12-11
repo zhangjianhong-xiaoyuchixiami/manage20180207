@@ -27,10 +27,16 @@
 
 
     <!--查询所有供应商Api-->
-    <select id="findAllApi" resultMap="Api-ApiVendor">
-      select a.id,a.name apiName,av.name apiVendorName
-      from qydata.Api a,qydata.ApiVendor av
-      where a.vendorId=av.id
+    <select id="findAllApi" parameterType="Map" resultMap="Api-ApiVendor">
+        select a.id,a.name apiName,av.name apiVendorName
+        from qydata.Api a,qydata.ApiVendor av
+        where a.vendorId=av.id
+        <if test="customerId!=null and customerId!=''">
+            and a.id not in(
+            select apiId from qydata.CustomerApi
+            where customerId=#{customerId}
+            )
+        </if>
     </select>
 
     <!--插入-->
@@ -42,17 +48,12 @@
     <select id="findAllByCustomerId" parameterType="map" resultMap="CustomerApi_Api_ApiVendor">
         select c.id,c.apiId,c.customerId,c.price,c.enabled,c.createTime,aat.apiName,aat.apiVendorName
         from qydata.CustomerApi c,(select a.id,a.name apiName,avd.name apiVendorName
-                                    from qydata.Api a,qydata.ApiVendor avd
-                                    where a.vendorId=avd.id
-                                    ) aat
+        from qydata.Api a,qydata.ApiVendor avd
+        where a.vendorId=avd.id
+        ) aat
         where c.apiId=aat.id and c.customerId=#{customerId}
         order by c.createTime desc
-        <where>
-            <if test="map!=null and map.size!=0">
-                limit #{beginIndex},#{lineSize}
-            </if>
-        </where>
-
+        limit #{beginIndex},#{lineSize}
     </select>
     <!--根据客户Id统计全部数据量-->
     <select id="getAllCountByCustomerId" parameterType="Map" resultType="Integer">

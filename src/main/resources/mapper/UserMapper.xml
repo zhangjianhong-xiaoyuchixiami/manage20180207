@@ -50,7 +50,7 @@
     </select>
     <!--添加管理员-->
     <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        insert into qyauth.User(name,username,tel,status,typeId,createTime)
+        insert into qyauth.User(name,username,password,tel,status,typeId,createTime)
         values(#{name},#{username},'123456',#{tel},#{status},#{typeId},sysdate())
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             select LAST_INSERT_ID()

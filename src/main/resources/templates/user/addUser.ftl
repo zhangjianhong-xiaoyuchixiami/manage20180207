@@ -69,20 +69,19 @@
                     </div>
                     <!-- END BEGIN STYLE CUSTOMIZER -->
                     <h3 class="page-title">
-                        Form Validation
-                        <small>form validation states</small>
+                        新增管理员
                     </h3>
                     <ul class="breadcrumb">
                         <li>
                             <i class="icon-home"></i>
-                            <a href="index.html">Home</a>
+                            <a href="#">首页</a>
                             <span class="icon-angle-right"></span>
                         </li>
                         <li>
-                            <a href="#">Form Stuff</a>
+                            <a href="#">管理员</a>
                             <span class="icon-angle-right"></span>
                         </li>
-                        <li><a href="#">Form Validation</a></li>
+                        <li><a href="#">新增管理员</a></li>
                     </ul>
                 </div>
             </div>
@@ -94,7 +93,7 @@
                     <!-- BEGIN VALIDATION STATES-->
                     <div class="portlet box blue">
                         <div class="portlet-title">
-                            <div class="caption"><i class="icon-reorder"></i>Basic Validation</div>
+                            <div class="caption"><i class="icon-reorder"></i>请填写管理员信息</div>
                             <div class="tools">
                                 <a href="javascript:;" class="collapse"></a>
                                 <a href="#portlet-config" data-toggle="modal" class="config"></a>
@@ -130,19 +129,27 @@
                                 <div class="control-group">
                                     <label class="control-label">姓名<span class="required">*</span></label>
                                     <div class="controls">
-                                        <input type="text" name="name" data-required="1" class="span6 m-wrap"/>
+                                        <input type="text" id="name" name="name" <#if name??>value="${name}" </#if> data-required="1" class="span6 m-wrap"/>
+
+                                        <span class="help-inline" id="nameMsg"><#if UserMessageName??><font color="red">${UserMessageName}</font></#if></span>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">用户名<span class="required">*</span></label>
                                     <div class="controls">
-                                        <input name="username" type="text" class="span6 m-wrap"/>
+                                        <input id="username" name="username" type="text" <#if username??>value="${username}" </#if> class="span6 m-wrap"/>
+
+                                        <span class="help-inline" id="usernameMsg"><#if UserMessageUsername??><font color="red">${UserMessageUsername}</font></#if></span>
+
+                                        <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">电话<span class="required">*</span></label>
                                     <div class="controls">
-                                        <input name="tel" type="text" class="span6 m-wrap"/>
+                                        <input id="tel" name="tel" type="text" <#if tel??>value="${tel}" </#if> class="span6 m-wrap"/>
+
+                                        <span class="help-inline" id="telMsg"><#if UserMessageTel??><font color="red">${UserMessageTel}</font></#if></span>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -170,7 +177,7 @@
 
                                 <div class="form-actions">
                                     <button type="submit" class="btn blue">提交</button>
-                                    <button type="reset" class="btn">取消</button>
+                                    <button type="button" class="btn">取消</button>
                                 </div>
                             </form>
                             <!-- END FORM-->
@@ -198,6 +205,18 @@
         $('#userManageSelect').addClass('selected');
 
         $('#userManageArrow').addClass('arrow open');
+
+        $("#name").focus(function () {
+            $("#nameMsg").html("");
+        });
+
+        $("#username").focus(function () {
+            $("#usernameMsg").html("");
+        });
+
+        $("#tel").focus(function () {
+            $("#telMsg").html("");
+        });
     });
 </script>
 </@layout>

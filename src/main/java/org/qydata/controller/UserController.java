@@ -3,6 +3,7 @@ package org.qydata.controller;
 import org.apache.log4j.Logger;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
+import org.qydata.regex.RegexUtil;
 import org.qydata.service.UserService;
 import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,59 @@ public class UserController {
     public String addUserView(){
         return "/user/addUser";
     }
+
+    @RequestMapping(value = "/addUserViewCommon")
+    public String addUserViewCommon(){
+        return "/user/addUserCommon";
+    }
+
+
     //super
     @RequestMapping(value = "/addUserAction")
     public String addUserAction(User user, RedirectAttributes model){
+        System.out.println(user.getName());
+        System.out.println(user.getUsername());
+        System.out.println(user.getTel());
+        System.out.println(user.getStatus());
+        System.out.println(user.getTypeId());
+
+        if(RegexUtil.isNull(user.getName())){
+            model.addFlashAttribute("UserMessageName","请输入姓名");
+            return "redirect:/user/addUserView";
+        }
+        if(RegexUtil.isNull(user.getUsername())){
+            model.addFlashAttribute("name",user.getName());
+            model.addFlashAttribute("UserMessageUsername","请输入用户名");
+            return "redirect:/user/addUserView";
+        }
+        if(!RegexUtil.stringCheck(user.getUsername())){
+            model.addFlashAttribute("name",user.getName());
+            model.addFlashAttribute("username",user.getUsername());
+            model.addFlashAttribute("UserMessageUsername","用户名格式不正确");
+            return "redirect:/user/addUserView";
+        }
+        if(RegexUtil.isNull(user.getTel())){
+            model.addFlashAttribute("name",user.getName());
+            model.addFlashAttribute("username",user.getUsername());
+            model.addFlashAttribute("UserMessageTel","请输入电话号码");
+            return "redirect:/user/addUserView";
+        }
+        if(!RegexUtil.isTel(user.getTel())){
+            model.addFlashAttribute("name",user.getName());
+            model.addFlashAttribute("username",user.getUsername());
+            model.addFlashAttribute("tel",user.getTel());
+            model.addFlashAttribute("UserMessageTel","电话号码格式不正确");
+            return "redirect:/user/addUserView";
+        }
+        System.out.println(RegexUtil.isNull(user.getStatus().toString()));
+        if(RegexUtil.isNull(user.getStatus().toString())){
+            return "redirect:/user/addUserView";
+        }
+        System.out.println(RegexUtil.isNull(user.getTypeId().toString()));
+        if(RegexUtil.isNull(user.getTypeId().toString())){
+            return "redirect:/user/addUserView";
+        }
+
         try {
             boolean flag = userService.addUser(user);
             if(!flag){
@@ -44,28 +95,64 @@ public class UserController {
                 return "redirect:/user/addUserView";
             }
         } catch (Exception e) {
+            e.printStackTrace();
             model.addFlashAttribute("msg","很遗憾，添加失败！");
             log.error("addUserAction:新增用户异常");
             return "redirect:/user/addUserView";
         }
         return "redirect:/user/findAllUser";
     }
+
+
     //common
     @RequestMapping(value = "/addUserCommonAction")
     public String addUserCommonAction(User user, RedirectAttributes model){
+        if(RegexUtil.isNull(user.getName())){
+            model.addFlashAttribute("UserMessageName","请输入姓名");
+            return "redirect:/user/addUserViewCommon";
+        }
+        if(RegexUtil.isNull(user.getUsername())){
+            model.addFlashAttribute("name",user.getName());
+            model.addFlashAttribute("UserMessageUsername","请输入用户名");
+            return "redirect:/user/addUserViewCommon";
+        }
+        if(!RegexUtil.stringCheck(user.getUsername())){
+            model.addFlashAttribute("name",user.getName());
+            model.addFlashAttribute("username",user.getUsername());
+            model.addFlashAttribute("UserMessageUsername","用户名格式不正确");
+            return "redirect:/user/addUserViewCommon";
+        }
+        if(RegexUtil.isNull(user.getTel())){
+            model.addFlashAttribute("name",user.getName());
+            model.addFlashAttribute("username",user.getUsername());
+            model.addFlashAttribute("UserMessageTel","请输入电话号码");
+            return "redirect:/user/addUserViewCommon";
+        }
+        if(!RegexUtil.isTel(user.getTel())){
+            model.addFlashAttribute("name",user.getName());
+            model.addFlashAttribute("username",user.getUsername());
+            model.addFlashAttribute("tel",user.getTel());
+            model.addFlashAttribute("UserMessageTel","电话号码格式不正确");
+            return "redirect:/user/addUserViewCommon";
+        }
+        if(RegexUtil.isNull(user.getStatus())){
+            return "redirect:/user/addUserViewCommon";
+        }
         try {
             boolean flag = userService.addUserCommon(user);
             if(!flag){
                 model.addFlashAttribute("msg","很遗憾，添加失败！");
-                return "redirect:/user/addUserView";
+                return "redirect:/user/addUserViewCommon";
             }
         } catch (Exception e) {
             model.addFlashAttribute("msg","很遗憾，添加失败！");
             log.error("addUserCommonAction:新增用户异常");
-            return "redirect:/user/addUserView";
+            return "redirect:/user/addUserViewCommon";
         }
-        return "redirect:/user/findAllUser";
+        return "redirect:/user/findAllUserCommon";
     }
+
+
     //super
     @RequestMapping(value = "/findAllUser")
     public String findAllUser(HttpServletRequest request, Model model,String content){
@@ -186,7 +273,52 @@ public class UserController {
     }
 
     @RequestMapping(value = "/updatePasswordAction")
-    public String updatePasswordAction(String username,String password,String newPassword,RedirectAttributes model){
+    public String updatePasswordAction(String username,String password,String newPassword,String
+            rppassword,RedirectAttributes model){
+
+        if(RegexUtil.isNull(username)){
+            model.addFlashAttribute("UserMessageUsername","请输入用户名");
+            return "redirect:/user/updatePasswordView";
+        }
+        if(RegexUtil.isNull(password)){
+            model.addFlashAttribute("username",username);
+            model.addFlashAttribute("UserMessagePassword","请输入旧密码");
+            return "redirect:/user/updatePasswordView";
+        }
+        if(RegexUtil.isPwd(password)){
+            model.addFlashAttribute("username",username);
+            model.addFlashAttribute("UserMessagePassword","旧密码格式不正确");
+            return "redirect:/user/updatePasswordView";
+        }
+        if(RegexUtil.isNull(newPassword)){
+            model.addFlashAttribute("username",username);
+            model.addFlashAttribute("password",password);
+            model.addFlashAttribute("UserMessageNewPassword","请输入新密码");
+            return "redirect:/user/updatePasswordView";
+        }
+        if(RegexUtil.isPwd(newPassword)){
+            model.addFlashAttribute("username",username);
+            model.addFlashAttribute("password",password);
+            if(!newPassword.equals(rppassword)) {
+                model.addFlashAttribute("UserMessageNewPassword", "新密码密码格式不正确");
+                return "redirect:/user/updatePasswordView";
+            }
+        }
+        if(RegexUtil.isNull(rppassword)){
+            model.addFlashAttribute("username",username);
+            model.addFlashAttribute("password",password);
+            model.addFlashAttribute("newPassword",newPassword);
+            model.addFlashAttribute("UserMessageRpPassword","请再次输入新密码");
+            return "redirect:/user/updatePasswordView";
+        }
+        if(RegexUtil.isPwd(rppassword)){
+            model.addFlashAttribute("username",username);
+            model.addFlashAttribute("password",password);
+            model.addFlashAttribute("newPassword",newPassword);
+            model.addFlashAttribute("UserMessageRpPassword","两次密码不一致");
+            return "redirect:/user/updatePasswordView";
+        }
+
         try {
             boolean flag = userService.updatePassword(username.trim(),password.trim(),newPassword.trim());
             if(!flag){

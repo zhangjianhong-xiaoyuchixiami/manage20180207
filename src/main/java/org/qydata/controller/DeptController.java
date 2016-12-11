@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
+import org.qydata.regex.RegexUtil;
 import org.qydata.service.DeptService;
 import org.qydata.service.UserService;
 import org.qydata.tools.PageModel;
@@ -34,7 +35,6 @@ public class DeptController {
     @Autowired
     private UserService userService;
 
-
     @RequestMapping( value = "/addDeptView")
     public String addView(){
         return "/dept/addDept";
@@ -42,6 +42,12 @@ public class DeptController {
 
     @RequestMapping( value = "/addDeptAction")
     public String addAction(Dept dept, RedirectAttributes model){
+
+        if(RegexUtil.isNull(dept.getDeptName())){
+            model.addFlashAttribute("DeptMessageDeptName","请输入部门名称");
+            return "redirect:/dept/addDeptView";
+        }
+
         try {
             boolean flag = deptService.addDept(dept);
             if(!flag){
@@ -134,9 +140,4 @@ public class DeptController {
         return gson.toJson(map);
     }
 
-
-    @RequestMapping(value = "/demo")
-    public String demo(){
-        return "/customer/demo";
-    }
 }

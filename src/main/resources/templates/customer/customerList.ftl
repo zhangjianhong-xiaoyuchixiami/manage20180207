@@ -127,7 +127,7 @@
 
                     <h3 class="page-title">
 
-                        Responsive Tables <small>responsive table samples</small>
+                        客户信息
 
                     </h3>
 
@@ -166,23 +166,37 @@
                 <div class="span12">
 
                 <#--搜索框-->
-                    <form action="/customer/findAllCustomer" method="post" class="form-search pull-right">
+                    <#if deptNoList??>
+                        <form action="/customer/findAllCustomerByDeptNo" method="post" class="form-search pull-right">
 
-                        <div class="input-append">
+                            <div class="input-append">
 
-                            <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
+                                <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
 
-                            <button class="btn blue" type="submit">Search</button>
+                                <button class="btn blue" type="submit">搜索</button>
 
-                        </div>
+                            </div>
 
-                    </form>
+                        </form>
+                    <#else >
+                        <form action="/customer/findAllCustomer" method="post" class="form-search pull-right">
+
+                            <div class="input-append">
+
+                                <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
+
+                                <button class="btn blue" type="submit">搜索</button>
+
+                            </div>
+
+                        </form>
+                    </#if>
                 <#--表单-->
                     <div class="portlet box blue">
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i>Table</div>
+                            <div class="caption"><i class="icon-cogs"></i></div>
 
                             <div class="tools">
 

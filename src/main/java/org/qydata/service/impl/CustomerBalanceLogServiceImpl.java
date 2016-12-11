@@ -30,7 +30,13 @@ public class CustomerBalanceLogServiceImpl implements CustomerBalanceLogService{
     public boolean changeCustomerBalance(String authId, String amount, String reasonId) throws Exception {
         Customer customer = customerMapper.findByAuthId(authId);
         Long balance = customerBalanceLogMapper.findBalanceByAuthId(authId);
-        Long totleBalance =Long.parseLong(amount)+balance;
+        Long totleBalance = null;
+        if(reasonId.equals("-1") || reasonId.equals("-2")){
+            totleBalance =balance-Long.parseLong(amount);
+        }else{
+            totleBalance =balance+Long.parseLong(amount);
+        }
+
         customerBalanceLogMapper.updateBalanceByAuthId(totleBalance,authId);
         CustomerBalanceLog customerBalanceLog = new CustomerBalanceLog();
         customerBalanceLog.setCustomerId(customer.getId());

@@ -132,9 +132,7 @@
 
                     <h3 class="page-title">
 
-                        Form Layouts
-
-                        <small>form layouts and more</small>
+                       添加Api
 
                     </h3>
 
@@ -184,7 +182,7 @@
 
                                 <i class="icon-reorder"></i>
 
-                                <span class="hidden-480">General Layouts</span>
+                                <span class="hidden-480">请填写Api信息</span>
 
                             </div>
 
@@ -200,7 +198,7 @@
 
                                     <li><a href="#" data-toggle="tab">Grid</a></li>
 
-                                    <li class="active"><a href="#" data-toggle="tab">Default</a></li>
+                                    <li><a href="#" data-toggle="tab">Default</a></li>
 
                                 </ul>
 
@@ -255,14 +253,15 @@
 
                                             <div class="control-group">
 
-                                                <label class="control-label">价&nbsp;&nbsp;格<span class="required">*</span></label>
+                                                <label class="control-label">价&nbsp;格（/:分）<span class="required">*</span></label>
 
                                                 <div class="controls">
 
                                                     <input type="text" id="price" name="price" value="${customerApi.price}" class="m-wrap medium">
 
-                                                    <span id="priceMsg" class="help-inline"></span>
+                                                    <span id="priceMsg" class="help-inline"><#if CustomerMessagePrice??><font color="red">${CustomerMessagePrice}</font></font></#if></span>
 
+                                                    <span class="help-block">e.g：只能输入数字并且金额大于0</span>
                                                 </div>
 
                                             </div>
@@ -315,8 +314,8 @@
                                             </div>
 
                                             <div class="form-actions">
-                                                <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
-                                                <button type="reset" class="btn">Cancel</button>
+                                                <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
+                                                <button type="reset" class="btn">取消</button>
                                             </div>
 
                                         </form>

@@ -132,9 +132,7 @@
 
                     <h3 class="page-title">
 
-                        Form Wizard
-
-                        <small>form wizard sample</small>
+                        修改密码
 
                     </h3>
 
@@ -180,7 +178,7 @@
 
                             <div class="caption">
 
-                                <i class="icon-reorder"></i> Form Wizard - <span class="step-title">Step 1 of 4</span>
+                                <i class="icon-reorder"></i>
 
                             </div>
 
@@ -228,9 +226,9 @@
 
                                                 <div class="controls">
 
-                                                    <input type="text" class="span6 m-wrap" id="loginName" name="loginName"/>
+                                                    <input type="text" <#if username??>value="${username}" </#if> class="span6 m-wrap" id="username" name="username"/>
 
-                                                    <span class="help-inline" id="loginNameMsg"></span>
+                                                    <span class="help-inline" id="usernameMsg"><#if UserMessageUsername??><font color="red">${UserMessageUsername}</font></#if></span>
 
                                                 </div>
 
@@ -242,9 +240,9 @@
 
                                                 <div class="controls">
 
-                                                    <input type="password" class="span6 m-wrap" id="password" name="password"/>
+                                                    <input type="password" <#if password??>value="${username}" </#if> class="span6 m-wrap" id="password" name="password"/>
 
-                                                    <span class="help-inline" id="passwordMsg"></span>
+                                                    <span class="help-inline" id="passwordMsg"><#if UserMessagePassword??><font color="red">${UserMessagePassword}</font></#if></span>
 
                                                 </div>
 
@@ -256,9 +254,11 @@
 
                                                 <div class="controls">
 
-                                                    <input type="password" class="span6 m-wrap" id="newPassword" name="newPassword"/>
+                                                    <input type="password" <#if newPassword??>value="${newPassword}" </#if> class="span6 m-wrap" id="newPassword" name="newPassword"/>
 
-                                                    <span class="help-inline" id="newPasswordMsg"></span>
+                                                    <span class="help-inline" id="newPasswordMsg"><#if UserMessageNewPassword??><font color="red">${UserMessageNewPassword}</font></#if></span>
+
+                                                    <span class="help-block">e.g：以字母开头，只能有数字、字母、下划线组成，长度为6-18个字符</span>
 
                                                 </div>
 
@@ -272,7 +272,7 @@
 
                                                     <input type="password" class="span6 m-wrap" id="rppassword" name="rppassword"/>
 
-                                                    <span class="help-inline" id="rppasswordMsg"></span>
+                                                    <span class="help-inline" id="rppasswordMsg"><#if UserMessageRpPassword??><font color="red">${UserMessageRpPassword}</font></#if></span>
 
                                                 </div>
 
@@ -286,7 +286,7 @@
 
                                         <button type="submit" class="btn blue">提交</button>
 
-                                        <button type="reset" class="btn">重置</button>
+                                        <button type="button" class="btn">取消</button>
 
                                     </div>
 
@@ -312,6 +312,26 @@
 
 
     <#elseif section = "footer">
-    <script src="/js/myjs/updatepassword.js" type="text/javascript" ></script>
+
     </#if>
+<script>
+    $(document).ready(function() {
+
+        $("#username").focus(function () {
+            $("#usernameMsg").html("");
+        });
+
+        $("#password").focus(function () {
+            $("#passwordMsg").html("");
+        });
+
+        $("#newPassword").focus(function () {
+            $("#newPasswordMsg").html("");
+        });
+
+        $("#rppassword").focus(function () {
+            $("#rppasswordMsg").html("");
+        });
+    });
+</script>
 </@layout>

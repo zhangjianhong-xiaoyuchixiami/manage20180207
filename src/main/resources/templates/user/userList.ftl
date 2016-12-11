@@ -127,7 +127,7 @@
 
                     <h3 class="page-title">
 
-                        Responsive Tables <small>responsive table samples</small>
+                        管理员信息
 
                     </h3>
 
@@ -171,7 +171,7 @@
 
                             <input class="m-wrap" type="text" name="content" placeholder="Search">
 
-                            <button class="btn blue" type="submit">Search</button>
+                            <button class="btn blue" type="submit">搜索</button>
 
                         </div>
 
@@ -181,7 +181,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i>Table</div>
+                            <div class="caption"><i class="icon-cogs"></i></div>
 
                             <div class="tools">
 

@@ -2,7 +2,9 @@ package org.qydata.controller;
 
 import org.qydata.entity.Api;
 import org.qydata.entity.CustomerApi;
+import org.qydata.regex.RegexUtil;
 import org.qydata.service.CustomerApiService;
+import org.qydata.tools.IpTool;
 import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,29 +35,11 @@ public class CustomerApiController {
         List<Api> apiList = null;
         try {
             Map<String,Object> map = new HashMap();
-            map.put("customerId",customerId);
-            PageModel<CustomerApi> pageModel = customerApiService.findAllByCustomerId(map);
-            List<CustomerApi> customerApiList = pageModel.getList();
-            System.out.println(customerApiList.size());
-
-            apiList = customerApiService.findAllApi();
-            System.out.println(apiList.size());
-            int sum = apiList.size();
-            System.out.println(sum);
-            for(int i=0;i<apiList.size();i++){
-                for(int j=0;j<customerApiList.size();j++){
-                    if(apiList.get(i).getId() == customerApiList.get(j).getApiId()){
-                        apiList.remove(apiList.get(i));
-                    }
-                }
-            }
-
-            System.out.println(apiList.size());
+            map.put("customerId",Integer.parseInt(customerId));
+            apiList = customerApiService.findAllApi(map);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         model.addAttribute(customerId);
         model.addAttribute("apiList",apiList);
         return "/customerApi/addCustomerApi";
@@ -63,6 +47,33 @@ public class CustomerApiController {
 
     @RequestMapping(value = "/addCustomerApiAction")
     public String addCustomerApiAction(RedirectAttributes model,String price, String customerId, String apiId, String enabled){
+
+        if(RegexUtil.isNull(price)){
+            model.addFlashAttribute("CustomerMessagePrice","请输入金额");
+            return "redirect:/customerApi/addCustomerApiView/"+customerId;
+        }
+        List priceList = IpTool.spiltStr(price);
+        for(int i=0;i<priceList.size();i++){
+            if(!RegexUtil.isFloat((String) priceList.get(i))){
+                model.addFlashAttribute("price",price);
+                if(Integer.parseInt((String) priceList.get(i))<=0){
+                    model.addFlashAttribute("CustomerMessagePrice","金额必须大于0");
+                }else{
+                    model.addFlashAttribute("CustomerMessagePrice","金额格式不正确");
+                }
+                return "redirect:/customerApi/addCustomerApiView/"+customerId;
+            }
+        }
+        if(RegexUtil.isNull(customerId)){
+            return "redirect:/customerApi/addCustomerApiView/"+customerId;
+        }
+        if(RegexUtil.isNull(apiId)){
+            return "redirect:/customerApi/addCustomerApiView/"+customerId;
+        }
+        if(RegexUtil.isNull(enabled)){
+            return "redirect:/customerApi/addCustomerApiView/"+customerId;
+        }
+
         try {
             boolean flag = customerApiService.insertCustomerApi(price, customerId, apiId, enabled);
             if (!flag) {
@@ -75,6 +86,7 @@ public class CustomerApiController {
         }
         return "redirect:/customerApi/customerApiListAction/"+customerId;
     }
+
 
     //根据客户Id查看所对应的的所有Api
     @RequestMapping(value = "/customerApiListAction/{customerId}")
@@ -113,13 +125,10 @@ public class CustomerApiController {
     @RequestMapping(value = "/findCustomerApiById/{id}")
     public String findCustomerApiById(@PathVariable("id") String id,Model model){
         List<Api> list = null;
-        try {
-            list = customerApiService.findAllApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         CustomerApi customerApi = null;
         try {
+            Map<String,Object> map = new HashMap<>();
+            list = customerApiService.findAllApi(map);
             customerApi = customerApiService.findById(Integer.parseInt(id));
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,6 +141,34 @@ public class CustomerApiController {
     //根据id修改指定的customerApi
     @RequestMapping(value = "/updateCustomerApiById")
     public String updateCustomerApiById(String id,String customerId,String price,String apiId,String enabled,RedirectAttributes model ){
+
+
+        if(RegexUtil.isNull(id)){
+            return "redirect:/customerApi/findCustomerApiById/"+id;
+        }
+        if(RegexUtil.isNull(price)){
+            model.addFlashAttribute("CustomerMessagePrice","请输入金额");
+            return "redirect:/customerApi/findCustomerApiById/"+id;
+        }
+        if(!RegexUtil.isFloat(price)){
+            model.addFlashAttribute("price",price);
+            if(price.equals("0")){
+                model.addFlashAttribute("CustomerMessagePrice","金额必须大于0");
+            }else{
+                model.addFlashAttribute("CustomerMessagePrice","金额格式不正确");
+            }
+            return "redirect:/customerApi/findCustomerApiById/"+id;
+        }
+        if(!RegexUtil.isZhengShuDigits(customerId)){
+            return "redirect:/customerApi/findCustomerApiById/"+id;
+        }
+        if(!RegexUtil.isZhengShuDigits(apiId)){
+            return "redirect:/customerApi/findCustomerApiById/"+id;
+        }
+        if(RegexUtil.isNull(enabled)){
+            return "redirect:/customerApi/findCustomerApiById/"+id;
+        }
+
         CustomerApi customerApi = new CustomerApi();
         customerApi.setId(Integer.parseInt(id));
         customerApi.setCustomerId(Integer.parseInt(customerId));
@@ -142,13 +179,13 @@ public class CustomerApiController {
             boolean flag = customerApiService.updateCustomerApiById(customerApi);
             if (!flag) {
                 model.addFlashAttribute("msg","修改失败");
-                return "redirect:/customerApi/findCustomerApiById/"+customerApi.getId();
+                return "redirect:/customerApi/findCustomerApiById/"+id;
             }
         }catch (Exception e){
             model.addFlashAttribute("msg","修改失败");
-            return "redirect:/customerApi/findCustomerApiById/"+customerApi.getId();
+            return "redirect:/customerApi/findCustomerApiById/"+id;
         }
-        return "redirect:/customerApi/customerApiListAction/" + customerApi.getCustomerId();
+        return "redirect:/customerApi/customerApiListAction/" + customerId;
     }
 
 }
