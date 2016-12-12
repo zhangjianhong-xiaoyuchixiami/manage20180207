@@ -1,6 +1,7 @@
 package org.qydata.mapper;
 
 import org.qydata.entity.Dept;
+import org.qydata.entity.UserDept;
 
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,14 @@ public interface DeptMapper {
      * @throws Exception
      */
     public Integer getAllCount(Map<String,Object> map)throws Exception;
+
+    /**
+     * 根据指定信息添加用户部门映射
+     * @param userDept
+     * @return
+     * @throws Exception
+     */
+    public Integer addUserDeptById(UserDept userDept)throws Exception;
 
 
 }

@@ -64,7 +64,7 @@
 
                 <a class="brand" href="#">
 
-                    <img src="/image/logo.png" alt="logo" />
+                   千眼数合科技
 
                 </a>
 
@@ -84,405 +84,19 @@
 
                 <ul class="nav pull-right">
 
-                    <!-- BEGIN NOTIFICATION DROPDOWN -->
-
-                    <li class="dropdown" id="header_notification_bar">
-
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-                            <i class="icon-warning-sign"></i>
-
-                            <span class="badge">6</span>
-
-                        </a>
-
-                        <ul class="dropdown-menu extended notification">
-
-                            <li>
-
-                                <p>You have 14 new notifications</p>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="label label-success"><i class="icon-plus"></i></span>
-
-                                    New user registered.
-
-                                    <span class="time">Just now</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="label label-important"><i class="icon-bolt"></i></span>
-
-                                    Server #12 overloaded.
-
-                                    <span class="time">15 mins</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="label label-warning"><i class="icon-bell"></i></span>
-
-                                    Server #2 not respoding.
-
-                                    <span class="time">22 mins</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="label label-info"><i class="icon-bullhorn"></i></span>
-
-                                    Application error.
-
-                                    <span class="time">40 mins</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="label label-important"><i class="icon-bolt"></i></span>
-
-                                    Database overloaded 68%.
-
-                                    <span class="time">2 hrs</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="label label-important"><i class="icon-bolt"></i></span>
-
-                                    2 user IP blocked.
-
-                                    <span class="time">5 hrs</span>
-
-                                </a>
-
-                            </li>
-
-                            <li class="external">
-
-                                <a href="#">See all notifications <i class="m-icon-swapright"></i></a>
-
-                            </li>
-
-                        </ul>
-
-                    </li>
-
-                    <!-- END NOTIFICATION DROPDOWN -->
-
-                    <!-- BEGIN INBOX DROPDOWN -->
-
-                    <li class="dropdown" id="header_inbox_bar">
-
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-                            <i class="icon-envelope"></i>
-
-                            <span class="badge">5</span>
-
-                        </a>
-
-                        <ul class="dropdown-menu extended inbox">
-
-                            <li>
-
-                                <p>You have 12 new messages</p>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="photo"><img src="/image/avatar2.jpg" alt="" /></span>
-
-                                    <span class="subject">
-
-								<span class="from">Lisa Wong</span>
-
-								<span class="time">Just Now</span>
-
-								</span>
-
-                                    <span class="message">
-
-								Vivamus sed auctor nibh congue nibh. auctor nibh
-
-								auctor nibh...
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="photo"><img src="/image/avatar3.jpg" alt="" /></span>
-
-                                    <span class="subject">
-
-								<span class="from">Richard Doe</span>
-
-								<span class="time">16 mins</span>
-
-								</span>
-
-                                    <span class="message">
-
-								Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh
-
-								auctor nibh...
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-                                    <span class="photo"><img src="/image/avatar1.jpg" alt="" /></span>
-
-                                    <span class="subject">
-
-								<span class="from">Bob Nilson</span>
-
-								<span class="time">2 hrs</span>
-
-								</span>
-
-                                    <span class="message">
-
-								Vivamus sed nibh auctor nibh congue nibh. auctor nibh
-
-								auctor nibh...
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li class="external">
-
-                                <a href="#">See all messages <i class="m-icon-swapright"></i></a>
-
-                            </li>
-
-                        </ul>
-
-                    </li>
-
-                    <!-- END INBOX DROPDOWN -->
-
-                    <!-- BEGIN TODO DROPDOWN -->
-
-                    <li class="dropdown" id="header_task_bar">
-
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-                            <i class="icon-tasks"></i>
-
-                            <span class="badge">5</span>
-
-                        </a>
-
-                        <ul class="dropdown-menu extended tasks">
-
-                            <li>
-
-                                <p>You have 12 pending tasks</p>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-								<span class="task">
-
-								<span class="desc">New release v1.2</span>
-
-								<span class="percent">30%</span>
-
-								</span>
-
-                                    <span class="progress progress-success ">
-
-								<span style="width: 30%;" class="bar"></span>
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-								<span class="task">
-
-								<span class="desc">Application deployment</span>
-
-								<span class="percent">65%</span>
-
-								</span>
-
-                                    <span class="progress progress-danger progress-striped active">
-
-								<span style="width: 65%;" class="bar"></span>
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-								<span class="task">
-
-								<span class="desc">Mobile app release</span>
-
-								<span class="percent">98%</span>
-
-								</span>
-
-                                    <span class="progress progress-success">
-
-								<span style="width: 98%;" class="bar"></span>
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-								<span class="task">
-
-								<span class="desc">Database migration</span>
-
-								<span class="percent">10%</span>
-
-								</span>
-
-                                    <span class="progress progress-warning progress-striped">
-
-								<span style="width: 10%;" class="bar"></span>
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-								<span class="task">
-
-								<span class="desc">Web server upgrade</span>
-
-								<span class="percent">58%</span>
-
-								</span>
-
-                                    <span class="progress progress-info">
-
-								<span style="width: 58%;" class="bar"></span>
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li>
-
-                                <a href="#">
-
-								<span class="task">
-
-								<span class="desc">Mobile development</span>
-
-								<span class="percent">85%</span>
-
-								</span>
-
-                                    <span class="progress progress-success">
-
-								<span style="width: 85%;" class="bar"></span>
-
-								</span>
-
-                                </a>
-
-                            </li>
-
-                            <li class="external">
-
-                                <a href="#">See all tasks <i class="m-icon-swapright"></i></a>
-
-                            </li>
-
-                        </ul>
-
-                    </li>
-
-                    <!-- END TODO DROPDOWN -->
-
-                    <!-- BEGIN USER LOGIN DROPDOWN -->
-
                     <li class="dropdown user">
 
                         <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
 
                             <img alt="" src="/image/avatar1_small.jpg" />
 
-                            <span class="username">管理员选项</span>
+                            <span class="username">
+                                <#if user??>
+                                      ${user.name}
+                                <#else >
+                                    管理员
+                                </#if>
+                            </span>
 
                             <i class="icon-angle-down"></i>
 
@@ -492,7 +106,7 @@
 
                             <li><a href="/user/updatePasswordView"><i class="icon-calendar"></i>修改密码</a></li>
 
-                            <li><a href="#"><i class="icon-key"></i> 退出</a></li>
+                            <li><a href="/view/logout"><i class="icon-key"></i> 退出</a></li>
 
                         </ul>
 
@@ -534,15 +148,15 @@
 
                     <!-- 搜索框 -->
 
-                    <form class="sidebar-search">
+                    <form class="sidebar-search" action="#">
 
                         <div class="input-box">
 
-                            <a href="javascript:;" class="remove"></a>
+                            <#--<a href="#" class="remove"></a>-->
 
-                            <input type="text" placeholder="Search..." />
+                            <#--<input type="text" placeholder="Search..." />-->
 
-                            <input type="button" class="submit" value=" " />
+                            <#--<input type="submit" class="submit" value=" " />-->
 
                         </div>
 
@@ -552,7 +166,7 @@
                 </li>
             <#--客户管理-->
 
-                <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
+                <@shiro.hasAnyRoles name="sell,backAdmin">
                     <li class="" id="customerManage">
                         <a href="javascript:;">
 
@@ -568,41 +182,46 @@
 
                         <ul class="sub-menu">
 
-                            <#--<@shiro.hasPermission name="customer:addCustomerView">-->
-                                <#--commmon-->
+                            <@shiro.hasPermission name="customer:addCustomerViewCommon">
+                            <#--commmon-->
                                 <li id="addCustomer">
                                     <a href="/customer/addCustomerViewCommon">
                                         新增客户
                                     </a>
                                 </li>
-                                <#--super-->
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="customer:addCustomerViewSuper">
+                            <#--super-->
                                 <li id="addCustomer">
                                     <a href="/customer/addCustomerViewSuper">
                                         新增客户
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="customer:findAllCustomer">-->
+                            <@shiro.hasPermission name="customer:findAllCustomer">
                                 <li id="customerList">
                                     <a href="/customer/findAllCustomer">
                                         客户信息
                                     </a>
                                 </li>
+                            </@shiro.hasPermission>
 
+                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                 <li id="customerList">
                                     <a href="/customer/findAllCustomerByDeptNo">
                                         客户信息
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
                         </ul>
                     </li>
-                <#--</@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>
 
             <#--财务管理-->
-                <#--<@shiro.hasAnyRoles name="finace,backAdmin">-->
+                <@shiro.hasAnyRoles name="sell,backAdmin">
                     <li class="" id="customerBalance">
                         <a href="javascript:;">
 
@@ -617,20 +236,20 @@
                         </a>
 
                         <ul class="sub-menu">
-                            <#--<@shiro.hasPermission name="customerBalance:customerBalanceChangeView">-->
-                                <li id="changeCustomerBalance">
-                                    <a href="/customerBalance/customerBalanceChangeView">
-                                        客户余额变更
-                                    </a>
-                                </li>
-                            <#--</@shiro.hasPermission>-->
+
+                            <li id="changeCustomerBalance">
+                                <a href="/customerBalance/customerBalanceChangeView">
+                                    客户余额变更
+                                </a>
+                            </li>
+
                         </ul>
 
                     </li>
-                <#--</@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>
 
             <#--用户管理-->
-                <#--<@shiro.hasAnyRoles name="deptManage,backAdmin,technology">-->
+                <@shiro.hasAnyRoles name="backAdmin,technology">
                     <li class="" id="userManage">
                         <a href="javascript:;">
 
@@ -645,39 +264,45 @@
                         </a>
 
                         <ul class="sub-menu">
-                            <#--<@shiro.hasPermission name="user:addUserView">-->
+                            <@shiro.hasPermission name="user:addUserView">
                                 <li id="addUser">
                                     <a href="/user/addUserView">
                                         新增管理员
                                     </a>
                                 </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="user:addUserCommonAction">
                                 <li id="addUser">
                                     <a href="/user/addUserCommonAction">
                                         新增管理员
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="user:findAllUser">-->
+                            <@shiro.hasPermission name="user:findAllUser">
                                 <li id="userList">
                                     <a href="/user/findAllUser">
                                         管理员信息
                                     </a>
                                 </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="user:findAllUserCommon">
                                 <li id="userList">
                                     <a href="/user/findAllUserCommon">
                                         管理员信息
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
                         </ul>
 
                     </>
-                <#--</@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>
 
             <#--部门管理-->
-                <#--<@shiro.hasAnyRoles name="backAdmin,technology">-->
+                <@shiro.hasAnyRoles name="backAdmin,technology">
                     <li class="" id="deptManage">
                         <a href="javascript:;">
 
@@ -692,26 +317,26 @@
                         </a>
 
                         <ul class="sub-menu">
-                            <#--<@shiro.hasPermission name="dept:addDeptView">-->
+                            <@shiro.hasPermission name="dept:addDeptView">
                                 <li id="addDept">
                                     <a href="/dept/addDeptView">
                                         新增部门
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="dept:findAllDept">-->
+                            <@shiro.hasPermission name="dept:findAllDept">
                                 <li id="deptList">
                                     <a href="/dept/findAllDept">
                                         部门信息
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
                         </ul>
 
                     </li>
-                <#--</@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>
 
             </ul>
 
@@ -817,15 +442,15 @@
                 dataType:'json',
                 success:function(data){
                     if(data!=null && data.result=="ok"){
-
-                        window.location.href="/dept/allotDeptView/"+data.msg
-                        $('#form_modal4').css('display','block');
-                        $('#tiShiXinXi').html("操作成功");
+                        alert("操作成功");
+                        window.location.href="/dept/allotDeptView/"+data.msg;
+//                        $('#form_modal4').css('display','block');
+//                        $('#tiShiXinXi').html("操作成功");
                     }else{
-
-                        window.location.href="/dept/allotDeptView/"+data.msg
-                        $('#form_modal4').css('display','block');
-                        $('#tiShiXinXi').html("操作失败");
+                        alert("操作失败");
+                        window.location.href="/dept/allotDeptView/"+data.msg;
+//                        $('#form_modal4').css('display','block');
+//                        $('#tiShiXinXi').html("操作失败");
                     }
                 }
             });
@@ -851,15 +476,15 @@
                 dataType:'json',
                 success:function(data){
                     if(data!=null && data.result=="ok"){
-
-                        window.location.href="/role/allotRoleView/"+data.msg
-                        $('#form_modal4').css('display','block');
-                        $('#tiShiXinXi').html("操作成功");
+                        alert("操作成功");
+                        window.location.href="/role/allotRoleView/"+data.msg;
+//                        $('#form_modal4').css('display','block');
+//                        $('#tiShiXinXi').html("操作成功");
                     }else{
-
-                        window.location.href="/role/allotRoleView/"+data.msg
-                        $('#form_modal4').css('display','block');
-                        $('#tiShiXinXi').html("操作失败");
+                        alert("操作失败");
+                        window.location.href="/role/allotRoleView/"+data.msg;
+//                        $('#form_modal4').css('display','block');
+//                        $('#tiShiXinXi').html("操作失败");
                     }
                 }
             });

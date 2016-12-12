@@ -159,7 +159,7 @@ public class ShiroConfig {
 	public QuartzSessionValidationScheduler quartzSessionValidationScheduler(){
 		QuartzSessionValidationScheduler sessionValidationScheduler = new QuartzSessionValidationScheduler();
 		//设置Session失效扫描间隔时间，单位毫秒
-		sessionValidationScheduler.setSessionValidationInterval(60000);
+		sessionValidationScheduler.setSessionValidationInterval(600000);
 		//会话管理器的程序类应用
 		sessionValidationScheduler.setSessionManager(sessionManager());
 		return sessionValidationScheduler;
@@ -172,7 +172,7 @@ public class ShiroConfig {
 	public DefaultWebSessionManager sessionManager() {
 		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 
-		//定义的是全局的session会话超时时间，此操作会覆盖web中的超市时间配置
+		//定义的是全局的session会话超时时间，此操作会覆盖web中的超时时间配置
 		sessionManager.setGlobalSessionTimeout(432000000);
 
 		//删除所有无效的session对象，此时的session被保存在了内存里面
@@ -187,13 +187,11 @@ public class ShiroConfig {
 		//定义Session可以进行序列化的工具类
 		sessionManager.setSessionDAO(sessionDAO());
 
-
 		//所有的Session一定要将ID设置到Cookie中去
 		sessionManager.setSessionIdCookie(simpleCookie());
 
 		//定义simpleCookie模板可以进行操作的启用
 		sessionManager.setSessionIdCookieEnabled(true);
-
 		return sessionManager;
 	}
 
@@ -251,7 +249,7 @@ public class ShiroConfig {
 		//余额变更
 		chains.put("/customerBalance/customerBalanceChangeView", "authc,perms");
 		chains.put("/customerBalance/customerBalanceChangeAction", "authc,perms");
-		chains.put("/customerBalance/customerBalanceChangeSuccess", "authc,perms");
+		chains.put("/customerBalance/customerBalanceChangeSuccess/**", "authc,perms");
 
 		//dept管理
 		chains.put("/dept/addDeptView", "authc,perms");

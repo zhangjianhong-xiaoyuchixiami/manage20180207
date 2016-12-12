@@ -53,15 +53,18 @@ public class CustomerBalanceLogController {
             model.addFlashAttribute("CustomerMessageAmount","请输入金额");
             return "redirect:/customerBalance/customerBalanceChangeView";
         }
-        if(!RegexUtil.isFloat(amount)){
+        if(!RegexUtil.isFloatZero(amount)){
             model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("amount",amount);
-            if(Integer.parseInt(amount)<=0){
-                model.addFlashAttribute("CustomerMessageAmount","金额必须大于0");
-            }else{
-                model.addFlashAttribute("CustomerMessageAmount","金额格式不正确");
-            }
+            model.addFlashAttribute("CustomerMessageAmount","金额格式不正确");
             return "redirect:/customerBalance/customerBalanceChangeView";
+        }else{
+            if(Integer.parseInt(amount)<=0){
+                model.addFlashAttribute("authId",authId);
+                model.addFlashAttribute("amount",amount);
+                model.addFlashAttribute("CustomerMessageAmount","金额必须大于0");
+                return "redirect:/customerBalance/customerBalanceChangeView";
+            }
         }
         if(!RegexUtil.isZhengShuDigits(reasonId)){
             model.addFlashAttribute("authId",authId);

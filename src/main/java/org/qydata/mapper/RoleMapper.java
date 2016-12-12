@@ -40,4 +40,12 @@ public interface RoleMapper {
      * @throws Exception
      */
     public boolean addRoleUser(Map<String, Object> map)throws Exception;
+
+    /**
+     * 给super默认添加角色
+     * @param username
+     * @return
+     * @throws Exception
+     */
+    public boolean addRoleSuperUser(String username)throws Exception;
 }

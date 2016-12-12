@@ -47,23 +47,29 @@ public class ViewController {
         return "view/welcome";
     }
 
+    //登录提交
     @RequestMapping("/view/Login")
     public String login(HttpServletRequest request, String username, String password, RedirectAttributes model) {
         Subject subject = SecurityUtils.getSubject();
-        System.out.println(username);
-        System.out.println(password);
-
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             subject.login(token);
 
             User user = userService.findUserByUsername(username);
             request.getSession().setAttribute("userInfo", user);
+            model.addFlashAttribute("user",user);
             return "redirect:/view/successUrl";
         } catch (Exception e) {
             e.printStackTrace();
             model.addFlashAttribute("msg","用户名或密码不正确");
             return "redirect:/";
         }
+    }
+    //注销
+    @RequestMapping(value = "/view/logout")
+    public String logout(){
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "redirect:/";
     }
 }

@@ -197,14 +197,24 @@ public class RegexUtil {
     }
 
     /**
-     * 匹配正浮点数(不包括0)
+     * 匹配浮点数(不包括0)
      *
      * @param str
      * @return
      * @author jiqinlin
      */
     public final static boolean isFloat(String str) {
-        return match(str, "^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$");
+        return match(str, "^-?(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$");
+    }
+    /**
+     * 匹配浮点数
+     *
+     * @param str
+     * @return
+     * @author jiqinlin
+     */
+    public final static boolean isFloatZero(String str) {
+        return match(str, "^(-?\\d+)(\\.\\d+)?$");
     }
 
     /**

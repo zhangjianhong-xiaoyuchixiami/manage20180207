@@ -58,16 +58,16 @@
     </insert>
     <!--Common添加管理员-->
     <insert id="addUserCommon" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        insert into qyauth.User(name,username,tel,status,typeId,createTime)
+        insert into qyauth.User(name,username,password,tel,status,typeId,createTime)
         values(#{name},#{username},'123456',#{tel},#{status},2,sysdate())
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             select LAST_INSERT_ID()
         </selectKey>
     </insert>
     <!--根据用户名和旧密码修改密码-->
-    <update id="updatePassword" parameterType="String">
-        update qyauth.User set password=#{param3}
-        where username=#{param1} and password=#{param2}
+    <update id="updatePassword" parameterType="Map">
+        update qyauth.User set password=#{newPassword}
+        where username=#{username} and password=#{password}
     </update>
     <!--重置密码-->
    <update id="resetPassword" parameterType="String">

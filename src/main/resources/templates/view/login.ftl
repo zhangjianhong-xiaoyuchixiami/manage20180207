@@ -74,7 +74,7 @@
 
     <form action="/view/Login" method="post" onsubmit="return validateLogin()">
 
-        <h3 class="form-title">欢迎登录哦！</h3>
+        <h3 class="form-title">欢迎登录</h3>
 
         <div class="alert alert-error hide">
 

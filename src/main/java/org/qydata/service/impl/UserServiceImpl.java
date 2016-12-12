@@ -1,6 +1,8 @@
 package org.qydata.service.impl;
 
 import org.qydata.entity.User;
+import org.qydata.mapper.DeptMapper;
+import org.qydata.mapper.RoleMapper;
 import org.qydata.mapper.UserMapper;
 import org.qydata.service.UserService;
 import org.qydata.tools.PageModel;
@@ -18,7 +20,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private DeptMapper deptMapper;
 
     @Override
     public User get(String username) throws Exception {
@@ -34,16 +40,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) throws Exception {
+        if(user.getTypeId() == 1){
+            roleMapper.addRoleSuperUser(user.getUsername());
+        }
         return userMapper.addUser(user);
     }
     @Override
     public boolean addUserCommon(User user) throws Exception {
+
+
+        //deptMapper.addUserDeptById()
         return userMapper.addUserCommon(user);
     }
 
     @Override
     public boolean updatePassword(String username, String password, String newPassword) throws Exception {
-        return userMapper.updatePassword(username,password,newPassword);
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",username);
+        map.put("password",password);
+        map.put("newPassword",newPassword);
+        return userMapper.updatePassword(map);
     }
 
     @Override

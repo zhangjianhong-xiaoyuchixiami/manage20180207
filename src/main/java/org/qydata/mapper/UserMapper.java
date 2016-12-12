@@ -47,12 +47,10 @@ public interface UserMapper {
     public boolean addUserCommon(User user)throws Exception;
     /**
      * 根据用户名和旧密码修改密码
-     * @param username
-     * @param password
      * @return
      * @throws Exception
      */
-    public boolean updatePassword(String username, String password, String newPassword)throws Exception;
+    public boolean updatePassword(Map<String,Object> map)throws Exception;
 
     /**
      * 根据用户Id重置密码

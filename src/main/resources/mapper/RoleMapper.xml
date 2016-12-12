@@ -24,4 +24,9 @@
     <delete id="deleteUserRoleByUserId" parameterType="String">
         delete from qyauth.UserRole where username=#{param}
     </delete>
+    <!--给super默认添加角色-->
+    <insert id="addRoleSuperUser" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO qyauth.UserRole(roleId,username,createTime)
+      VALUES (3,#{param},sysdate())
+    </insert>
 </mapper>

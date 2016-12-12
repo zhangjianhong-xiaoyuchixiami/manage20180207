@@ -47,6 +47,16 @@ public class DeptController {
             model.addFlashAttribute("DeptMessageDeptName","请输入部门名称");
             return "redirect:/dept/addDeptView";
         }
+        if(RegexUtil.isNull(dept.getDeptNo().toString())){
+            model.addFlashAttribute("deptName",dept.getDeptName());
+            model.addFlashAttribute("DeptMessageDeptNo","请输入部门编号");
+            return "redirect:/dept/addDeptView";
+        }
+        if(!RegexUtil.isZhengShuDigits(dept.getDeptNo().toString())){
+            model.addFlashAttribute("deptName",dept.getDeptName());
+            model.addFlashAttribute("DeptMessageDeptNo","部门编号格式不正确");
+            return "redirect:/dept/addDeptView";
+        }
 
         try {
             boolean flag = deptService.addDept(dept);

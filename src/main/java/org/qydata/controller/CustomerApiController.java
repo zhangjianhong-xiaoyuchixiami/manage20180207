@@ -54,14 +54,15 @@ public class CustomerApiController {
         }
         List priceList = IpTool.spiltStr(price);
         for(int i=0;i<priceList.size();i++){
-            if(!RegexUtil.isFloat((String) priceList.get(i))){
+            if(!RegexUtil.isFloatZero((String) priceList.get(i))){
                 model.addFlashAttribute("price",price);
+                model.addFlashAttribute("CustomerMessagePrice","金额格式不正确");
+                return "redirect:/customerApi/addCustomerApiView/"+customerId;
+            }else{
                 if(Integer.parseInt((String) priceList.get(i))<=0){
                     model.addFlashAttribute("CustomerMessagePrice","金额必须大于0");
-                }else{
-                    model.addFlashAttribute("CustomerMessagePrice","金额格式不正确");
+                    return "redirect:/customerApi/addCustomerApiView/"+customerId;
                 }
-                return "redirect:/customerApi/addCustomerApiView/"+customerId;
             }
         }
         if(RegexUtil.isNull(customerId)){
@@ -141,8 +142,6 @@ public class CustomerApiController {
     //根据id修改指定的customerApi
     @RequestMapping(value = "/updateCustomerApiById")
     public String updateCustomerApiById(String id,String customerId,String price,String apiId,String enabled,RedirectAttributes model ){
-
-
         if(RegexUtil.isNull(id)){
             return "redirect:/customerApi/findCustomerApiById/"+id;
         }
@@ -150,19 +149,19 @@ public class CustomerApiController {
             model.addFlashAttribute("CustomerMessagePrice","请输入金额");
             return "redirect:/customerApi/findCustomerApiById/"+id;
         }
-        if(!RegexUtil.isFloat(price)){
-            model.addFlashAttribute("price",price);
-            if(price.equals("0")){
+        if(!RegexUtil.isFloatZero(price)){
+            model.addFlashAttribute("CustomerMessagePrice","金额格式不正确");
+            return "redirect:/customerApi/findCustomerApiById/"+id;
+        }else {
+            if(Integer.parseInt(price)<=0){
                 model.addFlashAttribute("CustomerMessagePrice","金额必须大于0");
-            }else{
-                model.addFlashAttribute("CustomerMessagePrice","金额格式不正确");
+                return "redirect:/customerApi/findCustomerApiById/"+id;
             }
+        }
+        if(RegexUtil.isNull(customerId)){
             return "redirect:/customerApi/findCustomerApiById/"+id;
         }
-        if(!RegexUtil.isZhengShuDigits(customerId)){
-            return "redirect:/customerApi/findCustomerApiById/"+id;
-        }
-        if(!RegexUtil.isZhengShuDigits(apiId)){
+        if(RegexUtil.isNull(apiId)){
             return "redirect:/customerApi/findCustomerApiById/"+id;
         }
         if(RegexUtil.isNull(enabled)){

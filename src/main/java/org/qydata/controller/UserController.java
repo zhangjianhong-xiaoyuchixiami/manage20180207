@@ -45,11 +45,6 @@ public class UserController {
     //super
     @RequestMapping(value = "/addUserAction")
     public String addUserAction(User user, RedirectAttributes model){
-        System.out.println(user.getName());
-        System.out.println(user.getUsername());
-        System.out.println(user.getTel());
-        System.out.println(user.getStatus());
-        System.out.println(user.getTypeId());
 
         if(RegexUtil.isNull(user.getName())){
             model.addFlashAttribute("UserMessageName","请输入姓名");
@@ -79,11 +74,11 @@ public class UserController {
             model.addFlashAttribute("UserMessageTel","电话号码格式不正确");
             return "redirect:/user/addUserView";
         }
-        System.out.println(RegexUtil.isNull(user.getStatus().toString()));
+
         if(RegexUtil.isNull(user.getStatus().toString())){
             return "redirect:/user/addUserView";
         }
-        System.out.println(RegexUtil.isNull(user.getTypeId().toString()));
+
         if(RegexUtil.isNull(user.getTypeId().toString())){
             return "redirect:/user/addUserView";
         }
@@ -106,7 +101,10 @@ public class UserController {
 
     //common
     @RequestMapping(value = "/addUserCommonAction")
-    public String addUserCommonAction(User user, RedirectAttributes model){
+    public String addUserCommonAction(User user,String deptNo, RedirectAttributes model){
+
+        System.out.println(user);
+        System.out.println(deptNo);
         if(RegexUtil.isNull(user.getName())){
             model.addFlashAttribute("UserMessageName","请输入姓名");
             return "redirect:/user/addUserViewCommon";
@@ -135,7 +133,7 @@ public class UserController {
             model.addFlashAttribute("UserMessageTel","电话号码格式不正确");
             return "redirect:/user/addUserViewCommon";
         }
-        if(RegexUtil.isNull(user.getStatus())){
+        if(RegexUtil.isNull(user.getStatus().toString())){
             return "redirect:/user/addUserViewCommon";
         }
         try {
@@ -285,24 +283,18 @@ public class UserController {
             model.addFlashAttribute("UserMessagePassword","请输入旧密码");
             return "redirect:/user/updatePasswordView";
         }
-        if(RegexUtil.isPwd(password)){
-            model.addFlashAttribute("username",username);
-            model.addFlashAttribute("UserMessagePassword","旧密码格式不正确");
-            return "redirect:/user/updatePasswordView";
-        }
+
         if(RegexUtil.isNull(newPassword)){
             model.addFlashAttribute("username",username);
             model.addFlashAttribute("password",password);
-            model.addFlashAttribute("UserMessageNewPassword","请输入新密码");
+            model.addFlashAttribute("UserMessagePassword","请输入新密码");
             return "redirect:/user/updatePasswordView";
         }
-        if(RegexUtil.isPwd(newPassword)){
+        if(!RegexUtil.isPwd(newPassword)){
             model.addFlashAttribute("username",username);
             model.addFlashAttribute("password",password);
-            if(!newPassword.equals(rppassword)) {
-                model.addFlashAttribute("UserMessageNewPassword", "新密码密码格式不正确");
-                return "redirect:/user/updatePasswordView";
-            }
+            model.addFlashAttribute("UserMessageNewPassword","新密码格式不正确");
+            return "redirect:/user/updatePasswordView";
         }
         if(RegexUtil.isNull(rppassword)){
             model.addFlashAttribute("username",username);
@@ -311,14 +303,13 @@ public class UserController {
             model.addFlashAttribute("UserMessageRpPassword","请再次输入新密码");
             return "redirect:/user/updatePasswordView";
         }
-        if(RegexUtil.isPwd(rppassword)){
+        if(!newPassword.equals(rppassword)) {
             model.addFlashAttribute("username",username);
             model.addFlashAttribute("password",password);
             model.addFlashAttribute("newPassword",newPassword);
-            model.addFlashAttribute("UserMessageRpPassword","两次密码不一致");
+            model.addFlashAttribute("UserMessageRpPassword", "两次密码不一致");
             return "redirect:/user/updatePasswordView";
         }
-
         try {
             boolean flag = userService.updatePassword(username.trim(),password.trim(),newPassword.trim());
             if(!flag){
