@@ -37,7 +37,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/addUserViewCommon")
-    public String addUserViewCommon(){
+    public String addUserViewCommon(HttpServletRequest request, Model model){
+        User user = (User)request.getSession().getAttribute("userInfo");
+        List<Dept> deptList = user.getDept();
+
+        model.addAttribute("deptList",deptList);
         return "/user/addUserCommon";
     }
 

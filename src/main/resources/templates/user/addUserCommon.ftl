@@ -109,17 +109,40 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="control-group">
-                                    <label class="control-label">所属部门<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <select class="span6 m-wrap" name="deptNo">
+                                <#if deptList??>
+                                    <#if (deptList?size>1)>
+                                        <div class="control-group">
+                                            <label class="control-label">所属部门<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <select class="span6 m-wrap" name="deptNo">
 
-                                            <option value="0">a</option>
-                                            <option value="1">b</option>
+                                                    <#list deptList as dept>
 
-                                        </select>
-                                    </div>
-                                </div>
+                                                    <option value="${dept.deptNo}">${dept.deptName}</option>
+
+                                                    </#list>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    <#else >
+                                        <div class="control-group" style="display: none">
+                                            <label class="control-label">所属部门<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <select class="span6 m-wrap" name="deptNo">
+
+                                                    <#list deptList as dept>
+
+                                                        <option value="${dept.deptNo}">${dept.deptName}</option>
+
+                                                    </#list>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </#if>
+
+                                </#if>
 
 
                                 <div class="form-actions">
