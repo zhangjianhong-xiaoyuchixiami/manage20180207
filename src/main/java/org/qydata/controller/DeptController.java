@@ -41,24 +41,16 @@ public class DeptController {
     }
 
     @RequestMapping( value = "/addDeptAction")
-    public String addAction(Dept dept, RedirectAttributes model){
+    public String addAction(String deptName, RedirectAttributes model){
 
-        if(RegexUtil.isNull(dept.getDeptName())){
+        if(RegexUtil.isNull(deptName)){
             model.addFlashAttribute("DeptMessageDeptName","请输入部门名称");
-            return "redirect:/dept/addDeptView";
-        }
-        if(RegexUtil.isNull(dept.getDeptNo().toString())){
-            model.addFlashAttribute("deptName",dept.getDeptName());
-            model.addFlashAttribute("DeptMessageDeptNo","请输入部门编号");
-            return "redirect:/dept/addDeptView";
-        }
-        if(!RegexUtil.isZhengShuDigits(dept.getDeptNo().toString())){
-            model.addFlashAttribute("deptName",dept.getDeptName());
-            model.addFlashAttribute("DeptMessageDeptNo","部门编号格式不正确");
             return "redirect:/dept/addDeptView";
         }
 
         try {
+            Dept dept = new Dept();
+            dept.setDeptName(deptName);
             boolean flag = deptService.addDept(dept);
             if(!flag){
                 model.addFlashAttribute("msg", "添加失败");
@@ -106,19 +98,19 @@ public class DeptController {
     @RequestMapping(value = "/allotDeptView/{username}")
     public String allotDeptView(@PathVariable String username, Model model){
         List<Dept> deptList = null;
-        List<Integer> userDeptNoList = new ArrayList();
+        List<Integer> userDeptIdList = new ArrayList();
         User user = null;
         try {
             deptList = deptService.findAllDept();
             user = userService.findUserByUsername(username);
             List<Dept> list = user.getDept();
             for(int i=0;i< list.size();i++){
-                userDeptNoList.add(list.get(i).getDeptNo());
+                userDeptIdList.add(list.get(i).getId());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("userDeptNoList",userDeptNoList);
+        model.addAttribute("userDeptIdList",userDeptIdList);
         model.addAttribute("deptList",deptList);
         model.addAttribute("userId",user.getId());
         model.addAttribute("username",user.getUsername());
@@ -130,11 +122,11 @@ public class DeptController {
     public String allotDeptAction(HttpServletRequest request){
         String userId = request.getParameter("userId");
         String username = request.getParameter("username");
-        String [] deptNo = request.getParameterValues("deptNo[]");
+        String [] deptId = request.getParameterValues("deptId[]");
         Gson gson = new Gson();
         Map<String,String> map = new HashMap<>();
         try {
-            boolean flag = deptService.insertUserDept(userId,deptNo);
+            boolean flag = deptService.insertUserDept(userId,deptId);
             if (flag){
                 map.put("result","ok");
                 map.put("msg",username);

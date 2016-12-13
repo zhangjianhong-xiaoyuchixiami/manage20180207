@@ -10,7 +10,7 @@ public class CustomerDeptUser implements Serializable {
 
     private Integer id;
     private Integer customerId;
-    private Integer deptNo;
+    private Integer deptId;
     private Integer createId;
     private Timestamp createTime;
     private Timestamp timestamp;
@@ -34,12 +34,12 @@ public class CustomerDeptUser implements Serializable {
         this.customerId = customerId;
     }
 
-    public Integer getDeptNo() {
-        return deptNo;
+    public Integer getDeptId() {
+        return deptId;
     }
 
-    public void setDeptNo(Integer deptNo) {
-        this.deptNo = deptNo;
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
     }
 
     public Timestamp getCreateTime() {

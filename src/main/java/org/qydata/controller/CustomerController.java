@@ -104,7 +104,7 @@ public class CustomerController {
             model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确");
             return "redirect:/customer/addCustomerViewCommon";
         }
-        if(!RegexUtil.isDigits(customerDeptInfo.getDept().getDeptNo()+"")){
+        if(!RegexUtil.isDigits(customerDeptInfo.getDept().getId()+"")){
             model.addFlashAttribute("name",customerDeptInfo.getCustomer().getName());
             model.addFlashAttribute("authId",customerDeptInfo.getCustomer().getAuthId());
             model.addFlashAttribute("CustomerMessageDeptNo","请选择所属部门");
@@ -148,10 +148,7 @@ public class CustomerController {
             model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确");
             return "redirect:/customer/addCustomerViewSuper";
         }
-        if(!RegexUtil.isDigits(customerDeptInfo.getDept().getDeptNo()+"")){
-            model.addFlashAttribute("name",customerDeptInfo.getCustomer().getName());
-            model.addFlashAttribute("authId",customerDeptInfo.getCustomer().getAuthId());
-            model.addFlashAttribute("CustomerMessageDeptNo","请选择所属部门");
+        if(!RegexUtil.isDigits(customerDeptInfo.getDept().getId()+"")){
             return "redirect:/customer/addCustomerViewSuper";
         }
         User user = (User)request.getSession().getAttribute("userInfo");
@@ -216,9 +213,9 @@ public class CustomerController {
     public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content){
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
-        List deptNoList = new ArrayList();
+        List deptIdList = new ArrayList();
         for(int i =0;i<deptList.size();i++){
-            deptNoList.add(deptList.get(i).getDeptNo());
+            deptIdList.add(deptList.get(i).getId());
         }
         PageModel<Customer> pageModel = new PageModel();
         String pageSize= request.getParameter("pageSize");//当前页
@@ -228,12 +225,12 @@ public class CustomerController {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("beginIndex",pageModel.getBeginIndex());
         map.put("lineSize",pageModel.getLineSize());
-        map.put("deptNoList",deptNoList);
+        map.put("deptIdList",deptIdList);
         if(content!=null){
             map.put("content",content);
         }
         PageModel<Customer> pageModelOne = customerService.findAllCustomer(map);
-        model.addAttribute("deptNoList",deptNoList);
+        model.addAttribute("deptIdList",deptIdList);
         model.addAttribute("content",content);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("customerList",pageModelOne.getList());

@@ -114,11 +114,11 @@
                                         <div class="control-group">
                                             <label class="control-label">所属部门<span class="required">*</span></label>
                                             <div class="controls">
-                                                <select class="span6 m-wrap" name="deptNo">
+                                                <select class="span6 m-wrap" name="deptId">
 
                                                     <#list deptList as dept>
 
-                                                    <option value="${dept.deptNo}">${dept.deptName}</option>
+                                                    <option value="${dept.id}">${dept.deptName}</option>
 
                                                     </#list>
 
@@ -129,11 +129,11 @@
                                         <div class="control-group" style="display: none">
                                             <label class="control-label">所属部门<span class="required">*</span></label>
                                             <div class="controls">
-                                                <select class="span6 m-wrap" name="deptNo">
+                                                <select class="span6 m-wrap" name="deptId">
 
                                                     <#list deptList as dept>
 
-                                                        <option value="${dept.deptNo}">${dept.deptName}</option>
+                                                        <option value="${dept.id}">${dept.deptName}</option>
 
                                                     </#list>
 

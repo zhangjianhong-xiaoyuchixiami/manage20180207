@@ -125,15 +125,15 @@
 
                                             <div class="control-group">
 
-                                                <label class="control-label">金&nbsp;额（/：分）<span class="required">*</span></label>
+                                                <label class="control-label">金&nbsp;额<span class="required">*</span></label>
 
                                                 <div class="controls">
 
-                                                    <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> class="m-wrap medium">
+                                                    <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位：分）" class="m-wrap medium">
 
                                                     <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
 
-                                                    <span class="help-block">e.g：只能输入数字并且金额大于0</span>
+                                                    <span class="help-block">e.g：只能输入数字类型并且金额大于0</span>
 
                                                 </div>
 

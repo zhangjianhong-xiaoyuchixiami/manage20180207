@@ -40,7 +40,6 @@ public class UserController {
     public String addUserViewCommon(HttpServletRequest request, Model model){
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
-
         model.addAttribute("deptList",deptList);
         return "/user/addUserCommon";
     }
@@ -105,10 +104,8 @@ public class UserController {
 
     //common
     @RequestMapping(value = "/addUserCommonAction")
-    public String addUserCommonAction(User user,String deptNo, RedirectAttributes model){
+    public String addUserCommonAction(User user,String deptId, RedirectAttributes model){
 
-        System.out.println(user);
-        System.out.println(deptNo);
         if(RegexUtil.isNull(user.getName())){
             model.addFlashAttribute("UserMessageName","请输入姓名");
             return "redirect:/user/addUserViewCommon";
@@ -140,8 +137,11 @@ public class UserController {
         if(RegexUtil.isNull(user.getStatus().toString())){
             return "redirect:/user/addUserViewCommon";
         }
+        if(RegexUtil.isNull(deptId)){
+            return "redirect:/user/addUserViewCommon";
+        }
         try {
-            boolean flag = userService.addUserCommon(user);
+            boolean flag = userService.addUserCommon(user,deptId);
             if(!flag){
                 model.addFlashAttribute("msg","很遗憾，添加失败！");
                 return "redirect:/user/addUserViewCommon";
@@ -196,9 +196,9 @@ public class UserController {
     public String findAllUserCommon(HttpServletRequest request, Model model,String content){
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
-        List deptNoList = new ArrayList();
+        List deptIdList = new ArrayList();
         for(int i =0;i<deptList.size();i++){
-            deptNoList.add(deptList.get(i).getDeptNo());
+            deptIdList.add(deptList.get(i).getId());
         }
         PageModel pageModel = new PageModel();
         Map<String,Object> map = new HashMap<String,Object>();
@@ -208,7 +208,7 @@ public class UserController {
         pageModel.setLineSize(lineSize);
         map.put("beginIndex",pageModel.getBeginIndex());
         map.put("lineSize",pageModel.getLineSize());
-        map.put("deptNoList",deptNoList);
+        map.put("deptIdList",deptIdList);
 
         if(content!=null){
             map.put("content",content);
@@ -221,7 +221,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("deptNoList",deptNoList);
+        model.addAttribute("deptIdList",deptIdList);
         model.addAttribute("content",content);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("userDeptList",pageModelOne.getList());
@@ -237,7 +237,7 @@ public class UserController {
         return "/user/userList";
     }
 
-    //启动账号
+    //启动账号super
     @RequestMapping(value = "/statusStart/{username}")
     public String statusStart(@PathVariable String username){
         try {
@@ -247,7 +247,7 @@ public class UserController {
         }
         return "redirect:/user/findAllUser";
     }
-    //禁用账号
+    //禁用账号super
     @RequestMapping(value = "/statusForbid/{username}")
     public String statusForbid(@PathVariable String username){
         try {
@@ -257,7 +257,7 @@ public class UserController {
         }
         return "redirect:/user/findAllUser";
     }
-    //重置密码
+    //重置密码super
     @RequestMapping(value = "/resetPassword/{username}")
     public String resetPassword(@PathVariable String username){
         try {
@@ -266,6 +266,37 @@ public class UserController {
             e.printStackTrace();
         }
         return "redirect:/user/findAllUser";
+    }
+
+    //启动账号common
+    @RequestMapping(value = "/statusStartCommon/{username}")
+    public String statusStartCommon(@PathVariable String username){
+        try {
+            userService.updateStatusStart(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/user/findAllUserCommon";
+    }
+    //禁用账号common
+    @RequestMapping(value = "/statusForbidCommon/{username}")
+    public String statusForbidCommon(@PathVariable String username){
+        try {
+            userService.updateStatusForbid(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/user/findAllUserCommon";
+    }
+    //重置密码common
+    @RequestMapping(value = "/resetPasswordCommon/{username}")
+    public String resetPasswordCommon(@PathVariable String username){
+        try {
+            userService.resetPassword(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/user/findAllUserCommon";
     }
 
     //修改密码
@@ -291,7 +322,7 @@ public class UserController {
         if(RegexUtil.isNull(newPassword)){
             model.addFlashAttribute("username",username);
             model.addFlashAttribute("password",password);
-            model.addFlashAttribute("UserMessagePassword","请输入新密码");
+            model.addFlashAttribute("UserMessageNewPassword","请输入新密码");
             return "redirect:/user/updatePasswordView";
         }
         if(!RegexUtil.isPwd(newPassword)){

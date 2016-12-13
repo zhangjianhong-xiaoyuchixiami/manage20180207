@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 import org.qydata.entity.User;
+import org.qydata.entity.UserDept;
 import org.qydata.mapper.DeptMapper;
 import org.qydata.mapper.RoleMapper;
 import org.qydata.mapper.UserMapper;
@@ -40,17 +41,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) throws Exception {
-        if(user.getTypeId() == 1){
-            roleMapper.addRoleSuperUser(user.getUsername());
+        try{
+            userMapper.addUser(user);
+            if(user.getTypeId() == 1){
+                roleMapper.addRoleSuperUser(user.getUsername());
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return userMapper.addUser(user);
+        return false;
     }
     @Override
-    public boolean addUserCommon(User user) throws Exception {
-
-
-        //deptMapper.addUserDeptById()
-        return userMapper.addUserCommon(user);
+    public boolean addUserCommon(User user,String deptId) throws Exception {
+        userMapper.addUserCommon(user);
+        UserDept userDept = new UserDept();
+        userDept.setUserId(user.getId());
+        userDept.setDeptId(Integer.parseInt(deptId));
+        return deptMapper.addUserDeptById(userDept);
     }
 
     @Override

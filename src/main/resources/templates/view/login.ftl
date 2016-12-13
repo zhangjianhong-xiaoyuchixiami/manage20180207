@@ -72,7 +72,7 @@
 
     <!-- BEGIN LOGIN FORM -->
 
-    <form action="/view/Login" method="post" onsubmit="return validateLogin()">
+    <form action="/view/Login" method="post" >
 
         <h3 class="form-title">欢迎登录</h3>
 
@@ -80,7 +80,7 @@
 
             <button class="close" data-dismiss="alert"></button>
 
-            <span>Enter any username and password.</span>
+            <span>请输入用户名和密码</span>
 
         </div>
 
@@ -142,7 +142,7 @@
 
             </label>
 
-            <button type="submit" class="btn green pull-right">
+            <button type="submit" id="subButton" class="btn green pull-right">
 
                 登录 <i class="m-icon-swapright m-icon-white"></i>
 
@@ -182,35 +182,6 @@
 
 <!-- BEGIN CORE PLUGINS -->
 
-<script>
-    function isEmptyBlue(elename){
-        var obj = document.getElementById(elename);
-        var msg = document.getElementById(elename+"Msg");
-        if(obj.value!=""){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    window.onload = function(){
-        document.getElementById("loginName").addEventListener("blur",validateLoginNameBlue,false);
-        document.getElementById("password").addEventListener("blur",validatePasswordBlue,false);
-
-    }
-
-    function validateLoginNameBlue(){
-        return isEmptyBlue("loginName");
-    }
-    function validatePasswordBlue(){
-        return isEmptyBlue("password");
-    }
-
-    function validateLogin(){
-        return  validateLoginNameBlue()&&
-                validatePasswordBlue();
-    }
-</script>
 
 <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
@@ -238,21 +209,23 @@
 
 <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
 
-<!-- END CORE PLUGINS -->
-
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-
 <script src="/js/jquery.validate.min.js" type="text/javascript"></script>
-
-<!-- END PAGE LEVEL PLUGINS -->
-
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
 
 <script src="/js/app.js" type="text/javascript"></script>
 
 <script src="/js/login.js" type="text/javascript"></script>
 
-<!-- END PAGE LEVEL SCRIPTS -->
+<script>
+    $(document).ready(function(){
+        $("body").keydown(function(e){
+            var curKey = e.which;
+            if(curKey == 13){
+                $("#subButton").click();
+                return false;
+            }
+        });
+    });
+</script>
 
 <script>
 

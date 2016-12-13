@@ -32,7 +32,7 @@
         from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
         where qc.typeId=qct.id and qc.status=qcs.id and qc.authId=#{value}
         ) c
-        where cda.customerId=c.id and cda.createId=u.id and cda.deptNo=d.deptNo
+        where cda.customerId=c.id and cda.createId=u.id and cda.deptId=d.id
     </select>
     <!--插入新客户真是账号-->
     <insert id="insertCustomer" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
@@ -59,12 +59,12 @@
         from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
         where qc.typeId=qct.id and qc.status=qcs.id
         ) c
-        where cda.customerId=c.id and cda.createId=u.id and cda.deptNo=d.deptNo
-        <if test="deptNoList!=null and deptNoList.size()!=0">
-            and cda.deptNo in
-            <foreach collection="deptNoList" item="deptNo"
+        where cda.customerId=c.id and cda.createId=u.id and cda.deptId=d.id
+        <if test="deptIdList!=null and deptIdList.size()!=0">
+            and cda.deptId in
+            <foreach collection="deptIdList" item="deptId"
                      index="index" open="(" close=")" separator=",">
-                #{deptNo}
+                #{deptId}
             </foreach>
         </if>
         <if test="content!=null and content!=''">
@@ -82,12 +82,12 @@
         from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
         where qc.typeId=qct.id and qc.status=qcs.id
         ) c
-        where cda.customerId=c.id and cda.createId=u.id and cda.deptNo=d.deptNo
-        <if test="deptNoList!=null and deptNoList.size()!=0">
-            and cda.deptNo in
-            <foreach collection="deptNoList" item="deptNo"
+        where cda.customerId=c.id and cda.createId=u.id and cda.deptId=d.id
+        <if test="deptIdList!=null and deptIdList.size()!=0">
+            and cda.deptId in
+            <foreach collection="deptIdList" item="deptId"
                      index="index" open="(" close=")" separator=",">
-                #{deptNo}
+                #{deptId}
             </foreach>
         </if>
         <if test="content!=null and content!=''">

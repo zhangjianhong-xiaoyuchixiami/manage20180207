@@ -145,7 +145,7 @@
 
                                                     <span id="priceMsg" class="help-inline"><#if CustomerMessagePrice??><font color="red">${CustomerMessagePrice}</font></font></#if></span>
 
-                                                    <span class="help-block">e.g：只能输入数字并且金额大于0</span>
+                                                    <span class="help-block">e.g：只能输入数字类型并且金额大于0</span>
                                                 </div>
 
                                             </div>

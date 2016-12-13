@@ -7,25 +7,24 @@
     <resultMap type="Dept" id="dept">
         <id column="id" property="id"/>
         <result column="deptName" property="deptName"/>
-        <result column="deptNo" property="deptNo"/>
         <result column="createTime" property="createTime"/>
         <result column="timestamp" property="timestamp"/>
     </resultMap>
 
     <!--新增部门-->
     <insert id="insertDept" parameterType="Dept" useGeneratedKeys="true" keyProperty="id">
-        insert into qyauth.Dept(deptName,deptNo,createTime)
-        values(#{deptName},#{deptNo},sysdate())
+        insert into qyauth.Dept(deptName,createTime)
+        values(#{deptName},sysdate())
     </insert>
     <!--查找所有的部门-->
     <select id="findAllDept" resultType="Dept">
-        select id,deptNo,deptName from qyauth.Dept
+        select id,deptName from qyauth.Dept
     </select>
     <!--批量插入用户和部门映射-->
     <insert id="insertUserDept" parameterType="map" useGeneratedKeys="true" keyProperty="id">
-        insert into qyauth.UserDept(userId,deptNo,createTime)
+        insert into qyauth.UserDept(userId,deptId,createTime)
         values
-        <foreach collection="deptNo" index="index" item="item" separator=",">
+        <foreach collection="deptId" index="index" item="item" separator=",">
             ( #{userId},#{item},sysdate() )
         </foreach>
     </insert>
@@ -35,7 +34,7 @@
     </delete>
     <!---->
     <select id="findAll" parameterType="Map" resultType="Dept">
-        select id,deptNo,deptName,createTime
+        select id,deptName,createTime
         from qyauth.Dept
         order by createTime desc
         limit #{beginIndex},#{lineSize}
@@ -45,4 +44,9 @@
         select count(id)
         from qyauth.Dept
     </select>
+    <!---->
+    <insert id="addUserDeptById" parameterType="UserDept" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyauth.UserDept(userId,deptId,createTime)
+        VALUES (#{userId},#{deptId},sysdate())
+    </insert>
 </mapper>

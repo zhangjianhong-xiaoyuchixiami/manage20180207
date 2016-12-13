@@ -63,14 +63,14 @@ public class CustomerServiceImpl implements CustomerService {
         //向部门客户映射表中插入数据
         CustomerDeptUser customerDeptUser = new CustomerDeptUser();
         customerDeptUser.setCustomerId(customerA.getId());
-        customerDeptUser.setDeptNo(dept.getDeptNo());
+        customerDeptUser.setDeptId(dept.getId());
         customerDeptUser.setCreateId(user.getId());
         customerDeptUserMapper.insertCustomerDeptUser(customerDeptUser);
 
 
         CustomerDeptUser customerDeptUser1 = new CustomerDeptUser();
         customerDeptUser1.setCustomerId(customerB.getId());
-        customerDeptUser1.setDeptNo(dept.getDeptNo());
+        customerDeptUser1.setDeptId(dept.getId());
         customerDeptUser1.setCreateId(user.getId());
         return customerDeptUserMapper.insertCustomerDeptUser(customerDeptUser1);
     }

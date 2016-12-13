@@ -5,8 +5,8 @@
 
     <!--插入数据-->
     <insert id="insertCustomerDeptUser" parameterType="CustomerDeptUser" useGeneratedKeys="true" keyProperty="id">
-       insert into qyauth.CustomerDeptUser(customerId,deptNo,createId,createTime)
-       values(#{customerId},#{deptNo},#{createId},sysdate())
+       insert into qyauth.CustomerDeptUser(customerId,deptId,createId,createTime)
+       values(#{customerId},#{deptId},#{createId},sysdate())
     </insert>
 
 </mapper>

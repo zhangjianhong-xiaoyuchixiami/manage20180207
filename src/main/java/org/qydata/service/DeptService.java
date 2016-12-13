@@ -33,7 +33,7 @@ public interface DeptService {
      * @throws Exception
      */
     @Transactional
-    public boolean insertUserDept(String userId,String [] deptNo )throws Exception;
+    public boolean insertUserDept(String userId,String [] deptId )throws Exception;
 
     public PageModel<Dept> findAll(Map<String,Object> map)throws Exception;
 

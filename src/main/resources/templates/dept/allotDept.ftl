@@ -16,7 +16,7 @@
 
                     <h3 class="page-title">
 
-                       分配部门
+                        分配部门
 
                     </h3>
 
@@ -90,7 +90,7 @@
                                 <thead class="cf">
                                 <tr>
                                     <th style="width: 100px" class="numeric">部门选择</th>
-                                    <th class="numeric">部门编号</th>
+
                                     <th class="numeric">部门名称</th>
                                     <th class="numeric" style="display: none">用户Id</th>
                                     <th class="numeric" style="display: none">用户名</th>
@@ -98,24 +98,27 @@
                                 </thead>
                                 <tbody>
 
-                                        <#if deptList??>
-                                            <#list deptList as dept>
+                                    <#if deptList??>
+                                        <#list deptList as dept>
 
-                                                    <tr align="center">
-                                                        <td>
-                                                            <input type="checkbox" name="deptNo"  <#list userDeptNoList as deptNoList>
-                                                                   <#if deptNoList==dept.deptNo>checked="checked"</#if>
+                                        <tr align="center">
+                                            <td>
+                                                <input type="checkbox" name="deptId"
+                                                    <#list userDeptIdList as deptIdList>
+                                                        <#if deptIdList==dept.id>
+                                                       checked="checked"
+                                                        </#if>
+                                                    </#list>
+                                                       value="${dept.id}" />
+                                            </td>
 
-                                                                   </#list> value="${dept.deptNo}" />
-                                                        </td>
-                                                        <td>${dept.deptNo}</td>
-                                                        <td>${dept.deptName}</td>
-                                                        <td style="display: none"><input type="text" name="userId" value="${userId}" /></td>
-                                                        <td style="display: none"><input type="text" name="username" value="${username}" /></td>
-                                                    </tr>
+                                            <td>${dept.deptName}</td>
+                                            <td style="display: none"><input type="text" name="userId" value="${userId}" /></td>
+                                            <td style="display: none"><input type="text" name="username" value="${username}" /></td>
+                                        </tr>
 
-                                            </#list>
-                                        </#if>
+                                        </#list>
+                                    </#if>
 
                                 </tbody>
 
@@ -134,41 +137,41 @@
 
     </div>
 
-        <#--<div id="form_modal4" class="modal hide fade in" tabindex="-1" aria-labelledby="myModalLabel4" aria-hidden="false" style="display: none; margin-top: -125px;">-->
+    <#--<div id="form_modal4" class="modal hide fade in" tabindex="-1" aria-labelledby="myModalLabel4" aria-hidden="false" style="display: none; margin-top: -125px;">-->
 
-            <#--<div class="modal-header">-->
+    <#--<div class="modal-header">-->
 
-                <#--<button type="button" id="validButton" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
+    <#--<button type="button" id="validButton" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
 
-                <#--<h3 id="myModalLabel4">提示信息</h3>-->
+    <#--<h3 id="myModalLabel4">提示信息</h3>-->
 
-            <#--</div>-->
+    <#--</div>-->
 
-            <#--<div class="modal-body">-->
+    <#--<div class="modal-body">-->
 
-                <#--<div class="control-group">-->
+    <#--<div class="control-group">-->
 
-                    <#--<div class="controls">-->
+    <#--<div class="controls">-->
 
-                        <#--<div class="input-append bootstrap-timepicker-component">-->
+    <#--<div class="input-append bootstrap-timepicker-component">-->
 
-                            <#--<label id="tiShiXinXi" class="control-label"></label>-->
+    <#--<label id="tiShiXinXi" class="control-label"></label>-->
 
-                        <#--</div>-->
+    <#--</div>-->
 
-                    <#--</div>-->
+    <#--</div>-->
 
-                <#--</div>-->
+    <#--</div>-->
 
-            <#--</div>-->
+    <#--</div>-->
 
-            <#--<div class="modal-footer">-->
+    <#--<div class="modal-footer">-->
 
-                <#--<button class="btn" id="validBtn" data-dismiss="modal" aria-hidden="true">确定</button>-->
+    <#--<button class="btn" id="validBtn" data-dismiss="modal" aria-hidden="true">确定</button>-->
 
-            <#--</div>-->
+    <#--</div>-->
 
-        <#--</div>-->
+    <#--</div>-->
 
     <#elseif section = "footer">
 

@@ -62,7 +62,7 @@ public interface DeptMapper {
      * @return
      * @throws Exception
      */
-    public Integer addUserDeptById(UserDept userDept)throws Exception;
+    public boolean addUserDeptById(UserDept userDept)throws Exception;
 
 
 }

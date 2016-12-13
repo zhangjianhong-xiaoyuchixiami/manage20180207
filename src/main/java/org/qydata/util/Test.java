@@ -8,8 +8,8 @@ import org.qydata.regex.RegexUtil;
 public class Test {
 
     public static void main(String[] args) {
-       System.out.println( RegexUtil.isFloatZero("1234.344565"));
-        System.out.println( Integer.parseInt("-1"));
+       System.out.println( RegexUtil.isDigits("0"));
+
 
 
 

@@ -16,7 +16,7 @@
 
     <resultMap type="User" id="userDeptMap" extends="userMap">
         <collection property="dept" ofType="Dept">
-            <result column="deptNo" property="deptNo"/>
+            <result column="deptId" property="id"/>
             <result column="deptName" property="deptName"/>
         </collection>
     </resultMap>
@@ -76,21 +76,21 @@
    </update>
     <!--查找全部用户-->
     <select id="findAllUser" parameterType="Map" resultMap="userDeptMap">
-        select u.id,u.name,u.username,u.tel,u.status,u.createTime,d.deptNo,d.deptName
+        select u.id,u.name,u.username,u.tel,u.status,u.createTime,d.id deptId,d.deptName
         from qyauth.User u left join qyauth.UserDept ud on u.id=ud.userId left join qyauth.Dept d on
-        ud.deptNo=d.deptNo
+        ud.deptId=d.id
         <where>
-            <if test="deptNoList!=null and deptNoList.size()!=0">
-                and d.deptNo in
-                <foreach collection="deptNoList" item="deptNo"
+            <if test="deptIdList!=null and deptIdList.size()!=0">
+                and d.id in
+                <foreach collection="deptIdList" item="deptId"
                          index="index" open="(" close=")" separator=",">
-                    #{deptNo}
+                    #{deptId}
                 </foreach>
             </if>
             <if test="content!=null and content!=''">
                 and (u.name like '%${content}%' or u.username like '%${content}%'
                 or u.tel like '%${content}%' or u.status like '%${content}%'
-                or d.deptNo like '%${content}%' or d.deptName like '%${content}%')
+                or d.id like '%${content}%' or d.deptName like '%${content}%')
             </if>
         </where>
         order by u.createTime desc
@@ -100,27 +100,27 @@
     <select id="getAllCount" parameterType="Map" resultType="Integer">
         select count(u.id)
         from qyauth.User u left join qyauth.UserDept ud on u.id=ud.userId left join qyauth.Dept d on
-        ud.deptNo=d.deptNo
+        ud.deptId=d.id
         <where>
-            <if test="deptNoList!=null and deptNoList.size()!=0">
-                and d.deptNo in
-                <foreach collection="deptNoList" item="deptNo"
+            <if test="deptIdList!=null and deptIdList.size()!=0">
+                and d.id in
+                <foreach collection="deptIdList" item="deptId"
                          index="index" open="(" close=")" separator=",">
-                    #{deptNo}
+                    #{deptId}
                 </foreach>
             </if>
             <if test="content!=null and content!=''">
                 and (u.name like '%${content}%' or u.username like '%${content}%'
                 or u.tel like '%${content}%' or u.status like '%${content}%'
-                or d.deptNo like '%${content}%' or d.deptName like '%${content}%')
+                or d.id like '%${content}%' or d.deptName like '%${content}%')
             </if>
         </where>
     </select>
     <!--根据用户名查找指定用户信息-->
     <select id="findUserByUsername" parameterType="String" resultMap="userDeptMap">
-        select u.id,u.name,u.username,u.tel,u.status,u.createTime,u.typeId,d.deptNo,d.deptName
+        select u.id,u.name,u.username,u.tel,u.status,u.createTime,u.typeId,d.id deptId,d.deptName
         from qyauth.User u left join qyauth.UserDept ud on u.id=ud.userId left join qyauth.Dept d on
-        ud.deptNo=d.deptNo
+        ud.deptId=d.id
         where u.username=#{username}
     </select>
 

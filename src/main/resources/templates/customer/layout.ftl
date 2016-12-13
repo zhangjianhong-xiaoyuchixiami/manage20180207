@@ -272,9 +272,9 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="user:addUserCommonAction">
+                            <@shiro.hasPermission name="user:addUserViewCommon">
                                 <li id="addUser">
-                                    <a href="/user/addUserCommonAction">
+                                    <a href="/user/addUserViewCommon">
                                         新增管理员
                                     </a>
                                 </li>
@@ -302,7 +302,7 @@
                 </@shiro.hasAnyRoles>
 
             <#--部门管理-->
-                <@shiro.hasAnyRoles name="backAdmin,technology">
+                <@shiro.hasAnyRoles name="backAdmin">
                     <li class="" id="deptManage">
                         <a href="javascript:;">
 
@@ -428,13 +428,13 @@
 
         $('#allotDeptSave').on("click",function(){
             //jquery获取复选框值
-            var deptNo_no =[];//定义一个数组
-            $('input[name="deptNo"]:checked').each(function(){
-                deptNo_no.push($.trim($(this).val()));
+            var deptId_no =[];//定义一个数组
+            $('input[name="deptId"]:checked').each(function(){
+                deptId_no.push($.trim($(this).val()));
             });
             var userId_id = $('input[name="userId"]').val();
             var username_id = $('input[name="username"]').val();
-            var indata = {"userId":userId_id, "deptNo":deptNo_no,"username":username_id};
+            var indata = {"userId":userId_id, "deptId":deptId_no,"username":username_id};
             $.ajax({
                 type:'post',
                 url:"/dept/allotDeptAction",

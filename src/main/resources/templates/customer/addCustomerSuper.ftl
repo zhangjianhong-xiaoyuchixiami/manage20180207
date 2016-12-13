@@ -150,17 +150,15 @@
 
                                         <div class="controls">
 
-                                            <select id="dept_deptNo" name="dept.deptNo" class="medium m-wrap" tabindex="1">
+                                            <select id="dept_id" name="dept.id" class="medium m-wrap" tabindex="1">
 
                                                 <#list deptList as dept>
 
-                                                    <option value="${dept.deptNo}">${dept.deptName}</option>
+                                                    <option value="${dept.id}">${dept.deptName}</option>
 
                                                 </#list>
 
                                             </select>
-
-                                            <span id="dept_deptNoMsg" class="help-inline"><#if CustomerMessageDeptNo??><font color="red">${CustomerMessageDeptNo}</font></#if></span>
 
                                         </div>
 
@@ -216,8 +214,8 @@
             $("#customer_authIdMsg").html("");
         });
 
-        $("#dept_deptNo").focus(function () {
-            $("#dept_deptNoMsg").html("");
+        $("#dept_id").focus(function () {
+            $("#dept_IdMsg").html("");
         });
 
         $("#customer_authId").blur(function(){

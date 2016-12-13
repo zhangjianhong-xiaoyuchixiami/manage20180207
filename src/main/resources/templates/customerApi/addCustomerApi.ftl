@@ -136,15 +136,15 @@
 
                                                     <div class="control-group">
 
-                                                        <label class="control-label">价&nbsp;格（/:分）<span class="required">*</span></label>
+                                                        <label class="control-label">价&nbsp;格<span class="required">*</span></label>
 
                                                         <div class="controls">
 
-                                                            <input type="text" id="price" name="price" <#if price??>value="${price}" </#if>class="m-wrap medium">
+                                                            <input type="text" id="price" name="price" <#if price??>value="${price}" </#if> placeholder="（单位：分）" class="m-wrap medium">
 
                                                             <span id="priceMsg" class="help-inline"><#if CustomerMessagePrice??><font color="red">${CustomerMessagePrice}</font></font></#if></span>
 
-                                                            <span class="help-block">e.g：只能输入数字并且金额大于0</span>
+                                                            <span class="help-block">e.g：只能输入数字类型并且金额大于0</span>
 
                                                         </div>
 
@@ -201,12 +201,12 @@
 
                                 <div class="form-actions">
                                     <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
-                                    <@shiro.hasRoles name="backAdmin">
+                                    <@shiro.hasRole name="backAdmin">
                                         <a href="/customer/findAllCustomer"><button type="button" class="btn">取消</button></a>
-                                    </@shiro.hasRoles>
-                                    <@shiro.hasRoles name="sell">
+                                    </@shiro.hasRole>
+                                    <@shiro.hasRole name="sell">
                                         <a href="/customer/findAllCustomerByDeptNo"><button type="button" class="btn">取消</button></a>
-                                    </@shiro.hasRoles>
+                                    </@shiro.hasRole>
                                 </div>
 
                                 </form>

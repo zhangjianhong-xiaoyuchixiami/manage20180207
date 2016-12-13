@@ -80,7 +80,7 @@
                             <table class="table-bordered table-striped table-condensed cf">
                                 <thead class="cf">
                                 <tr>
-                                    <th class="numeric">部门编号</th>
+
                                     <th class="numeric">部门名称</th>
                                 </tr>
                                 </thead>
@@ -88,7 +88,6 @@
                                 <#if deptList??>
                                     <#list deptList as dept>
                                     <tr align="center">
-                                        <td>${dept.deptNo}</td>
                                         <td>${dept.deptName}</td>
                                     </tr>
                                     </#list>

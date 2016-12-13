@@ -54,7 +54,7 @@
 
                 <div class="span12">
 
-                    <#if deptNoList??>
+                    <#if deptIdList??>
 
                         <form action="/user/findAllUserCommon" method="post" class="form-search pull-right">
 
@@ -144,21 +144,42 @@
                                             <td class="numeric" style="text-align: center">
 
                                                 <p>
-                                                    <@shiro.hasPermission name="user:statusForbid">
-                                                        <a href="/user/statusForbid/${user.username}" class="btn blue" id="gritter-light">禁用账号</a>
-                                                    </@shiro.hasPermission>
+                                                    <@shiro.hasRole name="backAdmin">
+                                                        <@shiro.hasPermission name="user:statusForbid">
+                                                            <a href="/user/statusForbid/${user.username}" class="btn blue" id="gritter-light">禁用账号</a>
+                                                        </@shiro.hasPermission>
+                                                    </@shiro.hasRole>
+
+                                                    <@shiro.hasRole name="technology">
+                                                        <@shiro.hasPermission name="user:statusForbidCommon">
+                                                            <a href="/user/statusForbidCommon/${user.username}" class="btn blue" id="gritter-light">禁用账号</a>
+                                                        </@shiro.hasPermission>
+                                                    </@shiro.hasRole>
+
 
                                                     <@shiro.hasPermission name="dept:allotDeptView">
                                                         <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
                                                     </@shiro.hasPermission>
 
-                                                    <@shiro.hasPermission name="user:resetPassword">
-                                                        <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
-                                                    </@shiro.hasPermission>
+
+                                                    <@shiro.hasRole name="backAdmin">
+                                                        <@shiro.hasPermission name="user:resetPassword">
+                                                            <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
+                                                        </@shiro.hasPermission>
+                                                    </@shiro.hasRole>
+                                                    <@shiro.hasRole name="technology">
+                                                        <@shiro.hasPermission name="user:resetPasswordCommon">
+                                                            <a href="/user/resetPasswordCommon/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
+                                                        </@shiro.hasPermission>
+                                                    </@shiro.hasRole>
+
+
 
                                                     <@shiro.hasPermission name="role:allotRoleView">
                                                         <a href="/role/allotRoleView/${user.username}" class="btn black" id="gritter-max">分配角色</a>
                                                     </@shiro.hasPermission>
+
+
                                                 </p>
 
                                             </td>
@@ -166,17 +187,31 @@
                                             <td class="numeric" style="text-align: center">
 
                                                 <p>
-                                                    <@shiro.hasPermission name="user:statusStart">
-                                                        <a href="/user/statusStart/${user.username}" class="btn blue" id="gritter-light">启用账号</a>
-                                                    </@shiro.hasPermission>
+                                                    <@shiro.hasRole name="backAdmin">
+                                                        <@shiro.hasPermission name="user:statusStart">
+                                                            <a href="/user/statusStart/${user.username}" class="btn blue" id="gritter-light">启用账号</a>
+                                                        </@shiro.hasPermission>
+                                                    </@shiro.hasRole>
+                                                    <@shiro.hasRole name="technology">
+                                                        <@shiro.hasPermission name="user:statusStartCommon">
+                                                            <a href="/user/statusStartCommon/${user.username}" class="btn blue" id="gritter-light">启用账号</a>
+                                                        </@shiro.hasPermission>
+                                                    </@shiro.hasRole>
 
                                                     <@shiro.hasPermission name="dept:allotDeptView">
                                                         <a href="/dept/allotDeptView/${user.username}" class="btn black" id="gritter-light">分配部门</a><br/>
                                                     </@shiro.hasPermission>
 
-                                                    <@shiro.hasPermission name="user:resetPassword">
-                                                        <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
-                                                    </@shiro.hasPermission>
+                                                    <@shiro.hasRole name="backAdmin">
+                                                        <@shiro.hasPermission name="user:resetPassword">
+                                                            <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
+                                                        </@shiro.hasPermission>
+                                                    </@shiro.hasRole>
+                                                    <@shiro.hasRole name="technology">
+                                                        <@shiro.hasPermission name="user:resetPasswordCommon">
+                                                            <a href="/user/resetPasswordCommon/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
+                                                        </@shiro.hasPermission>
+                                                    </@shiro.hasRole>
 
                                                     <@shiro.hasPermission name="role:allotRoleView">
                                                         <a href="/role/allotRoleView/${user.username}" class="btn black" id="gritter-max">分配角色</a>
@@ -191,7 +226,7 @@
                                 </tbody>
 
                             </table>
-                            <#if deptNoList??>
+                            <#if deptIdList??>
                                 <div class="row-fluid">
 
                                     <div class="span6">

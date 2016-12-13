@@ -55,7 +55,7 @@
                 <div class="span12">
 
                 <#--搜索框-->
-                    <#if deptNoList??>
+                    <#if deptIdList??>
                         <form action="/customer/findAllCustomerByDeptNo" method="post" class="form-search pull-right">
 
                             <div class="input-append">
@@ -157,7 +157,7 @@
                                 </tbody>
 
                             </table>
-                            <#if deptNoList??>
+                            <#if deptIdList??>
 
                                 <#if (count>0)>
                                     <div class="row-fluid">

@@ -13,7 +13,6 @@ import java.util.List;
 public class Dept implements Serializable {
 
     private Integer id;
-    private Integer deptNo;
     private String deptName;
     private Timestamp createTime;
     private  Timestamp timestamp;
@@ -23,10 +22,7 @@ public class Dept implements Serializable {
     public Dept() {
     }
 
-    public Dept(Integer deptNo, String deptName) {
-        this.deptNo = deptNo;
-        this.deptName = deptName;
-    }
+
 
     public Integer getId() {
         return id;
@@ -34,14 +30,6 @@ public class Dept implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getDeptNo() {
-        return deptNo;
-    }
-
-    public void setDeptNo(Integer deptNo) {
-        this.deptNo = deptNo;
     }
 
     public String getDeptName() {

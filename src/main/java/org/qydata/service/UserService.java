@@ -44,7 +44,7 @@ public interface UserService {
      * @throws Exception
      */
     @Transactional
-    public boolean addUserCommon(User user)throws Exception;
+    public boolean addUserCommon(User user,String deptId)throws Exception;
     /**
      * 根据用户名和旧密码修改密码
      * @param username

@@ -48,14 +48,7 @@
 
                             <!-- BEGIN FORM-->
                             <form action="/dept/addDeptAction" method="post" id="form_sample_1" class="form-horizontal">
-                                <div class="alert alert-error hide">
-                                    <button class="close" data-dismiss="alert"></button>
-                                    You have some form errors. Please check below.
-                                </div>
-                                <div class="alert alert-success hide">
-                                    <button class="close" data-dismiss="alert"></button>
-                                    Your form validation is successful!
-                                </div>
+
                                 <div class="control-group">
 
                                 </div>
@@ -75,14 +68,6 @@
                                         <input type="text" id="deptName" name="deptName" <#if deptName??>value="${deptName}" </#if>data-required="1" class="span6 m-wrap"/>
 
                                         <span class="help-inline" id="deptNameMsg"><#if DeptMessageDeptName??><font color="red">${DeptMessageDeptName}</font></#if></span>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">部门编号<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <input name="deptNo" id="deptNo" type="text" class="span6 m-wrap"/>
-
-                                        <span class="help-inline" id="deptNoMsg"><#if DeptMessageDeptNo??><font color="red">${DeptMessageDeptNo}</font></#if></span>
                                     </div>
                                 </div>
 

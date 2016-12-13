@@ -152,12 +152,12 @@
 
                                             <div class="form-actions">
                                                 <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
-                                                <@shiro.hasRoles name="backAdmin">
+                                                <@shiro.hasRole name="backAdmin">
                                                     <a href="/customer/findAllCustomer"><button type="button" class="btn">取消</button></a>
-                                                </@shiro.hasRoles>
-                                                <@shiro.hasRoles name="sell">
+                                                </@shiro.hasRole>
+                                                <@shiro.hasRole name="sell">
                                                     <a href="/customer/findAllCustomerByDeptNo"><button type="button" class="btn">取消</button></a>
-                                                </@shiro.hasRoles>
+                                                </@shiro.hasRole>
                                             </div>
 
                                         </form>
