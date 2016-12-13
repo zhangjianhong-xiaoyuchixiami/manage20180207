@@ -39,6 +39,20 @@
         </if>
     </select>
 
+    <select id="findAllApi" parameterType="Map" resultMap="Api-ApiVendor">
+        SELECT id,name FROM qydata.ApiType
+
+        SELECT qat.id,qat.name,qaam.qaId,qaam.apiTypeId,qaam.vendorId,qaam.qaName,qaam.cost,qaam.qmoName,qaam.qamId
+        FROM qydata.ApiType qat,(SELECT qa.id qaId,qa.apiTypeId,qa.vendorId,qa.name qaName,qa.cost,qmo.name qmoName,qmo.id qamId
+                                  FROM qydata.ApiMobileOperator qamo,qydata.Api qa,qydata.MobileOperator qmo
+                                  WHERE qamo.apiId=qa.id and qamo.mobileOperatorId=qmo.id
+                                  ) qaam
+        WHERE qat.id=qaam.apiTypeId
+    </select>
+    <select id="">
+
+    </select>
+
     <!--插入-->
     <insert id="insertCustomerApi" parameterType="CustomerApi" useGeneratedKeys="true" keyProperty="id">
         insert into qydata.CustomerApi(apiId,customerId,price,enabled,createTime)
