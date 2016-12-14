@@ -44,9 +44,8 @@ public interface CustomerApiService {
     public CustomerApi findById(Integer id)throws Exception;
     /**
      * 根据Id修改
-     * @param api
      * @return
      */
     @Transactional
-    public boolean updateCustomerApiById(CustomerApi api)throws Exception;
+    public boolean updateCustomerApiById(String id,String price,String apiId,String enabled)throws Exception;
 }

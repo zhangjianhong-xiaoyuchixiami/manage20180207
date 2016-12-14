@@ -1,5 +1,8 @@
 package org.qydata.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -23,6 +26,8 @@ public class Api implements Serializable {
     private Timestamp createTime;
     private Timestamp timestamp;
     private ApiVendor apiVendor;
+    private ApiType apiType;
+    private ApiMobileOperator apiMobileOperator;
 
     public Api() {
     }
@@ -147,24 +152,30 @@ public class Api implements Serializable {
         this.apiVendor = apiVendor;
     }
 
+    public ApiType getApiType() {
+        return apiType;
+    }
+
+    public void setApiType(ApiType apiType) {
+        this.apiType = apiType;
+    }
+
+    public ApiMobileOperator getApiMobileOperator() {
+        return apiMobileOperator;
+    }
+
+    public void setApiMobileOperator(ApiMobileOperator apiMobileOperator) {
+        this.apiMobileOperator = apiMobileOperator;
+    }
+
     @Override
     public String toString() {
-        return "Api{" +
-                "id=" + id +
-                ", apiTypeId=" + apiTypeId +
-                ", vendorId=" + vendorId +
-                ", name='" + name + '\'' +
-                ", requestType=" + requestType +
-                ", url='" + url + '\'' +
-                ", testUrl='" + testUrl + '\'' +
-                ", contentType='" + contentType + '\'' +
-                ", requestClass='" + requestClass + '\'' +
-                ", responseClass='" + responseClass + '\'' +
-                ", cost=" + cost +
-                ", defaultPrice=" + defaultPrice +
-                ", createTime=" + createTime +
-                ", timestamp=" + timestamp +
-                ", apiVendor=" + apiVendor +
-                '}';
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

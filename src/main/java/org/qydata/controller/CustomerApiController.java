@@ -168,19 +168,15 @@ public class CustomerApiController {
             return "redirect:/customerApi/findCustomerApiById/"+id;
         }
 
-        CustomerApi customerApi = new CustomerApi();
-        customerApi.setId(Integer.parseInt(id));
-        customerApi.setCustomerId(Integer.parseInt(customerId));
-        customerApi.setPrice(Integer.parseInt(price.trim().replaceAll(",","")));
-        customerApi.setApiId(Integer.parseInt(apiId));
-        customerApi.setEnabled(Boolean.parseBoolean(enabled));
+
         try {
-            boolean flag = customerApiService.updateCustomerApiById(customerApi);
+            boolean flag = customerApiService.updateCustomerApiById(id,price,apiId,enabled);
             if (!flag) {
                 model.addFlashAttribute("msg","修改失败");
                 return "redirect:/customerApi/findCustomerApiById/"+id;
             }
         }catch (Exception e){
+            e.printStackTrace();
             model.addFlashAttribute("msg","修改失败");
             return "redirect:/customerApi/findCustomerApiById/"+id;
         }

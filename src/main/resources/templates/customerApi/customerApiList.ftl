@@ -86,23 +86,28 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <#list customerApiList as customerApi>
-                                    <tr align="center">
-                                        <td>${customerApi.apiVendor.name}-${customerApi.api.name}</td>
-                                        <td>${customerApi.price}</td>
-                                        <#if customerApi.enabled>
-                                            <td>已激活</td>
-                                        </#if>
-                                        <#if !customerApi.enabled>
-                                            <td>未激活</td>
-                                        </#if >
-                                        <td class="numeric" style="text-align: center">
-                                            <p>
-                                                <a href="/customerApi/findCustomerApiById/${customerApi.id}" class="btn blue" id="gritter-light">修改</a>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    </#list>
+                                    <#if customerApiList??>
+                                        <#list customerApiList as customerApi>
+
+                                        <tr align="center">
+
+                                            <td><#if customerApi.api.apiType??>${customerApi.api.apiType.name}</#if><#if customerApi.api.apiMobileOperator??>---${customerApi.api.apiMobileOperator.mobileOperator.name}</#if></td>
+
+                                            <td>${customerApi.price}</td>
+                                            <#if customerApi.enabled>
+                                                <td>已激活</td>
+                                            </#if>
+                                            <#if !customerApi.enabled>
+                                                <td>未激活</td>
+                                            </#if >
+                                            <td class="numeric" style="text-align: center">
+                                                <p>
+                                                    <a href="/customerApi/findCustomerApiById/${customerApi.id}" class="btn blue" id="gritter-light">修改</a>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        </#list>
+                                    </#if>
                                 </tbody>
 
                             </table>

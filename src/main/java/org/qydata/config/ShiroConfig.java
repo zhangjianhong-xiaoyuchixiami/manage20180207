@@ -128,7 +128,7 @@ public class ShiroConfig {
 	public EnterpriseCacheSessionDAO sessionDAO(){
 		EnterpriseCacheSessionDAO cacheSessionDAO = new EnterpriseCacheSessionDAO();
 		//设置session缓存的名字
-		cacheSessionDAO.setActiveSessionsCacheName("qydata-shiro-activeSessionsCacheName");
+		cacheSessionDAO.setActiveSessionsCacheName("qyData_activeSessionsCacheName");
 		//定义该Session  DAO操作中所使用的的ID生成器
 		cacheSessionDAO.setSessionIdGenerator(javaUuidSessionIdGenerator());
 		return cacheSessionDAO;
@@ -142,7 +142,7 @@ public class ShiroConfig {
 	public SimpleCookie simpleCookie(){
 		SimpleCookie cookie = new SimpleCookie();
 		//定义cookie名字
-		cookie.setName("qydata-session-id");
+		cookie.setName("qyData_session_id");
 		//保证该系统不会受到跨域的操作攻击
 		cookie.setHttpOnly(true);
 		//定义cookie的过期时间，设置为1，表示浏览器关闭，cookie消失

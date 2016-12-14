@@ -11,24 +11,38 @@ import java.util.Map;
  */
 public interface CustomerApiMapper {
     /**
-     * 查询Api所有数据
+     * 查询非mobileApi所有数据
      * @return
      */
-    public List<Api> findAllApi(Map<String,Object> map)throws Exception;
+    public List<Api> findAllApiNotMobile(Map<String,Object> map)throws Exception;
+
+    /**
+     * 查询mobileApi所有数据
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<Api> findAllApiMobile(Map<String,Object> map)throws Exception;
 
     /**
      * 插入一条客户Api
-     * @param customerApi
+     * @param customerApiList
      * @return
      */
-    public boolean insertCustomerApi(CustomerApi customerApi)throws Exception;
+    public boolean insertCustomerApi(List<CustomerApi> customerApiList)throws Exception;
 
     /**
-     * 根据客户Id查找指定客户的所有CustomerApi
+     * 根据客户Id查找指定客户的所有CustomerApiNotMobile
      * @param map
      * @return
      */
-    public List<CustomerApi> findAllByCustomerId(Map<String,Object> map)throws Exception;
+    public List<CustomerApi> findAllByCustomerIdNotMobile(Map<String,Object> map)throws Exception;
+    /**
+     * 根据客户Id查找指定客户的所有CustomerApiMobile
+     * @param map
+     * @return
+     */
+    public List<CustomerApi> findAllByCustomerIdMobile(Map<String,Object> map)throws Exception;
 
     /**
      * 根据客户Id统计全部数据量
@@ -38,11 +52,17 @@ public interface CustomerApiMapper {
     public Integer getAllCountByCustomerId(Map<String,Object> map)throws Exception;
 
     /**
-     * 根据Id查找
+     * 根据Id查找NotMobile
      * @param id
      * @return
      */
-    public CustomerApi findById(Integer id)throws Exception;
+    public CustomerApi findByIdNotMobile(Integer id)throws Exception;
+    /**
+     * 根据Id查找Mobile
+     * @param id
+     * @return
+     */
+    public CustomerApi findByIdMobile(Integer id)throws Exception;
 
     /**
      * 根据Id修改

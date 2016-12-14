@@ -108,6 +108,20 @@
                                                 </#if>
                                             </div>
 
+                                            <div class="control-group" style="display: none">
+
+                                                <label class="control-label">客户ID<span class="required">*</span></label>
+
+                                                <div class="controls">
+
+                                                    <input type="text" id="customerId" name="customerId" value="${customerId}" class="m-wrap medium">
+
+                                                    <span id="customerIdMsg" class="help-inline"></span>
+
+                                                </div>
+
+                                            </div>
+
                                             <div id="addCloneCustomerApi">
 
                                                 <div id="cloneCustomerApi">
@@ -115,20 +129,6 @@
                                                     <div class="control-group">
 
                                                         <div class="controls">
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="control-group" style="display: none">
-
-                                                        <label class="control-label">客户ID<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <input type="text" id="customerId" name="customerId" value="${customerId}" class="m-wrap medium">
-
-                                                            <span id="customerIdMsg" class="help-inline"></span>
 
                                                         </div>
 
@@ -157,13 +157,13 @@
                                                         <div class="controls">
 
                                                             <select id="apiId" name="apiId" class="medium m-wrap" tabindex="1">
+                                                                <#if apiList??>
+                                                                    <#list apiList as api>
 
-                                                                <#list apiList as api>
+                                                                        <option value="${api.id}"><#if api.apiType??>${api.apiType.name}</#if><#if api.apiMobileOperator??>---${api.apiMobileOperator.mobileOperator.name}</#if></option>
 
-                                                                    <option value="${api.id}">${api.apiVendor.name}-${api.name}</option>
-
-                                                                </#list>
-
+                                                                    </#list>
+                                                                </#if>
                                                             </select>
 
                                                             <span id="apiIdMsg" class="help-inline"></span>

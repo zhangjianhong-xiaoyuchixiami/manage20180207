@@ -16,7 +16,7 @@
 
                     <h3 class="page-title">
 
-                       添加Api
+                        添加Api
 
                     </h3>
 
@@ -158,15 +158,20 @@
 
                                                     <select id="apiId" name="apiId" class="medium m-wrap" tabindex="1">
 
-                                                        <#list apiList as api>
+                                                        <#if apiList??>
+                                                            <#list apiList as api>
 
-                                                            <option value="${api.id}">${api.apiVendor.name}-${api.name}</option>
+                                                                <option value="${api.id}"><#if api.apiType??>${api.apiType.name}</#if><#if api.apiMobileOperator??>---${api.apiMobileOperator.mobileOperator.name}</#if></option>
 
-                                                        </#list>
+                                                            </#list>
+                                                        </#if>
 
                                                     </select>
-                                                    <span class="help-inline">（原Api：${customerApi.apiVendor.name}-${customerApi.api.name}）</span>
+                                                    <#if customerApi??>
 
+                                                        <span class="help-inline">（原Api：<#if customerApi.api.apiType??>${customerApi.api.apiType.name}</#if><#if customerApi.api.apiMobileOperator??>---${customerApi.api.apiMobileOperator.mobileOperator.name}</#if>）</span>
+
+                                                    </#if>
                                                 </div>
 
                                             </div>
@@ -199,7 +204,7 @@
 
                                             <div class="form-actions">
                                                 <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
-                                                <a href="/customerApi/customerApiListAction/${customerApi.customerId}"></a><button type="button" class="btn">取消</button>
+                                                <a href="/customerApi/customerApiListAction/${customerApi.customerId}"><button type="button" class="btn">取消</button></a>
                                             </div>
 
                                         </form>
