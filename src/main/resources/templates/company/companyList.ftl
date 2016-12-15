@@ -106,39 +106,31 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
+                                    <th style="text-align: center"><input type="checkbox"/></th>
                                     <th style="text-align: center">公司名称</th>
-                                    <th style="text-align: center">账号类型</th>
-                                    <th style="text-align: center">账户</th>
-                                    <th style="text-align: center">余额</th>
-                                    <th style="text-align: center">状态</th>
-                                    <th style="text-align: center">部门</th>
                                     <th style="text-align: center">创建时间</th>
                                     <th style="text-align: center">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
-                                    <#if customerList??>
-                                        <#list customerList as customer>
+                                    <#if companyList??>
+                                        <#list companyList as company>
                                         <tr>
-                                            <td>${customer.name}</td>
-                                            <td>${customer.customerType.name}</td>
-                                            <td>${customer.authId}</td>
-                                            <td>${customer.balance}</td>
-                                            <td>${customer.customerStatus.name}</td>
-                                            <td>${customer.dept.deptName}</td>
-                                            <td>${customer.createTime}</td>
+                                            <td><input type="checkbox"/></td>
+                                            <td>${company.name}</td>
+                                            <td>${company.createTime}</td>
                                             <td style="text-align: center">
 
                                                 <p>
 
-                                                    <a href="/customerIp/addCustomerIpView/${customer.id}" class="btn" id="gritter-light">添加Ip</a>
+                                                    <a href="/customerIp/addCustomerIpView/${company.id}" class="btn" id="gritter-light">添加Ip</a>
 
-                                                    <a href="/customerApi/addCustomerApiView/${customer.id}" class="btn black" id="gritter-light">添加Api</a><br/>
+                                                    <a href="/customerApi/addCustomerApiView/${company.id}" class="btn black" id="gritter-light">添加Api</a><br/>
 
-                                                    <a href="/customerIp/customerIpListAction/${customer.id}" class="btn" id="gritter-max">管理Ip</a>
+                                                    <a href="/customerIp/customerIpListAction/${company.id}" class="btn" id="gritter-max">管理Ip</a>
 
-                                                    <a href="/customerApi/customerApiListAction/${customer.id}" class="btn black" id="gritter-max">管理Api</a>
+                                                    <a href="/customerApi/customerApiListAction/${company.id}" class="btn black" id="gritter-max">管理Api</a>
 
                                                 </p>
 

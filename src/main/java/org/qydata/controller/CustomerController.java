@@ -1,8 +1,9 @@
 package org.qydata.controller;
 
 import org.apache.log4j.Logger;
-import org.qydata.dst.CustomerDeptInfo;
-import org.qydata.entity.*;
+import org.qydata.entity.Customer;
+import org.qydata.entity.Dept;
+import org.qydata.entity.User;
 import org.qydata.regex.RegexUtil;
 import org.qydata.service.CustomerService;
 import org.qydata.service.DeptService;
@@ -63,13 +64,11 @@ public class CustomerController {
     //common
     @RequestMapping(value = ("/addCustomerViewCommon"))
     public String addCustomerViewCommon(Model model,HttpServletRequest request){
-
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         model.addAttribute("deptList",deptList);
         return "customer/addCustomerCommon";
     }
-
 
     //super
     @RequestMapping(value = ("/addCustomerViewSuper"))
@@ -87,36 +86,30 @@ public class CustomerController {
 
 
     @RequestMapping(value = ("/insertCustomerCommon"))
-    public String insertCustomerByDeptNo(HttpServletRequest request, CustomerDeptInfo customerDeptInfo, RedirectAttributes model){
+    public String insertCustomerByDeptNo(String name, String authId, String deptId, RedirectAttributes model){
 
-        if(RegexUtil.isNull(customerDeptInfo.getCustomer().getName())){
-            model.addFlashAttribute("CustomerMessageName","请输入公司名称");
+        if(RegexUtil.isNull(name)){
+            model.addFlashAttribute("CustomerMessageName","请输入公司名称!");
             return "redirect:/customer/addCustomerViewCommon";
         }
-        if(RegexUtil.isNull(customerDeptInfo.getCustomer().getAuthId())){
-            model.addFlashAttribute("name",customerDeptInfo.getCustomer().getName());
-            model.addFlashAttribute("CustomerMessageAuthId","请输入账户");
+        if(RegexUtil.isNull(authId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
             return "redirect:/customer/addCustomerViewCommon";
         }
-        if(!RegexUtil.stringCheck(customerDeptInfo.getCustomer().getAuthId())){
-            model.addFlashAttribute("name",customerDeptInfo.getCustomer().getName());
-            model.addFlashAttribute("authId",customerDeptInfo.getCustomer().getAuthId());
-            model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确");
+        if(!RegexUtil.stringCheck(authId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("authId");
+            model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
             return "redirect:/customer/addCustomerViewCommon";
         }
-        if(!RegexUtil.isDigits(customerDeptInfo.getDept().getId()+"")){
-            model.addFlashAttribute("name",customerDeptInfo.getCustomer().getName());
-            model.addFlashAttribute("authId",customerDeptInfo.getCustomer().getAuthId());
-            model.addFlashAttribute("CustomerMessageDeptNo","请选择所属部门");
+        if(!RegexUtil.isDigits(deptId)){
             return "redirect:/customer/addCustomerViewCommon";
         }
-        User user = (User)request.getSession().getAttribute("userInfo");
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("customerInfo",customerDeptInfo.getCustomer());
-        map.put("userInfo", user);
-        map.put("deptInfo", customerDeptInfo.getDept());
+
+
         try{
-            boolean flag = customerService.insertCustomer(map);
+            boolean flag = customerService.insertCustomer(name,authId,deptId);
             if (!flag) {
                 model.addFlashAttribute("msg", "添加失败");
                 return "redirect:/customer/addCustomerViewCommon";
@@ -132,32 +125,28 @@ public class CustomerController {
 
 
     @RequestMapping(value = ("/insertCustomerSuper"))
-    public String insertCustomer(HttpServletRequest request, CustomerDeptInfo customerDeptInfo, RedirectAttributes model){
-        if(RegexUtil.isNull(customerDeptInfo.getCustomer().getName())){
-            model.addFlashAttribute("CustomerMessageName","请输入公司名称");
+    public String insertCustomer(String name, String authId, String deptId, RedirectAttributes model){
+        if(RegexUtil.isNull(name)){
+            model.addFlashAttribute("CustomerMessageName","请输入公司名称!");
             return "redirect:/customer/addCustomerViewSuper";
         }
-        if(RegexUtil.isNull(customerDeptInfo.getCustomer().getAuthId())){
-            model.addFlashAttribute("name",customerDeptInfo.getCustomer().getName());
-            model.addFlashAttribute("CustomerMessageAuthId","请输入账户");
+        if(RegexUtil.isNull(authId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
             return "redirect:/customer/addCustomerViewSuper";
         }
-        if(!RegexUtil.stringCheck(customerDeptInfo.getCustomer().getAuthId())){
-            model.addFlashAttribute("name",customerDeptInfo.getCustomer().getName());
-            model.addFlashAttribute("authId",customerDeptInfo.getCustomer().getAuthId());
-            model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确");
+        if(!RegexUtil.stringCheck(authId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("authId");
+            model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
             return "redirect:/customer/addCustomerViewSuper";
         }
-        if(!RegexUtil.isDigits(customerDeptInfo.getDept().getId()+"")){
+        if(!RegexUtil.isDigits(deptId)){
             return "redirect:/customer/addCustomerViewSuper";
         }
-        User user = (User)request.getSession().getAttribute("userInfo");
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("customerInfo",customerDeptInfo.getCustomer());
-        map.put("userInfo", user);
-        map.put("deptInfo", customerDeptInfo.getDept());
+
         try{
-            boolean flag = customerService.insertCustomer(map);
+            boolean flag = customerService.insertCustomer(name,authId,deptId);
             if (!flag) {
                 model.addFlashAttribute("msg", "添加失败");
                 return "redirect:/customer/addCustomerViewSuper";
@@ -203,8 +192,6 @@ public class CustomerController {
         model.addAttribute("pageSize",pageModel.getPageSize());
         return "/customer/customerList";
     }
-
-
 
 
 

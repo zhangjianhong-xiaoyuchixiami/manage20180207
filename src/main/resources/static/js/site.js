@@ -7,7 +7,7 @@ function prt(str) {
 function writeTop() {
 	prt("<table class=\"HeaderTable\" width=\"760\" cellpadding=\"4\" align=\"center\">");
 	prt("<tr>");
-    prt("<td width=\"100%\" height=\"36\">jQuery formValidator±íµ¥ÑéÖ¤²å¼þ</td> ");
+    prt("<td width=\"100%\" height=\"36\">jQuery formValidatorï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½</td> ");
 	prt("<td class=\"VersionText\" valign=\"bottom\">"+VERSION+"</td>");
 	prt("</tr>");
 	prt("</table>");
@@ -16,17 +16,17 @@ function writeTop() {
 
 function writeNav() {
 	var str = "";
-	str+="::µ¼º½::";
+	str+="::ï¿½ï¿½ï¿½ï¿½::";
 	str+="<ul>";
-	str+="<li><a href=\"index.html\">Ê×Ò³</a></li>";
-	str+="<li><a href=\"update.html\">¸üÐÂ¼ÇÂ¼</a></li>";
-	str+="<li><a href=\"download.html\">ÏÂÔØ</a></li>";
-	str+="<li><a href=\"userguide.html\">ÓÃ»§ÊÖ²á</a></li>";
-	//str+="<li><a href=\"devguide.html\">¿ª·¢Ö¸ÄÏ</a></li>";
-	str+="<li><a href=\"demo.html\">ÑÝÊ¾</a></li>";
+	str+="<li><a href=\"index.html\">ï¿½ï¿½Ò³</a></li>";
+	str+="<li><a href=\"update.html\">ï¿½ï¿½ï¿½Â¼ï¿½Â¼</a></li>";
+	str+="<li><a href=\"download.html\">ï¿½ï¿½ï¿½ï¿½</a></li>";
+	str+="<li><a href=\"userguide.html\">ï¿½Ã»ï¿½ï¿½Ö²ï¿½</a></li>";
+	//str+="<li><a href=\"devguide.html\">ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½</a></li>";
+	str+="<li><a href=\"demo.ftl\">ï¿½ï¿½Ê¾</a></li>";
 	str+="<li><a href=\"faq.html\">FAQ</a></li>";
-	str+="<li><a href=\"money.html\">¹±Ï×Õß</a></li>";
-	str+="<li><a target=\"_blank\" href=\"http://qun.qq.com/#jointhegroup/gid/74106519\">¼ÓÈëQQÈº</a></li>";
+	str+="<li><a href=\"money.html\">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a></li>";
+	str+="<li><a target=\"_blank\" href=\"http://qun.qq.com/#jointhegroup/gid/74106519\">ï¿½ï¿½ï¿½ï¿½QQÈº</a></li>";
 	str+="</ul>";
 
 	prt(str);
@@ -35,12 +35,12 @@ function writeNav() {
 function writeBottom() {
 prt("<table width=\"760\" align=\"center\" cellpadding=\"2\" cellspacing=\"2\" class=\"BottomTable\">");
 prt("  <tr> ");
-prt("    <td align=\"center\"><font size=\"3\">Powered by: Ã¨¶¬ Copyright &reg;2011 Ã¨¶¬</font> ");
+prt("    <td align=\"center\"><font size=\"3\">Powered by: Ã¨ï¿½ï¿½ Copyright &reg;2011 Ã¨ï¿½ï¿½</font> ");
 prt("    </td>");
 prt("  </tr>");
 prt("  <tr>");
-prt("    <td align=\"center\"><font size=\"3\">Çë·ÃÎÊÎÒµÄ²©¿Í <a href=\"http://www.cnblogs.com/wzmaodong\">http://www.cnblogs.com/wzmaodong</a> ");
-prt("      À´¸üÐÂ²å¼þ</font></td>");
+prt("    <td align=\"center\"><font size=\"3\">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒµÄ²ï¿½ï¿½ï¿½ <a href=\"http://www.cnblogs.com/wzmaodong\">http://www.cnblogs.com/wzmaodong</a> ");
+prt("      ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½</font></td>");
 prt("  </tr>");
 prt("</table>");
 }

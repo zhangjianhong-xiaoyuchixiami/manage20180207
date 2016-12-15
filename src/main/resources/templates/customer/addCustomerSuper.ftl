@@ -80,45 +80,31 @@
 
                             <!-- BEGIN FORM-->
 
-                            <form action="/customer/insertCustomerSuper" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
+                            <form action="/customer/insertCustomerSuper" id="form_sample_1" class="form-horizontal" method="post">
 
-                                <div class="alert alert-error hide">
+                                <div class="control-group"></div>
 
-                                    <button class="close" data-dismiss="alert"></button>
+                                <div class="control-group"></div>
 
-                                    You have some form errors. Please check below.
-
-                                </div>
-
-                                <div class="alert alert-success hide">
-
-                                    <button class="close" data-dismiss="alert"></button>
-
-                                    Your form validation is successful!
-
-                                </div>
-                                <div class="control-group">
-
-                                </div>
-                                <div class="control-group">
-
-                                </div>
-
-                                <div class="controls">
                                     <#if msg??>
-                                        <span><h5><font color="red">${msg}</font></h5></span>
-                                    <#else>
-                                        <span></span>
+
+                                        <div class="alert alert-error show">
+
+                                            <button class="close" data-dismiss="alert"></button>
+
+                                            对不起，操作失败，请检查你的输入！
+
+                                        </div>
+
                                     </#if>
-                                </div>
 
                                 <div class="control-group">
 
-                                    <label class="control-label">公司名称<span class="required">*</span></label>
+                                    <label class="control-label">请输入公司名称<span class="required">*</span></label>
 
                                     <div class="controls">
 
-                                        <input type="text" id="customer_Name" name="customer.name" <#if name??>value="${name}"</#if> class="span6 m-wrap"/>
+                                        <input type="text" id="customer_Name" name="name" <#if name??>value="${name}"</#if> class="span6 m-wrap"/>
 
                                         <span id="customer_NameMsg" class="help-inline"><#if CustomerMessageName??><font color="red">${CustomerMessageName}</font></#if></span>
 
@@ -128,11 +114,11 @@
 
                                 <div class="control-group">
 
-                                    <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+                                    <label class="control-label">请输入账号<span class="required">*</span></label>
 
                                     <div class="controls">
 
-                                        <input type="text" id="customer_authId" name="customer.authId" <#if authId??>value="${authId}"</#if> class="span6 m-wrap"/>
+                                        <input type="text" id="customer_authId" name="authId" <#if authId??>value="${authId}"</#if> class="span6 m-wrap"/>
 
                                         <span id="customer_authIdMsg" class="help-inline"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
 
@@ -142,15 +128,17 @@
 
                                 </div>
 
+                                <#if deptList??>
+
                                 <div class="control-group">
 
-                                    <label class="control-label">所属部门<span class="required">*</span></label>
-
-                                    <#if deptList??>
+                                    <label class="control-label">请选择部门<span class="required">*</span></label>
 
                                         <div class="controls">
 
-                                            <select id="dept_id" name="dept.id" class="medium m-wrap" tabindex="1">
+                                            <select id="dept_id" name="deptId" class="medium m-wrap" tabindex="1">
+
+                                                <option value="">请选择...</option>
 
                                                 <#list deptList as dept>
 
@@ -162,9 +150,9 @@
 
                                         </div>
 
-                                    </#if>
-
                                 </div>
+
+                                </#if>
 
                                 <div class="form-actions">
 
@@ -192,43 +180,45 @@
 
     </div>
 
+    <script>
+        $(document).ready(function() {
+            $('#customerManage').addClass('active');
+
+            $('#addCustomer').addClass('active');
+
+            $('#customerManageSelect').addClass('selected');
+
+            $('#customerManageArrow').addClass('arrow open');
+
+            $("#customer_Name").focus(function () {
+                $("#customer_NameMsg").html("");
+            });
+
+            $("#customer_authId").focus(function () {
+                $("#customer_authIdMsg").html("");
+            });
+
+            $("#dept_id").focus(function () {
+                $("#dept_IdMsg").html("");
+            });
+
+            $("#customer_authId").blur(function(){
+                $("#customer_authIdMsg").load("/customer/findCustomerByAuthId/"+$("#customer_authId").val(),
+                        function(responseTxt){
+                            if(responseTxt=="yes")
+                                $("#customer_authIdMsg").html("<font color='red'>该账户已存在！</font>");
+                            if(responseTxt=="no")
+                                $("#customer_authIdMsg").html("");
+                        });
+            });
+        });
+
+    </script>
+
     <#elseif section = "footer">
 
     </#if>
 
-<script>
-    $(document).ready(function() {
-        $('#customerManage').addClass('active');
 
-        $('#addCustomer').addClass('active');
-
-        $('#customerManageSelect').addClass('selected');
-
-        $('#customerManageArrow').addClass('arrow open');
-
-        $("#customer_Name").focus(function () {
-            $("#customer_NameMsg").html("");
-        });
-
-        $("#customer_authId").focus(function () {
-            $("#customer_authIdMsg").html("");
-        });
-
-        $("#dept_id").focus(function () {
-            $("#dept_IdMsg").html("");
-        });
-
-        $("#customer_authId").blur(function(){
-            $("#customer_authIdMsg").load("/customer/findCustomerByAuthId/"+$("#customer_authId").val(),
-                    function(responseTxt){
-                        if(responseTxt=="yes")
-                            $("#customer_authIdMsg").html("<font color='red'>该账户已存在！</font>");
-                        if(responseTxt=="no")
-                            $("#customer_authIdMsg").html("");
-                    });
-        });
-    });
-
-</script>
 
 </@layout>

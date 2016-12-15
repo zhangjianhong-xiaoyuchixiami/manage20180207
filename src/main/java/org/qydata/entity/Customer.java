@@ -24,6 +24,7 @@ public class Customer implements Serializable{
     private CustomerStatus customerStatus;
     private User user;
     private Dept dept;
+    private Integer companyId;
     public Customer(){}
 
     public Integer getId() {
@@ -128,6 +129,14 @@ public class Customer implements Serializable{
 
     public void setDept(Dept dept) {
         this.dept = dept;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     @Override

@@ -44,7 +44,127 @@
 
     <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
+    <script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
+    <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+
+    <script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <!--[if lt IE 9]>
+
+    <script src="/js/excanvas.min.js"></script>
+
+    <script src="/js/respond.min.js"></script>
+
+    <![endif]-->
+
+    <script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+
+    <script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
+
+    <script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
+
+    <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
+
+    <!-- END CORE PLUGINS -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+
+    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+
+    <script type="text/javascript" src="/js/additional-methods.min.js"></script>
+
+    <script type="text/javascript" src="/js/select2.min.js"></script>
+
+    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN PAGE LEVEL STYLES -->
+
+    <script src="/js/app.js"></script>
+
+    <script src="/js/form-validation.js"></script>
+
+    <script>
+
+        jQuery(document).ready(function() {
+            App.init();
+        });
+    </script>
+    <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
+    </script>
+    <script>
+
+        $(document).ready(function(){
+
+            $('#allotDeptSave').on("click",function(){
+                //jquery获取复选框值
+                var deptId_no =[];//定义一个数组
+                $('input[name="deptId"]:checked').each(function(){
+                    deptId_no.push($.trim($(this).val()));
+                });
+                var userId_id = $('input[name="userId"]').val();
+                var username_id = $('input[name="username"]').val();
+                var indata = {"userId":userId_id, "deptId":deptId_no,"username":username_id};
+                $.ajax({
+                    type:'post',
+                    url:"/dept/allotDeptAction",
+                    data:indata,
+                    dataType:'json',
+                    success:function(data){
+                        if(data!=null && data.result=="ok"){
+                            alert("操作成功");
+                            window.location.href="/dept/allotDeptView/"+data.msg;
+//                        $('#form_modal4').css('display','block');
+//                        $('#tiShiXinXi').html("操作成功");
+                        }else{
+                            alert("操作失败");
+                            window.location.href="/dept/allotDeptView/"+data.msg;
+//                        $('#form_modal4').css('display','block');
+//                        $('#tiShiXinXi').html("操作失败");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+
+        $(document).ready(function(){
+
+            $('#allotRoleSave').on("click",function(){
+                //jquery获取复选框值
+                var roleId_id =[];//定义一个数组
+                $('input[name="roleId"]:checked').each(function(){
+                    roleId_id.push($.trim($(this).val()));
+                });
+                var username_id = $('input[name="username"]').val();
+                var indata = {"roleId":roleId_id,"username":username_id};
+                $.ajax({
+                    type:'post',
+                    url:"/role/allotRoleAction",
+                    data:indata,
+                    dataType:'json',
+                    success:function(data){
+                        if(data!=null && data.result=="ok"){
+                            alert("操作成功");
+                            window.location.href="/role/allotRoleView/"+data.msg;
+//                        $('#form_modal4').css('display','block');
+//                        $('#tiShiXinXi').html("操作成功");
+                        }else{
+                            alert("操作失败");
+                            window.location.href="/role/allotRoleView/"+data.msg;
+//                        $('#form_modal4').css('display','block');
+//                        $('#tiShiXinXi').html("操作失败");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
 </head>
 
@@ -373,124 +493,7 @@
 
 </div>
 
-<script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-<script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-<script src="/js/bootstrap.min.js" type="text/javascript"></script>
-<!--[if lt IE 9]>
-<script src="/js/excanvas.min.js"></script>
-<script src="/js/respond.min.js"></script>
-<![endif]-->
-<script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
-<script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
-<!-- END CORE PLUGINS -->
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<script type="text/javascript" src="/js/ckeditor.js"></script>
-<script type="text/javascript" src="/js/bootstrap-fileupload.js"></script>
-<script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
-<script type="text/javascript" src="/js/select2.min.js"></script>
-<script type="text/javascript" src="/js/wysihtml5-0.3.0.js"></script>
-<script type="text/javascript" src="/js/bootstrap-wysihtml5.js"></script>
-<script type="text/javascript" src="/js/jquery.tagsinput.min.js"></script>
-<script type="text/javascript" src="/js/jquery.toggle.buttons.js"></script>
-<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
-<script type="text/javascript" src="/js/clockface.js"></script>
-<script type="text/javascript" src="/js/date.js"></script>
-<script type="text/javascript" src="/js/daterangepicker.js"></script>
-<script type="text/javascript" src="/js/bootstrap-colorpicker.js"></script>
-<script type="text/javascript" src="/js/bootstrap-timepicker.js"></script>
-<script type="text/javascript" src="/js/jquery.inputmask.bundle.min.js"></script>
-<script type="text/javascript" src="/js/jquery.input-ip-address-control-1.0.min.js"></script>
-<script type="text/javascript" src="/js/jquery.multi-select.js"></script>
-<script src="/js/bootstrap-modal.js" type="text/javascript" ></script>
-<script src="/js/bootstrap-modalmanager.js" type="text/javascript" ></script>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="/js/app.js"></script>
-<script src="/js/form-components.js"></script>
 
-<script>
-
-    jQuery(document).ready(function() {
-        App.init();
-    });
-</script>
-
-<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
-</script>
-
-<script>
-
-    $(document).ready(function(){
-
-        $('#allotDeptSave').on("click",function(){
-            //jquery获取复选框值
-            var deptId_no =[];//定义一个数组
-            $('input[name="deptId"]:checked').each(function(){
-                deptId_no.push($.trim($(this).val()));
-            });
-            var userId_id = $('input[name="userId"]').val();
-            var username_id = $('input[name="username"]').val();
-            var indata = {"userId":userId_id, "deptId":deptId_no,"username":username_id};
-            $.ajax({
-                type:'post',
-                url:"/dept/allotDeptAction",
-                data:indata,
-                dataType:'json',
-                success:function(data){
-                    if(data!=null && data.result=="ok"){
-                        alert("操作成功");
-                        window.location.href="/dept/allotDeptView/"+data.msg;
-//                        $('#form_modal4').css('display','block');
-//                        $('#tiShiXinXi').html("操作成功");
-                    }else{
-                        alert("操作失败");
-                        window.location.href="/dept/allotDeptView/"+data.msg;
-//                        $('#form_modal4').css('display','block');
-//                        $('#tiShiXinXi').html("操作失败");
-                    }
-                }
-            });
-        });
-    });
-</script>
-<script>
-
-    $(document).ready(function(){
-
-        $('#allotRoleSave').on("click",function(){
-            //jquery获取复选框值
-            var roleId_id =[];//定义一个数组
-            $('input[name="roleId"]:checked').each(function(){
-                roleId_id.push($.trim($(this).val()));
-            });
-            var username_id = $('input[name="username"]').val();
-            var indata = {"roleId":roleId_id,"username":username_id};
-            $.ajax({
-                type:'post',
-                url:"/role/allotRoleAction",
-                data:indata,
-                dataType:'json',
-                success:function(data){
-                    if(data!=null && data.result=="ok"){
-                        alert("操作成功");
-                        window.location.href="/role/allotRoleView/"+data.msg;
-//                        $('#form_modal4').css('display','block');
-//                        $('#tiShiXinXi').html("操作成功");
-                    }else{
-                        alert("操作失败");
-                        window.location.href="/role/allotRoleView/"+data.msg;
-//                        $('#form_modal4').css('display','block');
-//                        $('#tiShiXinXi').html("操作失败");
-                    }
-                }
-            });
-        });
-    });
-</script>
 
 </body>
 </html>

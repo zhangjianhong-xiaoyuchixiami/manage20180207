@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.CompanyMapper">
+
+    <!--添加客户信息-->
+    <insert id="addCompany" parameterType="Company" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qydata.Company(name,createTime)
+        VALUES (#{name},sysdate())
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!--根据Id查找指定客户信息-->
+    <select id="findById" parameterType="Integer" resultType="Company">
+        SELECT id,name,createTime
+        FROM qydata.Company
+        WHERE id=#{param}
+    </select>
+
+    <!--根据条件查找客户信息-->
+    <select id="findAllCompany" parameterType="map" resultType="Company">
+        SELECT id,name,createTime
+        FROM qydata.Company
+        WHERE id IN (
+                        SELECT companyId
+                        FROM qydata.Customer
+                        WHERE id IN (
+                                        SELECT customerId
+                                        FROM qyauth.CustomerDept customerDept
+                                        <where>
+                                            <if test="deptId !=null and deptId !=''">
+                                                deptId=#{deptId}
+                                            </if>
+                                        </where>
+                                      )
+                     )
+        limit #{beginIndex},#{lineSize}
+    </select>
+
+    <!--根据条件统计数据量-->
+    <select id="getAllCountCompany" parameterType="map" resultType="Integer">
+        SELECT count(id)
+        FROM qydata.Company
+        WHERE id IN (
+                        SELECT companyId
+                        FROM qydata.Customer
+                        WHERE id IN (
+                                        SELECT customerId
+                                        FROM qyauth.CustomerDept customerDept
+                                        <where>
+                                            <if test="deptId !=null and deptId !=''">
+                                                deptId=#{deptId}
+                                            </if>
+                                        </where>
+                                        )
+                      )
+    </select>
+
+</mapper>

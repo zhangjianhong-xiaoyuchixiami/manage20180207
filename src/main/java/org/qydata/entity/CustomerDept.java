@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Created by jonhn on 2016/11/22.
  */
-public class CustomerDeptUser implements Serializable {
+public class CustomerDept implements Serializable {
 
     private Integer id;
     private Integer customerId;
@@ -15,7 +15,7 @@ public class CustomerDeptUser implements Serializable {
     private Timestamp createTime;
     private Timestamp timestamp;
 
-    public CustomerDeptUser() {
+    public CustomerDept() {
     }
 
     public Integer getId() {

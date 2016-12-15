@@ -2,17 +2,18 @@ package org.qydata.service.impl;
 
 
 
-import org.qydata.mapper.CustomerDeptUserMapper;
+import org.qydata.entity.Company;
+import org.qydata.entity.Customer;
+import org.qydata.entity.CustomerDept;
+import org.qydata.mapper.CompanyMapper;
+import org.qydata.mapper.CustomerDeptMapper;
 import org.qydata.mapper.CustomerMapper;
-import org.qydata.entity.*;
 import org.qydata.service.CustomerService;
 import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by jonhn on 2016/11/8.
@@ -23,7 +24,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerMapper customerMapper;
     @Autowired
-    private CustomerDeptUserMapper customerDeptUserMapper;
+    private CustomerDeptMapper customerDeptMapper;
+    @Autowired
+    private CompanyMapper companyMapper;
 
 
 
@@ -33,46 +36,34 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean insertCustomer(Map<String,Object> map)throws Exception {
-        Set<Map.Entry<String,Object>> set = map.entrySet();
-        Iterator<Map.Entry<String,Object>> it = set.iterator();
-        Customer customer = null;
-        User user = null;
-        Dept dept = null;
-        while(it.hasNext()){
-            Map.Entry<String,Object> me = it.next();
-            if(me.getKey().equals("customerInfo")){
-                customer = (Customer) me.getValue();
-            }if(me.getKey().equals("userInfo") ){
-                user = (User)me.getValue();
-            }if(me.getKey().equals("deptInfo") ){
-                dept = (Dept) me.getValue();
-            }
-        }
+    public boolean insertCustomer(String name, String authId, String deptId)throws Exception {
+
+        Company company = new Company();
+        company.setName(name.trim());
+        companyMapper.addCompany(company);
+
+
         //向客户表中插入数据
         Customer customerA = new Customer();
-        customerA.setName(customer.getName().trim());
-        customerA.setAuthId(customer.getAuthId().trim());
+        customerA.setAuthId(authId.trim());
+        customerA.setCompanyId(company.getId());
         customerMapper.insertCustomer(customerA);
+
         Customer customerB = new Customer();
-        customerB.setAuthId(customer.getAuthId().trim() + "_test");
-        customerB.setName(customer.getName().trim());
+        customerB.setAuthId(authId.trim() + "_test");
+        customerB.setCompanyId(company.getId());
         customerMapper.insertCustomerTest(customerB);
 
-
         //向部门客户映射表中插入数据
-        CustomerDeptUser customerDeptUser = new CustomerDeptUser();
-        customerDeptUser.setCustomerId(customerA.getId());
-        customerDeptUser.setDeptId(dept.getId());
-        customerDeptUser.setCreateId(user.getId());
-        customerDeptUserMapper.insertCustomerDeptUser(customerDeptUser);
+        CustomerDept customerDeptA = new CustomerDept();
+        customerDeptA.setCustomerId(customerA.getId());
+        customerDeptA.setDeptId(Integer.parseInt(deptId.trim()));
+        customerDeptMapper.insertCustomerDept(customerDeptA);
 
-
-        CustomerDeptUser customerDeptUser1 = new CustomerDeptUser();
-        customerDeptUser1.setCustomerId(customerB.getId());
-        customerDeptUser1.setDeptId(dept.getId());
-        customerDeptUser1.setCreateId(user.getId());
-        return customerDeptUserMapper.insertCustomerDeptUser(customerDeptUser1);
+        CustomerDept customerDeptB = new CustomerDept();
+        customerDeptB.setCustomerId(customerB.getId());
+        customerDeptB.setDeptId(Integer.parseInt(deptId.trim()));
+        return customerDeptMapper.insertCustomerDept(customerDeptB);
     }
 
     @Override

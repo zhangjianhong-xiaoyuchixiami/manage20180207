@@ -21,11 +21,11 @@ public interface CustomerService {
 
     /**
      * 添加新客户
-     * @param map 包含了要添加的数据
+
      * @return 插入成功返回true,否则返回false;
      */
     @Transactional
-    public boolean insertCustomer(Map<String,Object> map)throws Exception ;
+    public boolean insertCustomer(String name, String authId, String deptId)throws Exception ;
     /**
      * 查询当前登录着可见的客户信息并分页显示
      * @map 包含了要使用的数据
