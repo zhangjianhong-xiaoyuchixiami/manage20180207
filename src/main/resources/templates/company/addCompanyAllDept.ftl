@@ -81,31 +81,21 @@
 
                             <form action="#" id="form_sample_1" class="form-horizontal">
 
-                                <div class="control-group">
+                                <div class="control-group"></div>
 
+                                <div class="control-group"></div>
 
-                                </div>
+                                <#if msg??>
 
-                                <div class="control-group">
+                                    <div class="alert alert-error show">
 
+                                        <button class="close" data-dismiss="alert"></button>
 
-                                </div>
+                                        对不起，操作失败，请检查你的输入！
 
-                                <div class="alert alert-error hide">
+                                    </div>
 
-                                    <button class="close" data-dismiss="alert"></button>
-
-                                    对不起，操作失败，请检查你的输入！
-
-                                </div>
-
-                                <div class="alert alert-success hide">
-
-                                    <button class="close" data-dismiss="alert"></button>
-
-                                    操作成功！
-
-                                </div>
+                                </#if>
 
                                 <div class="control-group">
 

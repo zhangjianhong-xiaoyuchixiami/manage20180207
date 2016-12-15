@@ -61,8 +61,7 @@
         where cda.customerId=c.id and cda.deptId=d.id
         <if test="deptIdList!=null and deptIdList.size()!=0">
             and cda.deptId in
-            <foreach collection="deptIdList" item="deptId"
-                     index="index" open="(" close=")" separator=",">
+            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
                 #{deptId}
             </foreach>
         </if>
