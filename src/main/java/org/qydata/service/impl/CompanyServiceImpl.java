@@ -1,12 +1,11 @@
 package org.qydata.service.impl;
 
 import org.apache.commons.collections.map.HashedMap;
-import org.qydata.entity.Api;
-import org.qydata.entity.Company;
-import org.qydata.entity.Customer;
-import org.qydata.entity.CustomerApi;
+import org.qydata.entity.*;
 import org.qydata.mapper.CompanyMapper;
 import org.qydata.mapper.CustomerApiMapper;
+import org.qydata.mapper.CustomerDeptMapper;
+import org.qydata.mapper.CustomerMapper;
 import org.qydata.service.CompanyService;
 import org.qydata.tools.IpTool;
 import org.qydata.tools.PageModel;
@@ -25,6 +24,10 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyMapper companyMapper;
     @Autowired
     private CustomerApiMapper customerApiMapper;
+    @Autowired
+    private CustomerDeptMapper customerDeptMapper;
+    @Autowired
+    private CustomerMapper customerMapper;
 
     @Override
     public Company findById(String id) throws Exception {
@@ -38,6 +41,44 @@ public class CompanyServiceImpl implements CompanyService {
         pageModel.setCount(companyMapper.getAllCountCompany(map));
         return pageModel;
     }
+
+    @Override
+    public PageModel<Customer> findAllCustomerAccountByCompanyId(Map<String, Object> map) throws Exception {
+        PageModel<Customer> pageModel = new PageModel<>();
+        pageModel.setList(companyMapper.findAllCustomerAccountByCompanyId(map));
+        pageModel.setCount(companyMapper.getAllCustomerAccountByCompanyId(map));
+        return pageModel;
+    }
+
+    @Override
+    public boolean addCompanyAndCustomer(String name, String authId, String deptId) throws Exception {
+        Company company = new Company();
+        company.setName(name.trim());
+        companyMapper.addCompany(company);
+
+        //向客户表中插入数据
+        Customer customerA = new Customer();
+        customerA.setAuthId(authId.trim());
+        customerA.setCompanyId(company.getId());
+        customerMapper.insertCustomer(customerA);
+
+        Customer customerB = new Customer();
+        customerB.setAuthId(authId.trim() + "_test");
+        customerB.setCompanyId(company.getId());
+        customerMapper.insertCustomerTest(customerB);
+
+        //向部门客户映射表中插入数据
+        CustomerDept customerDeptA = new CustomerDept();
+        customerDeptA.setCustomerId(customerA.getId());
+        customerDeptA.setDeptId(Integer.parseInt(deptId.trim()));
+        customerDeptMapper.insertCustomerDept(customerDeptA);
+
+        CustomerDept customerDeptB = new CustomerDept();
+        customerDeptB.setCustomerId(customerB.getId());
+        customerDeptB.setDeptId(Integer.parseInt(deptId.trim()));
+        return customerDeptMapper.insertCustomerDept(customerDeptB);
+    }
+
 
     @Override
     public List<Api> findAllApi(String companyId) throws Exception{
@@ -118,7 +159,17 @@ public class CompanyServiceImpl implements CompanyService {
             List<CustomerApi> customerNotMobileApiList = companyMapper.findAllByCustomerIdNotMobile(mapA);
             List<CustomerApi> customerMobileApiList = companyMapper.findAllByCustomerIdMobile(mapA);
             customerNotMobileApiList.addAll(customerMobileApiList);
-            pageModel.setList(customerNotMobileApiList);
+            List<CustomerApi> customerApiList = new ArrayList<>();
+            for (int i=0;i<customerNotMobileApiList.size();i++){
+                for (int j=0;j<customerIdList.size();j++){
+                    if(companyMapper.findAllCustomerApiByOnlyOneCustomerId
+                            ((Integer) customerIdList.get(j)).contains(customerNotMobileApiList.get(i).getApiId()))
+                    {
+                        customerApiList.add(customerNotMobileApiList.get(i));
+                    }
+                }
+            }
+            pageModel.setList(customerApiList);
             pageModel.setCount(companyMapper.getAllCountByCustomerId(mapA));
             return pageModel;
         }
@@ -126,23 +177,44 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean updateCustomerApiById(String id,String price,String apiId,String enabled)throws Exception {
-        CustomerApi customerApi = new CustomerApi();
-        customerApi.setId(Integer.parseInt(id));
-        customerApi.setPrice(Integer.parseInt(price.trim().replaceAll(",","")));
-        customerApi.setApiId(Integer.parseInt(apiId));
-        customerApi.setEnabled(Boolean.parseBoolean(enabled));
-        return companyMapper.updateCustomerApiById(customerApi);
-    }
-
-    @Override
-    public CustomerApi findById(Integer id) throws Exception{
-        CustomerApi customerApiNotMobile = companyMapper.findByIdNotMobile(id);
-        CustomerApi customerApiMobile = companyMapper.findByIdMobile(id);
-        if(customerApiNotMobile != null){
-            return customerApiNotMobile;
+    public CustomerApi findById(String apiId,String companyId) throws Exception {
+        List<Customer> customerList = companyMapper.findAllCustomerByCompanyId(Integer.parseInt(companyId));
+        List customerIdList = new ArrayList();
+        if (customerList != null) {
+            for (int i = 0; i < customerList.size(); i++) {
+                customerIdList.add(customerList.get(i).getId());
+            }
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("customerIdList", customerIdList);
+        map.put("apiId", apiId);
+        List<CustomerApi> customerApiNotMobileList = companyMapper.findByIdNotMobile(map);
+        List<CustomerApi> customerApiMobileList = companyMapper.findByIdMobile(map);
+        if (customerApiNotMobileList != null) {
+            return customerApiNotMobileList.get(0);
         }else {
-            return customerApiMobile;
+            return customerApiMobileList.get(0);
         }
     }
-}
+
+
+
+
+        @Override
+        public boolean updateCustomerApiById(String companyId,String price,String apiId,String enabled)throws Exception {
+            List<Customer> customerList = companyMapper.findAllCustomerByCompanyId(Integer.parseInt(companyId));
+            List customerIdList = new ArrayList();
+           Map<String,Object> map = new HashedMap();
+            if(customerList != null) {
+                for (int i = 0; i < customerList.size(); i++) {
+                    customerIdList.add(customerList.get(i).getId());
+                }
+                map.put("customerIdList",customerIdList);
+                map.put("price",Integer.parseInt(price.trim().replaceAll(",", "")));
+                map.put("apiId",Integer.parseInt(apiId));
+                map.put("enabled",Boolean.parseBoolean(enabled));
+                return companyMapper.updateCustomerApiById(map);
+            }
+            return false;
+        }
+    }

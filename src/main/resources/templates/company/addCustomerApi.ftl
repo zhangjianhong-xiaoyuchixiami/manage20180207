@@ -98,7 +98,7 @@
 
                                         <!-- BEGIN FORM-->
 
-                                        <form action="/customerApi/addCustomerApiAction" class="form-horizontal" method="post">
+                                        <form action="/custom   erApi/addCustomerApiAction" class="form-horizontal" method="post">
 
                                             <#if msg??>
 
@@ -106,7 +106,7 @@
 
                                                     <button class="close" data-dismiss="alert"></button>
 
-                                                    对不起，操作失败，请检查你的输入！
+                                                    ${msg}
 
                                                 </div>
 

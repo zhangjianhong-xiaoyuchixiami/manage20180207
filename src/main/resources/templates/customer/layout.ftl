@@ -322,7 +322,7 @@
 
                             <@shiro.hasPermission name="customer:findAllCustomer">
                                 <li id="customerList">
-                                    <a href="/customer/findAllCustomer">
+                                    <a href="/company/findAllCustomer">
                                         客户信息
                                     </a>
                                 </li>
@@ -339,6 +339,60 @@
                         </ul>
                     </li>
                 </@shiro.hasAnyRoles>
+
+                <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
+                    <li class="" id="customerManage">
+                        <a href="javascript:;">
+
+                            <i class="icon-sitemap"></i>
+
+                            <span class="title">客户管理</span>
+
+                            <span class="" id="customerManageSelect"></span>
+
+                            <span class="arrow " id="customerManageArrow"></span>
+
+                        </a>
+
+                        <ul class="sub-menu">
+
+                            <#--<@shiro.hasPermission name="customer:addCustomerViewCommon">-->
+                            <#--commmon-->
+                                <li id="addCustomer">
+                                    <a href="/company/addCompanyAllDeptView">
+                                        新增客户Super
+                                    </a>
+                                </li>
+                            <#--</@shiro.hasPermission>-->
+
+                            <#--<@shiro.hasPermission name="customer:addCustomerViewSuper">-->
+                            <#--super-->
+                                <li id="addCustomer">
+                                    <a href="/company/addCompanyOnlyDeptView">
+                                        新增客户common
+                                    </a>
+                                </li>
+                            <#--</@shiro.hasPermission>-->
+
+                            <#--<@shiro.hasPermission name="customer:findAllCustomer">-->
+                                <li id="customerList">
+                                    <a href="/company/findAllAction">
+                                        客户信息super
+                                    </a>
+                                </li>
+                            <#--</@shiro.hasPermission>-->
+
+                            <#--<@shiro.hasPermission name="customer:findAllCustomerByDeptNo">-->
+                                <li id="customerList">
+                                    <a href="/company/findAllByDeptIdAction">
+                                        客户信息common
+                                    </a>
+                                </li>
+                            <#--</@shiro.hasPermission>-->
+
+                        </ul>
+                    </li>
+                <#--</@shiro.hasAnyRoles>-->
 
             <#--财务管理-->
                 <@shiro.hasAnyRoles name="sell,backAdmin">

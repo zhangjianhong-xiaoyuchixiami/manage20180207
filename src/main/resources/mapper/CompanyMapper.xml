@@ -11,6 +11,9 @@
         <result column="price" property="price"/>
         <result column="enabled" property="enabled"/>
         <result column="createTime" property="createTime"/>
+        <association property="customer" javaType="Customer">
+            <result column="companyId" property="companyId"/>
+        </association>
     </resultMap>
 
     <resultMap id="CustomerApi_Api_ApiType_Map" type="CustomerApi" extends="CustomerApi_Map">
@@ -60,6 +63,23 @@
                 <id column="mobileOperatorId" property="id"/>
                 <result column="mobileOperatorName" property="name"/>
             </association>
+        </association>
+    </resultMap>
+
+    <resultMap type="Customer" id="Customer_CustomerType_CustomerStatus">
+        <result column="id" property="id"/>
+        <result column="typeId" property="typeId"/>
+        <result column="name" property="name"/>
+        <result column="authId" property="authId"/>
+        <result column="authPass" property="authPass"/>
+        <result column="balance" property="balance"/>
+        <result column="status" property="status"/>
+        <result column="createTime" property="createTime"/>
+        <association property="customerType" javaType="CustomerType">
+            <result column="qctname" property="name"/>
+        </association>
+        <association property="customerStatus" javaType="CustomerStatus">
+            <result column="qcsname" property="name"/>
         </association>
     </resultMap>
 
@@ -120,9 +140,23 @@
 
     <!--根据客户公司Id查找全部的账号-->
     <select id="findAllCustomerByCompanyId" parameterType="Integer" resultType="Customer">
-        SELECT id,companyId
+        SELECT id,typeId,authId,authPass,balance,status,createTime,companyId
         FROM qydata.Customer
         WHERE companyId=#{param}
+    </select>
+
+    <select id="findAllCustomerAccountByCompanyId" parameterType="map" resultMap="Customer_CustomerType_CustomerStatus">
+        SELECT qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.status,qct.name qctname,qcs.name qcsname
+        FROM qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
+        WHERE qc.typeId=qct.id AND qc.status=qcs.id AND qc.companyId=#{companyId}
+        ORDER BY qc.createTime DESC
+        limit #{beginIndex},#{lineSize}
+    </select>
+
+    <select id="getAllCustomerAccountByCompanyId" parameterType="map" resultType="Integer">
+        SELECT COUNT(id)
+        FROM qydata.Customer
+        WHERE companyId=#{companyId}
     </select>
 
     <!--查询所有供应商Api-->
@@ -183,38 +217,38 @@
     <!--根据客户Id查找指定客户的所有CustomerApi-->
     <select id="findAllByCustomerIdNotMobile" parameterType="map" resultMap="CustomerApi_Api_ApiType_Map">
         SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.createTime,a.apiTypeId,
-        a.vendorId,a.apiName,apiType.name apiTypeName
+        a.vendorId,a.apiName,a.companyId,apiType.name apiTypeName,customer.companyId
         FROM (
-        SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,
-        customerApi.enabled,customerApi.createTime,api.apiTypeId,api.vendorId,api.name apiName
-        FROM qydata.CustomerApi customerApi,qydata.Api api
-        WHERE customerApi.apiId=api.id AND  customerId IN
-                                                            <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
-                                                                #{customerId}
-                                                            </foreach>
-        ) a,qydata.ApiType apiType
-        WHERE a.apiTypeId=apiType.id AND apiType.name NOT LIKE '%mobile%'
+                SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,
+                customerApi.enabled,customerApi.createTime,api.apiTypeId,api.vendorId,api.name apiName
+                FROM qydata.CustomerApi customerApi,qydata.Api api
+                WHERE customerApi.apiId=api.id AND  customerId IN
+                                                                    <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                                                                        #{customerId}
+                                                                    </foreach>
+              ) a,qydata.ApiType apiType,qydata.Customer customer
+        WHERE a.apiTypeId=apiType.id AND a.customerId=customer.id AND apiType.name NOT LIKE '%mobile%'
         ORDER BY a.createTime DESC
         limit #{beginIndex},#{lineSize}
     </select>
 
     <select id="findAllByCustomerIdMobile" parameterType="map" resultMap="CustomerApi_Api_ApiType_ApiMobileOperator_Map">
         SELECT b.customerApiId,b.apiId,b.customerId,b.price,b.enabled,b.createTime,b.apiTypeId,
-        b.vendorId,b.apiName,b.apiTypeName,mobileOperator.name mobileOperatorName
+        b.vendorId,b.apiName,b.apiTypeName,b.companyId,mobileOperator.name mobileOperatorName
         FROM (
-        SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.createTime,a.apiTypeId,
-        a.vendorId,a.apiName,apiType.name apiTypeName
-        FROM (
-        SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,
-        customerApi.enabled,customerApi.createTime,api.apiTypeId,api.vendorId,api.name apiName
-        FROM qydata.CustomerApi customerApi,qydata.Api api
-        WHERE customerApi.apiId=api.id AND  customerId IN
-                                                            <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
-                                                                #{customerId}
-                                                            </foreach>
-        ) a,qydata.ApiType apiType
-        WHERE a.apiTypeId=apiType.id AND apiType.name LIKE '%mobile%'
-        ) b,qydata.ApiMobileOperator apiMobileOperator,qydata.MobileOperator mobileOperator
+                SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.createTime,a.apiTypeId,
+                a.vendorId,a.apiName,apiType.name apiTypeName,customer.companyId
+                FROM (
+                        SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,
+                        customerApi.enabled,customerApi.createTime,api.apiTypeId,api.vendorId,api.name apiName
+                        FROM qydata.CustomerApi customerApi,qydata.Api api
+                        WHERE customerApi.apiId=api.id AND  customerId IN
+                                                                            <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                                                                                #{customerId}
+                                                                            </foreach>
+                      ) a,qydata.ApiType apiType,qydata.Customer customer
+                WHERE a.apiTypeId=apiType.id AND a.customerId=customer.id AND apiType.name LIKE '%mobile%'
+              ) b,qydata.ApiMobileOperator apiMobileOperator,qydata.MobileOperator mobileOperator
         WHERE b.apiId=apiMobileOperator.apiId AND apiMobileOperator.mobileOperatorId=mobileOperator.id
         ORDER BY b.createTime DESC
         limit #{beginIndex},#{lineSize}
@@ -228,45 +262,58 @@
                                                                         </foreach>
     </select>
 
-    <!--根据Id查找-->
-    <select id="findByIdNotMobile" parameterType="Integer" resultMap="CustomerApi_Api_ApiType_Map">
-        SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.apiTypeId,a.vendorId,a.apiName,
-        apiType.name apiTypeName
-        FROM (
-        SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,customerApi.enabled,
-        api.apiTypeId,api.vendorId,api.name apiName
-        FROM qydata.CustomerApi customerApi,qydata.Api api
-        WHERE customerApi.apiId=api.id AND customerApi.id=#{param}
-        ) a,qydata.ApiType apiType
-        WHERE a.apiTypeId=apiType.id AND apiType.name NOT LIKE '%mobile%'
+    <!--根据账号Id查找指定账号的所有CustomerApi-->
+    <select id="findAllCustomerApiByOnlyOneCustomerId" parameterType="Integer" resultType="Integer">
+        SELECT apiId
+        FROM qydata.CustomerApi
+        WHERE customerId=#{param}
     </select>
 
-    <select id="findByIdMobile" parameterType="Integer" resultMap="CustomerApi_Api_ApiType_ApiMobileOperator_Map">
-        SELECT b.customerApiId,b.apiId,b.customerId,b.price,b.enabled,b.apiTypeId,b.vendorId,b.apiName,
-        b.apiTypeName,c.mobileOperatorName
-        FROM (
+    <!--根据Id查找-->
+    <select id="findByIdNotMobile" parameterType="map" resultMap="CustomerApi_Api_ApiType_Map">
         SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.apiTypeId,a.vendorId,a.apiName,
-        apiType.name apiTypeName
+        apiType.name apiTypeName,customer.companyId
         FROM (
-        SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,customerApi.enabled,
-        api.apiTypeId,api.vendorId,api.name apiName
-        FROM qydata.CustomerApi customerApi,qydata.Api api
-        WHERE customerApi.apiId=api.id AND customerApi.id=#{param}
-        ) a,qydata.ApiType apiType
-        WHERE a.apiTypeId=apiType.id AND apiType.name LIKE '%mobile%'
+                SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,customerApi.enabled,
+                api.apiTypeId,api.vendorId,api.name apiName
+                FROM qydata.CustomerApi customerApi,qydata.Api api
+                WHERE customerApi.apiId=api.id AND customerApi.apiId=#{apiId} AND customerApi.customerId IN
+                <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                    #{customerId}
+                </foreach>
+              ) a,qydata.ApiType apiType,qydata.Customer customer
+        WHERE a.apiTypeId=apiType.id AND a.customerId=customer.id AND apiType.name NOT LIKE '%mobile%'
+    </select>
+
+    <select id="findByIdMobile" parameterType="map" resultMap="CustomerApi_Api_ApiType_ApiMobileOperator_Map">
+        SELECT b.customerApiId,b.apiId,b.customerId,b.price,b.enabled,b.apiTypeId,b.vendorId,b.apiName,
+        b.apiTypeName,b.companyId,c.mobileOperatorName
+        FROM (
+                SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.apiTypeId,a.vendorId,a.apiName,
+                apiType.name apiTypeName,customer.companyId
+                FROM (
+                        SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,customerApi.enabled,
+                        api.apiTypeId,api.vendorId,api.name apiName
+                        FROM qydata.CustomerApi customerApi,qydata.Api api
+                        WHERE customerApi.apiId=api.id AND customerApi.apiId=#{apiId} AND customerApi.customerId IN
+                        <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                            #{customerId}
+                        </foreach>
+                      ) a,qydata.ApiType apiType,qydata.Customer customer
+                WHERE a.apiTypeId=apiType.id AND a.customerId=customer.id AND apiType.name LIKE '%mobile%'
         ) b,(
-        SELECT apiMobileOperator.apiId,mobileOperator.name mobileOperatorName
-        FROM qydata.ApiMobileOperator apiMobileOperator,qydata.MobileOperator mobileOperator
-        WHERE apiMobileOperator.mobileOperatorId=mobileOperator.id
-        ) c
+                SELECT apiMobileOperator.apiId,mobileOperator.name mobileOperatorName
+                FROM qydata.ApiMobileOperator apiMobileOperator,qydata.MobileOperator mobileOperator
+                WHERE apiMobileOperator.mobileOperatorId=mobileOperator.id
+              ) c
         WHERE b.apiId=c.apiId
-
-
-
     </select>
     <!--根据Id修改-->
-    <update id="updateCustomerApiById" parameterType="CustomerApi">
-        update qydata.CustomerApi set apiId=#{apiId},price=#{price},enabled=#{enabled} where id=#{id}
+    <update id="updateCustomerApiById" parameterType="map">
+        update qydata.CustomerApi set apiId=#{apiId},price=#{price},enabled=#{enabled} where customerId IN
+        <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+            #{customerId}
+        </foreach>
     </update>
 
 </mapper>

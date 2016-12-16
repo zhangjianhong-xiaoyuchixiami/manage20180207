@@ -2,6 +2,7 @@ package org.qydata.service;
 
 import org.qydata.entity.Api;
 import org.qydata.entity.Company;
+import org.qydata.entity.Customer;
 import org.qydata.entity.CustomerApi;
 import org.qydata.tools.PageModel;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,24 @@ public interface CompanyService {
      * @throws Exception
      */
     public PageModel<Company> findAllCompany(Map<String,Object> map)throws Exception;
+
+    /**
+     * 根据客户公司Id查找全部的账号
+     * @return
+     * @throws Exception
+     */
+    public PageModel<Customer> findAllCustomerAccountByCompanyId(Map<String,Object> map)throws Exception;
+
+    /**
+     * 新增客户和账户
+     * @param name
+     * @param authId
+     * @param deptId
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public boolean addCompanyAndCustomer(String name,String authId,String deptId)throws Exception;
     /**
      * 查询供应商Api所有数据
      * @return
@@ -55,14 +74,14 @@ public interface CompanyService {
     public PageModel<CustomerApi> findAllCustomerApiByCompanyId(Map<String,Object> map)throws Exception;
     /**
      * 根据Id查找
-     * @param id
+     * @param apiId
      * @return
      */
-    public CustomerApi findById(Integer id)throws Exception;
+    public CustomerApi findById(String apiId,String companyId)throws Exception;
     /**
      * 根据Id修改
      * @return
      */
     @Transactional
-    public boolean updateCustomerApiById(String id,String price,String apiId,String enabled)throws Exception;
+    public boolean updateCustomerApiById(String companyId,String price,String apiId,String enabled)throws Exception;
 }

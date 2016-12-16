@@ -40,7 +40,7 @@
 
                         </li>
 
-                        <li><a href="#">客户列表</a></li>
+                        <li><a href="#">账号列表</a></li>
 
                     </ul>
 
@@ -56,25 +56,25 @@
 
                 <#--搜索框-->
                     <#if deptIdList??>
-                        <form action="/company/findAllByDeptIdAction" method="post" class="form-search pull-right">
+                        <form action="/customer/findAllCustomerByDeptNo" method="post" class="form-search pull-right">
 
                             <div class="input-append">
 
                                 <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
 
-                                <button class="btn" type="submit">搜索</button>
+                                <button class="btn blue" type="submit">搜索</button>
 
                             </div>
 
                         </form>
                     <#else >
-                        <form action="/company/findAllAction" method="post" class="form-search pull-right">
+                        <form action="/customer/findAllCustomer" method="post" class="form-search pull-right">
 
                             <div class="input-append">
 
                                 <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
 
-                                <button class="btn" type="submit">搜索</button>
+                                <button class="btn blue" type="submit">搜索</button>
 
                             </div>
 
@@ -106,31 +106,37 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 30px;"><input type="checkbox"/></th>
-                                    <th style="text-align: center">公司名称</th>
+                                    <th class="numeric"><input type="checkbox"/></th>
+                                    <th style="text-align: center">账号类型</th>
+                                    <th style="text-align: center">账户</th>
+                                    <th style="text-align: center">余额</th>
+                                    <th style="text-align: center">状态</th>
                                     <th style="text-align: center">创建时间</th>
                                     <th style="text-align: center">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
-                                    <#if companyList??>
-                                        <#list companyList as company>
+                                    <#if customerList??>
+                                        <#list customerList as customer>
                                         <tr>
-                                            <td><input type="checkbox" value="${company.id}"/></td>
-                                            <td><a href="/company/findAllCustomerAccountByCompanyId/${company.id}">${company.name}</a></td>
-                                            <td>${company.createTime}</td>
+                                            <td><input type="checkbox" value="${customer.id}"/></td>
+                                            <td>${customer.customerType.name}</td>
+                                            <td>${customer.authId}</td>
+                                            <td>${customer.balance}</td>
+                                            <td>${customer.customerStatus.name}</td>
+                                            <td>${customer.createTime}</td>
                                             <td style="text-align: center">
 
                                                 <p>
 
-                                                    <a href="/company/addCustomerIpView/${company.id}" class="btn" id="gritter-light">添加Ip</a>
+                                                    <a href="/customerIp/addCustomerIpView/${customer.id}" class="btn" id="gritter-light">添加Ip</a>
 
-                                                    <a href="/company/addCustomerApiView/${company.id}" class="btn black" id="gritter-light">添加Api</a><br/>
+                                                    <a href="/customerApi/addCustomerApiView/${customer.id}" class="btn black" id="gritter-light">添加Api</a><br/>
 
-                                                    <a href="/company/customerIpListAction/${company.id}" class="btn" id="gritter-max">管理Ip</a>
+                                                    <a href="/customerIp/customerIpListAction/${customer.id}" class="btn" id="gritter-max">管理Ip</a>
 
-                                                    <a href="/company/customerApiListAction/${company.id}" class="btn black" id="gritter-max">管理Api</a>
+                                                    <a href="/customerApi/customerApiListAction/${customer.id}" class="btn black" id="gritter-max">管理Api</a>
 
                                                 </p>
 
@@ -159,12 +165,12 @@
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
                                                         <#if (pageSize>1)>
-                                                            <li class="next"><a href="/company/findAllByDeptIdAction?pageSize=1<#if content??>&content=${content}</#if>"><span class="hidden-480">首页</span></a></li>
-                                                            <li class="next"><a href="/company/findAllByDeptIdAction?pageSize=${pageSize-1}<#if content??>&content=${content}</#if>"><span class="hidden-480">上一页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=1<#if content??>&content=${content}</#if>"><span class="hidden-480">首页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize-1}<#if content??>&content=${content}</#if>"><span class="hidden-480">上一页</span></a></li>
                                                         </#if>
                                                         <#if (pageSize<totlePage)>
-                                                            <li class="next"><a href="/company/findAllByDeptIdAction?pageSize=${pageSize+1}<#if content??>&content=${content}</#if>"><span class="hidden-480">下一页</span></a></li>
-                                                            <li class="next"><a href="/company/findAllByDeptIdAction?pageSize=${totlePage}<#if content??>&content=${content}</#if>"><span class="hidden-480">尾页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize+1}<#if content??>&content=${content}</#if>"><span class="hidden-480">下一页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${totlePage}<#if content??>&content=${content}</#if>"><span class="hidden-480">尾页</span></a></li>
                                                         </#if>
                                                     </ul>
                                                 </div>
@@ -188,12 +194,12 @@
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
                                                         <#if (pageSize>1)>
-                                                            <li class="next"><a href="/company/findAllAction?pageSize=1<#if content??>&content=${content}</#if>"><span class="hidden-480">首页</span></a></li>
-                                                            <li class="next"><a href="/company/findAllAction?pageSize=${pageSize-1}<#if content??>&content=${content}</#if>"><span class="hidden-480">上一页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=1<#if content??>&content=${content}</#if>"><span class="hidden-480">首页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize-1}<#if content??>&content=${content}</#if>"><span class="hidden-480">上一页</span></a></li>
                                                         </#if>
                                                         <#if (pageSize<totlePage)>
-                                                            <li class="next"><a href="/company/findAllAction?pageSize=${pageSize+1}<#if content??>&content=${content}</#if>"><span class="hidden-480">下一页</span></a></li>
-                                                            <li class="next"><a href="/company/findAllAction?pageSize=${totlePage}<#if content??>&content=${content}</#if>"><span class="hidden-480">尾页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize+1}<#if content??>&content=${content}</#if>"><span class="hidden-480">下一页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${totlePage}<#if content??>&content=${content}</#if>"><span class="hidden-480">尾页</span></a></li>
                                                         </#if>
                                                     </ul>
                                                 </div>

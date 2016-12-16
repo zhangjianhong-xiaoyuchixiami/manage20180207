@@ -1,8 +1,11 @@
 package org.qydata.controller;
 
 import org.qydata.entity.*;
+import org.qydata.regex.RegexUtil;
 import org.qydata.service.CompanyService;
+import org.qydata.service.CustomerApiService;
 import org.qydata.service.DeptService;
+import org.qydata.tools.IpTool;
 import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,8 @@ public class CompanyController {
     private DeptService deptService;
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private CustomerApiService customerApiService;
 
     @RequestMapping(value = "/addCompanyAllDeptView")
     public String addCompanyAllDeptView(Model model){
@@ -38,7 +43,7 @@ public class CompanyController {
             e.printStackTrace();
         }
         model.addAttribute("deptList",deptList);
-        return "/company/addCompanyAllDept";
+        return "/company/addCompanyAndCustomerAllDept";
     }
 
     @RequestMapping(value = "/addCompanyOnlyDeptView")
@@ -46,7 +51,81 @@ public class CompanyController {
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         model.addAttribute("deptList",deptList);
-        return "/company/addCompanyOnlyDept";
+        return "/company/addCompanyAndCustomerOnlyDept";
+    }
+
+    @RequestMapping(value = "/addCompanyAndCustomerAllDeptAction")
+    public String addCompanyAndCustomerAllDeptAction(String name,String authId,String deptId,RedirectAttributes model){
+        if(RegexUtil.isNull(name)){
+            model.addFlashAttribute("CompanyCustomerMessageName","请输入公司名称!");
+            return "redirect:/company/addCompanyAllDeptView";
+        }
+        if(RegexUtil.isNull(authId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("CompanyCustomerMessageAuthId","请输入账户!");
+            return "redirect:/company/addCompanyAllDeptView";
+        }
+        if(!RegexUtil.stringCheck(authId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("authId");
+            model.addFlashAttribute("CompanyCustomerMessageAuthId","账户格式输入不正确!");
+            return "redirect:/company/addCompanyAllDeptView";
+        }
+        if(RegexUtil.isNull(deptId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("authId");
+            model.addFlashAttribute("CompanyCustomerMessageDeptId","请选择所属部门!");
+            return "redirect:/company/addCompanyAllDeptView";
+        }
+        try{
+            boolean flag = companyService.addCompanyAndCustomer(name,authId,deptId);
+            if (!flag) {
+                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
+                return "redirect:/company/addCompanyAllDeptView";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
+            return "redirect:/company/addCompanyAllDeptView";
+        }
+        return "redirect:/company/findAllAction";
+    }
+
+    @RequestMapping(value = "/addCompanyAndCustomerOnlyDeptAction")
+    public String addCompanyAndCustomerOnlyDeptAction(String name,String authId,String deptId,RedirectAttributes model){
+        if(RegexUtil.isNull(name)){
+            model.addFlashAttribute("CompanyCustomerMessageName","请输入公司名称!");
+            return "redirect:/company/addCompanyOnlyDeptView";
+        }
+        if(RegexUtil.isNull(authId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("CompanyCustomerMessageAuthId","请输入账户!");
+            return "redirect:/company/addCompanyOnlyDeptView";
+        }
+        if(!RegexUtil.stringCheck(authId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("authId");
+            model.addFlashAttribute("CompanyCustomerMessageAuthId","账户格式输入不正确!");
+            return "redirect:/company/addCompanyOnlyDeptView";
+        }
+        if(RegexUtil.isNull(deptId)){
+            model.addFlashAttribute("name",name);
+            model.addFlashAttribute("authId");
+            model.addFlashAttribute("CompanyCustomerMessageDeptId","请选择所属部门!");
+            return "redirect:/company/addCompanyOnlyDeptView";
+        }
+        try{
+            boolean flag = companyService.addCompanyAndCustomer(name,authId,deptId);
+            if (!flag) {
+                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
+                return "redirect:/company/addCompanyOnlyDeptView";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
+            return "redirect:/company/addCompanyOnlyDeptView";
+        }
+        return "redirect:/company/findAllByDeptIdAction";
     }
 
     @RequestMapping(value = "/findAllByDeptIdAction")
@@ -127,6 +206,40 @@ public class CompanyController {
         return "/company/companyList";
     }
 
+    //通过客户公司的查找公司账号
+    @RequestMapping(value = "/findAllCustomerAccountByCompanyId/{companyId}")
+    public String findAllCustomerAccountByCompanyId(@PathVariable String companyId,HttpServletRequest request,Model model){
+        PageModel pageModel = new PageModel();
+        String pageSize= request.getParameter("pageSize");//当前页
+        String lineSize = "8";//每页显示条数
+        pageModel.setPageSize(pageSize);
+        pageModel.setLineSize(lineSize);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("beginIndex",pageModel.getBeginIndex());
+        map.put("lineSize",pageModel.getLineSize());
+        map.put("companyId",Integer.parseInt(companyId));
+        PageModel<Customer> pageModelOne = new PageModel<>();
+        try {
+            pageModelOne = companyService.findAllCustomerAccountByCompanyId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("count",pageModelOne.getCount());
+        model.addAttribute("customerList",pageModelOne.getList());
+        model.addAttribute("companyId",companyId);
+        Integer totalPage= null;
+        Integer count = pageModelOne.getCount();
+
+        if (count%Integer.parseInt(lineSize) == 0) {
+            totalPage = (count/Integer.parseInt(lineSize));
+        } else {
+            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+        }
+        model.addAttribute("totlePage",totalPage);
+        model.addAttribute("pageSize",pageModel.getPageSize());
+        return "/company/accountList";
+    }
+
     @RequestMapping(value = "/addCustomerApiView/{companyId}")
     public String addCustomerApiView(@PathVariable String companyId,Model model){
         List<Api> apiList = null;
@@ -142,8 +255,44 @@ public class CompanyController {
 
     @RequestMapping(value = "/addCustomerApiAction")
     public String addCustomerApiAction(RedirectAttributes model, String companyId, String price, String apiId, String enabled){
+        if(RegexUtil.isNull(price)){
+            model.addFlashAttribute("CustomerMessagePrice","请输入金额");
+            return "redirect:/company/addCustomerApiView/"+companyId;
+        }
+        List priceList = IpTool.spiltStr(price);
+        for(int i=0;i<priceList.size();i++){
+            if(!RegexUtil.isFloatZero((String) priceList.get(i))){
+                model.addFlashAttribute("price",price);
+                model.addFlashAttribute("CustomerMessagePrice","金额格式不正确");
+                return "redirect:/company/addCustomerApiView/"+companyId;
+            }else{
+                if(Integer.parseInt((String) priceList.get(i))<=0){
+                    model.addFlashAttribute("CustomerMessagePrice","金额必须大于0");
+                    return "redirect:/company/addCustomerApiView/"+companyId;
+                }
+            }
+        }
+        if(RegexUtil.isNull(companyId)){
+            return "redirect:/company/addCustomerApiView/"+companyId;
+        }
+        if(RegexUtil.isNull(apiId)){
+            return "redirect:/company/addCustomerApiView/"+companyId;
+        }
+        if(RegexUtil.isNull(enabled)){
+            return "redirect:/company/addCustomerApiView/"+companyId;
+        }
 
-        return null;
+        try {
+            boolean flag = companyService.insertCustomerApi(companyId,price,apiId,enabled);
+            if (!flag) {
+                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
+                return "redirect:/company/addCustomerApiView/"+companyId;
+            }
+        }catch (Exception e){
+            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
+            return "redirect:/company/addCustomerApiView/"+companyId;
+        }
+        return "redirect:/company/findAllCustomerApiByCompanyId/"+companyId;
     }
 
     @RequestMapping(value = "/findAllCustomerApiByCompanyId/{companyId}")
@@ -165,6 +314,7 @@ public class CompanyController {
         }
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("customerApiList",pageModelOne.getList());
+        model.addAttribute("companyId",companyId);
         Integer totalPage= null;
         Integer count = pageModelOne.getCount();
 
@@ -175,8 +325,71 @@ public class CompanyController {
         }
         model.addAttribute("totlePage",totalPage);
         model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/customerApi/customerApiList";
+        return "/company/customerApiList";
     }
+
+    //根据id查找指定的customerApi
+    @RequestMapping(value = "/findCustomerApiById/{apiId}/{companyId}")
+    public String findCustomerApiById(@PathVariable String apiId,@PathVariable String companyId, Model model){
+        List<Api> apiList = null;
+        CustomerApi customerApi = null;
+        try {
+            Map<String,Object> map = new HashMap<>();
+            apiList =customerApiService .findAllApi(map);
+            customerApi = companyService.findById(apiId,companyId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("apiList",apiList);
+        model.addAttribute(customerApi);
+        return "/company/updateCustomerApi";
+    }
+
+    //根据id修改指定的customerApi
+    @RequestMapping(value = "/updateCustomerApiById")
+    public String updateCustomerApiById(String beforApiId,String companyId,String price,String afterApiId,String enabled,RedirectAttributes model ){
+        if(RegexUtil.isNull(beforApiId)){
+            return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+        }
+        if(RegexUtil.isNull(price)){
+            model.addFlashAttribute("CustomerMessagePrice","请输入金额");
+            return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+        }
+        if(!RegexUtil.isFloatZero(price)){
+            model.addFlashAttribute("CustomerMessagePrice","金额格式不正确");
+            return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+        }else {
+            if(Integer.parseInt(price)<=0){
+                model.addFlashAttribute("CustomerMessagePrice","金额必须大于0");
+                return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+            }
+        }
+        if(RegexUtil.isNull(companyId)){
+            return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+        }
+        if(RegexUtil.isNull(afterApiId)){
+            return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+        }
+        if(RegexUtil.isNull(enabled)){
+            return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+        }
+
+
+        try {
+            boolean flag = companyService.updateCustomerApiById(companyId,price,afterApiId,enabled);
+            if (!flag) {
+                model.addFlashAttribute("msg","对不起，修改失败，请检查你的输入！");
+                return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            model.addFlashAttribute("msg","对不起，修改失败，请检查你的输入！");
+            return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
+        }
+        return "redirect:/company/findAllCustomerApiByCompanyId/" + companyId;
+    }
+
+
 
 
 }

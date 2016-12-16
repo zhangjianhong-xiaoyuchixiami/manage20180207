@@ -53,6 +53,22 @@ public interface CompanyMapper {
     public List<Customer> findAllCustomerByCompanyId(Integer companyId)throws Exception;
 
     /**
+     * 根据客户公司Id查找全部的账号
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<Customer> findAllCustomerAccountByCompanyId(Map<String,Object> map)throws Exception;
+
+    /**
+     * 根据客户公司Id统计全部的账号的数据量
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getAllCustomerAccountByCompanyId(Map<String,Object> map)throws Exception;
+
+    /**
      * 查询非mobileApi所有数据
      * @return
      */
@@ -87,22 +103,30 @@ public interface CompanyMapper {
     public Integer getAllCountByCustomerId(Map<String,Object> map)throws Exception;
 
     /**
-     * 根据Id查找NotMobile
-     * @param id
+     * 根据账号Id查找指定账号的所有CustomerApi
+     * @param customerId
      * @return
      */
-    public CustomerApi findByIdNotMobile(Integer id)throws Exception;
+    public List<Integer> findAllCustomerApiByOnlyOneCustomerId(Integer customerId)throws Exception;
+
+
+    /**
+     * 根据Id查找NotMobile
+     * @param map
+     * @return
+     */
+    public List<CustomerApi> findByIdNotMobile(Map<String,Object> map)throws Exception;
     /**
      * 根据Id查找Mobile
-     * @param id
+     * @param map
      * @return
      */
-    public CustomerApi findByIdMobile(Integer id)throws Exception;
+    public List<CustomerApi> findByIdMobile(Map<String,Object> map)throws Exception;
 
     /**
      * 根据Id修改
-     * @param api
+     * @param map
      * @return
      */
-    public boolean updateCustomerApiById(CustomerApi api)throws Exception;
+    public boolean updateCustomerApiById(Map<String,Object> map)throws Exception;
 }

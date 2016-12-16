@@ -2,7 +2,6 @@ package org.qydata.service.impl;
 
 
 
-import org.qydata.entity.Company;
 import org.qydata.entity.Customer;
 import org.qydata.entity.CustomerDept;
 import org.qydata.mapper.CompanyMapper;
@@ -36,22 +35,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean insertCustomer(String name, String authId, String deptId)throws Exception {
-
-        Company company = new Company();
-        company.setName(name.trim());
-        companyMapper.addCompany(company);
-
+    public boolean insertCustomer(String companyId, String authId, String deptId)throws Exception {
 
         //向客户表中插入数据
         Customer customerA = new Customer();
         customerA.setAuthId(authId.trim());
-        customerA.setCompanyId(company.getId());
+        customerA.setCompanyId(Integer.parseInt(companyId));
         customerMapper.insertCustomer(customerA);
 
         Customer customerB = new Customer();
         customerB.setAuthId(authId.trim() + "_test");
-        customerB.setCompanyId(company.getId());
+        customerB.setCompanyId(Integer.parseInt(companyId));
         customerMapper.insertCustomerTest(customerB);
 
         //向部门客户映射表中插入数据

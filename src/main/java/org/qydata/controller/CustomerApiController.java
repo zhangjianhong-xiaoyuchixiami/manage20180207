@@ -109,6 +109,7 @@ public class CustomerApiController {
         }
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("customerApiList",pageModelOne.getList());
+        model.addAttribute("customerId",customerId);
         Integer totalPage= null;
         Integer count = pageModelOne.getCount();
 

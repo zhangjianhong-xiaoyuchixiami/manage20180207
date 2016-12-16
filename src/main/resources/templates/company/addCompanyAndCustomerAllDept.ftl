@@ -2,7 +2,6 @@
 
 
 <@layout ; section>
-
     <#if section = "head">
 
     <#elseif section = "content" >
@@ -27,9 +26,9 @@
 
                             <i class="icon-home"></i>
 
-                            <a href="index.html">首页</a>
+                            <a href="/view/successUrl">首页</a>
 
-                            <span class="icon-angle-right"></span>
+                            <i class="icon-angle-right"></i>
 
                         </li>
 
@@ -37,13 +36,15 @@
 
                             <a href="#">客户管理</a>
 
-                            <span class="icon-angle-right"></span>
+                            <i class="icon-angle-right"></i>
 
                         </li>
 
                         <li><a href="#">新增客户</a></li>
 
                     </ul>
+
+                    <!-- END PAGE TITLE & BREADCRUMB-->
 
                 </div>
 
@@ -79,23 +80,23 @@
 
                             <!-- BEGIN FORM-->
 
-                            <form action="#" id="form_sample_1" class="form-horizontal">
+                            <form action="/company/addCompanyAndCustomerAllDeptAction" id="form_sample_1" class="form-horizontal" method="post">
 
                                 <div class="control-group"></div>
 
                                 <div class="control-group"></div>
 
-                                <#if msg??>
+                                    <#if msg??>
 
-                                    <div class="alert alert-error show">
+                                        <div class="alert alert-error show">
 
-                                        <button class="close" data-dismiss="alert"></button>
+                                            <button class="close" data-dismiss="alert"></button>
 
-                                        对不起，操作失败，请检查你的输入！
+                                            ${msg}
 
-                                    </div>
+                                        </div>
 
-                                </#if>
+                                    </#if>
 
                                 <div class="control-group">
 
@@ -103,7 +104,25 @@
 
                                     <div class="controls">
 
-                                        <input type="text" name="name" data-required="1" class="span6 m-wrap"/>
+                                        <input type="text" id="customer_Name" name="name" <#if name??>value="${name}"</#if> class="span6 m-wrap"/>
+
+                                        <span id="customer_NameMsg" class="help-inline"><#if CompanyCustomerMessageName??><font color="red">${CompanyCustomerMessageName}</font></#if></span>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="control-group">
+
+                                    <label class="control-label">请输入账号<span class="required">*</span></label>
+
+                                    <div class="controls">
+
+                                        <input type="text" id="customer_authId" name="authId" <#if authId??>value="${authId}"</#if> class="span6 m-wrap"/>
+
+                                        <span id="customer_authIdMsg" class="help-inline"><#if CompanyCustomerMessageAuthId??><font color="red">${CompanyCustomerMessageAuthId}</font></#if></span>
+
+                                        <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
 
                                     </div>
 
@@ -111,13 +130,13 @@
 
                                 <#if deptList??>
 
-                                    <div class="control-group">
+                                <div class="control-group">
 
-                                        <label class="control-label">请选择所属部门<span class="required">*</span></label>
+                                    <label class="control-label">请选择部门<span class="required">*</span></label>
 
                                         <div class="controls">
 
-                                            <select class="span6 m-wrap" name="deptId">
+                                            <select id="dept_id" name="deptId" class="medium m-wrap" tabindex="1">
 
                                                 <option value="">请选择...</option>
 
@@ -129,17 +148,19 @@
 
                                             </select>
 
+                                            <span id="deptIdMsg" class="help-inline"><#if CompanyCustomerMessageDeptId??><font color="red">${CompanyCustomerMessageDeptId}</font></#if></span>
+
                                         </div>
 
-                                    </div>
+                                </div>
 
                                 </#if>
 
                                 <div class="form-actions">
 
-                                    <button type="submit" class="btn blue">确定</button>
+                                    <button type="submit" class="btn black">提交</button>
 
-                                    <button type="button" class="btn">取消</button>
+                                    <a href="/view/successUrl"><button type="button" class="btn">取消</button></a>
 
                                 </div>
 
@@ -160,10 +181,9 @@
         </div>
 
     </div>
-
+    <script src="/js/myjs/addcompanyandcustomeralldept.js" type="text/javascript"></script>
     <#elseif section = "footer">
 
     </#if>
 
 </@layout>
-

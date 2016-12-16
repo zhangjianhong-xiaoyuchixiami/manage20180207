@@ -1,4 +1,4 @@
-<#include "../customer/layout.ftl">
+<#include "layout.ftl">
 
 
 <@layout ; section>
@@ -55,7 +55,7 @@
 
                     <!-- BEGIN VALIDATION STATES-->
 
-                    <div class="portlet box blue">
+                    <div class="portlet box light-grey">
 
                         <div class="portlet-title">
 
@@ -91,19 +91,35 @@
 
                                         <button class="close" data-dismiss="alert"></button>
 
-                                        对不起，操作失败，请检查你的输入！
+                                    ${msg}
 
                                     </div>
 
                                 </#if>
 
-                                <div class="control-group">
+                                <div class="control-group" style="display: block">
 
                                     <label class="control-label">请输入公司名称<span class="required">*</span></label>
 
                                     <div class="controls">
 
-                                        <input type="text" name="name" data-required="1" class="span6 m-wrap"/>
+                                        <input type="text" name="companyId" value="" data-required="1" class="span6 m-wrap"/>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="control-group">
+
+                                    <label class="control-label">请输入账号<span class="required">*</span></label>
+
+                                    <div class="controls">
+
+                                        <input type="text" name="authId" data-required="1" class="span6 m-wrap"/>
+
+                                        <span id="customer_authIdMsg" class="help-inline"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
+
+                                        <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
 
                                     </div>
 
@@ -117,7 +133,7 @@
 
                                         <div class="controls">
 
-                                            <select class="span6 m-wrap" name="deptId">
+                                            <select class="span6 m-wrap" id="deptId" name="deptId">
 
                                                 <option value="">请选择...</option>
 
@@ -129,6 +145,8 @@
 
                                             </select>
 
+                                            <span id="customer_deptIdMsg" class="help-inline"><#if CustomerMessagedeptId??><font color="red">${CustomerMessagedeptId}</font></#if></span>
+
                                         </div>
 
                                     </div>
@@ -137,7 +155,7 @@
 
                                 <div class="form-actions">
 
-                                    <button type="submit" class="btn blue">确定</button>
+                                    <button type="submit" class="btn black">确定</button>
 
                                     <button type="button" class="btn">取消</button>
 

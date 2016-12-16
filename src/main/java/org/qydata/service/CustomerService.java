@@ -25,7 +25,7 @@ public interface CustomerService {
      * @return 插入成功返回true,否则返回false;
      */
     @Transactional
-    public boolean insertCustomer(String name, String authId, String deptId)throws Exception ;
+    public boolean insertCustomer(String companyId, String authId, String deptId)throws Exception ;
     /**
      * 查询当前登录着可见的客户信息并分页显示
      * @map 包含了要使用的数据

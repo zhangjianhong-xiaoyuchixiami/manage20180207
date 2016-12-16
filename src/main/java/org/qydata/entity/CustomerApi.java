@@ -20,6 +20,7 @@ public class CustomerApi implements Serializable {
     private Timestamp createTime;
     private Timestamp timestamp;
     private Api api;
+    private Customer customer;
     public CustomerApi(){}
 
     public Integer getId() {
@@ -84,6 +85,14 @@ public class CustomerApi implements Serializable {
 
     public void setApi(Api api) {
         this.api = api;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override

@@ -1,4 +1,4 @@
-<#include "layout.ftl">
+<#include "../customer/layout.ftl">
 
 
 <@layout ; section>
@@ -80,37 +80,23 @@
 
                             <!-- BEGIN FORM-->
 
-                                <form action="/customer/insertCustomerCommon" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
+                                <form action="/company/addCompanyAndCustomerOnlyDeptAction" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
 
-                                    <div class="alert alert-error hide">
+                                    <div class="control-group"></div>
 
-                                        <button class="close" data-dismiss="alert"></button>
+                                    <div class="control-group"></div>
 
-                                        You have some form errors. Please check below.
+                                    <#if msg??>
 
-                                    </div>
+                                        <div class="alert alert-error show">
 
-                                    <div class="alert alert-success hide">
+                                            <button class="close" data-dismiss="alert"></button>
 
-                                        <button class="close" data-dismiss="alert"></button>
+                                        ${msg}
 
-                                        Your form validation is successful!
+                                        </div>
 
-                                    </div>
-                                    <div class="control-group">
-
-                                    </div>
-                                    <div class="control-group">
-
-                                    </div>
-
-                                    <div class="controls">
-                                        <#if msg??>
-                                            <span><h5><font color="red">${msg}</font></h5></span>
-                                        <#else>
-                                            <span></span>
-                                        </#if>
-                                    </div>
+                                    </#if>
 
                                     <div class="control-group">
 
@@ -120,7 +106,7 @@
 
                                             <input type="text" id="customer_Name" name="customer.name" <#if name??>value="${name}"</#if> class="span6 m-wrap"/>
 
-                                            <span id="customer_NameMsg" class="help-inline"><#if CustomerMessageName??><font color="red">${CustomerMessageName}</font></#if></span>
+                                            <span id="customer_NameMsg" class="help-inline"><#if CompanyCustomerMessageName??><font color="red">${CompanyCustomerMessageName}</font></#if></span>
 
                                         </div>
 
@@ -134,7 +120,7 @@
 
                                             <input type="text" id="customer_authId" name="customer.authId" <#if authId??>value="${authId}"</#if> class="span6 m-wrap"/>
 
-                                            <span id="customer_authIdMsg" class="help-inline"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
+                                            <span id="customer_authIdMsg" class="help-inline"><#if CompanyCustomerMessageAuthId??><font color="red">${CompanyCustomerMessageAuthId}</font></#if></span>
 
                                             <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
 
@@ -150,7 +136,9 @@
 
                                             <div class="controls">
 
-                                                <select id="dept_id" name="dept.id" class="medium m-wrap" tabindex="1">
+                                                <select id="deptId" name="dept.id" class="medium m-wrap" tabindex="1">
+
+                                                    <option value="">请选择...</option>
 
                                                     <#list deptList as dept>
 
@@ -160,6 +148,8 @@
 
                                                 </select>
 
+                                                <span id="deptIdMsg" class="help-inline"><#if CompanyCustomerMessageDeptId??><font color="red">${CompanyCustomerMessageDeptId}</font></#if></span>
+
                                             </div>
 
                                         </#if>
@@ -168,7 +158,7 @@
 
                                     <div class="form-actions">
 
-                                        <button type="submit" class="btn blue">提交</button>
+                                        <button type="submit" class="btn black">提交</button>
 
                                         <a href="/view/successUrl"><button type="button" class="btn">取消</button></a>
 
@@ -191,44 +181,10 @@
         </div>
 
     </div>
+    <script src="/js/myjs/addcompanyandcustomeralldept.js" type="text/javascript"></script>
 
     <#elseif section = "footer">
 
     </#if>
-
-<script>
-    $(document).ready(function() {
-        $('#customerManage').addClass('active');
-
-        $('#addCustomer').addClass('active');
-
-        $('#customerManageSelect').addClass('selected');
-
-        $('#customerManageArrow').addClass('arrow open');
-
-        $("#customer_Name").focus(function () {
-            $("#customer_NameMsg").html("");
-        });
-
-        $("#customer_authId").focus(function () {
-            $("#customer_authIdMsg").html("");
-        });
-
-        $("#dept_id").focus(function () {
-            $("#dept_IdMsg").html("");
-        });
-
-        $("#customer_authId").blur(function(){
-            $("#customer_authIdMsg").load("/customer/findCustomerByAuthId/"+$("#customer_authId").val(),
-                    function(responseTxt){
-                        if(responseTxt=="yes")
-                            $("#customer_authIdMsg").html("<font color='red'>该账户已存在！</font>");
-                        if(responseTxt=="no")
-                            $("#customer_authIdMsg").html("");
-                    });
-        });
-    });
-
-</script>
 
 </@layout>

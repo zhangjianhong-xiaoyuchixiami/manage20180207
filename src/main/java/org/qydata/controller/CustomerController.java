@@ -84,84 +84,79 @@ public class CustomerController {
     }
 
 
-
     @RequestMapping(value = ("/insertCustomerCommon"))
-    public String insertCustomerByDeptNo(String name, String authId, String deptId, RedirectAttributes model){
+    public String insertCustomerByDeptNo(String companyId, String authId, String deptId, RedirectAttributes model){
 
-        if(RegexUtil.isNull(name)){
-            model.addFlashAttribute("CustomerMessageName","请输入公司名称!");
+        if(RegexUtil.isNull(companyId)){
             return "redirect:/customer/addCustomerViewCommon";
         }
         if(RegexUtil.isNull(authId)){
-            model.addFlashAttribute("name",name);
             model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
             return "redirect:/customer/addCustomerViewCommon";
         }
         if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("name",name);
             model.addFlashAttribute("authId");
             model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
             return "redirect:/customer/addCustomerViewCommon";
         }
-        if(!RegexUtil.isDigits(deptId)){
+        if(RegexUtil.isNull(deptId)){
+            model.addFlashAttribute("authId");
+            model.addFlashAttribute("CustomerMessageDeptId","请选择所属部门!");
             return "redirect:/customer/addCustomerViewCommon";
         }
-
-
         try{
-            boolean flag = customerService.insertCustomer(name,authId,deptId);
+            boolean flag = customerService.insertCustomer(companyId,authId,deptId);
             if (!flag) {
-                model.addFlashAttribute("msg", "添加失败");
+                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
                 return "redirect:/customer/addCustomerViewCommon";
             }
         }catch (Exception e){
             e.printStackTrace();
-            model.addFlashAttribute("msg", "添加失败！");
+            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
             return "redirect:/customer/addCustomerViewCommon";
         }
-        return "redirect:/customer/findAllCustomerByDeptNo";
+        return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
     }
 
 
 
     @RequestMapping(value = ("/insertCustomerSuper"))
-    public String insertCustomer(String name, String authId, String deptId, RedirectAttributes model){
-        if(RegexUtil.isNull(name)){
-            model.addFlashAttribute("CustomerMessageName","请输入公司名称!");
+    public String insertCustomer(String companyId, String authId, String deptId, RedirectAttributes model){
+        if(RegexUtil.isNull(companyId)){
             return "redirect:/customer/addCustomerViewSuper";
         }
         if(RegexUtil.isNull(authId)){
-            model.addFlashAttribute("name",name);
             model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
             return "redirect:/customer/addCustomerViewSuper";
         }
         if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("name",name);
             model.addFlashAttribute("authId");
             model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
             return "redirect:/customer/addCustomerViewSuper";
         }
-        if(!RegexUtil.isDigits(deptId)){
+        if(RegexUtil.isNull(deptId)){
+            model.addFlashAttribute("authId");
+            model.addFlashAttribute("CustomerMessageDeptId","请选择所属部门!");
             return "redirect:/customer/addCustomerViewSuper";
         }
 
         try{
-            boolean flag = customerService.insertCustomer(name,authId,deptId);
+            boolean flag = customerService.insertCustomer(companyId,authId,deptId);
             if (!flag) {
-                model.addFlashAttribute("msg", "添加失败");
+                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
                 return "redirect:/customer/addCustomerViewSuper";
             }
         }catch (Exception e){
             e.printStackTrace();
-            model.addFlashAttribute("msg", "添加失败！");
+            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
             return "redirect:/customer/addCustomerViewSuper";
         }
-        return "redirect:/customer/findAllCustomer";
+        return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
     }
 
 
 
-    //查找客户
+    //查找查找公司账号
     @RequestMapping(value = ("/findAllCustomer"))
     public String findAllCustomer(HttpServletRequest request,Model model,String content){
 
@@ -195,7 +190,7 @@ public class CustomerController {
 
 
 
-    //通过部门编号查找客户
+    //通过部门编号查找公司账号
     @RequestMapping(value = ("/findAllCustomerByDeptNo"))
     public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content){
         User user = (User)request.getSession().getAttribute("userInfo");
