@@ -61,48 +61,50 @@ public class CustomerController {
     }
 
 
-    //common
-    @RequestMapping(value = ("/addCustomerViewCommon"))
-    public String addCustomerViewCommon(Model model,HttpServletRequest request){
+
+    @RequestMapping(value = ("/addCustomerOnlyDeptView/{companyId}"))
+    public String addCustomerViewCommon(Model model,HttpServletRequest request,@PathVariable String companyId){
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
+        model.addAttribute("companyId",companyId);
         model.addAttribute("deptList",deptList);
-        return "customer/addCustomerCommon";
+        return "customer/addCustomerOnlyDept";
     }
 
-    //super
-    @RequestMapping(value = ("/addCustomerViewSuper"))
-    public String addCustomerViewSuper(Model model,HttpServletRequest request){
+
+    @RequestMapping(value = ("/addCustomerAllDeptView/{companyId}"))
+    public String addCustomerViewSuper(Model model,HttpServletRequest request,@PathVariable String companyId){
         List<Dept> deptList = null;
         try {
             deptList = deptService.findAllDept();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        model.addAttribute("companyId",companyId);
         model.addAttribute("deptList",deptList);
-        return "customer/addCustomerSuper";
+        return "customer/addCustomerAllDept";
     }
 
 
-    @RequestMapping(value = ("/insertCustomerCommon"))
+    @RequestMapping(value = ("/addCustomerOnlyDeptAction"))
     public String insertCustomerByDeptNo(String companyId, String authId, String deptId, RedirectAttributes model){
 
         if(RegexUtil.isNull(companyId)){
-            return "redirect:/customer/addCustomerViewCommon";
+            return "redirect:/customer/addCustomerOnlyDeptView/"+companyId;
         }
         if(RegexUtil.isNull(authId)){
             model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
-            return "redirect:/customer/addCustomerViewCommon";
+            return "redirect:/customer/addCustomerOnlyDeptView/"+companyId;
         }
         if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("authId");
+            model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
-            return "redirect:/customer/addCustomerViewCommon";
+            return "redirect:/customer/addCustomerOnlyDeptView/"+companyId;
         }
         if(RegexUtil.isNull(deptId)){
-            model.addFlashAttribute("authId");
+            model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("CustomerMessageDeptId","请选择所属部门!");
-            return "redirect:/customer/addCustomerViewCommon";
+            return "redirect:/customer/addCustomerOnlyDeptView/"+companyId;
         }
         try{
             boolean flag = customerService.insertCustomer(companyId,authId,deptId);
@@ -120,24 +122,24 @@ public class CustomerController {
 
 
 
-    @RequestMapping(value = ("/insertCustomerSuper"))
+    @RequestMapping(value = ("/addCustomerAllDeptAction"))
     public String insertCustomer(String companyId, String authId, String deptId, RedirectAttributes model){
         if(RegexUtil.isNull(companyId)){
-            return "redirect:/customer/addCustomerViewSuper";
+            return "redirect:/customer/addCustomerAllDeptView/"+companyId;
         }
         if(RegexUtil.isNull(authId)){
             model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
-            return "redirect:/customer/addCustomerViewSuper";
+            return "redirect:/customer/addCustomerAllDeptView/"+companyId;
         }
         if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("authId");
+            model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
-            return "redirect:/customer/addCustomerViewSuper";
+            return "redirect:/customer/addCustomerAllDeptView/"+companyId;
         }
         if(RegexUtil.isNull(deptId)){
-            model.addFlashAttribute("authId");
+            model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("CustomerMessageDeptId","请选择所属部门!");
-            return "redirect:/customer/addCustomerViewSuper";
+            return "redirect:/customer/addCustomerAllDeptView/"+companyId;
         }
 
         try{
@@ -156,7 +158,7 @@ public class CustomerController {
 
 
 
-    //查找查找公司账号
+    //查找公司账号
     @RequestMapping(value = ("/findAllCustomer"))
     public String findAllCustomer(HttpServletRequest request,Model model,String content){
 

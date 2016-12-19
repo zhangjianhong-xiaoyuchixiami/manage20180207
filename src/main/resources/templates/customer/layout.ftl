@@ -286,59 +286,59 @@
                 </li>
             <#--客户管理-->
 
-                <@shiro.hasAnyRoles name="sell,backAdmin">
-                    <li class="" id="customerManage">
-                        <a href="javascript:;">
+                <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
+                    <#--<li class="" id="customerManage">-->
+                        <#--<a href="javascript:;">-->
 
-                            <i class="icon-sitemap"></i>
+                            <#--<i class="icon-sitemap"></i>-->
 
-                            <span class="title">客户管理</span>
+                            <#--<span class="title">客户管理</span>-->
 
-                            <span class="" id="customerManageSelect"></span>
+                            <#--<span class="" id="customerManageSelect"></span>-->
 
-                            <span class="arrow " id="customerManageArrow"></span>
+                            <#--<span class="arrow " id="customerManageArrow"></span>-->
 
-                        </a>
+                        <#--</a>-->
 
-                        <ul class="sub-menu">
+                        <#--&lt;#&ndash;<ul class="sub-menu">&ndash;&gt;-->
 
-                            <@shiro.hasPermission name="customer:addCustomerViewCommon">
-                            <#--commmon-->
-                                <li id="addCustomer">
-                                    <a href="/customer/addCustomerViewCommon">
-                                        新增客户
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--&lt;#&ndash;&lt;#&ndash;<@shiro.hasPermission name="customer:addCustomerViewCommon">&ndash;&gt;&ndash;&gt;-->
+                            <#--&lt;#&ndash;&lt;#&ndash;&lt;#&ndash;commmon&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+                                <#--&lt;#&ndash;&lt;#&ndash;<li id="addCustomer">&ndash;&gt;&ndash;&gt;-->
+                                    <#--&lt;#&ndash;&lt;#&ndash;<a href="/customer/addCustomerViewCommon">&ndash;&gt;&ndash;&gt;-->
+                                        <#--&lt;#&ndash;&lt;#&ndash;新增客户&ndash;&gt;&ndash;&gt;-->
+                                    <#--&lt;#&ndash;&lt;#&ndash;</a>&ndash;&gt;&ndash;&gt;-->
+                                <#--&lt;#&ndash;&lt;#&ndash;</li>&ndash;&gt;&ndash;&gt;-->
+                            <#--&lt;#&ndash;&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;&ndash;&gt;-->
 
-                            <@shiro.hasPermission name="customer:addCustomerViewSuper">
-                            <#--super-->
-                                <li id="addCustomer">
-                                    <a href="/customer/addCustomerViewSuper">
-                                        新增客户
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--&lt;#&ndash;&lt;#&ndash;<@shiro.hasPermission name="customer:addCustomerViewSuper">&ndash;&gt;&ndash;&gt;-->
+                            <#--&lt;#&ndash;&lt;#&ndash;&lt;#&ndash;super&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+                                <#--&lt;#&ndash;&lt;#&ndash;<li id="addCustomer">&ndash;&gt;&ndash;&gt;-->
+                                    <#--&lt;#&ndash;&lt;#&ndash;<a href="/customer/addCustomerViewSuper">&ndash;&gt;&ndash;&gt;-->
+                                        <#--&lt;#&ndash;&lt;#&ndash;新增客户&ndash;&gt;&ndash;&gt;-->
+                                    <#--&lt;#&ndash;&lt;#&ndash;</a>&ndash;&gt;&ndash;&gt;-->
+                                <#--&lt;#&ndash;&lt;#&ndash;</li>&ndash;&gt;&ndash;&gt;-->
+                            <#--&lt;#&ndash;&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;&ndash;&gt;-->
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
-                                <li id="customerList">
-                                    <a href="/company/findAllCustomer">
-                                        客户信息
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--&lt;#&ndash;&lt;#&ndash;<@shiro.hasPermission name="customer:findAllCustomer">&ndash;&gt;&ndash;&gt;-->
+                                <#--&lt;#&ndash;&lt;#&ndash;<li id="customerList">&ndash;&gt;&ndash;&gt;-->
+                                    <#--&lt;#&ndash;&lt;#&ndash;<a href="/customer/findAllCustomer">&ndash;&gt;&ndash;&gt;-->
+                                        <#--&lt;#&ndash;&lt;#&ndash;客户信息&ndash;&gt;&ndash;&gt;-->
+                                    <#--&lt;#&ndash;&lt;#&ndash;</a>&ndash;&gt;&ndash;&gt;-->
+                                <#--&lt;#&ndash;&lt;#&ndash;</li>&ndash;&gt;&ndash;&gt;-->
+                            <#--&lt;#&ndash;&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;&ndash;&gt;-->
 
-                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                <li id="customerList">
-                                    <a href="/customer/findAllCustomerByDeptNo">
-                                        客户信息
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--&lt;#&ndash;&lt;#&ndash;<@shiro.hasPermission name="customer:findAllCustomerByDeptNo">&ndash;&gt;&ndash;&gt;-->
+                                <#--&lt;#&ndash;&lt;#&ndash;<li id="customerList">&ndash;&gt;&ndash;&gt;-->
+                                    <#--&lt;#&ndash;&lt;#&ndash;<a href="/customer/findAllCustomerByDeptNo">&ndash;&gt;&ndash;&gt;-->
+                                        <#--&lt;#&ndash;&lt;#&ndash;客户信息&ndash;&gt;&ndash;&gt;-->
+                                    <#--&lt;#&ndash;&lt;#&ndash;</a>&ndash;&gt;&ndash;&gt;-->
+                                <#--&lt;#&ndash;&lt;#&ndash;</li>&ndash;&gt;&ndash;&gt;-->
+                            <#--&lt;#&ndash;&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;&ndash;&gt;-->
 
-                        </ul>
-                    </li>
-                </@shiro.hasAnyRoles>
+                        <#--&lt;#&ndash;</ul>&ndash;&gt;-->
+                    <#--</li>-->
+                <#--</@shiro.hasAnyRoles>-->
 
                 <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
                     <li class="" id="customerManage">

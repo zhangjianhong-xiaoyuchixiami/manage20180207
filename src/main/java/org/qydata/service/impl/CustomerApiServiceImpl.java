@@ -31,13 +31,13 @@ public class CustomerApiServiceImpl implements CustomerApiService{
 
     @Override
     public boolean insertCustomerApi(String price, String customerId, String apiId, String enabled)throws Exception {
-        CustomerApi customerApi = new CustomerApi();
-        List<CustomerApi> customerApiList = new ArrayList<>();
 
+        List<CustomerApi> customerApiList = new ArrayList<>();
         List<String> listPrice = IpTool.spiltStr(price);
         List<String> listApiId = IpTool.spiltStr(apiId);
         List<String> listEnabled = IpTool.spiltStr(enabled);
         for (int i=0;i<listPrice.size();i++){
+            CustomerApi customerApi = new CustomerApi();
             customerApi.setPrice(Integer.parseInt(listPrice.get(i)));
             customerApi.setCustomerId(Integer.parseInt(customerId));
             customerApi.setApiId(Integer.parseInt(listApiId.get(i)));

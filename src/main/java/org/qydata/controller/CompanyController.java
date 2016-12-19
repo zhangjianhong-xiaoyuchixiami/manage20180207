@@ -34,6 +34,7 @@ public class CompanyController {
     @Autowired
     private CustomerApiService customerApiService;
 
+    //新增客户AllDeptView
     @RequestMapping(value = "/addCompanyAllDeptView")
     public String addCompanyAllDeptView(Model model){
         List<Dept> deptList = null;
@@ -46,6 +47,7 @@ public class CompanyController {
         return "/company/addCompanyAndCustomerAllDept";
     }
 
+    //新增客户OnlyDeptView
     @RequestMapping(value = "/addCompanyOnlyDeptView")
     public String addCompanyOnlyDeptView(HttpServletRequest request,Model model){
         User user = (User)request.getSession().getAttribute("userInfo");
@@ -54,6 +56,7 @@ public class CompanyController {
         return "/company/addCompanyAndCustomerOnlyDept";
     }
 
+    //新增客户AllDeptAction
     @RequestMapping(value = "/addCompanyAndCustomerAllDeptAction")
     public String addCompanyAndCustomerAllDeptAction(String name,String authId,String deptId,RedirectAttributes model){
         if(RegexUtil.isNull(name)){
@@ -67,13 +70,13 @@ public class CompanyController {
         }
         if(!RegexUtil.stringCheck(authId)){
             model.addFlashAttribute("name",name);
-            model.addFlashAttribute("authId");
+            model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("CompanyCustomerMessageAuthId","账户格式输入不正确!");
             return "redirect:/company/addCompanyAllDeptView";
         }
         if(RegexUtil.isNull(deptId)){
             model.addFlashAttribute("name",name);
-            model.addFlashAttribute("authId");
+            model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("CompanyCustomerMessageDeptId","请选择所属部门!");
             return "redirect:/company/addCompanyAllDeptView";
         }
@@ -91,6 +94,7 @@ public class CompanyController {
         return "redirect:/company/findAllAction";
     }
 
+    //新增客户OnlyDeptAction
     @RequestMapping(value = "/addCompanyAndCustomerOnlyDeptAction")
     public String addCompanyAndCustomerOnlyDeptAction(String name,String authId,String deptId,RedirectAttributes model){
         if(RegexUtil.isNull(name)){
@@ -104,13 +108,13 @@ public class CompanyController {
         }
         if(!RegexUtil.stringCheck(authId)){
             model.addFlashAttribute("name",name);
-            model.addFlashAttribute("authId");
+            model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("CompanyCustomerMessageAuthId","账户格式输入不正确!");
             return "redirect:/company/addCompanyOnlyDeptView";
         }
         if(RegexUtil.isNull(deptId)){
             model.addFlashAttribute("name",name);
-            model.addFlashAttribute("authId");
+            model.addFlashAttribute("authId",authId);
             model.addFlashAttribute("CompanyCustomerMessageDeptId","请选择所属部门!");
             return "redirect:/company/addCompanyOnlyDeptView";
         }
@@ -128,51 +132,62 @@ public class CompanyController {
         return "redirect:/company/findAllByDeptIdAction";
     }
 
+    //通过部门编号查找客户（带模糊搜索）
     @RequestMapping(value = "/findAllByDeptIdAction")
     public String findAllByDeptIdAction(HttpServletRequest request,String content,Model model){
         User user = (User) request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
-        for(int i =0;i<deptList.size();i++){
-            deptIdList.add(deptList.get(i).getId());
-        }
-        PageModel pageModel = new PageModel();
-        String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-        map.put("deptIdList",deptIdList);
-        if(content!=null){
-            map.put("content",content);
-        }
-        PageModel<Company> pageModelOne = null;
-        try {
-            pageModelOne = companyService.findAllCompany(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("deptIdList",deptIdList);
-        model.addAttribute("content",content);
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("companyList",pageModelOne.getList());
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
+        if (deptList.size() > 0) {
 
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+            for (int i = 0; i < deptList.size(); i++) {
+                deptIdList.add(deptList.get(i).getId());
+            }
+            PageModel pageModel = new PageModel();
+            String pageSize = request.getParameter("pageSize");//当前页
+            String lineSize = "8";//每页显示条数
+            pageModel.setPageSize(pageSize);
+            pageModel.setLineSize(lineSize);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("beginIndex", pageModel.getBeginIndex());
+            map.put("lineSize", pageModel.getLineSize());
+            map.put("deptIdList", deptIdList);
+            if (content != null) {
+                map.put("content", content);
+            }
+            PageModel<Company> pageModelOne = null;
+            try {
+                pageModelOne = companyService.findAllCompany(map);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("deptIdList", deptIdList);
+            model.addAttribute("content", content);
+            model.addAttribute("count", pageModelOne.getCount());
+            model.addAttribute("companyList", pageModelOne.getList());
+            Integer totalPage = null;
+            Integer count = pageModelOne.getCount();
+
+            if (count % Integer.parseInt(lineSize) == 0) {
+                totalPage = (count / Integer.parseInt(lineSize));
+            } else {
+                totalPage = (count / Integer.parseInt(lineSize)) + 1;
+            }
+            model.addAttribute("totlePage", totalPage);
+            model.addAttribute("pageSize", pageModel.getPageSize());
+            return "/company/companyList";
+        }else{
+            model.addAttribute("deptIdList", deptIdList);
+            model.addAttribute("count", 0);
+            model.addAttribute("companyList", null);
+            return "/company/companyList";
         }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/company/companyList";
     }
 
+    //查找全部客户（带模糊搜索）
     @RequestMapping(value = "/findAllAction")
     public String findAllAction(HttpServletRequest request,String content,Model model){
+
         PageModel pageModel = new PageModel();
         String pageSize= request.getParameter("pageSize");//当前页
         String lineSize = "8";//每页显示条数
@@ -181,6 +196,7 @@ public class CompanyController {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("beginIndex",pageModel.getBeginIndex());
         map.put("lineSize",pageModel.getLineSize());
+
         if(content!=null){
             map.put("content",content);
         }
@@ -206,7 +222,7 @@ public class CompanyController {
         return "/company/companyList";
     }
 
-    //通过客户公司的查找公司账号
+    //通过客户Id查找公司所有的账号
     @RequestMapping(value = "/findAllCustomerAccountByCompanyId/{companyId}")
     public String findAllCustomerAccountByCompanyId(@PathVariable String companyId,HttpServletRequest request,Model model){
         PageModel pageModel = new PageModel();
@@ -240,6 +256,7 @@ public class CompanyController {
         return "/company/accountList";
     }
 
+    //给所有账号添加ApiView
     @RequestMapping(value = "/addCustomerApiView/{companyId}")
     public String addCustomerApiView(@PathVariable String companyId,Model model){
         List<Api> apiList = null;
@@ -253,6 +270,7 @@ public class CompanyController {
         return "/company/addCustomerApi";
     }
 
+    //给所有账号添加ApiAction
     @RequestMapping(value = "/addCustomerApiAction")
     public String addCustomerApiAction(RedirectAttributes model, String companyId, String price, String apiId, String enabled){
         if(RegexUtil.isNull(price)){
@@ -295,6 +313,7 @@ public class CompanyController {
         return "redirect:/company/findAllCustomerApiByCompanyId/"+companyId;
     }
 
+    //查看所有账号共有的Api
     @RequestMapping(value = "/findAllCustomerApiByCompanyId/{companyId}")
     public String findAllCustomerApiByCompanyId(@PathVariable String companyId,Model model, HttpServletRequest request){
         PageModel pageModel = new PageModel();
@@ -388,8 +407,6 @@ public class CompanyController {
         }
         return "redirect:/company/findAllCustomerApiByCompanyId/" + companyId;
     }
-
-
 
 
 }

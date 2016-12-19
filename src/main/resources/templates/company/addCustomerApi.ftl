@@ -54,7 +54,7 @@
 
                     <!-- BEGIN SAMPLE FORM PORTLET-->
 
-                    <div class="portlet box blue tabbable">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -74,9 +74,9 @@
 
                                 <ul class="nav nav-tabs">
 
-                                    <li><a href="#" data-toggle="tab">Inline</a></li>
+                                    <li></li>
 
-                                    <li><a href="#" data-toggle="tab">Grid</a></li>
+                                    <li></li>
 
                                     <li><a href="#"" data-toggle="tab">Default</a></li>
 
@@ -86,7 +86,7 @@
 
                                     <div class="btn-group">
 
-                                        <button class="btn blue" onclick="addCustomerApi()">
+                                        <button class="btn black" onclick="addCustomerApi()">
 
                                             Add New <i class="icon-plus"></i>
 
@@ -98,7 +98,7 @@
 
                                         <!-- BEGIN FORM-->
 
-                                        <form action="/custom   erApi/addCustomerApiAction" class="form-horizontal" method="post">
+                                        <form action="/company/addCustomerApiAction" class="form-horizontal" method="post">
 
                                             <#if msg??>
 
@@ -204,7 +204,7 @@
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
+                                    <button type="submit" class="btn black"><i class="icon-ok"></i> 提交</button>
                                     <@shiro.hasRole name="backAdmin">
                                         <a href="/customer/findAllCustomer"><button type="button" class="btn">取消</button></a>
                                     </@shiro.hasRole>

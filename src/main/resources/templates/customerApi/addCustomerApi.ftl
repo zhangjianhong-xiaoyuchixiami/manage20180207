@@ -110,7 +110,7 @@
 
                                             <div class="control-group" style="display: none">
 
-                                                <label class="control-label">客户ID<span class="required">*</span></label>
+                                                <label class="control-label">账号ID<span class="required">*</span></label>
 
                                                 <div class="controls">
 

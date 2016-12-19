@@ -104,12 +104,13 @@ public class CompanyServiceImpl implements CompanyService {
             List<Customer> customerList = companyMapper.findAllCustomerByCompanyId(Integer.parseInt(companyId));
             if (customerList != null) {
                 for (int i = 0; i < customerList.size(); i++) {
-                    CustomerApi customerApi = new CustomerApi();
+
                     List<CustomerApi> customerApiList = new ArrayList<>();
                     List<String> listPrice = IpTool.spiltStr(price);
                     List<String> listApiId = IpTool.spiltStr(apiId);
                     List<String> listEnabled = IpTool.spiltStr(enabled);
                     for (int j = 0; j < listPrice.size(); j++) {
+                        CustomerApi customerApi = new CustomerApi();
                         customerApi.setPrice(Integer.parseInt(listPrice.get(j)));
                         customerApi.setCustomerId(customerList.get(i).getId());
                         customerApi.setApiId(Integer.parseInt(listApiId.get(j)));
@@ -136,7 +137,7 @@ public class CompanyServiceImpl implements CompanyService {
         while (it.hasNext()){
             Map.Entry<String,Object> me = it.next();
             if(me.getKey().equals("companyId")){
-                companyId = (Integer) me.getValue();
+                companyId = Integer.parseInt( (String) me.getValue());
             }
             if(me.getKey().equals("beginIndex")){
                 beginIndex = (Integer) me.getValue();
@@ -155,21 +156,22 @@ public class CompanyServiceImpl implements CompanyService {
             mapA.put("beginIndex", beginIndex);
             mapA.put("lineSize", lineSize);
             mapA.put("customerIdList", customerIdList);
-            PageModel<CustomerApi> pageModel = new PageModel<CustomerApi>();
+            PageModel<CustomerApi> pageModel = new PageModel<>();
             List<CustomerApi> customerNotMobileApiList = companyMapper.findAllByCustomerIdNotMobile(mapA);
             List<CustomerApi> customerMobileApiList = companyMapper.findAllByCustomerIdMobile(mapA);
             customerNotMobileApiList.addAll(customerMobileApiList);
-            List<CustomerApi> customerApiList = new ArrayList<>();
-            for (int i=0;i<customerNotMobileApiList.size();i++){
-                for (int j=0;j<customerIdList.size();j++){
-                    if(companyMapper.findAllCustomerApiByOnlyOneCustomerId
-                            ((Integer) customerIdList.get(j)).contains(customerNotMobileApiList.get(i).getApiId()))
-                    {
-                        customerApiList.add(customerNotMobileApiList.get(i));
-                    }
-                }
-            }
-            pageModel.setList(customerApiList);
+//            List<CustomerApi> customerApiList = new ArrayList<>();
+//
+//            for (int i=0;i<customerNotMobileApiList.size();i++){
+//                for (int j=0;j<customerIdList.size();j++){
+//                    if(companyMapper.findAllCustomerApiByOnlyOneCustomerId
+//                            ((Integer) customerIdList.get(j)).contains(customerNotMobileApiList.get(i).getApiId()))
+//                    {
+//                        customerApiList.add(customerNotMobileApiList.get(i));
+//                    }
+//                }
+//            }
+            pageModel.setList(customerNotMobileApiList);
             pageModel.setCount(companyMapper.getAllCountByCustomerId(mapA));
             return pageModel;
         }

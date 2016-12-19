@@ -79,7 +79,7 @@
 
                             <!-- BEGIN FORM-->
 
-                            <form action="#" id="form_sample_1" class="form-horizontal">
+                            <form action="/customer/addCustomerAllDeptAction" id="form_sample_1" class="form-horizontal">
 
                                 <div class="control-group"></div>
 
@@ -103,7 +103,7 @@
 
                                     <div class="controls">
 
-                                        <input type="text" name="companyId" value="" data-required="1" class="span6 m-wrap"/>
+                                        <input type="text" name="companyId" <#if companyId??>value="${companyId}"</#if> data-required="1" class="span6 m-wrap"/>
 
                                     </div>
 
@@ -145,7 +145,7 @@
 
                                             </select>
 
-                                            <span id="customer_deptIdMsg" class="help-inline"><#if CustomerMessagedeptId??><font color="red">${CustomerMessagedeptId}</font></#if></span>
+                                            <span id="deptIdMsg" class="help-inline"><#if CustomerMessageDeptId??><font color="red">${CustomerMessageDeptId}</font></#if></span>
 
                                         </div>
 
@@ -178,6 +178,7 @@
         </div>
 
     </div>
+    <script src="/js/myjs/addcompanyandcustomeralldept.js" type="text/javascript"></script>
 
     <#elseif section = "footer">
 

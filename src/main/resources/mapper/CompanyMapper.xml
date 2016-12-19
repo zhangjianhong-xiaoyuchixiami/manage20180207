@@ -110,12 +110,19 @@
                                         SELECT customerId
                                         FROM qyauth.CustomerDept customerDept
                                         <where>
-                                            <if test="deptId !=null and deptId !=''">
-                                                deptId=#{deptId}
+                                            <if test="deptIdList!=null and deptIdList.size()!=0">
+                                                deptId in
+                                                <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                                                    #{deptId}
+                                                </foreach>
                                             </if>
                                         </where>
                                       )
                      )
+        <if test="content!=null and content!=''">
+            AND name LIKE '%${content}%'
+        </if>
+        ORDER BY createTime DESC
         limit #{beginIndex},#{lineSize}
     </select>
 
@@ -130,12 +137,18 @@
                                         SELECT customerId
                                         FROM qyauth.CustomerDept customerDept
                                         <where>
-                                            <if test="deptId !=null and deptId !=''">
-                                                deptId=#{deptId}
+                                            <if test="deptIdList!=null and deptIdList.size()!=0">
+                                                deptId in
+                                                <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                                                    #{deptId}
+                                                </foreach>
                                             </if>
                                         </where>
                                         )
                       )
+        <if test="content!=null and content!=''">
+            AND name LIKE '%${content}%'
+        </if>
     </select>
 
     <!--根据客户公司Id查找全部的账号-->
@@ -216,8 +229,8 @@
 
     <!--根据客户Id查找指定客户的所有CustomerApi-->
     <select id="findAllByCustomerIdNotMobile" parameterType="map" resultMap="CustomerApi_Api_ApiType_Map">
-        SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.createTime,a.apiTypeId,
-        a.vendorId,a.apiName,a.companyId,apiType.name apiTypeName,customer.companyId
+        SELECT DISTINCT (a.apiId),a.price,a.enabled,a.apiTypeId,
+        a.vendorId,a.apiName,apiType.name apiTypeName,customer.companyId
         FROM (
                 SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,
                 customerApi.enabled,customerApi.createTime,api.apiTypeId,api.vendorId,api.name apiName
@@ -233,7 +246,7 @@
     </select>
 
     <select id="findAllByCustomerIdMobile" parameterType="map" resultMap="CustomerApi_Api_ApiType_ApiMobileOperator_Map">
-        SELECT b.customerApiId,b.apiId,b.customerId,b.price,b.enabled,b.createTime,b.apiTypeId,
+        SELECT DISTINCT (b.apiId),b.price,b.enabled,b.apiTypeId,
         b.vendorId,b.apiName,b.apiTypeName,b.companyId,mobileOperator.name mobileOperatorName
         FROM (
                 SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.createTime,a.apiTypeId,
@@ -256,14 +269,15 @@
 
     <!--根据客户Id统计全部数据量-->
     <select id="getAllCountByCustomerId" parameterType="Map" resultType="Integer">
-        select count(id) from qydata.CustomerApi where customerId IN
-                                                                        <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
-                                                                            #{customerId}
-                                                                        </foreach>
+        SELECT count(*) FROM
+        (select apiId,price,enabled,apiTypeId,vendorId,apiName,apiTypeName from qydata.CustomerApi where customerId IN
+        <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">#{customerId}
+        </foreach>)
     </select>
 
     <!--根据账号Id查找指定账号的所有CustomerApi-->
-    <select id="findAllCustomerApiByOnlyOneCustomerId" parameterType="Integer" resultType="Integer">
+    <
+            select id="findAllCustomerApiByOnlyOneCustomerId" parameterType="Integer" resultType="Integer">
         SELECT apiId
         FROM qydata.CustomerApi
         WHERE customerId=#{param}

@@ -60,9 +60,9 @@
 
                             <div class="input-append">
 
-                                <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
+                                <input class="m-wrap" type="text" name="content">
 
-                                <button class="btn blue" type="submit">搜索</button>
+                                <button class="btn black" type="submit">搜索</button>
 
                             </div>
 
@@ -72,16 +72,16 @@
 
                             <div class="input-append">
 
-                                <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
+                                <input class="m-wrap" type="text" name="content">
 
-                                <button class="btn blue" type="submit">搜索</button>
+                                <button class="btn black" type="submit">搜索</button>
 
                             </div>
 
                         </form>
                     </#if>
                 <#--表单-->
-                    <div class="portlet box light-grey">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 

@@ -60,9 +60,9 @@
 
                             <div class="input-append">
 
-                                <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
+                                <input class="m-wrap" type="text" name="content" placeholder="搜索...">
 
-                                <button class="btn" type="submit">搜索</button>
+                                <button class="btn black" type="submit">搜索</button>
 
                             </div>
 
@@ -72,16 +72,16 @@
 
                             <div class="input-append">
 
-                                <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
+                                <input class="m-wrap" type="text" name="content" placeholder="搜索...">
 
-                                <button class="btn" type="submit">搜索</button>
+                                <button class="btn black" type="submit">搜索</button>
 
                             </div>
 
                         </form>
                     </#if>
                 <#--表单-->
-                    <div class="portlet box light-grey">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -106,10 +106,11 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 30px;"><input type="checkbox"/></th>
-                                    <th style="text-align: center">公司名称</th>
-                                    <th style="text-align: center">创建时间</th>
-                                    <th style="text-align: center">操作</th>
+                                    <th style="text-align: center; width: 5%;"><input type="checkbox"/></th>
+                                    <th style="text-align: center; width: 45%;">公司名称</th>
+                                    <th style="text-align: center; width: 20%;">创建时间</th>
+                                    <th style="text-align: center; width: 10%;">账号</th>
+                                    <th style="text-align: center; width: 20%;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -117,23 +118,28 @@
                                     <#if companyList??>
                                         <#list companyList as company>
                                         <tr>
-                                            <td><input type="checkbox" value="${company.id}"/></td>
-                                            <td><a href="/company/findAllCustomerAccountByCompanyId/${company.id}">${company.name}</a></td>
+                                            <td style="text-align: center"><input type="checkbox" value="${company.id}"/></td>
+                                            <td><a href="/company/findAllCustomerAccountByCompanyId/${company.id}"><strong>${company.name}</strong></a></td>
                                             <td>${company.createTime}</td>
+
+                                            <#--<@shiro.hasPermission name="customer:addCustomerAllDeptView">-->
+                                                <td style="text-align: center"><a href="/customer/addCustomerAllDeptView/${company.id}" class="btn" id="gritter-light">新增账号</a></td>
+                                            <#--</@shiro.hasPermission>-->
+
+                                            <#--<@shiro.hasPermission name="customer:addCustomerOnlyDeptView">-->
+                                                <#--<td style="text-align: center"><a href="/customer/addCustomerOnlyDeptView/${company.id}" class="btn" id="gritter-light">新增账号</a></td>-->
+                                            <#--</@shiro.hasPermission>-->
+
                                             <td style="text-align: center">
-
                                                 <p>
-
                                                     <a href="/company/addCustomerIpView/${company.id}" class="btn" id="gritter-light">添加Ip</a>
 
                                                     <a href="/company/addCustomerApiView/${company.id}" class="btn black" id="gritter-light">添加Api</a><br/>
 
                                                     <a href="/company/customerIpListAction/${company.id}" class="btn" id="gritter-max">管理Ip</a>
 
-                                                    <a href="/company/customerApiListAction/${company.id}" class="btn black" id="gritter-max">管理Api</a>
-
+                                                    <a href="/company/findAllCustomerApiByCompanyId/${company.id}" class="btn black" id="gritter-max">管理Api</a>
                                                 </p>
-
                                             </td>
 
                                         </tr>

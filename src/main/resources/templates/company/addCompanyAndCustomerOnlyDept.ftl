@@ -56,7 +56,7 @@
 
                     <!-- BEGIN VALIDATION STATES-->
 
-                    <div class="portlet box blue">
+                    <div class="portlet box light-grey">
 
                         <div class="portlet-title">
 

@@ -48,6 +48,11 @@ public class CustomerApiController {
     @RequestMapping(value = "/addCustomerApiAction")
     public String addCustomerApiAction(RedirectAttributes model,String price, String customerId, String apiId, String enabled){
 
+        System.out.println(price);
+        System.out.println(customerId);
+        System.out.println(apiId);
+        System.out.println(enabled);
+
         if(RegexUtil.isNull(price)){
             model.addFlashAttribute("CustomerMessagePrice","请输入金额");
             return "redirect:/customerApi/addCustomerApiView/"+customerId;
@@ -82,6 +87,7 @@ public class CustomerApiController {
                 return "redirect:/customerApi/addCustomerApiView/"+customerId;
             }
         }catch (Exception e){
+            e.printStackTrace();
             model.addFlashAttribute("msg","添加失败");
             return "redirect:/customerApi/addCustomerApiView/"+customerId;
         }
