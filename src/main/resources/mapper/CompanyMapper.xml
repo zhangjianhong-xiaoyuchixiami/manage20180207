@@ -176,68 +176,68 @@
     <select id="findAllApiNotMobile" parameterType="Map" resultMap="Api_ApiType_Map">
         SELECT a.id apiId,a.apiTypeId,a.vendorId,a.cost,a.apiName,a.apiTypeName
         FROM (
-        SELECT api.id,api.apiTypeId,api.vendorId,api.cost,api.name apiName,apiType.name apiTypeName
-        FROM qydata.Api api,qydata.ApiType apiType
-        WHERE api.apiTypeId=apiType.id AND apiType.id IN (
-        SELECT id
-        FROM qydata.ApiType
-        WHERE name NOT LIKE '%mobile%'
-        )
-        ) a,(
-        SELECT api.id,MIN(api.cost)
-        FROM qydata.Api api
-        GROUP BY api.apiTypeId
-        ) b
+                SELECT api.id,api.apiTypeId,api.vendorId,api.cost,api.name apiName,apiType.name apiTypeName
+                FROM qydata.Api api,qydata.ApiType apiType
+                WHERE api.apiTypeId=apiType.id AND apiType.id IN (
+                                                                    SELECT id
+                                                                    FROM qydata.ApiType
+                                                                    WHERE name NOT LIKE '%mobile%'
+                                                                    )
+                ) a,(
+                        SELECT api.id,MIN(api.cost)
+                        FROM qydata.Api api
+                        GROUP BY api.apiTypeId
+                        ) b
         WHERE a.id=b.id
         <if test="customerIdList!=null and customerIdList.size()!=0">
-            AND a.apiId NOT IN (
-            SELECT result.apiId
-            FROM
-            (
-            SELECT apiId,COUNT (apiId) amount FROM qydata.CustomerApi
-            WHERE customerId IN
-            <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
-                #{customerId}
-            </foreach>
-            ) result
-            WHERE a.amount>=(
-            SELECT COUNT (id)
-            FROM qydata.Customer
-            WHERE companyId=#{companyId}
-            )
-            )
+            AND a.id NOT IN (
+                                SELECT result.apiId
+                                FROM
+                                        (
+                                            SELECT apiId,COUNT(apiId) amount FROM qydata.CustomerApi
+                                            WHERE customerId IN
+                                                                <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                                                                    #{customerId}
+                                                                </foreach> GROUP BY apiId
+                                        ) result
+                                WHERE result.amount>=(
+                                                        SELECT COUNT(id)
+                                                        FROM qydata.Customer
+                                                        WHERE companyId=#{companyId}
+                                                       )
+                             )
         </if>
     </select>
 
     <select id="findAllApiMobile" parameterType="Map" resultMap="Api_ApiMobileOperator_Map">
         SELECT a.apiTypeName,a.apiId,a.apiTypeId,a.vendorId,a.apiName,a.cost,a.mobileOperatorName,a.mobileOperatorId
         FROM (
-        SELECT qat.name apiTypeName,qaam.apiId,qaam.apiTypeId,qaam.vendorId,qaam.apiName,qaam.cost,qaam.mobileOperatorName,qaam.mobileOperatorId
-        FROM qydata.ApiType qat,(
-        SELECT qa.id apiId,qa.apiTypeId,qa.vendorId,qa.name apiName,qa.cost,qmo.name mobileOperatorName,qmo.id mobileOperatorId
-        FROM qydata.ApiMobileOperator qamo,qydata.Api qa,qydata.MobileOperator qmo
-        WHERE qamo.apiId=qa.id and qamo.mobileOperatorId=qmo.id
-        ) qaam
-        WHERE qat.id=qaam.apiTypeId
+                SELECT qat.name apiTypeName,qaam.apiId,qaam.apiTypeId,qaam.vendorId,qaam.apiName,qaam.cost,qaam.mobileOperatorName,qaam.mobileOperatorId
+                FROM qydata.ApiType qat,(
+                                            SELECT qa.id apiId,qa.apiTypeId,qa.vendorId,qa.name apiName,qa.cost,qmo.name mobileOperatorName,qmo.id mobileOperatorId
+                                            FROM qydata.ApiMobileOperator qamo,qydata.Api qa,qydata.MobileOperator qmo
+                                            WHERE qamo.apiId=qa.id and qamo.mobileOperatorId=qmo.id
+                                          ) qaam
+                WHERE qat.id=qaam.apiTypeId
         ) a,(
-        SELECT api.id,MIN(api.cost)
-        FROM qydata.Api api
-        GROUP BY api.apiTypeId
-        ) b
+                SELECT api.id,MIN(api.cost)
+                FROM qydata.Api api
+                GROUP BY api.apiTypeId
+            ) b
         WHERE a.apiId=b.id
         <if test="customerIdList!=null and customerIdList.size()!=0">
             AND a.apiId NOT IN (
                                   SELECT result.apiId
                                   FROM
                                         (
-                                            SELECT apiId,COUNT (apiId) amount FROM qydata.CustomerApi
+                                            SELECT apiId,COUNT(apiId) amount FROM qydata.CustomerApi
                                             WHERE customerId IN
                                                                 <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
                                                                     #{customerId}
-                                                                </foreach>
+                                                                </foreach> GROUP BY apiId
                                         ) result
-                                  WHERE a.amount>=(
-                                                      SELECT COUNT (id)
+                                  WHERE result.amount>=(
+                                                      SELECT COUNT(id)
                                                       FROM qydata.Customer
                                                       WHERE companyId=#{companyId}
                                                     )
