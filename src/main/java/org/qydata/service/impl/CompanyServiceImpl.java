@@ -90,6 +90,7 @@ public class CompanyServiceImpl implements CompanyService {
             }
             Map<String,Object> map = new HashedMap();
             map.put("customerIdList",customerIdList);
+            map.put("companyId",companyId);
             List<Api> apiNotMobileList = companyMapper.findAllApiNotMobile(map);
             List<Api> apiMobileList = companyMapper.findAllApiMobile(map);
             apiNotMobileList.addAll(apiMobileList);

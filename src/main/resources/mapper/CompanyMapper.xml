@@ -190,12 +190,21 @@
         ) b
         WHERE a.id=b.id
         <if test="customerIdList!=null and customerIdList.size()!=0">
-            and a.id not in(
-            select apiId from qydata.CustomerApi
-            where customerId IN
-                <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
-                    #{customerId}
-                </foreach>
+            AND a.apiId NOT IN (
+            SELECT result.apiId
+            FROM
+            (
+            SELECT apiId,COUNT (apiId) amount FROM qydata.CustomerApi
+            WHERE customerId IN
+            <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                #{customerId}
+            </foreach>
+            ) result
+            WHERE a.amount>=(
+            SELECT COUNT (id)
+            FROM qydata.Customer
+            WHERE companyId=#{companyId}
+            )
             )
         </if>
     </select>
@@ -217,13 +226,22 @@
         ) b
         WHERE a.apiId=b.id
         <if test="customerIdList!=null and customerIdList.size()!=0">
-            and a.apiId not in(
-            select apiId from qydata.CustomerApi
-            where customerId IN
-                <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
-                    #{customerId}
-                </foreach>
-            )
+            AND a.apiId NOT IN (
+                                  SELECT result.apiId
+                                  FROM
+                                        (
+                                            SELECT apiId,COUNT (apiId) amount FROM qydata.CustomerApi
+                                            WHERE customerId IN
+                                                                <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                                                                    #{customerId}
+                                                                </foreach>
+                                        ) result
+                                  WHERE a.amount>=(
+                                                      SELECT COUNT (id)
+                                                      FROM qydata.Customer
+                                                      WHERE companyId=#{companyId}
+                                                    )
+                                  )
         </if>
     </select>
 
@@ -269,15 +287,44 @@
 
     <!--根据客户Id统计全部数据量-->
     <select id="getAllCountByCustomerId" parameterType="Map" resultType="Integer">
-        SELECT count(*) FROM
-        (select apiId,price,enabled,apiTypeId,vendorId,apiName,apiTypeName from qydata.CustomerApi where customerId IN
-        <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">#{customerId}
-        </foreach>)
+        SELECT count(result.apiId)
+        FROM (
+                SELECT DISTINCT (a.apiId),a.price,a.enabled,a.apiTypeId,
+                a.vendorId,a.apiName,apiType.name apiTypeName,customer.companyId
+                FROM (
+                        SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,
+                        customerApi.enabled,customerApi.createTime,api.apiTypeId,api.vendorId,api.name apiName
+                        FROM qydata.CustomerApi customerApi,qydata.Api api
+                        WHERE customerApi.apiId=api.id AND  customerId IN
+                                                                            <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                                                                                #{customerId}
+                                                                            </foreach>
+                      ) a,qydata.ApiType apiType,qydata.Customer customer
+                WHERE a.apiTypeId=apiType.id AND a.customerId=customer.id AND apiType.name NOT LIKE '%mobile%'
+                UNION
+                SELECT DISTINCT (b.apiId),b.price,b.enabled,b.apiTypeId,
+                b.vendorId,b.apiName,b.apiTypeName,b.companyId
+                FROM (
+                        SELECT a.customerApiId,a.apiId,a.customerId,a.price,a.enabled,a.createTime,a.apiTypeId,
+                        a.vendorId,a.apiName,apiType.name apiTypeName,customer.companyId
+                        FROM (
+                                SELECT customerApi.id customerApiId,customerApi.apiId,customerApi.customerId,customerApi.price,
+                                customerApi.enabled,customerApi.createTime,api.apiTypeId,api.vendorId,api.name apiName
+                                FROM qydata.CustomerApi customerApi,qydata.Api api
+                                WHERE customerApi.apiId=api.id AND  customerId IN
+                                                                                    <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                                                                                        #{customerId}
+                                                                                    </foreach>
+                              ) a,qydata.ApiType apiType,qydata.Customer customer
+                        WHERE a.apiTypeId=apiType.id AND a.customerId=customer.id AND apiType.name LIKE '%mobile%'
+                      ) b,qydata.ApiMobileOperator apiMobileOperator,qydata.MobileOperator mobileOperator
+                WHERE b.apiId=apiMobileOperator.apiId AND apiMobileOperator.mobileOperatorId=mobileOperator.id
+              ) result
+
     </select>
 
     <!--根据账号Id查找指定账号的所有CustomerApi-->
-    <
-            select id="findAllCustomerApiByOnlyOneCustomerId" parameterType="Integer" resultType="Integer">
+    <select id="findAllCustomerApiByOnlyOneCustomerId" parameterType="Integer" resultType="Integer">
         SELECT apiId
         FROM qydata.CustomerApi
         WHERE customerId=#{param}
