@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by jonhn on 2016/11/25.
@@ -28,6 +29,7 @@ public class Api implements Serializable {
     private ApiVendor apiVendor;
     private ApiType apiType;
     private ApiMobileOperator apiMobileOperator;
+    private List<Customer> customerList;
 
     public Api() {
     }
@@ -166,6 +168,14 @@ public class Api implements Serializable {
 
     public void setApiMobileOperator(ApiMobileOperator apiMobileOperator) {
         this.apiMobileOperator = apiMobileOperator;
+    }
+
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
     }
 
     @Override

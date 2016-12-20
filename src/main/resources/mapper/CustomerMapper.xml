@@ -96,4 +96,16 @@
         </if>
     </select>
 
+    <!--根据客户Id查找对应的部门Id-->
+    <select id="findDeptIdByCompanyId" parameterType="Integer" resultType="Integer">
+        SELECT DISTINCT(deptId)
+        FROM qyauth.CustomerDept
+        WHERE customerId
+        IN (
+                SELECT id
+                FROM qydata.Customer
+                WHERE companyId=#{companyId}
+           )
+    </select>
+
 </mapper>

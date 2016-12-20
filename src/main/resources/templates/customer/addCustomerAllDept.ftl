@@ -55,7 +55,7 @@
 
                     <!-- BEGIN VALIDATION STATES-->
 
-                    <div class="portlet box light-grey">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -76,8 +76,6 @@
                         </div>
 
                         <div class="portlet-body form">
-
-                            <!-- BEGIN FORM-->
 
                             <form action="/customer/addCustomerAllDeptAction" id="form_sample_1" class="form-horizontal">
 
@@ -115,7 +113,7 @@
 
                                     <div class="controls">
 
-                                        <input type="text" name="authId" data-required="1" class="span6 m-wrap"/>
+                                        <input type="text" id="customer_authId" name="authId" data-required="1" class="span6 m-wrap"/>
 
                                         <span id="customer_authIdMsg" class="help-inline"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
 
@@ -163,8 +161,6 @@
 
                             </form>
 
-                            <!-- END FORM-->
-
                         </div>
 
                     </div>
@@ -178,6 +174,7 @@
         </div>
 
     </div>
+
     <script src="/js/myjs/addcompanyandcustomeralldept.js" type="text/javascript"></script>
 
     <#elseif section = "footer">

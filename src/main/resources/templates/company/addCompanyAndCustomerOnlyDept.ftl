@@ -54,9 +54,7 @@
 
                 <div class="span12">
 
-                    <!-- BEGIN VALIDATION STATES-->
-
-                    <div class="portlet box light-grey">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -80,63 +78,64 @@
 
                             <!-- BEGIN FORM-->
 
-                                <form action="/company/addCompanyAndCustomerOnlyDeptAction" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
+                            <form action="/company/addCompanyAndCustomerOnlyDeptAction" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateCustomer()">
 
-                                    <div class="control-group"></div>
+                                <div class="control-group"></div>
 
-                                    <div class="control-group"></div>
+                                <div class="control-group"></div>
 
-                                    <#if msg??>
+                                <#if msg??>
 
-                                        <div class="alert alert-error show">
+                                    <div class="alert alert-error show">
 
-                                            <button class="close" data-dismiss="alert"></button>
+                                        <button class="close" data-dismiss="alert"></button>
 
-                                        ${msg}
-
-                                        </div>
-
-                                    </#if>
-
-                                    <div class="control-group">
-
-                                        <label class="control-label">公司名称<span class="required">*</span></label>
-
-                                        <div class="controls">
-
-                                            <input type="text" id="customer_Name" name="customer.name" <#if name??>value="${name}"</#if> class="span6 m-wrap"/>
-
-                                            <span id="customer_NameMsg" class="help-inline"><#if CompanyCustomerMessageName??><font color="red">${CompanyCustomerMessageName}</font></#if></span>
-
-                                        </div>
+                                    ${msg}
 
                                     </div>
 
-                                    <div class="control-group">
+                                </#if>
 
-                                        <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+                                <div class="control-group">
 
-                                        <div class="controls">
+                                    <label class="control-label">公司名称<span class="required">*</span></label>
 
-                                            <input type="text" id="customer_authId" name="customer.authId" <#if authId??>value="${authId}"</#if> class="span6 m-wrap"/>
+                                    <div class="controls">
 
-                                            <span id="customer_authIdMsg" class="help-inline"><#if CompanyCustomerMessageAuthId??><font color="red">${CompanyCustomerMessageAuthId}</font></#if></span>
+                                        <input type="text" id="customer_Name" name="name" <#if name??>value="${name}"</#if> class="span6 m-wrap"/>
 
-                                            <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
-
-                                        </div>
+                                        <span id="customer_NameMsg" class="help-inline"><#if CompanyCustomerMessageName??><font color="red">${CompanyCustomerMessageName}</font></#if></span>
 
                                     </div>
 
-                                    <div class="control-group">
+                                </div>
 
-                                        <label class="control-label">所属部门<span class="required">*</span></label>
+                                <div class="control-group">
 
-                                        <#if deptList??>
+                                    <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+
+                                    <div class="controls">
+
+                                        <input type="text" id="customer_authId" name="authId" <#if authId??>value="${authId}"</#if> class="span6 m-wrap"/>
+
+                                        <span id="customer_authIdMsg" class="help-inline"><#if CompanyCustomerMessageAuthId??><font color="red">${CompanyCustomerMessageAuthId}</font></#if></span>
+
+                                        <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
+
+                                    </div>
+
+                                </div>
+                                <#if deptList??>
+
+                                    <#if (deptList?size>1)>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">所属部门<span class="required">*</span></label>
 
                                             <div class="controls">
 
-                                                <select id="deptId" name="dept.id" class="medium m-wrap" tabindex="1">
+                                                <select id="deptId" name="deptId" class="medium m-wrap" tabindex="1">
 
                                                     <option value="">请选择...</option>
 
@@ -152,27 +151,51 @@
 
                                             </div>
 
-                                        </#if>
+                                        </div>
 
-                                    </div>
+                                    <#else >
 
-                                    <div class="form-actions">
+                                        <div class="control-group" style="display: none;">
 
-                                        <button type="submit" class="btn black">提交</button>
+                                            <label class="control-label">所属部门<span class="required">*</span></label>
 
-                                        <a href="/view/successUrl"><button type="button" class="btn">取消</button></a>
+                                            <div class="controls">
 
-                                    </div>
+                                                <select id="deptId" name="deptId" class="medium m-wrap" tabindex="1">
 
-                                </form>
+                                                    <#list deptList as dept>
+
+                                                        <option value="${dept.id}">${dept.deptName}</option>
+
+                                                    </#list>
+
+                                                </select>
+
+                                                <span id="deptIdMsg" class="help-inline"><#if CompanyCustomerMessageDeptId??><font color="red">${CompanyCustomerMessageDeptId}</font></#if></span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </#if>
+
+                                </#if>
+
+                                <div class="form-actions">
+
+                                    <button type="submit" class="btn black">提交</button>
+
+                                    <a href="/view/successUrl"><button type="button" class="btn">取消</button></a>
+
+                                </div>
+
+                            </form>
 
                             <!-- END FORM-->
 
                         </div>
 
                     </div>
-
-                    <!-- END VALIDATION STATES-->
 
                 </div>
 

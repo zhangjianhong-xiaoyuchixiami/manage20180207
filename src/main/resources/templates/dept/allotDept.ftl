@@ -54,7 +54,7 @@
 
                 <div class="span12">
 
-                    <div class="portlet box blue">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -86,14 +86,13 @@
 
                             </div>
 
-                            <table class="table-bordered table-striped table-condensed cf">
-                                <thead class="cf">
+                            <table class="table table-striped table-hover table-bordered">
+                                <thead>
                                 <tr>
-                                    <th style="width: 100px" class="numeric">部门选择</th>
-
-                                    <th class="numeric">部门名称</th>
-                                    <th class="numeric" style="display: none">用户Id</th>
-                                    <th class="numeric" style="display: none">用户名</th>
+                                    <th style="text-align: center; width: 100px">部门选择</th>
+                                    <th style="text-align: center">部门名称</th>
+                                    <th style="text-align: center; display: none" >用户Id</th>
+                                    <th style="text-align: center; display: none">用户名</th>
                                 </tr>
                                 </thead>
                                 <tbody>

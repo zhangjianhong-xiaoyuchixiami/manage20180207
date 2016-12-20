@@ -62,7 +62,7 @@
 
                                 <input class="m-wrap" type="text" name="content" placeholder="Search">
 
-                                <button class="btn blue" type="submit">搜索</button>
+                                <button class="btn black" type="submit">搜索</button>
 
                             </div>
 
@@ -75,7 +75,7 @@
 
                                 <input class="m-wrap" type="text" name="content" placeholder="Search">
 
-                                <button class="btn blue" type="submit">搜索</button>
+                                <button class="btn black" type="submit">搜索</button>
 
                             </div>
 
@@ -83,7 +83,7 @@
 
                     </#if>
 
-                    <div class="portlet box blue">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -107,20 +107,20 @@
                         <div class="portlet-body no-more-tables">
 
 
-                            <table class="table-bordered table-striped table-condensed cf">
-                                <thead class="cf">
+                            <table class="table table-striped table-hover table-bordered">
+                                <thead>
                                 <tr>
-                                    <th class="numeric">姓名</th>
+                                    <th style="text-align: center">姓名</th>
 
-                                    <th class="numeric">用户名</th>
+                                    <th style="text-align: center">用户名</th>
 
-                                    <th class="numeric">电话</th>
+                                    <th style="text-align: center">电话</th>
 
-                                    <th class="numeric">部门</th>
+                                    <th style="text-align: center">部门</th>
 
-                                    <th class="numeric">状态</th>
+                                    <th style="text-align: center">状态</th>
 
-                                    <th class="numeric">操作</th>
+                                    <th style="text-align: center">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -141,7 +141,7 @@
                                             <td>被禁用</td>
                                         </#if>
                                         <#if user.status=0>
-                                            <td class="numeric" style="text-align: center">
+                                            <td style="text-align: center">
 
                                                 <p>
                                                     <@shiro.hasRole name="backAdmin">
@@ -184,7 +184,7 @@
 
                                             </td>
                                         <#else >
-                                            <td class="numeric" style="text-align: center">
+                                            <td style="text-align: center">
 
                                                 <p>
                                                     <@shiro.hasRole name="backAdmin">

@@ -56,7 +56,7 @@
 
                 <div class="span12">
 
-                    <div class="portlet box blue" id="form_wizard_1">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -92,16 +92,21 @@
 
                                             <h3 class="block">请填写信息</h3>
 
-                                            <div class="controls">
+                                            <div class="control-group"></div>
 
-                                            </div>
-                                            <div class="controls">
-                                                <#if msg??>
-                                                    <span><h5><font color="red">${msg}</font></h5></span>
-                                                <#else>
-                                                    <span></span>
-                                                </#if>
-                                            </div>
+                                            <div class="control-group"></div>
+
+                                            <#if msg??>
+
+                                                <div class="alert alert-error show">
+
+                                                    <button class="close" data-dismiss="alert"></button>
+
+                                                ${msg}
+
+                                                </div>
+
+                                            </#if>
 
                                             <div class="control-group">
 

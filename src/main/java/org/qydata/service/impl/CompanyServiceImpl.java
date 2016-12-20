@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.qydata.dst.CustomerApiInfo;
 import org.qydata.entity.*;
 import org.qydata.mapper.CompanyMapper;
 import org.qydata.mapper.CustomerApiMapper;
@@ -104,12 +105,19 @@ public class CompanyServiceImpl implements CompanyService {
         try {
             List<Customer> customerList = companyMapper.findAllCustomerByCompanyId(Integer.parseInt(companyId));
             if (customerList != null) {
+                List<CustomerApi> customerApiList = new ArrayList<>();
+                List<String> listPrice = IpTool.spiltStr(price);
+                List<String> listApiId = IpTool.spiltStr(apiId);
+                List<String> listEnabled = IpTool.spiltStr(enabled);
+                List customerIdList = new ArrayList();
+                for(int i=0;i<customerList.size();i++){
+                    customerIdList.add(customerList.get(i).getId());
+                }
+                Map<String,Object> map = new HashedMap();
+                map.put("apiIdList",listApiId);
+                map.put("customerIdList",customerIdList);
+                companyMapper.removeCustomerApiByApiIdAndCustomerId(map);
                 for (int i = 0; i < customerList.size(); i++) {
-
-                    List<CustomerApi> customerApiList = new ArrayList<>();
-                    List<String> listPrice = IpTool.spiltStr(price);
-                    List<String> listApiId = IpTool.spiltStr(apiId);
-                    List<String> listEnabled = IpTool.spiltStr(enabled);
                     for (int j = 0; j < listPrice.size(); j++) {
                         CustomerApi customerApi = new CustomerApi();
                         customerApi.setPrice(Integer.parseInt(listPrice.get(j)));
@@ -118,8 +126,8 @@ public class CompanyServiceImpl implements CompanyService {
                         customerApi.setEnabled(Boolean.parseBoolean(listEnabled.get(j)));
                         customerApiList.add(customerApi);
                     }
-                    customerApiMapper.insertCustomerApi(customerApiList);
                 }
+                customerApiMapper.insertCustomerApi(customerApiList);
             }
             return true;
         }catch (Exception e){
@@ -129,7 +137,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PageModel<CustomerApi> findAllCustomerApiByCompanyId(Map<String, Object> map) throws Exception{
+    public PageModel<CustomerApi> findAllCustomerApiByCompanyIdOne(Map<String, Object> map) throws Exception{
         Set<Map.Entry<String,Object>> set = map.entrySet();
         Iterator<Map.Entry<String, Object>> it = set.iterator();
         Integer companyId = null;
@@ -161,17 +169,6 @@ public class CompanyServiceImpl implements CompanyService {
             List<CustomerApi> customerNotMobileApiList = companyMapper.findAllByCustomerIdNotMobile(mapA);
             List<CustomerApi> customerMobileApiList = companyMapper.findAllByCustomerIdMobile(mapA);
             customerNotMobileApiList.addAll(customerMobileApiList);
-//            List<CustomerApi> customerApiList = new ArrayList<>();
-//
-//            for (int i=0;i<customerNotMobileApiList.size();i++){
-//                for (int j=0;j<customerIdList.size();j++){
-//                    if(companyMapper.findAllCustomerApiByOnlyOneCustomerId
-//                            ((Integer) customerIdList.get(j)).contains(customerNotMobileApiList.get(i).getApiId()))
-//                    {
-//                        customerApiList.add(customerNotMobileApiList.get(i));
-//                    }
-//                }
-//            }
             pageModel.setList(customerNotMobileApiList);
             pageModel.setCount(companyMapper.getAllCountByCustomerId(mapA));
             return pageModel;
@@ -203,21 +200,61 @@ public class CompanyServiceImpl implements CompanyService {
 
 
 
-        @Override
-        public boolean updateCustomerApiById(String companyId,String price,String apiId,String enabled)throws Exception {
-            List<Customer> customerList = companyMapper.findAllCustomerByCompanyId(Integer.parseInt(companyId));
-            List customerIdList = new ArrayList();
-           Map<String,Object> map = new HashedMap();
-            if(customerList != null) {
-                for (int i = 0; i < customerList.size(); i++) {
-                    customerIdList.add(customerList.get(i).getId());
-                }
-                map.put("customerIdList",customerIdList);
-                map.put("price",Integer.parseInt(price.trim().replaceAll(",", "")));
-                map.put("apiId",Integer.parseInt(apiId));
-                map.put("enabled",Boolean.parseBoolean(enabled));
-                return companyMapper.updateCustomerApiById(map);
+    @Override
+    public boolean updateCustomerApiById(String beforApiId,String companyId,String price,String afterApiId,String enabled)throws Exception {
+        List<Customer> customerList = companyMapper.findAllCustomerByCompanyId(Integer.parseInt(companyId));
+        List customerIdList = new ArrayList();
+        Map<String,Object> map = new HashedMap();
+        if(customerList != null) {
+            for (int i = 0; i < customerList.size(); i++) {
+                customerIdList.add(customerList.get(i).getId());
             }
-            return false;
+            map.put("customerIdList",customerIdList);
+            map.put("beforApiId",beforApiId);
+            map.put("price",Integer.parseInt(price.trim().replaceAll(",", "")));
+            map.put("afterApiId",Integer.parseInt(afterApiId));
+            map.put("enabled",Boolean.parseBoolean(enabled));
+            return companyMapper.updateCustomerApiById(map);
         }
+        return false;
     }
+
+    @Override
+    public PageModel<CustomerApiInfo> findAllCustomerApiByCompanyId(Map<String, Object> map) throws Exception {
+        Set<Map.Entry<String,Object>> set = map.entrySet();
+        Iterator<Map.Entry<String, Object>> it = set.iterator();
+        Integer companyId = null;
+        Integer beginIndex = null;
+        Integer lineSize = null;
+        while (it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if(me.getKey().equals("companyId")){
+                companyId = Integer.parseInt( (String) me.getValue());
+            }
+            if(me.getKey().equals("beginIndex")){
+                beginIndex = (Integer) me.getValue();
+            }
+            if(me.getKey().equals("lineSize")){
+                lineSize = (Integer) me.getValue();
+            }
+        }
+        List<Customer> customerList = companyMapper.findAllCustomerByCompanyId(companyId);
+        List customerIdList = new ArrayList();
+        if(customerList != null) {
+            for (int i = 0; i < customerList.size(); i++) {
+                customerIdList.add(customerList.get(i).getId());
+            }
+            Map<String, Object> mapA = new HashedMap();
+            mapA.put("beginIndex", beginIndex);
+            mapA.put("lineSize", lineSize);
+            mapA.put("customerIdList", customerIdList);
+            PageModel<CustomerApiInfo> pageModel = new PageModel<>();
+            pageModel.setList(companyMapper.findAllCustomerApiByCompanyId(mapA));
+            pageModel.setCount(companyMapper.getAllCustomerApiCountByCompanyId(mapA));
+            return pageModel;
+        }
+        return null;
+    }
+
+
+}

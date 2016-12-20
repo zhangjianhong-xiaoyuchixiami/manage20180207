@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by jonhn on 2016/11/8.
@@ -25,6 +26,7 @@ public class Customer implements Serializable{
     private User user;
     private Dept dept;
     private Integer companyId;
+    private List<Api> apiList;
     public Customer(){}
 
     public Integer getId() {
@@ -133,6 +135,14 @@ public class Customer implements Serializable{
 
     public Integer getCompanyId() {
         return companyId;
+    }
+
+    public List<Api> getApiList() {
+        return apiList;
+    }
+
+    public void setApiList(List<Api> apiList) {
+        this.apiList = apiList;
     }
 
     public void setCompanyId(Integer companyId) {

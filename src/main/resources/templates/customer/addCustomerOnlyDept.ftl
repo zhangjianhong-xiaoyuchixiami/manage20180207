@@ -115,7 +115,7 @@
 
                                     <div class="controls">
 
-                                        <input type="text" name="authId" data-required="1" class="span6 m-wrap"/>
+                                        <input type="text" id="customer_authId" name="authId" data-required="1" class="span6 m-wrap"/>
 
                                         <span id="customer_authIdMsg" class="help-inline"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
 

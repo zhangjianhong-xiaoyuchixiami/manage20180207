@@ -136,7 +136,7 @@
 
                                         <div class="controls">
 
-                                            <select id="dept_id" name="deptId" class="medium m-wrap" tabindex="1">
+                                            <select id="deptId" name="deptId" class="medium m-wrap" tabindex="1">
 
                                                 <option value="">请选择...</option>
 

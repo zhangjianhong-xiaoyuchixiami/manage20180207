@@ -55,7 +55,7 @@
                 <div class="span12">
 
                 <#--表单-->
-                    <div class="portlet box blue">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -77,51 +77,23 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <table class="table-bordered table-striped table-condensed cf">
+                            <table class="table table-striped table-hover table-bordered">
                                 <thead class="cf">
                                 <tr>
-                                    <th class="numeric">公司名称</th>
-                                    <th class="numeric">账号类型</th>
-                                    <th class="numeric">账户</th>
-                                    <th class="numeric">余额</th>
-                                    <th class="numeric">状态</th>
-
-                                    <th class="numeric">部门</th>
-                                    <th class="numeric">创建者</th>
-
-                                    <th class="numeric">创建时间</th>
-                                    <th class="numeric">操作</th>
+                                    <th style="text-align: center;">公司名称</th>
+                                    <th style="text-align: center;">账号类型</th>
+                                    <th style="text-align: center;">账户</th>
+                                    <th style="text-align: center;">余额</th>
+                                    <th style="text-align: center;">状态</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                         <tr>
                                             <td>${customer.name}</td>
                                             <td>${customer.customerType.name}</td>
                                             <td>${customer.authId}</td>
                                             <td>${customer.balance}</td>
                                             <td>${customer.customerStatus.name}</td>
-
-                                            <td>${customer.dept.deptName}</td>
-                                            <td>${customer.user.name}</td>
-
-                                            <td>${customer.createTime}</td>
-                                            <td class="numeric" style="text-align: center">
-
-                                                <p>
-
-                                                    <a href="/customerIp/addCustomerIpView/${customer.id}" class="btn blue" id="gritter-light">添加Ip</a>
-
-                                                    <a href="/customerApi/addCustomerApiView/${customer.id}" class="btn black" id="gritter-light">添加Api</a><br/>
-
-                                                    <a href="/customerIp/customerIpListAction/${customer.id}" class="btn blue" id="gritter-max">管理Ip</a>
-
-                                                    <a href="/customerApi/customerApiListAction/${customer.id}" class="btn black" id="gritter-max">管理Api</a>
-
-                                                </p>
-
-                                            </td>
-
                                         </tr>
 
                                 </tbody>

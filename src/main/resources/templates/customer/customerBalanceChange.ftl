@@ -16,7 +16,7 @@
 
                     <h3 class="page-title">
 
-                      余额变更
+                        余额变更
 
                     </h3>
 
@@ -48,17 +48,11 @@
 
             </div>
 
-            <!-- END PAGE HEADER-->
-
-            <!-- BEGIN PAGE CONTENT-->
-
             <div class="row-fluid">
 
                 <div class="span12">
 
-                    <!-- BEGIN SAMPLE FORM PORTLET-->
-
-                    <div class="portlet box blue tabbable">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -70,131 +64,108 @@
 
                             </div>
 
-                        </div>
+                            <div class="tools">
 
-                        <div class="portlet-body form">
+                                <a href="javascript:;" class="collapse"></a>
 
-                            <div class="tabbable portlet-tabs">
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
 
-                                <ul class="nav nav-tabs">
+                                <a href="javascript:;" class="reload"></a>
 
-                                    <li><a href="#" data-toggle="tab">Inline</a></li>
-
-                                    <li><a href="#" data-toggle="tab">Grid</a></li>
-
-                                    <li><a href="#portlet_tab1" data-toggle="tab">Default</a></li>
-
-                                </ul>
-
-                                <div class="tab-content">
-
-                                    <div class="tab-pane active" id="portlet_tab1">
-
-                                        <!-- BEGIN FORM-->
-
-                                        <form action="/customerBalance/customerBalanceChangeAction" class="form-horizontal" method="post" >
-
-                                            <div class="control-group">
-
-                                            </div>
-                                            <div class="control-group">
-
-                                            </div>
-                                            <div class="controls">
-                                                <#if msg??>
-                                                    <span><h5><font color="red">${msg}</font></h5></span>
-                                                <#else>
-                                                    <span></span>
-                                                </#if>
-                                            </div>
-                                            <div class="control-group">
-
-                                                <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
-
-                                                <div class="controls">
-
-                                                    <input type="text" id="authId" name="authId" <#if authId??>value="${authId}"</#if> class="m-wrap medium">
-
-                                                    <span class="help-inline" id="authIdMsg"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
-
-                                                    <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div class="control-group">
-
-                                                <label class="control-label">金&nbsp;额<span class="required">*</span></label>
-
-                                                <div class="controls">
-
-                                                    <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位：分）" class="m-wrap medium">
-
-                                                    <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                    <span class="help-block">e.g：只能输入数字类型并且金额大于0</span>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div class="control-group">
-
-                                                <label class="control-label">原&nbsp;&nbsp;因<span class="required">*</span></label>
-
-                                                <div class="controls">
-
-                                                    <select id="reasonId" name="reasonId" class="medium m-wrap" tabindex="1">
-
-                                                        <#list customerBalanceModifyReasonList as reasonList>
-
-                                                            <option value="${reasonList.id}">${reasonList.name}</option>
-
-                                                        </#list>
-
-                                                    </select>
-
-                                                    <span class="help-inline" id="reasonIdMsg"><#if CustomerMessageReasonId??><font color="red">${CustomerMessageReasonId}</font></#if></span>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div class="form-actions">
-                                                <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
-                                                <a href="/view/successUrl"><button type="button" class="btn">取消</button></a>
-                                            </div>
-
-                                        </form>
-
-
-                                        <!-- END FORM-->
-
-                                    </div>
-
-                                </div>
+                                <a href="javascript:;" class="remove"></a>
 
                             </div>
 
                         </div>
 
-                    </div>
+                        <form action="/customerBalance/customerBalanceChangeAction" class="form-horizontal" method="post" >
 
-                    <!-- END SAMPLE FORM PORTLET-->
+                            <div class="control-group">
+
+                            </div>
+                            <div class="control-group">
+
+                            </div>
+                            <div class="controls">
+                                <#if msg??>
+                                    <span><h5><font color="red">${msg}</font></h5></span>
+                                <#else>
+                                    <span></span>
+                                </#if>
+                            </div>
+                            <div class="control-group">
+
+                                <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="authId" name="authId" <#if authId??>value="${authId}"</#if> class="m-wrap medium">
+
+                                    <span class="help-inline" id="authIdMsg"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
+
+                                    <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="control-group">
+
+                                <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位：分）" class="m-wrap medium">
+
+                                    <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                    <span class="help-block">e.g：只能输入数字类型并且金额大于0</span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="control-group">
+
+                                <label class="control-label">原&nbsp;&nbsp;因<span class="required">*</span></label>
+
+                                <div class="controls">
+
+                                    <select id="reasonId" name="reasonId" class="medium m-wrap" tabindex="1">
+
+                                        <#list customerBalanceModifyReasonList as reasonList>
+
+                                            <option value="${reasonList.id}">${reasonList.name}</option>
+
+                                        </#list>
+
+                                    </select>
+
+                                    <span class="help-inline" id="reasonIdMsg"><#if CustomerMessageReasonId??><font color="red">${CustomerMessageReasonId}</font></#if></span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
+                                <a href="/view/successUrl"><button type="button" class="btn">取消</button></a>
+                            </div>
+
+                        </form>
+
+
+                        <!-- END FORM-->
+
+                    </div>
 
                 </div>
 
             </div>
 
-            <!-- END PAGE CONTENT-->
-
         </div>
 
-        <!-- END PAGE CONTAINER-->
-
     </div>
-
 
     <#elseif section = "footer">
 

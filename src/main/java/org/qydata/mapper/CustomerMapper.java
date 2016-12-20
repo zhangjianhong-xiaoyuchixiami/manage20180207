@@ -36,13 +36,21 @@ public interface CustomerMapper {
      * @param map 包含了筛选条件数据
      * @return 如果有数据，则以List集合的形式返回，如果没有返回空（size==0）
      */
-    public List<Customer> findAllCustomer(Map<String,Object> map);
+    public List<Customer> findAllCustomer(Map<String,Object> map)throws Exception;
     /**
      * 获取总的数据量
      * @param map 包含了筛选条件数据
      * @return
      */
-    public Integer getAllCount(Map<String,Object> map);
+    public Integer getAllCount(Map<String,Object> map)throws Exception;
+
+    /**
+     * 根据客户Id查找对应的部门Id
+     * @param companyId
+     * @return
+     * @throws Exception
+     */
+    public Integer findDeptIdByCompanyId(Integer companyId)throws Exception;
 
 
 

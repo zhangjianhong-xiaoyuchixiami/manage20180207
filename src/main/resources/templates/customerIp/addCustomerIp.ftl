@@ -16,9 +16,7 @@
 
                     <h3 class="page-title">
 
-                        Form Layouts
-
-                        <small>form layouts and more</small>
+                        添加Ip
 
                     </h3>
 
@@ -50,144 +48,114 @@
 
             </div>
 
-            <!-- END PAGE HEADER-->
-
-            <!-- BEGIN PAGE CONTENT-->
-
             <div class="row-fluid">
 
                 <div class="span12">
-
-                    <!-- BEGIN SAMPLE FORM PORTLET-->
 
                     <div class="portlet box blue tabbable">
 
                         <div class="portlet-title">
 
-                            <div class="caption">
+                            <div class="caption"><i class="icon-reorder"></i>请填写Ip信息</div>
 
-                                <i class="icon-reorder"></i>
+                            <div class="tools">
 
-                                <span class="hidden-480">General Layouts</span>
+                                <a href="javascript:;" class="collapse"></a>
+
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
+                                <a href="javascript:;" class="reload"></a>
+
+                                <a href="javascript:;" class="remove"></a>
 
                             </div>
+
+                        </div>
+
+                        <div class="control-group"></div>
+
+                        <div class="control-group"></div>
+
+                        <div class="btn-group">
+
+                            <button class="btn blue" onclick="add()">
+
+                                Add New <i class="icon-plus"></i>
+
+                            </button>
 
                         </div>
 
                         <div class="portlet-body form">
 
-                            <div class="tabbable portlet-tabs">
+                            <form action="/customerIp/addCustomerIpAction" class="form-horizontal" method="post">
 
-                                <ul class="nav nav-tabs">
+                                <div class="controls">
+                                    <#if msg??>
+                                        <span><h5><font color="red">${msg}</font></h5></span>
+                                    <#else>
+                                        <span></span>
+                                    </#if>
+                                </div>
 
-                                    <li><a href="#" data-toggle="tab">Inline</a></li>
+                                <div class="control-group">
 
-                                    <li><a href="#" data-toggle="tab">Grid</a></li>
+                                    <div class="controls">
 
-                                    <li><a href="#" data-toggle="tab">Default</a></li>
-
-                                </ul>
-
-                                <div class="tab-content">
-
-
-                                    <div class="btn-group">
-
-                                        <button class="btn blue" onclick="add()">
-
-                                            Add New <i class="icon-plus"></i>
-
-                                        </button>
-
-                                    </div>
-
-                                    <div class="tab-pane active" id="portlet_tab1">
-
-                                        <!-- BEGIN FORM-->
-
-                                        <form action="/customerIp/addCustomerIpAction" class="form-horizontal" method="post">
-
-                                            <div class="controls">
-                                                <#if msg??>
-                                                    <span><h5><font color="red">${msg}</font></h5></span>
-                                                <#else>
-                                                    <span></span>
-                                                </#if>
-                                            </div>
-
-                                            <div class="control-group">
-
-                                                <div class="controls">
-
-                                                    <input type="hidden" id="customerId" name="customerId" value="${id}" class="m-wrap medium" />
-
-                                                </div>
-
-                                            </div>
-
-                                            <div id="addClone">
-
-                                                <div class="control-group" id="clone">
-
-                                                    <label class="control-label">请输入Ip段<span class="required">*</span></label>
-
-                                                    <div class="controls">
-
-                                                        <input type="text" id="beginIp" name="beginIp" placeholder="例如：192.168.111.12" class="m-wrap medium" />
-
-                                                        ---
-
-                                                        <input type="text" id="endIp" name="endIp" placeholder="例如：192.168.111.112" class="m-wrap medium" />
-
-
-                                                        <span class="help-inline" id="beginIpMsg"><#if CustomerMessageBeginIp??><font color="red">${CustomerMessageBeginIp}</font></#if></span>
-
-                                                        <span class="help-inline" id="endIpMsg"><#if CustomerMessageEndIp??><font color="red">${CustomerMessageEndIp}</font></#if></span>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div class="form-actions">
-                                                <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
-                                                <@shiro.hasRole name="backAdmin">
-                                                    <a href="/customer/findAllCustomer"><button type="button" class="btn">取消</button></a>
-                                                </@shiro.hasRole>
-                                                <@shiro.hasRole name="sell">
-                                                    <a href="/customer/findAllCustomerByDeptNo"><button type="button" class="btn">取消</button></a>
-                                                </@shiro.hasRole>
-                                            </div>
-
-                                        </form>
-
-                                        <!-- END FORM-->
+                                        <input type="hidden" id="customerId" name="customerId" value="${id}" class="m-wrap medium" />
 
                                     </div>
 
                                 </div>
 
-                            </div>
+                                <div id="addClone">
+
+                                    <div class="control-group" id="clone">
+
+                                        <label class="control-label">请输入Ip段<span class="required">*</span></label>
+
+                                        <div class="controls">
+
+                                            <input type="text" id="beginIp" name="beginIp" placeholder="例如：192.168.111.12" class="m-wrap medium" />
+
+                                            ---
+
+                                            <input type="text" id="endIp" name="endIp" placeholder="例如：192.168.111.112" class="m-wrap medium" />
+
+
+                                            <span class="help-inline" id="beginIpMsg"><#if CustomerMessageBeginIp??><font color="red">${CustomerMessageBeginIp}</font></#if></span>
+
+                                            <span class="help-inline" id="endIpMsg"><#if CustomerMessageEndIp??><font color="red">${CustomerMessageEndIp}</font></#if></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
+                                    <@shiro.hasRole name="backAdmin">
+                                        <a href="/customer/findAllCustomer"><button type="button" class="btn">取消</button></a>
+                                    </@shiro.hasRole>
+                                    <@shiro.hasRole name="sell">
+                                        <a href="/customer/findAllCustomerByDeptNo"><button type="button" class="btn">取消</button></a>
+                                    </@shiro.hasRole>
+                                </div>
+
+                            </form>
 
                         </div>
 
                     </div>
 
-                    <!-- END SAMPLE FORM PORTLET-->
-
                 </div>
 
             </div>
 
-            <!-- END PAGE CONTENT-->
-
         </div>
 
-        <!-- END PAGE CONTAINER-->
-
     </div>
-
 
     <#elseif section = "footer">
 

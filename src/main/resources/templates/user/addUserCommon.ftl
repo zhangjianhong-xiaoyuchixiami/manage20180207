@@ -37,7 +37,7 @@
             <div class="row-fluid">
                 <div class="span12">
                     <!-- BEGIN VALIDATION STATES-->
-                    <div class="portlet box blue">
+                    <div class="portlet box grey">
                         <div class="portlet-title">
                             <div class="caption"><i class="icon-reorder"></i>请填写管理员信息</div>
                             <div class="tools">
@@ -51,27 +51,21 @@
 
                             <!-- BEGIN FORM-->
                             <form action="/user/addUserCommonAction" method="post" id="form_sample_1" class="form-horizontal">
-                                <div class="alert alert-error hide">
-                                    <button class="close" data-dismiss="alert"></button>
-                                    You have some form errors. Please check below.
-                                </div>
-                                <div class="alert alert-success hide">
-                                    <button class="close" data-dismiss="alert"></button>
-                                    Your form validation is successful!
-                                </div>
-                                <div class="control-group">
+                                <div class="control-group"></div>
 
-                                </div>
-                                <div class="control-group">
+                                <div class="control-group"></div>
 
-                                </div>
-                                <div class="controls">
-                                    <#if msg??>
-                                        <span><h5><font color="red">${msg}</font></h5></span>
-                                    <#else>
-                                        <span></span>
-                                    </#if>
-                                </div>
+                                <#if msg??>
+
+                                    <div class="alert alert-error show">
+
+                                        <button class="close" data-dismiss="alert"></button>
+
+                                    ${msg}
+
+                                    </div>
+
+                                </#if>
                                 <div class="control-group">
                                     <label class="control-label">姓名<span class="required">*</span></label>
                                     <div class="controls">

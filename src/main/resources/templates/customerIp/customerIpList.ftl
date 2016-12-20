@@ -54,7 +54,7 @@
 
                 <div class="span12">
 
-                    <div class="portlet box blue">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -76,12 +76,12 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <table class="table-bordered table-striped table-condensed cf">
-                                <thead class="cf">
+                            <table class="table table-striped table-hover table-bordered">
+                                <thead>
                                 <tr>
-                                    <th class="numeric">起始段</th>
-                                    <th class="numeric">结束段</th>
-                                    <th class="numeric">操作</th>
+                                    <th style="text-align: center">起始段</th>
+                                    <th style="text-align: center">结束段</th>
+                                    <th style="text-align: center">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -90,7 +90,7 @@
                                         <tr align="center">
                                             <td>${customerIp.beginIpRaw}</td>
                                             <td>${customerIp.endIpRaw}</td>
-                                            <td class="numeric" style="text-align: center">
+                                            <td style="text-align: center">
                                                 <p>
                                                     <a href="/customerIp/deleteIp/${customerIp.id}/${customerIp.customerId}" class="btn red" id="gritter-light"><i class="icon-trash icon-white">Delete</i></a>
                                                 </p>

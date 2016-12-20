@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.dst.CustomerApiInfo;
 import org.qydata.entity.Api;
 import org.qydata.entity.Company;
 import org.qydata.entity.Customer;
@@ -124,9 +125,33 @@ public interface CompanyMapper {
     public List<CustomerApi> findByIdMobile(Map<String,Object> map)throws Exception;
 
     /**
-     * 根据Id修改
+     * 根据apiId和customerId修改
      * @param map
      * @return
      */
     public boolean updateCustomerApiById(Map<String,Object> map)throws Exception;
+
+    /**
+     * 根据apiId和customerId批量删除CustomerApi数据
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public boolean removeCustomerApiByApiIdAndCustomerId(Map<String,Object> map)throws Exception;
+
+    /**
+     * 根据companyId查询对应的CustomerApi
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerApiInfo> findAllCustomerApiByCompanyId(Map<String,Object> map) throws Exception;
+
+    /**
+     * 根据companyId统计对应的CustomerApi的数据量
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getAllCustomerApiCountByCompanyId(Map<String,Object> map)throws Exception;
 }

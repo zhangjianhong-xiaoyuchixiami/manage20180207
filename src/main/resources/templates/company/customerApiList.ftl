@@ -54,7 +54,7 @@
 
                 <div class="span12">
 
-                    <div class="portlet box blue">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -76,23 +76,26 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <table class="table-bordered table-striped table-condensed cf">
+                            <table class="table table-striped table-hover table-bordered">
                                 <thead class="cf">
                                 <tr>
-                                    <th class="numeric">Api</th>
-                                    <th class="numeric">价格</th>
-                                    <th class="numeric">状态</th>
-                                    <th class="numeric">操作</th>
+                                    <th style="text-align: center; width: 25%;">账号</th>
+                                    <th style="text-align: center; width: 35%;">Api</th>
+                                    <th style="text-align: center; width: 20%;">价格（单位：分）</th>
+                                    <th style="text-align: center; width: 10%;">状态</th>
+                                    <th style="text-align: center; width: 10%;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#if customerApiList??>
                                         <#list customerApiList as customerApi>
-
-                                        <tr align="center">
-
-                                            <td><#if customerApi.api.apiType??>${customerApi.api.apiType.name}</#if><#if customerApi.api.apiMobileOperator??>---${customerApi.api.apiMobileOperator.mobileOperator.name}</#if></td>
-
+                                        <tr>
+                                            <td>
+                                                <#list customerApi.customerList as customer>
+                                                    <a href="/customerApi/customerApiListAction/${customer.id}" style="color: #0e0e0e"><strong>${customer.authId}</strong></a><br/>
+                                                </#list>
+                                            </td>
+                                            <td><#if customerApi.apiTypeName??>${customerApi.apiTypeName}</#if><#if customerApi.mobileOperatorName??>---${customerApi.mobileOperatorName}</#if></td>
                                             <td>${customerApi.price}</td>
                                             <#if customerApi.enabled>
                                                 <td>已激活</td>
@@ -100,9 +103,9 @@
                                             <#if !customerApi.enabled>
                                                 <td>未激活</td>
                                             </#if >
-                                            <td class="numeric" style="text-align: center">
+                                            <td style="text-align: center">
                                                 <p>
-                                                    <a href="/company/findCustomerApiById/${customerApi.apiId}/${customerApi.customer.companyId}" class="btn blue" id="gritter-light">修改</a>
+                                                    <a href="/company/findCustomerApiById/${customerApi.apiId}/${customerApi.companyId}" class="btn black" id="gritter-light">修改</a>
                                                 </p>
                                             </td>
                                         </tr>
@@ -126,12 +129,12 @@
                                             <div class="dataTables_paginate paging_bootstrap pagination">
                                                 <ul>
                                                     <#if (pageSize>1)>
-                                                        <li class="next"><a href="/company/customerApiListAction/${companyId}?pageSize=1"><span class="hidden-480">首页</span></a></li>
-                                                        <li class="next"><a href="/company/customerApiListAction/${companyId}?pageSize=${pageSize-1}"><span class="hidden-480">上一页</span></a></li>
+                                                        <li class="next"><a href="/company/findAllCustomerApiByCompanyId/${companyId}?pageSize=1"><span class="hidden-480">首页</span></a></li>
+                                                        <li class="next"><a href="/company/findAllCustomerApiByCompanyId/${companyId}?pageSize=${pageSize-1}"><span class="hidden-480">上一页</span></a></li>
                                                     </#if>
                                                     <#if (pageSize<totlePage)>
-                                                        <li class="next"><a href="/company/customerApiListAction/${companyId}?pageSize=${pageSize+1}"><span class="hidden-480">下一页</span></a></li>
-                                                        <li class="next"><a href="/company/customerApiListAction/${companyId}?pageSize=${totlePage}"><span class="hidden-480">尾页</span></a></li>
+                                                        <li class="next"><a href="/company/findAllCustomerApiByCompanyId/${companyId}?pageSize=${pageSize+1}"><span class="hidden-480">下一页</span></a></li>
+                                                        <li class="next"><a href="/company/findAllCustomerApiByCompanyId/${companyId}?pageSize=${totlePage}"><span class="hidden-480">尾页</span></a></li>
                                                     </#if>
                                                 </ul>
                                             </div>

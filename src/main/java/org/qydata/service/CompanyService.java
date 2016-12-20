@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.dst.CustomerApiInfo;
 import org.qydata.entity.Api;
 import org.qydata.entity.Company;
 import org.qydata.entity.Customer;
@@ -71,7 +72,7 @@ public interface CompanyService {
      * @param map
      * @return
      */
-    public PageModel<CustomerApi> findAllCustomerApiByCompanyId(Map<String,Object> map)throws Exception;
+    public PageModel<CustomerApi> findAllCustomerApiByCompanyIdOne(Map<String,Object> map)throws Exception;
     /**
      * 根据Id查找
      * @param apiId
@@ -83,5 +84,13 @@ public interface CompanyService {
      * @return
      */
     @Transactional
-    public boolean updateCustomerApiById(String companyId,String price,String apiId,String enabled)throws Exception;
+    public boolean updateCustomerApiById(String beforApiId,String companyId,String price,String afterApiId,String enabled)throws Exception;
+
+    /**
+     * 根据companyId查询对应的CustomerApi
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public PageModel<CustomerApiInfo> findAllCustomerApiByCompanyId(Map<String,Object> map) throws Exception;
 }

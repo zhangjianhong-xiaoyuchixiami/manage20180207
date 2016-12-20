@@ -60,8 +60,43 @@ public class CustomerController {
         }
     }
 
+    @RequestMapping(value = "/addCustomerAccountView/{companyId}")
+    public String addCustomerAccountView(@PathVariable String companyId,Model model){
+        model.addAttribute("companyId",companyId);
+        return "customer/addCustomerAccount";
+    }
 
+    @RequestMapping(value = "/addCustomerAccountAction")
+    public String addCustomerAccountAction(String companyId,String authId,RedirectAttributes model){
 
+        if(RegexUtil.isNull(companyId)){
+            return "redirect:/customer/addCustomerAccountView/"+companyId;
+        }
+        if(RegexUtil.isNull(authId)){
+            model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
+            return "redirect:/customer/addCustomerAccountView/"+companyId;
+        }
+        if(!RegexUtil.stringCheck(authId)){
+            model.addFlashAttribute("authId",authId);
+            model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
+            return "redirect:/customer/addCustomerAccountView/"+companyId;
+        }
+        try{
+            boolean flag = customerService.insertCustomerAccount(companyId,authId);
+            if (!flag) {
+                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
+                return "redirect:/customer/addCustomerViewCommon";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
+            return "redirect:/customer/addCustomerViewCommon";
+        }
+        return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
+
+    }
+
+    //（暂时没用到）
     @RequestMapping(value = ("/addCustomerOnlyDeptView/{companyId}"))
     public String addCustomerViewCommon(Model model,HttpServletRequest request,@PathVariable String companyId){
         User user = (User)request.getSession().getAttribute("userInfo");
@@ -71,7 +106,7 @@ public class CustomerController {
         return "customer/addCustomerOnlyDept";
     }
 
-
+    //（暂时没用到）
     @RequestMapping(value = ("/addCustomerAllDeptView/{companyId}"))
     public String addCustomerViewSuper(Model model,HttpServletRequest request,@PathVariable String companyId){
         List<Dept> deptList = null;
@@ -85,7 +120,7 @@ public class CustomerController {
         return "customer/addCustomerAllDept";
     }
 
-
+    //（暂时没用到）
     @RequestMapping(value = ("/addCustomerOnlyDeptAction"))
     public String insertCustomerByDeptNo(String companyId, String authId, String deptId, RedirectAttributes model){
 
@@ -120,8 +155,7 @@ public class CustomerController {
         return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
     }
 
-
-
+    //（暂时没用到）
     @RequestMapping(value = ("/addCustomerAllDeptAction"))
     public String insertCustomer(String companyId, String authId, String deptId, RedirectAttributes model){
         if(RegexUtil.isNull(companyId)){
@@ -156,9 +190,7 @@ public class CustomerController {
         return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
     }
 
-
-
-    //查找公司账号
+    //查找公司账号（暂时没用到）
     @RequestMapping(value = ("/findAllCustomer"))
     public String findAllCustomer(HttpServletRequest request,Model model,String content){
 
@@ -173,7 +205,12 @@ public class CustomerController {
         if(content!=null){
             map.put("content",content);
         }
-        PageModel<Customer> pageModelOne = customerService.findAllCustomer(map);
+        PageModel<Customer> pageModelOne = null;
+        try {
+            pageModelOne = customerService.findAllCustomer(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         model.addAttribute("content",content);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("customerList",pageModelOne.getList());
@@ -190,9 +227,7 @@ public class CustomerController {
         return "/customer/customerList";
     }
 
-
-
-    //通过部门编号查找公司账号
+    //通过部门编号查找公司账号（暂时没用到）
     @RequestMapping(value = ("/findAllCustomerByDeptNo"))
     public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content){
         User user = (User)request.getSession().getAttribute("userInfo");
@@ -213,7 +248,12 @@ public class CustomerController {
         if(content!=null){
             map.put("content",content);
         }
-        PageModel<Customer> pageModelOne = customerService.findAllCustomer(map);
+        PageModel<Customer> pageModelOne = null;
+        try {
+            pageModelOne = customerService.findAllCustomer(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         model.addAttribute("deptIdList",deptIdList);
         model.addAttribute("content",content);
         model.addAttribute("count",pageModelOne.getCount());

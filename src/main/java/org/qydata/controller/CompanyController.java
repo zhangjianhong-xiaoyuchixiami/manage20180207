@@ -1,5 +1,6 @@
 package org.qydata.controller;
 
+import org.qydata.dst.CustomerApiInfo;
 import org.qydata.entity.*;
 import org.qydata.regex.RegexUtil;
 import org.qydata.service.CompanyService;
@@ -97,6 +98,10 @@ public class CompanyController {
     //新增客户OnlyDeptAction
     @RequestMapping(value = "/addCompanyAndCustomerOnlyDeptAction")
     public String addCompanyAndCustomerOnlyDeptAction(String name,String authId,String deptId,RedirectAttributes model){
+
+        System.out.println(name);
+        System.out.println(authId);
+        System.out.println(deptId);
         if(RegexUtil.isNull(name)){
             model.addFlashAttribute("CompanyCustomerMessageName","请输入公司名称!");
             return "redirect:/company/addCompanyOnlyDeptView";
@@ -224,7 +229,7 @@ public class CompanyController {
 
     //通过客户Id查找公司所有的账号
     @RequestMapping(value = "/findAllCustomerAccountByCompanyId/{companyId}")
-    public String findAllCustomerAccountByCompanyId(@PathVariable String companyId,HttpServletRequest request,Model model){
+    public String findAllCustomerAccountByCompanyId(@PathVariable String companyId,String content,HttpServletRequest request,Model model){
         PageModel pageModel = new PageModel();
         String pageSize= request.getParameter("pageSize");//当前页
         String lineSize = "8";//每页显示条数
@@ -234,6 +239,9 @@ public class CompanyController {
         map.put("beginIndex",pageModel.getBeginIndex());
         map.put("lineSize",pageModel.getLineSize());
         map.put("companyId",Integer.parseInt(companyId));
+        if(content != null && content != ""){
+            map.put("content",content);
+        }
         PageModel<Customer> pageModelOne = new PageModel<>();
         try {
             pageModelOne = companyService.findAllCustomerAccountByCompanyId(map);
@@ -318,14 +326,14 @@ public class CompanyController {
     public String findAllCustomerApiByCompanyId(@PathVariable String companyId,Model model, HttpServletRequest request){
         PageModel pageModel = new PageModel();
         String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
+        String lineSize = "12";//每页显示条数
         pageModel.setPageSize(pageSize);
         pageModel.setLineSize(lineSize);
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("beginIndex",pageModel.getBeginIndex());
         map.put("lineSize",pageModel.getLineSize());
         map.put("companyId",companyId);
-        PageModel<CustomerApi> pageModelOne = null;
+        PageModel<CustomerApiInfo> pageModelOne = null;
         try {
             pageModelOne = companyService.findAllCustomerApiByCompanyId(map);
         } catch (Exception e) {
@@ -361,12 +369,21 @@ public class CompanyController {
         }
         model.addAttribute("apiList",apiList);
         model.addAttribute(customerApi);
+
         return "/company/updateCustomerApi";
     }
 
     //根据id修改指定的customerApi
     @RequestMapping(value = "/updateCustomerApiById")
     public String updateCustomerApiById(String beforApiId,String companyId,String price,String afterApiId,String enabled,RedirectAttributes model ){
+
+        System.out.println(beforApiId);
+        System.out.println(companyId);
+        System.out.println(price);
+        System.out.println(afterApiId);
+        System.out.println(enabled);
+
+
         if(RegexUtil.isNull(beforApiId)){
             return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;
         }
@@ -395,7 +412,7 @@ public class CompanyController {
 
 
         try {
-            boolean flag = companyService.updateCustomerApiById(companyId,price,afterApiId,enabled);
+            boolean flag = companyService.updateCustomerApiById(beforApiId,companyId,price,afterApiId,enabled);
             if (!flag) {
                 model.addFlashAttribute("msg","对不起，修改失败，请检查你的输入！");
                 return "redirect:/company/findCustomerApiById/"+beforApiId+"/"+companyId;

@@ -54,7 +54,7 @@
 
                 <div class="span12">
 
-                    <div class="portlet box blue">
+                    <div class="portlet box grey">
 
                         <div class="portlet-title">
 
@@ -76,14 +76,14 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <table class="table-bordered table-striped table-condensed cf">
-                                <thead class="cf">
+                            <table class="table table-striped table-hover table-bordered">
+                                <thead>
                                 <tr>
 
-                                    <th class="numeric">Api</th>
-                                    <th class="numeric">价格</th>
-                                    <th class="numeric">状态</th>
-                                    <th class="numeric">操作</th>
+                                    <th style="text-align: center">Api</th>
+                                    <th style="text-align: center">价格（单位：分）</th>
+                                    <th style="text-align: center">状态</th>
+                                    <th style="text-align: center">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -100,7 +100,7 @@
                                             <#if !customerApi.enabled>
                                                 <td>未激活</td>
                                             </#if >
-                                            <td class="numeric" style="text-align: center">
+                                            <td style="text-align: center">
                                                 <p>
                                                     <a href="/customerApi/findCustomerApiById/${customerApi.id}" class="btn blue" id="gritter-light">修改</a>
                                                 </p>

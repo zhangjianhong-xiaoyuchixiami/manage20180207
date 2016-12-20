@@ -61,10 +61,37 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public PageModel<Customer> findAllCustomer(Map<String,Object> map) {
+    public PageModel<Customer> findAllCustomer(Map<String,Object> map) throws Exception{
         PageModel<Customer> pageModel = new PageModel<Customer>();
         pageModel.setCount(customerMapper.getAllCount(map));
         pageModel.setList(customerMapper.findAllCustomer(map));
         return pageModel;
+    }
+
+    @Override
+    public boolean insertCustomerAccount(String companyId, String authId) throws Exception {
+
+        Integer deptId = customerMapper.findDeptIdByCompanyId(Integer.parseInt(companyId));
+        //向客户表中插入数据
+        Customer customerA = new Customer();
+        customerA.setAuthId(authId.trim());
+        customerA.setCompanyId(Integer.parseInt(companyId));
+        customerMapper.insertCustomer(customerA);
+
+        Customer customerB = new Customer();
+        customerB.setAuthId(authId.trim() + "_test");
+        customerB.setCompanyId(Integer.parseInt(companyId));
+        customerMapper.insertCustomerTest(customerB);
+
+        //向部门客户映射表中插入数据
+        CustomerDept customerDeptA = new CustomerDept();
+        customerDeptA.setCustomerId(customerA.getId());
+        customerDeptA.setDeptId(deptId);
+        customerDeptMapper.insertCustomerDept(customerDeptA);
+
+        CustomerDept customerDeptB = new CustomerDept();
+        customerDeptB.setCustomerId(customerB.getId());
+        customerDeptB.setDeptId(deptId);
+        return customerDeptMapper.insertCustomerDept(customerDeptB);
     }
 }

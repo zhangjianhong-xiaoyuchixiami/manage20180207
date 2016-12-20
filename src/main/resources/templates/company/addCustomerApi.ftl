@@ -52,152 +52,139 @@
 
                 <div class="span12">
 
-                    <!-- BEGIN SAMPLE FORM PORTLET-->
-
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
 
-                            <div class="caption">
+                            <div class="caption"><i class="icon-reorder"></i>请填写Api信息</div>
 
-                                <i class="icon-reorder"></i>
+                            <div class="tools">
 
-                                <span class="hidden-480">请填写Api信息</span>
+                                <a href="javascript:;" class="collapse"></a>
+
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
+                                <a href="javascript:;" class="reload"></a>
+
+                                <a href="javascript:;" class="remove"></a>
 
                             </div>
 
                         </div>
 
+                        <div class="control-group"></div>
+
+                        <div class="control-group"></div>
+
+                        <div class="btn-group">
+
+                            <button class="btn black" onclick="addCustomerApi()">
+
+                                Add New <i class="icon-plus"></i>
+
+                            </button>
+
+                        </div>
+
                         <div class="portlet-body form">
 
-                            <div class="tabbable portlet-tabs">
+                            <form action="/company/addCustomerApiAction" class="form-horizontal" method="post">
 
-                                <ul class="nav nav-tabs">
+                                <#if msg??>
 
-                                    <li></li>
+                                    <div class="alert alert-error show">
 
-                                    <li></li>
+                                        <button class="close" data-dismiss="alert"></button>
 
-                                    <li><a href="#"" data-toggle="tab">Default</a></li>
-
-                                </ul>
-
-                                <div class="tab-content">
-
-                                    <div class="btn-group">
-
-                                        <button class="btn black" onclick="addCustomerApi()">
-
-                                            Add New <i class="icon-plus"></i>
-
-                                        </button>
+                                    ${msg}
 
                                     </div>
 
-                                    <div class="tab-pane active" id="portlet_tab1">
+                                </#if>
 
-                                        <!-- BEGIN FORM-->
+                                <div class="control-group" style="display: none">
 
-                                        <form action="/company/addCustomerApiAction" class="form-horizontal" method="post">
+                                    <label class="control-label">客户ID<span class="required">*</span></label>
 
-                                            <#if msg??>
+                                    <div class="controls">
 
-                                                <div class="alert alert-error show">
+                                        <input type="text" id="companyId" name="companyId" value="${companyId}" class="m-wrap medium">
 
-                                                    <button class="close" data-dismiss="alert"></button>
+                                        <span id="customerIdMsg" class="help-inline"></span>
 
-                                                    ${msg}
+                                    </div>
 
-                                                </div>
+                                </div>
 
-                                            </#if>
+                                <div id="addCloneCustomerApi">
 
-                                            <div class="control-group" style="display: none">
+                                    <div id="cloneCustomerApi">
 
-                                                <label class="control-label">客户ID<span class="required">*</span></label>
+                                        <div class="control-group">
 
-                                                <div class="controls">
-
-                                                    <input type="text" id="companyId" name="companyId" value="${companyId}" class="m-wrap medium">
-
-                                                    <span id="customerIdMsg" class="help-inline"></span>
-
-                                                </div>
+                                            <div class="controls">
 
                                             </div>
 
-                                            <div id="addCloneCustomerApi">
+                                        </div>
 
-                                                <div id="cloneCustomerApi">
+                                        <div class="control-group">
 
-                                                    <div class="control-group">
+                                            <label class="control-label">价&nbsp;格<span class="required">*</span></label>
 
-                                                        <div class="controls">
+                                            <div class="controls">
 
-                                                        </div>
+                                                <input type="text" id="price" name="price" <#if price??>value="${price}" </#if> placeholder="（单位：分）" class="m-wrap medium">
 
-                                                    </div>
+                                                <span id="priceMsg" class="help-inline"><#if CustomerMessagePrice??><font color="red">${CustomerMessagePrice}</font></font></#if></span>
 
-                                                    <div class="control-group">
+                                                <span class="help-block">e.g：只能输入数字类型并且金额大于0</span>
 
-                                                        <label class="control-label">价&nbsp;格<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <input type="text" id="price" name="price" <#if price??>value="${price}" </#if> placeholder="（单位：分）" class="m-wrap medium">
-
-                                                            <span id="priceMsg" class="help-inline"><#if CustomerMessagePrice??><font color="red">${CustomerMessagePrice}</font></font></#if></span>
-
-                                                            <span class="help-block">e.g：只能输入数字类型并且金额大于0</span>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="control-group">
-
-                                                        <label class="control-label">Api<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <select id="apiId" name="apiId" class="medium m-wrap" tabindex="1">
-                                                                <#if apiList??>
-                                                                    <#list apiList as api>
-
-                                                                        <option value="${api.id}"><#if api.apiType??>${api.apiType.name}</#if><#if api.apiMobileOperator??>---${api.apiMobileOperator.mobileOperator.name}</#if></option>
-
-                                                                    </#list>
-                                                                </#if>
-                                                            </select>
-
-                                                            <span id="apiIdMsg" class="help-inline"></span>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="control-group">
-
-                                                        <label class="control-label">激活状态<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <select id="enabled" name="enabled" class="medium m-wrap" tabindex="1">
-
-                                                                <option value="true">是</option>
-
-                                                                <option value="false">否</option>
-
-                                                            </select>
-
-                                                            <span id="enabledMsg" class="help-inline"></span>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
                                             </div>
+
+                                        </div>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">Api<span class="required">*</span></label>
+
+                                            <div class="controls">
+
+                                                <select id="apiId" name="apiId" class="medium m-wrap" tabindex="1">
+                                                    <#if apiList??>
+                                                        <#list apiList as api>
+
+                                                            <option value="${api.id}"><#if api.apiType??>${api.apiType.name}</#if><#if api.apiMobileOperator??>---${api.apiMobileOperator.mobileOperator.name}</#if></option>
+
+                                                        </#list>
+                                                    </#if>
+                                                </select>
+
+                                                <span id="apiIdMsg" class="help-inline"></span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">激活状态<span class="required">*</span></label>
+
+                                            <div class="controls">
+
+                                                <select id="enabled" name="enabled" class="medium m-wrap" tabindex="1">
+
+                                                    <option value="true">是</option>
+
+                                                    <option value="false">否</option>
+
+                                                </select>
+
+                                                <span id="enabledMsg" class="help-inline"></span>
+
+                                            </div>
+
+                                        </div>
 
                                     </div>
 
@@ -213,11 +200,7 @@
                                     </@shiro.hasRole>
                                 </div>
 
-                                </form>
-
-                                <!-- END FORM-->
-
-                            </div>
+                            </form>
 
                         </div>
 
@@ -231,13 +214,6 @@
 
     </div>
 
-    <!-- END PAGE CONTENT-->
-
-    </div>
-
-    <!-- END PAGE CONTAINER-->
-
-    </div>
 
 
     <#elseif section = "footer">

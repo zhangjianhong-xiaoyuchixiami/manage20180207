@@ -20,8 +20,7 @@ public interface CustomerService {
     public Customer findByAuthId(String authId);
 
     /**
-     * 添加新客户
-
+     * 添加账户
      * @return 插入成功返回true,否则返回false;
      */
     @Transactional
@@ -31,7 +30,14 @@ public interface CustomerService {
      * @map 包含了要使用的数据
      * @return 如果有数据，则以List集合的形式返回，如果没有返回空（size==0）
      */
-    public PageModel<Customer> findAllCustomer(Map<String,Object> map);
+    public PageModel<Customer> findAllCustomer(Map<String,Object> map)throws Exception;
+
+    /**
+     * 添加账户
+     * @return 插入成功返回true,否则返回false;
+     */
+    @Transactional
+    public boolean insertCustomerAccount(String companyId, String authId)throws Exception ;
 
 
 
