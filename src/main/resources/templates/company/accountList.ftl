@@ -104,10 +104,10 @@
                                 <tr>
                                     <th style="text-align: center; width: 10%"><input type="checkbox"/></th>
                                     <th style="text-align: center; width: 15%">账号类型</th>
-                                    <th style="text-align: center; width: 35%">账户</th>
+                                    <th style="text-align: center; width: 30%">账户</th>
                                     <th style="text-align: center; width: 15%">余额</th>
                                     <th style="text-align: center; width: 10%">状态</th>
-                                    <th style="text-align: center; width: 15%">操作</th>
+                                    <th style="text-align: center; width: 20%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>

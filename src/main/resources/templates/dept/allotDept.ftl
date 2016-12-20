@@ -78,7 +78,7 @@
 
                             <div class="btn-group">
 
-                                <button class="btn blue" id="allotDeptSave">
+                                <button class="btn black" id="allotDeptSave">
 
                                     Save <i class="m-icon-swapright m-icon-white"></i>
 
@@ -100,8 +100,8 @@
                                     <#if deptList??>
                                         <#list deptList as dept>
 
-                                        <tr align="center">
-                                            <td>
+                                        <tr>
+                                            <td style="text-align: center">
                                                 <input type="checkbox" name="deptId"
                                                     <#list userDeptIdList as deptIdList>
                                                         <#if deptIdList==dept.id>

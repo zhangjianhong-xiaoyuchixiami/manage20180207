@@ -87,7 +87,7 @@
                                 <#if deptList??>
                                     <#list deptList as dept>
                                     <tr>
-                                        <td style="text-align: center">${dept.deptName}</td>
+                                        <td>${dept.deptName}</td>
                                     </tr>
                                     </#list>
                                 </#if>

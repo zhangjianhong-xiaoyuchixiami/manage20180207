@@ -227,13 +227,28 @@ public class ShiroConfig {
 		//出错页面
 		chains.put("/error/404", "authc");
 		chains.put("/error/500", "authc");
-		//客户管理
-		chains.put("/customer/addCustomerViewCommon", "authc,perms");
-		chains.put("/customer/insertCustomerCommon", "authc,perms");
+		//账号管理
+		chains.put("/customer/addCustomerAccountView/**", "authc,perms");
+		chains.put("/customer/addCustomerAccountAction", "authc,perms");
+		chains.put("/customer/addCustomerOnlyDeptView/**", "authc,perms");
+		chains.put("/customer/addCustomerOnlyDeptAction", "authc,perms");
 		chains.put("/customer/findAllCustomerByDeptNo", "authc,perms");
-		chains.put("/customer/addCustomerViewSuper", "authc,perms");
-		chains.put("/customer/insertCustomerSuper", "authc,perms");
+		chains.put("/customer/addCustomerAllDeptView/**", "authc,perms");
+		chains.put("/customer/addCustomerAllDeptAction", "authc,perms");
 		chains.put("/customer/findAllCustomer", "authc,perms");
+		//客户管理
+		chains.put("/company/addCompanyAllDeptView", "authc,perms");
+		chains.put("/company/addCompanyOnlyDeptView", "authc,perms");
+		chains.put("/company/addCompanyAndCustomerAllDeptAction", "authc,perms");
+		chains.put("/company/addCompanyAndCustomerOnlyDeptAction", "authc,perms");
+		chains.put("/company/findAllByDeptIdAction", "authc,perms");
+		chains.put("/company/findAllAction", "authc,perms");
+		chains.put("/company/findAllCustomerAccountByCompanyId/**", "authc,perms");
+		chains.put("/company/addCustomerApiView/**", "authc,perms");
+		chains.put("/company/addCustomerApiAction", "authc,perms");
+		chains.put("/company/findAllCustomerApiByCompanyId/**", "authc,perms");
+		chains.put("/company/findCustomerApiById/**", "authc,perms");
+		chains.put("/company/updateCustomerApiById", "authc,perms");
 		//客户Api
 		chains.put("/customerApi/addCustomerApiView/**", "authc,perms");
 		chains.put("/customerApi/addCustomerApiAction", "authc,perms");

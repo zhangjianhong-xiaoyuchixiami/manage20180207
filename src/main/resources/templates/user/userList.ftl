@@ -131,7 +131,7 @@
                                         <td>${user.tel}</td>
                                         <td>
                                             <#list user.dept as dept>
-                                            ${dept.deptName}，
+                                            ${dept.deptName}<br/>
                                             </#list>
                                         </td>
 
@@ -146,13 +146,13 @@
                                                 <p>
                                                     <@shiro.hasRole name="backAdmin">
                                                         <@shiro.hasPermission name="user:statusForbid">
-                                                            <a href="/user/statusForbid/${user.username}" class="btn blue" id="gritter-light">禁用账号</a>
+                                                            <a href="/user/statusForbid/${user.username}" class="btn" id="gritter-light">禁用账号</a>
                                                         </@shiro.hasPermission>
                                                     </@shiro.hasRole>
 
                                                     <@shiro.hasRole name="technology">
                                                         <@shiro.hasPermission name="user:statusForbidCommon">
-                                                            <a href="/user/statusForbidCommon/${user.username}" class="btn blue" id="gritter-light">禁用账号</a>
+                                                            <a href="/user/statusForbidCommon/${user.username}" class="btn" id="gritter-light">禁用账号</a>
                                                         </@shiro.hasPermission>
                                                     </@shiro.hasRole>
 
@@ -164,12 +164,12 @@
 
                                                     <@shiro.hasRole name="backAdmin">
                                                         <@shiro.hasPermission name="user:resetPassword">
-                                                            <a href="/user/resetPassword/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
+                                                            <a href="/user/resetPassword/${user.username}" class="btn" id="gritter-max">重置密码</a>
                                                         </@shiro.hasPermission>
                                                     </@shiro.hasRole>
                                                     <@shiro.hasRole name="technology">
                                                         <@shiro.hasPermission name="user:resetPasswordCommon">
-                                                            <a href="/user/resetPasswordCommon/${user.username}" class="btn blue" id="gritter-max">重置密码</a>
+                                                            <a href="/user/resetPasswordCommon/${user.username}" class="btn" id="gritter-max">重置密码</a>
                                                         </@shiro.hasPermission>
                                                     </@shiro.hasRole>
 

@@ -80,7 +80,6 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead class="cf">
                                 <tr>
-                                    <th style="text-align: center;">公司名称</th>
                                     <th style="text-align: center;">账号类型</th>
                                     <th style="text-align: center;">账户</th>
                                     <th style="text-align: center;">余额</th>
@@ -89,7 +88,6 @@
                                 </thead>
                                 <tbody>
                                         <tr>
-                                            <td>${customer.name}</td>
                                             <td>${customer.customerType.name}</td>
                                             <td>${customer.authId}</td>
                                             <td>${customer.balance}</td>

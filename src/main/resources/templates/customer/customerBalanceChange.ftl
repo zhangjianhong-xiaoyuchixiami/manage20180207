@@ -148,7 +148,7 @@
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
+                                <button type="submit" class="btn black"><i class="icon-ok"></i> 提交</button>
                                 <a href="/view/successUrl"><button type="button" class="btn">取消</button></a>
                             </div>
 

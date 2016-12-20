@@ -78,7 +78,7 @@
 
                             <div class="btn-group">
 
-                                <button class="btn blue" id="allotRoleSave">
+                                <button class="btn black" id="allotRoleSave">
 
                                     Save <i class="m-icon-swapright m-icon-white"></i>
 
@@ -100,8 +100,8 @@
                                     <#if roleList??>
                                         <#list roleList as role>
 
-                                        <tr align="center">
-                                            <td>
+                                        <tr>
+                                            <td style="text-align: center">
                                                 <input type="checkbox" name="roleId"  <#list userRoleList as userRoleIdList>
                                                        <#if userRoleIdList.roleId==role.id>checked="checked"</#if>
 
