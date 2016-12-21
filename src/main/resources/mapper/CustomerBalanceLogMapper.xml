@@ -9,6 +9,21 @@
         <result column="name" property="name"/>
     </resultMap>
 
+    <resultMap type="CustomerBalanceLog" id="CustomerBalanceLog_Map">
+        <id column="id" property="id"/>
+        <result column="reasonId" property="reasonId"/>
+        <result column="amount" property="amount"/>
+        <result column="customerId" property="customerId"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <resultMap type="CustomerBalanceLog" id="CustomerBalanceLog_CustomerBalanceModifyReason_Map" extends="CustomerBalanceLog_Map">
+        <association property="customerBalanceModifyReason" javaType="CustomerBalanceModifyReason">
+            <result column="name" property="name"/>
+        </association>
+    </resultMap>
+
+
     <select id="findAll" resultType="CustomerBalanceModifyReason">
         select id,name
         from qydata.CustomerBalanceModifyReason
@@ -25,10 +40,51 @@
     </update>
 
     <!--余额变动日志-->
-    <insert id="insertcustomerBalanceLog" parameterType="CustomerBalanceLog" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertCustomerBalanceLog" parameterType="CustomerBalanceLog" useGeneratedKeys="true" keyProperty="id">
       insert into qydata.CustomerBalanceLog(reasonId,customerId,amount,createTime)
       values(#{reasonId},#{customerId},#{amount},sysdate())
     </insert>
 
+    <!--指定账号消费记录-->
+    <select id="findAllCustomerBalanceLogByCustomerId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
+        SELECT customerBalanceLog.id,customerBalanceLog.reasonId,customerBalanceLog.amount,customerBalanceLog.customerId,
+        customerBalanceLog.createTime,customerBalanceModifyReason.name
+        FROM qydata.CustomerBalanceLog customerBalanceLog,qydata.CustomerBalanceModifyReason customerBalanceModifyReason
+        WHERE customerBalanceLog.reasonId=customerBalanceModifyReason.id
+        AND customerBalanceLog.customerId=#{customerId}
+        <if test="reasonIdList != null and reasonIdList.size() != 0">
+            AND customerBalanceLog.reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
+        <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+            <![CDATA[
+            AND customerBalanceLog.createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            AND customerBalanceLog.createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+             ]]>
+        </if>
+        ORDER BY customerBalanceLog.createTime DESC
+        limit #{beginIndex},#{lineSize}
+    </select>
+
+
+    <select id="getAllCountCustomerBalanceLogByCustomerId" parameterType="map" resultType="Integer">
+        SELECT COUNT(id)
+        FROM qydata.CustomerBalanceLog
+        WHERE customerId=#{customerId}
+        <if test="reasonIdList != null and reasonIdList.size() != 0">
+            AND reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
+        <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+            <![CDATA[
+            AND createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            AND createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+             ]]>
+        </if>
+    </select>
 
 </mapper>

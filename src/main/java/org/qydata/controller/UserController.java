@@ -197,44 +197,51 @@ public class UserController {
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
-        for(int i =0;i<deptList.size();i++){
-            deptIdList.add(deptList.get(i).getId());
-        }
-        PageModel pageModel = new PageModel();
-        Map<String,Object> map = new HashMap<String,Object>();
-        String pageSize = request.getParameter("pageSize");//当前页
-        String lineSize = "8";
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-        map.put("deptIdList",deptIdList);
+        if(deptList.size() > 0){
+            for(int i =0;i<deptList.size();i++){
+                deptIdList.add(deptList.get(i).getId());
+            }
+            PageModel pageModel = new PageModel();
+            Map<String,Object> map = new HashMap<String,Object>();
+            String pageSize = request.getParameter("pageSize");//当前页
+            String lineSize = "8";
+            pageModel.setPageSize(pageSize);
+            pageModel.setLineSize(lineSize);
+            map.put("beginIndex",pageModel.getBeginIndex());
+            map.put("lineSize",pageModel.getLineSize());
+            map.put("deptIdList",deptIdList);
 
-        if(content!=null){
-            map.put("content",content);
-        }
+            if(content!=null){
+                map.put("content",content);
+            }
 
-        PageModel<User> pageModelOne = null;
-        try {
-            pageModelOne = userService.findAllUser(map);
+            PageModel<User> pageModelOne = null;
+            try {
+                pageModelOne = userService.findAllUser(map);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("deptIdList",deptIdList);
+            model.addAttribute("content",content);
+            model.addAttribute("count",pageModelOne.getCount());
+            model.addAttribute("userDeptList",pageModelOne.getList());
+            Integer totalPage= null;
+            Integer count = pageModelOne.getCount();
+            if (count%Integer.parseInt(lineSize) == 0) {
+                totalPage = (count/Integer.parseInt(lineSize));
+            } else {
+                totalPage = (count/Integer.parseInt(lineSize)) + 1;
+            }
+            model.addAttribute("totlePage",totalPage);
+            model.addAttribute("pageSize",pageModel.getPageSize());
+            return "/user/userList";
+        }else{
+            model.addAttribute("deptIdList", deptIdList);
+            model.addAttribute("count", 0);
+            model.addAttribute("userDeptList", null);
+            return "/user/userList";
         }
-        model.addAttribute("deptIdList",deptIdList);
-        model.addAttribute("content",content);
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("userDeptList",pageModelOne.getList());
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
-        }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/user/userList";
     }
 
     //启动账号super

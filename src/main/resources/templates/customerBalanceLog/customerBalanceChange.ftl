@@ -1,5 +1,5 @@
 
-<#include "layout.ftl">
+<#include "../customer/layout.ftl">
 
 <@layout ; section>
     <#if section = "head">

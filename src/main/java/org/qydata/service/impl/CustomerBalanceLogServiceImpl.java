@@ -6,10 +6,12 @@ import org.qydata.mapper.CustomerMapper;
 import org.qydata.entity.Customer;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.service.CustomerBalanceLogService;
+import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jonhn on 2016/11/8.
@@ -40,8 +42,20 @@ public class CustomerBalanceLogServiceImpl implements CustomerBalanceLogService{
         customerBalanceLogMapper.updateBalanceByAuthId(totleBalance,authId);
         CustomerBalanceLog customerBalanceLog = new CustomerBalanceLog();
         customerBalanceLog.setCustomerId(customer.getId());
-        customerBalanceLog.setAmount(Long.parseLong(amount));
         customerBalanceLog.setReasonId(Integer.parseInt(reasonId));
-        return customerBalanceLogMapper.insertcustomerBalanceLog(customerBalanceLog);
+        if(reasonId.equals("-1") || reasonId.equals("-2")) {
+            customerBalanceLog.setAmount(0-(Long.parseLong(amount)));
+        }else{
+            customerBalanceLog.setAmount(0+(Long.parseLong(amount)));
+        }
+        return customerBalanceLogMapper.insertCustomerBalanceLog(customerBalanceLog);
+    }
+
+    @Override
+    public PageModel<CustomerBalanceLog> findAllCustomerBalanceLogByCustomerId(Map<String, Object> map) throws Exception {
+        PageModel<CustomerBalanceLog> pageModel = new PageModel<>();
+        pageModel.setList(customerBalanceLogMapper.findAllCustomerBalanceLogByCustomerId(map));
+        pageModel.setCount(customerBalanceLogMapper.getAllCountCustomerBalanceLogByCustomerId(map));
+        return pageModel;
     }
 }

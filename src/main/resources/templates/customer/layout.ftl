@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>千眼数合</title>
+    <title>平台管理后台</title>
     <meta content="width=device-width, height=device-height, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -39,26 +39,22 @@
     <link rel="stylesheet" type="text/css" href="/css/datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="/css/multi-select-metro.css" />
     <link href="/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
-    <!-- END PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
+    <link href="/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="/css/search.css" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="/image/favicon.ico" />
 
     <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
     <script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
-    <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-
     <script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 
     <script src="/js/bootstrap.min.js" type="text/javascript"></script>
 
-    <!--[if lt IE 9]>
-
     <script src="/js/excanvas.min.js"></script>
 
     <script src="/js/respond.min.js"></script>
-
-    <![endif]-->
 
     <script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
 
@@ -68,9 +64,9 @@
 
     <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
 
-    <!-- END CORE PLUGINS -->
+    <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
 
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="/js/search.js"></script>
 
     <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
 
@@ -80,10 +76,6 @@
 
     <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
 
-    <!-- END PAGE LEVEL PLUGINS -->
-
-    <!-- BEGIN PAGE LEVEL STYLES -->
-
     <script src="/js/app.js"></script>
 
     <script src="/js/form-validation.js"></script>
@@ -92,6 +84,8 @@
 
         jQuery(document).ready(function() {
             App.init();
+
+            Search.init();
         });
     </script>
     <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
@@ -166,6 +160,8 @@
         });
     </script>
 
+    <script src=/js/jquery.fancybox.pack.js"></script>
+
 </head>
 
 <body class="page-header-fixed">
@@ -184,7 +180,7 @@
 
                 <a class="brand" href="#">
 
-                   千眼数合科技
+
 
                 </a>
 
@@ -208,14 +204,8 @@
 
                         <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
 
-                            <img alt="" src="/image/avatar1_small.jpg" />
-
                             <span class="username">
-                                <#if user??>
-                                      ${user.name}
-                                <#else >
-                                    管理员
-                                </#if>
+                                <@shiro.principal/>
                             </span>
 
                             <i class="icon-angle-down"></i>
@@ -272,7 +262,7 @@
 
                         <div class="input-box">
 
-                            <#--<a href="#" class="remove"></a>-->
+                        <#--<a href="#" class="remove"></a>-->
 
                             <#--<input type="text" placeholder="Search..." />-->
 
@@ -287,60 +277,44 @@
             <#--客户管理-->
 
                 <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
-                    <#--<li class="" id="customerManage">-->
-                        <#--<a href="javascript:;">-->
+                <#--&lt;#&ndash;<li class="" id="customerManage">&ndash;&gt;-->
+                <#--&lt;#&ndash;<a href="javascript:;">&ndash;&gt;-->
 
-                            <#--<i class="icon-sitemap"></i>-->
+                <#--&lt;#&ndash;<i class="icon-sitemap"></i>&ndash;&gt;-->
 
-                            <#--<span class="title">客户管理</span>-->
+                <#--&lt;#&ndash;<span class="title">客户管理</span>&ndash;&gt;-->
 
-                            <#--<span class="" id="customerManageSelect"></span>-->
+                <#--&lt;#&ndash;<span class="" id="customerManageSelect"></span>&ndash;&gt;-->
 
-                            <#--<span class="arrow " id="customerManageArrow"></span>-->
+                <#--&lt;#&ndash;<span class="arrow " id="customerManageArrow"></span>&ndash;&gt;-->
 
-                        <#--</a>-->
+                <#--&lt;#&ndash;</a>&ndash;&gt;-->
 
-                        <#--&lt;#&ndash;<ul class="sub-menu">&ndash;&gt;-->
+                    <#--<ul class="sub-menu">-->
 
-                            <#--&lt;#&ndash;&lt;#&ndash;<@shiro.hasPermission name="customer:addCustomerViewCommon">&ndash;&gt;&ndash;&gt;-->
-                            <#--&lt;#&ndash;&lt;#&ndash;&lt;#&ndash;commmon&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
-                                <#--&lt;#&ndash;&lt;#&ndash;<li id="addCustomer">&ndash;&gt;&ndash;&gt;-->
-                                    <#--&lt;#&ndash;&lt;#&ndash;<a href="/customer/addCustomerViewCommon">&ndash;&gt;&ndash;&gt;-->
-                                        <#--&lt;#&ndash;&lt;#&ndash;新增客户&ndash;&gt;&ndash;&gt;-->
-                                    <#--&lt;#&ndash;&lt;#&ndash;</a>&ndash;&gt;&ndash;&gt;-->
-                                <#--&lt;#&ndash;&lt;#&ndash;</li>&ndash;&gt;&ndash;&gt;-->
-                            <#--&lt;#&ndash;&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;&ndash;&gt;-->
+                        <#--<@shiro.hasPermission name="customer:addCustomerViewCommon">-->
+                        <#--&lt;#&ndash;commmon&ndash;&gt;-->
+                            <#--<li id="addCustomer">-->
+                                <#--<a href="/customer/addCustomerViewCommon">-->
+                                    <#--新增客户-->
+                                <#--</a>-->
+                            <#--</li>-->
+                        <#--</@shiro.hasPermission>-->
 
-                            <#--&lt;#&ndash;&lt;#&ndash;<@shiro.hasPermission name="customer:addCustomerViewSuper">&ndash;&gt;&ndash;&gt;-->
-                            <#--&lt;#&ndash;&lt;#&ndash;&lt;#&ndash;super&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
-                                <#--&lt;#&ndash;&lt;#&ndash;<li id="addCustomer">&ndash;&gt;&ndash;&gt;-->
-                                    <#--&lt;#&ndash;&lt;#&ndash;<a href="/customer/addCustomerViewSuper">&ndash;&gt;&ndash;&gt;-->
-                                        <#--&lt;#&ndash;&lt;#&ndash;新增客户&ndash;&gt;&ndash;&gt;-->
-                                    <#--&lt;#&ndash;&lt;#&ndash;</a>&ndash;&gt;&ndash;&gt;-->
-                                <#--&lt;#&ndash;&lt;#&ndash;</li>&ndash;&gt;&ndash;&gt;-->
-                            <#--&lt;#&ndash;&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;&ndash;&gt;-->
-
-                            <#--&lt;#&ndash;&lt;#&ndash;<@shiro.hasPermission name="customer:findAllCustomer">&ndash;&gt;&ndash;&gt;-->
-                                <#--&lt;#&ndash;&lt;#&ndash;<li id="customerList">&ndash;&gt;&ndash;&gt;-->
-                                    <#--&lt;#&ndash;&lt;#&ndash;<a href="/customer/findAllCustomer">&ndash;&gt;&ndash;&gt;-->
-                                        <#--&lt;#&ndash;&lt;#&ndash;客户信息&ndash;&gt;&ndash;&gt;-->
-                                    <#--&lt;#&ndash;&lt;#&ndash;</a>&ndash;&gt;&ndash;&gt;-->
-                                <#--&lt;#&ndash;&lt;#&ndash;</li>&ndash;&gt;&ndash;&gt;-->
-                            <#--&lt;#&ndash;&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;&ndash;&gt;-->
-
-                            <#--&lt;#&ndash;&lt;#&ndash;<@shiro.hasPermission name="customer:findAllCustomerByDeptNo">&ndash;&gt;&ndash;&gt;-->
-                                <#--&lt;#&ndash;&lt;#&ndash;<li id="customerList">&ndash;&gt;&ndash;&gt;-->
-                                    <#--&lt;#&ndash;&lt;#&ndash;<a href="/customer/findAllCustomerByDeptNo">&ndash;&gt;&ndash;&gt;-->
-                                        <#--&lt;#&ndash;&lt;#&ndash;客户信息&ndash;&gt;&ndash;&gt;-->
-                                    <#--&lt;#&ndash;&lt;#&ndash;</a>&ndash;&gt;&ndash;&gt;-->
-                                <#--&lt;#&ndash;&lt;#&ndash;</li>&ndash;&gt;&ndash;&gt;-->
-                            <#--&lt;#&ndash;&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;&ndash;&gt;-->
-
-                        <#--&lt;#&ndash;</ul>&ndash;&gt;-->
+                        <#--<@shiro.hasPermission name="customer:addCustomerViewSuper">-->
+                        <#--&lt;#&ndash;super&ndash;&gt;-->
+                            <#--<li id="addCustomer">-->
+                                <#--<a href="/customer/addCustomerViewSuper">-->
+                                    <#--新增客户-->
+                                <#--</a>-->
+                            <#--</li>-->
+                        <#--</@shiro.hasPermission>-->
+                        <#---->
+                    <#--</ul>-->
                     <#--</li>-->
                 <#--</@shiro.hasAnyRoles>-->
 
-                <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
+                <@shiro.hasAnyRoles name="sell,backAdmin">
                     <li class="" id="customerManage">
                         <a href="javascript:;">
 
@@ -356,46 +330,45 @@
 
                         <ul class="sub-menu">
 
-                            <#--<@shiro.hasPermission name="customer:addCustomerViewCommon">-->
-                            <#--commmon-->
+                            <@shiro.hasPermission name="company:addCompanyAllDeptView">
                                 <li id="addCustomer">
                                     <a href="/company/addCompanyAllDeptView">
-                                        新增客户Super
+                                        新增客户
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="customer:addCustomerViewSuper">-->
-                            <#--super-->
+                            <@shiro.hasPermission name="company:addCompanyOnlyDeptView">
                                 <li id="addCustomer">
                                     <a href="/company/addCompanyOnlyDeptView">
-                                        新增客户common
+                                        新增客户
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="customer:findAllCustomer">-->
+                            <@shiro.hasPermission name="company:findAllAction">
                                 <li id="customerList">
                                     <a href="/company/findAllAction">
-                                        客户信息super
+                                        客户信息
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="customer:findAllCustomerByDeptNo">-->
+                            <@shiro.hasPermission name="company:findAllByDeptIdAction">
                                 <li id="customerList">
                                     <a href="/company/findAllByDeptIdAction">
-                                        客户信息common
+                                        客户信息
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
                         </ul>
                     </li>
-                <#--</@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>
 
             <#--财务管理-->
                 <@shiro.hasAnyRoles name="sell,backAdmin">
+
                     <li class="" id="customerBalance">
                         <a href="javascript:;">
 
@@ -416,6 +389,22 @@
                                     客户余额变更
                                 </a>
                             </li>
+
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="customerListBalanceLog">
+                                    <a href="/customer/findAllCustomer">
+                                        财务报表
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                <li id="customerListBalanceLog">
+                                    <a href="/customer/findAllCustomerByDeptNo">
+                                        财务报表
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
                         </ul>
 
@@ -530,7 +519,7 @@
 
         <div class="footer-inner">
 
-            2016 &copy; 北京千眼数合科技有限公司
+            2016 &copy;
         </div>
 
         <div class="footer-tools">

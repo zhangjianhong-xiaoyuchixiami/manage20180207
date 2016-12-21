@@ -60,12 +60,14 @@ public class CustomerController {
         }
     }
 
+    //添加账号View
     @RequestMapping(value = "/addCustomerAccountView/{companyId}")
     public String addCustomerAccountView(@PathVariable String companyId,Model model){
         model.addAttribute("companyId",companyId);
         return "customer/addCustomerAccount";
     }
 
+    //添加账号Action
     @RequestMapping(value = "/addCustomerAccountAction")
     public String addCustomerAccountAction(String companyId,String authId,RedirectAttributes model){
 
@@ -95,6 +97,97 @@ public class CustomerController {
         return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
 
     }
+
+    //查找公司账号
+    @RequestMapping(value = ("/findAllCustomer"))
+    public String findAllCustomer(HttpServletRequest request,Model model,String content){
+
+        PageModel<Customer> pageModel = new PageModel();
+        String pageSize= request.getParameter("pageSize");//当前页
+        String lineSize = "8";//每页显示条数
+        pageModel.setPageSize(pageSize);
+        pageModel.setLineSize(lineSize);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("beginIndex",pageModel.getBeginIndex());
+        map.put("lineSize",pageModel.getLineSize());
+        if(content!=null){
+            map.put("content",content);
+        }
+        PageModel<Customer> pageModelOne = null;
+        try {
+            pageModelOne = customerService.findAllCustomer(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("content",content);
+        model.addAttribute("count",pageModelOne.getCount());
+        model.addAttribute("customerList",pageModelOne.getList());
+        Integer totalPage= null;
+        Integer count = pageModelOne.getCount();
+
+        if (count%Integer.parseInt(lineSize) == 0) {
+            totalPage = (count/Integer.parseInt(lineSize));
+        } else {
+            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+        }
+        model.addAttribute("totlePage",totalPage);
+        model.addAttribute("pageSize",pageModel.getPageSize());
+        return "/customerBalanceLog/customerList";
+    }
+
+    //通过部门编号查找公司账号
+    @RequestMapping(value = ("/findAllCustomerByDeptNo"))
+    public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content){
+        User user = (User)request.getSession().getAttribute("userInfo");
+        List<Dept> deptList = user.getDept();
+        List deptIdList = new ArrayList();
+        for(int i =0;i<deptList.size();i++){
+            deptIdList.add(deptList.get(i).getId());
+        }
+        PageModel<Customer> pageModel = new PageModel();
+        String pageSize= request.getParameter("pageSize");//当前页
+        String lineSize = "8";//每页显示条数
+        pageModel.setPageSize(pageSize);
+        pageModel.setLineSize(lineSize);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("beginIndex",pageModel.getBeginIndex());
+        map.put("lineSize",pageModel.getLineSize());
+        map.put("deptIdList",deptIdList);
+        if(content!=null){
+            map.put("content",content);
+        }
+        PageModel<Customer> pageModelOne = null;
+        try {
+            pageModelOne = customerService.findAllCustomer(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("deptIdList",deptIdList);
+        model.addAttribute("content",content);
+        model.addAttribute("count",pageModelOne.getCount());
+        model.addAttribute("customerList",pageModelOne.getList());
+        Integer totalPage= null;
+        Integer count = pageModelOne.getCount();
+
+        if (count%Integer.parseInt(lineSize) == 0) {
+            totalPage = (count/Integer.parseInt(lineSize));
+        } else {
+            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+        }
+        model.addAttribute("totlePage",totalPage);
+        model.addAttribute("pageSize",pageModel.getPageSize());
+        return "/customerBalanceLog/customerList";
+    }
+
+    //通过authId查找账号详细信息
+    @RequestMapping(value = "/findCustomerDetailInfo/{authId}")
+    public String findCustomerDetailInfo(@PathVariable String authId,Model model){
+        Customer customer = customerService.findByAuthId(authId);
+        model.addAttribute("customer",customer);
+        return "/customerBalanceLog/detailCustomerInfo";
+    }
+
+
 
     //（暂时没用到）
     @RequestMapping(value = ("/addCustomerOnlyDeptView/{companyId}"))
@@ -190,85 +283,5 @@ public class CustomerController {
         return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
     }
 
-    //查找公司账号（暂时没用到）
-    @RequestMapping(value = ("/findAllCustomer"))
-    public String findAllCustomer(HttpServletRequest request,Model model,String content){
-
-        PageModel<Customer> pageModel = new PageModel();
-        String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-        if(content!=null){
-            map.put("content",content);
-        }
-        PageModel<Customer> pageModelOne = null;
-        try {
-            pageModelOne = customerService.findAllCustomer(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("content",content);
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("customerList",pageModelOne.getList());
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
-
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
-        }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/customer/customerList";
-    }
-
-    //通过部门编号查找公司账号（暂时没用到）
-    @RequestMapping(value = ("/findAllCustomerByDeptNo"))
-    public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content){
-        User user = (User)request.getSession().getAttribute("userInfo");
-        List<Dept> deptList = user.getDept();
-        List deptIdList = new ArrayList();
-        for(int i =0;i<deptList.size();i++){
-            deptIdList.add(deptList.get(i).getId());
-        }
-        PageModel<Customer> pageModel = new PageModel();
-        String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-        map.put("deptIdList",deptIdList);
-        if(content!=null){
-            map.put("content",content);
-        }
-        PageModel<Customer> pageModelOne = null;
-        try {
-            pageModelOne = customerService.findAllCustomer(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("deptIdList",deptIdList);
-        model.addAttribute("content",content);
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("customerList",pageModelOne.getList());
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
-
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
-        }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/customer/customerList";
-    }
 
 }

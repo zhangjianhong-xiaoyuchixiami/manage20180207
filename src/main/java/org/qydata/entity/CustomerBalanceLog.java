@@ -15,6 +15,7 @@ public class CustomerBalanceLog implements Serializable{
     private Long amount;
     private Long reqId;
     private Timestamp createTime;
+    private CustomerBalanceModifyReason customerBalanceModifyReason;
     public CustomerBalanceLog(){}
 
     public Long getId() {
@@ -63,5 +64,13 @@ public class CustomerBalanceLog implements Serializable{
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public CustomerBalanceModifyReason getCustomerBalanceModifyReason() {
+        return customerBalanceModifyReason;
+    }
+
+    public void setCustomerBalanceModifyReason(CustomerBalanceModifyReason customerBalanceModifyReason) {
+        this.customerBalanceModifyReason = customerBalanceModifyReason;
     }
 }

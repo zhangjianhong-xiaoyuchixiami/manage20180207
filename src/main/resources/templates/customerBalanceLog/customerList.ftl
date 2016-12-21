@@ -1,5 +1,5 @@
 
-<#include "layout.ftl">
+<#include "../customer/layout.ftl">
 
 <@layout ; section>
     <#if section = "head">
@@ -60,9 +60,9 @@
 
                             <div class="input-append">
 
-                                <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
+                                <input class="m-wrap" type="text" name="content">
 
-                                <button class="btn blue" type="submit">搜索</button>
+                                <button class="btn black" type="submit">搜索</button>
 
                             </div>
 
@@ -72,9 +72,9 @@
 
                             <div class="input-append">
 
-                                <input class="m-wrap" type="text" name="content" placeholder="Search AuthId or Name">
+                                <input class="m-wrap" type="text" name="content">
 
-                                <button class="btn blue" type="submit">搜索</button>
+                                <button class="btn black" type="submit">搜索</button>
 
                             </div>
 
@@ -106,13 +106,12 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th class="numeric"><input type="checkbox"/></th>
-                                    <th style="text-align: center">账号类型</th>
-                                    <th style="text-align: center">账户</th>
-                                    <th style="text-align: center">余额</th>
-                                    <th style="text-align: center">状态</th>
-                                    <th style="text-align: center">创建时间</th>
-                                    <th style="text-align: center">操作</th>
+
+                                    <th style="text-align: center; width: 15%">账号类型</th>
+                                    <th style="text-align: center; width: 35%">账户</th>
+                                    <th style="text-align: center; width: 20%">余额</th>
+                                    <th style="text-align: center; width: 10%">状态</th>
+                                    <th style="text-align: center; width: 20%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -120,26 +119,16 @@
                                     <#if customerList??>
                                         <#list customerList as customer>
                                         <tr>
-                                            <td><input type="checkbox" value="${customer.id}"/></td>
                                             <td>${customer.customerType.name}</td>
-                                            <td>${customer.authId}</td>
+                                            <td><a href="/customer/findCustomerDetailInfo/${customer.authId}" style="color: #0e0e0e"><strong>${customer.authId}</strong></a></td>
                                             <td>${customer.balance}</td>
                                             <td>${customer.customerStatus.name}</td>
-                                            <td>${customer.createTime}</td>
                                             <td style="text-align: center">
-
                                                 <p>
+                                                    <a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}" class="btn" id="gritter-light">消费记录</a>
 
-                                                    <a href="/customerIp/addCustomerIpView/${customer.id}" class="btn" id="gritter-light">添加Ip</a>
-
-                                                    <a href="/customerApi/addCustomerApiView/${customer.id}" class="btn black" id="gritter-light">添加Api</a><br/>
-
-                                                    <a href="/customerIp/customerIpListAction/${customer.id}" class="btn" id="gritter-max">管理Ip</a>
-
-                                                    <a href="/customerApi/customerApiListAction/${customer.id}" class="btn black" id="gritter-max">管理Api</a>
-
+                                                    <a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}" class="btn black" id="gritter-light">充值记录</a>
                                                 </p>
-
                                             </td>
 
                                         </tr>
@@ -227,13 +216,13 @@
     </#if>
 <script>
     $(document).ready(function() {
-        $('#customerManage').addClass('active');
+        $('#customerBalance').addClass('active');
 
-        $('#customerList').addClass('active');
+        $('#customerListBalanceLog').addClass('active');
 
-        $('#customerManageSelect').addClass('selected');
+        $('#customerBalanceSelect').addClass('selected');
 
-        $('#customerManageArrow').addClass('arrow open');
+        $('#customerBalanceArrow').addClass('arrow open');
     });
 </script>
 </@layout>

@@ -2,10 +2,12 @@ package org.qydata.controller;
 
 import org.apache.log4j.Logger;
 import org.qydata.entity.Customer;
+import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.CustomerBalanceModifyReason;
 import org.qydata.regex.RegexUtil;
 import org.qydata.service.CustomerBalanceLogService;
 import org.qydata.service.CustomerService;
+import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -28,15 +34,15 @@ public class CustomerBalanceLogController {
     @Autowired
     private CustomerService customerService;
 
-    //余额变动日志
+    //余额变动日志View
     @RequestMapping(value = "/customerBalanceChangeView")
     public  String customerBalanceChangeView(Model model){
         List<CustomerBalanceModifyReason> list= customerBalanceLogService.findAll();
         model.addAttribute("customerBalanceModifyReasonList",list);
-        return "/customer/customerBalanceChange";
+        return "/customerBalanceLog/customerBalanceChange";
     }
 
-
+    //余额变动日志Action
     @RequestMapping(value = "/customerBalanceChangeAction")
     public String customerBalanceChangeAction(String authId, String amount, String reasonId, RedirectAttributes model){
         if(RegexUtil.isNull(authId)){
@@ -87,12 +93,70 @@ public class CustomerBalanceLogController {
         return "redirect:/customerBalance/customerBalanceChangeSuccess/"+authId;
     }
 
-
+    //余额变动日志Success
     @RequestMapping(value = "/customerBalanceChangeSuccess/{authId}")
     public String customerBalanceChangeSuccess(@PathVariable String authId,Model model){
         Customer customer = customerService.findByAuthId(authId);
         model.addAttribute("customer",customer);
-        return "/customer/customerBalanceChangeSuccess";
+        return "/customerBalanceLog/customerBalanceChangeSuccess";
 
     }
+
+    //指定账号消费记录
+    @RequestMapping(value = "/findAllCustomerBalanceLogByCustomerId/{customerId}")
+    public String findAllCustomerBalanceLogByCustomerId(@PathVariable String customerId,String beginDate,String endDate,String reasonId, HttpServletRequest request,Model model){
+
+        System.out.println("customerId="+customerId);
+        System.out.println("beginDate="+beginDate+" "+"00:00:00");
+        System.out.println("endDate="+endDate+" "+"23:59:59");
+        System.out.println("reasonId=" + reasonId);
+
+        PageModel pageModel = new PageModel();
+        String pageSize = request.getParameter("pageSize");//当前页
+        String lineSize = "12";//每页显示条数
+        pageModel.setPageSize(pageSize);
+        pageModel.setLineSize(lineSize);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("beginIndex", pageModel.getBeginIndex());
+        map.put("lineSize", pageModel.getLineSize());
+        map.put("customerId", Integer.parseInt(customerId));
+        List<Integer> reasonIdList = new ArrayList<>();
+        if (reasonId != null && reasonId != "") {
+            reasonIdList.add(Integer.parseInt(reasonId));
+        } else {
+            reasonIdList.add(-1);
+        }
+        map.put("reasonIdList", reasonIdList);
+        if (beginDate != null && beginDate != "" && endDate != null && endDate != "") {
+            map.put("beginDate", beginDate+" "+"00:00:00");
+            map.put("endDate", endDate+" "+"23:59:59");
+        }
+        PageModel<CustomerBalanceLog> pageModelOne = null;
+        try {
+            pageModelOne = customerBalanceLogService.findAllCustomerBalanceLogByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (beginDate != null && beginDate != "" && endDate != null && endDate != "") {
+            model.addAttribute("beginDate", beginDate);
+            model.addAttribute("endDate", endDate);
+        }
+        if (reasonId != null && reasonId != "") {
+            model.addAttribute("reasonId", reasonId);
+        }
+        model.addAttribute("count", pageModelOne.getCount());
+        model.addAttribute("customerBalanceLogList", pageModelOne.getList());
+        model.addAttribute("customerId", customerId);
+        Integer totalPage = null;
+        Integer count = pageModelOne.getCount();
+        if (count % Integer.parseInt(lineSize) == 0) {
+            totalPage = (count / Integer.parseInt(lineSize));
+        } else {
+            totalPage = (count / Integer.parseInt(lineSize)) + 1;
+        }
+        model.addAttribute("totlePage", totalPage);
+        model.addAttribute("pageSize", pageModel.getPageSize());
+        return "/customerBalanceLog/consumptionRecord";
+    }
+
 }
