@@ -16,7 +16,7 @@
 
                     <h3 class="page-title">
 
-                        余额变更
+                        <#--余额变更-->
 
                     </h3>
 
@@ -66,13 +66,13 @@
 
                             <div class="tools">
 
-                                <a href="javascript:;" class="collapse"></a>
+                                <#--<a href="javascript:;" class="collapse"></a>-->
 
-                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
 
-                                <a href="javascript:;" class="reload"></a>
+                                <#--<a href="javascript:;" class="reload"></a>-->
 
-                                <a href="javascript:;" class="remove"></a>
+                                <#--<a href="javascript:;" class="remove"></a>-->
 
                             </div>
 
@@ -93,7 +93,7 @@
                                     <span></span>
                                 </#if>
                             </div>
-                            <div class="control-group">
+                            <div class="control-group" style="display: none;">
 
                                 <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
 

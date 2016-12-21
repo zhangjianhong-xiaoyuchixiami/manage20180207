@@ -66,9 +66,13 @@
             </foreach>
         </if>
         <if test="content!=null and content!=''">
-            and (c.name like '%${content}%' or c.authId like '%${content}%'
-            or d.deptName like '%${content}%'
-            or c.qctname like '%${content}%' or c.qcsname like '%${content}%')
+            and c.authId like '%${content}%'
+        </if>
+        <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
+            and c.typeId in
+            <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
+                #{customerTypeId}
+            </foreach>
         </if>
         order by c.createTime desc
         limit #{beginIndex},#{lineSize}
@@ -90,10 +94,15 @@
             </foreach>
         </if>
         <if test="content!=null and content!=''">
-            and (c.name like '%${content}%' or c.authId like '%${content}%'
-            or d.deptName like '%${content}%'
-            or c.qctname like '%${content}%' or c.qcsname like '%${content}%')
+            and c.authId like '%${content}%'
         </if>
+        <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
+            and c.typeId in
+            <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
+                #{customerTypeId}
+            </foreach>
+        </if>
+
     </select>
 
     <!--根据客户Id查找对应的部门Id-->

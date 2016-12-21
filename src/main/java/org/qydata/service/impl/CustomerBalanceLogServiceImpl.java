@@ -58,4 +58,9 @@ public class CustomerBalanceLogServiceImpl implements CustomerBalanceLogService{
         pageModel.setCount(customerBalanceLogMapper.getAllCountCustomerBalanceLogByCustomerId(map));
         return pageModel;
     }
+
+    @Override
+    public List<CustomerBalanceLog> getAllCustomerBalanceLogAmountByCustomerId(Map<String, Object> map) throws Exception {
+        return customerBalanceLogMapper.getAllCustomerBalanceLogAmountByCustomerId(map);
+    }
 }

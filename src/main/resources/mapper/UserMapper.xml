@@ -51,7 +51,7 @@
     <!--添加管理员-->
     <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         insert into qyauth.User(name,username,password,tel,status,typeId,createTime)
-        values(#{name},#{username},'123456',#{tel},#{status},#{typeId},sysdate())
+        values(#{name},#{username},#{password},#{tel},#{status},#{typeId},sysdate())
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             select LAST_INSERT_ID()
         </selectKey>
@@ -59,7 +59,7 @@
     <!--Common添加管理员-->
     <insert id="addUserCommon" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         insert into qyauth.User(name,username,password,tel,status,typeId,createTime)
-        values(#{name},#{username},'123456',#{tel},#{status},2,sysdate())
+        values(#{name},#{username},#{password},#{tel},#{status},2,sysdate())
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             select LAST_INSERT_ID()
         </selectKey>
@@ -71,8 +71,8 @@
     </update>
     <!--重置密码-->
    <update id="resetPassword" parameterType="String">
-       update qyauth.User set password='123456'
-       where username=#{username}
+       update qyauth.User set password=#{param2}
+       where username=#{param1}
    </update>
     <!--查找全部用户-->
     <select id="findAllUser" parameterType="Map" resultMap="userDeptMap">

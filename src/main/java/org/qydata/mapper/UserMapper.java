@@ -58,7 +58,7 @@ public interface UserMapper {
      * @return
      * @throws Exception
      */
-    public boolean resetPassword(String username)throws Exception;
+    public boolean resetPassword(String username,String password)throws Exception;
 
     /**
      * 查找全部用户

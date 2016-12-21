@@ -58,9 +58,13 @@
                 #{reasonId}
             </foreach>
         </if>
-        <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+        <if test="beginDate != null and beginDate != ''">
             <![CDATA[
             AND customerBalanceLog.createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
             AND customerBalanceLog.createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
              ]]>
         </if>
@@ -79,10 +83,37 @@
                 #{reasonId}
             </foreach>
         </if>
-        <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+        <if test="beginDate != null and beginDate != ''">
             <![CDATA[
             AND createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
             AND createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+             ]]>
+        </if>
+    </select>
+
+    <select id="getAllCustomerBalanceLogAmountByCustomerId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
+        SELECT customerBalanceLog.amount
+        FROM qydata.CustomerBalanceLog customerBalanceLog,qydata.CustomerBalanceModifyReason customerBalanceModifyReason
+        WHERE customerBalanceLog.reasonId=customerBalanceModifyReason.id
+        AND customerBalanceLog.customerId=#{customerId}
+        <if test="reasonIdList != null and reasonIdList.size() != 0">
+            AND customerBalanceLog.reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            <![CDATA[
+            AND customerBalanceLog.createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND customerBalanceLog.createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
              ]]>
         </if>
     </select>

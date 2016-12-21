@@ -16,7 +16,7 @@
 
                     <h3 class="page-title">
 
-                        客户信息
+                        <#--客户信息-->
 
                     </h3>
 
@@ -63,13 +63,13 @@
 
                             <div class="tools">
 
-                                <a href="javascript:;" class="collapse"></a>
+                                <#--<a href="javascript:;" class="collapse"></a>-->
 
-                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
 
-                                <a href="javascript:;" class="reload"></a>
+                                <#--<a href="javascript:;" class="reload"></a>-->
 
-                                <a href="javascript:;" class="remove"></a>
+                                <#--<a href="javascript:;" class="remove"></a>-->
 
                             </div>
 
@@ -115,13 +115,13 @@
     </#if>
 <script>
     $(document).ready(function() {
-        $('#customerManage').addClass('active');
+        $('#customerBalance').addClass('active');
 
-        $('#customerList').addClass('active');
+        $('#changeCustomerBalance').addClass('active');
 
-        $('#customerManageSelect').addClass('selected');
+        $('#customerBalanceSelect').addClass('selected');
 
-        $('#customerManageArrow').addClass('arrow open');
+        $('#customerBalanceArrow').addClass('arrow open');
     });
 </script>
 </@layout>

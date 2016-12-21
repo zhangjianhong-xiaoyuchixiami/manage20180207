@@ -6,6 +6,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.qydata.entity.User;
 import org.qydata.service.UserService;
+import org.qydata.tools.Md5Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +52,11 @@ public class ViewController {
     @RequestMapping("/view/Login")
     public String login(HttpServletRequest request, String username, String password, RedirectAttributes model) {
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+
+        String md5Password = Md5Tools.md5(username.trim()+password.trim());
+        System.out.println(md5Password);
+
+        UsernamePasswordToken token = new UsernamePasswordToken(username, md5Password);
         try {
             subject.login(token);
 

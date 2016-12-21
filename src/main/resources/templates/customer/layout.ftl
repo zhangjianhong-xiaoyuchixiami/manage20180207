@@ -170,23 +170,9 @@
 
     <div class="header navbar navbar-inverse navbar-fixed-top">
 
-        <!-- BEGIN TOP NAVIGATION BAR -->
-
         <div class="navbar-inner">
 
             <div class="container-fluid">
-
-                <!-- BEGIN LOGO -->
-
-                <a class="brand" href="#">
-
-
-
-                </a>
-
-                <!-- END LOGO -->
-
-                <!-- BEGIN RESPONSIVE MENU TOGGLER -->
 
                 <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
 
@@ -194,17 +180,13 @@
 
                 </a>
 
-                <!-- END RESPONSIVE MENU TOGGLER -->
-
-                <!-- BEGIN TOP NAVIGATION MENU -->
-
                 <ul class="nav pull-right">
 
                     <li class="dropdown user">
 
                         <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
 
-                            <span class="username">
+                            <span class="username" style="font-size: 16px;">
                                 <@shiro.principal/>
                             </span>
 
@@ -231,8 +213,6 @@
             </div>
 
         </div>
-
-        <!-- END TOP NAVIGATION BAR -->
 
     </div>
 
@@ -384,12 +364,6 @@
 
                         <ul class="sub-menu">
 
-                            <li id="changeCustomerBalance">
-                                <a href="/customerBalance/customerBalanceChangeView">
-                                    客户余额变更
-                                </a>
-                            </li>
-
                             <@shiro.hasPermission name="customer:findAllCustomer">
                                 <li id="customerListBalanceLog">
                                     <a href="/customer/findAllCustomer">
@@ -519,7 +493,7 @@
 
         <div class="footer-inner">
 
-            2016 &copy;
+            <#--2016 &copy;-->
         </div>
 
         <div class="footer-tools">

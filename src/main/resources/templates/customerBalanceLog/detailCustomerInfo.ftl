@@ -16,7 +16,7 @@
 
                     <h3 class="page-title">
 
-                        客户信息
+                        <#--客户信息-->
 
                     </h3>
 
@@ -64,13 +64,13 @@
 
                             <div class="tools">
 
-                                <a href="javascript:;" class="collapse"></a>
+                                <#--<a href="javascript:;" class="collapse"></a>-->
 
-                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
 
-                                <a href="javascript:;" class="reload"></a>
+                                <#--<a href="javascript:;" class="reload"></a>-->
 
-                                <a href="javascript:;" class="remove"></a>
+                                <#--<a href="javascript:;" class="remove"></a>-->
 
                             </div>
 
@@ -82,9 +82,9 @@
                                 <thead>
                                 <tr>
                                     <th style="text-align: center; width: 15%">账号类型</th>
-                                    <th style="text-align: center; width: 20%">账户</th>
+                                    <th style="text-align: center; width: 20%">账号</th>
                                     <th style="text-align: center; width: 20%">密码</th>
-                                    <th style="text-align: center; width: 15%">余额</th>
+                                    <th style="text-align: center; width: 15%">余额（单位/元）</th>
                                     <th style="text-align: center; width: 15%">创建时间</th>
                                     <th style="text-align: center; width: 10%">部门</th>
                                     <th style="text-align: center; width: 5%">状态</th>
@@ -96,7 +96,7 @@
                                     <td>${customer.customerType.name}</td>
                                     <td>${customer.authId}</td>
                                     <td>${customer.authPass}</td>
-                                    <td>${customer.balance}</td>
+                                    <td>${customer.balance/100}</td>
                                     <td>${customer.createTime}</td>
                                     <td>${customer.dept.deptName}</td>
                                     <td>${customer.customerStatus.name}</td>

@@ -99,8 +99,8 @@ public class CustomerController {
     }
 
     //查找公司账号
-    @RequestMapping(value = ("/findAllCustomer"))
-    public String findAllCustomer(HttpServletRequest request,Model model,String content){
+    @RequestMapping(value = "/findAllCustomer")
+    public String findAllCustomer(HttpServletRequest request,Model model,String content,String customerTypeId1,String customerTypeId2){
 
         PageModel<Customer> pageModel = new PageModel();
         String pageSize= request.getParameter("pageSize");//当前页
@@ -113,6 +113,14 @@ public class CustomerController {
         if(content!=null){
             map.put("content",content);
         }
+        List customerTypeIdList = new ArrayList();
+        if(customerTypeId1 != null && customerTypeId1 != ""){
+            customerTypeIdList.add(Integer.parseInt(customerTypeId1));
+        }
+        if(customerTypeId2 != null && customerTypeId2 != ""){
+            customerTypeIdList.add(Integer.parseInt(customerTypeId2));
+        }
+        map.put("customerTypeIdList",customerTypeIdList);
         PageModel<Customer> pageModelOne = null;
         try {
             pageModelOne = customerService.findAllCustomer(map);
@@ -120,6 +128,8 @@ public class CustomerController {
             e.printStackTrace();
         }
         model.addAttribute("content",content);
+        model.addAttribute("customerTypeId1",customerTypeId1);
+        model.addAttribute("customerTypeId2",customerTypeId2);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("customerList",pageModelOne.getList());
         Integer totalPage= null;
@@ -137,7 +147,7 @@ public class CustomerController {
 
     //通过部门编号查找公司账号
     @RequestMapping(value = ("/findAllCustomerByDeptNo"))
-    public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content){
+    public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content,String customerTypeId1,String customerTypeId2){
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
@@ -156,6 +166,14 @@ public class CustomerController {
         if(content!=null){
             map.put("content",content);
         }
+        List customerTypeIdList = new ArrayList();
+        if(customerTypeId1 != null && customerTypeId1 != ""){
+            customerTypeIdList.add(Integer.parseInt(customerTypeId1));
+        }
+        if(customerTypeId2 != null && customerTypeId2 != ""){
+            customerTypeIdList.add(Integer.parseInt(customerTypeId2));
+        }
+        map.put("customerTypeIdList",customerTypeIdList);
         PageModel<Customer> pageModelOne = null;
         try {
             pageModelOne = customerService.findAllCustomer(map);
@@ -164,6 +182,8 @@ public class CustomerController {
         }
         model.addAttribute("deptIdList",deptIdList);
         model.addAttribute("content",content);
+        model.addAttribute("customerTypeId1",customerTypeId1);
+        model.addAttribute("customerTypeId2",customerTypeId2);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("customerList",pageModelOne.getList());
         Integer totalPage= null;

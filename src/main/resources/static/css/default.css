@@ -13,10 +13,10 @@ Page header
 .header .navbar-inner {
   filter: none !important;
   background-image: none !important;
-  background-color: #212121 !important;
+  background-color: #3d3d3d !important;
 }
 .header .btn-navbar {
-  background-color: #212121 !important;
+  background-color: #3d3d3d !important;
 }
 .header .nav .dropdown-toggle:hover,
 .header .nav .dropdown.open .dropdown-toggle {

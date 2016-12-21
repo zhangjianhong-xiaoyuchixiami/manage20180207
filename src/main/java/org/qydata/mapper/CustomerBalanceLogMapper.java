@@ -54,4 +54,12 @@ public interface CustomerBalanceLogMapper {
      */
     public Integer getAllCountCustomerBalanceLogByCustomerId(Map<String,Object> map)throws Exception;
 
+    /**
+     * 查询指定账号的Amount
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerBalanceLog> getAllCustomerBalanceLogAmountByCustomerId(Map<String,Object> map)throws Exception;
+
 }

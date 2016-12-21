@@ -12,7 +12,7 @@
 
     <meta charset="utf-8" />
 
-    <title>千眼数合</title>
+    <title>平台管理后台</title>
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -136,11 +136,11 @@
 
         <div class="form-actions">
 
-            <label class="checkbox">
+            <#--<label class="checkbox">-->
 
-                <input type="checkbox" name="remember" value="1"/> 记住我
+                <#--<input type="checkbox" name="remember" value="1"/> 记住我-->
 
-            </label>
+            <#--</label>-->
 
             <button type="submit" id="subButton" class="btn green pull-right">
 
@@ -154,9 +154,9 @@
 
             <p align="right">
 
-                <a href="javascript:;" class="" id="forget-password">忘记密码？</a>
+                <#--<a href="javascript:;" class="" id="forget-password">忘记密码？</a>-->
 
-                <a href="javascript:;" class="" id="forget-password">申请账号</a>
+                <#--<a href="javascript:;" class="" id="forget-password">申请账号</a>-->
 
             </p>
 
@@ -172,7 +172,7 @@
 
 <div class="copyright">
 
-    2016 &copy; 北京千眼数合科技有限公司
+    <#--2016 &copy; 北京千眼数合科技有限公司-->
 
 </div>
 

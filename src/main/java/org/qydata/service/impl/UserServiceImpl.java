@@ -6,6 +6,7 @@ import org.qydata.mapper.DeptMapper;
 import org.qydata.mapper.RoleMapper;
 import org.qydata.mapper.UserMapper;
 import org.qydata.service.UserService;
+import org.qydata.tools.Md5Tools;
 import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) throws Exception {
+        User userA = new User();
+        userA.setPassword(Md5Tools.md5(user.getUsername().trim()+"123456"));
+        userA.setUsername(user.getUsername().trim());
+        userA.setName(user.getName());
+        userA.setTel(user.getTel());
+        userA.setStatus(user.getStatus());
+        userA.setTypeId(user.getTypeId());
         try{
-            userMapper.addUser(user);
+            userMapper.addUser(userA);
             if(user.getTypeId() == 1){
                 roleMapper.addRoleSuperUser(user.getUsername());
             }
@@ -54,9 +62,15 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean addUserCommon(User user,String deptId) throws Exception {
-        userMapper.addUserCommon(user);
+        User userA = new User();
+        userA.setPassword(Md5Tools.md5(user.getUsername().trim()+"123456"));
+        userA.setUsername(user.getUsername().trim());
+        userA.setName(user.getName());
+        userA.setTel(user.getTel());
+        userA.setStatus(user.getStatus());
+        userMapper.addUserCommon(userA);
         UserDept userDept = new UserDept();
-        userDept.setUserId(user.getId());
+        userDept.setUserId(userA.getId());
         userDept.setDeptId(Integer.parseInt(deptId));
         return deptMapper.addUserDeptById(userDept);
     }
@@ -72,7 +86,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean resetPassword(String username) throws Exception {
-        return userMapper.resetPassword(username);
+        String password = Md5Tools.md5(username+"123456");
+        return userMapper.resetPassword(username,password);
     }
 
     @Override

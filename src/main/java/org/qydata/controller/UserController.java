@@ -5,6 +5,7 @@ import org.qydata.entity.Dept;
 import org.qydata.entity.User;
 import org.qydata.regex.RegexUtil;
 import org.qydata.service.UserService;
+import org.qydata.tools.Md5Tools;
 import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -147,6 +148,7 @@ public class UserController {
                 return "redirect:/user/addUserViewCommon";
             }
         } catch (Exception e) {
+            e.printStackTrace();
             model.addFlashAttribute("msg","很遗憾，添加失败！");
             log.error("addUserCommonAction:新增用户异常");
             return "redirect:/user/addUserViewCommon";
@@ -352,8 +354,10 @@ public class UserController {
             model.addFlashAttribute("UserMessageRpPassword", "两次密码不一致");
             return "redirect:/user/updatePasswordView";
         }
+        String md5NewPassword = Md5Tools.md5(username.trim()+newPassword.trim());
+        String md5Password = Md5Tools.md5(username.trim()+password.trim());
         try {
-            boolean flag = userService.updatePassword(username.trim(),password.trim(),newPassword.trim());
+            boolean flag = userService.updatePassword(username.trim(),md5Password,md5NewPassword);
             if(!flag){
                 model.addFlashAttribute("msg","修改失败！");
                 return "redirect:/user/updatePasswordView";
