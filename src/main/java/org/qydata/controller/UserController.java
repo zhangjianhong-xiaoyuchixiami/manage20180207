@@ -315,45 +315,43 @@ public class UserController {
     }
 
     @RequestMapping(value = "/updatePasswordAction")
-    public String updatePasswordAction(String username,String password,String newPassword,String
-            rppassword,RedirectAttributes model){
+    public String updatePasswordAction(String password,String newPassword,String
+            rppassword,RedirectAttributes model,HttpServletRequest request){
 
-        if(RegexUtil.isNull(username)){
-            model.addFlashAttribute("UserMessageUsername","请输入用户名");
-            return "redirect:/user/updatePasswordView";
-        }
         if(RegexUtil.isNull(password)){
-            model.addFlashAttribute("username",username);
+
             model.addFlashAttribute("UserMessagePassword","请输入旧密码");
             return "redirect:/user/updatePasswordView";
         }
 
         if(RegexUtil.isNull(newPassword)){
-            model.addFlashAttribute("username",username);
+
             model.addFlashAttribute("password",password);
             model.addFlashAttribute("UserMessageNewPassword","请输入新密码");
             return "redirect:/user/updatePasswordView";
         }
         if(!RegexUtil.isPwd(newPassword)){
-            model.addFlashAttribute("username",username);
+
             model.addFlashAttribute("password",password);
             model.addFlashAttribute("UserMessageNewPassword","新密码格式不正确");
             return "redirect:/user/updatePasswordView";
         }
         if(RegexUtil.isNull(rppassword)){
-            model.addFlashAttribute("username",username);
+
             model.addFlashAttribute("password",password);
             model.addFlashAttribute("newPassword",newPassword);
             model.addFlashAttribute("UserMessageRpPassword","请再次输入新密码");
             return "redirect:/user/updatePasswordView";
         }
         if(!newPassword.equals(rppassword)) {
-            model.addFlashAttribute("username",username);
+
             model.addFlashAttribute("password",password);
             model.addFlashAttribute("newPassword",newPassword);
             model.addFlashAttribute("UserMessageRpPassword", "两次密码不一致");
             return "redirect:/user/updatePasswordView";
         }
+        User user = (User) request.getSession().getAttribute("userInfo");
+        String username = user.getUsername();
         String md5NewPassword = Md5Tools.md5(username.trim()+newPassword.trim());
         String md5Password = Md5Tools.md5(username.trim()+password.trim());
         try {

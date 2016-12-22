@@ -12,6 +12,7 @@ import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -93,5 +94,10 @@ public class CustomerServiceImpl implements CustomerService {
         customerDeptB.setCustomerId(customerB.getId());
         customerDeptB.setDeptId(deptId);
         return customerDeptMapper.insertCustomerDept(customerDeptB);
+    }
+
+    @Override
+    public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList) throws Exception {
+        return customerMapper.findAllCustomerIdByDeptId(deptIdList);
     }
 }

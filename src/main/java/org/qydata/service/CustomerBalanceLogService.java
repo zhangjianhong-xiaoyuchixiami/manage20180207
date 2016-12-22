@@ -17,7 +17,7 @@ public interface CustomerBalanceLogService {
      * 查询全部的CustomerBalanceModifyReason
      * @return
      */
-    public List<CustomerBalanceModifyReason> findAll();
+    public List<CustomerBalanceModifyReason> findAll(List customerBalanceModifyReasonIdList);
 
     /**
      * 余额变动

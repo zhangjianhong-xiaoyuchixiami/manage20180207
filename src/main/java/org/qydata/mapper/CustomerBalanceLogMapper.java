@@ -15,7 +15,7 @@ public interface CustomerBalanceLogMapper {
      * 查询全部的CustomerBalanceModifyReason
      * @return
      */
-    public List<CustomerBalanceModifyReason> findAll();
+    public List<CustomerBalanceModifyReason> findAll(List customerBalanceModifyReasonIdList);
 
     /**
      * 根据账户查询余额

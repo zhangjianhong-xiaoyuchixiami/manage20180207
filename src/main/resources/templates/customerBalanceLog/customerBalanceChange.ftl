@@ -16,33 +16,33 @@
 
                     <h3 class="page-title">
 
-                        <#--余额变更-->
+                    <#--余额变更-->
 
                     </h3>
 
-                    <ul class="breadcrumb">
+                <#--<ul class="breadcrumb">-->
 
-                        <li>
+                <#--<li>-->
 
-                            <i class="icon-home"></i>
+                <#--<i class="icon-home"></i>-->
 
-                            <a href="/view/successUrl">首页</a>
+                <#--<a href="/view/successUrl">首页</a>-->
 
-                            <span class="icon-angle-right"></span>
+                <#--<span class="icon-angle-right"></span>-->
 
-                        </li>
+                <#--</li>-->
 
-                        <li>
+                <#--<li>-->
 
-                            <a href="#">财务管理</a>
+                <#--<a href="#">财务管理</a>-->
 
-                            <span class="icon-angle-right"></span>
+                <#--<span class="icon-angle-right"></span>-->
 
-                        </li>
+                <#--</li>-->
 
-                        <li><a href="#">余额变更</a></li>
+                <#--<li><a href="#">余额变更</a></li>-->
 
-                    </ul>
+                <#--</ul>-->
 
                 </div>
 
@@ -66,7 +66,7 @@
 
                             <div class="tools">
 
-                                <#--<a href="javascript:;" class="collapse"></a>-->
+                            <#--<a href="javascript:;" class="collapse"></a>-->
 
                                 <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
 
@@ -80,19 +80,21 @@
 
                         <form action="/customerBalance/customerBalanceChangeAction" class="form-horizontal" method="post" >
 
-                            <div class="control-group">
+                            <div class="control-group"></div>
 
-                            </div>
-                            <div class="control-group">
+                            <div class="control-group"></div>
 
-                            </div>
-                            <div class="controls">
-                                <#if msg??>
-                                    <span><h5><font color="red">${msg}</font></h5></span>
-                                <#else>
-                                    <span></span>
-                                </#if>
-                            </div>
+                            <#if msg??>
+
+                                <div class="alert alert-error show">
+
+                                    <button class="close" data-dismiss="alert"></button>
+
+                                ${msg}
+
+                                </div>
+
+                            </#if>
                             <div class="control-group" style="display: none;">
 
                                 <label class="control-label">账&nbsp;&nbsp;户<span class="required">*</span></label>
@@ -103,7 +105,7 @@
 
                                     <span class="help-inline" id="authIdMsg"><#if CustomerMessageAuthId??><font color="red">${CustomerMessageAuthId}</font></#if></span>
 
-                                    <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
+                                    <span class="help-block">只能有数字、字母、下划线组成</span>
 
                                 </div>
 
@@ -115,11 +117,11 @@
 
                                 <div class="controls">
 
-                                    <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位：分）" class="m-wrap medium">
+                                    <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位：元）" class="m-wrap medium">
 
                                     <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
 
-                                    <span class="help-block">e.g：只能输入数字类型并且金额大于0</span>
+                                    <span class="help-block">只能输入数字类型并且金额大于0</span>
 
                                 </div>
 
@@ -155,7 +157,46 @@
                         </form>
 
 
-                        <!-- END FORM-->
+                        <#--<div class="control-group" style="display: block;">-->
+
+                            <#--<label class="control-label"></label>-->
+
+                            <#--<div class="controls">-->
+
+                                <#--<a id="tipInfo" class="btn blue" href="#form_modal3" data-toggle="modal">-->
+
+                                    <#--点击-->
+
+                                <#--</a>-->
+
+                            <#--</div>-->
+
+                        <#--</div>-->
+
+                        <#--<div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">-->
+
+                            <#--<div class="modal-header">-->
+
+                                <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
+
+                                <#--<h3 id="myModalLabel3">提示信息</h3>-->
+
+                            <#--</div>-->
+
+                            <#--<div class="modal-body">-->
+
+                                <#--<#if success??>${success}</#if>-->
+
+                            <#--</div>-->
+
+                            <#--<div class="modal-footer">-->
+
+                                <#--<button class="btn" data-dismiss="modal" aria-hidden="true">确定</button>-->
+
+                            <#--</div>-->
+
+                        <#--</div>-->
+
 
                     </div>
 
@@ -167,40 +208,42 @@
 
     </div>
 
+        <#if success??>
+            <#if success == "yes">
+            <script>
+//                $(document).ready(function() {
+//                    $('tipInfo').click();
+//                });
+                alert("操作成功")
+            </script>
+            <#else >
+            <script>
+//                $(document).ready(function() {
+//                    $('tipInfo').click();
+//                });
+                alert("操作失败")
+            </script>
+            </#if>
+        </#if>
+
+    <script type="text/javascript" src="/js/myjs/customerbalancelog.js"></script>
+
+    <script>
+//        $(document).ready(function() {
+//
+//            $('#validButton').click(function () {
+//                $('#form_modal4').css('display','none');
+//            });
+//
+//            $('#validBtn').click(function () {
+//                $('#form_modal4').css('display','none');
+//            });
+//        });
+    </script>
+
+
     <#elseif section = "footer">
 
     </#if>
-<script>
-    $(document).ready(function() {
-        $('#customerBalance').addClass('active');
 
-        $('#changeCustomerBalance').addClass('active');
-
-        $('#customerBalanceSelect').addClass('selected');
-
-        $('#customerBalanceArrow').addClass('arrow open');
-
-        $("#authId").focus(function () {
-            $("#authIdMsg").html("");
-        });
-
-        $("#amount").focus(function () {
-            $("#amountMsg").html("");
-        });
-
-        $("#reasonId").focus(function () {
-            $("#reasonIdMsg").html("");
-        });
-
-        $("#authId").blur(function(){
-            $("#authIdMsg").load("/customer/findCustomerByAuthId/"+$("#authId").val(),
-                    function(responseTxt){
-                        if(responseTxt=="yes")
-                            $("#authIdMsg").html("");
-                        if(responseTxt=="no")
-                            $("#authIdMsg").html("<font color='red'>该账户不存在！</font>");
-                    });
-        });
-    });
-</script>
 </@layout>

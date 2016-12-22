@@ -236,6 +236,7 @@ public class ShiroConfig {
 		chains.put("/customer/addCustomerAllDeptView/**", "authc,perms");
 		chains.put("/customer/addCustomerAllDeptAction", "authc,perms");
 		chains.put("/customer/findAllCustomer", "authc,perms");
+		chains.put("/customer/findCustomerDetailInfo/**", "authc,perms");
 		//客户管理
 		chains.put("/company/addCompanyAllDeptView", "authc,perms");
 		chains.put("/company/addCompanyOnlyDeptView", "authc,perms");
@@ -262,9 +263,11 @@ public class ShiroConfig {
 		chains.put("/customerIp/deleteIp/**", "authc,perms");
 
 		//余额变更
-		chains.put("/customerBalance/customerBalanceChangeView", "authc,perms");
+		chains.put("/customerBalance/customerBalanceChangeView/**", "authc,perms");
 		chains.put("/customerBalance/customerBalanceChangeAction", "authc,perms");
 		chains.put("/customerBalance/customerBalanceChangeSuccess/**", "authc,perms");
+		chains.put("/customerBalance/findAllCustomerBalanceLogByCustomerId/**", "authc,perms");
+		chains.put("/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/**", "authc,perms");
 
 		//dept管理
 		chains.put("/dept/addDeptView", "authc,perms");

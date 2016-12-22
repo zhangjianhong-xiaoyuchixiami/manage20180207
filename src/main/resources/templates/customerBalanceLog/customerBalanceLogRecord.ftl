@@ -20,29 +20,29 @@
 
                     </h3>
 
-                    <ul class="breadcrumb">
+                    <#--<ul class="breadcrumb">-->
 
-                        <li>
+                        <#--<li>-->
 
-                            <i class="icon-home"></i>
+                            <#--<i class="icon-home"></i>-->
 
-                            <a href="/view/successUrl">首页</a>
+                            <#--<a href="/view/successUrl">首页</a>-->
 
-                            <i class="icon-angle-right"></i>
+                            <#--<i class="icon-angle-right"></i>-->
 
-                        </li>
+                        <#--</li>-->
 
-                        <li>
+                        <#--<li>-->
 
-                            <a href="#">财务管理</a>
+                            <#--<a href="#">财务管理</a>-->
 
-                            <i class="icon-angle-right"></i>
+                            <#--<i class="icon-angle-right"></i>-->
 
-                        </li>
+                        <#--</li>-->
 
-                        <li><a href="#">财务报表</a></li>
+                        <#--<li><a href="#">财务报表</a></li>-->
 
-                    </ul>
+                    <#--</ul>-->
 
                     <!-- END PAGE TITLE & BREADCRUMB-->
 
@@ -67,17 +67,21 @@
 
                                     <div class="controls">
 
+
+
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if reasonId1??>checked="checked"</#if> id="reasonId1" name="reasonId1" value="-2">弥补扣费
+                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-2">弥补扣费
 
                                         </label>
 
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if reasonId2??>checked="checked"</#if> id="reasonId2" name="reasonId2" value="-1">消费扣费
+                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-1">消费扣费
 
                                         </label>
+
+
 
                                     </div>
 
@@ -150,19 +154,19 @@
 
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if reasonId3??>checked="checked"</#if> id="reasonId3" name="reasonId3" value="1">正常充值
+                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="1">正常充值
 
                                         </label>
 
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if reasonId4??>checked="checked"</#if> id="reasonId4" name="reasonId4" value="2">弥补充值
+                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="2">弥补充值
 
                                         </label>
 
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if reasonId5??>checked="checked"</#if> id="reasonId5" name="reasonId5" value="2">测试充值
+                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="3">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="3">测试充值
 
                                         </label>
 
@@ -277,7 +281,7 @@
                                     <#if customerBalanceLogList??>
                                         <#list customerBalanceLogList as customerBalanceLog>
                                         <tr>
-                                            <td style="text-align: center;">${customerBalanceLog.amount/100}</td>
+                                            <td style="text-align: center;">${customerBalanceLog.amount/100.0}</td>
                                             <td style="text-align: center;">${customerBalanceLog.createTime}</td>
                                             <td style="text-align: center;">${customerBalanceLog.customerBalanceModifyReason.name}</td>
                                         </tr>
@@ -296,12 +300,12 @@
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
                                                         <#if (pageSize>1)>
-                                                            <li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=1<#if reasonId1??>&reasonId1=${reasonId1}</#if><#if reasonId2??>&reasonId2=${reasonId2}</#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">首页</span></a></li>
-                                                            <li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize-1}<#if reasonId1??>&reasonId1=${reasonId1}</#if><#if reasonId2??>&reasonId2=${reasonId2}</#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">上一页</span></a></li>
+                                                            <li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=1<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">首页</span></a></li>
+                                                            <li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize-1}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">上一页</span></a></li>
                                                         </#if>
                                                         <#if (pageSize<totlePage)>
-                                                            <li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize+1}<#if reasonId1??>&reasonId1=${reasonId1}</#if><#if reasonId2??>&reasonId2=${reasonId2}</#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">下一页</span></a></li>
-                                                            <li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${totlePage}<#if reasonId1??>&reasonId1=${reasonId1}</#if><#if reasonId2??>&reasonId2=${reasonId2}</#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">尾页</span></a></li>
+                                                            <li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize+1}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">下一页</span></a></li>
+                                                            <li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${totlePage}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">尾页</span></a></li>
                                                         </#if>
                                                     </ul>
                                                 </div>
@@ -321,12 +325,12 @@
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
                                                         <#if (pageSize>1)>
-                                                            <li class="next"><a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}?pageSize=1<#if reasonId3??>&reasonId3=${reasonId3}</#if><#if reasonId4??>&reasonId4=${reasonId4}</#if><#if reasonId5??>&reasonId5=${reasonId5}</#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">首页</span></a></li>
-                                                            <li class="next"><a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize-1}<#if reasonId3??>&reasonId3=${reasonId3}</#if><#if reasonId4??>&reasonId4=${reasonId4}</#if><#if reasonId5??>&reasonId5=${reasonId5}</#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">上一页</span></a></li>
+                                                            <li class="next"><a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}?pageSize=1<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">首页</span></a></li>
+                                                            <li class="next"><a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize-1}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">上一页</span></a></li>
                                                         </#if>
                                                         <#if (pageSize<totlePage)>
-                                                            <li class="next"><a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize+1}<#if reasonId3??>&reasonId3=${reasonId3}</#if><#if reasonId4??>&reasonId4=${reasonId4}</#if><#if reasonId5??>&reasonId5=${reasonId5}</#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">下一页</span></a></li>
-                                                            <li class="next"><a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}?pageSize=${totlePage}<#if reasonId3??>&reasonId3=${reasonId3}</#if><#if reasonId4??>&reasonId4=${reasonId4}</#if><#if reasonId5??>&reasonId5=${reasonId5}</#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">尾页</span></a></li>
+                                                            <li class="next"><a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize+1}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">下一页</span></a></li>
+                                                            <li class="next"><a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}?pageSize=${totlePage}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">尾页</span></a></li>
                                                         </#if>
                                                     </ul>
                                                 </div>

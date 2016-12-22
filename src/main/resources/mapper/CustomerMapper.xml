@@ -21,14 +21,19 @@
         <association property="dept" javaType="Dept">
             <result column="deptName" property="deptName"/>
         </association>
+        <association property="company" javaType="Company">
+            <result column="companyName" property="name"/>
+        </association>
     </resultMap>
     <!--查询指定客户信息-->
     <select id="findByAuthId" parameterType="java.lang.String" resultMap="Customer_CustomerType_CustomerStatus">
-        select c.id,c.typeId,c.name,c.authId,c.authPass,c.balance,c.createTime,c.qctname,c.qcsname,d.deptName
+        select c.id,c.typeId,c.name,c.authId,c.authPass,c.balance,c.createTime,c.qctname,c.qcsname,d.deptName,
+        c.companyName
         from qyauth.CustomerDept cda,qyauth.Dept d,(
-                                                        select qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.status,qct.name qctname,qcs.name qcsname
-                                                        from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
-                                                        where qc.typeId=qct.id and qc.status=qcs.id and qc.authId=#{value}
+                                                        select qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.status,qct.name qctname,qcs.name qcsname,
+                                                        company.name companyName
+                                                        from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs,qydata.Company company
+                                                        where qc.typeId=qct.id and qc.status=qcs.id and qc.companyId=company.id and qc.authId=#{value}
                                                        ) c
         where cda.customerId=c.id and cda.deptId=d.id
     </select>
@@ -52,11 +57,14 @@
     </insert>
     <!--查询当前登录着可见的客户信息并分页显示-->
     <select id="findAllCustomer" parameterType="Map" resultMap="Customer_CustomerType_CustomerStatus">
-        select c.id,c.typeId,c.name,c.authId,c.authPass,c.balance,c.createTime,c.qctname,c.qcsname,d.deptName
+        select c.id,c.typeId,c.name,c.authId,c.authPass,c.balance,c.createTime,c.qctname,c.status,c.qcsname,
+        d.deptName,c.companyName
         from qyauth.CustomerDept cda,qyauth.Dept d,(
-                                                            select qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.status,qct.name qctname,qcs.name qcsname
-                                                            from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
-                                                            where qc.typeId=qct.id and qc.status=qcs.id
+                                                            select customer.id,customer.typeId,customer.name,customer.authId,customer.authPass,customer.balance,
+                                                            customer.createTime,customer.status,qct.name qctname,qcs.name qcsname,company.name companyName
+                                                            from qydata.Customer customer,qydata.CustomerType qct,qydata.CustomerStatus qcs,qydata.Company company
+                                                            where customer.typeId=qct.id and customer.status=qcs.id and customer.companyId=company.id
+                                                            order by customer.createTime desc
                                                         ) c
         where cda.customerId=c.id and cda.deptId=d.id
         <if test="deptIdList!=null and deptIdList.size()!=0">
@@ -74,7 +82,7 @@
                 #{customerTypeId}
             </foreach>
         </if>
-        order by c.createTime desc
+        order by c.typeId asc
         limit #{beginIndex},#{lineSize}
     </select>
     <!--统计当前登陆者可见客户的所有数据-->
@@ -115,6 +123,17 @@
                 FROM qydata.Customer
                 WHERE companyId=#{companyId}
            )
+    </select>
+
+    <!--根据部门编号查找对应的customerId-->
+    <select id="findAllCustomerIdByDeptId" parameterType="list" resultType="Integer">
+        SELECT customerId
+        FROM qyauth.CustomerDept
+        WHERE deptId
+        IN
+        <foreach collection="list" item="deptId" index="index" open="(" close=")" separator=",">
+            #{deptId}
+        </foreach>
     </select>
 
 </mapper>

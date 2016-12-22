@@ -52,6 +52,14 @@ public interface CustomerMapper {
      */
     public Integer findDeptIdByCompanyId(Integer companyId)throws Exception;
 
+    /**
+     * 根据部门编号查找对应的customerId
+     * @param deptIdList
+     * @return
+     * @throws Exception
+     */
+    public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList)throws Exception;
+
 
 
 

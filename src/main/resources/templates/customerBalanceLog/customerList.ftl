@@ -20,29 +20,29 @@
 
                     </h3>
 
-                    <ul class="breadcrumb">
+                    <#--<ul class="breadcrumb">-->
 
-                        <li>
+                        <#--<li>-->
 
-                            <i class="icon-home"></i>
+                            <#--<i class="icon-home"></i>-->
 
-                            <a href="/view/successUrl">首页</a>
+                            <#--<a href="/view/successUrl">首页</a>-->
 
-                            <i class="icon-angle-right"></i>
+                            <#--<i class="icon-angle-right"></i>-->
 
-                        </li>
+                        <#--</li>-->
 
-                        <li>
+                        <#--<li>-->
 
-                            <a href="#">财务管理</a>
+                            <#--<a href="#">财务管理</a>-->
 
-                            <i class="icon-angle-right"></i>
+                            <#--<i class="icon-angle-right"></i>-->
 
-                        </li>
+                        <#--</li>-->
 
-                        <li><a href="#">账号列表</a></li>
+                        <#--<li><a href="#">账号列表</a></li>-->
 
-                    </ul>
+                    <#--</ul>-->
 
                     <!-- END PAGE TITLE & BREADCRUMB-->
 
@@ -68,13 +68,13 @@
 
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if customerTypeId1??>checked="checked"</#if> id="customerTypeId1" name="customerTypeId1" value="1">普通账号
+                                            <input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="1">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="1">普通账号
 
                                         </label>
 
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if customerTypeId2??>checked="checked"</#if> id="customerTypeId2" name="customerTypeId2" value="2">技术调试账号
+                                            <input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="2">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="2">技术调试账号
 
                                         </label>
 
@@ -90,7 +90,7 @@
 
                                         <div class="input-append">
 
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="账号">
+                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入账号">
 
                                             <button class="btn black" type="submit">搜索</button>
 
@@ -116,13 +116,13 @@
 
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if customerTypeId1??>checked="checked"</#if> id="customerTypeId1" name="customerTypeId1" value="1">普通账号
+                                            <input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="1">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="1">普通账号
 
                                         </label>
 
                                         <label class="checkbox">
 
-                                            <input type="checkbox" <#if customerTypeId2??>checked="checked"</#if> id="customerTypeId2" name="customerTypeId2" value="2">技术调试账号
+                                            <input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="2">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="2">技术调试账号
 
                                         </label>
 
@@ -138,7 +138,7 @@
 
                                         <div class="input-append">
 
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="账号">
+                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入账号">
 
                                             <button class="btn black" type="submit">搜索</button>
 
@@ -182,10 +182,10 @@
                                 <tr>
 
                                     <th style="text-align: center; width: 15%">账号类型</th>
-                                    <th style="text-align: center; width: 25%">账号</th>
-                                    <th style="text-align: center; width: 20%">余额（单位/元）</th>
+                                    <th style="text-align: center; width: 20%">公司名称</th>
+                                    <th style="text-align: center; width: 20%">账号</th>
+                                    <th style="text-align: center; width: 15%">余额（单位/元）</th>
                                     <th style="text-align: center; width: 10%">状态</th>
-                                    <th style="text-align: center; width: 10%">充值</th>
                                     <th style="text-align: center; width: 20%">操作</th>
                                 </tr>
                                 </thead>
@@ -195,19 +195,24 @@
                                         <#list customerList as customer>
                                         <tr>
                                             <td>${customer.customerType.name}</td>
+                                            <td>${customer.company.name}</td>
                                             <td><a href="/customer/findCustomerDetailInfo/${customer.authId}"><strong>${customer.authId}</strong></a></td>
-                                            <td>${customer.balance/100}</td>
-                                            <td>${customer.customerStatus.name}</td>
-                                            <td style="text-align: center">
-                                                <p>
-                                                    <a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId2=-1" class="btn" id="gritter-light">充值</a>
-                                                </p>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <p>
-                                                    <a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}?reasonId2=-1" class="btn" id="gritter-light">消费记录</a>
+                                            <td>${customer.balance/100.0}</td>
+                                            <#if (customer.status)<0>
+                                                <td style="color: red;">${customer.customerStatus.name}</td>
+                                            <#else >
+                                                <td>${customer.customerStatus.name}</td>
+                                            </#if>
 
-                                                    <a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customer.id}?reasonId3=1" class="btn black" id="gritter-light">充值记录</a>
+                                            <td style="text-align: center">
+                                                <p>
+                                                    <a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=1" class="btn" id="gritter-light">充值</a>
+
+                                                    <a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customer.id}?reasonId=1" class="btn black" id="gritter-light">充值记录</a><br/>
+
+                                                    <a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=-1" class="btn" id="gritter-light">扣费</a>
+
+                                                    <a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}?reasonId=-1" class="btn black" id="gritter-light">消费记录</a>
                                                 </p>
                                             </td>
 
@@ -234,12 +239,12 @@
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
                                                         <#if (pageSize>1)>
-                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=1<#if content??>&content=${content}</#if><#if customerTypeId1??>&customerTypeId1=${customerTypeId1}</#if><#if customerType2??>&customerTypeId2=${customerTypeId2}</#if>"><span class="hidden-480">首页</span></a></li>
-                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize-1}<#if content??>&content=${content}</#if><#if customerTypeId1??>&customerTypeId1=${customerTypeId1}</#if><#if customerTypeId2??>&customerTypeId2=${customerTypeId2}</#if>"><span class="hidden-480">上一页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=1<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">首页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize-1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">上一页</span></a></li>
                                                         </#if>
                                                         <#if (pageSize<totlePage)>
-                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize+1}<#if content??>&content=${content}</#if><#if customerTypeId1??>&customerTypeId1=${customerTypeId1}</#if><#if customerTypeId2??>&customerTypeId2=${customerTypeId2}</#if>"><span class="hidden-480">下一页</span></a></li>
-                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${totlePage}<#if content??>&content=${content}</#if><#if customerTypeId1??>&customerTypeId1=${customerTypeId1}</#if><#if customerTypeId2??>&customerTypeId2=${customerTypeId2}</#if>"><span class="hidden-480">尾页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize+1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">下一页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${totlePage}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">尾页</span></a></li>
                                                         </#if>
                                                     </ul>
                                                 </div>
@@ -263,12 +268,12 @@
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
                                                         <#if (pageSize>1)>
-                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=1<#if content??>&content=${content}</#if><#if customerTypeId1??>&customerTypeId1=${customerTypeId1}</#if><#if customerTypeId2??>&customerTypeId2=${customerTypeId2}</#if>"><span class="hidden-480">首页</span></a></li>
-                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize-1}<#if content??>&content=${content}</#if><#if customerTypeId1??>&customerTypeId1=${customerTypeId1}</#if><#if customerTypeId2??>&customerTypeId2=${customerTypeId2}</#if>"><span class="hidden-480">上一页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=1<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">首页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize-1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">上一页</span></a></li>
                                                         </#if>
                                                         <#if (pageSize<totlePage)>
-                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize+1}<#if content??>&content=${content}</#if><#if customerTypeId1??>&customerTypeId1=${customerTypeId1}</#if><#if customerTypeId2??>&customerTypeId2=${customerTypeId2}</#if>"><span class="hidden-480">下一页</span></a></li>
-                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${totlePage}<#if content??>&content=${content}</#if><#if customerTypeId1??>&customerTypeId1=${customerTypeId1}</#if><#if customerTypeId2??>&customerTypeId2=${customerTypeId2}</#if>"><span class="hidden-480">尾页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize+1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">下一页</span></a></li>
+                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${totlePage}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">尾页</span></a></li>
                                                         </#if>
                                                     </ul>
                                                 </div>

@@ -100,7 +100,7 @@ public class CustomerController {
 
     //查找公司账号
     @RequestMapping(value = "/findAllCustomer")
-    public String findAllCustomer(HttpServletRequest request,Model model,String content,String customerTypeId1,String customerTypeId2){
+    public String findAllCustomer(HttpServletRequest request,Model model,String content,String [] customerTypeId){
 
         PageModel<Customer> pageModel = new PageModel();
         String pageSize= request.getParameter("pageSize");//当前页
@@ -114,11 +114,10 @@ public class CustomerController {
             map.put("content",content);
         }
         List customerTypeIdList = new ArrayList();
-        if(customerTypeId1 != null && customerTypeId1 != ""){
-            customerTypeIdList.add(Integer.parseInt(customerTypeId1));
-        }
-        if(customerTypeId2 != null && customerTypeId2 != ""){
-            customerTypeIdList.add(Integer.parseInt(customerTypeId2));
+        if(customerTypeId != null && customerTypeId.length >0){
+            for (int i=0;i<customerTypeId.length;i++){
+                customerTypeIdList.add(customerTypeId[i]);
+            }
         }
         map.put("customerTypeIdList",customerTypeIdList);
         PageModel<Customer> pageModelOne = null;
@@ -128,8 +127,7 @@ public class CustomerController {
             e.printStackTrace();
         }
         model.addAttribute("content",content);
-        model.addAttribute("customerTypeId1",customerTypeId1);
-        model.addAttribute("customerTypeId2",customerTypeId2);
+        model.addAttribute("customerTypeIdArray",customerTypeId);
         model.addAttribute("count",pageModelOne.getCount());
         model.addAttribute("customerList",pageModelOne.getList());
         Integer totalPage= null;
@@ -147,56 +145,61 @@ public class CustomerController {
 
     //通过部门编号查找公司账号
     @RequestMapping(value = ("/findAllCustomerByDeptNo"))
-    public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content,String customerTypeId1,String customerTypeId2){
+    public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content,String [] customerTypeId){
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
-        for(int i =0;i<deptList.size();i++){
-            deptIdList.add(deptList.get(i).getId());
-        }
-        PageModel<Customer> pageModel = new PageModel();
-        String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-        map.put("deptIdList",deptIdList);
-        if(content!=null){
-            map.put("content",content);
-        }
-        List customerTypeIdList = new ArrayList();
-        if(customerTypeId1 != null && customerTypeId1 != ""){
-            customerTypeIdList.add(Integer.parseInt(customerTypeId1));
-        }
-        if(customerTypeId2 != null && customerTypeId2 != ""){
-            customerTypeIdList.add(Integer.parseInt(customerTypeId2));
-        }
-        map.put("customerTypeIdList",customerTypeIdList);
-        PageModel<Customer> pageModelOne = null;
-        try {
-            pageModelOne = customerService.findAllCustomer(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("deptIdList",deptIdList);
-        model.addAttribute("content",content);
-        model.addAttribute("customerTypeId1",customerTypeId1);
-        model.addAttribute("customerTypeId2",customerTypeId2);
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("customerList",pageModelOne.getList());
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
+        if (deptList.size() > 0) {
+            for (int i = 0; i < deptList.size(); i++) {
+                deptIdList.add(deptList.get(i).getId());
+            }
+            PageModel<Customer> pageModel = new PageModel();
+            String pageSize = request.getParameter("pageSize");//当前页
+            String lineSize = "8";//每页显示条数
+            pageModel.setPageSize(pageSize);
+            pageModel.setLineSize(lineSize);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("beginIndex", pageModel.getBeginIndex());
+            map.put("lineSize", pageModel.getLineSize());
+            map.put("deptIdList", deptIdList);
+            if (content != null) {
+                map.put("content", content);
+            }
+            List customerTypeIdList = new ArrayList();
+            if(customerTypeId != null && customerTypeId.length >0){
+                for (int i=0;i<customerTypeId.length;i++){
+                    customerTypeIdList.add(customerTypeId[i]);
+                }
+            }
+            map.put("customerTypeIdList", customerTypeIdList);
+            PageModel<Customer> pageModelOne = null;
+            try {
+                pageModelOne = customerService.findAllCustomer(map);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("deptIdList", deptIdList);
+            model.addAttribute("content", content);
+            model.addAttribute("customerTypeIdArray",customerTypeId);
+            model.addAttribute("count", pageModelOne.getCount());
+            model.addAttribute("customerList", pageModelOne.getList());
+            Integer totalPage = null;
+            Integer count = pageModelOne.getCount();
 
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+            if (count % Integer.parseInt(lineSize) == 0) {
+                totalPage = (count / Integer.parseInt(lineSize));
+            } else {
+                totalPage = (count / Integer.parseInt(lineSize)) + 1;
+            }
+            model.addAttribute("totlePage", totalPage);
+            model.addAttribute("pageSize", pageModel.getPageSize());
+            return "/customerBalanceLog/customerList";
+        }else {
+            model.addAttribute("deptIdList", deptIdList);
+            model.addAttribute("count", 0);
+            model.addAttribute("customerList", null);
+            return "/customerBalanceLog/customerList";
         }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/customerBalanceLog/customerList";
     }
 
     //通过authId查找账号详细信息
@@ -303,5 +306,9 @@ public class CustomerController {
         return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
     }
 
+    @RequestMapping(value = "/list1")
+    public String list1(){
+        return "/customer/list";
+    }
 
 }

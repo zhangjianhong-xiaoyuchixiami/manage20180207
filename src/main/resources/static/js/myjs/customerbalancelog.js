@@ -1,80 +1,31 @@
+$(document).ready(function() {
+    $('#customerBalance').addClass('active');
 
-function isEmpty(elename){
-    var obj = document.getElementById(elename);
-    var msg = document.getElementById(elename+"Msg");
-    if(obj.value!=""){
-        return true;
-    }else{
-        msg.innerHTML = "内容输入不能为空";
-        return false;
-    }
-}
-function validateRegex(elename,regex){
-    var obj = document.getElementById(elename);
-    var msg = document.getElementById(elename+"Msg");
-    if(regex.test(obj.value)){
-        return true;
-    }else{
-        msg.innerHTML = "内容输入格式不正确";
-        return false;
-    }
-}
+    $('#changeCustomerBalance').addClass('active');
 
-function isEmptyFocus(elename){
-    var obj = document.getElementById(elename);
-    var msg = document.getElementById(elename+"Msg");
-    if(obj.value!=""){
-        return true;
-    }else{
-        msg.innerHTML = "";
-        return false;
-    }
-}
-function validateRegexFocus(elename,regex){
-    var obj = document.getElementById(elename);
-    var msg = document.getElementById(elename+"Msg");
-    if(regex.test(obj.value)){
-        return true;
-    }else{
-        msg.innerHTML = "";
-        return false;
-    }
-}
+    $('#customerBalanceSelect').addClass('selected');
 
-window.onload = function(){
+    $('#customerBalanceArrow').addClass('arrow open');
 
-    document.getElementById("authId").addEventListener("blur",validateAuthId,false);
-    document.getElementById("amount").addEventListener("blur",validateAmount,false);
-    document.getElementById("authId").addEventListener("focus",validateAuthIdFocus,false);
-    document.getElementById("amount").addEventListener("focus",validateAmountFocus,false);
-    document.getElementById("reasonId").addEventListener("blur",validateReasonId,false);
-}
+    $("#authId").focus(function () {
+        $("#authIdMsg").html("");
+    });
 
-function validateAuthId(){
-    return isEmpty("authId");
-}
-function validateAuthIdFocus(){
-    return isEmptyFocus("authId");
-}
-function validateAmount(){
-    return validateRegex("amount",/[1-9][0-9]*$/);
-}
-function validateAmountFocus(){
-    return validateRegexFocus("amount",/^[1-9][0-9]*$/);
-}
+    $("#amount").focus(function () {
+        $("#amountMsg").html("");
+    });
 
-function validateReasonId(){
-    return isEmpty("reasonId");
-}
+    $("#reasonId").focus(function () {
+        $("#reasonIdMsg").html("");
+    });
 
-function validateCustomerBalanceLog(){
-    return  validateAuthId()&&
-        validateAmount()&&
-        validateReasonId();
-}
-
-
-
-/*function validateGoodprice(){
-    return validateRegex("gooprice",/^\d+(\.\d{1,2})?$/);
-}*/
+    $("#authId").blur(function(){
+        $("#authIdMsg").load("/customer/findCustomerByAuthId/"+$("#authId").val(),
+            function(responseTxt){
+                if(responseTxt=="yes")
+                    $("#authIdMsg").html("");
+                if(responseTxt=="no")
+                    $("#authIdMsg").html("<font color='red'>该账户不存在！</font>");
+            });
+    });
+});

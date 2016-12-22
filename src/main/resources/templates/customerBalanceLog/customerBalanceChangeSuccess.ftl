@@ -82,7 +82,7 @@
                                 <tr>
                                     <th style="text-align: center;">账号类型</th>
                                     <th style="text-align: center;">账户</th>
-                                    <th style="text-align: center;">余额</th>
+                                    <th style="text-align: center;">余额（单位/元）</th>
                                     <th style="text-align: center;">状态</th>
                                 </tr>
                                 </thead>
@@ -90,7 +90,7 @@
                                         <tr>
                                             <td>${customer.customerType.name}</td>
                                             <td>${customer.authId}</td>
-                                            <td>${customer.balance}</td>
+                                            <td>${customer.balance/100.0}</td>
                                             <td>${customer.customerStatus.name}</td>
                                         </tr>
 

@@ -1,8 +1,7 @@
 package org.qydata.util;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.qydata.tools.Md5Tools;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/12/10.
@@ -11,10 +10,13 @@ public class Test {
 
     public static void main(String[] args) {
 
-        System.out.println(Md5Tools.md5("zhang"+"123456"));
-
-
-
+        List list = new ArrayList();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        System.out.println(list.contains("2"));
 
     }
 

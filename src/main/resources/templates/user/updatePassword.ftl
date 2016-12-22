@@ -16,33 +16,33 @@
 
                     <h3 class="page-title">
 
-                        修改密码
+                        <#--修改密码-->
 
                     </h3>
 
-                    <ul class="breadcrumb">
+                    <#--<ul class="breadcrumb">-->
 
-                        <li>
+                        <#--<li>-->
 
-                            <i class="icon-home"></i>
+                            <#--<i class="icon-home"></i>-->
 
-                            <a href="/view/successUrl">首页</a>
+                            <#--<a href="/view/successUrl">首页</a>-->
 
-                            <span class="icon-angle-right"></span>
+                            <#--<span class="icon-angle-right"></span>-->
 
-                        </li>
+                        <#--</li>-->
 
-                        <li>
+                        <#--<li>-->
 
-                            <a href="#">管理员</a>
+                            <#--<a href="#">管理员</a>-->
 
-                            <span class="icon-angle-right"></span>
+                            <#--<span class="icon-angle-right"></span>-->
 
-                        </li>
+                        <#--</li>-->
 
-                        <li><a href="#">修改密码</a></li>
+                        <#--<li><a href="#">修改密码</a></li>-->
 
-                    </ul>
+                    <#--</ul>-->
 
                 </div>
 
@@ -108,19 +108,19 @@
 
                                             </#if>
 
-                                            <div class="control-group">
+                                            <#--<div class="control-group">-->
 
-                                                <label class="control-label">用户名<span class="required">*</span></label>
+                                                <#--<label class="control-label">用户名<span class="required">*</span></label>-->
 
-                                                <div class="controls">
+                                                <#--<div class="controls">-->
 
-                                                    <input type="text" <#if username??>value="${username}" </#if> class="span6 m-wrap" id="username" name="username"/>
+                                                    <#--<input type="text" <#if username??>value="${username}" </#if> class="span6 m-wrap" id="username" name="username"/>-->
 
-                                                    <span class="help-inline" id="usernameMsg"><#if UserMessageUsername??><font color="red">${UserMessageUsername}</font></#if></span>
+                                                    <#--<span class="help-inline" id="usernameMsg"><#if UserMessageUsername??><font color="red">${UserMessageUsername}</font></#if></span>-->
 
-                                                </div>
+                                                <#--</div>-->
 
-                                            </div>
+                                            <#--</div>-->
 
                                             <div class="control-group">
 
@@ -146,7 +146,7 @@
 
                                                     <span class="help-inline" id="newPasswordMsg"><#if UserMessageNewPassword??><font color="red">${UserMessageNewPassword}</font></#if></span>
 
-                                                    <span class="help-block">e.g：以字母开头，只能有数字、字母、下划线组成，长度为6-18个字符</span>
+                                                    <span class="help-block">以字母开头，只能有数字、字母、下划线组成，长度为6-18个字符</span>
 
                                                 </div>
 

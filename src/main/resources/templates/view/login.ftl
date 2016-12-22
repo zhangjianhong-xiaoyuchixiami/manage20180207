@@ -76,25 +76,20 @@
 
         <h3 class="form-title">欢迎登录</h3>
 
-        <div class="alert alert-error hide">
-
-            <button class="close" data-dismiss="alert"></button>
-
-            <span>请输入用户名和密码</span>
-
-        </div>
-
 
         <div class="control-group">
 
         <#if msg??>
-            <span><h5><font color="red">${msg}</font></h5></span>
-        <#else>
-            <span></span>
+            <div class="alert alert-error show">
+
+                <button class="close" data-dismiss="alert"></button>
+
+                <span>${msg}</span>
+
+            </div>
         </#if>
 
         </div>
-
 
         <div class="control-group">
 

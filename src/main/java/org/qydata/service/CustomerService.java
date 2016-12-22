@@ -5,6 +5,7 @@ import org.qydata.entity.Customer;
 import org.qydata.tools.PageModel;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +39,14 @@ public interface CustomerService {
      */
     @Transactional
     public boolean insertCustomerAccount(String companyId, String authId)throws Exception ;
+
+    /**
+     * 根据部门编号查找对应的customerId
+     * @param deptIdList
+     * @return
+     * @throws Exception
+     */
+    public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList)throws Exception;
 
 
 

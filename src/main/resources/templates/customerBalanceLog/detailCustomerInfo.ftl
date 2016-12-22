@@ -20,29 +20,29 @@
 
                     </h3>
 
-                    <ul class="breadcrumb">
+                    <#--<ul class="breadcrumb">-->
 
-                        <li>
+                        <#--<li>-->
 
-                            <i class="icon-home"></i>
+                            <#--<i class="icon-home"></i>-->
 
-                            <a href="/view/successUrl">首页</a>
+                            <#--<a href="/view/successUrl">首页</a>-->
 
-                            <i class="icon-angle-right"></i>
+                            <#--<i class="icon-angle-right"></i>-->
 
-                        </li>
+                        <#--</li>-->
 
-                        <li>
+                        <#--<li>-->
 
-                            <a href="#">财务管理</a>
+                            <#--<a href="#">财务管理</a>-->
 
-                            <i class="icon-angle-right"></i>
+                            <#--<i class="icon-angle-right"></i>-->
 
-                        </li>
+                        <#--</li>-->
 
-                        <li><a href="#">账号详细信息</a></li>
+                        <#--<li><a href="#">账号详细信息</a></li>-->
 
-                    </ul>
+                    <#--</ul>-->
 
                     <!-- END PAGE TITLE & BREADCRUMB-->
 
@@ -81,10 +81,11 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 15%">账号类型</th>
-                                    <th style="text-align: center; width: 20%">账号</th>
+                                    <th style="text-align: center; width: 10%">账号类型</th>
+                                    <th style="text-align: center; width: 15%">公司名称</th>
+                                    <th style="text-align: center; width: 15%">账号</th>
                                     <th style="text-align: center; width: 20%">密码</th>
-                                    <th style="text-align: center; width: 15%">余额（单位/元）</th>
+                                    <th style="text-align: center; width: 10%">余额（单位/元）</th>
                                     <th style="text-align: center; width: 15%">创建时间</th>
                                     <th style="text-align: center; width: 10%">部门</th>
                                     <th style="text-align: center; width: 5%">状态</th>
@@ -94,9 +95,10 @@
                                 <tbody>
                                 <tr>
                                     <td>${customer.customerType.name}</td>
+                                    <td>${customer.company.name}</td>
                                     <td>${customer.authId}</td>
                                     <td>${customer.authPass}</td>
-                                    <td>${customer.balance/100}</td>
+                                    <td>${customer.balance/100.0}</td>
                                     <td>${customer.createTime}</td>
                                     <td>${customer.dept.deptName}</td>
                                     <td>${customer.customerStatus.name}</td>

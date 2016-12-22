@@ -24,8 +24,8 @@ public class CustomerBalanceLogServiceImpl implements CustomerBalanceLogService{
     private CustomerMapper customerMapper;
 
     @Override
-    public List<CustomerBalanceModifyReason> findAll() {
-        return customerBalanceLogMapper.findAll();
+    public List<CustomerBalanceModifyReason> findAll(List customerBalanceModifyReasonIdList) {
+        return customerBalanceLogMapper.findAll(customerBalanceModifyReasonIdList);
     }
 
     @Override
@@ -34,9 +34,9 @@ public class CustomerBalanceLogServiceImpl implements CustomerBalanceLogService{
         Long balance = customerBalanceLogMapper.findBalanceByAuthId(authId);
         Long totleBalance = null;
         if(reasonId.equals("-1") || reasonId.equals("-2")){
-            totleBalance =balance-Long.parseLong(amount);
+            totleBalance =balance-(Long.parseLong(amount)*100);
         }else{
-            totleBalance =balance+Long.parseLong(amount);
+            totleBalance =balance+(Long.parseLong(amount)*100);
         }
 
         customerBalanceLogMapper.updateBalanceByAuthId(totleBalance,authId);
@@ -44,9 +44,9 @@ public class CustomerBalanceLogServiceImpl implements CustomerBalanceLogService{
         customerBalanceLog.setCustomerId(customer.getId());
         customerBalanceLog.setReasonId(Integer.parseInt(reasonId));
         if(reasonId.equals("-1") || reasonId.equals("-2")) {
-            customerBalanceLog.setAmount(0-(Long.parseLong(amount)));
+            customerBalanceLog.setAmount(0-(Long.parseLong(amount)*100));
         }else{
-            customerBalanceLog.setAmount(0+(Long.parseLong(amount)));
+            customerBalanceLog.setAmount(0+(Long.parseLong(amount)*100));
         }
         return customerBalanceLogMapper.insertCustomerBalanceLog(customerBalanceLog);
     }

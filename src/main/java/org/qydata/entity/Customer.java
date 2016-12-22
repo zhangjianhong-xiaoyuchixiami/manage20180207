@@ -25,6 +25,7 @@ public class Customer implements Serializable{
     private CustomerStatus customerStatus;
     private User user;
     private Dept dept;
+    private Company company;
     private Integer companyId;
     private List<Api> apiList;
     public Customer(){}
@@ -147,6 +148,14 @@ public class Customer implements Serializable{
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override

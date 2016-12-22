@@ -171,19 +171,17 @@
     <#--</div>-->
 
     <#--</div>-->
+    <script type="text/javascript" src="/js/myjs/allotdept.js"></script>
 
-    <#elseif section = "footer">
+    <script>
+        $(document).ready(function() {
+            $('#userManage').addClass('active');
 
-    </#if>
-<script>
-    $(document).ready(function() {
-        $('#userManage').addClass('active');
+            $('#userList').addClass('active');
 
-        $('#userList').addClass('active');
+            $('#userManageSelect').addClass('selected');
 
-        $('#userManageSelect').addClass('selected');
-
-        $('#userManageArrow').addClass('arrow open');
+            $('#userManageArrow').addClass('arrow open');
 
 //        $('#validButton').click(function () {
 //            $('#form_modal4').css('display','none');
@@ -192,6 +190,11 @@
 //        $('#validBtn').click(function () {
 //            $('#form_modal4').css('display','none');
 //        });
-    });
-</script>
+        });
+    </script>
+
+    <#elseif section = "footer">
+
+    </#if>
+
 </@layout>
