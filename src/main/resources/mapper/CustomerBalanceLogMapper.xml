@@ -23,7 +23,7 @@
         </association>
     </resultMap>
 
-
+    <!--查询账号余额变动理由-->
     <select id="findAll" resultType="CustomerBalanceModifyReason">
         SELECT id,name
         FROM qydata.CustomerBalanceModifyReason
@@ -53,7 +53,7 @@
       values(#{reasonId},#{customerId},#{amount},sysdate())
     </insert>
 
-    <!--指定账号消费记录-->
+    <!--指定账号余额变动记录-->
     <select id="findAllCustomerBalanceLogByCustomerId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
         SELECT customerBalanceLog.id,customerBalanceLog.reasonId,customerBalanceLog.amount,customerBalanceLog.customerId,
         customerBalanceLog.createTime,customerBalanceModifyReason.name
@@ -80,7 +80,7 @@
         limit #{beginIndex},#{lineSize}
     </select>
 
-
+    <!--统计指定账号的余额变动记录数据量-->
     <select id="getAllCountCustomerBalanceLogByCustomerId" parameterType="map" resultType="Integer">
         SELECT COUNT(id)
         FROM qydata.CustomerBalanceLog
@@ -103,6 +103,7 @@
         </if>
     </select>
 
+    <!--查询指定账号的余额变动明细Amount-->
     <select id="getAllCustomerBalanceLogAmountByCustomerId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
         SELECT customerBalanceLog.amount
         FROM qydata.CustomerBalanceLog customerBalanceLog,qydata.CustomerBalanceModifyReason customerBalanceModifyReason
@@ -126,4 +127,64 @@
         </if>
     </select>
 
+    <!--指定客户余额变动记录-->
+    <select id="findAllCustomerBalanceLogByCompanyId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
+        SELECT customerBalanceLog.id,customerBalanceLog.reasonId,customerBalanceLog.amount,customerBalanceLog.customerId,
+        customerBalanceLog.createTime,customerBalanceModifyReason.name
+        FROM qydata.CustomerBalanceLog customerBalanceLog,qydata.CustomerBalanceModifyReason customerBalanceModifyReason
+        WHERE customerBalanceLog.reasonId=customerBalanceModifyReason.id
+        <if test="customerIdList != null and customerIdList.size() != 0">
+            AND customerBalanceLog.customerId IN
+            <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                #{customerId}
+            </foreach>
+        </if>
+        <if test="reasonIdList != null and reasonIdList.size() != 0">
+            AND customerBalanceLog.reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            <![CDATA[
+            AND customerBalanceLog.createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND customerBalanceLog.createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+             ]]>
+        </if>
+        ORDER BY customerBalanceLog.createTime DESC
+        limit #{beginIndex},#{lineSize}
+    </select>
+
+    <!--统计指定客户的余额变动记录数据量-->
+    <select id="getAllCountCustomerBalanceLogByCompanyId" parameterType="map" resultType="Integer">
+        SELECT COUNT(customerBalanceLog.id)
+        FROM qydata.CustomerBalanceLog customerBalanceLog,qydata.CustomerBalanceModifyReason customerBalanceModifyReason
+        WHERE customerBalanceLog.reasonId=customerBalanceModifyReason.id
+        <if test="customerIdList != null and customerIdList.size() != 0">
+            AND customerBalanceLog.customerId IN
+            <foreach collection="customerIdList" item="customerId" index="index" open="(" close=")" separator=",">
+                #{customerId}
+            </foreach>
+        </if>
+        <if test="reasonIdList != null and reasonIdList.size() != 0">
+            AND customerBalanceLog.reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            <![CDATA[
+            AND customerBalanceLog.createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND customerBalanceLog.createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+             ]]>
+        </if>
+    </select>
 </mapper>

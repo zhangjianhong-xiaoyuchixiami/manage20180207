@@ -64,6 +64,7 @@
                                                             customer.createTime,customer.status,qct.name qctname,qcs.name qcsname,company.name companyName
                                                             from qydata.Customer customer,qydata.CustomerType qct,qydata.CustomerStatus qcs,qydata.Company company
                                                             where customer.typeId=qct.id and customer.status=qcs.id and customer.companyId=company.id
+                                                            and customer.typeId=1
                                                             order by customer.createTime desc
                                                         ) c
         where cda.customerId=c.id and cda.deptId=d.id
@@ -89,9 +90,10 @@
     <select id="getAllCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(c.id)
         from qyauth.CustomerDept cda,qyauth.Dept d,(
-                                                            select qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.status,qct.name qctname,qcs.name qcsname
-                                                            from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs
-                                                            where qc.typeId=qct.id and qc.status=qcs.id
+                                                            select customer.id,customer.typeId,customer.name,customer.authId,customer.authPass,customer.balance,
+                                                            customer.createTime,customer.status,qct.name qctname,qcs.name qcsname
+                                                            from qydata.Customer customer,qydata.CustomerType qct,qydata.CustomerStatus qcs
+                                                            where customer.typeId=qct.id and customer.status=qcs.id and customer.typeId=1
                                                          ) c
         where cda.customerId=c.id and cda.deptId=d.id
         <if test="deptIdList!=null and deptIdList.size()!=0">

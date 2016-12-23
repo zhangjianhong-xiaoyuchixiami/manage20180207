@@ -48,4 +48,8 @@ public interface CustomerApiService {
      */
     @Transactional
     public boolean updateCustomerApiById(String id,String price,String apiId,String enabled)throws Exception;
+
+    public List<Api> apiList();
+
+    public List<Api> apiList1();
 }

@@ -103,7 +103,7 @@ public class CustomerBalanceLogController {
             model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
             return "redirect:/customerBalance/customerBalanceChangeView/"+authId;
         }
-        model.addFlashAttribute("success","恭喜您，操作成功");
+        model.addFlashAttribute("success","yes");
         return "redirect:/customerBalance/customerBalanceChangeView/"+authId+"?reasonId="+reasonId;
     }
 
@@ -311,6 +311,12 @@ public class CustomerBalanceLogController {
         model.addAttribute("pageSize", pageModel.getPageSize());
         model.addAttribute("CustomerBalanceModifyReason","充值");
         return "/customerBalanceLog/customerBalanceLogRecord";
+    }
+
+
+    @RequestMapping("/findApiConsumeRecordByCustomerId")
+    public String findApiConsumeRecordByCustomerId(){
+        return "/customerBalanceLog/apiConsumeRecord";
     }
 
 }

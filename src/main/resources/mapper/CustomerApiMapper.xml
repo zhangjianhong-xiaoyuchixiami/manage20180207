@@ -202,4 +202,14 @@
         update qydata.CustomerApi set apiId=#{apiId},price=#{price},enabled=#{enabled} where id=#{id}
     </update>
 
+    <select id="apiList" resultType="Api">
+       SELECT apiTypeId
+       FROM qydata.Api
+    </select>
+
+    <select id="apiList1" resultType="Api">
+        SELECT apiTypeId
+        FROM qydata.Api
+    </select>
+
 </mapper>

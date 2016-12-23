@@ -1,21 +1,22 @@
 package org.qydata.config;
 
-import com.github.pagehelper.PageHelper;
-import org.apache.ibatis.plugin.Interceptor;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -24,28 +25,49 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-public class MyBatisConfig implements TransactionManagementConfigurer {
+public class MyBatisConfig {
 
     @Autowired
-    DataSource dataSource;
+    private Environment env;
+
+    @Bean
+    public DataSource masterDataSource() throws Exception {
+        Properties props = new Properties();
+        props.put("driverClassName", env.getProperty("master.spring.datasource.driver-class-name"));
+        props.put("url", env.getProperty("master.spring.datasource.url"));
+        props.put("username", env.getProperty("master.spring.datasource.username"));
+        props.put("password", env.getProperty("master.spring.datasource.password"));
+        return DruidDataSourceFactory.createDataSource(props);
+    }
+
+    @Bean
+    public DataSource slaveDataSource() throws Exception {
+        Properties props = new Properties();
+        props.put("driverClassName", env.getProperty("slave.spring.datasource.driver-class-name"));
+        props.put("url", env.getProperty("slave.spring.datasource.url"));
+        props.put("username", env.getProperty("slave.spring.datasource.username"));
+        props.put("password", env.getProperty("slave.spring.datasource.password"));
+        return DruidDataSourceFactory.createDataSource(props);
+    }
+
+    @Bean
+    @Primary
+    public DynamicDataSource dataSource(@Qualifier("masterDataSource") DataSource masterDataSource, @Qualifier("slaveDataSource") DataSource slaveDataSource) {
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        targetDataSources.put(DatabaseType.master, masterDataSource);
+        targetDataSources.put(DatabaseType.slave, slaveDataSource);
+        DynamicDataSource dataSource = new DynamicDataSource();
+        dataSource.setTargetDataSources(targetDataSources);// 该方法是AbstractRoutingDataSource的方法
+        dataSource.setDefaultTargetDataSource(masterDataSource);// 默认的datasource设置为myTestDbDataSource
+        return dataSource;
+    }
 
     @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactoryBean() {
+    public SqlSessionFactory sqlSessionFactoryBean(DynamicDataSource ds) {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-        bean.setDataSource(dataSource);
+        bean.setDataSource(ds);
         //类型别名
         bean.setTypeAliasesPackage("org.qydata.entity");
-//        //分页插件
-//        PageHelper pageHelper = new PageHelper();
-//        Properties properties = new Properties();
-//        properties.setProperty("reasonable", "true");
-//        properties.setProperty("supportMethodsArguments", "true");
-//        properties.setProperty("returnPageInfo", "check");
-//        properties.setProperty("params", "count=countSql");
-//        pageHelper.setProperties(properties);
-//
-//        //添加插件
-//        bean.setPlugins(new Interceptor[]{pageHelper});
 
         //添加XML目录
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -59,14 +81,11 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
         }
     }
 
+    /**
+     * 配置事务管理器
+     */
     @Bean
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
-        return new SqlSessionTemplate(sqlSessionFactory);
-    }
-
-    @Bean
-    @Override
-    public PlatformTransactionManager annotationDrivenTransactionManager() {
+    public DataSourceTransactionManager transactionManager(DynamicDataSource dataSource) throws Exception {
         return new DataSourceTransactionManager(dataSource);
     }
 }

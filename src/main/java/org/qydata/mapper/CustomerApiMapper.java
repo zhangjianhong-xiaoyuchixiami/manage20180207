@@ -72,4 +72,9 @@ public interface CustomerApiMapper {
     public boolean updateCustomerApiById(CustomerApi api)throws Exception;
 
 
+    public List<Api> apiList();
+
+    public List<Api> apiList1();
+
+
 }

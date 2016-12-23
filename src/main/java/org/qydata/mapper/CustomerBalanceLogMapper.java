@@ -39,7 +39,7 @@ public interface CustomerBalanceLogMapper {
     public boolean insertCustomerBalanceLog(CustomerBalanceLog customerBalanceLog)throws Exception;
 
     /**
-     * 指定账号消费记录
+     * 指定账号余额变动记录
      * @param map
      * @return
      * @throws Exception
@@ -47,7 +47,7 @@ public interface CustomerBalanceLogMapper {
     public List<CustomerBalanceLog> findAllCustomerBalanceLogByCustomerId(Map<String,Object> map)throws Exception;
 
     /**
-     * 统计指定账号的消费记录数据量
+     * 统计指定账号的余额变动记录数据量
      * @param map
      * @return
      * @throws Exception
@@ -55,11 +55,27 @@ public interface CustomerBalanceLogMapper {
     public Integer getAllCountCustomerBalanceLogByCustomerId(Map<String,Object> map)throws Exception;
 
     /**
-     * 查询指定账号的Amount
+     * 查询指定账号的余额变动明细Amount
      * @param map
      * @return
      * @throws Exception
      */
     public List<CustomerBalanceLog> getAllCustomerBalanceLogAmountByCustomerId(Map<String,Object> map)throws Exception;
+
+    /**
+     * 指定客户余额变动记录
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerBalanceLog> findAllCustomerBalanceLogByCompanyId(Map<String,Object> map)throws Exception;
+
+    /**
+     * 统计指定客户的余额变动记录数据量
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getAllCountCustomerBalanceLogByCompanyId(Map<String,Object> map)throws Exception;
 
 }

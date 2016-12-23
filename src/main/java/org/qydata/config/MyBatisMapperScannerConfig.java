@@ -18,12 +18,6 @@ public class MyBatisMapperScannerConfig {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         mapperScannerConfigurer.setBasePackage("org.qydata.mapper");
-        //通用Mapper配置
-//        Properties properties = new Properties();
-//        properties.setProperty("mappers", "org.qydata.util.DaoMapper");
-//        properties.setProperty("notEmpty", "false");
-//        properties.setProperty("IDENTITY", "MYSQL");
-//        mapperScannerConfigurer.setProperties(properties);
         return mapperScannerConfigurer;
     }
 
