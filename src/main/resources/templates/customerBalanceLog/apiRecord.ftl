@@ -60,36 +60,13 @@
 
                         <div class="clearfix margin-bottom-20">
 
-                            <div class="control-group pull-left"
-                            >
-
-                                <label class="control-label">状态</label>
-
-                                <div class="controls">
-
-                                    <label class="checkbox">
-
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-2">成功
-
-                                    </label>
-
-                                    <label class="checkbox">
-
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-1">失败
-
-                                    </label>
-
-                                </div>
-
-                            </div>
-
                             <div class="control-group pull-left">
 
                                 <label class="control-label">Api类型</label>
 
                                 <div class="controls">
 
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1">
+                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
                                     <#--<#if apiList??>-->
                                     <#--<#list apiList as api>-->
 
@@ -111,7 +88,7 @@
 
                                 <div class="controls">
 
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1">
+                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
                                     <#--<#if apiList??>-->
                                     <#--<#list apiList as api>-->
 
@@ -122,38 +99,6 @@
                                     <#--</#list>-->
                                     <#--</#if>-->
                                     </select>
-
-                                </div>
-
-                            </div>
-
-                            <div class="control-group pull-left margin-right-20">
-
-                                <label class="control-label">起始日期</label>
-
-                                <div class="controls">
-
-                                    <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
-
-                                        <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">结束日期</label>
-
-                                <div class="controls">
-
-                                    <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
-
-                                        <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
-
-                                    </div>
 
                                 </div>
 
@@ -209,7 +154,7 @@
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">周消费总额共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
@@ -221,7 +166,7 @@
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">成功次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>23次</span></#if></label>
+                                    <label class="control-label">月消费总额共计&yen;：0元</label>
 
                                 </div>
 
@@ -233,57 +178,34 @@
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">失败次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0次</span></#if></label>
+                                    <label class="control-label">消费总额共计&yen;：0元</label>
 
                                 </div>
+
+                                <div class="control-group pull-left">
+
+                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+                                </div>
+
+                                <div class="control-group pull-left">
+
+                                    <label class="control-label">所剩余额共计&yen;：0元</label>
+
+                                </div>
+
 
                             </div>
 
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 20%">Api类型</th>
-                                    <th style="text-align: center; width: 30%">
-                                        金额（单位/元）
-                                        <div class="btn-group pull-right">
-
-                                            <a class="btn mini white" href="#" data-toggle="dropdown">
-
-                                                <i class="icon-angle-down "></i>
-
-                                            </a>
-
-                                            <ul class="dropdown-menu pull-right">
-
-                                                <li><a href="#">按金额由小到大</a></li>
-
-                                                <li><a href="#">按金额由大到小</a></li>
-
-                                            </ul>
-
-                                        </div>
-                                    </th>
-                                    <th style="text-align: center; width: 30%">
-                                        创建时间
-                                        <div class="btn-group pull-right">
-
-                                            <a class="btn mini white" href="#" data-toggle="dropdown">
-
-                                                <i class="icon-angle-down "></i>
-
-                                            </a>
-
-                                            <ul class="dropdown-menu pull-right">
-
-                                                <li><a href="#">按时间由早到晚</a></li>
-
-                                                <li><a href="#">按时间由晚到早</a></li>
-
-                                            </ul>
-
-                                        </div>
-                                    </th>
-                                    <th style="text-align: center; width: 20%">状态</th>
+                                    <th style="text-align: center; width: 21%">Api</th>
+                                    <th style="text-align: center; width: 17%">周消费总额（单位：元）</th>
+                                    <th style="text-align: center; width: 17%">月消费总额（单位：元）</th>
+                                    <th style="text-align: center; width: 15%">消费总额（单位：元）</th>
+                                    <th style="text-align: center; width: 15%">所剩余额（单位：元）</th>
+                                    <th style="text-align: center; width: 15%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -291,58 +213,31 @@
                                 <#--<#list customerBalanceLogList as customerBalanceLog>-->
                                 <tr>
                                     <td style="text-align: center;">三要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;">567890</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
                                 </tr>
                                 <tr>
                                     <td style="text-align: center;">二要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;">567890</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: center;">四要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;">567890</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;">2345</td>
+                                    <td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiMonthLog">消费明细</a></td>
                                 </tr>
-                                <tr>
-                                    <td style="text-align: center;">三要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">二要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">四要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">三要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">二要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">四要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
+
+
                                 <#--</#list>-->
                                 <#--</#if>-->
                                 </tbody>
@@ -366,15 +261,15 @@
 
                                             <li class="prev disabled"><a href="#">← <span class="hidden-480">上一页</span></a></li>
 
-                                            <#--<li class="active"><a href="#">1</a></li>-->
+                                        <#--<li class="active"><a href="#">1</a></li>-->
 
-                                            <#--<li><a href="#">2</a></li>-->
+                                        <#--<li><a href="#">2</a></li>-->
 
-                                            <#--<li><a href="#">3</a></li>-->
+                                        <#--<li><a href="#">3</a></li>-->
 
-                                            <#--<li><a href="#">4</a></li>-->
+                                        <#--<li><a href="#">4</a></li>-->
 
-                                            <#--<li><a href="#">5</a></li>-->
+                                        <#--<li><a href="#">5</a></li>-->
 
                                             <li class="next"><a href="#"><span class="hidden-480">下一页</span> → </a></li>
 
@@ -429,7 +324,7 @@
     $(document).ready(function() {
         $('#customerBalance').addClass('active');
 
-        $('#customerListBalanceLog').addClass('active');
+        $('#apiRecordLog').addClass('active');
 
         $('#customerBalanceSelect').addClass('selected');
 

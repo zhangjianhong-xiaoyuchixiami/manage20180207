@@ -319,4 +319,19 @@ public class CustomerBalanceLogController {
         return "/customerBalanceLog/apiConsumeRecord";
     }
 
+    @RequestMapping("/findApiLog")
+    public String findApiLog(){
+        return "/customerBalanceLog/apiRecord";
+    }
+
+    @RequestMapping("/findApiDetailRecord")
+    public String findApiDetailRecord(){
+        return "/customerBalanceLog/apiDetailRecord";
+    }
+
+    @RequestMapping("/apiRecharageView")
+    public String apiRecharageView(){
+        return "/customerBalanceLog/apiRecharage";
+    }
+
 }

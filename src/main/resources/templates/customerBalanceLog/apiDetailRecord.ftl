@@ -60,73 +60,6 @@
 
                         <div class="clearfix margin-bottom-20">
 
-                            <div class="control-group pull-left"
-                            >
-
-                                <label class="control-label">状态</label>
-
-                                <div class="controls">
-
-                                    <label class="checkbox">
-
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-2">成功
-
-                                    </label>
-
-                                    <label class="checkbox">
-
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-1">失败
-
-                                    </label>
-
-                                </div>
-
-                            </div>
-
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">Api类型</label>
-
-                                <div class="controls">
-
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
-
-                                        <option value="">二要素</option>
-                                        <option value="">三要素</option>
-                                        <option value="">四要素</option>
-
-                                    <#--</#list>-->
-                                    <#--</#if>-->
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">Api供应商</label>
-
-                                <div class="controls">
-
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
-
-                                        <option value="">移动</option>
-                                        <option value="">联通</option>
-                                        <option value="">电信</option>
-
-                                    <#--</#list>-->
-                                    <#--</#if>-->
-                                    </select>
-
-                                </div>
-
-                            </div>
-
                             <div class="control-group pull-left margin-right-20">
 
                                 <label class="control-label">起始日期</label>
@@ -209,42 +142,42 @@
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">消费金额共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
-                                <div class="control-group pull-left">
+                                <#--<div class="control-group pull-left">-->
 
-                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
 
-                                </div>
+                                <#--</div>-->
 
-                                <div class="control-group pull-left">
+                                <#--<div class="control-group pull-left">-->
 
-                                    <label class="control-label">成功次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>23次</span></#if></label>
+                                    <#--<label class="control-label">平均耗时：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>56毫秒</span></#if></label>-->
 
-                                </div>
+                                <#--</div>-->
 
-                                <div class="control-group pull-left">
+                                <#--<div class="control-group pull-left">-->
 
-                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
 
-                                </div>
+                                <#--</div>-->
 
-                                <div class="control-group pull-left">
+                                <#--<div class="control-group pull-left">-->
 
-                                    <label class="control-label">失败次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0次</span></#if></label>
+                                    <#--<label class="control-label">失败次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0次</span></#if></label>-->
 
-                                </div>
+                                <#--</div>-->
 
                             </div>
 
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 20%">Api类型</th>
-                                    <th style="text-align: center; width: 30%">
-                                        金额（单位/元）
+
+                                    <th style="text-align: center; width: 50%">
+                                        消费金额（单位：元）
                                         <div class="btn-group pull-right">
 
                                             <a class="btn mini white" href="#" data-toggle="dropdown">
@@ -263,7 +196,7 @@
 
                                         </div>
                                     </th>
-                                    <th style="text-align: center; width: 30%">
+                                    <th style="text-align: center; width: 50%">
                                         创建时间
                                         <div class="btn-group pull-right">
 
@@ -283,66 +216,37 @@
 
                                         </div>
                                     </th>
-                                    <th style="text-align: center; width: 20%">状态</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <#--<#if customerBalanceLogList??>-->
                                 <#--<#list customerBalanceLogList as customerBalanceLog>-->
                                 <tr>
-                                    <td style="text-align: center;">三要素</td>
+
                                     <td style="text-align: center;">10</td>
                                     <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
+
                                 </tr>
                                 <tr>
-                                    <td style="text-align: center;">二要素</td>
+
                                     <td style="text-align: center;">10</td>
                                     <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
+
                                 </tr>
                                 <tr>
-                                    <td style="text-align: center;">四要素</td>
+
                                     <td style="text-align: center;">10</td>
                                     <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
+
                                 </tr>
                                 <tr>
-                                    <td style="text-align: center;">三要素</td>
+
                                     <td style="text-align: center;">10</td>
                                     <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
+
                                 </tr>
-                                <tr>
-                                    <td style="text-align: center;">二要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">四要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">三要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">二要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">四要素</td>
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-                                    <td style="text-align: center;">成功</td>
-                                </tr>
+
                                 <#--</#list>-->
                                 <#--</#if>-->
                                 </tbody>
@@ -429,7 +333,7 @@
     $(document).ready(function() {
         $('#customerBalance').addClass('active');
 
-        $('#customerListBalanceLog').addClass('active');
+        $('#apiRecordLog').addClass('active');
 
         $('#customerBalanceSelect').addClass('selected');
 

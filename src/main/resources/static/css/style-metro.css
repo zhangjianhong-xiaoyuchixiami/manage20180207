@@ -624,6 +624,10 @@ select.m-wrap.medium {
   width: 220px !important;
 }
 
+select.m-wrap1.medium {
+  width: 150px !important;
+}
+
 select.m-wrap.large {
   width: 334px !important;
 }

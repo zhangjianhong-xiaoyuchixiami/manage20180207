@@ -12,7 +12,7 @@
 
     <meta charset="utf-8" />
 
-    <title>Metronic | Form Stuff - Form Components</title>
+    <title>Metronic | Data Tables - Editable Tables</title>
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -42,35 +42,9 @@
 
     <!-- BEGIN PAGE LEVEL STYLES -->
 
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-fileupload.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/jquery.gritter.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/chosen.css" />
-
     <link rel="stylesheet" type="text/css" href="/css/select2_metro.css" />
 
-    <link rel="stylesheet" type="text/css" href="/css/jquery.tagsinput.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/clockface.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-wysihtml5.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/timepicker.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/colorpicker.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-toggle-buttons.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/daterangepicker.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/datetimepicker.css" />
-
-    <link rel="stylesheet" type="text/css" href="/css/multi-select-metro.css" />
-
-    <link href="/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/css/DT_bootstrap.css" />
 
     <!-- END PAGE LEVEL STYLES -->
 
@@ -78,77 +52,82 @@
 
 </head>
 
-
-
 <body class="page-header-fixed">
-
-
 
 <div class="page-container row-fluid">
 
-
-
-
     <div class="page-content">
 
-
-
         <div class="container-fluid">
-
-
-
 
             <div class="row-fluid">
 
                 <div class="span12">
 
-                    <!-- BEGIN PORTLET-->
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
 
-                    <div class="portlet box green">
+                    <div class="portlet box blue">
 
-                        <div class="portlet-body form">
+                        <div class="portlet-body">
 
-                                <div class="control-group">
+                            <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
 
-                                    <label class="control-label"></label>
+                                <thead>
 
-                                    <div class="controls">
+                                <tr>
+                                    <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample_editable_1" rowspan="1" colspan="1" aria-label="Username: activate to sort column ascending" style="width: 289px;">Username</th>
 
-                                        <a  class="btn yellow" href="#form_modal3" data-toggle="modal">
+                                    <th>Full Name</th>
 
-                                            View colorpicker in modal window <i class="icon-share"></i>
+                                    <th>Points</th>
 
-                                        </a>
+                                    <th>Notes</th>
 
-                                    </div>
+                                </tr>
 
-                                </div>
+                                </thead>
 
-                            <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+                                <tbody>
 
-                                <div class="modal-header">
+                                <tr class="">
 
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    <td>alex</td>
 
-                                    <h3 id="myModalLabel3">egfwergwrgwrg</h3>
+                                    <td>Alex Nilson</td>
 
-                                </div>
+                                    <td>1234</td>
 
-                                <div class="modal-body">
+                                    <td class="center">power user</td>
 
-                                    fsdgfrgrehg
+                                </tr>
 
-                                </div>
+                                <tr class="">
 
-                                <div class="modal-footer">
+                                    <td>lisa</td>
 
-                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                    <td>Lisa Wong</td>
 
-                                    <button class="btn green btn-primary" data-dismiss="modal">Save changes</button>
+                                    <td>434</td>
 
-                                </div>
+                                    <td class="center">new user</td>
 
-                            </div>
+                                </tr>
+
+                                <tr class="">
+
+                                    <td>nick12</td>
+
+                                    <td>Nick Roberts</td>
+
+                                    <td>232</td>
+
+                                    <td class="center">power user</td>
+
+                                </tr>
+
+                                </tbody>
+
+                            </table>
 
                         </div>
 
@@ -156,111 +135,65 @@
 
                 </div>
 
-            </div>
+                <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample_editable_1" rowspan="1" colspan="1" aria-label="Username: activate to sort column ascending" style="width: 289px;">Username</th>
 
-        </div>
+                <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
-    </div>
+                <script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
-</div>
+                <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 
+                <script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 
-<script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+                <script src="/js/bootstrap.min.js" type="text/javascript"></script>
 
-<script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+                <!--[if lt IE 9]>
 
-<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+                <script src="/js/excanvas.min.js"></script>
 
-<script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+                <script src="/js/respond.min.js"></script>
 
-<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+                <![endif]-->
 
-<!--[if lt IE 9]>
+                <script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
 
-<script src="/js/excanvas.min.js"></script>
+                <script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
 
-<script src="/js/respond.min.js"></script>
+                <script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
 
-<![endif]-->
+                <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
 
-<script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+                <!-- END CORE PLUGINS -->
 
-<script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
+                <!-- BEGIN PAGE LEVEL PLUGINS -->
 
-<script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
+                <script type="text/javascript" src="/js/select2.min.js"></script>
 
-<script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
+                <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
-<!-- END CORE PLUGINS -->
+                <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
-<!-- BEGIN PAGE LEVEL PLUGINS -->
+                <!-- END PAGE LEVEL PLUGINS -->
 
-<script type="text/javascript" src="/js/ckeditor.js"></script>
+                <!-- BEGIN PAGE LEVEL SCRIPTS -->
 
-<script type="text/javascript" src="/js/bootstrap-fileupload.js"></script>
+                <script src="/js/app.js"></script>
 
-<script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+                <script src="/js/table-editable.js"></script>
 
-<script type="text/javascript" src="/js/select2.min.js"></script>
+                <script>
 
-<script type="text/javascript" src="/js/wysihtml5-0.3.0.js"></script>
+                    jQuery(document).ready(function() {
 
-<script type="text/javascript" src="/js/bootstrap-wysihtml5.js"></script>
+                        App.init();
 
-<script type="text/javascript" src="/js/jquery.tagsinput.min.js"></script>
+                        TableEditable.init();
 
-<script type="text/javascript" src="/js/jquery.toggle.buttons.js"></script>
+                    });
 
-<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
+                </script>
 
-<script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
-
-<script type="text/javascript" src="/js/clockface.js"></script>
-
-<script type="text/javascript" src="/js/date.js"></script>
-
-<script type="text/javascript" src=/js/daterangepicker.js"></script>
-
-<script type="text/javascript" src="/js/bootstrap-colorpicker.js"></script>
-
-<script type="text/javascript" src="/js/bootstrap-timepicker.js"></script>
-
-<script type="text/javascript" src="/js/jquery.inputmask.bundle.min.js"></script>
-
-<script type="text/javascript" src="/js/jquery.input-ip-address-control-1.0.min.js"></script>
-
-<script type="text/javascript" src="/js/jquery.multi-select.js"></script>
-
-<script src="/js/bootstrap-modal.js" type="text/javascript" ></script>
-
-<script src="/js/bootstrap-modalmanager.js" type="text/javascript" ></script>
-
-<!-- END PAGE LEVEL PLUGINS -->
-
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-
-<script src="/js/app.js"></script>
-
-<script src="/js/form-components.js"></script>
-
-<!-- END PAGE LEVEL SCRIPTS -->
-
-<script>
-
-    jQuery(document).ready(function() {
-
-        // initiate layout and plugins
-
-        App.init();
-
-
-    });
-
-</script>
-
-<!-- END JAVASCRIPTS -->
-
-<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
+                <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
 
 <!-- END BODY -->
 

@@ -348,7 +348,7 @@
                             <@shiro.hasPermission name="customer:findAllCustomer">
                                 <li id="customerListBalanceLog">
                                     <a href="/customer/findAllCustomer">
-                                        财务报表
+                                        客户财务账单
                                     </a>
                                 </li>
                             </@shiro.hasPermission>
@@ -356,11 +356,16 @@
                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                 <li id="customerListBalanceLog">
                                     <a href="/customer/findAllCustomerByDeptNo">
-                                        财务报表
+                                        客户财务账单
                                     </a>
                                 </li>
                             </@shiro.hasPermission>
 
+                            <li id="apiRecordLog">
+                                <a href="/customerBalance/findApiLog">
+                                    Api消费账单
+                                </a>
+                            </li>
                         </ul>
 
                     </li>

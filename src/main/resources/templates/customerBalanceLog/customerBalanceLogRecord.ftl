@@ -253,26 +253,14 @@
 
                             <div class="control-group pull-left">
 
-                                <label class="control-label">本页总计&yen;：<#if lineSizeTotleAmount??><span>${lineSizeTotleAmount}元</span><#else ><span>元0</span></#if></label>
-
-                            </div>
-
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-
-                            </div>
-
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+                                <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
 
                             </div>
 
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 30%">金额（单位/元）</th>
+                                    <th style="text-align: center; width: 30%">金额（单位：元）</th>
                                     <th style="text-align: center; width: 30%">时间</th>
                                     <th style="text-align: center; width: 40%">理由</th>
                                 </tr>

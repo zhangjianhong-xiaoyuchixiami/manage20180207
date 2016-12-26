@@ -20,29 +20,29 @@
 
                     </h3>
 
-                    <#--<ul class="breadcrumb">-->
+                <#--<ul class="breadcrumb">-->
 
-                        <#--<li>-->
+                <#--<li>-->
 
-                            <#--<i class="icon-home"></i>-->
+                <#--<i class="icon-home"></i>-->
 
-                            <#--<a href="/view/successUrl">首页</a>-->
+                <#--<a href="/view/successUrl">首页</a>-->
 
-                            <#--<i class="icon-angle-right"></i>-->
+                <#--<i class="icon-angle-right"></i>-->
 
-                        <#--</li>-->
+                <#--</li>-->
 
-                        <#--<li>-->
+                <#--<li>-->
 
-                            <#--<a href="#">财务管理</a>-->
+                <#--<a href="#">财务管理</a>-->
 
-                            <#--<i class="icon-angle-right"></i>-->
+                <#--<i class="icon-angle-right"></i>-->
 
-                        <#--</li>-->
+                <#--</li>-->
 
-                        <#--<li><a href="#">账号列表</a></li>-->
+                <#--<li><a href="#">账号列表</a></li>-->
 
-                    <#--</ul>-->
+                <#--</ul>-->
 
                     <!-- END PAGE TITLE & BREADCRUMB-->
 
@@ -60,27 +60,27 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <#--<div class="control-group pull-left">-->
+                            <#--<div class="control-group pull-left">-->
 
-                                    <#--<label class="control-label">账号类型</label>-->
+                            <#--<label class="control-label">账号类型</label>-->
 
-                                    <#--<div class="controls">-->
+                            <#--<div class="controls">-->
 
-                                        <#--<label class="checkbox">-->
+                            <#--<label class="checkbox">-->
 
-                                            <#--<input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="1">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="1">普通账号-->
+                            <#--<input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="1">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="1">普通账号-->
 
-                                        <#--</label>-->
+                            <#--</label>-->
 
-                                        <#--<label class="checkbox">-->
+                            <#--<label class="checkbox">-->
 
-                                            <#--<input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="2">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="2">技术调试账号-->
+                            <#--<input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="2">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="2">技术调试账号-->
 
-                                        <#--</label>-->
+                            <#--</label>-->
 
-                                    <#--</div>-->
+                            <#--</div>-->
 
-                                <#--</div>-->
+                            <#--</div>-->
 
                                 <div class="control-group pull-left">
 
@@ -90,7 +90,7 @@
 
                                         <div class="input-append">
 
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入账号">
+                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入公司名称">
 
                                             <button class="btn black" type="submit">搜索</button>
 
@@ -108,27 +108,27 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <#--<div class="control-group pull-left">-->
+                            <#--<div class="control-group pull-left">-->
 
-                                    <#--<label class="control-label">账号类型</label>-->
+                            <#--<label class="control-label">账号类型</label>-->
 
-                                    <#--<div class="controls">-->
+                            <#--<div class="controls">-->
 
-                                        <#--<label class="checkbox">-->
+                            <#--<label class="checkbox">-->
 
-                                            <#--<input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="1">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="1">普通账号-->
+                            <#--<input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="1">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="1">普通账号-->
 
-                                        <#--</label>-->
+                            <#--</label>-->
 
-                                        <#--<label class="checkbox">-->
+                            <#--<label class="checkbox">-->
 
-                                            <#--<input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="2">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="2">技术调试账号-->
+                            <#--<input type="checkbox" <#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId><#if customerTypeId=="2">checked="checked"</#if></#list></#if> id="customerTypeId" name="customerTypeId" value="2">技术调试账号-->
 
-                                        <#--</label>-->
+                            <#--</label>-->
 
-                                    <#--</div>-->
+                            <#--</div>-->
 
-                                <#--</div>-->
+                            <#--</div>-->
 
                                 <div class="control-group pull-left">
 
@@ -138,7 +138,7 @@
 
                                         <div class="input-append">
 
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入账号">
+                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入公司名称">
 
                                             <button class="btn black" type="submit">搜索</button>
 
@@ -177,16 +177,107 @@
 
                         <div class="portlet-body no-more-tables">
 
+                            <#--<div class="clearfix margin-bottom-20">-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">周充值总额共计&yen;：0元</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">周消费总额共计&yen;：0元</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">周Api消费总额共计&yen;：0元</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">月充值总额共计&yen;：0元</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">月消费总额共计&yen;：0元</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">月Api消费总额共计&yen;：0元</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+
+                                <#--</div>-->
+
+                                <#--<div class="control-group pull-left">-->
+
+                                    <#--<label class="control-label">账号余额共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>-->
+
+                                <#--</div>-->
+
+                            <#--</div>-->
+
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
 
-                                    <#--<th style="text-align: center; width: 15%">账号类型</th>-->
-                                    <th style="text-align: center; width: 50%">公司名称</th>
-                                    <#--<th style="text-align: center; width: 20%">账号</th>-->
-                                    <th style="text-align: center; width: 25%">余额（单位/元）</th>
-                                    <#--<th style="text-align: center; width: 10%">状态</th>-->
-                                    <th style="text-align: center; width: 25%">操作</th>
+                                <#--<th style="text-align: center; width: 15%">账号类型</th>-->
+                                    <th style="text-align: center; width: 10%">公司名称</th>
+                                    <th style="text-align: center; ">周充值总额</th>
+                                    <th style="text-align: center; ">月充值总额</th>
+                                    <th style="text-align: center; ">充值总额</th>
+                                    <th style="text-align: center; ">周消费总额</th>
+                                    <th style="text-align: center; ">月消费总额</th>
+                                    <th style="text-align: center; ">消费总额</th>
+                                    <th style="text-align: center; ">周Api消费总额</th>
+                                    <th style="text-align: center; ">月Api消费总额</th>
+                                    <th style="text-align: center; ">Api消费总额</th>
+                                <#--<th style="text-align: center; width: 20%">账号</th>-->
+                                    <th style="text-align: center; ">账号余额</th>
+                                <#--<th style="text-align: center; width: 10%">状态</th>-->
+                                    <th style="text-align: center; width: 15%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -194,27 +285,36 @@
                                     <#if customerList??>
                                         <#list customerList as customer>
                                         <tr>
-                                            <#--<td>${customer.customerType.name}</td>-->
+                                        <#--<td>${customer.customerType.name}</td>-->
                                             <td>${customer.company.name}</td>
-                                            <#--<td><a href="/customer/findCustomerDetailInfo/${customer.authId}"><strong>${customer.authId}</strong></a></td>-->
+                                            <td>123</td>
+                                            <td>123</td>
+                                            <td>123</td>
+                                            <td>123</td>
+                                            <td>123</td>
+                                            <td>123</td>
+                                            <td>123</td>
+                                            <td>123</td>
+                                            <td>123</td>
+                                        <#--<td><a href="/customer/findCustomerDetailInfo/${customer.authId}"><strong>${customer.authId}</strong></a></td>-->
                                             <td>${customer.balance/100.0}</td>
-                                            <#--<#if (customer.status)<0>-->
-                                                <#--<td style="color: red;">${customer.customerStatus.name}</td>-->
-                                            <#--<#else >-->
-                                                <#--<td>${customer.customerStatus.name}</td>-->
-                                            <#--</#if>-->
+                                        <#--<#if (customer.status)<0>-->
+                                        <#--<td style="color: red;">${customer.customerStatus.name}</td>-->
+                                        <#--<#else >-->
+                                        <#--<td>${customer.customerStatus.name}</td>-->
+                                        <#--</#if>-->
 
                                             <td style="text-align: center">
                                                 <p>
-                                                    <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=1" class="btn" id="gritter-light">充值</a>-->
+                                                <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=1" class="btn" id="gritter-light">充值</a>-->
 
-                                                    <a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customer.id}?reasonId=1" class="btn" id="gritter-light">充值记录</a>
+                                                    <a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customer.id}?reasonId=1" class="btn" id="gritter-light">账号充值记录</a>
 
-                                                    <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=-1" class="btn" id="gritter-light">扣费</a>-->
+                                                <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=-1" class="btn" id="gritter-light">扣费</a>-->
 
-                                                    <a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}?reasonId=-1" class="btn black" id="gritter-light">消费记录</a>
+                                                    <a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}?reasonId=-1" class="btn black" id="gritter-light">账号消费记录</a>
 
-                                                        <a href="/customerBalance/findApiConsumeRecordByCustomerId" class="btn" id="gritter-light">Api消费</a>
+                                                    <a href="/customerBalance/findApiConsumeRecordByCustomerId" class="btn" id="gritter-light">Api消费明细</a>
                                                 </p>
                                             </td>
 
@@ -232,12 +332,12 @@
 
                                         <div class="span6">
 
-                                            <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
+                                            <div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
 
                                         </div>
 
                                         <#if (totlePage>0)>
-                                            <div class="span6" align="right">
+                                            <div class="span6 pull-right">
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
                                                         <#if (pageSize>1)>
@@ -261,12 +361,12 @@
 
                                         <div class="span6">
 
-                                            <div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
+                                            <div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
 
                                         </div>
 
                                         <#if (totlePage>0)>
-                                            <div class="span6" align="right">
+                                            <div class="span6 pull-right">
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
                                                         <#if (pageSize>1)>
