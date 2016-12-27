@@ -12,7 +12,7 @@
 
     <meta charset="utf-8" />
 
-    <title>Metronic | Data Tables - Editable Tables</title>
+    <title>Metronic | Visual Charts</title>
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -40,14 +40,6 @@
 
     <!-- END GLOBAL MANDATORY STYLES -->
 
-    <!-- BEGIN PAGE LEVEL STYLES -->
-
-    <link rel="stylesheet" type="text/css" href="/css/select2_metro.css" />
-
-    <link rel="stylesheet" href="/css/DT_bootstrap.css" />
-
-    <!-- END PAGE LEVEL STYLES -->
-
     <link rel="shortcut icon" href="/image/favicon.ico" />
 
 </head>
@@ -62,118 +54,33 @@
 
     <div class="page-content">
 
-
         <div class="container-fluid">
 
             <div class="row-fluid">
 
-                <div class="span12">
-
-                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                <div class="span6">
 
                     <div class="portlet box blue">
 
-                        <div class="portlet-title">
-
-                            <div class="caption"><i class="icon-edit"></i>Editable Table</div>
-
-
-                        </div>
-
                         <div class="portlet-body">
 
+                            <h4>Added a semi-transparent background to the labels and a custom labelFormatter function.</h4>
 
-                            <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
-
-                                <thead>
-
-                                <tr>
-
-                                    <th>Username</th>
-
-                                    <th>Full Name</th>
-
-                                    <th>Points</th>
-
-                                    <th>Notes</th>
-
-                                </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                <#list userList as user>
-
-                                <tr class="">
-
-                                    <td>${user.id}</td>
-
-                                    <td>${user.name}</td>
-
-                                    <td>${user.username}</td>
-
-                                    <td>${user.tel}</td>
-
-                                </tr>
-
-                                </#list>
-
-                                </tbody>
-
-                            </table>
+                            <div id="pie_chart_6" class="chart"></div>
 
                         </div>
 
                     </div>
 
-                    <!-- END EXAMPLE TABLE PORTLET-->
-
                 </div>
 
             </div>
 
-            <!-- END PAGE CONTENT -->
-
         </div>
 
-        <!-- END PAGE CONTAINER-->
-
-    </div>
-
-    <!-- END PAGE -->
-
-</div>
-
-<!-- END CONTAINER -->
-
-<!-- BEGIN FOOTER -->
-
-<div class="footer">
-
-    <div class="footer-inner">
-
-        2013 &copy; Metronic by keenthemes.
-
-    </div>
-
-    <div class="footer-tools">
-
-			<span class="go-top">
-
-			<i class="icon-angle-up"></i>
-
-			</span>
-
     </div>
 
 </div>
-
-<!-- END FOOTER -->
-
-<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-
-<!-- BEGIN CORE PLUGINS -->
 
 <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
@@ -205,11 +112,15 @@
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 
-<script type="text/javascript" src="/js/select2.min.js"></script>
+<script src="/js/jquery.flot.js"></script>
 
-<script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+<script src="/js/jquery.flot.resize.js"></script>
 
-<script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+<script src="/js/jquery.flot.pie.js"></script>
+
+<script src="/js/jquery.flot.stack.js"></script>
+
+<script src="/js/jquery.flot.crosshair.js"></script>
 
 <!-- END PAGE LEVEL PLUGINS -->
 
@@ -217,19 +128,27 @@
 
 <script src="/js/app.js"></script>
 
-<script src="/js/table-editable.js"></script>
+<script src="/js/charts.js"></script>
 
 <script>
 
     jQuery(document).ready(function() {
 
+        // initiate layout and plugins
+
         App.init();
 
-        TableEditable.init();
+        Charts.init();
+
+        Charts.initCharts();
+
+        Charts.initPieCharts();
 
     });
 
 </script>
+
+<!-- END PAGE LEVEL SCRIPTS -->
 
 <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
 

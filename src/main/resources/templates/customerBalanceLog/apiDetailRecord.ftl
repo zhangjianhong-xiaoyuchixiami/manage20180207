@@ -176,45 +176,11 @@
                                 <thead>
                                 <tr>
 
-                                    <th style="text-align: center; width: 50%">
+                                    <th class="sorting" style="text-align: center;">
                                         消费金额（单位：元）
-                                        <div class="btn-group pull-right">
-
-                                            <a class="btn mini white" href="#" data-toggle="dropdown">
-
-                                                <i class="icon-angle-down "></i>
-
-                                            </a>
-
-                                            <ul class="dropdown-menu pull-right">
-
-                                                <li><a href="#">按金额由小到大</a></li>
-
-                                                <li><a href="#">按金额由大到小</a></li>
-
-                                            </ul>
-
-                                        </div>
                                     </th>
-                                    <th style="text-align: center; width: 50%">
+                                    <th class="sorting" style="text-align: center;">
                                         创建时间
-                                        <div class="btn-group pull-right">
-
-                                            <a class="btn mini white" href="#" data-toggle="dropdown">
-
-                                                <i class="icon-angle-down "></i>
-
-                                            </a>
-
-                                            <ul class="dropdown-menu pull-right">
-
-                                                <li><a href="#">按时间由早到晚</a></li>
-
-                                                <li><a href="#">按时间由晚到早</a></li>
-
-                                            </ul>
-
-                                        </div>
                                     </th>
 
                                 </tr>

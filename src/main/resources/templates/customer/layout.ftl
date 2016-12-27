@@ -22,6 +22,7 @@
     <link href="/css/style-responsive.css" rel="stylesheet" type="text/css"/>
     <link href="/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/css/DT_bootstrap.css" />
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-fileupload.css" />

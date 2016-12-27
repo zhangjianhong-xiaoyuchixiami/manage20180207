@@ -132,4 +132,9 @@
     <update id="updateStatusforbid" parameterType="java.lang.String">
         update qyauth.User set status=1 where username=#{value}
     </update>
+
+    <select id="findAllUser1" resultType="User">
+        SELECT id,name,username,tel
+        FROM qyauth.User
+    </select>
 </mapper>

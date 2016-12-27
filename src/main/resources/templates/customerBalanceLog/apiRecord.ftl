@@ -194,17 +194,41 @@
 
                                 </div>
 
+                                <div class="control-group pull-left">
+
+                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+                                </div>
+
+                                <div class="control-group pull-left">
+
+                                    <label class="control-label"><a href="/customerBalance/findApiRecordCountResult">查看Api消费统计结果</a></label>
+
+                                </div>
+
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered">
+                            <table class="table table-striped table-hover table-bordered" >
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 21%">Api</th>
-                                    <th style="text-align: center; width: 17%">周消费总额（单位：元）</th>
-                                    <th style="text-align: center; width: 17%">月消费总额（单位：元）</th>
-                                    <th style="text-align: center; width: 15%">消费总额（单位：元）</th>
-                                    <th style="text-align: center; width: 15%">所剩余额（单位：元）</th>
+                                    <th style="text-align: center; width: 25%">Api</th>
+                                    <th style="text-align: center; ">
+                                        周消费总额（单位：元）
+                                        <a id="hrefWeekSort" href="javaScript:;"><img id="weekSort" align="right" src="/image/sort_both.png" alt="" /></a>
+                                    </th>
+                                    <th style="text-align: center; ">
+                                        月消费总额（单位：元）
+                                        <a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>
+                                    </th>
+                                    <th style="text-align: center; ">
+                                        消费总额（单位：元）
+                                        <a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>
+                                    </th>
+                                    <th style="text-align: center; ">
+                                        所剩余额（单位：元）
+                                        <a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>
+                                    </th>
                                     <th style="text-align: center; width: 15%">操作</th>
                                 </tr>
                                 </thead>
@@ -329,6 +353,7 @@
         $('#customerBalanceSelect').addClass('selected');
 
         $('#customerBalanceArrow').addClass('arrow open');
+
     });
 </script>
 </@layout>

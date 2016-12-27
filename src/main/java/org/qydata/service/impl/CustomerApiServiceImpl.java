@@ -1,7 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.DatabaseContextHolder;
-import org.qydata.config.DatabaseType;
 import org.qydata.entity.Api;
 import org.qydata.entity.CustomerApi;
 import org.qydata.mapper.CustomerApiMapper;
@@ -83,15 +81,15 @@ public class CustomerApiServiceImpl implements CustomerApiService{
         }
     }
 
-    @Override
-    public List<Api> apiList() {
-        DatabaseContextHolder.setDatabaseType(DatabaseType.master);
-        return customerApiMapper.apiList();
-    }
-
-    @Override
-    public List<Api> apiList1() {
-        DatabaseContextHolder.setDatabaseType(DatabaseType.slave);
-        return customerApiMapper.apiList1();
-    }
+//    @Override
+//    public List<Api> apiList() {
+//        DatabaseContextHolder.setDatabaseType(DatabaseType.master);
+//        return customerApiMapper.apiList();
+//    }
+//
+//    @Override
+//    public List<Api> apiList1() {
+//        DatabaseContextHolder.setDatabaseType(DatabaseType.slave);
+//        return customerApiMapper.apiList1();
+//    }
 }

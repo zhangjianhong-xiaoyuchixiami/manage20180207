@@ -334,4 +334,9 @@ public class CustomerBalanceLogController {
         return "/customerBalanceLog/apiRecharage";
     }
 
+    @RequestMapping("/findApiRecordCountResult")
+    public String findApiRecordCountResult(){
+        return "/customerBalanceLog/apiRecordCountResult";
+    }
+
 }

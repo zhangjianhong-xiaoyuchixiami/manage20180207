@@ -260,8 +260,8 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 30%">金额（单位：元）</th>
-                                    <th style="text-align: center; width: 30%">时间</th>
+                                    <th class="sorting" style="text-align: center; width: 30%">金额（单位：元）</th>
+                                    <th class="sorting" style="text-align: center; width: 30%">时间</th>
                                     <th style="text-align: center; width: 40%">理由</th>
                                 </tr>
                                 </thead>

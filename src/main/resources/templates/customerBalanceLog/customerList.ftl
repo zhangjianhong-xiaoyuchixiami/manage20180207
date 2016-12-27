@@ -265,17 +265,17 @@
 
                                 <#--<th style="text-align: center; width: 15%">账号类型</th>-->
                                     <th style="text-align: center; width: 10%">公司名称</th>
-                                    <th style="text-align: center; ">周充值总额</th>
-                                    <th style="text-align: center; ">月充值总额</th>
-                                    <th style="text-align: center; ">充值总额</th>
-                                    <th style="text-align: center; ">周消费总额</th>
-                                    <th style="text-align: center; ">月消费总额</th>
-                                    <th style="text-align: center; ">消费总额</th>
-                                    <th style="text-align: center; ">周Api消费总额</th>
-                                    <th style="text-align: center; ">月Api消费总额</th>
-                                    <th style="text-align: center; ">Api消费总额</th>
+                                    <th class="sorting" style="text-align: center; ">周充值总额</th>
+                                    <th class="sorting" style="text-align: center; ">月充值总额</th>
+                                    <th class="sorting" style="text-align: center; ">充值总额</th>
+                                    <th class="sorting" style="text-align: center; ">周消费总额</th>
+                                    <th class="sorting" style="text-align: center; ">月消费总额</th>
+                                    <th class="sorting" style="text-align: center; ">消费总额</th>
+                                    <th class="sorting" style="text-align: center; ">周Api消费总额</th>
+                                    <th class="sorting" style="text-align: center; ">月Api消费总额</th>
+                                    <th class="sorting" style="text-align: center; ">Api消费总额</th>
                                 <#--<th style="text-align: center; width: 20%">账号</th>-->
-                                    <th style="text-align: center; ">账号余额</th>
+                                    <th class="sorting" style="text-align: center; ">账号余额</th>
                                 <#--<th style="text-align: center; width: 10%">状态</th>-->
                                     <th style="text-align: center; width: 15%">操作</th>
                                 </tr>

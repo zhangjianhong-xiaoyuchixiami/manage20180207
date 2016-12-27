@@ -7,6 +7,7 @@ import org.qydata.entity.User;
 import org.qydata.regex.RegexUtil;
 import org.qydata.service.CustomerService;
 import org.qydata.service.DeptService;
+import org.qydata.service.UserService;
 import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,9 @@ public class CustomerController {
 
     @Autowired
     private DeptService deptService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 添加新客户时验证账户名是否已存在
@@ -307,8 +311,15 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/list1")
-    public String list1(){
+    public String list1(Model model){
+      List<User> userList = userService.findAllUser();
+        model.addAttribute("userList",userList);
         return "/customer/list";
+    }
+
+    @RequestMapping("/demo")
+    public String demo(){
+        return "/customer/demo";
     }
 
 }

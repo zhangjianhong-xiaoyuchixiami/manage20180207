@@ -33,20 +33,20 @@ public class MyBatisConfig {
     @Bean
     public DataSource masterDataSource() throws Exception {
         Properties props = new Properties();
-        props.put("driverClassName", env.getProperty("master.spring.datasource.driver-class-name"));
-        props.put("url", env.getProperty("master.spring.datasource.url"));
-        props.put("username", env.getProperty("master.spring.datasource.username"));
-        props.put("password", env.getProperty("master.spring.datasource.password"));
+        props.put("driverClassName", env.getProperty("master.datasource.driver-class-name"));
+        props.put("url", env.getProperty("master.datasource.url"));
+        props.put("username", env.getProperty("master.datasource.username"));
+        props.put("password", env.getProperty("master.datasource.password"));
         return DruidDataSourceFactory.createDataSource(props);
     }
 
     @Bean
     public DataSource slaveDataSource() throws Exception {
         Properties props = new Properties();
-        props.put("driverClassName", env.getProperty("slave.spring.datasource.driver-class-name"));
-        props.put("url", env.getProperty("slave.spring.datasource.url"));
-        props.put("username", env.getProperty("slave.spring.datasource.username"));
-        props.put("password", env.getProperty("slave.spring.datasource.password"));
+        props.put("driverClassName", env.getProperty("slave.datasource.driver-class-name"));
+        props.put("url", env.getProperty("slave.datasource.url"));
+        props.put("username", env.getProperty("slave.datasource.username"));
+        props.put("password", env.getProperty("slave.datasource.password"));
         return DruidDataSourceFactory.createDataSource(props);
     }
 

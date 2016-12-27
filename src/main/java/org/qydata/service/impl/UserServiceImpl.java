@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -111,6 +112,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateStatusForbid(String username) throws Exception {
         return userMapper.updateStatusforbid(username);
+    }
+
+    @Override
+    public List<User> findAllUser() {
+        return userMapper.findAllUser1();
     }
 
 }
