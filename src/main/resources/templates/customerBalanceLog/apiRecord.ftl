@@ -209,129 +209,432 @@
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered" >
-                                <thead>
-                                <tr>
-                                    <th style="text-align: center; width: 25%">Api</th>
-                                    <th style="text-align: center; ">
-                                        周消费总额（单位：元）
-                                        <a id="hrefWeekSort" href="javaScript:;"><img id="weekSort" align="right" src="/image/sort_both.png" alt="" /></a>
-                                    </th>
-                                    <th style="text-align: center; ">
-                                        月消费总额（单位：元）
-                                        <a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>
-                                    </th>
-                                    <th style="text-align: center; ">
-                                        消费总额（单位：元）
-                                        <a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>
-                                    </th>
-                                    <th style="text-align: center; ">
-                                        所剩余额（单位：元）
-                                        <a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>
-                                    </th>
-                                    <th style="text-align: center; width: 15%">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <#--<#if customerBalanceLogList??>-->
-                                <#--<#list customerBalanceLogList as customerBalanceLog>-->
-                                <tr>
-                                    <td style="text-align: center;">三要素</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;">567890</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+                        <#--<table class="table table-striped table-hover table-bordered" >-->
+                        <#--<thead>-->
+                        <#--<tr>-->
+                        <#--<th style="text-align: center; width: 25%">Api</th>-->
+                        <#--<th style="text-align: center; ">-->
+                        <#--周消费总额（单位：元）-->
+                        <#--<a id="hrefWeekSort" href="javaScript:;"><img id="weekSort" align="right" src="/image/sort_both.png" alt="" /></a>-->
+                        <#--</th>-->
+                        <#--<th style="text-align: center; ">-->
+                        <#--月消费总额（单位：元）-->
+                        <#--<a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>-->
+                        <#--</th>-->
+                        <#--<th style="text-align: center; ">-->
+                        <#--消费总额（单位：元）-->
+                        <#--<a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>-->
+                        <#--</th>-->
+                        <#--<th style="text-align: center; ">-->
+                        <#--所剩余额（单位：元）-->
+                        <#--<a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>-->
+                        <#--</th>-->
+                        <#--<th style="text-align: center; width: 15%">操作</th>-->
+                        <#--</tr>-->
+                        <#--</thead>-->
+                        <#--<tbody>-->
+                        <#--&lt;#&ndash;<#if customerBalanceLogList??>&ndash;&gt;-->
+                        <#--&lt;#&ndash;<#list customerBalanceLogList as customerBalanceLog>&ndash;&gt;-->
+                        <#--<tr>-->
+                        <#--<td style="text-align: center;">三要素</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;">567890</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>-->
 
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">二要素</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;">567890</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">四要素</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;">567890</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;">2345</td>
-                                    <td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiMonthLog">消费明细</a></td>
-                                </tr>
+                        <#--</tr>-->
+                        <#--<tr>-->
+                        <#--<td style="text-align: center;">二要素</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;">567890</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>-->
+                        <#--</tr>-->
+                        <#--<tr>-->
+                        <#--<td style="text-align: center;">四要素</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;">567890</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;">2345</td>-->
+                        <#--<td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiMonthLog">消费明细</a></td>-->
+                        <#--</tr>-->
 
 
-                                <#--</#list>-->
-                                <#--</#if>-->
-                                </tbody>
-                            </table>
+                        <#--&lt;#&ndash;</#list>&ndash;&gt;-->
+                        <#--&lt;#&ndash;</#if>&ndash;&gt;-->
+                        <#--</tbody>-->
+                        <#--</table>-->
 
-                            <div class="row-fluid">
-
-                                <div class="span6">
-
-                                    <div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 1 页 共 10 页</div>
-
-                                </div>
-
-                                <div class="span6">
-
-                                    <div class="dataTables_paginate paging_bootstrap pagination pull-right">
-
-                                        <ul>
-
-                                            <li class="prev disabled"><a href="#">首页</a></li>
-
-                                            <li class="prev disabled"><a href="#">← <span class="hidden-480">上一页</span></a></li>
-
-                                        <#--<li class="active"><a href="#">1</a></li>-->
-
-                                        <#--<li><a href="#">2</a></li>-->
-
-                                        <#--<li><a href="#">3</a></li>-->
-
-                                        <#--<li><a href="#">4</a></li>-->
-
-                                        <#--<li><a href="#">5</a></li>-->
-
-                                            <li class="next"><a href="#"><span class="hidden-480">下一页</span> → </a></li>
-
-                                            <li class="next"><a href="#">尾页</a></li>
-
-                                        </ul>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        <#--<#if CustomerBalanceModifyReason=="扣费">-->
-                        <#--<#if (count>0)>-->
                         <#--<div class="row-fluid">-->
+
                         <#--<div class="span6">-->
-                        <#--<div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>-->
+
+                        <#--<div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 1 页 共 10 页</div>-->
+
                         <#--</div>-->
-                        <#--<#if (totlePage>0)>-->
-                        <#--<div class="span6" align="right">-->
-                        <#--<div class="dataTables_paginate paging_bootstrap pagination">-->
+
+                        <#--<div class="span6">-->
+
+                        <#--<div class="dataTables_paginate paging_bootstrap pagination pull-right">-->
+
                         <#--<ul>-->
-                        <#--<#if (pageSize>1)>-->
-                        <#--<li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=1<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">首页</span></a></li>-->
-                        <#--<li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize-1}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">上一页</span></a></li>-->
-                        <#--</#if>-->
-                        <#--<#if (pageSize<totlePage)>-->
-                        <#--<li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize+1}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">下一页</span></a></li>-->
-                        <#--<li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${totlePage}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">尾页</span></a></li>-->
-                        <#--</#if>-->
+
+                        <#--<li class="prev disabled"><a href="#">首页</a></li>-->
+
+                        <#--<li class="prev disabled"><a href="#">← <span class="hidden-480">上一页</span></a></li>-->
+
+                        <#--&lt;#&ndash;<li class="active"><a href="#">1</a></li>&ndash;&gt;-->
+
+                        <#--&lt;#&ndash;<li><a href="#">2</a></li>&ndash;&gt;-->
+
+                        <#--&lt;#&ndash;<li><a href="#">3</a></li>&ndash;&gt;-->
+
+                        <#--&lt;#&ndash;<li><a href="#">4</a></li>&ndash;&gt;-->
+
+                        <#--&lt;#&ndash;<li><a href="#">5</a></li>&ndash;&gt;-->
+
+                        <#--<li class="next"><a href="#"><span class="hidden-480">下一页</span> → </a></li>-->
+
+                        <#--<li class="next"><a href="#">尾页</a></li>-->
+
                         <#--</ul>-->
+
                         <#--</div>-->
+
                         <#--</div>-->
-                        <#--</#if>-->
+
                         <#--</div>-->
-                        <#--</#if>-->
-                        <#--</#if>-->
+
+                            <table class="table table-striped table-bordered table-hover" id="sample_1">
+
+                                <thead>
+
+                                <tr>
+
+                                    <th style="width:20%;">Api</th>
+
+                                    <th>周消费总额（单位：元）</th>
+
+                                    <th class="hidden-480">月消费总额（单位：元）</th>
+
+                                    <th class="hidden-480">消费总额（单位：元）</th>
+
+                                    <th class="hidden-480">所剩余额（单位：元）</th>
+
+                                    <th style="width:15%;">操作</th>
+
+                                </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>fgrg</td>
+
+                                    <td>43543</td>
+
+                                    <td class="hidden-480">545</td>
+
+                                    <td class="hidden-480">4543</td>
+
+                                    <td class="center hidden-480">4554</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>vfg</td>
+
+                                    <td>654</td>
+
+                                    <td class="hidden-480">767</td>
+
+                                    <td class="hidden-480">66675675</td>
+
+                                    <td class="center hidden-480">65756</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>dsfdf</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">323</td>
+
+                                    <td class="hidden-480">4234</td>
+
+                                    <td class="center hidden-480">3242</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>ggg</td>
+
+                                    <td>76</td>
+
+                                    <td class="hidden-480">6765</td>
+
+                                    <td class="hidden-480">767</td>
+
+                                    <td class="center hidden-480">676</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">665</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+
+                                </tbody>
+
+                            </table>
 
                         </div>
 
@@ -341,19 +644,34 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+
+    <script src="/js/table-managed.js"></script>
+
+    <script>
+
+        jQuery(document).ready(function() {
+            TableManaged.init();
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#customerBalance').addClass('active');
+
+            $('#apiRecordLog').addClass('active');
+
+            $('#customerBalanceSelect').addClass('selected');
+
+            $('#customerBalanceArrow').addClass('arrow open');
+        });
+    </script>
+
     <#elseif section = "footer">
 
     </#if>
-<script>
-    $(document).ready(function() {
-        $('#customerBalance').addClass('active');
 
-        $('#apiRecordLog').addClass('active');
-
-        $('#customerBalanceSelect').addClass('selected');
-
-        $('#customerBalanceArrow').addClass('arrow open');
-
-    });
-</script>
 </@layout>

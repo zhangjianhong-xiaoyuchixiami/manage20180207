@@ -12,7 +12,7 @@
 
     <meta charset="utf-8" />
 
-    <title>Metronic | Data Tables - Editable Tables</title>
+    <title>Metronic | Data Tables - Managed Tables</title>
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -58,10 +58,10 @@
 
 <body class="page-header-fixed">
 
+
 <div class="page-container row-fluid">
 
     <div class="page-content">
-
 
         <div class="container-fluid">
 
@@ -69,33 +69,45 @@
 
                 <div class="span12">
 
-                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
-
-                    <div class="portlet box blue">
+                    <div class="portlet box light-grey">
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-edit"></i>Editable Table</div>
+                            <div class="caption"><i class="icon-globe"></i>Managed Table</div>
 
+                            <div class="tools">
+
+                                <a href="javascript:;" class="collapse"></a>
+
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
+                                <a href="javascript:;" class="reload"></a>
+
+                                <a href="javascript:;" class="remove"></a>
+
+                            </div>
 
                         </div>
 
                         <div class="portlet-body">
 
-
-                            <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
+                            <table class="table table-striped table-bordered table-hover" id="sample_1">
 
                                 <thead>
 
                                 <tr>
 
+                                    <th style="width:8px;"><input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /></th>
+
                                     <th>Username</th>
 
-                                    <th>Full Name</th>
+                                    <th class="hidden-480">Email</th>
 
-                                    <th>Points</th>
+                                    <th class="hidden-480">Points</th>
 
-                                    <th>Notes</th>
+                                    <th class="hidden-480">Joined</th>
+
+                                    <th ></th>
 
                                 </tr>
 
@@ -105,15 +117,19 @@
 
                                 <#list userList as user>
 
-                                <tr class="">
+                                <tr class="odd gradeX">
+
+                                    <td><input type="checkbox" class="checkboxes" value="1" /></td>
 
                                     <td>${user.id}</td>
 
-                                    <td>${user.name}</td>
+                                    <td class="hidden-480"><a href="mailto:shuxer@gmail.com"></a>${user.name}</td>
 
-                                    <td>${user.username}</td>
+                                    <td class="hidden-480">${user.username}</td>
 
-                                    <td>${user.tel}</td>
+                                    <td class="center hidden-480">${user.tel}</td>
+
+                                    <td >Suspended</td>
 
                                 </tr>
 
@@ -133,21 +149,11 @@
 
             </div>
 
-            <!-- END PAGE CONTENT -->
-
         </div>
-
-        <!-- END PAGE CONTAINER-->
 
     </div>
 
-    <!-- END PAGE -->
-
 </div>
-
-<!-- END CONTAINER -->
-
-<!-- BEGIN FOOTER -->
 
 <div class="footer">
 
@@ -168,12 +174,6 @@
     </div>
 
 </div>
-
-<!-- END FOOTER -->
-
-<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-
-<!-- BEGIN CORE PLUGINS -->
 
 <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
@@ -217,7 +217,7 @@
 
 <script src="/js/app.js"></script>
 
-<script src="/js/table-editable.js"></script>
+<script src="/js/table-managed.js"></script>
 
 <script>
 
@@ -225,7 +225,7 @@
 
         App.init();
 
-        TableEditable.init();
+        TableManaged.init();
 
     });
 

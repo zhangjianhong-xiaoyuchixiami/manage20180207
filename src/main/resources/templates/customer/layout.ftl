@@ -126,7 +126,6 @@
 
     <script src=/js/jquery.fancybox.pack.js"></script>
 
-
     <script>
 
         jQuery(document).ready(function() {
