@@ -266,20 +266,21 @@
                                 <tr>
 
                                 <#--<th style="text-align: center; width: 15%">账号类型</th>-->
-                                    <th style="text-align: center; width: 10%">公司名称</th>
+                                    <th style="text-align: center; width: 15%">公司名称</th>
                                     <th>周充值总额</th>
-                                    <th>月充值总额</th>
-                                    <th>充值总额</th>
                                     <th>周消费总额</th>
-                                    <th>月消费总额</th>
-                                    <th>消费总额</th>
                                     <th>周Api消费总额</th>
+                                    <th>月充值总额</th>
+                                    <th>月消费总额</th>
                                     <th>月Api消费总额</th>
+                                    <th>充值总额</th>
+                                    <th>消费总额</th>
                                     <th>Api消费总额</th>
-                                <#--<th style="text-align: center; width: 20%">账号</th>-->
-                                    <t>账号余额</t>
-                                <#--<th style="text-align: center; width: 10%">状态</th>-->
+                                    <th>账号余额</th>
                                     <th style="text-align: center; width: 15%">操作</th>
+                                <#--<th style="text-align: center; width: 20%">账号</th>-->
+                                <#--<th style="text-align: center; width: 10%">状态</th>-->
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -310,13 +311,16 @@
                                                 <p>
                                                 <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=1" class="btn" id="gritter-light">充值</a>-->
 
-                                                    <a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customer.id}?reasonId=1" class="btn" id="gritter-light">账号充值记录</a>
+                                                    <a href="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customer.id}?reasonId=1">充值记录</a>
+
+                                                    |
 
                                                 <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=-1" class="btn" id="gritter-light">扣费</a>-->
 
-                                                    <a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}?reasonId=-1" class="btn black" id="gritter-light">账号消费记录</a>
+                                                    <#--<a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}?reasonId=-1">账号消费记录</a>-->
 
-                                                    <a href="/customerBalance/findApiConsumeRecordByCustomerId" class="btn" id="gritter-light">Api消费明细</a>
+                                                    <a href="/customerBalance/findApiConsumeRecordByCustomerId">消费明细</a>
+
                                                 </p>
                                             </td>
 

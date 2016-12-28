@@ -60,49 +60,49 @@
 
                         <div class="clearfix margin-bottom-20">
 
-                            <#--<div class="control-group pull-left">-->
+                            <div class="control-group pull-left">
 
-                                <#--<label class="control-label">Api类型</label>-->
+                                <label class="control-label">Api类型</label>
 
-                                <#--<div class="controls">-->
+                                <div class="controls">
 
-                                    <#--<select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">-->
-                                    <#--&lt;#&ndash;<#if apiList??>&ndash;&gt;-->
-                                    <#--&lt;#&ndash;<#list apiList as api>&ndash;&gt;-->
+                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
+                                    <#--<#if apiList??>-->
+                                    <#--<#list apiList as api>-->
 
-                                        <#--<option value="">二要素</option>-->
-                                        <#--<option value="">三要素</option>-->
-                                        <#--<option value="">四要素</option>-->
+                                        <option value="">二要素</option>
+                                        <option value="">三要素</option>
+                                        <option value="">四要素</option>
 
-                                    <#--&lt;#&ndash;</#list>&ndash;&gt;-->
-                                    <#--&lt;#&ndash;</#if>&ndash;&gt;-->
-                                    <#--</select>-->
+                                    <#--</#list>-->
+                                    <#--</#if>-->
+                                    </select>
 
-                                <#--</div>-->
+                                </div>
 
-                            <#--</div>-->
+                            </div>
 
-                            <#--<div class="control-group pull-left">-->
+                            <div class="control-group pull-left">
 
-                                <#--<label class="control-label">Api供应商</label>-->
+                                <label class="control-label">Api供应商</label>
 
-                                <#--<div class="controls">-->
+                                <div class="controls">
 
-                                    <#--<select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">-->
-                                    <#--&lt;#&ndash;<#if apiList??>&ndash;&gt;-->
-                                    <#--&lt;#&ndash;<#list apiList as api>&ndash;&gt;-->
+                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
+                                    <#--<#if apiList??>-->
+                                    <#--<#list apiList as api>-->
 
-                                        <#--<option value="">移动</option>-->
-                                        <#--<option value="">联通</option>-->
-                                        <#--<option value="">电信</option>-->
+                                        <option value="">移动</option>
+                                        <option value="">联通</option>
+                                        <option value="">电信</option>
 
-                                    <#--&lt;#&ndash;</#list>&ndash;&gt;-->
-                                    <#--&lt;#&ndash;</#if>&ndash;&gt;-->
-                                    <#--</select>-->
+                                    <#--</#list>-->
+                                    <#--</#if>-->
+                                    </select>
 
-                                <#--</div>-->
+                                </div>
 
-                            <#--</div>-->
+                            </div>
 
                             <div class="control-group pull-left">
 
@@ -139,14 +139,6 @@
                                 <div class="input-append" >
 
                                     <button class="btn black" type="submit">搜索</button>
-
-                                </div>
-
-                            </div>
-
-                            <div class="control-group pull-right">
-
-                                <div id="container">
 
                                 </div>
 
@@ -539,10 +531,57 @@
                         </div>
 
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
+    <div class="control-group" style="display: block;">
+
+        <label class="control-label"></label>
+
+        <div class="controls">
+
+            <a id="tipInfo" class="btn blue" href="#form_modal3" data-toggle="modal">
+
+                点击
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+            <h3 id="myModalLabel3">Api消费统计结果</h3>
+
+        </div>
+
+        <div id="container" class="modal-body" style="border: 1px solid red;" >
+
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button class="btn" data-dismiss="modal" aria-hidden="true">确定</button>
+
+        </div>
+
+    </div>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
@@ -550,13 +589,18 @@
 
     <script src="/js/table-managed.js"></script>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
 
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        jQuery(document).ready(function() {
+            TableManaged.init();
+        });
+
+    </script>
 
     <script type="text/javascript">
 
         $(function () {
+
             // Radialize the colors
             Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
                 return {
@@ -575,17 +619,10 @@
             // Build the chart
             Highcharts.chart('container', {
                 chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    height: 200,
-                    width: 400,
-                    reflow: true,
-                    size: 200,
                     type: 'pie'
                 },
                 title: {
-                    text: 'Api消费统计结果',
+                    text: '',
                     margin: 3
                 },
                 exporting :{
@@ -627,14 +664,6 @@
     </script>
 
     <script>
-
-        jQuery(document).ready(function() {
-            TableManaged.init();
-        });
-
-    </script>
-
-    <script>
         $(document).ready(function() {
             $('#customerBalance').addClass('active');
 
@@ -643,6 +672,7 @@
             $('#customerBalanceSelect').addClass('selected');
 
             $('#customerBalanceArrow').addClass('arrow open');
+
         });
     </script>
 

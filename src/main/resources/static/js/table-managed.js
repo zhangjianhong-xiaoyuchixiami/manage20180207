@@ -113,7 +113,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "全文搜索：",
+                    "sSearch" : "请输入公司名称：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -128,6 +128,7 @@ var TableManaged = function () {
                     'aTargets': [0]
                 }
                 ]
+
             });
 
         }
