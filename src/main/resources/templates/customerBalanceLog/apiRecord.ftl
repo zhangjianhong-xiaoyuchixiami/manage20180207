@@ -566,7 +566,7 @@
 
         </div>
 
-        <div id="container" class="modal-body" style="border: 1px solid red;" >
+        <div id="container" class="modal-body">
 
 
         </div>
@@ -619,6 +619,7 @@
             // Build the chart
             Highcharts.chart('container', {
                 chart: {
+                    size: 250,
                     type: 'pie'
                 },
                 title: {
