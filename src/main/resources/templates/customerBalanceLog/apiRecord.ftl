@@ -106,6 +106,28 @@
 
                             <div class="control-group pull-left">
 
+                                <label class="control-label">Api</label>
+
+                                <div class="controls">
+
+                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
+                                    <#--<#if apiList??>-->
+                                    <#--<#list apiList as api>-->
+
+                                        <option value="">sdsds</option>
+                                        <option value="">gfdgfd</option>
+                                        <option value="">gdfgfd</option>
+
+                                    <#--</#list>-->
+                                    <#--</#if>-->
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="control-group pull-left">
+
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
                             </div>
@@ -121,6 +143,16 @@
                                 </div>
 
                             </div>
+
+                            <div class="control-group pull-right">
+
+                                <div id="container">
+
+                                </div>
+
+                            </div>
+
+
 
                         </div>
 
@@ -194,118 +226,7 @@
 
                                 </div>
 
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label"><a href="/customerBalance/findApiRecordCountResult">查看Api消费统计结果</a></label>
-
-                                </div>
-
-
                             </div>
-
-                        <#--<table class="table table-striped table-hover table-bordered" >-->
-                        <#--<thead>-->
-                        <#--<tr>-->
-                        <#--<th style="text-align: center; width: 25%">Api</th>-->
-                        <#--<th style="text-align: center; ">-->
-                        <#--周消费总额（单位：元）-->
-                        <#--<a id="hrefWeekSort" href="javaScript:;"><img id="weekSort" align="right" src="/image/sort_both.png" alt="" /></a>-->
-                        <#--</th>-->
-                        <#--<th style="text-align: center; ">-->
-                        <#--月消费总额（单位：元）-->
-                        <#--<a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>-->
-                        <#--</th>-->
-                        <#--<th style="text-align: center; ">-->
-                        <#--消费总额（单位：元）-->
-                        <#--<a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>-->
-                        <#--</th>-->
-                        <#--<th style="text-align: center; ">-->
-                        <#--所剩余额（单位：元）-->
-                        <#--<a href=""><img align="right" src="/image/sort_both.png" alt="" /></a>-->
-                        <#--</th>-->
-                        <#--<th style="text-align: center; width: 15%">操作</th>-->
-                        <#--</tr>-->
-                        <#--</thead>-->
-                        <#--<tbody>-->
-                        <#--&lt;#&ndash;<#if customerBalanceLogList??>&ndash;&gt;-->
-                        <#--&lt;#&ndash;<#list customerBalanceLogList as customerBalanceLog>&ndash;&gt;-->
-                        <#--<tr>-->
-                        <#--<td style="text-align: center;">三要素</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;">567890</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>-->
-
-                        <#--</tr>-->
-                        <#--<tr>-->
-                        <#--<td style="text-align: center;">二要素</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;">567890</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>-->
-                        <#--</tr>-->
-                        <#--<tr>-->
-                        <#--<td style="text-align: center;">四要素</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;">567890</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;">2345</td>-->
-                        <#--<td style="text-align: center;"><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiMonthLog">消费明细</a></td>-->
-                        <#--</tr>-->
-
-
-                        <#--&lt;#&ndash;</#list>&ndash;&gt;-->
-                        <#--&lt;#&ndash;</#if>&ndash;&gt;-->
-                        <#--</tbody>-->
-                        <#--</table>-->
-
-                        <#--<div class="row-fluid">-->
-
-                        <#--<div class="span6">-->
-
-                        <#--<div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 1 页 共 10 页</div>-->
-
-                        <#--</div>-->
-
-                        <#--<div class="span6">-->
-
-                        <#--<div class="dataTables_paginate paging_bootstrap pagination pull-right">-->
-
-                        <#--<ul>-->
-
-                        <#--<li class="prev disabled"><a href="#">首页</a></li>-->
-
-                        <#--<li class="prev disabled"><a href="#">← <span class="hidden-480">上一页</span></a></li>-->
-
-                        <#--&lt;#&ndash;<li class="active"><a href="#">1</a></li>&ndash;&gt;-->
-
-                        <#--&lt;#&ndash;<li><a href="#">2</a></li>&ndash;&gt;-->
-
-                        <#--&lt;#&ndash;<li><a href="#">3</a></li>&ndash;&gt;-->
-
-                        <#--&lt;#&ndash;<li><a href="#">4</a></li>&ndash;&gt;-->
-
-                        <#--&lt;#&ndash;<li><a href="#">5</a></li>&ndash;&gt;-->
-
-                        <#--<li class="next"><a href="#"><span class="hidden-480">下一页</span> → </a></li>-->
-
-                        <#--<li class="next"><a href="#">尾页</a></li>-->
-
-                        <#--</ul>-->
-
-                        <#--</div>-->
-
-                        <#--</div>-->
-
-                        <#--</div>-->
 
                             <table class="table table-striped table-bordered table-hover" id="sample_1">
 
@@ -332,50 +253,31 @@
                                 <tbody>
 
                                 <tr class="odd gradeX">
-
                                     <td>asas</td>
-
                                     <td>234</td>
-
                                     <td class="hidden-480">453</td>
-
                                     <td class="hidden-480">665</td>
-
                                     <td class="center hidden-480">890</td>
-
                                     <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
 
                                 </tr>
                                 <tr class="odd gradeX">
-
                                     <td>fgrg</td>
-
                                     <td>43543</td>
-
                                     <td class="hidden-480">545</td>
-
                                     <td class="hidden-480">4543</td>
-
                                     <td class="center hidden-480">4554</td>
-
                                     <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
                                 </tr>
                                 <tr class="odd gradeX">
-
                                     <td>vfg</td>
-
                                     <td>654</td>
-
                                     <td class="hidden-480">767</td>
-
                                     <td class="hidden-480">66675675</td>
-
                                     <td class="center hidden-480">65756</td>
-
                                     <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
                                 </tr>
+
                                 <tr class="odd gradeX">
 
                                     <td>dsfdf</td>
@@ -649,6 +551,82 @@
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
     <script src="/js/table-managed.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            // Radialize the colors
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                return {
+                    radialGradient: {
+                        cx: 0.5,
+                        cy: 0.3,
+                        r: 0.7
+                    },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+
+            // Build the chart
+            Highcharts.chart('container', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    height: 200,
+                    width: 400,
+                    reflow: true,
+                    size: 200,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Api消费统计结果',
+                    margin: 3
+                },
+                exporting :{
+                    enabled:false
+                },
+                credits:{
+                    enabled:false
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Api',
+                    data: [
+                        { name: '一要素', y: 56.33 },
+                        {name:  '二要素',  y: 24.03},
+                        { name: '三要素', y: 10.38 },
+                        { name: '四要素', y: 4.77 },
+                        { name: '五要素', y: 0.91 },
+                        { name: '六要素', y: 0.2 }
+                    ]
+                }]
+            });
+        });
+    </script>
 
     <script>
 

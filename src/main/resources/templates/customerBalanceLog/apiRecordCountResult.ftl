@@ -78,7 +78,7 @@
 
                         </div>
 
-                        <div id="container" style="height: 400px">
+                        <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
 
                         </div>
 
@@ -94,21 +94,43 @@
 
 
     <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
     <script type="text/javascript">
+
         $(function () {
+            // Radialize the colors
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                return {
+                    radialGradient: {
+                        cx: 0.5,
+                        cy: 0.3,
+                        r: 0.7
+                    },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+
+            // Build the chart
             Highcharts.chart('container', {
                 chart: {
-                    type: 'pie',
-                    options3d: {
-                        enabled: true,
-                        alpha: 45,
-                        beta: 0
-                    }
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
                 },
                 title: {
                     text: 'Api消费统计结果'
+                },
+                exporting :{
+                    enabled:false
+                },
+                credits:{
+                    enabled:false
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -117,28 +139,36 @@
                     pie: {
                         allowPointSelect: true,
                         cursor: 'pointer',
-                        depth: 35,
                         dataLabels: {
                             enabled: true,
-                            format: '{point.name}'
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
                         }
                     }
                 },
                 series: [{
-                    type: 'pie',
-                    name: 'Browser share',
+                    name: 'Api',
                     data: [
-                        ['三要素', 45.0],
-                        ['四要素', 15.0],
-                        ['二要素', 10.0],
-                        ['五要素', 10.0],
-                        ['一要素', 10.0],
-                        ['十要素', 10.0]
+                        { name: '一要素', y: 56.33 },
+                        {
+                            name: '二要素',
+                            y: 24.03,
+                            sliced: true,
+                            selected: true
+                        },
+                        { name: '三要素', y: 10.38 },
+                        { name: '四要素', y: 4.77 },
+                        { name: '五要素', y: 0.91 },
+                        { name: '六要素', y: 0.2 }
                     ]
                 }]
             });
         });
     </script>
+
     <script type="text/javascript" src="/js/myjs/customerbalancelog.js"></script>
 
     <#elseif section = "footer">
