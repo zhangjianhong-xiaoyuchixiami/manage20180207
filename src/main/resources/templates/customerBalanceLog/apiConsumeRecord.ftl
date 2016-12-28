@@ -127,6 +127,28 @@
 
                             </div>
 
+                            <div class="control-group pull-left">
+
+                                <label class="control-label">Api</label>
+
+                                <div class="controls">
+
+                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
+                                    <#--<#if apiList??>-->
+                                    <#--<#list apiList as api>-->
+
+                                        <option value="">sdsds</option>
+                                        <option value="">gfdgfd</option>
+                                        <option value="">gdfgfd</option>
+
+                                    <#--</#list>-->
+                                    <#--</#if>-->
+                                    </select>
+
+                                </div>
+
+                            </div>
+
                             <div class="control-group pull-left margin-right-20">
 
                                 <label class="control-label">起始日期</label>

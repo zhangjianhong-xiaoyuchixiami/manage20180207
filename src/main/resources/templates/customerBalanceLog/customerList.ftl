@@ -259,23 +259,25 @@
 
                             <#--</div>-->
 
-                            <table class="table table-striped table-hover table-bordered">
+                            <table class="table table-striped table-bordered table-hover" id="sample_2">
+
                                 <thead>
+
                                 <tr>
 
                                 <#--<th style="text-align: center; width: 15%">账号类型</th>-->
                                     <th style="text-align: center; width: 10%">公司名称</th>
-                                    <th class="sorting" style="text-align: center; ">周充值总额</th>
-                                    <th class="sorting" style="text-align: center; ">月充值总额</th>
-                                    <th class="sorting" style="text-align: center; ">充值总额</th>
-                                    <th class="sorting" style="text-align: center; ">周消费总额</th>
-                                    <th class="sorting" style="text-align: center; ">月消费总额</th>
-                                    <th class="sorting" style="text-align: center; ">消费总额</th>
-                                    <th class="sorting" style="text-align: center; ">周Api消费总额</th>
-                                    <th class="sorting" style="text-align: center; ">月Api消费总额</th>
-                                    <th class="sorting" style="text-align: center; ">Api消费总额</th>
+                                    <th>周充值总额</th>
+                                    <th>月充值总额</th>
+                                    <th>充值总额</th>
+                                    <th>周消费总额</th>
+                                    <th>月消费总额</th>
+                                    <th>消费总额</th>
+                                    <th>周Api消费总额</th>
+                                    <th>月Api消费总额</th>
+                                    <th>Api消费总额</th>
                                 <#--<th style="text-align: center; width: 20%">账号</th>-->
-                                    <th class="sorting" style="text-align: center; ">账号余额</th>
+                                    <t>账号余额</t>
                                 <#--<th style="text-align: center; width: 10%">状态</th>-->
                                     <th style="text-align: center; width: 15%">操作</th>
                                 </tr>
@@ -325,66 +327,66 @@
                                 </tbody>
 
                             </table>
-                            <#if deptIdList??>
+                            <#--<#if deptIdList??>-->
 
-                                <#if (count>0)>
-                                    <div class="row-fluid">
+                                <#--<#if (count>0)>-->
+                                    <#--<div class="row-fluid">-->
 
-                                        <div class="span6">
+                                        <#--<div class="span6">-->
 
-                                            <div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
+                                            <#--<div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>-->
 
-                                        </div>
+                                        <#--</div>-->
 
-                                        <#if (totlePage>0)>
-                                            <div class="span6 pull-right">
-                                                <div class="dataTables_paginate paging_bootstrap pagination">
-                                                    <ul>
-                                                        <#if (pageSize>1)>
-                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=1<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>">首页</a></li>
-                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize-1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>">← <span class="hidden-480">上一页</span></a></li>
-                                                        </#if>
-                                                        <#if (pageSize<totlePage)>
-                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize+1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">下一页</span> → </a></li>
-                                                            <li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${totlePage}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>">尾页</a></li>
-                                                        </#if>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </#if>
+                                        <#--<#if (totlePage>0)>-->
+                                            <#--<div class="span6 pull-right">-->
+                                                <#--<div class="dataTables_paginate paging_bootstrap pagination">-->
+                                                    <#--<ul>-->
+                                                        <#--<#if (pageSize>1)>-->
+                                                            <#--<li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=1<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>">首页</a></li>-->
+                                                            <#--<li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize-1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>">← <span class="hidden-480">上一页</span></a></li>-->
+                                                        <#--</#if>-->
+                                                        <#--<#if (pageSize<totlePage)>-->
+                                                            <#--<li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${pageSize+1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">下一页</span> → </a></li>-->
+                                                            <#--<li class="next"><a href="/customer/findAllCustomerByDeptNo?pageSize=${totlePage}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>">尾页</a></li>-->
+                                                        <#--</#if>-->
+                                                    <#--</ul>-->
+                                                <#--</div>-->
+                                            <#--</div>-->
+                                        <#--</#if>-->
 
-                                    </div>
-                                </#if>
-                            <#else >
-                                <#if (count>0)>
-                                    <div class="row-fluid">
+                                    <#--</div>-->
+                                <#--</#if>-->
+                            <#--<#else >-->
+                                <#--<#if (count>0)>-->
+                                    <#--<div class="row-fluid">-->
 
-                                        <div class="span6">
+                                        <#--<div class="span6">-->
 
-                                            <div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>
+                                            <#--<div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>-->
 
-                                        </div>
+                                        <#--</div>-->
 
-                                        <#if (totlePage>0)>
-                                            <div class="span6 pull-right">
-                                                <div class="dataTables_paginate paging_bootstrap pagination">
-                                                    <ul>
-                                                        <#if (pageSize>1)>
-                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=1<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">首页</span></a></li>
-                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize-1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">上一页</span></a></li>
-                                                        </#if>
-                                                        <#if (pageSize<totlePage)>
-                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize+1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">下一页</span></a></li>
-                                                            <li class="next"><a href="/customer/findAllCustomer?pageSize=${totlePage}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">尾页</span></a></li>
-                                                        </#if>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </#if>
+                                        <#--<#if (totlePage>0)>-->
+                                            <#--<div class="span6 pull-right">-->
+                                                <#--<div class="dataTables_paginate paging_bootstrap pagination">-->
+                                                    <#--<ul>-->
+                                                        <#--<#if (pageSize>1)>-->
+                                                            <#--<li class="next"><a href="/customer/findAllCustomer?pageSize=1<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">首页</span></a></li>-->
+                                                            <#--<li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize-1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">上一页</span></a></li>-->
+                                                        <#--</#if>-->
+                                                        <#--<#if (pageSize<totlePage)>-->
+                                                            <#--<li class="next"><a href="/customer/findAllCustomer?pageSize=${pageSize+1}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">下一页</span></a></li>-->
+                                                            <#--<li class="next"><a href="/customer/findAllCustomer?pageSize=${totlePage}<#if content??>&content=${content}</#if><#if customerTypeIdArray??><#list customerTypeIdArray as customerTypeId>&customerTypeId=${customerTypeId}</#list></#if>"><span class="hidden-480">尾页</span></a></li>-->
+                                                        <#--</#if>-->
+                                                    <#--</ul>-->
+                                                <#--</div>-->
+                                            <#--</div>-->
+                                        <#--</#if>-->
 
-                                    </div>
-                                </#if>
-                            </#if>
+                                    <#--</div>-->
+                                <#--</#if>-->
+                            <#--</#if>-->
 
                         </div>
 
@@ -398,18 +400,34 @@
 
     </div>
 
+    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+
+    <script src="/js/table-managed.js"></script>
+
+    <script>
+
+        jQuery(document).ready(function() {
+            TableManaged.init();
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#customerBalance').addClass('active');
+
+            $('#customerListBalanceLog').addClass('active');
+
+            $('#customerBalanceSelect').addClass('selected');
+
+            $('#customerBalanceArrow').addClass('arrow open');
+        });
+    </script>
+
     <#elseif section = "footer">
 
     </#if>
-<script>
-    $(document).ready(function() {
-        $('#customerBalance').addClass('active');
 
-        $('#customerListBalanceLog').addClass('active');
-
-        $('#customerBalanceSelect').addClass('selected');
-
-        $('#customerBalanceArrow').addClass('arrow open');
-    });
-</script>
 </@layout>

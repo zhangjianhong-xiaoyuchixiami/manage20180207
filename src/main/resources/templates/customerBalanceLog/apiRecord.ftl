@@ -60,49 +60,49 @@
 
                         <div class="clearfix margin-bottom-20">
 
-                            <div class="control-group pull-left">
+                            <#--<div class="control-group pull-left">-->
 
-                                <label class="control-label">Api类型</label>
+                                <#--<label class="control-label">Api类型</label>-->
 
-                                <div class="controls">
+                                <#--<div class="controls">-->
 
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
+                                    <#--<select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">-->
+                                    <#--&lt;#&ndash;<#if apiList??>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;<#list apiList as api>&ndash;&gt;-->
 
-                                        <option value="">二要素</option>
-                                        <option value="">三要素</option>
-                                        <option value="">四要素</option>
+                                        <#--<option value="">二要素</option>-->
+                                        <#--<option value="">三要素</option>-->
+                                        <#--<option value="">四要素</option>-->
 
-                                    <#--</#list>-->
-                                    <#--</#if>-->
-                                    </select>
+                                    <#--&lt;#&ndash;</#list>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;</#if>&ndash;&gt;-->
+                                    <#--</select>-->
 
-                                </div>
+                                <#--</div>-->
 
-                            </div>
+                            <#--</div>-->
 
-                            <div class="control-group pull-left">
+                            <#--<div class="control-group pull-left">-->
 
-                                <label class="control-label">Api供应商</label>
+                                <#--<label class="control-label">Api供应商</label>-->
 
-                                <div class="controls">
+                                <#--<div class="controls">-->
 
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
+                                    <#--<select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">-->
+                                    <#--&lt;#&ndash;<#if apiList??>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;<#list apiList as api>&ndash;&gt;-->
 
-                                        <option value="">移动</option>
-                                        <option value="">联通</option>
-                                        <option value="">电信</option>
+                                        <#--<option value="">移动</option>-->
+                                        <#--<option value="">联通</option>-->
+                                        <#--<option value="">电信</option>-->
 
-                                    <#--</#list>-->
-                                    <#--</#if>-->
-                                    </select>
+                                    <#--&lt;#&ndash;</#list>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;</#if>&ndash;&gt;-->
+                                    <#--</select>-->
 
-                                </div>
+                                <#--</div>-->
 
-                            </div>
+                            <#--</div>-->
 
                             <div class="control-group pull-left">
 
