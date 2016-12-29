@@ -175,6 +175,24 @@
 
 </div>
 
+<div class="btn-group pull-right">
+
+    <button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="icon-angle-down"></i>
+
+    </button>
+
+    <ul class="dropdown-menu pull-right">
+
+        <li><a href="#">Print</a></li>
+
+        <li><a href="#">Save as PDF</a></li>
+
+        <li><a href="#">Export to Excel</a></li>
+
+    </ul>
+
+</div>
+
 <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
 <script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>

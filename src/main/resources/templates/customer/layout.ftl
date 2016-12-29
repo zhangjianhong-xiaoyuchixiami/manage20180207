@@ -366,6 +366,12 @@
                                     Api消费账单
                                 </a>
                             </li>
+
+                            <li id="partnersFinancialAccount">
+                                <a href="/customerBalance/findPartnersFinancialAccount">
+                                    合作伙伴账单
+                                </a>
+                            </li>
                         </ul>
 
                     </li>

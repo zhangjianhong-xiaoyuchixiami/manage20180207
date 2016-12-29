@@ -102,7 +102,7 @@ public class CustomerController {
 
     }
 
-    //查找公司账号
+    //查找公司财务账单
     @RequestMapping(value = "/findAllCustomer")
     public String findAllCustomer(HttpServletRequest request,Model model,String content,String [] customerTypeId){
 
@@ -144,10 +144,10 @@ public class CustomerController {
         }
         model.addAttribute("totlePage",totalPage);
         model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/customerBalanceLog/customerList";
+        return "/customerBalanceLog/customerFinancialAccount";
     }
 
-    //通过部门编号查找公司账号
+    //通过部门编号查找公司财务账单
     @RequestMapping(value = ("/findAllCustomerByDeptNo"))
     public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content,String [] customerTypeId){
         User user = (User)request.getSession().getAttribute("userInfo");
@@ -202,7 +202,7 @@ public class CustomerController {
             model.addAttribute("deptIdList", deptIdList);
             model.addAttribute("count", 0);
             model.addAttribute("customerList", null);
-            return "/customerBalanceLog/customerList";
+            return "/customerBalanceLog/customerFinancialAccount";
         }
     }
 
@@ -309,6 +309,7 @@ public class CustomerController {
         }
         return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
     }
+
 
     @RequestMapping(value = "/list1")
     public String list1(Model model){

@@ -1,5 +1,6 @@
 package org.qydata.controller;
 
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -329,14 +331,37 @@ public class CustomerBalanceLogController {
         return "/customerBalanceLog/apiDetailRecord";
     }
 
-    @RequestMapping("/apiRecharageView")
-    public String apiRecharageView(){
-        return "/customerBalanceLog/apiRecharage";
+    @RequestMapping("/apiRechargeView")
+    public String apiRechargeView(){
+        return "/customerBalanceLog/apiRecharge";
     }
 
     @RequestMapping("/findApiRecordCountResult")
+    @ResponseBody
     public String findApiRecordCountResult(){
-        return "/customerBalanceLog/apiRecordCountResult";
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap<>();
+        map.put("张建宏",12);
+        map.put("韩立志",23);
+        map.put("王永鹏",15);
+        map.put("王鸿年",10);
+        map.put("张悦",20);
+        map.put("张诗雨",20);
+        return gson.toJson(map);
     }
 
+    @RequestMapping("/findPartnersFinancialAccount")
+    public String findPartnersFinancialAccount(){
+        return "/customerBalanceLog/partnersFinancialAccount";
+    }
+
+    @RequestMapping("/partnersPayingView")
+    public String partnersPayingView(){
+        return "/customerBalanceLog/partnersPaying";
+    }
+
+    @RequestMapping("/findPartnersReceiptAndPayingRecord")
+    public String findPartnersReceiptAndPayingRecord(){
+        return "/customerBalanceLog/partnersReceiptAndPayingRecord";
+    }
 }

@@ -176,43 +176,39 @@
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">周消费总额共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">周消费总额共计&yen;：<#if totleAmount??><span>${totleAmount}元&nbsp;&nbsp;&nbsp;</span><#else ><span>0元&nbsp;&nbsp;&nbsp;</span></#if></label>
 
                                 </div>
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">月消费总额共计&yen;：0元&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">月消费总额共计&yen;：0元</label>
+                                    <label class="control-label">消费总额共计&yen;：0元&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">所剩余额共计&yen;：0元&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">消费总额共计&yen;：0元</label>
+                                    <label class="control-label">
 
-                                </div>
+                                        <a id="tipInfo" href="#form_modal3" data-toggle="modal">
 
-                                <div class="control-group pull-left">
+                                            查看消费统计结果
 
-                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                        </a>
 
-                                </div>
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">所剩余额共计&yen;：0元</label>
+                                    </label>
 
                                 </div>
 
@@ -224,7 +220,7 @@
 
                                 <tr>
 
-                                    <th style="width:20%;">Api</th>
+                                    <th style="width:20%; text-align: center;">Api</th>
 
                                     <th>周消费总额（单位：元）</th>
 
@@ -234,7 +230,7 @@
 
                                     <th class="hidden-480">所剩余额（单位：元）</th>
 
-                                    <th style="width:15%;">操作</th>
+                                    <th style="width:15%; text-align: center">操作</th>
 
                                 </tr>
 
@@ -243,13 +239,12 @@
                                 <tbody>
 
                                 <tr class="odd gradeX">
-                                    <td>asas</td>
-                                    <td>234</td>
-                                    <td class="hidden-480">453</td>
-                                    <td class="hidden-480">665</td>
-                                    <td class="center hidden-480">890</td>
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
+                                    <td data-title="Api">asas</td>
+                                    <td data-title="周消费总额">234</td>
+                                    <td data-title="月消费总额" class="hidden-480">453</td>
+                                    <td data-title="消费总额" class="hidden-480">523</td>
+                                    <td data-title="所剩余额" class="center hidden-480">890</td>
+                                    <td data-title="操作" style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
                                 </tr>
                                 <tr class="odd gradeX">
                                     <td>fgrg</td>
@@ -267,7 +262,6 @@
                                     <td class="center hidden-480">65756</td>
                                     <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
                                 </tr>
-
                                 <tr class="odd gradeX">
 
                                     <td>dsfdf</td>
@@ -306,7 +300,52 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">890</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">128</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">434</td>
+
+                                    <td class="center hidden-480">890</td>
+
+                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
+
+                                </tr>
+                                <tr class="odd gradeX">
+
+                                    <td>asas</td>
+
+                                    <td>234</td>
+
+                                    <td class="hidden-480">453</td>
+
+                                    <td class="hidden-480">567</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -336,7 +375,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">098</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -351,7 +390,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">367</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -366,7 +405,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">321</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -381,7 +420,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">88</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -396,7 +435,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">67</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -411,7 +450,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">89</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -426,7 +465,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">34</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -441,7 +480,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">21</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -456,7 +495,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">70</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -471,52 +510,7 @@
 
                                     <td class="hidden-480">453</td>
 
-                                    <td class="hidden-480">665</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">665</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">665</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">665</td>
+                                    <td class="hidden-480">61</td>
 
                                     <td class="center hidden-480">890</td>
 
@@ -540,42 +534,27 @@
 
     </div>
 
-    <div class="control-group" style="display: block;">
 
-        <label class="control-label"></label>
-
-        <div class="controls">
-
-            <a id="tipInfo" class="btn blue" href="#form_modal3" data-toggle="modal">
-
-                点击
-
-            </a>
-
-        </div>
-
-    </div>
 
     <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
 
-        <div class="modal-header">
+    <#--<div class="modal-header">-->
 
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
 
-            <h3 id="myModalLabel3">Api消费统计结果</h3>
+    <#--<h3 id="myModalLabel3">&nbsp;</h3>-->
 
-        </div>
+    <#--</div>-->
 
-        <div id="container" class="modal-body">
-
-
-        </div>
-
-        <div class="modal-footer">
-
-            <button class="btn" data-dismiss="modal" aria-hidden="true">确定</button>
+        <div id="container">
 
         </div>
+
+    <#--<div class="modal-footer">-->
+
+    <#--<button class="btn" data-dismiss="modal" aria-hidden="true">确定</button>-->
+
+    <#--</div>-->
 
     </div>
 
@@ -599,69 +578,66 @@
 
     <script type="text/javascript">
 
-        $(function () {
+        $(document).ready(function() {
 
-            // Radialize the colors
-            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
-                return {
-                    radialGradient: {
-                        cx: 0.5,
-                        cy: 0.3,
-                        r: 0.7
-                    },
-                    stops: [
-                        [0, color],
-                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                    ]
-                };
-            });
+            $('#tipInfo').on("click", function () {
 
-            // Build the chart
-            Highcharts.chart('container', {
-                chart: {
-                    size: 250,
-                    type: 'pie'
-                },
-                title: {
-                    text: '',
-                    margin: 3
-                },
-                exporting :{
-                    enabled:false
-                },
-                credits:{
-                    enabled:false
-                },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            style: {
-                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                            },
-                            connectorColor: 'silver'
+                $.ajax({
+                    type: "post",
+                    url: "/customerBalance/findApiRecordCountResult",
+                    dataType: 'json',
+                    success: function (result) {
+                        var json = result;
+                        var jsondata = [];
+                        for (var i in json) {
+                            jsondata.push([i, json[i]]);
                         }
+
+                        var chart = new Highcharts.Chart({
+                            chart: {
+                                renderTo: 'container',
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Api消费统计结果',
+                                margin: 15
+                            },
+                            exporting: {
+                                enabled: false
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                        style: {
+                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                        }
+                                        ,
+                                        connectorColor: 'silver'
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: 'Api',
+                                data: jsondata
+                            }]
+                        });
                     }
-                },
-                series: [{
-                    name: 'Api',
-                    data: [
-                        { name: '一要素', y: 56.33 },
-                        {name:  '二要素',  y: 24.03},
-                        { name: '三要素', y: 10.38 },
-                        { name: '四要素', y: 4.77 },
-                        { name: '五要素', y: 0.91 },
-                        { name: '六要素', y: 0.2 }
-                    ]
-                }]
+                });
             });
         });
+
+
+
     </script>
 
     <script>
