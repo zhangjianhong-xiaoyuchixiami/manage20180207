@@ -133,87 +133,61 @@
 
                         <div class="portlet-body no-more-tables">
 
-                        <#--<div class="clearfix margin-bottom-20">-->
+                            <div class="clearfix">
 
-                        <#--<div class="control-group pull-left">-->
+                                <div class="btn-group">
 
-                        <#--<label class="control-label">周充值总额共计&yen;：0元</label>-->
+                                    <a class="btn black" href="#form_modal1" data-toggle="modal">
 
-                        <#--</div>-->
+                                        新增<i class="icon-plus"></i>
 
-                        <#--<div class="control-group pull-left">-->
+                                    </a>
 
-                        <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                </div>
 
-                        <#--</div>-->
+                                <div id="form_modal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
 
-                        <#--<div class="control-group pull-left">-->
+                                    <div class="modal-header">
 
-                        <#--<label class="control-label">周消费总额共计&yen;：0元</label>-->
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 
-                        <#--</div>-->
+                                        <h3 id="myModalLabel1">请填写信息</h3>
 
-                        <#--<div class="control-group pull-left">-->
+                                    </div>
 
-                        <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                    <div class="modal-body">
 
-                        <#--</div>-->
+                                        <form action="#" class="form-horizontal">
 
-                        <#--<div class="control-group pull-left">-->
+                                            <div class="control-group">
 
-                        <#--<label class="control-label">周Api消费总额共计&yen;：0元</label>-->
+                                                <label class="control-label">请输入公司名称<span class="required">*</span></label>
 
-                        <#--</div>-->
+                                                <div class="controls">
 
-                        <#--<div class="control-group pull-left">-->
+                                                    <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> class="m-wrap medium">
 
-                        <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                                    <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
 
-                        <#--</div>-->
+                                                </div>
 
-                        <#--<div class="control-group pull-left">-->
+                                            </div>
 
-                        <#--<label class="control-label">月充值总额共计&yen;：0元</label>-->
+                                        </form>
 
-                        <#--</div>-->
+                                    </div>
 
-                        <#--<div class="control-group pull-left">-->
+                                    <div class="modal-footer">
 
-                        <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
 
-                        <#--</div>-->
+                                        <button class="btn green btn-primary" data-dismiss="modal">提交</button>
 
-                        <#--<div class="control-group pull-left">-->
+                                    </div>
 
-                        <#--<label class="control-label">月消费总额共计&yen;：0元</label>-->
+                                </div>
 
-                        <#--</div>-->
-
-                        <#--<div class="control-group pull-left">-->
-
-                        <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
-
-                        <#--</div>-->
-
-                        <#--<div class="control-group pull-left">-->
-
-                        <#--<label class="control-label">月Api消费总额共计&yen;：0元</label>-->
-
-                        <#--</div>-->
-
-                        <#--<div class="control-group pull-left">-->
-
-                        <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
-
-                        <#--</div>-->
-
-                        <#--<div class="control-group pull-left">-->
-
-                        <#--<label class="control-label">账号余额共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>-->
-
-                        <#--</div>-->
-
-                        <#--</div>-->
+                            </div>
 
                             <table class="table table-striped table-bordered table-hover" id="sample_3">
 
@@ -241,9 +215,183 @@
                                     <td data-title="支出总额">567</td>
                                     <td data-title="操作" style="text-align: center">
                                         <div>
-                                            <a href="/customerBalance/partnersPayingView">付款</a>|
-                                            <a href="/customerBalance/findPartnersReceiptAndPayingRecord">收支明细</a>
+                                            <a href="#form_modal2"  data-toggle="modal">付款</a>|
+
+                                            <div id="form_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel2">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="#form_modal5"  data-toggle="modal">收款</a>|
+
+                                            <div id="form_modal5" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel5">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="/customer-balance/find-all-partners-financial-account/receipt-and-paying-record">收支明细</a>
                                         </div>
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -256,8 +404,181 @@
                                     <td data-title="支出总额">657</td>
                                     <td data-title="操作" style="text-align: center">
                                         <div>
-                                            <a href="">付款</a>|
-                                            <a href="">收支明细</a>
+                                            <a href="#form_modal2"  data-toggle="modal">付款</a>|
+
+                                            <div id="form_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel2">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="#form_modal5"  data-toggle="modal">收款</a>|
+
+                                            <div id="form_modal5" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel5">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="/customer-balance/find-all-partners-financial-account/receipt-and-paying-record">收支明细</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -271,8 +592,181 @@
                                     <td data-title="支出总额">735</td>
                                     <td data-title="操作" style="text-align: center">
                                         <div>
-                                            <a href="">付款</a>|
-                                            <a href="">收支明细</a>
+                                            <a href="#form_modal2"  data-toggle="modal">付款</a>|
+
+                                            <div id="form_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel2">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="#form_modal5"  data-toggle="modal">收款</a>|
+
+                                            <div id="form_modal5" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel5">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="/customer-balance/find-all-partners-financial-account/receipt-and-paying-record">收支明细</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -286,8 +780,181 @@
                                     <td data-title="支出总额">2456</td>
                                     <td data-title="操作" style="text-align: center">
                                         <div>
-                                            <a href="">付款</a>|
-                                            <a href="">收支明细</a>
+                                            <a href="#form_modal2"  data-toggle="modal">付款</a>|
+
+                                            <div id="form_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel2">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="#form_modal5"  data-toggle="modal">收款</a>|
+
+                                            <div id="form_modal5" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel5">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="/customer-balance/find-all-partners-financial-account/receipt-and-paying-record">收支明细</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -301,8 +968,181 @@
                                     <td data-title="支出总额">7890</td>
                                     <td data-title="操作" style="text-align: center">
                                         <div>
-                                            <a href="">付款</a>|
-                                            <a href="">收支明细</a>
+                                            <a href="#form_modal2"  data-toggle="modal">付款</a>|
+
+                                            <div id="form_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel2">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="#form_modal5"  data-toggle="modal">收款</a>|
+
+                                            <div id="form_modal5" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                    <h3 id="myModalLabel5">请填写信息</h3>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form action="#" class="form-horizontal">
+
+                                                        <div class="control-group"></div>
+
+                                                        <div class="control-group"></div>
+
+                                                        <#if msg??>
+
+                                                            <div class="alert alert-error show">
+
+                                                                <button class="close" data-dismiss="alert"></button>
+
+                                                            ${msg}
+
+                                                            </div>
+
+                                                        </#if>
+                                                        <div class="control-group" style="display: none;">
+
+                                                            <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="control-group">
+
+                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                                            <div class="controls">
+
+                                                                <textarea class="medium m-wrap" rows="3"></textarea>
+
+                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                                </div>
+
+                                            </div>
+
+                                            <a href="/customer-balance/find-all-partners-financial-account/receipt-and-paying-record">收支明细</a>
                                         </div>
                                     </td>
                                 </tr>

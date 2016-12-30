@@ -347,7 +347,7 @@
 
                             <@shiro.hasPermission name="customer:findAllCustomer">
                                 <li id="customerListBalanceLog">
-                                    <a href="/customer/findAllCustomer">
+                                    <a href="/customer-balance/find-all-customer">
                                         客户财务账单
                                     </a>
                                 </li>
@@ -355,21 +355,21 @@
 
                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                 <li id="customerListBalanceLog">
-                                    <a href="/customer/findAllCustomerByDeptNo">
+                                    <a href="/customer-balance/find-all-customer-by-dept-id">
                                         客户财务账单
                                     </a>
                                 </li>
                             </@shiro.hasPermission>
 
                             <li id="apiRecordLog">
-                                <a href="/customerBalance/findApiLog">
+                                <a href="/customer-balance/find-all-api-record">
                                     Api消费账单
                                 </a>
                             </li>
 
                             <li id="partnersFinancialAccount">
-                                <a href="/customerBalance/findPartnersFinancialAccount">
-                                    合作伙伴账单
+                                <a href="/customer-balance/find-all-partners-financial-account">
+                                    合作企业来往账目
                                 </a>
                             </li>
                         </ul>

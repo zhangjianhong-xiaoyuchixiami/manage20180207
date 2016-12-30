@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by jonhn on 2016/11/8.
  */
 @Controller
-@RequestMapping(value = "/customerBalance")
+@RequestMapping(value = "/customer-balance")
 public class CustomerBalanceLogController {
     private final Logger log = Logger.getLogger(this.getClass());
     @Autowired
@@ -119,9 +119,116 @@ public class CustomerBalanceLogController {
     }
 
 
+
+
+    //查找公司财务账单
+    @RequestMapping(value = "/find-all-customer")
+    public String findAllCustomer(HttpServletRequest request,Model model,String content,String [] customerTypeId){
+
+        PageModel<Customer> pageModel = new PageModel();
+        String pageSize= request.getParameter("pageSize");//当前页
+        String lineSize = "8";//每页显示条数
+        pageModel.setPageSize(pageSize);
+        pageModel.setLineSize(lineSize);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("beginIndex",pageModel.getBeginIndex());
+        map.put("lineSize",pageModel.getLineSize());
+        if(content!=null){
+            map.put("content",content);
+        }
+        List customerTypeIdList = new ArrayList();
+        if(customerTypeId != null && customerTypeId.length >0){
+            for (int i=0;i<customerTypeId.length;i++){
+                customerTypeIdList.add(customerTypeId[i]);
+            }
+        }
+        map.put("customerTypeIdList",customerTypeIdList);
+        PageModel<Customer> pageModelOne = null;
+        try {
+            pageModelOne = customerService.findAllCustomer(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("content",content);
+        model.addAttribute("customerTypeIdArray",customerTypeId);
+        model.addAttribute("count",pageModelOne.getCount());
+        model.addAttribute("customerList",pageModelOne.getList());
+        Integer totalPage= null;
+        Integer count = pageModelOne.getCount();
+
+        if (count%Integer.parseInt(lineSize) == 0) {
+            totalPage = (count/Integer.parseInt(lineSize));
+        } else {
+            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+        }
+        model.addAttribute("totlePage",totalPage);
+        model.addAttribute("pageSize",pageModel.getPageSize());
+        return "/customerBalanceLog/customerFinancialAccount";
+    }
+
+    //通过部门编号查找公司财务账单
+    @RequestMapping(value = ("/find-all-customer-by-dept-id"))
+    public String findAllCustomerByDeptId(HttpServletRequest request,Model model,String content,String [] customerTypeId){
+        User user = (User)request.getSession().getAttribute("userInfo");
+        List<Dept> deptList = user.getDept();
+        List deptIdList = new ArrayList();
+        if (deptList.size() > 0) {
+            for (int i = 0; i < deptList.size(); i++) {
+                deptIdList.add(deptList.get(i).getId());
+            }
+            PageModel<Customer> pageModel = new PageModel();
+            String pageSize = request.getParameter("pageSize");//当前页
+            String lineSize = "8";//每页显示条数
+            pageModel.setPageSize(pageSize);
+            pageModel.setLineSize(lineSize);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("beginIndex", pageModel.getBeginIndex());
+            map.put("lineSize", pageModel.getLineSize());
+            map.put("deptIdList", deptIdList);
+            if (content != null) {
+                map.put("content", content);
+            }
+            List customerTypeIdList = new ArrayList();
+            if(customerTypeId != null && customerTypeId.length >0){
+                for (int i=0;i<customerTypeId.length;i++){
+                    customerTypeIdList.add(customerTypeId[i]);
+                }
+            }
+            map.put("customerTypeIdList", customerTypeIdList);
+            PageModel<Customer> pageModelOne = null;
+            try {
+                pageModelOne = customerService.findAllCustomer(map);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("deptIdList", deptIdList);
+            model.addAttribute("content", content);
+            model.addAttribute("customerTypeIdArray",customerTypeId);
+            model.addAttribute("count", pageModelOne.getCount());
+            model.addAttribute("customerList", pageModelOne.getList());
+            Integer totalPage = null;
+            Integer count = pageModelOne.getCount();
+
+            if (count % Integer.parseInt(lineSize) == 0) {
+                totalPage = (count / Integer.parseInt(lineSize));
+            } else {
+                totalPage = (count / Integer.parseInt(lineSize)) + 1;
+            }
+            model.addAttribute("totlePage", totalPage);
+            model.addAttribute("pageSize", pageModel.getPageSize());
+            return "/customerBalanceLog/customerList";
+        }else {
+            model.addAttribute("deptIdList", deptIdList);
+            model.addAttribute("count", 0);
+            model.addAttribute("customerList", null);
+            return "/customerBalanceLog/customerFinancialAccount";
+        }
+    }
+
+
     //指定账号消费记录
-    @RequestMapping(value = "/findAllCustomerBalanceLogByCustomerId/{customerId}")
-    public String findAllCustomerBalanceLogByCustomerId(@PathVariable String customerId,String beginDate,String endDate,String [] reasonId, HttpServletRequest request,Model model){
+    @RequestMapping(value = "/find-all-customer/find-all-customer-consume-log-by-customer-id/{customerId}")
+    public String findAllCustomerConsumeLogByCustomerId(@PathVariable String customerId,String beginDate,String endDate,String [] reasonId, HttpServletRequest request,Model model){
 
         Subject subject = SecurityUtils.getSubject();
         if (subject.hasRole("sell")){
@@ -218,8 +325,8 @@ public class CustomerBalanceLogController {
     }
 
     //指定账号充值记录
-    @RequestMapping(value = "/findAllRechargeCustomerBalanceLogByCustomerId/{customerId}")
-    public String findAllRechargeCustomerBalanceLogByCustomerId(@PathVariable String customerId,String beginDate,String endDate,String [] reasonId, HttpServletRequest request,Model model){
+    @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id/{customerId}")
+    public String findAllCustomerRechargeLogByCustomerId(@PathVariable String customerId,String beginDate,String endDate,String [] reasonId, HttpServletRequest request,Model model){
         Subject subject = SecurityUtils.getSubject();
         if (subject.hasRole("sell")){
             User user = (User)request.getSession().getAttribute("userInfo");
@@ -315,28 +422,26 @@ public class CustomerBalanceLogController {
         return "/customerBalanceLog/customerBalanceLogRecord";
     }
 
-
-    @RequestMapping("/findApiConsumeRecordByCustomerId")
-    public String findApiConsumeRecordByCustomerId(){
-        return "/customerBalanceLog/apiConsumeRecord";
+    //指定账号Api消费记录
+    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id")
+    public String findAllApiConsumeRecordByCustomerId(){
+        return "/customerBalanceLog/customerApiConsumeRecord";
     }
 
-    @RequestMapping("/findApiLog")
-    public String findApiLog(){
+    //Api消费账单
+    @RequestMapping("/find-all-api-record")
+    public String findAllApiRecord(){
         return "/customerBalanceLog/apiRecord";
     }
 
-    @RequestMapping("/findApiDetailRecord")
-    public String findApiDetailRecord(){
+    //Api消费账单-消费明细
+    @RequestMapping("/find-all-api-record/detail")
+    public String findAllApiDetailRecord(){
         return "/customerBalanceLog/apiDetailRecord";
     }
 
-    @RequestMapping("/apiRechargeView")
-    public String apiRechargeView(){
-        return "/customerBalanceLog/apiRecharge";
-    }
-
-    @RequestMapping("/findApiRecordCountResult")
+    //Api消费总额饼状图
+    @RequestMapping("/find-all-api-record/count-result")
     @ResponseBody
     public String findApiRecordCountResult(){
         Gson gson = new Gson();
@@ -350,17 +455,14 @@ public class CustomerBalanceLogController {
         return gson.toJson(map);
     }
 
-    @RequestMapping("/findPartnersFinancialAccount")
+    //合作伙伴来往账目
+    @RequestMapping("/find-all-partners-financial-account")
     public String findPartnersFinancialAccount(){
         return "/customerBalanceLog/partnersFinancialAccount";
     }
 
-    @RequestMapping("/partnersPayingView")
-    public String partnersPayingView(){
-        return "/customerBalanceLog/partnersPaying";
-    }
-
-    @RequestMapping("/findPartnersReceiptAndPayingRecord")
+    //合作伙伴来往账目-收支明细
+    @RequestMapping("/find-all-partners-financial-account/receipt-and-paying-record")
     public String findPartnersReceiptAndPayingRecord(){
         return "/customerBalanceLog/partnersReceiptAndPayingRecord";
     }

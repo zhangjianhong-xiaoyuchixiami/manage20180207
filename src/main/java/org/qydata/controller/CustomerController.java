@@ -8,22 +8,19 @@ import org.qydata.regex.RegexUtil;
 import org.qydata.service.CustomerService;
 import org.qydata.service.DeptService;
 import org.qydata.service.UserService;
-import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by jonhn on 2016/11/8.
@@ -100,110 +97,6 @@ public class CustomerController {
         }
         return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
 
-    }
-
-    //查找公司财务账单
-    @RequestMapping(value = "/findAllCustomer")
-    public String findAllCustomer(HttpServletRequest request,Model model,String content,String [] customerTypeId){
-
-        PageModel<Customer> pageModel = new PageModel();
-        String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-        if(content!=null){
-            map.put("content",content);
-        }
-        List customerTypeIdList = new ArrayList();
-        if(customerTypeId != null && customerTypeId.length >0){
-            for (int i=0;i<customerTypeId.length;i++){
-                customerTypeIdList.add(customerTypeId[i]);
-            }
-        }
-        map.put("customerTypeIdList",customerTypeIdList);
-        PageModel<Customer> pageModelOne = null;
-        try {
-            pageModelOne = customerService.findAllCustomer(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("content",content);
-        model.addAttribute("customerTypeIdArray",customerTypeId);
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("customerList",pageModelOne.getList());
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
-
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
-        }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/customerBalanceLog/customerFinancialAccount";
-    }
-
-    //通过部门编号查找公司财务账单
-    @RequestMapping(value = ("/findAllCustomerByDeptNo"))
-    public String findAllCustomerByDeptNo(HttpServletRequest request,Model model,String content,String [] customerTypeId){
-        User user = (User)request.getSession().getAttribute("userInfo");
-        List<Dept> deptList = user.getDept();
-        List deptIdList = new ArrayList();
-        if (deptList.size() > 0) {
-            for (int i = 0; i < deptList.size(); i++) {
-                deptIdList.add(deptList.get(i).getId());
-            }
-            PageModel<Customer> pageModel = new PageModel();
-            String pageSize = request.getParameter("pageSize");//当前页
-            String lineSize = "8";//每页显示条数
-            pageModel.setPageSize(pageSize);
-            pageModel.setLineSize(lineSize);
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("beginIndex", pageModel.getBeginIndex());
-            map.put("lineSize", pageModel.getLineSize());
-            map.put("deptIdList", deptIdList);
-            if (content != null) {
-                map.put("content", content);
-            }
-            List customerTypeIdList = new ArrayList();
-            if(customerTypeId != null && customerTypeId.length >0){
-                for (int i=0;i<customerTypeId.length;i++){
-                    customerTypeIdList.add(customerTypeId[i]);
-                }
-            }
-            map.put("customerTypeIdList", customerTypeIdList);
-            PageModel<Customer> pageModelOne = null;
-            try {
-                pageModelOne = customerService.findAllCustomer(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            model.addAttribute("deptIdList", deptIdList);
-            model.addAttribute("content", content);
-            model.addAttribute("customerTypeIdArray",customerTypeId);
-            model.addAttribute("count", pageModelOne.getCount());
-            model.addAttribute("customerList", pageModelOne.getList());
-            Integer totalPage = null;
-            Integer count = pageModelOne.getCount();
-
-            if (count % Integer.parseInt(lineSize) == 0) {
-                totalPage = (count / Integer.parseInt(lineSize));
-            } else {
-                totalPage = (count / Integer.parseInt(lineSize)) + 1;
-            }
-            model.addAttribute("totlePage", totalPage);
-            model.addAttribute("pageSize", pageModel.getPageSize());
-            return "/customerBalanceLog/customerList";
-        }else {
-            model.addAttribute("deptIdList", deptIdList);
-            model.addAttribute("count", 0);
-            model.addAttribute("customerList", null);
-            return "/customerBalanceLog/customerFinancialAccount";
-        }
     }
 
     //通过authId查找账号详细信息
@@ -312,10 +205,23 @@ public class CustomerController {
 
 
     @RequestMapping(value = "/list1")
-    public String list1(Model model){
-      List<User> userList = userService.findAllUser();
-        model.addAttribute("userList",userList);
-        return "/customer/list";
+    public String list1(){
+
+        return "customer/list";
+    }
+
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    public String list(HttpServletRequest request){
+       String [] param = request.getParameterValues("param[]");
+
+       for(int i=0;i<param.length;i++){
+           System.out.println(param[i]);
+       }
+
+        //List<User> userList = userService.findAllUser();
+
+        return "";
     }
 
     @RequestMapping("/demo")

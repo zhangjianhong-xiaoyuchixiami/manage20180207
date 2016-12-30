@@ -56,7 +56,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/customerBalance/findAllCustomerBalanceLogByCustomerId" method="get">
+                    <form action="/customer-balance/find-all-api-record" method="get">
 
                         <div class="clearfix margin-bottom-20">
 
@@ -148,7 +148,7 @@
 
                     </form>
 
-
+                    <a data-role="button" data-rel="back">回退</a>
                 <#--表单-->
                     <div class="portlet box grey">
 
@@ -176,353 +176,1335 @@
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">周消费总额共计&yen;：<#if totleAmount??><span>${totleAmount}元&nbsp;&nbsp;&nbsp;</span><#else ><span>0元&nbsp;&nbsp;&nbsp;</span></#if></label>
+                                    <label class="control-label">周消费总额&yen;123元&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">月消费总额共计&yen;：0元&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">月消费总额&yen;123元&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">消费总额共计&yen;：0元&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">消费总额&yen;123元&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
                                 <div class="control-group pull-left">
 
-                                    <label class="control-label">所剩余额共计&yen;：0元&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">所剩余额&yen;123元&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
-                                <div class="control-group pull-left">
+                            <#--消费总额-->
+                                <div class="control-group pull-right">
 
                                     <label class="control-label">
 
                                         <a id="tipInfo" href="#form_modal3" data-toggle="modal">
 
-                                            查看消费统计结果
+                                            <img src="/image/t04.png" alt="" />消费总额
 
                                         </a>
 
                                     </label>
 
+                                    <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+
+                                    <#--<div class="modal-header">-->
+
+                                    <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
+
+                                    <#--<h3 id="myModalLabel3">&nbsp;</h3>-->
+
+                                    <#--</div>-->
+
+                                        <div id="container">
+
+                                        </div>
+
+                                    <#--<div class="modal-footer">-->
+
+                                    <#--<button class="btn" data-dismiss="modal" aria-hidden="true">确定</button>-->
+
+                                    <#--</div>-->
+
+                                    </div>
+
+                                </div>
+
+                            <#--表字段总额-->
+                                <div class="control-group pull-right">
+
+                                    <label class="control-label">
+
+                                        <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
+
+                                            <img src="/image/t04.png" alt="" />表字段统计
+
+                                        </a>
+
+                                    </label>
+
+                                    <div id="form_modal7" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+
+                                    <#--<div class="modal-header">-->
+
+                                    <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
+
+                                    <#--<h3 id="myModalLabel6">&nbsp;</h3>-->
+
+                                    <#--</div>-->
+
+                                    <#--<div class="modal-body">-->
+
+
+                                    <#--</div>-->
+
+                                        <div id="columnHistogramContainer">
+
+
+                                        </div>
+
+                                    <#--<div class="modal-footer">-->
+
+                                    <#--<button class="btn" data-dismiss="modal" aria-hidden="true">确定</button>-->
+
+                                    <#--</div>-->
+
+                                    </div>
+
+                                </div>
+
+                            <#--总额共计-->
+                                <div class="control-group pull-right">
+
+                                    <label class="control-label">
+
+                                        <a id="countResult" href="#form_modal6" data-toggle="modal">
+
+                                            <i class="icon-reorder"></i>计算统计结果
+
+                                        </a>
+
+                                    </label>
+
+                                    <div id="form_modal6" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
+
+                                        <div class="portlet box grey">
+
+                                            <div class="portlet-title">
+
+                                                <div class="caption"><i class="icon-user"></i>统计结果</div>
+
+                                            </div>
+
+                                            <div class="portlet-body">
+
+                                                <table class="table table-striped table-bordered table-hover">
+                                                    <tr>
+                                                        <th width="50%">列名</th>
+                                                        <td width="50%">金额（单位：元）</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>周消费总额</td>
+                                                        <td>2345</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>月消费总额</td>
+                                                        <td>5678</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>消费总额</td>
+                                                        <td>8907</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>所剩余额</td>
+                                                        <td>456</td>
+                                                    </tr>
+
+                                                </table>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                 </div>
 
                             </div>
 
-                            <table class="table table-striped table-bordered table-hover" id="sample_1">
-
-                                <thead>
-
-                                <tr>
-
-                                    <th style="width:20%; text-align: center;">Api</th>
-
-                                    <th>周消费总额（单位：元）</th>
-
-                                    <th class="hidden-480">月消费总额（单位：元）</th>
-
-                                    <th class="hidden-480">消费总额（单位：元）</th>
-
-                                    <th class="hidden-480">所剩余额（单位：元）</th>
-
-                                    <th style="width:15%; text-align: center">操作</th>
-
-                                </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                <tr class="odd gradeX">
-                                    <td data-title="Api">asas</td>
-                                    <td data-title="周消费总额">234</td>
-                                    <td data-title="月消费总额" class="hidden-480">453</td>
-                                    <td data-title="消费总额" class="hidden-480">523</td>
-                                    <td data-title="所剩余额" class="center hidden-480">890</td>
-                                    <td data-title="操作" style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td>fgrg</td>
-                                    <td>43543</td>
-                                    <td class="hidden-480">545</td>
-                                    <td class="hidden-480">4543</td>
-                                    <td class="center hidden-480">4554</td>
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td>vfg</td>
-                                    <td>654</td>
-                                    <td class="hidden-480">767</td>
-                                    <td class="hidden-480">66675675</td>
-                                    <td class="center hidden-480">65756</td>
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>dsfdf</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">323</td>
-
-                                    <td class="hidden-480">4234</td>
-
-                                    <td class="center hidden-480">3242</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>ggg</td>
-
-                                    <td>76</td>
-
-                                    <td class="hidden-480">6765</td>
-
-                                    <td class="hidden-480">767</td>
-
-                                    <td class="center hidden-480">676</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">890</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">128</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">434</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">567</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">665</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">098</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">367</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">321</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">88</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">67</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">89</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">34</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">21</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">70</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-                                <tr class="odd gradeX">
-
-                                    <td>asas</td>
-
-                                    <td>234</td>
-
-                                    <td class="hidden-480">453</td>
-
-                                    <td class="hidden-480">61</td>
-
-                                    <td class="center hidden-480">890</td>
-
-                                    <td style="text-align: center;" ><a href="/customerBalance/apiRecharageView">充值</a>|<a href="/customerBalance/findApiDetailRecord">消费明细</a></td>
-
-                                </tr>
-
-                                </tbody>
-
-                            </table>
-
                         </div>
+
+                        <table class="table table-striped table-bordered table-hover" id="sample_1">
+
+                            <thead>
+
+                            <tr>
+
+                                <th style="width:20%; text-align: center;">Api</th>
+
+                                <th>周消费总额（单位：元）</th>
+
+                                <th class="hidden-480">月消费总额（单位：元）</th>
+
+                                <th class="hidden-480">消费总额（单位：元）</th>
+
+                                <th class="hidden-480">所剩余额（单位：元）</th>
+
+                                <th style="width:15%; text-align: center">操作</th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            <tr class="odd gradeX">
+                                <td data-title="Api">asas</td>
+                                <td data-title="周消费总额">234</td>
+                                <td data-title="月消费总额" class="hidden-480">453</td>
+                                <td data-title="消费总额" class="hidden-480">523</td>
+                                <td data-title="所剩余额" class="center hidden-480">890</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td>fgrg</td>
+                                <td>43543</td>
+                                <td class="hidden-480">545</td>
+                                <td class="hidden-480">4543</td>
+                                <td class="center hidden-480">4554</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td>vfg</td>
+                                <td>654</td>
+                                <td class="hidden-480">767</td>
+                                <td class="hidden-480">66675675</td>
+                                <td class="center hidden-480">65756</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>dsfdf</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">323</td>
+
+                                <td class="hidden-480">4234</td>
+
+                                <td class="center hidden-480">3242</td>
+
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>ggg</td>
+
+                                <td>76</td>
+
+                                <td class="hidden-480">6765</td>
+
+                                <td class="hidden-480">767</td>
+
+                                <td class="center hidden-480">676</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>asas</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">453</td>
+
+                                <td class="hidden-480">890</td>
+
+                                <td class="center hidden-480">890</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>asas</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">453</td>
+
+                                <td class="hidden-480">128</td>
+
+                                <td class="center hidden-480">890</td>
+
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>asas</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">453</td>
+
+                                <td class="hidden-480">434</td>
+
+                                <td class="center hidden-480">890</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>asas</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">453</td>
+
+                                <td class="hidden-480">567</td>
+
+                                <td class="center hidden-480">890</td>
+
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>asas</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">453</td>
+
+                                <td class="hidden-480">665</td>
+
+                                <td class="center hidden-480">890</td>
+
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>asas</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">453</td>
+
+                                <td class="hidden-480">098</td>
+
+                                <td class="center hidden-480">890</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>asas</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">453</td>
+
+                                <td class="hidden-480">367</td>
+
+                                <td class="center hidden-480">890</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+
+                            </tr>
+                            <tr class="odd gradeX">
+
+                                <td>asas</td>
+
+                                <td>234</td>
+
+                                <td class="hidden-480">453</td>
+
+                                <td class="hidden-480">321</td>
+
+                                <td class="center hidden-480">890</td>
+                                <td data-title="操作" style="text-align: center;" >
+                                    <a href="#form_modal4"  data-toggle="modal">充值</a>
+
+                                    <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabel4">请填写信息</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form action="#" class="form-horizontal">
+
+                                                <div class="control-group"></div>
+
+                                                <div class="control-group"></div>
+
+                                                <#if msg??>
+
+                                                    <div class="alert alert-error show">
+
+                                                        <button class="close" data-dismiss="alert"></button>
+
+                                                    ${msg}
+
+                                                    </div>
+
+                                                </#if>
+                                                <div class="control-group" style="display: none;">
+
+                                                    <label class="control-label">公司id<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="control-group">
+
+                                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                                    <div class="controls">
+
+                                                        <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+
+                                                        <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+
+                                                        <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                            <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+
+                                        </div>
+
+                                    </div>
+                                    |
+                                    <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+
+                        </table>
 
                     </div>
 
@@ -533,28 +1515,6 @@
         </div>
 
     </div>
-
-
-
-    <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
-
-    <#--<div class="modal-header">-->
-
-    <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
-
-    <#--<h3 id="myModalLabel3">&nbsp;</h3>-->
-
-    <#--</div>-->
-
-        <div id="container">
-
-        </div>
-
-    <#--<div class="modal-footer">-->
-
-    <#--<button class="btn" data-dismiss="modal" aria-hidden="true">确定</button>-->
-
-    <#--</div>-->
 
     </div>
 
@@ -568,7 +1528,7 @@
 
     <script src="/js/table-managed.js"></script>
 
-    <script>
+    <script type="text/javascript">
 
         jQuery(document).ready(function() {
             TableManaged.init();
@@ -584,7 +1544,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/customerBalance/findApiRecordCountResult",
+                    url: "/customer-balance/find-all-api-record/count-result",
                     dataType: 'json',
                     success: function (result) {
                         var json = result;
@@ -636,11 +1596,77 @@
             });
         });
 
+    </script>
 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $(function () {
+
+                var chart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'columnHistogramContainer',
+                        type: 'column'
+                    },
+                    title: {
+                        text: '表字段总额统计'
+                    },
+                    exporting: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    xAxis: {
+                        categories: ['一要素','二要素', '三要素', '四要素', '五要素', '六要素', '七要素', '八要素', '就要素'],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: '总额（元）'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: '周消费总额',
+                        data: [800, 456, 106, 6789, 144, 176, 234, 679, 4563]
+
+                    }, {
+                        name: '月消费总额',
+                        data: [8360, 7880, 9850, 9340, 1060, 8450, 1050, 1043, 9120]
+
+                    }, {
+                        name: '消费总额',
+                        data: [4890, 3880, 3930, 4140, 4700, 4830, 5900, 5960, 5240]
+
+                    }, {
+                        name: '所剩余额',
+                        data: [424, 332, 345, 397, 526, 755, 574, 604, 476]
+
+                    }]
+                });
+            });
+
+        });
 
     </script>
 
-    <script>
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#customerBalance').addClass('active');
 

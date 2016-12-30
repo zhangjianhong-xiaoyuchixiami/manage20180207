@@ -120,7 +120,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i></div>
+                            <div class="caption"><i class="icon-cogs"></i>三要素</div>
 
                             <div class="tools">
 

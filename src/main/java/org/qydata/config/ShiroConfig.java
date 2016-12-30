@@ -207,19 +207,21 @@ public class ShiroConfig {
 		ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
 		bean.setSecurityManager(securityManager());
 		//认证失败之后的跳转路径
-		bean.setLoginUrl("/");
+		bean.setLoginUrl("/login");
 		//授权失败之后的跳转路径
-		bean.setUnauthorizedUrl("/view/unauthUrl");
+		bean.setUnauthorizedUrl("/view/unauthurl");
 		//登录成功之后跳转访问路径
-		bean.setSuccessUrl("/view/successUrl");
+		bean.setSuccessUrl("/");
 		Map<String, Filter> filters = Maps.newHashMap();
 		filters.put("perms", urlPermissionsFilter());
 		filters.put("anon", new AnonymousFilter());
 		bean.setFilters(filters);
 		Map<String, String> chains = new HashMap<String,String>();
-		chains.put("/", "anon");
-		chains.put("/view/successUrl", "authc,roles");
-		chains.put("/view/unauthUrl", "authc");
+		chains.put("/login", "anon");
+		chains.put("/", "authc");
+		chains.put("/view/unauthurl", "authc");
+		chains.put("/view/logout", "authc");
+		chains.put("/view/login-action", "anon");
 		//静态资源
 		chains.put("/js/**", "anon");
 		chains.put("/css/**", "anon");

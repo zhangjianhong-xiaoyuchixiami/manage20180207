@@ -72,7 +72,7 @@
 
     <!-- BEGIN LOGIN FORM -->
 
-    <form action="/view/Login" method="post" >
+    <form action="/view/login-action" method="post" >
 
         <h3 class="form-title">欢迎登录</h3>
 

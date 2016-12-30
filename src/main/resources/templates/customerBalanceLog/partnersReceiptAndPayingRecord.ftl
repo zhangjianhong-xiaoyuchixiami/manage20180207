@@ -55,67 +55,13 @@
                 <div class="span12">
 
                 <#--搜索框-->
-                    <#if deptIdList??>
-                        <form action="/customer/findAllCustomerByDeptNo" method="get">
-
-                            <div class="clearfix margin-bottom-20">
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">&nbsp;&nbsp;</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append">
-
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入公司名称">
-
-                                            <button class="btn black" type="submit">搜索</button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-                    <#else >
-                        <form action="/customer/findAllCustomer" method="get">
-
-                            <div class="clearfix margin-bottom-20">
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">&nbsp;&nbsp;</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append">
-
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入公司名称">
-
-                                            <button class="btn black" type="submit">搜索</button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-                    </#if>
-
 
                 <#--表单-->
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i></div>
+                            <div class="caption"><i class="icon-cogs"></i>厦门掌讯</div>
 
                             <div class="tools">
 
@@ -141,7 +87,7 @@
                                     <th>金额（单位：元）</th>
                                     <th>创建时间</th>
                                     <th>类型</th>
-                                    <th>备注</th>
+                                    <th style="text-align: center;">备注</th>
                                 </tr>
                                 </thead>
                                 <tbody>

@@ -200,13 +200,6 @@ var TableManaged = function () {
                 "iDisplayLength": 10, //每页显示多少行
                 "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
-                // "oLanguage": {
-                //     "sLengthMenu": "_MENU_ records per page",
-                //     "oPaginate": {
-                //         "sPrevious": "Prev",
-                //         "sNext": "Next"
-                //     }
-                // },
                 "oLanguage" : {  //设置语言
                     "sLengthMenu" : "每页显示 _MENU_ 条记录",
                     "sZeroRecords" : "对不起，没有匹配的数据",
@@ -224,13 +217,10 @@ var TableManaged = function () {
                 },
                 "bFilter" : false, //设置全文搜索框，默认true
 
-                "aoColumnDefs": [{
-                    'bSortable': false,
-                    'aTargets': [0]
-                }
-                ]
-
             });
+
+
+
 
         }
 

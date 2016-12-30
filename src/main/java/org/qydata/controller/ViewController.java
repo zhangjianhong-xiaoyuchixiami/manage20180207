@@ -25,31 +25,13 @@ public class ViewController {
 
     @Autowired
     UserService userService;
-    /**
-     * 登录
-     * @return
-     */
-    @RequestMapping("/")
+
+    //登录
+    @RequestMapping("/login")
     public String loginUrl() { return "view/login";}
-    /**
-     * 未授权
-     * @return
-     */
-    @RequestMapping("/view/unauthUrl")
-    public String unauthUrl() {
-        return "view/role";
-    }
-    /**
-     * 登录成功
-     * @return
-     */
-    @RequestMapping("/view/successUrl")
-    public String successUrl() {
-        return "view/welcome";
-    }
 
     //登录提交
-    @RequestMapping("/view/Login")
+    @RequestMapping("/view/login-action")
     public String login(HttpServletRequest request, String username, String password, RedirectAttributes model) {
         Subject subject = SecurityUtils.getSubject();
 
@@ -63,18 +45,31 @@ public class ViewController {
             User user = userService.findUserByUsername(username);
             request.getSession().setAttribute("userInfo", user);
             model.addFlashAttribute("user",user);
-            return "redirect:/view/successUrl";
+            return "redirect:/";
         } catch (Exception e) {
             e.printStackTrace();
             model.addFlashAttribute("msg","用户名或密码不正确");
-            return "redirect:/";
+            return "redirect:/login";
         }
     }
+
+    //登录成功
+    @RequestMapping("/")
+    public String successUrl() {
+        return "view/welcome";
+    }
+
+   //未授权
+    @RequestMapping("/view/unauthurl")
+    public String unauthUrl() {
+        return "view/role";
+    }
+
     //注销
     @RequestMapping(value = "/view/logout")
     public String logout(){
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return "redirect:/";
+        return "redirect:/login";
     }
 }

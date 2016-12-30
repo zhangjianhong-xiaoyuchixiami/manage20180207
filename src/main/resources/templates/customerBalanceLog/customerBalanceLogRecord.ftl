@@ -233,7 +233,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i></div>
+                            <div class="caption"><i class="icon-cogs"></i>北风分期分期付</div>
 
                             <div class="tools">
 
