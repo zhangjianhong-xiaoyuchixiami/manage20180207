@@ -2,6 +2,7 @@
 <#include "../customer/layout.ftl">
 
 <@layout ; section>
+
     <#if section = "head">
 
     <#elseif section = "content" >
@@ -148,8 +149,7 @@
 
                     </form>
 
-                    <a data-role="button" data-rel="back">回退</a>
-                <#--表单-->
+                <#--表格-->
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
@@ -293,29 +293,28 @@
                                         <div class="modal-body">
 
                                             <table class="table table-striped table-bordered table-hover">
-                                                        <tr>
-                                                            <th width="50%">列名</th>
-                                                            <td width="50%">金额（单位：元）</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>周消费总额</td>
-                                                            <td>2345</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>月消费总额</td>
-                                                            <td>5678</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>消费总额</td>
-                                                            <td>8907</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>所剩余额</td>
-                                                            <td>456</td>
-                                                        </tr>
+                                                <tr>
+                                                    <th width="50%">列名</th>
+                                                    <td width="50%">金额（单位：元）</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>周消费总额</td>
+                                                    <td>2345</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>月消费总额</td>
+                                                    <td>5678</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>消费总额</td>
+                                                    <td>8907</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>所剩余额</td>
+                                                    <td>456</td>
+                                                </tr>
 
-                                                    </table>
-
+                                            </table>
                                         </div>
 
                                     </div>
@@ -686,11 +685,12 @@
 
     </div>
 
-
-
-
-
     <#elseif section = "footer">
+
+    <#elseif section = "publicJs">
+
+    <#elseif section = "privateJs">
+
     <script src="https://code.highcharts.com/highcharts.js"></script>
 
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -717,7 +717,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/customer-balance/find-all-api-record/count-result",
+                    url: "/finance/find-all-api-record/count-result",
                     dataType: 'json',
                     success: function (result) {
                         var json = result;
@@ -851,6 +851,7 @@
 
         });
     </script>
+
     </#if>
 
 </@layout>

@@ -6,14 +6,13 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
-
 <head>
+
     <meta charset="utf-8" />
     <title>平台管理后台</title>
     <meta content="width=device-width, height=device-height, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
-
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -23,8 +22,7 @@
     <link href="/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/css/uniform.default.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="/css/DT_bootstrap.css" />
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL STYLES -->
+
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-fileupload.css" />
     <link rel="stylesheet" type="text/css" href="/css/jquery.gritter.css" />
     <link rel="stylesheet" type="text/css" href="/css/chosen.css" />
@@ -42,102 +40,9 @@
     <link href="/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
 
     <link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
-    <link href="/css/jquery.fancybox.css" rel="stylesheet" />
+
     <link href="/css/search.css" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="/image/favicon.ico" />
-
-    <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-
-    <script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-
-    <script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-
-    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
-
-    <script src="/js/excanvas.min.js"></script>
-
-    <script src="/js/respond.min.js"></script>
-
-    <script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-
-    <script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
-
-    <script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
-
-    <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
-
-    <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
-
-    <script src="/js/search.js"></script>
-
-    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
-
-    <script type="text/javascript" src="/js/additional-methods.min.js"></script>
-
-    <script type="text/javascript" src="/js/select2.min.js"></script>
-
-    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
-
-    <script type="text/javascript" src="/js/ckeditor.js"></script>
-
-    <script type="text/javascript" src="/js/bootstrap-fileupload.js"></script>
-
-    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
-
-    <script type="text/javascript" src="/js/select2.min.js"></script>
-
-    <script type="text/javascript" src="/js/wysihtml5-0.3.0.js"></script>
-
-    <script type="text/javascript" src="/js/bootstrap-wysihtml5.js"></script>
-
-    <script type="text/javascript" src="/js/jquery.tagsinput.min.js"></script>
-
-    <script type="text/javascript" src="/js/jquery.toggle.buttons.js"></script>
-
-    <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
-
-    <script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
-
-    <script type="text/javascript" src="/js/clockface.js"></script>
-
-    <script type="text/javascript" src="/js/date.js"></script>
-
-    <script type="text/javascript" src="/js/daterangepicker.js"></script>
-
-    <script type="text/javascript" src="/js/bootstrap-colorpicker.js"></script>
-
-    <script type="text/javascript" src="/js/bootstrap-timepicker.js"></script>
-
-    <script type="text/javascript" src="/js/jquery.inputmask.bundle.min.js"></script>
-
-    <script type="text/javascript" src="/js/jquery.input-ip-address-control-1.0.min.js"></script>
-
-    <script type="text/javascript" src="/js/jquery.multi-select.js"></script>
-
-    <script src="/js/bootstrap-modal.js" type="text/javascript" ></script>
-
-    <script src="/js/bootstrap-modalmanager.js" type="text/javascript" ></script>
-
-    <script src="/js/app.js"></script>
-
-    <script src="/js/form-validation.js"></script>
-
-    <script src="/js/form-components.js"></script>
-
-    <script>
-
-        jQuery(document).ready(function() {
-            App.init();
-
-            Search.init();
-
-        });
-    </script>
-
-    <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
-    </script>
-
-
 
 </head>
 
@@ -233,45 +138,6 @@
 
                     <!-- 搜索框结束 -->
                 </li>
-            <#--客户管理-->
-
-                <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
-                <#--&lt;#&ndash;<li class="" id="customerManage">&ndash;&gt;-->
-                <#--&lt;#&ndash;<a href="javascript:;">&ndash;&gt;-->
-
-                <#--&lt;#&ndash;<i class="icon-sitemap"></i>&ndash;&gt;-->
-
-                <#--&lt;#&ndash;<span class="title">客户管理</span>&ndash;&gt;-->
-
-                <#--&lt;#&ndash;<span class="" id="customerManageSelect"></span>&ndash;&gt;-->
-
-                <#--&lt;#&ndash;<span class="arrow " id="customerManageArrow"></span>&ndash;&gt;-->
-
-                <#--&lt;#&ndash;</a>&ndash;&gt;-->
-
-                    <#--<ul class="sub-menu">-->
-
-                        <#--<@shiro.hasPermission name="customer:addCustomerViewCommon">-->
-                        <#--&lt;#&ndash;commmon&ndash;&gt;-->
-                            <#--<li id="addCustomer">-->
-                                <#--<a href="/customer/addCustomerViewCommon">-->
-                                    <#--新增客户-->
-                                <#--</a>-->
-                            <#--</li>-->
-                        <#--</@shiro.hasPermission>-->
-
-                        <#--<@shiro.hasPermission name="customer:addCustomerViewSuper">-->
-                        <#--&lt;#&ndash;super&ndash;&gt;-->
-                            <#--<li id="addCustomer">-->
-                                <#--<a href="/customer/addCustomerViewSuper">-->
-                                    <#--新增客户-->
-                                <#--</a>-->
-                            <#--</li>-->
-                        <#--</@shiro.hasPermission>-->
-                        <#---->
-                    <#--</ul>-->
-                    <#--</li>-->
-                <#--</@shiro.hasAnyRoles>-->
 
                 <@shiro.hasAnyRoles name="sell,backAdmin">
                     <li class="" id="customerManage">
@@ -366,9 +232,25 @@
                             </li>
 
                             <li id="partnersFinancialAccount">
-                                <a href="/finance/find-all-partners-financial-account">
+
+                                <a href="javascript:;">
+
                                     合作企业来往账目
+
+                                    <span class="" id="partnersSelect"></span>
+
+                                    <span class="arrow" id="partnersArrow"></span>
+
                                 </a>
+
+                                <ul class="sub-menu">
+
+                                    <li id="partnersUp"><a href="/finance/find-all-partners-financial-account">上游企业</a></li>
+
+                                    <li id="partnersDown"><a href="/finance/find-all-partners-financial-account">下游企业</a></li>
+
+                                </ul>
+
                             </li>
                         </ul>
 
@@ -500,6 +382,98 @@
 
 </div>
 
+<#nested "publicJs" />
+
+    <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+
+    <script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+
+    <script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/js/excanvas.min.js"></script>
+
+    <script src="/js/respond.min.js"></script>
+
+    <script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+
+    <script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
+
+    <script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
+
+    <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
+
+    <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
+
+    <script src="/js/search.js"></script>
+
+    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+
+    <script type="text/javascript" src="/js/select2.min.js"></script>
+
+    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+
+    <script type="text/javascript" src="/js/ckeditor.js"></script>
+
+    <script type="text/javascript" src="/js/bootstrap-fileupload.js"></script>
+
+    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+
+    <script type="text/javascript" src="/js/select2.min.js"></script>
+
+    <script type="text/javascript" src="/js/wysihtml5-0.3.0.js"></script>
+
+    <script type="text/javascript" src="/js/bootstrap-wysihtml5.js"></script>
+
+    <script type="text/javascript" src="/js/jquery.tagsinput.min.js"></script>
+
+    <script type="text/javascript" src="/js/jquery.toggle.buttons.js"></script>
+
+    <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
+
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
+
+    <script type="text/javascript" src="/js/clockface.js"></script>
+
+    <script type="text/javascript" src="/js/date.js"></script>
+
+    <script type="text/javascript" src="/js/daterangepicker.js"></script>
+
+    <script type="text/javascript" src="/js/bootstrap-colorpicker.js"></script>
+
+    <script type="text/javascript" src="/js/bootstrap-timepicker.js"></script>
+
+    <script type="text/javascript" src="/js/jquery.inputmask.bundle.min.js"></script>
+
+    <script type="text/javascript" src="/js/jquery.input-ip-address-control-1.0.min.js"></script>
+
+    <script type="text/javascript" src="/js/jquery.multi-select.js"></script>
+
+    <script src="/js/bootstrap-modal.js" type="text/javascript" ></script>
+
+    <script src="/js/bootstrap-modalmanager.js" type="text/javascript" ></script>
+
+    <script src="/js/app.js"></script>
+
+    <script src="/js/form-validation.js"></script>
+
+    <script src="/js/form-components.js"></script>
+
+    <script>
+
+        jQuery(document).ready(function() {
+            App.init();
+
+            Search.init();
+
+        });
+    </script>
+
+    <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
+    </script>
+
+<#nested "privateJs" />
 </body>
 </html>
 </#macro>

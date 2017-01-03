@@ -344,6 +344,11 @@ public class FinanceController {
         return "/finance/customerApiConsumeRecord";
     }
 
+    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail")
+    public String findAllApiConsumeDetailRecordByCustomerId(){
+        return "/finance/customerApiConsumeDetailRecord";
+    }
+
     //Api消费账单
     @RequestMapping("/find-all-api-record")
     public String findAllApiRecord(){

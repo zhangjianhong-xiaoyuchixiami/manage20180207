@@ -150,7 +150,7 @@
 
                                     <#if customerList??>
                                         <#list customerList as customer>
-                                        <tr>
+                                        <tr class="odd gradeX">
                                             <td data-title="公司名称">${customer.company.name}</td>
                                             <td data-title="周充值总额">123</td>
                                             <td data-title="周消费总额">123</td>
@@ -189,6 +189,11 @@
 
     </div>
 
+    <#elseif section = "footer">
+
+    <#elseif section = "publicJs">
+
+    <#elseif section = "privateJs">
     <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
@@ -214,9 +219,6 @@
             $('#customerBalanceArrow').addClass('arrow open');
         });
     </script>
-
-    <#elseif section = "footer">
-
     </#if>
 
 </@layout>

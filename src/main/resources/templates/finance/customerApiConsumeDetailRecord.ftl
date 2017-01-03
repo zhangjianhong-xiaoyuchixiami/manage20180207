@@ -60,6 +60,29 @@
 
                         <div class="clearfix margin-bottom-20">
 
+                            <div class="control-group pull-left"
+                            >
+
+                                <label class="control-label">状态</label>
+
+                                <div class="controls">
+
+                                    <label class="checkbox">
+
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-2">成功
+
+                                    </label>
+
+                                    <label class="checkbox">
+
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-1">失败
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
                             <div class="control-group pull-left">
 
                                 <label class="control-label">Api类型</label>
@@ -95,6 +118,28 @@
                                         <option value="">移动</option>
                                         <option value="">联通</option>
                                         <option value="">电信</option>
+
+                                    <#--</#list>-->
+                                    <#--</#if>-->
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="control-group pull-left">
+
+                                <label class="control-label">Api</label>
+
+                                <div class="controls">
+
+                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1">
+                                    <#--<#if apiList??>-->
+                                    <#--<#list apiList as api>-->
+
+                                        <option value="">二要素</option>
+                                        <option value="">三要素</option>
+                                        <option value="">四要素</option>
 
                                     <#--</#list>-->
                                     <#--</#if>-->
@@ -190,31 +235,72 @@
 
                                 </div>
 
+                                <div class="control-group pull-left">
+
+                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+                                </div>
+
+                                <div class="control-group pull-left">
+
+                                    <label class="control-label">成功次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>23次</span></#if></label>
+
+                                </div>
+
+                                <div class="control-group pull-left">
+
+                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+                                </div>
+
+                                <div class="control-group pull-left">
+
+                                    <label class="control-label">失败次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0次</span></#if></label>
+
+                                </div>
+
                             </div>
 
                             <table class="table table-striped table-hover table-bordered table-condensed">
                                 <thead>
                                 <tr>
-                                    <th>Api类型</th>
+                                    <th>Api</th>
                                     <th>金额（单位/元）</th>
-                                    <th style="text-align: center; width: 20%">操作</th>
+                                    <th>创建时间</th>
+                                    <th>状态</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#--<#if customerBalanceLogList??>-->
-                                <#--<#list customerBalanceLogList as customerBalanceLog>-->
-                                <tr class="odd gradeX">
+                                <tr class="danger">
                                     <td>三要素</td>
                                     <td>10</td>
-                                    <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail">明细</a></td>
+                                    <td>2016.12.12</td>
+                                    <td>失败</td>
                                 </tr>
-                                <tr class="odd gradeX">
-                                    <td>三要素</td>
+                                <tr>
+                                    <td>二要素</td>
                                     <td>10</td>
-                                    <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail">明细</a></td>
+                                    <td>2016.12.12</td>
+                                    <td>成功</td>
                                 </tr>
-                                <#--</#list>-->
-                                <#--</#if>-->
+                                <tr>
+                                    <td>二要素</td>
+                                    <td>10</td>
+                                    <td>2016.12.12</td>
+                                    <td>成功</td>
+                                </tr>
+                                <tr>
+                                    <td>二要素</td>
+                                    <td>10</td>
+                                    <td>2016.12.12</td>
+                                    <td>成功</td>
+                                </tr>
+                                <tr>
+                                    <td>二要素</td>
+                                    <td>10</td>
+                                    <td>2016.12.12</td>
+                                    <td>成功</td>
+                                </tr>
                                 </tbody>
                             </table>
 

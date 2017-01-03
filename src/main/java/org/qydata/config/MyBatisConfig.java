@@ -37,6 +37,11 @@ public class MyBatisConfig {
         props.put("url", env.getProperty("master.datasource.url"));
         props.put("username", env.getProperty("master.datasource.username"));
         props.put("password", env.getProperty("master.datasource.password"));
+        props.put("maxActive", env.getProperty("datasource.maxActive"));
+        props.put("maxIdle", env.getProperty("datasource.maxIdle"));
+        props.put("minIdle", env.getProperty("datasource.minIdle"));
+        props.put("initialSize", env.getProperty("datasource.initialSize"));
+        props.put("maxWait ", env.getProperty("datasource.maxWait "));
         return DruidDataSourceFactory.createDataSource(props);
     }
 
@@ -47,6 +52,11 @@ public class MyBatisConfig {
         props.put("url", env.getProperty("slave.datasource.url"));
         props.put("username", env.getProperty("slave.datasource.username"));
         props.put("password", env.getProperty("slave.datasource.password"));
+        props.put("maxActive", env.getProperty("datasource.maxActive"));
+        props.put("maxIdle", env.getProperty("datasource.maxIdle"));
+        props.put("minIdle", env.getProperty("datasource.minIdle"));
+        props.put("initialSize", env.getProperty("datasource.initialSize"));
+        props.put("maxWait ", env.getProperty("datasource.maxWait "));
         return DruidDataSourceFactory.createDataSource(props);
     }
 

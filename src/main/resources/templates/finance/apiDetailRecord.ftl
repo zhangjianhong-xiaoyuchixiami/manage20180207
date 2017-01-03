@@ -268,16 +268,20 @@
 
     <#elseif section = "footer">
 
+    <#elseif section = "publicJs">
+
+    <#elseif section = "privateJs">
+    <script>
+        $(document).ready(function() {
+            $('#customerBalance').addClass('active');
+
+            $('#apiRecordLog').addClass('active');
+
+            $('#customerBalanceSelect').addClass('selected');
+
+            $('#customerBalanceArrow').addClass('arrow open');
+        });
+    </script>
     </#if>
-<script>
-    $(document).ready(function() {
-        $('#customerBalance').addClass('active');
 
-        $('#apiRecordLog').addClass('active');
-
-        $('#customerBalanceSelect').addClass('selected');
-
-        $('#customerBalanceArrow').addClass('arrow open');
-    });
-</script>
 </@layout>
