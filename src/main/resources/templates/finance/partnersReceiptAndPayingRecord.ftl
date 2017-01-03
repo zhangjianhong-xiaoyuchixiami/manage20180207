@@ -79,7 +79,7 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <table class="table table-striped table-bordered table-hover" id="sample_4">
+                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_4">
 
                                 <thead>
 

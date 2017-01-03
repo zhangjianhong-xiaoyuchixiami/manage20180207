@@ -124,8 +124,6 @@
 
     <script src="/js/form-components.js"></script>
 
-    <script src=/js/jquery.fancybox.pack.js"></script>
-
     <script>
 
         jQuery(document).ready(function() {
@@ -347,7 +345,7 @@
 
                             <@shiro.hasPermission name="customer:findAllCustomer">
                                 <li id="customerListBalanceLog">
-                                    <a href="/customer-balance/find-all-customer">
+                                    <a href="/finance/find-all-customer">
                                         客户财务账单
                                     </a>
                                 </li>
@@ -355,20 +353,20 @@
 
                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                 <li id="customerListBalanceLog">
-                                    <a href="/customer-balance/find-all-customer-by-dept-id">
+                                    <a href="/finance/find-all-customer-by-dept-id">
                                         客户财务账单
                                     </a>
                                 </li>
                             </@shiro.hasPermission>
 
                             <li id="apiRecordLog">
-                                <a href="/customer-balance/find-all-api-record">
+                                <a href="/finance/find-all-api-record">
                                     Api消费账单
                                 </a>
                             </li>
 
                             <li id="partnersFinancialAccount">
-                                <a href="/customer-balance/find-all-partners-financial-account">
+                                <a href="/finance/find-all-partners-financial-account">
                                     合作企业来往账目
                                 </a>
                             </li>
@@ -501,8 +499,6 @@
     </div>
 
 </div>
-
-
 
 </body>
 </html>

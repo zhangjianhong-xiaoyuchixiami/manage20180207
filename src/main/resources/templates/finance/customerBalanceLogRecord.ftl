@@ -257,7 +257,7 @@
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered">
+                            <table class="table table-striped table-hover table-bordered table-condensed">
                                 <thead>
                                 <tr>
                                     <th class="sorting" style="text-align: center; width: 30%">金额（单位：元）</th>

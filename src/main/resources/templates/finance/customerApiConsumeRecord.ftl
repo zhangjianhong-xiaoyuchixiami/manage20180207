@@ -56,7 +56,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/customerBalance/findAllCustomerBalanceLogByCustomerId" method="get">
+                    <form action="/finance/findAllCustomerBalanceLogByCustomerId" method="get">
 
                         <div class="clearfix margin-bottom-20">
 
@@ -239,7 +239,7 @@
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered">
+                            <table class="table table-striped table-hover table-bordered table-condensed">
                                 <thead>
                                 <tr>
                                     <th style="text-align: center; width: 20%">Api类型</th>

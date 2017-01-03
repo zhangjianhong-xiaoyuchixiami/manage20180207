@@ -131,7 +131,7 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <table class="table table-striped table-bordered table-hover" id="sample_2">
+                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
 
                                 <thead>
                                 <tr>
@@ -162,11 +162,11 @@
                                             <td data-title="操作" style="text-align: center">
                                                 <p>
                                                 <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=1" class="btn" id="gritter-light">充值</a>-->
-                                                    <a href="/customer-balance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>
+                                                    <a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>
                                                     |
                                                 <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=-1" class="btn" id="gritter-light">扣费</a>-->
                                                 <#--<a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}?reasonId=-1">账号消费记录</a>-->
-                                                    <a href="/customer-balance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费明细</a>
+                                                    <a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费明细</a>
                                                 </p>
                                             </td>
                                         </tr>

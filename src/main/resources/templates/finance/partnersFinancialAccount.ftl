@@ -189,7 +189,7 @@
 
                             </div>
 
-                            <table class="table table-striped table-bordered table-hover" id="sample_3">
+                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_3">
 
                                 <thead>
 
@@ -389,7 +389,7 @@
 
                                             </div>
 
-                                            <a href="/customer-balance/find-all-partners-financial-account/receipt-and-paying-record">收支明细</a>
+                                            <a href="/finance/find-all-partners-financial-account/receipt-and-paying-record">收支明细</a>
                                         </div>
 
                                     </td>

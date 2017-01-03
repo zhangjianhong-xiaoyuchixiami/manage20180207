@@ -56,7 +56,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/customerBalance/findAllCustomerBalanceLogByCustomerId" method="get">
+                    <form action="/finance/findAllCustomerBalanceLogByCustomerId" method="get">
 
                         <div class="clearfix margin-bottom-20">
 
@@ -172,7 +172,7 @@
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered">
+                            <table class="table table-striped table-hover table-bordered table-condensed">
                                 <thead>
                                 <tr>
 
@@ -257,32 +257,6 @@
                                 </div>
 
                             </div>
-
-                        <#--<#if CustomerBalanceModifyReason=="扣费">-->
-                        <#--<#if (count>0)>-->
-                        <#--<div class="row-fluid">-->
-                        <#--<div class="span6">-->
-                        <#--<div class="dataTables_info" id="sample_1_info">当前显示第 ${pageSize} 页 共 ${totlePage} 页</div>-->
-                        <#--</div>-->
-                        <#--<#if (totlePage>0)>-->
-                        <#--<div class="span6" align="right">-->
-                        <#--<div class="dataTables_paginate paging_bootstrap pagination">-->
-                        <#--<ul>-->
-                        <#--<#if (pageSize>1)>-->
-                        <#--<li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=1<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">首页</span></a></li>-->
-                        <#--<li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize-1}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">上一页</span></a></li>-->
-                        <#--</#if>-->
-                        <#--<#if (pageSize<totlePage)>-->
-                        <#--<li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${pageSize+1}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">下一页</span></a></li>-->
-                        <#--<li class="next"><a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}?pageSize=${totlePage}<#if reasonIdArray??><#list reasonIdArray as reasonId>&reasonId=${reasonId}</#list></#if><#if beginDate??>&beginDate=${beginDate}</#if><#if endDate??>&endDate=${endDate}</#if>" ><span class="hidden-480">尾页</span></a></li>-->
-                        <#--</#if>-->
-                        <#--</ul>-->
-                        <#--</div>-->
-                        <#--</div>-->
-                        <#--</#if>-->
-                        <#--</div>-->
-                        <#--</#if>-->
-                        <#--</#if>-->
 
                         </div>
 
