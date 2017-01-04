@@ -20,29 +20,29 @@
 
                     </h3>
 
-                <#--<ul class="breadcrumb">-->
+                <ul class="breadcrumb">
 
-                <#--<li>-->
+                <li>
 
-                <#--<i class="icon-home"></i>-->
+                <i class="icon-home"></i>
 
-                <#--<a href="/view/successUrl">首页</a>-->
+                <a href="/view/successUrl">首页</a>
 
-                <#--<i class="icon-angle-right"></i>-->
+                <i class="icon-angle-right"></i>
 
-                <#--</li>-->
+                </li>
 
-                <#--<li>-->
+                <li>
 
-                <#--<a href="#">财务管理</a>-->
+                <a href="#">财务管理</a>
 
-                <#--<i class="icon-angle-right"></i>-->
+                <i class="icon-angle-right"></i>
 
-                <#--</li>-->
+                </li>
 
-                <#--<li><a href="#">账号列表</a></li>-->
+                <li><a href="#">账号列表</a></li>
 
-                <#--</ul>-->
+                </ul>
 
                     <!-- END PAGE TITLE & BREADCRUMB-->
 
@@ -58,9 +58,9 @@
                     <#if deptIdList??>
                         <form action="/customer-balance/find-all-customer-by-dept-id" method="get">
 
-                            <div class="clearfix margin-bottom-20">
+                            <div class="clearfix margin-bottom-20" style="border: 1px solid red">
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -25px">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -86,7 +86,7 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -25px">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -161,11 +161,8 @@
                                             <td data-title="账号余额">${customer.balance/100.0}</td>
                                             <td data-title="操作" style="text-align: center">
                                                 <p>
-                                                <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=1" class="btn" id="gritter-light">充值</a>-->
                                                     <a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>
                                                     |
-                                                <#--<a href="/customerBalance/customerBalanceChangeView/${customer.authId}?reasonId=-1" class="btn" id="gritter-light">扣费</a>-->
-                                                <#--<a href="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customer.id}?reasonId=-1">账号消费记录</a>-->
                                                     <a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费明细</a>
                                                 </p>
                                             </td>

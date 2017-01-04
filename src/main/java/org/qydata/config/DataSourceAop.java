@@ -16,19 +16,22 @@ public class DataSourceAop {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
+
     @Before("execution(* org.qydata.mapper.*.find*(..)) " +
             "or execution(* org.qydata.mapper.*.get*(..))")
     public void setReadDataSourceType() {
-        DataSourceContextHolder.read();
-        log.info("dataSource切换到：Read");
+        DataSourceContextHolder.slave();
+        log.info("dataSource切换到：slave");
     }
+
 
     @Before("execution(* org.qydata.mapper.*.insert*(..)) " +
             "or execution(* org.qydata.mapper.*.update*(..))" +
             "or execution(* org.qydata.mapper.*.delete*(..)) " +
-            "or execution(* org.qydata.mapper.*.remove*(..))")
+            "or execution(* org.qydata.mapper.*.remove*(..) " +
+            "or execution(* org.qydata.mapper.*.add*(..))")
     public void setWriteDataSourceType() {
-        DataSourceContextHolder.write();
-        log.info("dataSource切换到：write");
+        DataSourceContextHolder.master();
+        log.info("dataSource切换到：master");
     }
 }

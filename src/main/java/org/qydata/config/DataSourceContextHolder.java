@@ -11,14 +11,14 @@ public class DataSourceContextHolder {
         return local;
     }
 
-    /** * 读可能是多个库 */
-    public static void read() {
-        local.set(DataSourceType.read.getType());
+    /** * 写只有一个库 */
+    public static void master() {
+        local.set(DataSourceType.master.getType());
     }
 
-    /** * 写只有一个库 */
-    public static void write() {
-        local.set(DataSourceType.write.getType());
+    /** * 读可能是多个库 */
+    public static void slave() {
+        local.set(DataSourceType.slave.getType());
     }
 
     public static String getJdbcType() {

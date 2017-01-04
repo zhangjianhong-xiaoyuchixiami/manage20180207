@@ -4,7 +4,7 @@ package org.qydata.config;
  * Created by Administrator on 2017/1/3.
  */
 public enum DataSourceType {
-    read("read", "从库"), write("write", "主库");
+    master("master", "主库"), slave("slave", "从库");
 
     private String type;
     private String name;
