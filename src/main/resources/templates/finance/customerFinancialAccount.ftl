@@ -20,29 +20,29 @@
 
                     </h3>
 
-                <ul class="breadcrumb">
+                    <ul class="breadcrumb">
 
-                <li>
+                        <li>
 
-                <i class="icon-home"></i>
+                            <i class="icon-home"></i>
 
-                <a href="/view/successUrl">首页</a>
+                            <a href="/view/successUrl">首页</a>
 
-                <i class="icon-angle-right"></i>
+                            <i class="icon-angle-right"></i>
 
-                </li>
+                        </li>
 
-                <li>
+                        <li>
 
-                <a href="#">财务管理</a>
+                            <a href="#">财务管理</a>
 
-                <i class="icon-angle-right"></i>
+                            <i class="icon-angle-right"></i>
 
-                </li>
+                        </li>
 
-                <li><a href="#">账号列表</a></li>
+                        <li><a href="#">账号列表</a></li>
 
-                </ul>
+                    </ul>
 
                     <!-- END PAGE TITLE & BREADCRUMB-->
 
