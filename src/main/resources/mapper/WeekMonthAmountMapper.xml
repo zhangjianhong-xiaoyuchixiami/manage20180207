@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.WeekMonthAmountMapper">
+
+    <select id="a">
+        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,DATE_FORMAT(createTime,'%u') weeks,sum(amount) totleAmount
+        FROM qydata.CustomerBalanceLog
+        WHERE customerId=10 AND
+        reasonId IN(1,2,3,-1,-2)
+        GROUP BY DATE_FORMAT(createTime,'%Y-%m-%u');
+    </select>
+
+    <select id="b">
+        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(amount) totleAmount
+        FROM qydata.CustomerBalanceLog
+        WHERE customerId=10 AND
+        reasonId IN(1,2,3,-1,-2)
+        GROUP BY DATE_FORMAT(createTime,'%Y-%m');
+    </select>
+
+    <select id="c">
+        SELECT apiId,price
+        FROM qydata.CustomerApi
+        WHERE customerId=9
+        AND apiId
+        IN (
+        SELECT id
+        FROM qydata.Api
+        WHERE apiTypeId IN (
+        SELECT customerRequestLog.apiTypeId
+        FROM qydata.CustomerRequestLog customerRequestLog
+        LEFT JOIN qydata.CustomerResponseLog customerResponseLog
+        ON customerRequestLog.id=customerResponseLog.reqId
+        WHERE customerRequestLog.customerId=9 AND customerResponseLog.hasCost=1
+        GROUP BY customerRequestLog.apiTypeId
+        )
+        )
+    </select>
+    <select id="d">
+        SELECT apiId,count(apiId),apiTypeId,count(apiTypeId),customerId
+        FROM qydata.CustomerRequestLog customerRequestLog
+        LEFT JOIN qydata.CustomerResponseLog customerResponseLog
+        ON customerRequestLog.id=customerResponseLog.reqId
+        WHERE customerId=10
+        GROUP BY apiTypeId
+    </select>
+
+</mapper>

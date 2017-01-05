@@ -188,47 +188,4 @@
         </if>
     </select>
 
-    <select id="a">
-        SELECT DATE_FORMAT(createTime,'%Y-%u-%D') weeks,sum(amount) totleSum
-        FROM qydata.CustomerBalanceLog
-        WHERE customerId=10
-        AND reasonId IN (1,2,3)
-        GROUP BY weeks
-    </select>
-
-    <select id="b">
-        SELECT DATE_FORMAT(createTime,'%Y-%m') month,count(id) count,sum(amount) sum
-        FROM qydata.CustomerBalanceLog
-        WHERE customerId=7
-        AND reasonId IN (1,2,3)
-        GROUP BY createTime
-    </select>
-
-    <select id="c">
-        SELECT apiId,price
-        FROM qydata.CustomerApi
-        WHERE customerId=9
-        AND apiId
-        IN (
-            SELECT id
-            FROM qydata.Api
-            WHERE apiTypeId IN (
-                                SELECT customerRequestLog.apiTypeId
-                                FROM qydata.CustomerRequestLog customerRequestLog
-                                LEFT JOIN qydata.CustomerResponseLog customerResponseLog
-                                ON customerRequestLog.id=customerResponseLog.reqId
-                                WHERE customerRequestLog.customerId=9 AND customerResponseLog.hasCost=1
-                                GROUP BY customerRequestLog.apiTypeId
-                                )
-            )
-    </select>
-    <select id="d">
-        SELECT apiId,count(apiId),apiTypeId,count(apiTypeId),customerId
-        FROM qydata.CustomerRequestLog customerRequestLog
-        LEFT JOIN qydata.CustomerResponseLog customerResponseLog
-        ON customerRequestLog.id=customerResponseLog.reqId
-        WHERE customerId=10
-        GROUP BY apiTypeId
-    </select>
-
 </mapper>
