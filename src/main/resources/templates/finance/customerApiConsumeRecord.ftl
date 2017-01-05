@@ -20,29 +20,29 @@
 
                     </h3>
 
-                <#--<ul class="breadcrumb">-->
+                    <ul class="breadcrumb">
 
-                <#--<li>-->
+                        <li>
 
-                <#--<i class="icon-home"></i>-->
+                            <i class="icon-home"></i>
 
-                <#--<a href="/view/successUrl">首页</a>-->
+                            <a href="/view/successUrl">首页</a>
 
-                <#--<i class="icon-angle-right"></i>-->
+                            <i class="icon-angle-right"></i>
 
-                <#--</li>-->
+                        </li>
 
-                <#--<li>-->
+                        <li>
 
-                <#--<a href="#">财务管理</a>-->
+                            <a href="#">财务管理</a>
 
-                <#--<i class="icon-angle-right"></i>-->
+                            <i class="icon-angle-right"></i>
 
-                <#--</li>-->
+                        </li>
 
-                <#--<li><a href="#">财务报表</a></li>-->
+                        <li><a href="#">财务报表</a></li>
 
-                <#--</ul>-->
+                    </ul>
 
                     <!-- END PAGE TITLE & BREADCRUMB-->
 
@@ -60,9 +60,9 @@
 
                         <div class="clearfix margin-bottom-20">
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
-                                <label class="control-label">Api类型</label>
+                                <label class="control-label">产品类型</label>
 
                                 <div class="controls">
 
@@ -82,11 +82,13 @@
 
                             </div>
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
-                                <label class="control-label">Api供应商</label>
+                                <label class="control-label">产品供应商</label>
 
                                 <div class="controls">
+
+
 
                                     <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1">
                                     <#--<#if apiList??>-->
@@ -100,55 +102,23 @@
                                     <#--</#if>-->
                                     </select>
 
-                                </div>
 
-                            </div>
-
-                            <div class="control-group pull-left margin-right-20">
-
-                                <label class="control-label">起始日期</label>
-
-                                <div class="controls">
-
-                                    <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
-
-                                        <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
-
-                                    </div>
 
                                 </div>
 
                             </div>
 
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">结束日期</label>
-
-                                <div class="controls">
-
-                                    <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
-
-                                        <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
-                            </div>
+                                <div class="controls" >
 
-                            <div class="control-group pull-left">
+                                    <div class="input-append">
 
-                                <label class="control-label">&nbsp;&nbsp;</label>
+                                        <button class="btn black" type="submit">搜索</button>
 
-                                <div class="input-append" >
-
-                                    <button class="btn black" type="submit">搜索</button>
+                                    </div>
 
                                 </div>
 
@@ -157,9 +127,7 @@
                         </div>
 
                     </form>
-
-
-                <#--表单-->
+                <#--表格-->
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
@@ -184,7 +152,7 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
 
                                     <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
 
@@ -192,68 +160,30 @@
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered table-condensed">
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_5">
                                 <thead>
                                 <tr>
-                                    <th>Api类型</th>
-                                    <th>金额（单位/元）</th>
+                                    <th>产品类型</th>
+                                    <th>产品供应商</th>
+                                    <th style="width: 20%">金额（单位/元</th>
                                     <th style="text-align: center; width: 20%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <#--<#if customerBalanceLogList??>-->
                                 <#--<#list customerBalanceLogList as customerBalanceLog>-->
-                                <tr class="odd gradeX">
+                                <tr>
                                     <td>三要素</td>
+                                    <td>京东</td>
                                     <td>10</td>
                                     <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail">明细</a></td>
                                 </tr>
-                                <tr class="odd gradeX">
-                                    <td>三要素</td>
-                                    <td>10</td>
-                                    <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail">明细</a></td>
-                                </tr>
+
                                 <#--</#list>-->
                                 <#--</#if>-->
                                 </tbody>
                             </table>
 
-                            <div class="row-fluid">
-
-                                <div class="span6">
-
-                                    <div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 1 页 共 10 页</div>
-
-                                </div>
-
-                                <div class="span6">
-
-                                    <div class="dataTables_paginate paging_bootstrap pagination pull-right">
-
-                                        <ul>
-
-                                            <li class="prev disabled"><a href="#">首页</a></li>
-
-                                            <li class="prev disabled"><a href="#">← <span class="hidden-480">上一页</span></a></li>
-
-                                        <#--<li class="active"><a href="#">1</a></li>-->
-
-                                        <#--<li><a href="#">2</a></li>-->
-
-                                        <#--<li><a href="#">3</a></li>-->
-
-                                        <#--<li><a href="#">4</a></li>-->
-
-                                        <#--<li><a href="#">5</a></li>-->
-
-                                            <li class="next"><a href="#"><span class="hidden-480">下一页</span> → </a></li>
-
-                                            <li class="next"><a href="#">尾页</a></li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -266,6 +196,19 @@
     <#elseif section = "publicJs">
 
     <#elseif section = "privateJs">
+
+    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+
+    <script src="/js/table-managed.js"></script>
+
+    <script type="text/javascript">
+
+        jQuery(document).ready(function() {
+            TableManaged.init();
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('#customerBalance').addClass('active');

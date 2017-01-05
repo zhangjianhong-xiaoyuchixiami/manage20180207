@@ -626,6 +626,7 @@ select.m-wrap.medium {
 
 select.m-wrap1.medium {
   width: 150px !important;
+  height: 34px;
 }
 
 select.m-wrap.large {

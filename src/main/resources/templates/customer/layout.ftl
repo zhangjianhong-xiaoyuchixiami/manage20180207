@@ -42,6 +42,8 @@
     <link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
 
     <link href="/css/search.css" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" type="text/css" href="/css/icon.css" />
     <link rel="shortcut icon" href="/image/favicon.ico" />
 
 </head>

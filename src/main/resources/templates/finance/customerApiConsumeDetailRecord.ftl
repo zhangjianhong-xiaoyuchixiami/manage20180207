@@ -20,29 +20,29 @@
 
                     </h3>
 
-                <#--<ul class="breadcrumb">-->
+                    <ul class="breadcrumb">
 
-                <#--<li>-->
+                        <li>
 
-                <#--<i class="icon-home"></i>-->
+                            <i class="icon-home"></i>
 
-                <#--<a href="/view/successUrl">首页</a>-->
+                            <a href="/view/successUrl">首页</a>
 
-                <#--<i class="icon-angle-right"></i>-->
+                            <i class="icon-angle-right"></i>
 
-                <#--</li>-->
+                        </li>
 
-                <#--<li>-->
+                        <li>
 
-                <#--<a href="#">财务管理</a>-->
+                            <a href="#">财务管理</a>
 
-                <#--<i class="icon-angle-right"></i>-->
+                            <i class="icon-angle-right"></i>
 
-                <#--</li>-->
+                        </li>
 
-                <#--<li><a href="#">财务报表</a></li>-->
+                        <li><a href="#">财务报表</a></li>
 
-                <#--</ul>-->
+                    </ul>
 
                     <!-- END PAGE TITLE & BREADCRUMB-->
 
@@ -60,8 +60,7 @@
 
                         <div class="clearfix margin-bottom-20">
 
-                            <div class="control-group pull-left"
-                            >
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">状态</label>
 
@@ -83,7 +82,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">Api类型</label>
 
@@ -105,7 +104,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">Api供应商</label>
 
@@ -127,7 +126,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">Api</label>
 
@@ -149,7 +148,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left margin-right-20">
+                            <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
 
                                 <label class="control-label">起始日期</label>
 
@@ -165,7 +164,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">结束日期</label>
 
@@ -181,13 +180,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">&nbsp;&nbsp;</label>
-
-                            </div>
-
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -229,39 +222,29 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
-
-                                </div>
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount}元&nbsp;&nbsp;&nbsp;</span><#else ><span>0元&nbsp;&nbsp;&nbsp;</span></#if></label>
 
                                 </div>
 
-                                <div class="control-group pull-left">
 
-                                    <label class="control-label">成功次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>23次</span></#if></label>
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                </div>
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">成功次数：<#if totleAmount??><span>${totleAmount}元&nbsp;&nbsp;&nbsp;</span><#else ><span>23次&nbsp;&nbsp;&nbsp;</span></#if></label>
 
                                 </div>
 
-                                <div class="control-group pull-left">
 
-                                    <label class="control-label">失败次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0次</span></#if></label>
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+
+                                    <label class="control-label">失败次数：<#if totleAmount??><span>${totleAmount}元&nbsp;&nbsp;&nbsp;</span><#else ><span>0次&nbsp;&nbsp;&nbsp;</span></#if></label>
 
                                 </div>
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered table-condensed">
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_7">
                                 <thead>
                                 <tr>
                                     <th>Api</th>
@@ -304,42 +287,6 @@
                                 </tbody>
                             </table>
 
-                            <div class="row-fluid">
-
-                                <div class="span6">
-
-                                    <div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 1 页 共 10 页</div>
-
-                                </div>
-
-                                <div class="span6">
-
-                                    <div class="dataTables_paginate paging_bootstrap pagination pull-right">
-
-                                        <ul>
-
-                                            <li class="prev disabled"><a href="#">首页</a></li>
-
-                                            <li class="prev disabled"><a href="#">← <span class="hidden-480">上一页</span></a></li>
-
-                                        <#--<li class="active"><a href="#">1</a></li>-->
-
-                                        <#--<li><a href="#">2</a></li>-->
-
-                                        <#--<li><a href="#">3</a></li>-->
-
-                                        <#--<li><a href="#">4</a></li>-->
-
-                                        <#--<li><a href="#">5</a></li>-->
-
-                                            <li class="next"><a href="#"><span class="hidden-480">下一页</span> → </a></li>
-
-                                            <li class="next"><a href="#">尾页</a></li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -352,6 +299,19 @@
     <#elseif section = "publicJs">
 
     <#elseif section = "privateJs">
+
+    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+
+    <script src="/js/table-managed.js"></script>
+
+    <script type="text/javascript">
+
+        jQuery(document).ready(function() {
+            TableManaged.init();
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('#customerBalance').addClass('active');

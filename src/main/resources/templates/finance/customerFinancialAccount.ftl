@@ -24,27 +24,29 @@
 
                         <li>
 
-                            <i class="icon-home"></i>
-
-                            <a href="/view/successUrl">首页</a>
-
-                            <i class="icon-angle-right"></i>
+                            <a href="#" class="icon icon_i">首页</a>
 
                         </li>
 
                         <li>
 
-                            <a href="#">财务管理</a>
-
-                            <i class="icon-angle-right"></i>
+                            <a href="#" class="icon icon_j">前进</a>
 
                         </li>
 
-                        <li><a href="#">账号列表</a></li>
+                        <li>
+
+                            <a href="#" class="icon icon_t">后退</a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="#" class="icon icon_n">刷新</a>
+
+                        </li>
 
                     </ul>
-
-                    <!-- END PAGE TITLE & BREADCRUMB-->
 
                 </div>
 
@@ -58,9 +60,9 @@
                     <#if deptIdList??>
                         <form action="/customer-balance/find-all-customer-by-dept-id" method="get">
 
-                            <div class="clearfix margin-bottom-20" style="border: 1px solid red">
+                            <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left" style="margin-bottom: -25px">
+                                <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -86,7 +88,7 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left" style="margin-bottom: -25px">
+                                <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -113,17 +115,35 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i></div>
+                            <div class="caption"><i class="icon-user"></i></div>
 
-                            <div class="tools">
+                            <div class="actions">
 
-                            <#--<a href="javascript:;" class="collapse"></a>-->
+                                <div class="btn-group">
 
-                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
+                                    <a class="btn white" href="#" data-toggle="dropdown">
 
-                                <#--<a href="javascript:;" class="reload"></a>-->
+                                        工具
 
-                                <#--<a href="javascript:;" class="remove"></a>-->
+                                        <i class="icon-angle-down"></i>
+
+                                    </a>
+
+                                    <ul class="dropdown-menu pull-right">
+
+                                        <li><a href="#"><i class="icon-print"></i> 打印</a></li>
+
+                                        <li><a href="#"><i class="icon-share icon-black"></i> 导出Excel</a></li>
+
+                                        <#--<li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>-->
+
+                                        <#--<li class="divider"></li>-->
+
+                                        <#--<li><a href="#"><i class="i"></i> Make admin</a></li>-->
+
+                                    </ul>
+
+                                </div>
 
                             </div>
 
@@ -147,10 +167,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                     <#if customerList??>
                                         <#list customerList as customer>
-                                        <tr class="odd gradeX">
+                                        <tr>
                                             <td data-title="公司名称">${customer.company.name}</td>
                                             <td data-title="周充值总额">123</td>
                                             <td data-title="周消费总额">123</td>

@@ -20,31 +20,29 @@
 
                     </h3>
 
-                    <#--<ul class="breadcrumb">-->
+                    <ul class="breadcrumb">
 
-                        <#--<li>-->
+                        <li>
 
-                            <#--<i class="icon-home"></i>-->
+                            <i class="icon-home"></i>
 
-                            <#--<a href="/view/successUrl">首页</a>-->
+                            <a href="/view/successUrl">首页</a>
 
-                            <#--<i class="icon-angle-right"></i>-->
+                            <i class="icon-angle-right"></i>
 
-                        <#--</li>-->
+                        </li>
 
-                        <#--<li>-->
+                        <li>
 
-                            <#--<a href="#">财务管理</a>-->
+                            <a href="#">财务管理</a>
 
-                            <#--<i class="icon-angle-right"></i>-->
+                            <i class="icon-angle-right"></i>
 
-                        <#--</li>-->
+                        </li>
 
-                        <#--<li><a href="#">财务报表</a></li>-->
+                        <li><a href="#">财务报表</a></li>
 
-                    <#--</ul>-->
-
-                    <!-- END PAGE TITLE & BREADCRUMB-->
+                    </ul>
 
                 </div>
 
@@ -55,98 +53,13 @@
                 <div class="span12">
 
                 <#--搜索框-->
-                    <#if CustomerBalanceModifyReason=="扣费">
-                        <form action="/customerBalance/findAllCustomerBalanceLogByCustomerId/${customerId}" method="get">
 
-                            <div class="clearfix margin-bottom-20">
-
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">消费理由</label>
-
-                                    <div class="controls">
-
-
-
-                                        <label class="checkbox">
-
-                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-2">弥补扣费
-
-                                        </label>
-
-                                        <label class="checkbox">
-
-                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-1">消费扣费
-
-                                        </label>
-
-
-
-                                    </div>
-
-                                </div>
-
-                                <div class="control-group pull-left margin-right-20">
-
-                                    <label class="control-label">起始日期</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
-
-                                            <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text"><span class="add-on"><i class="icon-calendar"></i></span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">结束日期</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
-
-                                            <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text"><span class="add-on"><i class="icon-calendar"></i></span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">&nbsp;&nbsp;</label>
-
-                                    <div class="input-append" >
-
-                                        <button class="btn black" type="submit">搜索</button>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-                    </#if>
                     <#if CustomerBalanceModifyReason=="充值">
                         <form action="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}" method="get">
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                     <label class="control-label">充值理由</label>
 
@@ -174,7 +87,7 @@
 
                                 </div>
 
-                                <div class="control-group pull-left margin-right-20">
+                                <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
 
                                     <label class="control-label">起始日期</label>
 
@@ -190,7 +103,7 @@
 
                                 </div>
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                     <label class="control-label">结束日期</label>
 
@@ -206,19 +119,17 @@
 
                                 </div>
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
-                                </div>
+                                    <div class="controls" >
 
-                                <div class="control-group pull-left">
+                                        <div class="input-append">
 
-                                    <label class="control-label">&nbsp;&nbsp;</label>
+                                            <button class="btn black" type="submit">搜索</button>
 
-                                    <div class="input-append" >
-
-                                        <button class="btn black" type="submit">搜索</button>
+                                        </div>
 
                                     </div>
 
@@ -251,27 +162,31 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <div class="control-group pull-left">
+                            <div class="clearfix margin-bottom-20">
 
-                                <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+
+                                    <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+
+                                </div>
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered table-condensed">
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_6">
                                 <thead>
                                 <tr>
-                                    <th class="sorting" style="text-align: center; width: 30%">金额（单位：元）</th>
-                                    <th class="sorting" style="text-align: center; width: 30%">时间</th>
-                                    <th style="text-align: center; width: 40%">理由</th>
+                                    <th style="width: 30%">金额（单位：元）</th>
+                                    <th style="width: 40%">时间</th>
+                                    <th style="width: 30%">理由</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#if customerBalanceLogList??>
                                         <#list customerBalanceLogList as customerBalanceLog>
-                                        <tr class="odd gradeX">
-                                            <td style="text-align: center;">${customerBalanceLog.amount/100.0}</td>
-                                            <td style="text-align: center;">${customerBalanceLog.createTime}</td>
-                                            <td style="text-align: center;">${customerBalanceLog.customerBalanceModifyReason.name}</td>
+                                        <tr>
+                                            <td>${customerBalanceLog.amount/100.0}</td>
+                                            <td>${customerBalanceLog.createTime}</td>
+                                            <td>${customerBalanceLog.customerBalanceModifyReason.name}</td>
                                         </tr>
                                         </#list>
                                     </#if>
@@ -290,6 +205,20 @@
     <#elseif section = "publicJs">
 
     <#elseif section = "privateJs">
+
+    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+
+    <script src="/js/table-managed.js"></script>
+
+    <script type="text/javascript">
+
+        jQuery(document).ready(function() {
+            TableManaged.init();
+        });
+
+    </script>
     <script>
         $(document).ready(function() {
             $('#customerBalance').addClass('active');
