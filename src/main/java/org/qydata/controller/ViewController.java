@@ -24,7 +24,7 @@ public class ViewController {
     private final Logger log = Logger.getLogger(this.getClass());
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     //登录
     @RequestMapping("/login")

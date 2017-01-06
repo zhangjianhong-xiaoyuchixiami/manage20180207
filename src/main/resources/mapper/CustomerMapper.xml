@@ -62,7 +62,7 @@
         from qyauth.CustomerDept cda,qyauth.Dept d,(
                                                             select customer.id,customer.typeId,customer.name,customer.authId,customer.authPass,customer.balance,
                                                             customer.createTime,customer.status,qct.name qctname,qcs.name qcsname,company.name companyName
-                                                            from qydata.Customer customer,qydata.CustomerType qct,qydata.CustomerStatus qcs,qydata.Company company
+                                                            from qydata.Customer customer,qydata.CustomerType qct,qydata.CustomerStatus qcs,qydata.CustomerCompany company
                                                             where customer.typeId=qct.id and customer.status=qcs.id and customer.companyId=company.id
                                                             and customer.typeId=1
                                                             order by customer.createTime desc

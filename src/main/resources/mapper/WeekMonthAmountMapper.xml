@@ -3,47 +3,86 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.WeekMonthAmountMapper">
 
-    <select id="a">
-        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,DATE_FORMAT(createTime,'%u') weeks,sum(amount) totleAmount
+    <resultMap id="WeekMonthAmount_Map" type="WeekMonthAmount">
+        <result column="years" property="years"/>
+        <result column="months" property="months"/>
+        <result column="weeks" property="weeks"/>
+        <result column="totleAmount" property="totleAmount"/>
+        <result column="customerId" property="customerId"/>
+        <result column="temporal" property="temporal"/>
+    </resultMap>
+
+    <!--统计客户每周的充值数据-->
+    <select id="getAllCustomerWeekRechargeRecord" resultMap="WeekMonthAmount_Map">
+        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,DATE_FORMAT(createTime,'%u') weeks,sum(amount) totleAmount,customerId,
+        GROUP_CONCAT(DISTINCT DATE(createTime) ORDER BY DATE(createTime) ASC) temporal
         FROM qydata.CustomerBalanceLog
-        WHERE customerId=10 AND
-        reasonId IN(1,2,3,-1,-2)
-        GROUP BY DATE_FORMAT(createTime,'%Y-%m-%u');
+        WHERE reasonId IN(1,2,3)
+        GROUP BY DATE_FORMAT(createTime,'%Y-%m-%u'),customerId
     </select>
 
-    <select id="b">
-        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(amount) totleAmount
+    <!--统计客户每月的充值数据-->
+    <select id="getAllCustomerMonthRechargeRecord" resultMap="WeekMonthAmount_Map">
+        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(amount) totleAmount,customerId,
+        GROUP_CONCAT(DISTINCT DATE(createTime) ORDER BY DATE(createTime) ASC) temporal
         FROM qydata.CustomerBalanceLog
-        WHERE customerId=10 AND
-        reasonId IN(1,2,3,-1,-2)
-        GROUP BY DATE_FORMAT(createTime,'%Y-%m');
+        WHERE reasonId IN(1,2,3)
+        GROUP BY DATE_FORMAT(createTime,'%Y-%m'),customerId
     </select>
 
-    <select id="c">
-        SELECT apiId,price
-        FROM qydata.CustomerApi
-        WHERE customerId=9
-        AND apiId
-        IN (
-        SELECT id
-        FROM qydata.Api
-        WHERE apiTypeId IN (
-        SELECT customerRequestLog.apiTypeId
-        FROM qydata.CustomerRequestLog customerRequestLog
-        LEFT JOIN qydata.CustomerResponseLog customerResponseLog
-        ON customerRequestLog.id=customerResponseLog.reqId
-        WHERE customerRequestLog.customerId=9 AND customerResponseLog.hasCost=1
-        GROUP BY customerRequestLog.apiTypeId
-        )
-        )
-    </select>
-    <select id="d">
-        SELECT apiId,count(apiId),apiTypeId,count(apiTypeId),customerId
-        FROM qydata.CustomerRequestLog customerRequestLog
-        LEFT JOIN qydata.CustomerResponseLog customerResponseLog
-        ON customerRequestLog.id=customerResponseLog.reqId
-        WHERE customerId=10
-        GROUP BY apiTypeId
-    </select>
+    <!--插入客户每周的充值数据-->
+    <insert id="addCustomerWeekRechargeRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.WeekMonthAmount(years,months,weeks,totleAmount,customerId,tableName,weekMonthTypeId,
+        beginTime,endTime,createTime)
+        VALUES
+        <foreach collection="list" item="weekMonthAmount" index="index" separator=",">
+            (
+            #{weekMonthAmount.years},#{weekMonthAmount.months},#{weekMonthAmount.weeks},#{weekMonthAmount.totleAmount},
+            #{weekMonthAmount.customerId},#{weekMonthAmount.tableName},#{weekMonthAmount.weekMonthTypeId},#{weekMonthAmount.beginTime},
+            #{weekMonthAmount.endTime},sysdate()
+            )
+        </foreach>
+    </insert>
+
+    <!--插入客户每月的充值数据-->
+    <insert id="addCustomerMonthRechargeRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.WeekMonthAmount(years,months,totleAmount,customerId,tableName,weekMonthTypeId,
+        beginTime,endTime,createTime)
+        VALUES
+        <foreach collection="list" item="weekMonthAmount" index="index" separator=",">
+            (
+            #{weekMonthAmount.years},#{weekMonthAmount.months},#{weekMonthAmount.totleAmount},#{weekMonthAmount.customerId},
+            #{weekMonthAmount.tableName},#{weekMonthAmount.weekMonthTypeId},#{weekMonthAmount.beginTime},
+            #{weekMonthAmount.endTime},sysdate()
+            )
+        </foreach>
+    </insert>
+
+    <!--<select id="c">-->
+        <!--SELECT apiId,price-->
+        <!--FROM qydata.CustomerApi-->
+        <!--WHERE customerId=9-->
+        <!--AND apiId-->
+        <!--IN (-->
+        <!--SELECT id-->
+        <!--FROM qydata.Api-->
+        <!--WHERE apiTypeId IN (-->
+        <!--SELECT customerRequestLog.apiTypeId-->
+        <!--FROM qydata.CustomerRequestLog customerRequestLog-->
+        <!--LEFT JOIN qydata.CustomerResponseLog customerResponseLog-->
+        <!--ON customerRequestLog.id=customerResponseLog.reqId-->
+        <!--WHERE customerRequestLog.customerId=9 AND customerResponseLog.hasCost=1-->
+        <!--GROUP BY customerRequestLog.apiTypeId-->
+        <!--)-->
+        <!--)-->
+    <!--</select>-->
+    <!--<select id="d">-->
+        <!--SELECT apiId,count(apiId),apiTypeId,count(apiTypeId),customerId-->
+        <!--FROM qydata.CustomerRequestLog customerRequestLog-->
+        <!--LEFT JOIN qydata.CustomerResponseLog customerResponseLog-->
+        <!--ON customerRequestLog.id=customerResponseLog.reqId-->
+        <!--WHERE customerId=10-->
+        <!--GROUP BY apiTypeId-->
+    <!--</select>-->
 
 </mapper>

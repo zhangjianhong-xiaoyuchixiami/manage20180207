@@ -1,6 +1,8 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -10,45 +12,7 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-
-                <div class="span12">
-
-                    <h3 class="page-title">
-
-                    <#--客户信息-->
-
-                    </h3>
-
-                    <ul class="breadcrumb">
-
-                        <li>
-
-                            <i class="icon-home"></i>
-
-                            <a href="/view/successUrl">首页</a>
-
-                            <i class="icon-angle-right"></i>
-
-                        </li>
-
-                        <li>
-
-                            <a href="#">财务管理</a>
-
-                            <i class="icon-angle-right"></i>
-
-                        </li>
-
-                        <li><a href="#">财务报表</a></li>
-
-                    </ul>
-
-                    <!-- END PAGE TITLE & BREADCRUMB-->
-
-                </div>
-
-            </div>
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
 
