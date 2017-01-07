@@ -25,6 +25,9 @@ public class WeekMonthAmount implements Serializable {
     private Timestamp createTime;
     private Timestamp timestamp;
     private String  temporal;
+    private Integer apiId;
+    private Integer countApiSum;
+    private Integer price;
 
 
     public Integer getId() {
@@ -129,6 +132,30 @@ public class WeekMonthAmount implements Serializable {
 
     public void setTemporal(String temporal) {
         this.temporal = temporal;
+    }
+
+    public Integer getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(Integer apiId) {
+        this.apiId = apiId;
+    }
+
+    public Integer getCountApiSum() {
+        return countApiSum;
+    }
+
+    public void setCountApiSum(Integer countApiSum) {
+        this.countApiSum = countApiSum;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     @Override

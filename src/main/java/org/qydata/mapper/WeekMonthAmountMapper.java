@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.entity.CustomerApi;
 import org.qydata.entity.WeekMonthAmount;
 
 import java.util.List;
@@ -24,19 +25,40 @@ public interface WeekMonthAmountMapper {
     public List<WeekMonthAmount> getAllCustomerMonthRechargeRecord()throws Exception;
 
     /**
-     * 插入客户每周的充值数据
+     * 插入客户每周的数据
      * @param weekAmountList
      * @return
      * @throws Exception
      */
-    public boolean addCustomerWeekRechargeRecord(List<WeekMonthAmount> weekAmountList)throws Exception;
+    public boolean addWeekRecord(List<WeekMonthAmount> weekAmountList)throws Exception;
 
     /**
-     * 插入客户每月的充值数据
+     * 插入客户每月的数据
      * @param monthAmountList
      * @return
      * @throws Exception
      */
-    public boolean addCustomerMonthRechargeRecord(List<WeekMonthAmount> monthAmountList)throws Exception;
+    public boolean addMonthRecord(List<WeekMonthAmount> monthAmountList)throws Exception;
 
+    /**
+     * 统计客户每周的Api消费数据
+     * @return
+     * @throws Exception
+     */
+    public List<WeekMonthAmount> getAllCustomerApiWeekConsumeRecord()throws Exception;
+
+    /**
+     * 统计客户每月的Api消费数据
+     * @return
+     * @throws Exception
+     */
+    public List<WeekMonthAmount> getAllCustomerApiMonthConsumeRecord()throws Exception;
+
+    /**
+     * 根据客户账号Id统计该客户的Api价格
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerApi> getCustomerApiPriceByCustomerId(Integer customerId)throws Exception;
 }

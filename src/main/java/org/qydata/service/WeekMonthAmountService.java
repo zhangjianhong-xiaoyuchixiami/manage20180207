@@ -23,4 +23,22 @@ public interface WeekMonthAmountService {
     @Transactional
     public boolean getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount()throws Exception;
 
+
+    /**
+     * 统计和插入客户每周的Api消费数据
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public boolean getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount()throws Exception;
+
+    /**
+     * 统计和插入客户每月的消费数据
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public boolean getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount()throws Exception;
+
+
 }

@@ -20,7 +20,7 @@
 
                 <#--搜索框-->
                     <#if deptIdList??>
-                        <form action="/customer-balance/find-all-customer-by-dept-id" method="get">
+                        <form action="/finance/find-all-customer-by-dept-id" method="get">
 
                             <div class="clearfix margin-bottom-20">
 
@@ -46,7 +46,7 @@
 
                         </form>
                     <#else >
-                        <form action="/customer-balance/find-all-customer" method="get">
+                        <form action="/finance/find-all-customer" method="get">
 
                             <div class="clearfix margin-bottom-20">
 
@@ -94,15 +94,15 @@
 
                                     <ul class="dropdown-menu pull-right">
 
-                                        <li><a href="#"><i class="icon-print"></i> 打印</a></li>
+                                    <#--<li><a href="#"><i class="icon-print"></i> 打印</a></li>-->
 
                                         <li><a href="#"><i class="icon-share icon-black"></i> 导出Excel</a></li>
 
-                                        <#--<li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>-->
+                                    <#--<li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>-->
 
-                                        <#--<li class="divider"></li>-->
+                                    <#--<li class="divider"></li>-->
 
-                                        <#--<li><a href="#"><i class="i"></i> Make admin</a></li>-->
+                                    <#--<li><a href="#"><i class="i"></i> Make admin</a></li>-->
 
                                     </ul>
 
@@ -126,7 +126,7 @@
                                     <th>充值总额（单位：元</th>
                                     <th>消费总额（单位：元</th>
                                     <th>余额（单位：元</th>
-                                    <th style="text-align: center; width: 10%;">操作</th>
+                                    <th style="text-align: center; width: 12%;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -141,24 +141,26 @@
                                             <td data-title="充值总额">123</td>
                                             <td data-title="消费总额">123</td>
                                             <td data-title="账号余额">${customer.balance/100.0}</td>
-                                            <td data-title="操作" style="text-align: center">
-                                                <#--<p>-->
-                                                    <#--<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>-->
-                                                    <#--|-->
-                                                    <#--<a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费明细</a>-->
-                                                <#--</p>-->
-                                                    <ul class="nav nav-tabs">
-                                                        <li class="dropdown">
-                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                                充值记录 <span class="caret"></span>
-                                                            </a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a href="#">消费记录</a></li>
-                                                                <li><a href="#">周历史数据</a></li>
-                                                                <li><a href="#">月历史数据</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
+                                            <td data-title="" style="text-align: center">
+
+                                                <#--<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>-->
+                                                <#--|-->
+                                                <#--<a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费明细</a>-->
+
+                                                <ul class="nav nav-tabs" style="margin-bottom: 0px; min-width: 94px; border-bottom: 0px solid #f4f4f4;">
+                                                    <li class="dropdown" style="float: none;">
+                                                        <a class="dropdown-toggle" style=" padding-bottom: 0px; padding-top: 0px;" data-toggle="dropdown" href="#">
+                                                            操作 <span class="caret"></span>
+                                                        </a>
+                                                        <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
+                                                            <li style="text-align: left"><a style="color: #08c;" href="#">充值记录</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="#">消费记录</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="#">周历史数据</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="#">月历史数据</a></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+
                                             </td>
                                         </tr>
                                         </#list>

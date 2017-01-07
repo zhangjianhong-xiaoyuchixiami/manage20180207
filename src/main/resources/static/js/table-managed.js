@@ -83,8 +83,8 @@ var TableManaged = function () {
                 ],
                 "aaSorting": [[7, 'asc']],
                 "aLengthMenu": [
-                    [5, 15, 20, -1],
-                    [5, 15, 20, "全部"] // change per page values here
+                    [10, 15, 20, -1],
+                    [10, 15, 20, "全部"] // change per page values here
                 ],
                 // set the initial value
                 "iDisplayLength": 10, //每页显示多少行
@@ -112,8 +112,26 @@ var TableManaged = function () {
                     'aTargets': [0]
                 }
                 ]
-
+                //"bProcessing": true // 是否显示取数据时的那个等待提示
+                // "bServerSide": true,//这个用来指明是通过服务端来取数据
+                // "sAjaxSource": "tableDemoAjax.html",//这个是请求的地址
+                // "fnServerData": retrieveData // 获取数据的处理函数
             });
+
+            // function retrieveData( sSource111,aoData111, fnCallback111) {
+            //     $.ajax({
+            //         url : sSource111,//这个就是请求地址对应sAjaxSource
+            //         data : {"aoData":JSON.stringify(aoData111)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            //         type : 'post',
+            //         dataType : 'json',
+            //         async : false,
+            //         success : function(result) {
+            //             fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+            //         },
+            //         error : function(msg) {
+            //         }
+            //     });
+            // }
 
             //partnersFinancialAccount
             $('#sample_3').dataTable({

@@ -44,7 +44,7 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
             weekMonthAmountOne.setEndTime(sdf.parse(temporalList.get(temporalList.size()-1)));
             weekAmounts.add(weekMonthAmountOne);
         }
-        return weekMonthAmountMapper.addCustomerWeekRechargeRecord(weekAmounts);
+        return weekMonthAmountMapper.addWeekRecord(weekAmounts);
     }
 
 
@@ -70,6 +70,57 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
             weekMonthAmountOne.setEndTime(sdf.parse(temporalList.get(temporalList.size()-1)));
             monthAmounts.add(weekMonthAmountOne);
         }
-        return weekMonthAmountMapper.addCustomerMonthRechargeRecord(monthAmounts);
+        return weekMonthAmountMapper.addMonthRecord(monthAmounts);
+    }
+
+    @Override
+    public boolean getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount() throws Exception {
+        List<WeekMonthAmount> weekAmountList = weekMonthAmountMapper.getAllCustomerApiWeekConsumeRecord();
+        List<WeekMonthAmount> weekAmounts = new ArrayList<>();
+        Iterator<WeekMonthAmount> iterator = weekAmountList.iterator();
+        while (iterator.hasNext()){
+            WeekMonthAmount weekMonthAmount = iterator.next();
+            List<String> temporalList = IpTool.spiltStr(weekMonthAmount.getTemporal());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String tableName = "CustomerRequestLogCustomerResponseLog";
+            Integer weekMonthTypeId = 1;
+            WeekMonthAmount weekMonthAmountOne = new WeekMonthAmount();
+            weekMonthAmountOne.setYears(weekMonthAmount.getYears());
+            weekMonthAmountOne.setMonths(weekMonthAmount.getMonths());
+            weekMonthAmountOne.setWeeks(weekMonthAmount.getWeeks());
+            weekMonthAmountOne.setTotleAmount(new Long(weekMonthAmount.getCountApiSum()*weekMonthAmount.getPrice()));
+            weekMonthAmountOne.setCustomerId(weekMonthAmount.getCustomerId());
+            weekMonthAmountOne.setTableName(tableName);
+            weekMonthAmountOne.setWeekMonthTypeId(weekMonthTypeId);
+            weekMonthAmountOne.setBeginTime(sdf.parse(temporalList.get(0)));
+            weekMonthAmountOne.setEndTime(sdf.parse(temporalList.get(temporalList.size()-1)));
+            weekAmounts.add(weekMonthAmountOne);
+        }
+        return weekMonthAmountMapper.addWeekRecord(weekAmounts);
+    }
+
+    @Override
+    public boolean getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount() throws Exception {
+        List<WeekMonthAmount> monthAmountList = weekMonthAmountMapper.getAllCustomerApiMonthConsumeRecord();
+        List<WeekMonthAmount> monthAmounts = new ArrayList<>();
+        Iterator<WeekMonthAmount> iterator = monthAmountList.iterator();
+        while (iterator.hasNext()){
+            WeekMonthAmount weekMonthAmount = iterator.next();
+            List<String> temporalList = IpTool.spiltStr(weekMonthAmount.getTemporal());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String tableName = "CustomerRequestLogCustomerResponseLog";
+            Integer weekMonthTypeId = 2;
+            WeekMonthAmount weekMonthAmountOne = new WeekMonthAmount();
+            weekMonthAmountOne.setYears(weekMonthAmount.getYears());
+            weekMonthAmountOne.setMonths(weekMonthAmount.getMonths());
+            weekMonthAmountOne.setTotleAmount(new Long(weekMonthAmount.getCountApiSum()*weekMonthAmount.getPrice()));
+            weekMonthAmountOne.setCustomerId(weekMonthAmount.getCustomerId());
+            weekMonthAmountOne.setTableName(tableName);
+            weekMonthAmountOne.setWeekMonthTypeId(weekMonthTypeId);
+            weekMonthAmountOne.setBeginTime(sdf.parse(temporalList.get(0)));
+            weekMonthAmountOne.setEndTime(sdf.parse(temporalList.get(temporalList.size()-1)));
+            monthAmounts.add(weekMonthAmountOne);
+        }
+        return weekMonthAmountMapper.addMonthRecord(monthAmounts);
     }
 }

@@ -39,46 +39,22 @@ public class FinanceController {
 
     //查找公司财务账单
     @RequestMapping(value = "/find-all-customer")
-    public String findAllCustomer(HttpServletRequest request, Model model, String content, String [] customerTypeId){
-
-        PageModel<Customer> pageModel = new PageModel();
-        String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-        if(content!=null){
-            map.put("content",content);
-        }
-        List customerTypeIdList = new ArrayList();
-        if(customerTypeId != null && customerTypeId.length >0){
-            for (int i=0;i<customerTypeId.length;i++){
-                customerTypeIdList.add(customerTypeId[i]);
-            }
-        }
-        map.put("customerTypeIdList",customerTypeIdList);
-        PageModel<Customer> pageModelOne = null;
+    public String findAllCustomer(HttpServletRequest request, Model model, String content){
         try {
+            Map<String,Object> map = new HashMap<String,Object>();
+            if(content!=null){
+                map.put("content",content);
+            }
+            List customerTypeIdList = new ArrayList();
+            customerTypeIdList.add(1);
+            map.put("customerTypeIdList",customerTypeIdList);
+            PageModel<Customer> pageModelOne = null;
             pageModelOne = customerService.findAllCustomer(map);
+            model.addAttribute("customerList",pageModelOne.getList());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("content",content);
-        model.addAttribute("customerTypeIdArray",customerTypeId);
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("customerList",pageModelOne.getList());
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
 
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
-        }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
         return "/finance/customerFinancialAccount";
     }
 
