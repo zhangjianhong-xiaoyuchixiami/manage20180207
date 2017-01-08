@@ -82,6 +82,7 @@
             </foreach>
         </if>
         order by c.createTime desc
+        limit #{beginIndex},#{lineSize}
 
     </select>
     <!--统计当前登陆者可见客户的所有数据-->

@@ -1,6 +1,5 @@
 package org.qydata.mapper;
 
-import org.qydata.entity.CustomerApi;
 import org.qydata.entity.WeekMonthAmount;
 
 import java.util.List;
@@ -54,11 +53,4 @@ public interface WeekMonthAmountMapper {
      */
     public List<WeekMonthAmount> getAllCustomerApiMonthConsumeRecord()throws Exception;
 
-    /**
-     * 根据客户账号Id统计该客户的Api价格
-     * @param customerId
-     * @return
-     * @throws Exception
-     */
-    public List<CustomerApi> getCustomerApiPriceByCustomerId(Integer customerId)throws Exception;
 }

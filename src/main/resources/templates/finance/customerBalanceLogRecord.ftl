@@ -21,82 +21,48 @@
 
                 <#--搜索框-->
 
-                    <#if CustomerBalanceModifyReason=="充值">
-                        <form action="/customerBalance/findAllRechargeCustomerBalanceLogByCustomerId/${customerId}" method="get">
 
-                            <div class="clearfix margin-bottom-20">
+                    <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customerId}" method="get">
 
-                                <div class="control-group pull-left" style="margin-bottom: -20px;">
+                        <div class="clearfix margin-bottom-20">
 
-                                    <label class="control-label">充值理由</label>
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
-                                    <div class="controls">
+                                <label class="control-label">充值理由</label>
 
-                                        <label class="checkbox">
+                                <div class="controls">
 
-                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="1">正常充值
+                                    <label class="checkbox">
 
-                                        </label>
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="1">正常充值
 
-                                        <label class="checkbox">
+                                    </label>
 
-                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="2">弥补充值
+                                    <label class="checkbox">
 
-                                        </label>
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="2">弥补充值
 
-                                        <label class="checkbox">
+                                    </label>
 
-                                            <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="3">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="3">测试充值
+                                    <label class="checkbox">
 
-                                        </label>
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="3">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="3">测试充值
 
-                                    </div>
+                                    </label>
 
                                 </div>
 
-                                <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
+                            </div>
 
-                                    <label class="control-label">起始日期</label>
+                            <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
 
-                                    <div class="controls">
+                                <label class="control-label">起始日期</label>
 
-                                        <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+                                <div class="controls">
 
-                                            <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text"><span class="add-on"><i class="icon-calendar"></i></span>
+                                    <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
 
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="control-group pull-left" style="margin-bottom: -20px;">
-
-                                    <label class="control-label">结束日期</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
-
-                                            <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text"><span class="add-on"><i class="icon-calendar"></i></span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="control-group pull-left" style="margin-bottom: -20px;">
-
-                                    <label class="control-label">&nbsp;&nbsp;</label>
-
-                                    <div class="controls" >
-
-                                        <div class="input-append">
-
-                                            <button class="btn black" type="submit">搜索</button>
-
-                                        </div>
+                                        <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
 
                                     </div>
 
@@ -104,14 +70,48 @@
 
                             </div>
 
-                        </form>
-                    </#if>
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+
+                                <label class="control-label">结束日期</label>
+
+                                <div class="controls">
+
+                                    <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                        <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+
+                                <label class="control-label">&nbsp;&nbsp;</label>
+
+                                <div class="controls" >
+
+                                    <div class="input-append">
+
+                                        <button class="btn black" type="submit">搜索</button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
                 <#--表单-->
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i>北风分期分期付</div>
+                            <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if></div>
 
                             <div class="tools">
 
@@ -133,7 +133,7 @@
 
                                 <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${totleAmount/100.0}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 

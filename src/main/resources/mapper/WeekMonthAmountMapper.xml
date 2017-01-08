@@ -103,11 +103,8 @@
         WHERE customerApi.customerId=monthConsume.customerId AND monthConsume.apiId=customerApi.apiId
     </select>
 
-    <!--根据客户账号Id统计该客户的Api价格-->
-    <select id="getCustomerApiPriceByCustomerId" parameterType="Integer" resultType="CustomerApi">
-        SELECT apiId,price
-        FROM qydata.CustomerApi
-        WHERE customerId=10
-    </select>
+
+
+
 
 </mapper>

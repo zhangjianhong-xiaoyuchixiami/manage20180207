@@ -130,18 +130,18 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <#if customerList??>
-                                        <#list customerList as customer>
+                                    <#if customerFinanceList??>
+                                        <#list customerFinanceList as customer>
                                         <tr>
-                                            <td data-title="公司名称">${customer.company.name}</td>
-                                            <td data-title="周充值总额">123</td>
-                                            <td data-title="周消费总额">123</td>
-                                            <td data-title="月充值总额">123</td>
-                                            <td data-title="月消费总额">123</td>
-                                            <td data-title="充值总额">123</td>
-                                            <td data-title="消费总额">123</td>
-                                            <td data-title="账号余额">${customer.balance/100.0}</td>
-                                            <td data-title="" style="text-align: center">
+                                            <td data-title="公司名称">${customer.companyName}</td>
+                                            <td data-title="周充值总额"><#if customer.chargeWeekTotleAmount??>${customer.chargeWeekTotleAmount/100.0}<#else >0</#if></td>
+                                            <td data-title="周消费总额"><#if customer.consumeWeekTotleAmount??>${customer.consumeWeekTotleAmount/100.0}<#else >0</#if></td>
+                                            <td data-title="月充值总额"><#if customer.chargeMonthTotleAmount??>${customer.chargeMonthTotleAmount/100.0}<#else >0</#if></td>
+                                            <td data-title="月消费总额"><#if customer.consumeMonthTotleAmount??>${customer.consumeMonthTotleAmount/100.0}<#else >0</#if></td>
+                                            <td data-title="充值总额"><#if customer.chargeTotleAmount??>${customer.chargeTotleAmount/100.0}<#else >0</#if></td>
+                                            <td data-title="消费总额"><#if customer.consumeTotleAmount??>${customer.consumeTotleAmount/100.0}<#else >0</#if></td>
+                                            <td data-title="账号余额"><#if customer.balance??>${customer.balance/100.0}<#else >0</#if></td>
+                                            <td data-title="操作" style="text-align: center">
 
                                                 <#--<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>-->
                                                 <#--|-->
@@ -153,8 +153,8 @@
                                                             操作 <span class="caret"></span>
                                                         </a>
                                                         <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
-                                                            <li style="text-align: left"><a style="color: #08c;" href="#">充值记录</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="#">消费记录</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1&companyName=${customer.companyName}">充值记录</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费记录</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="#">周历史数据</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="#">月历史数据</a></li>
                                                         </ul>
