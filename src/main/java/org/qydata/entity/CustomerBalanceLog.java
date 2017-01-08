@@ -1,5 +1,8 @@
 package org.qydata.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -72,5 +75,14 @@ public class CustomerBalanceLog implements Serializable{
 
     public void setCustomerBalanceModifyReason(CustomerBalanceModifyReason customerBalanceModifyReason) {
         this.customerBalanceModifyReason = customerBalanceModifyReason;
+    }
+    public String toString(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

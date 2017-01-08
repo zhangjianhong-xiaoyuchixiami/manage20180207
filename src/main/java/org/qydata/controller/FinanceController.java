@@ -155,16 +155,18 @@ public class FinanceController {
             map.put("endDate", endDate+" "+"23:59:59");
         }
         List<CustomerBalanceLog> customerBalanceLogList = null;
+        long totleAmount = 0;
         try {
             customerBalanceLogList = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
+            if(customerBalanceLogList != null && customerBalanceLogList.size()>0) {
+                Iterator<CustomerBalanceLog> iterator = customerBalanceLogList.iterator();
+                while (iterator.hasNext()) {
+                    CustomerBalanceLog customerBalanceLog = iterator.next();
+                    totleAmount = totleAmount + customerBalanceLog.getAmount();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        Long totleAmount = null;
-        Iterator<CustomerBalanceLog> iterator = customerBalanceLogList.iterator();
-        while (iterator.hasNext()){
-            CustomerBalanceLog customerBalanceLog = iterator.next();
-            totleAmount+=customerBalanceLog.getAmount();
         }
         model.addAttribute("customerBalanceLogList",customerBalanceLogList);
         model.addAttribute("customerId",customerId);

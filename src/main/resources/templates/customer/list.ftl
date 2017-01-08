@@ -69,6 +69,8 @@
 
                 <div class="span12">
 
+                    <button type="button" id="dddd">点击</button>
+
                     <div class="portlet box light-grey">
 
                         <div class="portlet-title">
@@ -97,13 +99,23 @@
 
                                 <tr>
 
-                                    <th>col1</th>
+                                    <th>id</th>
 
-                                    <th>col2</th>
+                                    <th>name</th>
+
+                                    <#--<th>username</th>-->
+
+                                    <#--<th>tel</th>-->
+
+                                    <#--<th>operator</th>-->
 
                                 </tr>
 
                                 </thead>
+
+                                <tbody>
+
+                                </tbody>
 
                             </table>
 
@@ -165,49 +177,92 @@
 
 <script src="/js/table-managed.js"></script>
 
-<script>
+<script type="text/javascript">
+    $("#dddd").on("click",function (){
 
-    //    jQuery(document).ready(function() {
-    //
-    //        App.init();
-    //
-    //        TableManaged.init();
-    //
-    //    });
-
-</script>
-<script>
-    $(document).ready(function() {
-
-//        $("#sample_5").on("click",function () {
-
-        $(function () {
-            //初始化表格
-            var table = $("#sample_5").dataTable({
-                "bProcessing": false, // 是否显示取数据时的那个等待提示
-                "bServerSide": true,//这个用来指明是通过服务端来取数据
-                "sAjaxSource": "/customer/list",//这个是请求的地址
-                "fnServerData": retrieveData // 获取数据的处理函数
-            });
-
-            function retrieveData( sSource111,aoData111, fnCallback111) {
-                $.ajax({
-                    url : sSource111,//这个就是请求地址对应sAjaxSource
-                    data : {"aoData":JSON.stringify(aoData111)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
-                    type : 'post',
-                    dataType : 'json',
-                    async : false,
-                    success : function(result) {
-                        fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
-                    },
-                    error : function(msg) {
-                    }
-                });
-            }
+        //初始化表格
+        var table = $("#sample_5").dataTable({
+            "oLanguage" : {  //设置语言
+                "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                "sZeroRecords" : "对不起，没有匹配的数据",
+                "sInfo" : "第 _START_ - _END_ 条 / 共 _TOTAL_ 条数据",
+                "sInfoEmpty" : "没有匹配的数据",
+                "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
+                "sProcessing" : "正在加载中...",
+                "sSearch" : "请输入公司名称：",
+                "oPaginate" : {
+                    "sFirst" : "第一页",
+                    "sPrevious" : " 上一页 ",
+                    "sNext" : " 下一页 ",
+                    "sLast" : " 最后一页 "
+                }
+            },
+            "bFilter" : false, //设置全文搜索框，默认true
+            "bProcessing": true ,// 是否显示取数据时的那个等待提示
+             "bServerSide": true,//这个用来指明是通过服务端来取数据
+             "sAjaxSource": "/customer/list",//这个是请求的地址
+             "fnServerData": retrieveData // 获取数据的处理函数
         });
 
+        function retrieveData( sSource,aoData, fnCallback) {
+            $.ajax({
+                url : sSource,//这个就是请求地址对应sAjaxSource
+                data : {"aoData":JSON.stringify(aoData)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                type : 'post',
+                dataType : 'json',
+                async : false,
+                success : function(result) {
+                    fnCallback(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+                }
+            });
+        }
     });
 </script>
+<#--<script>-->
+
+    <#--//    jQuery(document).ready(function() {-->
+    <#--//-->
+    <#--//        App.init();-->
+    <#--//-->
+    <#--//        TableManaged.init();-->
+    <#--//-->
+    <#--//    });-->
+
+<#--</script>-->
+<#--<script>-->
+    <#--$(document).ready(function() {-->
+
+<#--//        $("#sample_5").on("click",function () {-->
+
+        <#--$(function () {-->
+            <#--//初始化表格-->
+            <#--var table = $("#sample_5").dataTable({-->
+                <#--"bProcessing": true, // 是否显示取数据时的那个等待提示-->
+                <#--"bServerSide": true,//这个用来指明是通过服务端来取数据-->
+                <#--"sAjaxSource": "/customer/list",//这个是请求的地址-->
+                <#--"fnServerData": retrieveData // 获取数据的处理函数-->
+            <#--});-->
+
+            <#--function retrieveData( sSource111,aoData111, fnCallback111) {-->
+                <#--$.ajax({-->
+                    <#--url : sSource111,//这个就是请求地址对应sAjaxSource-->
+                    <#--data : {"aoData":JSON.stringify(aoData111)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数-->
+                    <#--type : 'post',-->
+                    <#--dataType : 'json',-->
+                    <#--async : false,-->
+                    <#--success : function(result) {-->
+                        <#--fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的-->
+                    <#--},-->
+                    <#--error : function(msg) {-->
+                    <#--}-->
+                <#--});-->
+            <#--}-->
+        <#--});-->
+
+    <#--});-->
+<#--</script>-->
+
+
 
 <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
 
