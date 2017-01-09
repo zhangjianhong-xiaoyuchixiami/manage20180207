@@ -1,13 +1,14 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
+import net.sf.json.JSONArray;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerFinance;
-import org.qydata.entity.CustomerBalanceLog;
-import org.qydata.entity.Dept;
-import org.qydata.entity.User;
+import org.qydata.entity.*;
 import org.qydata.service.CustomerBalanceLogService;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerService;
@@ -102,7 +103,6 @@ public class FinanceController {
             return "/finance/customerFinancialAccount";
         }
     }
-
     /**
      * 指定账号充值记录
      * @param customerId
@@ -177,16 +177,92 @@ public class FinanceController {
         model.addAttribute("totleAmount",totleAmount);
         return "/finance/customerBalanceLogRecord";
     }
-
-
     /**
      * 指定账号Api消费记录
      * @return
      */
-    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id")
-    public String findAllApiConsumeRecordByCustomerId(){
+    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/{customerId}")
+    public String findAllApiConsumeRecordByCustomerId(@PathVariable Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        System.out.println(apiTypeId);
+        System.out.println(apiVendorId);
+        if(apiTypeId != null){
+            map.put("apiTypeId",apiTypeId);
+        }
+        if(apiVendorId != null){
+            map.put("apiVendorId",apiVendorId);
+        }
+        List<ApiType> apiTypeList = null;
+        long totleAmount =0;
+        List<CustomerApiType> customerApiTypeList = new ArrayList<>();
+        try {
+            apiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+            if(apiTypeList != null && apiTypeList.size()>0) {
+                Iterator<ApiType> iterator = apiTypeList.iterator();
+
+                while (iterator.hasNext()) {
+                    ApiType apiType = iterator.next();
+                    List<CustomerApi> customerApiList = apiType.getCustomerApiList();
+                    long totlePrice = 0;
+                    for (int i=0;i<customerApiList.size();i++){
+                        CustomerApi customerApi = customerApiList.get(i);
+                        totlePrice = totlePrice + customerApi.getPrice();
+                    }
+                    System.out.println(totlePrice);
+                    CustomerApiType customerApiType = new CustomerApiType();
+                    customerApiType.setApiTypeId(apiType.getId());
+                    customerApiType.setTypeName(apiType.getName());
+                    customerApiType.setTotlePrice(totlePrice);
+                    customerApiType.setVendorList(apiType.getApiVendorList());
+                    customerApiTypeList.add(customerApiType);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("customerApiTypeList",customerApiTypeList);
+        model.addAttribute("customerId",customerId);
+        model.addAttribute("apiTypeId",apiTypeId);
+        model.addAttribute("apiVendorId",apiVendorId);
+        model.addAttribute("companyName",companyName);
+        model.addAttribute("totleAmount",totleAmount);
         return "/finance/customerApiConsumeRecord";
     }
+
+    /**
+     * 二级级联
+     * @param request
+     * @return
+     */
+    @RequestMapping("find-api-vendor-by-api-type-id")
+    @ResponseBody
+    public String findApiVendorByApiTypeId(HttpServletRequest request){
+        Integer apiTypeId = Integer.parseInt(request.getParameter("apiTypeId"));
+        Integer customerId = Integer.parseInt(request.getParameter("customerId"));
+
+        Map<String, Object> map = new HashedMap();
+        map.put("customerId", customerId);
+        map.put("apiTypeId", apiTypeId);
+        List<ApiType> customerApiList = null;
+        ApiType apiType = null;
+        try {
+            customerApiList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+            if(customerApiList != null) {
+                for (int i = 0; i < customerApiList.size(); i++) {
+                    apiType = customerApiList.get(i);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONArray jsonArray = JSONArray.fromObject(apiType.getApiVendorList());
+        return jsonArray.toString();
+    }
+
+
+
+
 
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail")
     public String findAllApiConsumeDetailRecordByCustomerId(){

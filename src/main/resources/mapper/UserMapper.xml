@@ -133,8 +133,9 @@
         update qyauth.User set status=1 where username=#{value}
     </update>
 
-    <select id="findAllUser1" resultType="User">
+    <select id="findAllUser1" parameterType="int" resultType="User">
         SELECT id,name,username,tel
         FROM qyauth.User
+        limit #{param1},#{param2}
     </select>
 </mapper>

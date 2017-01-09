@@ -103,11 +103,11 @@
 
                                     <th>name</th>
 
-                                    <#--<th>username</th>-->
+                                    <th>username</th>
 
-                                    <#--<th>tel</th>-->
+                                    <th>tel</th>
 
-                                    <#--<th>operator</th>-->
+                                    <th>operator</th>
 
                                 </tr>
 
@@ -182,6 +182,14 @@
 
         //初始化表格
         var table = $("#sample_5").dataTable({
+
+            "aLengthMenu": [
+                [5, 15, 20, -1],
+                [5, 15, 20, "全部"] // change per page values here
+            ],
+            "iDisplayLength": 15, //每页显示多少行
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            "sPaginationType": "bootstrap",
             "oLanguage" : {  //设置语言
                 "sLengthMenu" : "每页显示 _MENU_ 条记录",
                 "sZeroRecords" : "对不起，没有匹配的数据",
@@ -199,9 +207,22 @@
             },
             "bFilter" : false, //设置全文搜索框，默认true
             "bProcessing": true ,// 是否显示取数据时的那个等待提示
-             "bServerSide": true,//这个用来指明是通过服务端来取数据
-             "sAjaxSource": "/customer/list",//这个是请求的地址
-             "fnServerData": retrieveData // 获取数据的处理函数
+            "bServerSide": true,//这个用来指明是通过服务端来取数据
+            "sAjaxDataProp" : "aaData",
+            "sAjaxSource": "/customer/list",//这个是请求的地址
+            "fnServerData": retrieveData ,// 获取数据的处理函数
+            "aoColumns": [
+                { "mDataProp" : "id" },
+                { "mDataProp" : "name"},
+                { "mDataProp" : "username"},
+                { "mDataProp" : "tel","bSortable": false}
+            ],
+            "aoColumnDefs":[
+                {"aTargets":[4],"mRender":function(){
+                    return "<a href=#>删除</a>"}
+                }
+            ]
+
         });
 
         function retrieveData( sSource,aoData, fnCallback) {
@@ -213,6 +234,7 @@
                 async : false,
                 success : function(result) {
                     fnCallback(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+
                 }
             });
         }
@@ -220,46 +242,46 @@
 </script>
 <#--<script>-->
 
-    <#--//    jQuery(document).ready(function() {-->
-    <#--//-->
-    <#--//        App.init();-->
-    <#--//-->
-    <#--//        TableManaged.init();-->
-    <#--//-->
-    <#--//    });-->
+<#--//    jQuery(document).ready(function() {-->
+<#--//-->
+<#--//        App.init();-->
+<#--//-->
+<#--//        TableManaged.init();-->
+<#--//-->
+<#--//    });-->
 
 <#--</script>-->
 <#--<script>-->
-    <#--$(document).ready(function() {-->
+<#--$(document).ready(function() {-->
 
 <#--//        $("#sample_5").on("click",function () {-->
 
-        <#--$(function () {-->
-            <#--//初始化表格-->
-            <#--var table = $("#sample_5").dataTable({-->
-                <#--"bProcessing": true, // 是否显示取数据时的那个等待提示-->
-                <#--"bServerSide": true,//这个用来指明是通过服务端来取数据-->
-                <#--"sAjaxSource": "/customer/list",//这个是请求的地址-->
-                <#--"fnServerData": retrieveData // 获取数据的处理函数-->
-            <#--});-->
+<#--$(function () {-->
+<#--//初始化表格-->
+<#--var table = $("#sample_5").dataTable({-->
+<#--"bProcessing": true, // 是否显示取数据时的那个等待提示-->
+<#--"bServerSide": true,//这个用来指明是通过服务端来取数据-->
+<#--"sAjaxSource": "/customer/list",//这个是请求的地址-->
+<#--"fnServerData": retrieveData // 获取数据的处理函数-->
+<#--});-->
 
-            <#--function retrieveData( sSource111,aoData111, fnCallback111) {-->
-                <#--$.ajax({-->
-                    <#--url : sSource111,//这个就是请求地址对应sAjaxSource-->
-                    <#--data : {"aoData":JSON.stringify(aoData111)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数-->
-                    <#--type : 'post',-->
-                    <#--dataType : 'json',-->
-                    <#--async : false,-->
-                    <#--success : function(result) {-->
-                        <#--fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的-->
-                    <#--},-->
-                    <#--error : function(msg) {-->
-                    <#--}-->
-                <#--});-->
-            <#--}-->
-        <#--});-->
+<#--function retrieveData( sSource111,aoData111, fnCallback111) {-->
+<#--$.ajax({-->
+<#--url : sSource111,//这个就是请求地址对应sAjaxSource-->
+<#--data : {"aoData":JSON.stringify(aoData111)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数-->
+<#--type : 'post',-->
+<#--dataType : 'json',-->
+<#--async : false,-->
+<#--success : function(result) {-->
+<#--fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的-->
+<#--},-->
+<#--error : function(msg) {-->
+<#--}-->
+<#--});-->
+<#--}-->
+<#--});-->
 
-    <#--});-->
+<#--});-->
 <#--</script>-->
 
 

@@ -115,8 +115,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUser() {
-        return userMapper.findAllUser1();
+    public List<User> findAllUser(int iDisplayStart, int iDisplayLength) {
+        return userMapper.findAllUser1(iDisplayStart,iDisplayLength);
     }
 
 }

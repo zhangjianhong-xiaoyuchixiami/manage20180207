@@ -98,7 +98,7 @@ public interface UserService {
     @Transactional
     public boolean updateStatusForbid(String username)throws Exception;
 
-    public List<User> findAllUser();
+    public List<User> findAllUser(int iDisplayStart, int iDisplayLength);
 
 
 }

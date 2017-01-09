@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -247,19 +246,14 @@ public class CustomerController {
         System.out.println(sEcho);
         System.out.println(iDisplayStart);
         System.out.println(iDisplayLength);
-
-
-        List<String[]> list = new ArrayList<String[]>();
-        for (int i = 0; i < 20; i++) {
-            String[] d = { "co1_data" + i, "col2_data" + i };
-            list.add(d);
-        }
+        List<User> userList = userService.findAllUser(iDisplayStart,iDisplayLength);
+        JSONArray jsonArray =JSONArray.fromObject(userList);
+        System.out.println(jsonArray.toString());
         JSONObject getObj = new JSONObject();
-
         getObj.put("sEcho", sEcho);// 不知道这个值有什么用,有知道的请告知一下
-        getObj.put("iTotalRecords", 20);//实际的行数
-        getObj.put("iTotalDisplayRecords", 20);//显示的行数,这个要和上面写的一样
-        getObj.put("aaData",list.subList(0,10));//要以JSON格式返回
+        getObj.put("iTotalRecords", 27);//实际的行数
+        getObj.put("iTotalDisplayRecords", 27);//显示的行数,这个要和上面写的一样
+        getObj.put("aaData",jsonArray);//要以JSON格式返回
         return getObj.toString();
     }
 

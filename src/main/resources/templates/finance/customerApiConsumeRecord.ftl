@@ -20,9 +20,20 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance/findAllCustomerBalanceLogByCustomerId" method="get">
+                    <form action="/finance//find-all-customer/find-all-customer-api-consume-record-by-customer-id/${customerId}" method="get">
 
                         <div class="clearfix margin-bottom-20">
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                                <label class="control-label">客户账号Id</label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="customerId" name="customerId" value="${customerId}" class="m-wrap medium">
+
+                                </div>
+                            </div>
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
@@ -30,20 +41,15 @@
 
                                 <div class="controls">
 
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
-
-                                        <option value="">二要素</option>
-                                        <option value="">三要素</option>
-                                        <option value="">四要素</option>
-
-                                    <#--</#list>-->
-                                    <#--</#if>-->
+                                    <select id="apiTypeId" name="apiTypeId" class="medium m-wrap1" tabindex="1" >
+                                        <option value="">请选择...</option>
+                                        <#if customerApiTypeList??>
+                                            <#list customerApiTypeList as customerApiType>
+                                                <option value="${customerApiType.apiTypeId}">${customerApiType.typeName}</option>
+                                            </#list>
+                                        </#if>
                                     </select>
-
                                 </div>
-
                             </div>
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
@@ -51,23 +57,9 @@
                                 <label class="control-label">产品供应商</label>
 
                                 <div class="controls">
-
-
-
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
-
-                                        <option value="">移动</option>
-                                        <option value="">联通</option>
-                                        <option value="">电信</option>
-
-                                    <#--</#list>-->
-                                    <#--</#if>-->
+                                    <select id="apiVendorId" name="apiVendorId" class="medium m-wrap1" tabindex="1">
+                                        <option value="">请选择...</option>
                                     </select>
-
-
-
                                 </div>
 
                             </div>
@@ -96,7 +88,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i>北风分期分期付</div>
+                            <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if></div>
 
                             <div class="tools">
 
@@ -118,7 +110,7 @@
 
                                 <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount/100.0}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
@@ -129,22 +121,21 @@
                                 <tr>
                                     <th>产品类型</th>
                                     <th>产品供应商</th>
-                                    <th style="width: 20%">金额（单位/元</th>
-                                    <th style="text-align: center; width: 20%">操作</th>
+                                    <th style="width: 15%">金额（单位/元</th>
+                                    <th style="text-align: center; width: 13%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#--<#if customerBalanceLogList??>-->
-                                <#--<#list customerBalanceLogList as customerBalanceLog>-->
-                                <tr>
-                                    <td>三要素</td>
-                                    <td>京东</td>
-                                    <td>10</td>
-                                    <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail">明细</a></td>
-                                </tr>
-
-                                <#--</#list>-->
-                                <#--</#if>-->
+                                    <#if customerApiTypeList??>
+                                        <#list customerApiTypeList as customerApiType>
+                                        <tr>
+                                            <td>${customerApiType.typeName}</td>
+                                            <td><#if customerApiType.vendorList??><#list customerApiType.vendorList as vendor>${vendor.name}，&nbsp;</#list></#if></td>
+                                            <td><#if customerApiType.totlePrice??>${customerApiType.totlePrice/100.0}<#else >0</#if></td>
+                                            <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail">明细</a></td>
+                                        </tr>
+                                        </#list>
+                                    </#if>
                                 </tbody>
                             </table>
 
@@ -167,10 +158,37 @@
 
     <script src="/js/table-managed.js"></script>
 
-    <script type="text/javascript">
+    <script src="/js/myjs/json2.js" type="text/javascript"></script>
 
+    <script type="text/javascript">
         jQuery(document).ready(function() {
+
             TableManaged.init();
+
+            $("#apiTypeId").change(function () {
+                var param = $("#apiTypeId").val();
+                var param1 = $("#customerId").val();
+                if (param !=null) {
+                    $.ajax({
+                        url: '/finance/find-api-vendor-by-api-type-id',//这个就是请求地址对应sAjaxSource
+                        data: {"apiTypeId": param, "customerId": param1},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data != null){
+                                $("#apiVendorId ").empty();
+                                $("#apiVendorId").append("<option value='-1'>请选择...</option>");
+                                for (var i=0; i<data.length; i++){
+                                    var op=document.createElement("option");
+                                    op.value=data[i].id;
+                                    op.innerHTML=data[i].name;
+                                    $("#apiVendorId").append(op);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         });
     </script>
     <script>
@@ -184,6 +202,7 @@
             $('#customerBalanceArrow').addClass('arrow open');
         });
     </script>
+
     </#if>
 
 </@layout>

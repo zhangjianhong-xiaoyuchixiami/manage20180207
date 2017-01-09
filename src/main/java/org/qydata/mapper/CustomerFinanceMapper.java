@@ -1,7 +1,7 @@
 package org.qydata.mapper;
 
 import org.qydata.dst.CustomerFinance;
-import org.qydata.entity.Customer;
+import org.qydata.entity.ApiType;
 import org.qydata.entity.CustomerBalanceLog;
 
 import java.util.List;
@@ -34,6 +34,6 @@ public interface CustomerFinanceMapper {
      * @return
      * @throws Exception
      */
-    public List<Customer> queryCompanyCustomerConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
+    public List<ApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
 }

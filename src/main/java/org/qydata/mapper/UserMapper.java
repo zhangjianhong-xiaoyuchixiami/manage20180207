@@ -97,6 +97,6 @@ public interface UserMapper {
      */
     public boolean updateStatusforbid(String username)throws Exception;
 
-    public List<User> findAllUser1();
+    public List<User> findAllUser1(int iDisplayStart, int iDisplayLength);
 
 }

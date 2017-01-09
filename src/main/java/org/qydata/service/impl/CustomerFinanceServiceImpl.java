@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.CustomerFinance;
+import org.qydata.entity.ApiType;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
@@ -27,5 +28,10 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     @Override
     public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String, Object> map) throws Exception {
         return customerFinanceMapper.queryCompanyCustomerRechargeRecordByCustomerId(map);
+    }
+
+    @Override
+    public List<ApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String, Object> map) throws Exception {
+        return customerFinanceMapper.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
     }
 }

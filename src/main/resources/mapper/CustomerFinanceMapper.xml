@@ -29,6 +29,26 @@
             <result column="reasonName" property="name"/>
         </association>
     </resultMap>
+
+    <resultMap id="ApiType_Map" type="ApiType">
+        <result column="apiTypeId" property="id"/>
+        <result column="typeName" property="name"/>
+    </resultMap>
+
+    <resultMap id="ApiType_CustomerApi_Map" type="ApiType" extends="ApiType_Map">
+        <collection property="customerApiList" ofType="CustomerApi">
+            <result column="apiId" property="apiId"/>
+            <result column="customerId" property="customerId"/>
+            <result column="price" property="price"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="ApiType_CustomerApi_ApiVendor_Map" type="ApiType" extends="ApiType_CustomerApi_Map">
+        <collection property="apiVendorList" ofType="ApiVendor">
+            <result column="vendorName" property="name"/>
+            <result column="vendorId" property="id"/>
+        </collection>
+    </resultMap>
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
@@ -111,9 +131,9 @@
 
     <!--查询客户的充值记录-->
     <select id="queryCompanyCustomerRechargeRecordByCustomerId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
-       SELECT id,reasonId,amount,customerId,createTime,reasonName
-       FROM qydata.vwCustomerBalanceLog
-       WHERE customerId=#{customerId}
+        SELECT id,reasonId,amount,customerId,createTime,reasonName
+        FROM qydata.vwCustomerBalanceLog
+        WHERE customerId=#{customerId}
         <if test="reasonIdList != null and reasonIdList.size() != 0">
             AND reasonId IN
             <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
@@ -133,8 +153,51 @@
         ORDER BY createTime DESC
     </select>
 
+    <!--查询客户的Api消费记录-->
+    <select id="queryCompanyCustomerApiConsumeRecordByCustomerId" parameterType="map" resultMap="ApiType_CustomerApi_ApiVendor_Map">
 
-    <select id="queryCompanyCustomerConsumeRecordByCustomerId" parameterType="map">
+        SELECT cc.apiTypeId,dd.name typeName,cc.apiId,cc.customerId,cc.price,cc.vendorName,cc.vendorId
+        FROM
+        (SELECT aa.apiTypeId,aa.apiId,aa.customerId,aa.price,bb.vendorName,bb.vendorId
+        FROM
+        (SELECT a.apiTypeId,a.apiId,a.customerId,b.price
+        FROM qydata.vwCustomerRequestLog a left join qydata.vwCustomerApi b
+        on a.customerId=b.customerId
+        where a.apiId=b.apiId
+        AND a.customerId=#{customerId}
+        AND a.apiId IS NOT NULL
+        AND a.hasCost=1
+        ) aa left join qydata.vwApi bb
+        on aa.apiId = bb.id
+        ) cc LEFT JOIN qydata.vwApiType dd
+        ON cc.apiTypeId=dd.id
+        <where>
+            <if test="apiTypeId != null and apiTypeId != ''">
+                cc.apiTypeId=#{apiTypeId}
+            </if>
+            <if test="apiVendorId != null and apiVendorId != ''">
+                AND cc.vendorId=#{apiVendorId}
+            </if>
+        </where>
+
+        SELECT cc.apiTypeId,sum(cc.price)
+        from
+        (SELECT aa.apiTypeId,aa.apiId,aa.customerId,aa.price,bb.vendorName,bb.vendorId
+        FROM
+        (SELECT a.apiTypeId,a.apiId,a.customerId,b.price
+        FROM qydata.vwCustomerRequestLog a left join qydata.vwCustomerApi b
+        on a.customerId=b.customerId
+        where a.apiId=b.apiId
+        AND a.customerId=7
+        AND a.apiId IS NOT NULL
+        AND a.hasCost=1
+        ) aa left join qydata.vwApi bb
+        on aa.apiId = bb.id
+        ) cc LEFT JOIN qydata.vwApiType dd
+        ON cc.apiTypeId=dd.id
+        group by cc.apiTypeId
 
     </select>
+
 </mapper>
+
