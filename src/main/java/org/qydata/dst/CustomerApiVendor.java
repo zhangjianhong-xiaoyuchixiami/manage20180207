@@ -1,0 +1,46 @@
+package org.qydata.dst;
+
+import java.io.Serializable;
+
+/**
+ * Created by jonhn on 2017/1/9.
+ */
+public class CustomerApiVendor implements Serializable {
+
+    private Integer apiId;
+    private Long totlePrice;
+    private String vendorName;
+    private Integer vendorId;
+
+    public Integer getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(Integer apiId) {
+        this.apiId = apiId;
+    }
+
+    public Long getTotlePrice() {
+        return totlePrice;
+    }
+
+    public void setTotlePrice(Long totlePrice) {
+        this.totlePrice = totlePrice;
+    }
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
+
+    public Integer getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(Integer vendorId) {
+        this.vendorId = vendorId;
+    }
+}

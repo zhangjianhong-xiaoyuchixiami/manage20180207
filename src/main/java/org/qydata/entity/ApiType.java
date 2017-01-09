@@ -2,6 +2,7 @@ package org.qydata.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.qydata.dst.CustomerApiVendor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,8 +15,7 @@ public class ApiType implements Serializable {
     private Integer id;
     private String name;
     private String description;
-    private List<CustomerApi> customerApiList;
-    private List<ApiVendor> apiVendorList;
+   private List<CustomerApiVendor> customerApiVendorList;
 
     public Integer getId() {
         return id;
@@ -41,20 +41,12 @@ public class ApiType implements Serializable {
         this.description = description;
     }
 
-    public List<CustomerApi> getCustomerApiList() {
-        return customerApiList;
+    public List<CustomerApiVendor> getCustomerApiVendorList() {
+        return customerApiVendorList;
     }
 
-    public void setCustomerApiList(List<CustomerApi> customerApiList) {
-        this.customerApiList = customerApiList;
-    }
-
-    public List<ApiVendor> getApiVendorList() {
-        return apiVendorList;
-    }
-
-    public void setApiVendorList(List<ApiVendor> apiVendorList) {
-        this.apiVendorList = apiVendorList;
+    public void setCustomerApiVendorList(List<CustomerApiVendor> customerApiVendorList) {
+        this.customerApiVendorList = customerApiVendorList;
     }
 
     public String toString(){

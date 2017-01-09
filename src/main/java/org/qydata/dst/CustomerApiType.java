@@ -1,19 +1,17 @@
 package org.qydata.dst;
 
-import org.qydata.entity.ApiVendor;
-
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by jonhn on 2017/1/9.
+ * Created by Administrator on 2017/1/9.
  */
 public class CustomerApiType implements Serializable {
 
     private Integer apiTypeId;
+    private String apiTypeName;
     private Long totlePrice;
-    private String typeName;
-    private List<ApiVendor> vendorList;
+    private List<CustomerApiVendor> customerApiVendors;
 
     public Integer getApiTypeId() {
         return apiTypeId;
@@ -21,6 +19,14 @@ public class CustomerApiType implements Serializable {
 
     public void setApiTypeId(Integer apiTypeId) {
         this.apiTypeId = apiTypeId;
+    }
+
+    public String getApiTypeName() {
+        return apiTypeName;
+    }
+
+    public void setApiTypeName(String apiTypeName) {
+        this.apiTypeName = apiTypeName;
     }
 
     public Long getTotlePrice() {
@@ -31,19 +37,11 @@ public class CustomerApiType implements Serializable {
         this.totlePrice = totlePrice;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public List<CustomerApiVendor> getCustomerApiVendors() {
+        return customerApiVendors;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public List<ApiVendor> getVendorList() {
-        return vendorList;
-    }
-
-    public void setVendorList(List<ApiVendor> vendorList) {
-        this.vendorList = vendorList;
+    public void setCustomerApiVendors(List<CustomerApiVendor> customerApiVendors) {
+        this.customerApiVendors = customerApiVendors;
     }
 }

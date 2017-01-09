@@ -7,8 +7,11 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.qydata.dst.CustomerApiType;
+import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
-import org.qydata.entity.*;
+import org.qydata.entity.CustomerBalanceLog;
+import org.qydata.entity.Dept;
+import org.qydata.entity.User;
 import org.qydata.service.CustomerBalanceLogService;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerService;
@@ -185,43 +188,46 @@ public class FinanceController {
     public String findAllApiConsumeRecordByCustomerId(@PathVariable Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
-        System.out.println(apiTypeId);
-        System.out.println(apiVendorId);
+        List<CustomerApiType> customerApiTypes = null;
+        try {
+            customerApiTypes = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<CustomerApiType> customerApiTypes1 = null;
+        List<CustomerApiVendor> customerApiVendors = null;
         if(apiTypeId != null){
             map.put("apiTypeId",apiTypeId);
+            try {
+                customerApiTypes1 = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+                for (int i=0;i<customerApiTypes1.size();i++){
+                    CustomerApiType customerApiType = customerApiTypes1.get(i);
+                    customerApiVendors = customerApiType.getCustomerApiVendors();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         if(apiVendorId != null){
             map.put("apiVendorId",apiVendorId);
         }
-        List<ApiType> apiTypeList = null;
+        List<CustomerApiType> customerApiTypeList = null;
         long totleAmount =0;
-        List<CustomerApiType> customerApiTypeList = new ArrayList<>();
         try {
-            apiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-            if(apiTypeList != null && apiTypeList.size()>0) {
-                Iterator<ApiType> iterator = apiTypeList.iterator();
-
-                while (iterator.hasNext()) {
-                    ApiType apiType = iterator.next();
-                    List<CustomerApi> customerApiList = apiType.getCustomerApiList();
-                    long totlePrice = 0;
-                    for (int i=0;i<customerApiList.size();i++){
-                        CustomerApi customerApi = customerApiList.get(i);
-                        totlePrice = totlePrice + customerApi.getPrice();
-                    }
-                    System.out.println(totlePrice);
-                    CustomerApiType customerApiType = new CustomerApiType();
-                    customerApiType.setApiTypeId(apiType.getId());
-                    customerApiType.setTypeName(apiType.getName());
-                    customerApiType.setTotlePrice(totlePrice);
-                    customerApiType.setVendorList(apiType.getApiVendorList());
-                    customerApiTypeList.add(customerApiType);
-                }
+            customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+            for (int i=0; i<customerApiTypeList.size(); i++){
+                CustomerApiType customerApiType = customerApiTypeList.get(i);
+                totleAmount = totleAmount + customerApiType.getTotlePrice();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("customerApiTypeList",customerApiTypeList);
+
+
+        model.addAttribute("customerApiTypeList", customerApiTypeList);
+        model.addAttribute("customerApiTypes",customerApiTypes);
+        model.addAttribute("customerApiVendors",customerApiVendors);
         model.addAttribute("customerId",customerId);
         model.addAttribute("apiTypeId",apiTypeId);
         model.addAttribute("apiVendorId",apiVendorId);
@@ -240,23 +246,24 @@ public class FinanceController {
     public String findApiVendorByApiTypeId(HttpServletRequest request){
         Integer apiTypeId = Integer.parseInt(request.getParameter("apiTypeId"));
         Integer customerId = Integer.parseInt(request.getParameter("customerId"));
-
         Map<String, Object> map = new HashedMap();
         map.put("customerId", customerId);
         map.put("apiTypeId", apiTypeId);
-        List<ApiType> customerApiList = null;
-        ApiType apiType = null;
+        List<CustomerApiType> customerApiTypeList = null;
+        CustomerApiType customerApiType = null;
+        List<CustomerApiVendor> customerApiVendorList = null;
         try {
-            customerApiList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-            if(customerApiList != null) {
-                for (int i = 0; i < customerApiList.size(); i++) {
-                    apiType = customerApiList.get(i);
+            customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+            if(customerApiTypeList != null) {
+                for (int i = 0; i < customerApiTypeList.size(); i++) {
+                    customerApiType = customerApiTypeList.get(i);
+                    customerApiVendorList = customerApiType.getCustomerApiVendors();
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JSONArray jsonArray = JSONArray.fromObject(apiType.getApiVendorList());
+        JSONArray jsonArray = JSONArray.fromObject(customerApiVendorList);
         return jsonArray.toString();
     }
 

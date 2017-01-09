@@ -154,7 +154,7 @@
                                                         </a>
                                                         <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
                                                             <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1&companyName=${customer.companyName}">充值记录</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/${customer.id}?reasonId=1&companyName=${customer.companyName}">消费记录</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/${customer.id}?companyName=${customer.companyName}">消费记录</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="#">周历史数据</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="#">月历史数据</a></li>
                                                         </ul>

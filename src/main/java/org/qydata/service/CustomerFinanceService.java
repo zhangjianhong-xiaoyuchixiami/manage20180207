@@ -1,7 +1,7 @@
 package org.qydata.service;
 
+import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerFinance;
-import org.qydata.entity.ApiType;
 import org.qydata.entity.CustomerBalanceLog;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public interface CustomerFinanceService {
      * @return
      * @throws Exception
      */
-    public List<ApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
+    public List<CustomerApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
 
 }

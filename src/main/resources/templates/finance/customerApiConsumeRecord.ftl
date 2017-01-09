@@ -43,9 +43,9 @@
 
                                     <select id="apiTypeId" name="apiTypeId" class="medium m-wrap1" tabindex="1" >
                                         <option value="">请选择...</option>
-                                        <#if customerApiTypeList??>
-                                            <#list customerApiTypeList as customerApiType>
-                                                <option value="${customerApiType.apiTypeId}">${customerApiType.typeName}</option>
+                                        <#if customerApiTypes??>
+                                            <#list customerApiTypes as customerApiType>
+                                                <option <#if apiTypeId?? && customerApiType.apiTypeId==apiTypeId>selected="selected"</#if> value="${customerApiType.apiTypeId}">${customerApiType.apiTypeName}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -59,6 +59,13 @@
                                 <div class="controls">
                                     <select id="apiVendorId" name="apiVendorId" class="medium m-wrap1" tabindex="1">
                                         <option value="">请选择...</option>
+                                        <#if customerApiVendors??>
+                                            <#list customerApiVendors as vendor>
+
+                                                <option <#if apiVendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="${vendor.vendorId}">${vendor.vendorName}</option>
+
+                                            </#list>
+                                        </#if>
                                     </select>
                                 </div>
 
@@ -129,8 +136,8 @@
                                     <#if customerApiTypeList??>
                                         <#list customerApiTypeList as customerApiType>
                                         <tr>
-                                            <td>${customerApiType.typeName}</td>
-                                            <td><#if customerApiType.vendorList??><#list customerApiType.vendorList as vendor>${vendor.name}，&nbsp;</#list></#if></td>
+                                            <td>${customerApiType.apiTypeName}</td>
+                                            <td><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor>${vendor.vendorName}，&nbsp;</#list></#if></td>
                                             <td><#if customerApiType.totlePrice??>${customerApiType.totlePrice/100.0}<#else >0</#if></td>
                                             <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail">明细</a></td>
                                         </tr>
@@ -177,11 +184,11 @@
                         success: function (data) {
                             if(data != null){
                                 $("#apiVendorId ").empty();
-                                $("#apiVendorId").append("<option value='-1'>请选择...</option>");
+                                $("#apiVendorId").append("<option value=''>请选择...</option>");
                                 for (var i=0; i<data.length; i++){
                                     var op=document.createElement("option");
-                                    op.value=data[i].id;
-                                    op.innerHTML=data[i].name;
+                                    op.value=data[i].vendorId;
+                                    op.innerHTML=data[i].vendorName;
                                     $("#apiVendorId").append(op);
                                 }
                             }
