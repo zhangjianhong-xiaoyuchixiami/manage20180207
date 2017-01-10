@@ -18,7 +18,7 @@ public class WeekMonthAmount implements Serializable {
     private Integer weeks;
     private Long totleAmount;
     private Integer customerId;
-    private String tableName;
+    private Integer tableId;
     private Integer weekMonthTypeId;
     private Date beginTime;
     private Date endTime;
@@ -78,12 +78,12 @@ public class WeekMonthAmount implements Serializable {
         this.customerId = customerId;
     }
 
-    public String getTableName() {
-        return tableName;
+    public Integer getTableId() {
+        return tableId;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
     }
 
     public Integer getWeekMonthTypeId() {

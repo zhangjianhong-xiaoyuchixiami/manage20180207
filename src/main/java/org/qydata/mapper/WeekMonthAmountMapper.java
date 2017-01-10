@@ -3,6 +3,7 @@ package org.qydata.mapper;
 import org.qydata.entity.WeekMonthAmount;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/1/5.
@@ -22,6 +23,14 @@ public interface WeekMonthAmountMapper {
      * @throws Exception
      */
     public List<WeekMonthAmount> getAllCustomerMonthRechargeRecord()throws Exception;
+
+    /**
+     * 删除客户周月的数据
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteRecord(Map<String,Object> map)throws Exception;
 
     /**
      * 插入客户每周的数据

@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class CustomerApiVendor implements Serializable {
 
     private Integer apiId;
+    private String apiName;
     private Long totlePrice;
     private String vendorName;
     private Integer vendorId;
@@ -18,6 +19,14 @@ public class CustomerApiVendor implements Serializable {
 
     public void setApiId(Integer apiId) {
         this.apiId = apiId;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
     }
 
     public Long getTotlePrice() {

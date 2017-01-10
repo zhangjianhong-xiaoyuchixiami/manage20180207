@@ -41,29 +41,34 @@
         GROUP BY DATE_FORMAT(createTime,'%Y-%m'),customerId
     </select>
 
+    <!--删除客户每周月的数据-->
+    <delete id="deleteRecord" parameterType="map">
+        DELETE FROM qyfinance.WeekMonthAmount WHERE weekMonthTypeId=#{weekMonthTypeId} AND tableId=#{tableId}
+    </delete>
+
     <!--插入客户每周的数据-->
-    <insert id="addCustomerWeekRechargeRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qyfinance.WeekMonthAmount(years,months,weeks,totleAmount,customerId,tableName,weekMonthTypeId,
+    <insert id="addWeekRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.WeekMonthAmount(years,months,weeks,totleAmount,customerId,tableId,weekMonthTypeId,
         beginTime,endTime,createTime)
         VALUES
         <foreach collection="list" item="weekMonthAmount" index="index" separator=",">
             (
             #{weekMonthAmount.years},#{weekMonthAmount.months},#{weekMonthAmount.weeks},#{weekMonthAmount.totleAmount},
-            #{weekMonthAmount.customerId},#{weekMonthAmount.tableName},#{weekMonthAmount.weekMonthTypeId},#{weekMonthAmount.beginTime},
+            #{weekMonthAmount.customerId},#{weekMonthAmount.tableId},#{weekMonthAmount.weekMonthTypeId},#{weekMonthAmount.beginTime},
             #{weekMonthAmount.endTime},sysdate()
             )
         </foreach>
     </insert>
 
     <!--插入客户每月的数据-->
-    <insert id="addCustomerMonthRechargeRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qyfinance.WeekMonthAmount(years,months,totleAmount,customerId,tableName,weekMonthTypeId,
+    <insert id="addMonthRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.WeekMonthAmount(years,months,totleAmount,customerId,tableId,weekMonthTypeId,
         beginTime,endTime,createTime)
         VALUES
         <foreach collection="list" item="weekMonthAmount" index="index" separator=",">
             (
             #{weekMonthAmount.years},#{weekMonthAmount.months},#{weekMonthAmount.totleAmount},#{weekMonthAmount.customerId},
-            #{weekMonthAmount.tableName},#{weekMonthAmount.weekMonthTypeId},#{weekMonthAmount.beginTime},
+            #{weekMonthAmount.tableId},#{weekMonthAmount.weekMonthTypeId},#{weekMonthAmount.beginTime},
             #{weekMonthAmount.endTime},sysdate()
             )
         </foreach>

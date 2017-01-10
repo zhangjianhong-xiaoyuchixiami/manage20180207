@@ -22,9 +22,31 @@
                 <#--搜索框-->
 
 
-                    <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customerId}" method="get">
+                    <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id" method="get">
 
                         <div class="clearfix margin-bottom-20">
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                                <label class="control-label">客户账号Id</label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="customerId" name="customerId" value="${customerId?c}" class="m-wrap medium">
+
+                                </div>
+                            </div>
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                                <label class="control-label">公司名称</label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="companyName" name="companyName" value="${companyName}" class="m-wrap medium">
+
+                                </div>
+                            </div>
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 

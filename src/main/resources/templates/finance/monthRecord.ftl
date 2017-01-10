@@ -20,7 +20,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance//find-all-customer/find-all-customer-api-consume-record-by-customer-id" method="get">
+                    <form action="/finance/find-all-customer/find-month-record-by-customer-id" method="get">
 
                         <div class="clearfix margin-bottom-20">
 
@@ -30,7 +30,7 @@
 
                                 <div class="controls">
 
-                                    <input type="text" id="customerId" name="customerId" value="${customerId?c}" class="m-wrap medium">
+                                    <input type="text" id="customerId" name="customerId" value="${customerId}" class="m-wrap medium">
 
                                 </div>
                             </div>
@@ -48,36 +48,60 @@
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
-                                <label class="control-label">产品类型</label>
+                                <label class="control-label">类型</label>
 
                                 <div class="controls">
 
-                                    <select id="apiTypeId" name="apiTypeId" class="medium m-wrap1" tabindex="1" >
-                                        <option value="">请选择...</option>
-                                        <#if customerApiTypes??>
-                                            <#list customerApiTypes as customerApiType>
-                                                <option <#if apiTypeId?? && customerApiType.apiTypeId==apiTypeId>selected="selected"</#if> value="${customerApiType.apiTypeId?c}">${customerApiType.apiTypeName}</option>
-                                            </#list>
-                                        </#if>
-                                    </select>
+                                    <label class="checkbox">
+
+                                        <input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==1>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="1">充值
+
+                                    </label>
+
+                                    <label class="checkbox">
+
+                                        <input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==2>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="2">消费
+
+                                    </label>
+
                                 </div>
+
                             </div>
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
-                                <label class="control-label">产品供应商</label>
+                                <label class="control-label">年</label>
 
                                 <div class="controls">
-                                    <select id="apiVendorId" name="apiVendorId" class="medium m-wrap1" tabindex="1">
+
+                                    <select id="years" name="years" class="medium m-wrap1" tabindex="1">
                                         <option value="">请选择...</option>
-                                        <#if customerApiVendors??>
-                                            <#list customerApiVendors as vendor>
-
-                                                <option <#if apiVendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="${vendor.vendorId?c}">${vendor.vendorName}</option>
-
+                                        <#if yearList??>
+                                            <#list yearList as year>
+                                                <option <#if years?? && year==years>selected="selected"</#if> value="${year?c}">${year?c}年</option>
                                             </#list>
                                         </#if>
                                     </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+
+                                <label class="control-label">月</label>
+
+                                <div class="controls">
+
+                                    <select id="months" name="months" class="medium m-wrap1" tabindex="1">
+                                        <option value="">请选择...</option>
+                                        <#if monthList??>
+                                            <#list monthList as month>
+                                                <option <#if months?? && month==months>selected="selected"</#if> value="${month?c}">第${month?c}月</option>
+                                            </#list>
+                                        </#if>
+                                    </select>
+
                                 </div>
 
                             </div>
@@ -86,13 +110,9 @@
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
-                                <div class="controls" >
+                                <div class="input-append" >
 
-                                    <div class="input-append">
-
-                                        <button class="btn black" type="submit">搜索</button>
-
-                                    </div>
+                                    <button class="btn black" type="submit">搜索</button>
 
                                 </div>
 
@@ -101,12 +121,14 @@
                         </div>
 
                     </form>
-                <#--表格-->
+
+
+                <#--表单-->
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if></div>
+                            <div class="caption"><i class="icon-user"></i></i><#if companyName??>${companyName}</#if></div>
 
                             <div class="tools">
 
@@ -134,29 +156,34 @@
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_5">
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_8">
                                 <thead>
                                 <tr>
-                                    <th>产品类型</th>
-                                    <th>产品供应商</th>
-                                    <th style="width: 15%">金额（单位/元</th>
-                                    <th style="text-align: center; width: 13%">操作</th>
+                                    <th style="width: 25%;">年-月</th>
+                                    <th style="width: 15%;">金额（单位/元）</th>
+                                    <th style="width: 20%;">开始时间</th>
+                                    <th style="width: 20%;">结束时间</th>
+                                    <th style="width: 20%;">类型</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <#if customerApiTypeList??>
-                                        <#list customerApiTypeList as customerApiType>
+                                    <#if weekMonthAmountList??>
+                                        <#list weekMonthAmountList as weekMonthAmount>
                                         <tr>
-                                            <td>${customerApiType.apiTypeName}</td>
-                                            <td><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor>${vendor.vendorName}，&nbsp;</#list></#if></td>
-                                            <td><#if customerApiType.totlePrice??>${customerApiType.totlePrice/100.0}<#else >0</#if></td>
-                                            <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail/${customerId?c}?apiTypeId=${customerApiType.apiTypeId?c}<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
+                                            <td><#if weekMonthAmount.years??>${weekMonthAmount.years?c}年</#if><#if weekMonthAmount.months??>第${weekMonthAmount.months}月</#if></td>
+                                            <td><#if weekMonthAmount.totleAmount??>${weekMonthAmount.totleAmount/100.0}<#else >0</#if></td>
+                                            <td><#if weekMonthAmount.beginTime??>${weekMonthAmount.beginTime?date}</#if></td>
+                                            <td><#if weekMonthAmount.endTime??>${weekMonthAmount.endTime?date}</#if></td>
+                                            <#if weekMonthAmount.tableId==1>
+                                                <td>充值</td>
+                                            <#else >
+                                                <td>消费</td>
+                                            </#if>
                                         </tr>
                                         </#list>
                                     </#if>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -176,31 +203,32 @@
 
     <script src="/js/table-managed.js"></script>
 
-    <script src="/js/myjs/json2.js" type="text/javascript"></script>
-
     <script type="text/javascript">
+
         jQuery(document).ready(function() {
-
             TableManaged.init();
-
-            $("#apiTypeId").change(function () {
-                var param = $("#apiTypeId").val();
+            $("#years").change(function () {
+                var param = $("#years").val();
                 var param1 = $("#customerId").val();
+                var param2 =[];//定义一个数组
+                $('input[name="typeId"]:checked').each(function(){
+                    param2.push($.trim($(this).val()));
+                });
                 if (param !=null) {
                     $.ajax({
-                        url: '/finance/find-api-vendor-by-api-type-id',//这个就是请求地址对应sAjaxSource
-                        data: {"apiTypeId": param, "customerId": param1},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                        url: '/finance/find-company-customer-month-uplink-months-by-customer-id',
+                        data: {"years": param, "customerId": param1, "typeId": param2},
                         type: 'post',
                         dataType: 'json',
                         success: function (data) {
                             if(data != null){
-                                $("#apiVendorId ").empty();
-                                $("#apiVendorId").append("<option value=''>请选择...</option>");
+                                $("#months ").empty();
+                                $("#months").append("<option value=''>请选择...</option>");
                                 for (var i=0; i<data.length; i++){
                                     var op=document.createElement("option");
-                                    op.value=data[i].vendorId;
-                                    op.innerHTML=data[i].vendorName;
-                                    $("#apiVendorId").append(op);
+                                    op.value=data[i];
+                                    op.innerHTML='第'+data[i]+'月';
+                                    $("#months").append(op);
                                 }
                             }
                         }
@@ -220,7 +248,6 @@
             $('#customerBalanceArrow').addClass('arrow open');
         });
     </script>
-
     </#if>
 
 </@layout>

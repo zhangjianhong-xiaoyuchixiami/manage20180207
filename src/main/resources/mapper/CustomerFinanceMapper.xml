@@ -43,6 +43,14 @@
             <result column="vendorId" property="vendorId"/>
         </collection>
     </resultMap>
+
+    <resultMap id="CustomerApiVendor_Map" type="org.qydata.dst.CustomerApiVendor" >
+        <result column="apiId" property="apiId"/>
+        <result column="apiName" property="apiName"/>
+        <result column="totlePrice" property="totlePrice"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="vendorId" property="vendorId"/>
+    </resultMap>
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
@@ -82,42 +90,42 @@
         ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=1 AND tableName='CustomerBalanceLog' AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
+        WHERE weekMonthTypeId=1 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m') AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%u')
         ) bb
         ON aa.id=bb.customerId
         ) cc LEFT JOIN
         (SELECT customerId,totleAmount chargeMonthTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=2 AND tableName='CustomerBalanceLog' AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
+        WHERE weekMonthTypeId=2 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m')
         ) dd
         ON cc.id=dd.customerId
         ) ee LEFT JOIN
         (SELECT customerId,totleAmount consumeWeekTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=1 AND tableName='CustomerRequestLogCustomerResponseLog' AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
+        WHERE weekMonthTypeId=1 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m') AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%u')
         ) ff
         ON ee.id=ff.customerId
         ) gg LEFT JOIN
         (SELECT customerId,totleAmount consumeMonthTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=2 AND tableName='CustomerRequestLogCustomerResponseLog' AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
+        WHERE weekMonthTypeId=2 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m')
         ) hh
         ON gg.id=hh.customerId
         ) ii LEFT JOIN
         (SELECT customerId,sum(totleAmount) chargeTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE tableName='CustomerBalanceLog'
+        WHERE tableId=1
         GROUP BY customerId
         ) jj
         ON ii.id=jj.customerId
         ) kk LEFT JOIN
         (SELECT customerId,sum(totleAmount) consumeTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE tableName='CustomerRequestLogCustomerResponseLog'
+        WHERE tableId=2
         GROUP BY customerId
         ) ll
         ON kk.id=ll.customerId
@@ -176,6 +184,116 @@
             </if>
         </where>
     </select>
+
+    <!--查询客户的Api消费明细记录-->
+    <select id="queryCompanyCustomerApiDetailConsumeRecordByCustomerId" parameterType="map" resultMap="CustomerApiVendor_Map">
+        SELECT cc.apiTypeId,dd.name typeName,cc.apiId,cc.totlePrice,cc.vendorName,cc.vendorId,cc.apiName
+        FROM
+        (
+        SELECT aa.apiTypeId,aa.apiId,aa.totlePrice,bb.vendorName,bb.vendorId,bb.name apiName
+        FROM
+        (
+        SELECT a.apiTypeId,a.apiId,sum(b.price) totlePrice
+        FROM qydata.vwCustomerRequestLog a left join qydata.vwCustomerApi b
+        on a.customerId=b.customerId
+        WHERE a.apiId=b.apiId
+        AND a.customerId=#{customerId}
+        AND a.apiId IS NOT NULL
+        AND a.hasCost=1
+        group by a.apiTypeId,a.apiId
+        ) aa LEFT JOIN qydata.vwApi bb
+        ON aa.apiId = bb.id
+        ) cc LEFT JOIN qydata.vwApiType dd
+        ON cc.apiTypeId=dd.id
+        WHERE cc.apiTypeId=#{apiTypeId}
+    </select>
+
+    <!--查询客户的周月记录-->
+    <select id="queryCompanyCustomerWeekMonthRecordByCustomerId" parameterType="map" resultType="WeekMonthAmount">
+        SELECT years,months,weeks,totleAmount,customerId,tableId,weekMonthTypeId,name,beginTime,endTime
+        FROM qyfinance.vwWeekMonthAmount
+        WHERE customerId=#{customerId}
+        AND weekMonthTypeId=#{weekMonthTypeId}
+        <if test="years != null and years != ''">
+            AND years=#{years}
+        </if>
+        <if test="months != null and months != ''">
+            AND months=#{months}
+        </if>
+        <if test="weeks != null and weeks != ''">
+            AND weeks=#{weeks}
+        </if>
+        <if test="tableIdList != null and tableIdList.size() > 0">
+            AND tableId IN
+            <foreach collection="tableIdList" item="tableId" index="index" open="(" close=")" separator=",">
+                #{tableId}
+            </foreach>
+        </if>
+    </select>
+
+    <!--查询客户的周月记录年级联菜单-->
+    <select id="queryCompanyCustomerYearsByCustomerId" parameterType="map" resultType="int">
+        SELECT DISTINCT(years)
+        FROM qyfinance.vwWeekMonthAmount
+        WHERE customerId=#{customerId} AND weekMonthTypeId=#{weekMonthTypeId}
+        <if test="years != null and years != ''">
+            AND years=#{years}
+        </if>
+        <if test="months != null and months != ''">
+            AND months=#{months}
+        </if>
+        <if test="weeks != null and weeks != ''">
+            AND weeks=#{weeks}
+        </if>
+        <if test="tableIdList != null and tableIdList.size() > 0">
+            AND tableId IN
+            <foreach collection="tableIdList" item="tableId" index="index" open="(" close=")" separator=",">
+                #{tableId}
+            </foreach>
+        </if>
+    </select>
+
+    <!--查询客户的周月记录月级联菜单-->
+    <select id="queryCompanyCustomerMonthsByCustomerId" parameterType="map" resultType="int">
+        SELECT DISTINCT(months)
+        FROM qyfinance.vwWeekMonthAmount
+        WHERE customerId=#{customerId}
+        <if test="weekMonthTypeId != null and weekMonthTypeId != ''">
+            AND weekMonthTypeId=#{weekMonthTypeId}
+        </if>
+        <if test="years != null and years != ''">
+            AND years=#{years}
+        </if>
+        <if test="tableIdList != null and tableIdList.size() > 0">
+            AND tableId IN
+            <foreach collection="tableIdList" item="tableId" index="index" open="(" close=")" separator=",">
+                #{tableId}
+            </foreach>
+        </if>
+    </select>
+
+    <!--查询客户的周月记录周级联菜单-->
+    <select id="queryCompanyCustomerWeeksByCustomerId" parameterType="map" resultType="int">
+        SELECT DISTINCT(weeks)
+        FROM qyfinance.vwWeekMonthAmount
+        WHERE customerId=#{customerId} AND weekMonthTypeId=#{weekMonthTypeId}
+        <if test="years != null and years != ''">
+            AND years=#{years}
+        </if>
+        <if test="months != null and months != ''">
+            AND months=#{months}
+        </if>
+        <if test="weeks != null and weeks != ''">
+            AND weeks=#{weeks}
+        </if>
+        <if test="tableIdList != null and tableIdList.size() > 0">
+            AND tableId IN
+            <foreach collection="tableIdList" item="tableId" index="index" open="(" close=")" separator=",">
+                #{tableId}
+            </foreach>
+        </if>
+    </select>
+
 
 </mapper>
 

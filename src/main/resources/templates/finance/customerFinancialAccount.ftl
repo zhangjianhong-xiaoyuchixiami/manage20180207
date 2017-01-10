@@ -96,7 +96,7 @@
 
                                     <#--<li><a href="#"><i class="icon-print"></i> 打印</a></li>-->
 
-                                        <li><a href="#"><i class="icon-share icon-black"></i> 导出Excel</a></li>
+                                        <li><a id="exportExcel" href="javaScript:;"><i class="icon-share icon-black"></i> 导出Excel</a></li>
 
                                     <#--<li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>-->
 
@@ -153,10 +153,10 @@
                                                             操作 <span class="caret"></span>
                                                         </a>
                                                         <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1&companyName=${customer.companyName}">充值记录</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/${customer.id}?companyName=${customer.companyName}">消费记录</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="#">周历史数据</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="#">月历史数据</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id?c}&reasonId=1&companyName=${customer.companyName}">充值记录</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}">消费记录</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">周历史数据</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">月历史数据</a></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -197,6 +197,38 @@
 
         jQuery(document).ready(function() {
             TableManaged.init();
+        });
+        var tableToExcel = (function() {
+            var uri = 'data:application/vnd.ms-excel;base64,',
+                    template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
+                            + '<head><meta http-equiv="Content-type" content="text/html;charset=UTF-8" /><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/>'
+                            + '</x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+                    base64 = function(s) {
+                        return window.btoa(unescape(encodeURIComponent(s)))
+                    },
+                    format = function(s, c) {
+                        return s.replace(/{(\w+)}/g, function(m, p) {
+                            return c[p];
+                        })
+                    };
+
+            return function(table, name) {
+                var ctx = {
+                    worksheet : name || 'Worksheet',
+                    table : table.innerHTML
+                }
+                return uri + base64(format(template, ctx));
+            }
+        })();
+
+        $(function(){
+            $('#exportExcel').on('click', function(){
+                var $this = $(this);
+                //设定下载的文件名及后缀
+                $this.attr('download', '2016-3-3-财务报表.xls');
+                //设定下载内容
+                $this.attr('href', tableToExcel($('#sample_2')[0], '财务统计'));
+            });
         });
 
     </script>

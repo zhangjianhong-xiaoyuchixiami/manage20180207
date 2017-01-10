@@ -5,6 +5,7 @@ import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.CustomerBalanceLog;
+import org.qydata.entity.WeekMonthAmount;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,30 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         }
 
         return customerApiTypeList;
+    }
+
+    @Override
+    public List<CustomerApiVendor> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String, Object> map) throws Exception {
+        return customerFinanceMapper.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
+    }
+
+    @Override
+    public List<WeekMonthAmount> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String, Object> map) throws Exception {
+        return customerFinanceMapper.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
+    }
+
+    @Override
+    public List<Integer> queryCompanyCustomerYearsByCustomerId(Map<String, Object> map) throws Exception {
+        return customerFinanceMapper.queryCompanyCustomerYearsByCustomerId(map);
+    }
+
+    @Override
+    public List<Integer> queryCompanyCustomerMonthsByCustomerId(Map<String, Object> map) throws Exception {
+        return customerFinanceMapper.queryCompanyCustomerMonthsByCustomerId(map);
+    }
+
+    @Override
+    public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String, Object> map) throws Exception {
+        return customerFinanceMapper.queryCompanyCustomerWeeksByCustomerId(map);
     }
 }

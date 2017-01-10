@@ -12,6 +12,7 @@ import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
+import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerBalanceLogService;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerService;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by jonhn on 2017/1/3.
@@ -117,8 +120,8 @@ public class FinanceController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id/{customerId}")
-    public String findAllCustomerRechargeLogByCustomerId(@PathVariable Integer customerId,String companyName, String beginDate, String endDate, String [] reasonId, HttpServletRequest request, Model model){
+    @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id")
+    public String findAllCustomerRechargeLogByCustomerId(Integer customerId,String companyName, String beginDate, String endDate, String [] reasonId, HttpServletRequest request, Model model){
         Subject subject = SecurityUtils.getSubject();
         if (subject.hasRole("sell")){
             User user = (User)request.getSession().getAttribute("userInfo");
@@ -143,7 +146,7 @@ public class FinanceController {
         List<Integer> reasonIdList = new ArrayList<>();
         if (reasonId != null && reasonId.length >0) {
             for(int i=0;i<reasonId.length;i++){
-                reasonIdList.add(Integer.parseInt(reasonId[i]));
+                reasonIdList.add(parseInt(reasonId[i]));
             }
         }else {
             reasonIdList.add(1);
@@ -180,12 +183,13 @@ public class FinanceController {
         model.addAttribute("totleAmount",totleAmount);
         return "/finance/customerBalanceLogRecord";
     }
+
     /**
      * 指定账号Api消费记录
      * @return
      */
-    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/{customerId}")
-    public String findAllApiConsumeRecordByCustomerId(@PathVariable Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
+    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id")
+    public String findAllApiConsumeRecordByCustomerId(Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         List<CustomerApiType> customerApiTypes = null;
@@ -200,15 +204,16 @@ public class FinanceController {
             map.put("apiTypeId",apiTypeId);
             try {
                 customerApiTypes1 = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-                for (int i=0;i<customerApiTypes1.size();i++){
-                    CustomerApiType customerApiType = customerApiTypes1.get(i);
-                    customerApiVendors = customerApiType.getCustomerApiVendors();
+                if (customerApiTypes1 != null) {
+                    for (int i = 0; i < customerApiTypes1.size(); i++) {
+                        CustomerApiType customerApiType = customerApiTypes1.get(i);
+                        customerApiVendors = customerApiType.getCustomerApiVendors();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
         if(apiVendorId != null){
             map.put("apiVendorId",apiVendorId);
         }
@@ -216,15 +221,15 @@ public class FinanceController {
         long totleAmount =0;
         try {
             customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-            for (int i=0; i<customerApiTypeList.size(); i++){
-                CustomerApiType customerApiType = customerApiTypeList.get(i);
-                totleAmount = totleAmount + customerApiType.getTotlePrice();
+            if (customerApiTypeList != null) {
+                for (int i = 0; i < customerApiTypeList.size(); i++) {
+                    CustomerApiType customerApiType = customerApiTypeList.get(i);
+                    totleAmount = totleAmount + customerApiType.getTotlePrice();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         model.addAttribute("customerApiTypeList", customerApiTypeList);
         model.addAttribute("customerApiTypes",customerApiTypes);
         model.addAttribute("customerApiVendors",customerApiVendors);
@@ -244,8 +249,8 @@ public class FinanceController {
     @RequestMapping("find-api-vendor-by-api-type-id")
     @ResponseBody
     public String findApiVendorByApiTypeId(HttpServletRequest request){
-        Integer apiTypeId = Integer.parseInt(request.getParameter("apiTypeId"));
-        Integer customerId = Integer.parseInt(request.getParameter("customerId"));
+        Integer apiTypeId = parseInt(request.getParameter("apiTypeId"));
+        Integer customerId = parseInt(request.getParameter("customerId"));
         Map<String, Object> map = new HashedMap();
         map.put("customerId", customerId);
         map.put("apiTypeId", apiTypeId);
@@ -267,14 +272,296 @@ public class FinanceController {
         return jsonArray.toString();
     }
 
-
-
-
-
-    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail")
-    public String findAllApiConsumeDetailRecordByCustomerId(){
+    /**
+     * 指定账号Api消费明细记录
+     * @param customerId
+     * @param apiTypeId
+     * @param companyName
+     * @param apiTypeName
+     * @param model
+     * @return
+     */
+    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail/{customerId}")
+    public String findAllApiConsumeDetailRecordByCustomerId(@PathVariable Integer customerId, Integer apiTypeId, String companyName, String apiTypeName, Model model){
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        map.put("apiTypeId",apiTypeId);
+        List<CustomerApiVendor> customerApiVendorList = null;
+        long totleAmount = 0;
+        try {
+            customerApiVendorList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
+            if(customerApiVendorList != null) {
+                for (int i = 0; i < customerApiVendorList.size(); i++) {
+                    CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
+                    totleAmount = totleAmount + customerApiVendor.getTotlePrice();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("customerApiVendorList",customerApiVendorList);
+        model.addAttribute("companyName",companyName);
+        model.addAttribute("apiTypeName",apiTypeName);
+        model.addAttribute("totleAmount",totleAmount);
         return "/finance/customerApiConsumeDetailRecord";
     }
+
+    /**
+     * 周历史记录
+     * @param customerId
+     * @param years
+     * @param months
+     * @param weeks
+     * @param typeId
+     * @param companyName
+     * @param model
+     * @return
+     */
+    @RequestMapping("/find-all-customer/find-week-record-by-customer-id")
+    public String findWeekRecordByCustomerId(Integer customerId,Integer years,Integer months,Integer weeks,Integer [] typeId,String companyName,Model model){
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        map.put("weekMonthTypeId",1);
+        List<Integer> tableIdList = new ArrayList();
+        if(typeId != null && typeId.length>0){
+            for(int i=0; i<typeId.length; i++){
+                tableIdList.add(typeId[i]);
+            }
+        }else {
+            tableIdList.add(1);
+            tableIdList.add(2);
+        }
+        map.put("tableIdList",tableIdList);
+        List<Integer> monthList = null;
+        if(years != null){
+            map.put("years",years);
+            try {
+                monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        List<Integer> weekList = null;
+        if(months != null){
+            map.put("months",months);
+            try {
+                weekList = customerFinanceService.queryCompanyCustomerWeeksByCustomerId(map);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(weeks != null){
+            map.put("weeks",weeks);
+        }
+        List<WeekMonthAmount> weekMonthAmountList = null;
+        List<Integer> yearList = null;
+        long totleAmount = 0;
+        try {
+            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
+            weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
+            if(weekMonthAmountList != null){
+                for (int i=0; i<weekMonthAmountList.size(); i++){
+                    WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
+                    totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("weekMonthAmountList",weekMonthAmountList);
+        model.addAttribute("yearList",yearList);
+        model.addAttribute("monthList",monthList);
+        model.addAttribute("weekList",weekList);
+        model.addAttribute("totleAmount",totleAmount);
+        model.addAttribute("companyName",companyName);
+        model.addAttribute("customerId",customerId);
+        model.addAttribute("typeIdArray",typeId);
+        model.addAttribute("years",years);
+        model.addAttribute("months",months);
+        model.addAttribute("weeks",weeks);
+        return "/finance/weekRecord";
+    }
+
+    /**
+     * 月历史记录
+     * @param customerId
+     * @param years
+     * @param months
+     * @param typeId
+     * @param companyName
+     * @param model
+     * @return
+     */
+    @RequestMapping("/find-all-customer/find-month-record-by-customer-id")
+    public String findMonthRecordByCustomerId(Integer customerId,Integer years,Integer months, Integer [] typeId,String companyName,Model model){
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        map.put("weekMonthTypeId",2);
+        List<Integer> tableIdList = new ArrayList();
+        if(typeId != null && typeId.length>0){
+            for(int i=0; i<typeId.length; i++){
+                tableIdList.add(typeId[i]);
+            }
+        }else {
+            tableIdList.add(1);
+            tableIdList.add(2);
+        }
+        map.put("tableIdList",tableIdList);
+        List<Integer> monthList = null;
+        if(years != null){
+            map.put("years",years);
+            try {
+                monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(months != null){
+            map.put("months",months);
+
+        }
+        List<WeekMonthAmount> weekMonthAmountList = null;
+        List<Integer> yearList = null;
+        long totleAmount = 0;
+        try {
+            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
+            weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
+            if(weekMonthAmountList != null){
+                for (int i=0; i<weekMonthAmountList.size(); i++){
+                    WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
+                    totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("weekMonthAmountList",weekMonthAmountList);
+        model.addAttribute("yearList",yearList);
+        model.addAttribute("monthList",monthList);
+        model.addAttribute("totleAmount",totleAmount);
+        model.addAttribute("companyName",companyName);
+        model.addAttribute("customerId",customerId);
+        model.addAttribute("typeIdArray",typeId);
+        model.addAttribute("years",years);
+        model.addAttribute("months",months);
+        return "/finance/monthRecord";
+    }
+
+    /**
+     * 周记录数月级联菜单
+     * @param request
+     * @return
+     */
+    @RequestMapping("/find-company-customer-week-uplink-months-by-customer-id")
+    @ResponseBody
+    public String findCompanyCustomerWeekUplinkMonthsByCustomerId(HttpServletRequest request){
+        Integer customerId = parseInt(request.getParameter("customerId"));
+        Integer years = parseInt(request.getParameter("years"));
+        String typeId [] =request.getParameterValues("typeId[]");
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        map.put("weekMonthTypeId",1);
+        map.put("years",years);
+        List<Integer> tableIdList = new ArrayList();
+        if(typeId != null && typeId.length>0){
+            for(int i=0; i<typeId.length; i++){
+                tableIdList.add(Integer.parseInt(typeId[i]));
+            }
+        }else {
+            tableIdList.add(1);
+            tableIdList.add(2);
+        }
+        map.put("tableIdList",tableIdList);
+        List<Integer> monthList = null;
+        try {
+            monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONArray jsonArray = JSONArray.fromObject(monthList);
+        return jsonArray.toString();
+    }
+
+    /**
+     * 周记录数周级联菜单
+     * @param request
+     * @return
+     */
+    @RequestMapping("/find-company-customer-weeks-by-customer-id")
+    @ResponseBody
+    public String findCompanyCustomerWeeksByCustomerId(HttpServletRequest request){
+        Integer customerId = parseInt(request.getParameter("customerId"));
+        Integer years = parseInt(request.getParameter("years"));
+        Integer months = parseInt(request.getParameter("months"));
+        String typeId [] =request.getParameterValues("typeId[]");
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        map.put("weekMonthTypeId",1);
+        map.put("years",years);
+        map.put("months",months);
+        List<Integer> tableIdList = new ArrayList();
+        if(typeId != null && typeId.length>0){
+            for(int i=0; i<typeId.length; i++){
+                tableIdList.add(Integer.parseInt(typeId[i]));
+            }
+        }else {
+            tableIdList.add(1);
+            tableIdList.add(2);
+        }
+        map.put("tableIdList",tableIdList);
+        List<Integer> weekList = null;
+        try {
+            weekList = customerFinanceService.queryCompanyCustomerWeeksByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONArray jsonArray = JSONArray.fromObject(weekList);
+        return jsonArray.toString();
+    }
+
+
+    /**
+     * 月记录数月级联菜单
+     * @param request
+     * @return
+     */
+    @RequestMapping("/find-company-customer-month-uplink-months-by-customer-id")
+    @ResponseBody
+    public String findCompanyCustomerMonthUplinkMonthsByCustomerId(HttpServletRequest request){
+        Integer customerId = parseInt(request.getParameter("customerId"));
+        Integer years = parseInt(request.getParameter("years"));
+        String typeId [] =request.getParameterValues("typeId[]");
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        map.put("weekMonthTypeId",2);
+        map.put("years",years);
+        List<Integer> tableIdList = new ArrayList();
+        if(typeId != null && typeId.length>0){
+            for(int i=0; i<typeId.length; i++){
+                tableIdList.add(Integer.parseInt(typeId[i]));
+            }
+        }else {
+            tableIdList.add(1);
+            tableIdList.add(2);
+        }
+        map.put("tableIdList",tableIdList);
+        List<Integer> monthList = null;
+        try {
+            monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONArray jsonArray = JSONArray.fromObject(monthList);
+        return jsonArray.toString();
+    }
+
+
+
+
+
+
+
+
 
     //Api消费账单
     @RequestMapping("/find-all-api-record")
