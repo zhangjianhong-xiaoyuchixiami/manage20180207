@@ -32,7 +32,7 @@
 
                                         <div class="input-append">
 
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入公司名称">
+                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
 
                                             <button class="btn black" type="submit">搜索</button>
 
@@ -58,7 +58,7 @@
 
                                         <div class="input-append">
 
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入公司名称">
+                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
 
                                             <button class="btn black" type="submit">搜索</button>
 
@@ -95,9 +95,11 @@
                                     <ul class="dropdown-menu pull-right">
 
                                     <#--<li><a href="#"><i class="icon-print"></i> 打印</a></li>-->
-
-                                        <li><a id="exportExcel" href="javaScript:;"><i class="icon-share icon-black"></i> 导出Excel</a></li>
-
+                                        <#if deptIdList??>
+                                            <li><a id="exportExcelDeptId" href="javaScript:;"><i class="icon-share icon-black"></i> 导出Excel</a></li>
+                                        <#else>
+                                            <li><a id="exportExcel" href="javaScript:;"><i class="icon-share icon-black"></i> 导出Excel</a></li>
+                                        </#if>
                                     <#--<li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>-->
 
                                     <#--<li class="divider"></li>-->
@@ -143,9 +145,9 @@
                                             <td data-title="账号余额"><#if customer.balance??>${customer.balance/100.0}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center">
 
-                                                <#--<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>-->
-                                                <#--|-->
-                                                <#--<a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费明细</a>-->
+                                            <#--<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>-->
+                                            <#--|-->
+                                            <#--<a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费明细</a>-->
 
                                                 <ul class="nav nav-tabs" style="margin-bottom: 0px; min-width: 94px; border-bottom: 0px solid #f4f4f4;">
                                                     <li class="dropdown" style="float: none;">
@@ -198,38 +200,22 @@
         jQuery(document).ready(function() {
             TableManaged.init();
         });
-        var tableToExcel = (function() {
-            var uri = 'data:application/vnd.ms-excel;base64,',
-                    template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
-                            + '<head><meta http-equiv="Content-type" content="text/html;charset=UTF-8" /><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/>'
-                            + '</x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
-                    base64 = function(s) {
-                        return window.btoa(unescape(encodeURIComponent(s)))
-                    },
-                    format = function(s, c) {
-                        return s.replace(/{(\w+)}/g, function(m, p) {
-                            return c[p];
-                        })
-                    };
 
-            return function(table, name) {
-                var ctx = {
-                    worksheet : name || 'Worksheet',
-                    table : table.innerHTML
-                }
-                return uri + base64(format(template, ctx));
-            }
-        })();
+        $(document).ready(function() {
+            $('#exportExcel').on('click', function () {
+                var companyName = $('#companyName').val();
+                $.ajax({
+                    url: '/excel-finance/find-all-customer',
+                    data: {"companyName": companyName},
+                    type: 'post',
+                    datType: 'json',
+                    success: function (data) {
 
-        $(function(){
-            $('#exportExcel').on('click', function(){
-                var $this = $(this);
-                //设定下载的文件名及后缀
-                $this.attr('download', '2016-3-3-财务报表.xls');
-                //设定下载内容
-                $this.attr('href', tableToExcel($('#sample_2')[0], '财务统计'));
+                    }
+                });
             });
         });
+
 
     </script>
 

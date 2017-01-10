@@ -1,114 +1,80 @@
 package org.qydata.util;
 
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
-import java.lang.reflect.Field;
-
-import jxl.Workbook;
-import jxl.format.Alignment;
-import jxl.format.Border;
-import jxl.format.BorderLineStyle;
-import jxl.format.VerticalAlignment;
-import jxl.write.Label;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-
-/**
- * Created by jonhn on 2017/1/10.
- */
 public class ExportExcel {
-
-    /***************************************************************************
-     * @param fileName EXCEL文件名称
-     * @param listTitle EXCEL文件第一行列标题集合
-     * @param listContent EXCEL文件正文数据集合
-     * @return
-     */
-    public  final static String exportExcel(String fileName,String[] Title, List<Object> listContent) {
-        String result="系统提示：Excel文件导出成功！";
-        // 以下开始输出到EXCEL
+    public static void exportExcel(String title, String[] headers, List mapList, OutputStream out, String pattern){
+        //声明一个工作簿
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        //生成一个表格
+        HSSFSheet sheet = workbook.createSheet(title);
+        //设置表格默认列宽度为15个字符
+        sheet.setDefaultColumnWidth(20);
+        //生成一个样式，用来设置标题样式
+        HSSFCellStyle style = workbook.createCellStyle();
+        //设置这些样式
+        style.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        //生成一个字体
+        HSSFFont font = workbook.createFont();
+        font.setColor(HSSFColor.VIOLET.index);
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        //把字体应用到当前的样式
+        style.setFont(font);
+        // 生成并设置另一个样式,用于设置内容样式
+        HSSFCellStyle style2 = workbook.createCellStyle();
+        style2.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+        style2.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        // 生成另一个字体
+        HSSFFont font2 = workbook.createFont();
+        font2.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+        // 把字体应用到当前的样式
+        style2.setFont(font2);
+        //产生表格标题行
+        HSSFRow row = sheet.createRow(0);
+        for(int i = 0; i<headers.length;i++){
+            HSSFCell cell = row.createCell(i);
+            cell.setCellStyle(style);
+            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+            cell.setCellValue(text);
+        }
+        for (int i=0;i<mapList.size();i++) {
+            Map<String,Object> map = (Map<String, Object>) mapList.get(i);
+            row = sheet.createRow(i+1);
+            int j = 0;
+            Object value = null;
+            value=map.get("number");
+            if(value instanceof Integer){
+                row.createCell(j++).setCellValue(String.valueOf(value));
+            }
+            row.createCell(j++).setCellValue(map.get("name").toString());
+            value=map.get("age");
+            if(value instanceof Integer){
+                row.createCell(j++).setCellValue(String.valueOf(value));
+            }
+            row.createCell(j++).setCellValue("0".equals(map.get("sex").toString())?"女":"男");
+        }
         try {
-            //定义输出流，以便打开保存对话框______________________begin
-            HttpServletResponse response;
-            response.
-            OutputStream os = response.get();// 取得输出流
-            response.reset();// 清空输出流
-            response.setHeader("Content-disposition", "attachment; filename="+ new String(fileName.getBytes("GB2312"),"ISO8859-1"));
-// 设定输出文件头
-            response.setContentType("application/msexcel");// 定义输出类型
-            //定义输出流，以便打开保存对话框_______________________end
-
-            /** **********创建工作簿************ */
-            WritableWorkbook workbook = Workbook.createWorkbook(os);
-
-            /** **********创建工作表************ */
-
-            WritableSheet sheet = workbook.createSheet("Sheet1", 0);
-
-            /** **********设置纵横打印（默认为纵打）、打印纸***************** */
-            jxl.SheetSettings sheetset = sheet.getSettings();
-            sheetset.setProtected(false);
-
-
-            /** ************设置单元格字体************** */
-            WritableFont NormalFont = new WritableFont(WritableFont.ARIAL, 10);
-            WritableFont BoldFont = new WritableFont(WritableFont.ARIAL, 10,WritableFont.BOLD);
-
-            /** ************以下设置三种单元格样式，灵活备用************ */
-            // 用于标题居中
-            WritableCellFormat wcf_center = new WritableCellFormat(BoldFont);
-            wcf_center.setBorder(Border.ALL, BorderLineStyle.THIN); // 线条
-            wcf_center.setVerticalAlignment(VerticalAlignment.CENTRE); // 文字垂直对齐
-            wcf_center.setAlignment(Alignment.CENTRE); // 文字水平对齐
-            wcf_center.setWrap(false); // 文字是否换行
-
-            // 用于正文居左
-            WritableCellFormat wcf_left = new WritableCellFormat(NormalFont);
-            wcf_left.setBorder(Border.NONE, BorderLineStyle.THIN); // 线条
-            wcf_left.setVerticalAlignment(VerticalAlignment.CENTRE); // 文字垂直对齐
-            wcf_left.setAlignment(Alignment.LEFT); // 文字水平对齐
-            wcf_left.setWrap(false); // 文字是否换行
-
-
-            /** ***************以下是EXCEL开头大标题，暂时省略********************* */
-            //sheet.mergeCells(0, 0, colWidth, 0);
-            //sheet.addCell(new Label(0, 0, "XX报表", wcf_center));
-            /** ***************以下是EXCEL第一行列标题********************* */
-            for (int i = 0; i < Title.length; i++) {
-                sheet.addCell(new Label(i, 0,Title[i],wcf_center));
-            }
-            /** ***************以下是EXCEL正文数据********************* */
-            Field[] fields=null;
-            int i=1;
-            for(Object obj:listContent){
-                fields=obj.getClass().getDeclaredFields();
-                int j=0;
-                for(Field v:fields){
-                    v.setAccessible(true);
-                    Object va=v.get(obj);
-                    if(va==null){
-                        va="";
-                    }
-                    sheet.addCell(new Label(j, i,va.toString(),wcf_left));
-                    j++;
-                }
-                i++;
-            }
-            /** **********将以上缓存中的内容写到EXCEL文件中******** */
-            workbook.write();
-            /** *********关闭文件************* */
-            workbook.close();
-
-        } catch (Exception e) {
-            result="系统提示：Excel文件导出失败，原因："+ e.toString();
-            System.out.println(result);
+            workbook.write(out);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return result;
     }
 }
