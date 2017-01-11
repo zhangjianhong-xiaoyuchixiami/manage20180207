@@ -3,6 +3,8 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<#import "../publicPart/tools.ftl" as d>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -108,17 +110,7 @@
 
                             <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if></div>
 
-                            <div class="tools">
-
-                            <#--<a href="javascript:;" class="collapse"></a>-->
-
-                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
-
-                                <#--<a href="javascript:;" class="reload"></a>-->
-
-                                <#--<a href="javascript:;" class="remove"></a>-->
-
-                            </div>
+                            <@d.tools idName="exportExcel"></@d.tools>
 
                         </div>
 
@@ -206,6 +198,26 @@
                         }
                     });
                 }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#exportExcel').on('click', function () {
+                var companyName = $('#companyName').val();
+                var customerId = $('#customerId').val();
+                var apiTypeId = $('#apiTypeId').val();
+                var apiVendorId = $('#apiVendorId').val();
+                fetch('/excel-finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?companyName='+companyName+'&customerId='+customerId+'&apiTypeId='+apiTypeId+'&apiVendorId='+apiVendorId).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename = companyName+'消费记录.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
             });
         });
     </script>

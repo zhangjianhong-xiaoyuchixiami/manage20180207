@@ -302,6 +302,8 @@ public class FinanceController {
         model.addAttribute("customerApiVendorList",customerApiVendorList);
         model.addAttribute("companyName",companyName);
         model.addAttribute("apiTypeName",apiTypeName);
+        model.addAttribute("apiTypeId",apiTypeId);
+        model.addAttribute("customerId",customerId);
         model.addAttribute("totleAmount",totleAmount);
         return "/finance/customerApiConsumeDetailRecord";
     }

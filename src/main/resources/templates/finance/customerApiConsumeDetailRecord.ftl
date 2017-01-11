@@ -3,6 +3,8 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<#import "../publicPart/tools.ftl" as d>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -18,6 +20,50 @@
 
                 <div class="span12">
 
+                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                        <label class="control-label">客户账号Id</label>
+
+                        <div class="controls">
+
+                            <input type="text" id="customerId" name="customerId" value="${customerId?c}" class="m-wrap medium">
+
+                        </div>
+                    </div>
+
+                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                        <label class="control-label">公司名称</label>
+
+                        <div class="controls">
+
+                            <input type="text" id="companyName" name="companyName" value="${companyName}" class="m-wrap medium">
+
+                        </div>
+                    </div>
+
+                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                        <label class="control-label">api类型名称</label>
+
+                        <div class="controls">
+
+                            <input type="text" id="apiTypeName" name="apiTypeName" value="${apiTypeName}" class="m-wrap medium">
+
+                        </div>
+                    </div>
+
+                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                        <label class="control-label">api类型Id</label>
+
+                        <div class="controls">
+
+                            <input type="text" id="apiTypeId" name="apiTypeId" value="${apiTypeId}" class="m-wrap medium">
+
+                        </div>
+                    </div>
+
                 <#--表单-->
                     <div class="portlet box grey">
 
@@ -25,17 +71,7 @@
 
                             <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if><#if apiTypeName??>--${apiTypeName}</#if></div>
 
-                            <div class="tools">
-
-                            <#--<a href="javascript:;" class="collapse"></a>-->
-
-                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
-
-                                <#--<a href="javascript:;" class="reload"></a>-->
-
-                                <#--<a href="javascript:;" class="remove"></a>-->
-
-                            </div>
+                            <@d.tools idName="exportExcel"></@d.tools>
 
                         </div>
 
@@ -95,6 +131,26 @@
 
         jQuery(document).ready(function() {
             TableManaged.init();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#exportExcel').on('click', function () {
+                var companyName = $('#companyName').val();
+                var customerId = $('#customerId').val();
+                var apiTypeId = $('#apiTypeId').val();
+                var apiTypeName = $('#apiTypeName').val();
+                fetch('/excel-finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?companyName='+companyName+'&customerId='+customerId+'&apiTypeId='+apiTypeId).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename = companyName+'-'+apiTypeName+'消费明细记录.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
+            });
         });
     </script>
     <script>

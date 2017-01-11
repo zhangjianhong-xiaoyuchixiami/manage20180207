@@ -3,6 +3,8 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<#import "../publicPart/tools.ftl" as d>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -80,37 +82,11 @@
 
                             <div class="caption"><i class="icon-user"></i></div>
 
-                            <div class="actions">
-
-                                <div class="btn-group">
-
-                                    <a class="btn white" href="#" data-toggle="dropdown">
-
-                                        工具
-
-                                        <i class="icon-angle-down"></i>
-
-                                    </a>
-
-                                    <ul class="dropdown-menu pull-right">
-
-                                    <#--<li><a href="#"><i class="icon-print"></i> 打印</a></li>-->
-                                        <#if deptIdList??>
-                                            <li><a id="exportExcelDeptId" href="javaScript:;"><i class="icon-share icon-black"></i> 导出Excel</a></li>
-                                        <#else>
-                                            <li><a id="exportExcel" href="javaScript:;"><i class="icon-share icon-black"></i> 导出Excel</a></li>
-                                        </#if>
-                                    <#--<li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>-->
-
-                                    <#--<li class="divider"></li>-->
-
-                                    <#--<li><a href="#"><i class="i"></i> Make admin</a></li>-->
-
-                                    </ul>
-
-                                </div>
-
-                            </div>
+                            <#if deptIdList??>
+                                <@d.tools idName="exportExcelByDeptId"></@d.tools>
+                            <#else >
+                                <@d.tools idName="exportExcel"></@d.tools>
+                            </#if>
 
                         </div>
 
@@ -144,11 +120,6 @@
                                             <td data-title="消费总额"><#if customer.consumeTotleAmount??>${customer.consumeTotleAmount/100.0}<#else >0</#if></td>
                                             <td data-title="账号余额"><#if customer.balance??>${customer.balance/100.0}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center">
-
-                                            <#--<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id/${customer.id}?reasonId=1">充值记录</a>-->
-                                            <#--|-->
-                                            <#--<a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id">消费明细</a>-->
-
                                                 <ul class="nav nav-tabs" style="margin-bottom: 0px; min-width: 94px; border-bottom: 0px solid #f4f4f4;">
                                                     <li class="dropdown" style="float: none;">
                                                         <a class="dropdown-toggle" style=" padding-bottom: 0px; padding-top: 0px;" data-toggle="dropdown" href="#">
@@ -162,7 +133,6 @@
                                                         </ul>
                                                     </li>
                                                 </ul>
-
                                             </td>
                                         </tr>
                                         </#list>
@@ -204,15 +174,28 @@
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
                 var companyName = $('#companyName').val();
-                $.ajax({
-                    url: '/excel-finance/find-all-customer',
-                    data: {"companyName": companyName},
-                    type: 'post',
-                    datType: 'json',
-                    success: function (data) {
+                fetch('/excel-finance/find-all-customer?content='+companyName).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename = '客户财务报表.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
+            });
 
-                    }
-                });
+            $('#exportExcelByDeptId').on('click', function () {
+                var companyName = $('#companyName').val();
+                fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename = '客户财务报表.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
             });
         });
 

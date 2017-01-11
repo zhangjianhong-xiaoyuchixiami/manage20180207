@@ -3,6 +3,8 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<#import "../publicPart/tools.ftl" as d>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -130,17 +132,7 @@
 
                             <div class="caption"><i class="icon-user"></i></i><#if companyName??>${companyName}</#if></div>
 
-                            <div class="tools">
-
-                            <#--<a href="javascript:;" class="collapse"></a>-->
-
-                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
-
-                                <#--<a href="javascript:;" class="reload"></a>-->
-
-                                <#--<a href="javascript:;" class="remove"></a>-->
-
-                            </div>
+                            <@d.tools idName="exportExcel"></@d.tools>
 
                         </div>
 
