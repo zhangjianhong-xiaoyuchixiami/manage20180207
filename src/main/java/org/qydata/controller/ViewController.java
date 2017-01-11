@@ -28,30 +28,33 @@ public class ViewController {
 
     //登录
     @RequestMapping("/login")
-    public String loginUrl() { return "view/login";}
+    public String loginUrl() {
+        return "view/login";
+    }
 
     //登录提交
     @RequestMapping("/view/login-action")
     public String login(HttpServletRequest request, String username, String password, RedirectAttributes model) {
         Subject subject = SecurityUtils.getSubject();
 
-        String md5Password = Md5Tools.md5(username.trim()+password.trim());
+        String md5Password = Md5Tools.md5(username.trim() + password.trim());
         System.out.println(md5Password);
 
         UsernamePasswordToken token = new UsernamePasswordToken(username, md5Password);
         try {
             subject.login(token);
-
             User user = userService.findUserByUsername(username);
             request.getSession().setAttribute("userInfo", user);
-            model.addFlashAttribute("user",user);
+            model.addFlashAttribute("user", user);
             return "redirect:/";
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
-            model.addFlashAttribute("msg","用户名或密码不正确");
+            model.addFlashAttribute("msg", "用户名或密码不正确");
             return "redirect:/login";
         }
     }
+
+
 
     //登录成功
     @RequestMapping("/")

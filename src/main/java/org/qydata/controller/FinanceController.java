@@ -19,7 +19,6 @@ import org.qydata.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -101,6 +100,7 @@ public class FinanceController {
                 e.printStackTrace();
             }
             model.addAttribute("customerFinanceList",customerFinanceList);
+            model.addAttribute("deptIdList", deptIdList);
             model.addAttribute("content",content);
             return "/finance/customerFinancialAccount";
         }else {
@@ -208,6 +208,14 @@ public class FinanceController {
                     for (int i = 0; i < customerApiTypes1.size(); i++) {
                         CustomerApiType customerApiType = customerApiTypes1.get(i);
                         customerApiVendors = customerApiType.getCustomerApiVendors();
+                        if (customerApiVendors != null){
+                            for (int j=0; j<customerApiVendors.size(); j++){
+                                CustomerApiVendor customerApiVendor = customerApiVendors.get(j);
+                                if (customerApiVendor.getVendorName() == null){
+                                    customerApiVendors.remove(j);
+                                }
+                            }
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -246,11 +254,9 @@ public class FinanceController {
      * @param request
      * @return
      */
-    @RequestMapping("find-api-vendor-by-api-type-id")
+    @RequestMapping("/find-api-vendor-by-api-type-id")
     @ResponseBody
-    public String findApiVendorByApiTypeId(HttpServletRequest request){
-        Integer apiTypeId = parseInt(request.getParameter("apiTypeId"));
-        Integer customerId = parseInt(request.getParameter("customerId"));
+    public String findApiVendorByApiTypeId(Integer apiTypeId,Integer customerId,HttpServletRequest request){
         Map<String, Object> map = new HashedMap();
         map.put("customerId", customerId);
         map.put("apiTypeId", apiTypeId);
@@ -289,8 +295,8 @@ public class FinanceController {
      * @param model
      * @return
      */
-    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail/{customerId}")
-    public String findAllApiConsumeDetailRecordByCustomerId(@PathVariable Integer customerId, Integer apiTypeId, String companyName, String apiTypeName,Integer [] reasonId, Model model){
+    @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail")
+    public String findAllApiConsumeDetailRecordByCustomerId(Integer customerId, Integer apiTypeId, String companyName, String apiTypeName,Integer [] reasonId, Model model){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("apiTypeId",apiTypeId);
@@ -475,10 +481,7 @@ public class FinanceController {
      */
     @RequestMapping("/find-company-customer-week-uplink-months-by-customer-id")
     @ResponseBody
-    public String findCompanyCustomerWeekUplinkMonthsByCustomerId(HttpServletRequest request){
-        Integer customerId = parseInt(request.getParameter("customerId"));
-        Integer years = parseInt(request.getParameter("years"));
-        String typeId [] =request.getParameterValues("typeId[]");
+    public String findCompanyCustomerWeekUplinkMonthsByCustomerId(Integer customerId,Integer years,Integer [] typeId,HttpServletRequest request){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",1);
@@ -486,7 +489,7 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         if(typeId != null && typeId.length>0){
             for(int i=0; i<typeId.length; i++){
-                tableIdList.add(Integer.parseInt(typeId[i]));
+                tableIdList.add(typeId[i]);
             }
         }else {
             tableIdList.add(1);
@@ -510,11 +513,7 @@ public class FinanceController {
      */
     @RequestMapping("/find-company-customer-weeks-by-customer-id")
     @ResponseBody
-    public String findCompanyCustomerWeeksByCustomerId(HttpServletRequest request){
-        Integer customerId = parseInt(request.getParameter("customerId"));
-        Integer years = parseInt(request.getParameter("years"));
-        Integer months = parseInt(request.getParameter("months"));
-        String typeId [] =request.getParameterValues("typeId[]");
+    public String findCompanyCustomerWeeksByCustomerId(Integer customerId,Integer years,Integer months,Integer [] typeId,HttpServletRequest request){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",1);
@@ -523,7 +522,7 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         if(typeId != null && typeId.length>0){
             for(int i=0; i<typeId.length; i++){
-                tableIdList.add(Integer.parseInt(typeId[i]));
+                tableIdList.add(typeId[i]);
             }
         }else {
             tableIdList.add(1);
@@ -548,10 +547,7 @@ public class FinanceController {
      */
     @RequestMapping("/find-company-customer-month-uplink-months-by-customer-id")
     @ResponseBody
-    public String findCompanyCustomerMonthUplinkMonthsByCustomerId(HttpServletRequest request){
-        Integer customerId = parseInt(request.getParameter("customerId"));
-        Integer years = parseInt(request.getParameter("years"));
-        String typeId [] =request.getParameterValues("typeId[]");
+    public String findCompanyCustomerMonthUplinkMonthsByCustomerId(Integer customerId,Integer years,Integer [] typeId,HttpServletRequest request){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",2);
@@ -559,7 +555,7 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         if(typeId != null && typeId.length>0){
             for(int i=0; i<typeId.length; i++){
-                tableIdList.add(Integer.parseInt(typeId[i]));
+                tableIdList.add(typeId[i]);
             }
         }else {
             tableIdList.add(1);

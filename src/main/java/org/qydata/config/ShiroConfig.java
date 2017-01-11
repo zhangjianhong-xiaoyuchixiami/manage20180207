@@ -297,6 +297,22 @@ public class ShiroConfig {
 		chains.put("/user/updatePasswordView", "authc");
 		chains.put("/user/updatePasswordAction", "authc");
 
+		//客户财务账单
+		chains.put("/finance/find-all-customer", "authc,perms");
+		chains.put("/finance/find-all-customer-by-dept-id", "authc,perms");
+		chains.put("/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id", "authc,perms");
+		chains.put("/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id", "authc,perms");
+		chains.put("/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail", "authc,perms");
+		chains.put("/finance/find-all-customer/find-week-record-by-customer-id", "authc,perms");
+		chains.put("/finance/find-all-customer/find-month-record-by-customer-id", "authc,perms");
+		//级联
+		chains.put("/finance/find-api-vendor-by-api-type-id", "authc");
+		chains.put("/finance/find-company-customer-week-uplink-months-by-customer-id", "authc");
+		chains.put("/finance/find-company-customer-weeks-by-customer-id", "authc");
+		chains.put("/finance/find-company-customer-month-uplink-months-by-customer-id", "authc");
+
+
+		//chains.put("/excel-finance/find-all-customer-by-dept-id", "authc");
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}

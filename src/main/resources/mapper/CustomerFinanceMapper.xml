@@ -41,8 +41,6 @@
             <result column="totlePrice" property="totlePrice"/>
             <result column="vendorName" property="vendorName"/>
             <result column="vendorId" property="vendorId"/>
-            <result column="reasonId" property="reasonId"/>
-            <result column="reasonName" property="reasonName"/>
         </collection>
     </resultMap>
 
@@ -161,23 +159,18 @@
 
     <!--查询客户的Api消费记录-->
     <select id="queryCompanyCustomerApiConsumeRecordByCustomerId" parameterType="map" resultMap="ApiType_CustomerApiVendor_Map">
-        select ee.apiTypeId,ff.name typeName,ee.apiId,ee.reasonId,ee.reasonName,ee.totlePrice,ee.vendorName,ee.vendorId
+        select ee.apiTypeId,ff.name typeName,ee.apiId,ee.totlePrice,ee.vendorName,ee.vendorId
         from
         (
-            select cc.apiTypeId,cc.apiId,cc.reasonId,cc.reasonName,cc.totlePrice,dd.vendorName,dd.vendorId
+            select cc.apiTypeId,cc.apiId,cc.totlePrice,dd.vendorName,dd.vendorId
             from
             (
-                select aa.apiTypeId,aa.apiId,aa.reasonId,bb.name reasonName,aa.totlePrice
-                from
-                (
-                    select b.apiTypeId,b.apiId,a.reasonId,sum(a.amount) totlePrice
-                    from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
-                    ON a.reqId=b.id
-                    where a.reasonId in(-1,-2) and b.hasCost=1
-                    and a.customerId=#{customerId}
-                    group by b.apiTypeId,b.apiId,a.reasonId
-                ) aa LEFT JOIN qydata.CustomerBalanceModifyReason bb
-                ON aa.reasonId=bb.id
+                select b.apiTypeId,b.apiId,sum(a.amount) totlePrice
+                from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+                ON a.reqId=b.id
+                where a.reasonId in(-1,-2) and b.hasCost=1
+                and a.customerId=#{customerId}
+                group by b.apiTypeId,b.apiId
             ) cc LEFT JOIN qydata.vwApi dd
             ON cc.apiId = dd.id
         ) ee LEFT JOIN qydata.vwApiType ff

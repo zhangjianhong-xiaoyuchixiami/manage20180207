@@ -76,13 +76,13 @@
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-1">消费扣费
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId==-1>checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-1">消费扣费
 
                                     </label>
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-2">弥补扣费
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId==-2>checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-2">弥补扣费
 
                                     </label>
 
@@ -136,9 +136,10 @@
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_7">
                                 <thead>
                                 <tr>
-                                    <th style="width: 35%">产品供应商</th>
-                                    <th style="width: 45%">产品名称</th>
-                                    <th style="width: 20%">金额（单位/元）</th>
+                                    <th style="width: 30%">产品供应商</th>
+                                    <th style="width: 35%">产品名称</th>
+                                    <th style="width: 15%">金额（单位/元）</th>
+                                    <th style="width: 20%">类型</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -152,6 +153,7 @@
                                             <td>${customerApiVendor.vendorName!'未知产品供应商'}</td>
                                             <td>${customerApiVendor.apiName!'未知产品'}</td>
                                             <td><#if customerApiVendor.totlePrice??>${customerApiVendor.totlePrice/100.0}<#else >0</#if></td>
+                                            <td>${customerApiVendor.reasonName!'未知类型'}</td>
                                         </tr>
                                         </#list>
                                     </#if>
@@ -191,7 +193,11 @@
                 var customerId = $('#customerId').val();
                 var apiTypeId = $('#apiTypeId').val();
                 var apiTypeName = $('#apiTypeName').val();
-                fetch('/excel-finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?companyName='+companyName+'&customerId='+customerId+'&apiTypeId='+apiTypeId).then(res => res.blob().then(blob => {
+                var reasonId =[];//定义一个数组
+                $('input[name="reasonId"]:checked').each(function(){
+                    reasonId.push($.trim($(this).val()));
+                });
+                fetch('/excel-finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?companyName='+companyName+'&customerId='+customerId+'&reasonId='+reasonId+'&apiTypeId='+apiTypeId).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
                 var filename = companyName+'-'+apiTypeName+'消费明细记录.xls';

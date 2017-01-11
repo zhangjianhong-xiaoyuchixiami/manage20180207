@@ -22,6 +22,15 @@
 
                 <#--搜索框-->
                     <#if deptIdList??>
+                        <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px; display: none">
+                            <label class="control-label">username</label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input class="m-wrap" <#if Session.userInfo?exists>value="${Session.userInfo.username}"</#if> type="text" id="username" name="username">
+                                </div>
+                            </div>
+                        </div>
+
                         <form action="/finance/find-all-customer-by-dept-id" method="get">
 
                             <div class="clearfix margin-bottom-20">
@@ -187,7 +196,8 @@
 
             $('#exportExcelByDeptId').on('click', function () {
                 var companyName = $('#companyName').val();
-                fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName).then(res => res.blob().then(blob => {
+                var username = $('#username').val();
+                fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName+'&username='+username).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
                 var filename = '客户财务报表.xls';

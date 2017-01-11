@@ -275,7 +275,8 @@ var TableManaged = function () {
                 "aoColumns": [
                     { "bSortable": false },
                     { "bSortable": false },
-                    null
+                    null,
+                    { "bSortable": false }
                 ],
                 "aaSorting": [[2, 'desc']],
                 "aLengthMenu": [

@@ -1,6 +1,8 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -10,47 +12,7 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-
-                <div class="span12">
-
-                    <h3 class="page-title">
-
-                        <#--修改密码-->
-
-                    </h3>
-
-                    <#--<ul class="breadcrumb">-->
-
-                        <#--<li>-->
-
-                            <#--<i class="icon-home"></i>-->
-
-                            <#--<a href="/view/successUrl">首页</a>-->
-
-                            <#--<span class="icon-angle-right"></span>-->
-
-                        <#--</li>-->
-
-                        <#--<li>-->
-
-                            <#--<a href="#">管理员</a>-->
-
-                            <#--<span class="icon-angle-right"></span>-->
-
-                        <#--</li>-->
-
-                        <#--<li><a href="#">修改密码</a></li>-->
-
-                    <#--</ul>-->
-
-                </div>
-
-            </div>
-
-            <!-- END PAGE HEADER-->
-
-            <!-- BEGIN PAGE CONTENT-->
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
 
@@ -62,21 +24,21 @@
 
                             <div class="caption">
 
-                                <i class="icon-reorder"></i>
+                                <i class="icon-user"></i>
 
                             </div>
 
-                            <div class="tools hidden-phone">
+                            <#--<div class="tools hidden-phone">-->
 
-                                <a href="javascript:;" class="collapse"></a>
+                                <#--<a href="javascript:;" class="collapse"></a>-->
 
-                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
 
-                                <a href="javascript:;" class="reload"></a>
+                                <#--<a href="javascript:;" class="reload"></a>-->
 
-                                <a href="javascript:;" class="remove"></a>
+                                <#--<a href="javascript:;" class="remove"></a>-->
 
-                            </div>
+                            <#--</div>-->
 
                         </div>
 
@@ -174,7 +136,7 @@
 
                                         <button type="submit" class="btn black">提交</button>
 
-                                        <a href="/view/successUrl"><button type="button" class="btn">取消</button></a>
+                                        <a href="/"><button type="button" class="btn">取消</button></a>
 
                                     </div>
 

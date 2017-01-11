@@ -10,6 +10,7 @@ import org.qydata.entity.Dept;
 import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerFinanceService;
+import org.qydata.service.UserService;
 import org.qydata.tools.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,8 @@ import static java.lang.Integer.parseInt;
 public class ExcelFinanceController {
 
     private final Logger log = Logger.getLogger(this.getClass());
+    @Autowired
+    private UserService userService;
     @Autowired
     private CustomerFinanceService customerFinanceService;
     /**
@@ -152,10 +155,16 @@ public class ExcelFinanceController {
      * @param request
      * @return
      */
-    @RequestMapping(value = ("/find-all-customer-by-dept-id"))
-    public void findAllCustomerByDeptId(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    @RequestMapping("/find-all-customer-by-dept-id")
+    public void findAllCustomerByDeptId(String username,HttpServletRequest request,HttpServletResponse response) throws IOException {
         String companyName = request.getParameter("content");
-        User user = (User)request.getSession().getAttribute("userInfo");
+        User user = null;
+        try {
+            user = userService.findUserByUsername(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(user.getName());
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
         if (deptList.size() > 0) {
@@ -393,7 +402,9 @@ public class ExcelFinanceController {
             StringBuffer apiVendorName = new StringBuffer();
             for (int i=0; i<customerApiVendorList.size(); i++){
                 CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
-                apiVendorName =new StringBuffer(customerApiVendor.getVendorName()+","+apiVendorName);
+                if(customerApiVendor.getVendorName() != null) {
+                    apiVendorName = new StringBuffer(customerApiVendor.getVendorName() + "," + apiVendorName);
+                }
             }
             mapValue.put("apiVendor", apiVendorName);
             if(customerApiType.getTotlePrice() != null){
@@ -452,10 +463,20 @@ public class ExcelFinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail")
-    public void findAllApiConsumeDetailRecordByCustomerId(Integer customerId, Integer apiTypeId, String companyName,HttpServletResponse response) throws IOException {
+    public void findAllApiConsumeDetailRecordByCustomerId(Integer customerId, Integer apiTypeId, String companyName,Integer [] reasonId,HttpServletResponse response) throws IOException {
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("apiTypeId",apiTypeId);
+        List<Integer> reasonIdList = new ArrayList<>();
+        if (reasonId != null && reasonId.length >0) {
+            for(int i=0;i<reasonId.length;i++){
+                reasonIdList.add(reasonId[i]);
+            }
+        }else {
+            reasonIdList.add(-1);
+            reasonIdList.add(-2);
+        }
+        map.put("reasonIdList", reasonIdList);
         List<CustomerApiVendor> customerApiVendorList = null;
         try {
             customerApiVendorList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
@@ -478,11 +499,12 @@ public class ExcelFinanceController {
             }else{
                 mapValue.put("price", 0.0);
             }
+            mapValue.put("reasonName", customerApiVendor.getReasonName());
             list.add(mapValue);
         }
         String fileName = companyName+"消费明细记录";
-        String columnNames[]= {"产品供应商","产品名称","金额（单位：元）"};//列名
-        String keys[] = {"apiVendor","apiName","price"};//map中的key
+        String columnNames[]= {"产品供应商","产品名称","金额（单位：元）","类型"};//列名
+        String keys[] = {"apiVendor","apiName","price","reasonName"};//map中的key
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
