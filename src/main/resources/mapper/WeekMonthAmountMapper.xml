@@ -12,17 +12,6 @@
         <result column="temporal" property="temporal"/>
     </resultMap>
 
-    <resultMap id="WeekMonthAmount_CustomerRequestLog_CustomerResponseLog_Map" type="WeekMonthAmount">
-        <result column="years" property="years"/>
-        <result column="months" property="months"/>
-        <result column="weeks" property="weeks"/>
-        <result column="countApiSum" property="countApiSum"/>
-        <result column="customerId" property="customerId"/>
-        <result column="temporal" property="temporal"/>
-        <result column="apiId" property="apiId"/>
-        <result column="price" property="price"/>
-    </resultMap>
-
     <!--统计客户每周的充值数据-->
     <select id="getAllCustomerWeekRechargeRecord" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
         SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,DATE_FORMAT(createTime,'%u') weeks,sum(amount) totleAmount,customerId,
@@ -75,41 +64,23 @@
     </insert>
 
     <!--统计客户每周的Api消费数据-->
-    <select id="getAllCustomerApiWeekConsumeRecord" resultMap="WeekMonthAmount_CustomerRequestLog_CustomerResponseLog_Map">
-      SELECT weekConsume.years,weekConsume.months,weekConsume.weeks,weekConsume.customerId,weekConsume.countApiSum,
-      weekConsume.apiId,customerApi.price,weekConsume.temporal
-      FROM (
-              SELECT DATE_FORMAT(customerResponseLog.createTime,'%Y') years,DATE_FORMAT(customerResponseLog.createTime,'%m') months,
-              DATE_FORMAT(customerResponseLog.createTime,'%u') weeks,customerRequestLog.customerId,COUNT(customerResponseLog.apiId) countApiSum,
-              customerResponseLog.apiId,GROUP_CONCAT(DISTINCT DATE(customerResponseLog.createTime) ORDER BY DATE(customerResponseLog.createTime) ASC) temporal
-              FROM qydata.CustomerRequestLog customerRequestLog,qydata.CustomerResponseLog customerResponseLog
-              WHERE customerRequestLog.id=customerResponseLog.reqId
-              AND customerResponseLog.hasCost=1 AND customerResponseLog.apiId IS NOT NULL
-              GROUP BY DATE_FORMAT(customerResponseLog.createTime,'%Y-%m-%u'),
-              customerRequestLog.customerId,customerResponseLog.apiId
-            ) weekConsume,qydata.CustomerApi customerApi
-      WHERE customerApi.customerId=weekConsume.customerId AND weekConsume.apiId=customerApi.apiId
+    <select id="getAllCustomerApiWeekConsumeRecord" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
+        SELECT DATE_FORMAT(a.createTime,'%Y') years,DATE_FORMAT(a.createTime,'%m') months,DATE_FORMAT(a.createTime,'%u') weeks,
+        sum(a.amount) totleAmount,a.customerId,GROUP_CONCAT(DISTINCT(DATE(a.createTime)) ORDER BY DATE(a.createTime) ASC) temporal
+        FROM qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+        ON a.reqId=b.id
+        where a.reasonId in(-1,-2) and b.hasCost=1
+        GROUP BY DATE_FORMAT(a.createTime,'%Y-%m-%u'),a.customerId
     </select>
 
     <!--统计客户每月的Api消费数据-->
-    <select id="getAllCustomerApiMonthConsumeRecord" resultMap="WeekMonthAmount_CustomerRequestLog_CustomerResponseLog_Map">
-       SELECT monthConsume.years,monthConsume.months,monthConsume.customerId,monthConsume.countApiSum,
-       monthConsume.apiId,customerApi.price,monthConsume.temporal
-       FROM (
-                  SELECT DATE_FORMAT(customerResponseLog.createTime,'%Y') years,DATE_FORMAT(customerResponseLog.createTime,'%m') months,
-                  customerRequestLog.customerId,COUNT(customerResponseLog.apiId) countApiSum,
-                  customerResponseLog.apiId,GROUP_CONCAT(DISTINCT DATE(customerResponseLog.createTime) ORDER BY DATE(customerResponseLog.createTime) ASC) temporal
-                  FROM qydata.CustomerRequestLog customerRequestLog,qydata.CustomerResponseLog customerResponseLog
-                  WHERE customerRequestLog.id=customerResponseLog.reqId
-                  AND customerResponseLog.hasCost=1 AND customerResponseLog.apiId IS NOT NULL
-                  GROUP BY DATE_FORMAT(customerResponseLog.createTime,'%Y-%m'),
-                  customerRequestLog.customerId,customerResponseLog.apiId
-             ) monthConsume,qydata.CustomerApi customerApi
-        WHERE customerApi.customerId=monthConsume.customerId AND monthConsume.apiId=customerApi.apiId
+    <select id="getAllCustomerApiMonthConsumeRecord" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
+       SELECT DATE_FORMAT(a.createTime,'%Y') years,DATE_FORMAT(a.createTime,'%m') months,
+       sum(a.amount) totleAmount,a.customerId,GROUP_CONCAT(DISTINCT(DATE(a.createTime)) ORDER BY DATE(a.createTime) ASC) temporal
+       FROM qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+       ON a.reqId=b.id
+       where a.reasonId in(-1,-2) and b.hasCost=1
+       GROUP BY DATE_FORMAT(a.createTime,'%Y-%m'),a.customerId
     </select>
-
-
-
-
 
 </mapper>

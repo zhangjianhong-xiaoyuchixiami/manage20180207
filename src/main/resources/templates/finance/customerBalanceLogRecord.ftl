@@ -203,7 +203,7 @@
             $('#exportExcel').on('click', function () {
                 var companyName = $('#companyName').val();
                 var reasonId =[];//定义一个数组
-                $('input[name="typeId"]:checked').each(function(){
+                $('input[name="reasonId"]:checked').each(function(){
                     reasonId.push($.trim($(this).val()));
                 });
                 var customerId = $('#customerId').val();

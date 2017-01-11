@@ -10,17 +10,16 @@ import org.qydata.entity.Dept;
 import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerFinanceService;
-import org.qydata.service.CustomerService;
 import org.qydata.tools.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,13 +36,10 @@ public class ExcelFinanceController {
 
     private final Logger log = Logger.getLogger(this.getClass());
     @Autowired
-    private CustomerService customerService;
-    @Autowired
     private CustomerFinanceService customerFinanceService;
     /**
      * 查找公司财务账单
      * @param request
-
      * @return
      */
     @RequestMapping(value = "/find-all-customer")
@@ -151,7 +147,6 @@ public class ExcelFinanceController {
                 bos.close();
         }
     }
-
     /**
      * 通过部门编号查找公司财务账单
      * @param request
@@ -269,7 +264,6 @@ public class ExcelFinanceController {
             }
         }
     }
-
     /**
      * 指定账号充值记录
      * @param customerId
@@ -365,7 +359,6 @@ public class ExcelFinanceController {
                 bos.close();
         }
     }
-
     /**
      * 指定账号Api消费记录
      * @return
@@ -451,8 +444,6 @@ public class ExcelFinanceController {
                 bos.close();
         }
     }
-
-
     /**
      * 指定账号Api消费明细记录
      * @param customerId
@@ -529,9 +520,7 @@ public class ExcelFinanceController {
             if (bos != null)
                 bos.close();
         }
-
     }
-
     /**
      * 周历史记录
      * @param customerId
@@ -540,11 +529,10 @@ public class ExcelFinanceController {
      * @param weeks
      * @param typeId
      * @param companyName
-     * @param model
      * @return
      */
     @RequestMapping("/find-all-customer/find-week-record-by-customer-id")
-    public String findWeekRecordByCustomerId(Integer customerId,Integer years,Integer months,Integer weeks,Integer [] typeId,String companyName,Model model){
+    public void findWeekRecordByCustomerId(String companyName,Integer [] typeId,Integer customerId,Integer years,Integer months,Integer weeks,HttpServletResponse  response) throws IOException {
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",1);
@@ -558,56 +546,90 @@ public class ExcelFinanceController {
             tableIdList.add(2);
         }
         map.put("tableIdList",tableIdList);
-        List<Integer> monthList = null;
+
         if(years != null){
             map.put("years",years);
-            try {
-                monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
         }
-        List<Integer> weekList = null;
         if(months != null){
             map.put("months",months);
-            try {
-                weekList = customerFinanceService.queryCompanyCustomerWeeksByCustomerId(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         if(weeks != null){
             map.put("weeks",weeks);
         }
         List<WeekMonthAmount> weekMonthAmountList = null;
-        List<Integer> yearList = null;
-        long totleAmount = 0;
         try {
-            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
             weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
-            if(weekMonthAmountList != null){
-                for (int i=0; i<weekMonthAmountList.size(); i++){
-                    WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
-                    totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("weekMonthAmountList",weekMonthAmountList);
-        model.addAttribute("yearList",yearList);
-        model.addAttribute("monthList",monthList);
-        model.addAttribute("weekList",weekList);
-        model.addAttribute("totleAmount",totleAmount);
-        model.addAttribute("companyName",companyName);
-        model.addAttribute("customerId",customerId);
-        model.addAttribute("typeIdArray",typeId);
-        model.addAttribute("years",years);
-        model.addAttribute("months",months);
-        model.addAttribute("weeks",weeks);
-        return "/finance/weekRecord";
-    }
+        List<Map<String,Object>> list = new ArrayList<>();
+        Map<String, Object> mapA = new HashMap<String, Object>();
+        mapA.put("sheetName", "sheet1");
+        list.add(mapA);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        WeekMonthAmount weekMonthAmount = null;
+        for (int j = 0; j < weekMonthAmountList.size(); j++) {
+            weekMonthAmount = weekMonthAmountList.get(j);
+            Map<String, Object> mapValue = new HashMap<String, Object>();
 
+            mapValue.put("yearMonthWeek", weekMonthAmount.getYears()+"年第"+weekMonthAmount.getMonths()+"月第"+weekMonthAmount.getWeeks()+"周");
+            if(weekMonthAmount.getTotleAmount() != null){
+                mapValue.put("totleAmount", weekMonthAmount.getTotleAmount()/100.0);
+            }else{
+                mapValue.put("totleAmount", 0.0);
+            }
+            mapValue.put("beginTime", sdf.format(weekMonthAmount.getBeginTime()));
+            mapValue.put("endTime", sdf.format(weekMonthAmount.getEndTime()));
+            if (weekMonthAmount.getTableId() == 1){
+                mapValue.put("type", "充值");
+            }
+            if (weekMonthAmount.getTableId() == 2){
+                mapValue.put("type", "消费");
+            }
+            list.add(mapValue);
+        }
+        String fileName = companyName+"周历史记录";
+        String columnNames[]= {"年月周","金额（单位：元）","开始时间","结束时间","类型"};//列名
+        String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime","type"};//map中的key
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        byte[] content = os.toByteArray();
+        InputStream is = new ByteArrayInputStream(content);
+        // 设置response参数，可以打开下载页面
+        response.reset();
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            bis = new BufferedInputStream(is);
+            bos = new BufferedOutputStream(out);
+            byte[] buff = new byte[2048];
+            int bytesRead;
+            // Simple read/write loop.
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                bos.write(buff, 0, bytesRead);
+            }
+        } catch (final IOException e) {
+            throw e;
+        } finally {
+            if (bis != null)
+                bis.close();
+            if (bos != null)
+                bos.close();
+        }
+    }
     /**
      * 月历史记录
      * @param customerId
@@ -615,11 +637,10 @@ public class ExcelFinanceController {
      * @param months
      * @param typeId
      * @param companyName
-     * @param model
      * @return
      */
     @RequestMapping("/find-all-customer/find-month-record-by-customer-id")
-    public String findMonthRecordByCustomerId(Integer customerId,Integer years,Integer months, Integer [] typeId,String companyName,Model model){
+    public void findMonthRecordByCustomerId(String companyName,Integer [] typeId,Integer customerId,Integer years,Integer months,HttpServletResponse response) throws IOException {
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",2);
@@ -633,48 +654,84 @@ public class ExcelFinanceController {
             tableIdList.add(2);
         }
         map.put("tableIdList",tableIdList);
-        List<Integer> monthList = null;
         if(years != null){
             map.put("years",years);
-            try {
-                monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         if(months != null){
             map.put("months",months);
-
         }
         List<WeekMonthAmount> weekMonthAmountList = null;
-        List<Integer> yearList = null;
-        long totleAmount = 0;
         try {
-            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
             weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
-            if(weekMonthAmountList != null){
-                for (int i=0; i<weekMonthAmountList.size(); i++){
-                    WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
-                    totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("weekMonthAmountList",weekMonthAmountList);
-        model.addAttribute("yearList",yearList);
-        model.addAttribute("monthList",monthList);
-        model.addAttribute("totleAmount",totleAmount);
-        model.addAttribute("companyName",companyName);
-        model.addAttribute("customerId",customerId);
-        model.addAttribute("typeIdArray",typeId);
-        model.addAttribute("years",years);
-        model.addAttribute("months",months);
-        return "/finance/monthRecord";
+        List<Map<String,Object>> list = new ArrayList<>();
+        Map<String, Object> mapA = new HashMap<String, Object>();
+        mapA.put("sheetName", "sheet1");
+        list.add(mapA);
+        WeekMonthAmount weekMonthAmount = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for (int j = 0; j < weekMonthAmountList.size(); j++) {
+            weekMonthAmount = weekMonthAmountList.get(j);
+            Map<String, Object> mapValue = new HashMap<String, Object>();
+
+            mapValue.put("yearMonthWeek", weekMonthAmount.getYears()+"年第"+weekMonthAmount.getMonths()+"月");
+            if(weekMonthAmount.getTotleAmount() != null){
+                mapValue.put("totleAmount", weekMonthAmount.getTotleAmount()/100.0);
+            }else{
+                mapValue.put("totleAmount", 0.0);
+            }
+            mapValue.put("beginTime", sdf.format(weekMonthAmount.getBeginTime()));
+            mapValue.put("endTime", sdf.format(weekMonthAmount.getEndTime()));
+            if (weekMonthAmount.getTableId() == 1){
+                mapValue.put("type", "充值");
+            }
+            if (weekMonthAmount.getTableId() == 2){
+                mapValue.put("type", "消费");
+            }
+            list.add(mapValue);
+        }
+        String fileName = companyName+"月历史记录";
+        String columnNames[]= {"年月","金额（单位：元）","开始时间","结束时间","类型"};//列名
+        String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime","type"};//map中的key
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        byte[] content = os.toByteArray();
+        InputStream is = new ByteArrayInputStream(content);
+        // 设置response参数，可以打开下载页面
+        response.reset();
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            bis = new BufferedInputStream(is);
+            bos = new BufferedOutputStream(out);
+            byte[] buff = new byte[2048];
+            int bytesRead;
+            // Simple read/write loop.
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                bos.write(buff, 0, bytesRead);
+            }
+        } catch (final IOException e) {
+            throw e;
+        } finally {
+            if (bis != null)
+                bis.close();
+            if (bos != null)
+                bos.close();
+        }
     }
-
-
-
-
 
 }

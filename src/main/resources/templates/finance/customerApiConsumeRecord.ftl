@@ -75,7 +75,7 @@
                                         <#if customerApiVendors??>
                                             <#list customerApiVendors as vendor>
 
-                                                <option <#if apiVendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="${vendor.vendorId?c}">${vendor.vendorName}</option>
+                                                <option <#if apiVendorId?? &&vendor.vendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="<#if vendor.vendorId??>${vendor.vendorId?c}</#if>"><#if vendor.vendorName??>${vendor.vendorName}</#if></option>
 
                                             </#list>
                                         </#if>
@@ -140,7 +140,7 @@
                                         <#list customerApiTypeList as customerApiType>
                                         <tr>
                                             <td>${customerApiType.apiTypeName}</td>
-                                            <td><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor>${vendor.vendorName}，&nbsp;</#list></#if></td>
+                                            <td><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></td>
                                             <td><#if customerApiType.totlePrice??>${customerApiType.totlePrice/100.0}<#else >0</#if></td>
                                             <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail/${customerId?c}?apiTypeId=${customerApiType.apiTypeId?c}<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
                                         </tr>

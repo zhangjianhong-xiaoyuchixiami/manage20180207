@@ -101,7 +101,7 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
             weekMonthAmountOne.setYears(weekMonthAmount.getYears());
             weekMonthAmountOne.setMonths(weekMonthAmount.getMonths());
             weekMonthAmountOne.setWeeks(weekMonthAmount.getWeeks());
-            weekMonthAmountOne.setTotleAmount(new Long(weekMonthAmount.getCountApiSum()*weekMonthAmount.getPrice()));
+            weekMonthAmountOne.setTotleAmount(weekMonthAmount.getTotleAmount());
             weekMonthAmountOne.setCustomerId(weekMonthAmount.getCustomerId());
             weekMonthAmountOne.setTableId(tableId);
             weekMonthAmountOne.setWeekMonthTypeId(weekMonthTypeId);
@@ -130,7 +130,7 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
             WeekMonthAmount weekMonthAmountOne = new WeekMonthAmount();
             weekMonthAmountOne.setYears(weekMonthAmount.getYears());
             weekMonthAmountOne.setMonths(weekMonthAmount.getMonths());
-            weekMonthAmountOne.setTotleAmount(new Long(weekMonthAmount.getCountApiSum()*weekMonthAmount.getPrice()));
+            weekMonthAmountOne.setTotleAmount(weekMonthAmount.getTotleAmount());
             weekMonthAmountOne.setCustomerId(weekMonthAmount.getCustomerId());
             weekMonthAmountOne.setTableId(tableId);
             weekMonthAmountOne.setWeekMonthTypeId(weekMonthTypeId);

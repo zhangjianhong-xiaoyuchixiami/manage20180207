@@ -12,6 +12,8 @@ public class CustomerApiVendor implements Serializable {
     private Long totlePrice;
     private String vendorName;
     private Integer vendorId;
+    private Integer reasonId;
+    private String reasonName;
 
     public Integer getApiId() {
         return apiId;
@@ -51,5 +53,21 @@ public class CustomerApiVendor implements Serializable {
 
     public void setVendorId(Integer vendorId) {
         this.vendorId = vendorId;
+    }
+
+    public Integer getReasonId() {
+        return reasonId;
+    }
+
+    public void setReasonId(Integer reasonId) {
+        this.reasonId = reasonId;
+    }
+
+    public String getReasonName() {
+        return reasonName;
+    }
+
+    public void setReasonName(String reasonName) {
+        this.reasonName = reasonName;
     }
 }

@@ -20,48 +20,94 @@
 
                 <div class="span12">
 
-                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                    <div class="clearfix margin-bottom-20">
 
-                        <label class="control-label">客户账号Id</label>
+                        <form action="" method="get">
 
-                        <div class="controls">
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
-                            <input type="text" id="customerId" name="customerId" value="${customerId?c}" class="m-wrap medium">
+                                <label class="control-label">api类型Id</label>
 
-                        </div>
-                    </div>
+                                <div class="controls">
 
-                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                                    <input type="text" id="apiTypeId" name="apiTypeId" value="${apiTypeId}" class="m-wrap medium">
 
-                        <label class="control-label">公司名称</label>
+                                </div>
+                            </div>
 
-                        <div class="controls">
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
-                            <input type="text" id="companyName" name="companyName" value="${companyName}" class="m-wrap medium">
+                                <label class="control-label">客户账号Id</label>
 
-                        </div>
-                    </div>
+                                <div class="controls">
 
-                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                                    <input type="text" id="customerId" name="customerId" value="${customerId?c}" class="m-wrap medium">
 
-                        <label class="control-label">api类型名称</label>
+                                </div>
+                            </div>
 
-                        <div class="controls">
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
-                            <input type="text" id="apiTypeName" name="apiTypeName" value="${apiTypeName}" class="m-wrap medium">
+                                <label class="control-label">公司名称</label>
 
-                        </div>
-                    </div>
+                                <div class="controls">
 
-                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                                    <input type="text" id="companyName" name="companyName" value="${companyName}" class="m-wrap medium">
 
-                        <label class="control-label">api类型Id</label>
+                                </div>
+                            </div>
 
-                        <div class="controls">
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
-                            <input type="text" id="apiTypeId" name="apiTypeId" value="${apiTypeId}" class="m-wrap medium">
+                                <label class="control-label">api类型名称</label>
 
-                        </div>
+                                <div class="controls">
+
+                                    <input type="text" id="apiTypeName" name="apiTypeName" value="${apiTypeName}" class="m-wrap medium">
+
+                                </div>
+                            </div>
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+
+                                <label class="control-label">消费理由</label>
+
+                                <div class="controls">
+
+                                    <label class="checkbox">
+
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-1">消费扣费
+
+                                    </label>
+
+                                    <label class="checkbox">
+
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="-2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-2">弥补扣费
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+
+                                <label class="control-label">&nbsp;&nbsp;</label>
+
+                                <div class="controls" >
+
+                                    <div class="input-append">
+
+                                        <button class="btn black" type="submit">搜索</button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
                     </div>
 
                 <#--表单-->
@@ -96,15 +142,19 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                               <#if customerApiVendorList??>
-                                   <#list customerApiVendorList as customerApiVendor>
-                                   <tr>
-                                       <td><#if customerApiVendor.vendorName??>${customerApiVendor.vendorName}</#if></td>
-                                       <td><#if customerApiVendor.apiName??>${customerApiVendor.apiName}</#if></td>
-                                       <td><#if customerApiVendor.totlePrice??>${customerApiVendor.totlePrice/100.0}<#else >0</#if></td>
-                                   </tr>
-                                   </#list>
-                               </#if>
+                                    <#if customerApiVendorList??>
+                                        <#list customerApiVendorList as customerApiVendor>
+                                            <#if customerApiVendor.vendorName??>
+                                            <tr>
+                                            <#else >
+                                            <tr class="danger">
+                                            </#if>
+                                            <td>${customerApiVendor.vendorName!'未知产品供应商'}</td>
+                                            <td>${customerApiVendor.apiName!'未知产品'}</td>
+                                            <td><#if customerApiVendor.totlePrice??>${customerApiVendor.totlePrice/100.0}<#else >0</#if></td>
+                                        </tr>
+                                        </#list>
+                                    </#if>
                                 </tbody>
                             </table>
 

@@ -41,6 +41,8 @@
             <result column="totlePrice" property="totlePrice"/>
             <result column="vendorName" property="vendorName"/>
             <result column="vendorId" property="vendorId"/>
+            <result column="reasonId" property="reasonId"/>
+            <result column="reasonName" property="reasonName"/>
         </collection>
     </resultMap>
 
@@ -50,6 +52,8 @@
         <result column="totlePrice" property="totlePrice"/>
         <result column="vendorName" property="vendorName"/>
         <result column="vendorId" property="vendorId"/>
+        <result column="reasonId" property="reasonId"/>
+        <result column="reasonName" property="reasonName"/>
     </resultMap>
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_Map">
@@ -157,55 +161,67 @@
 
     <!--查询客户的Api消费记录-->
     <select id="queryCompanyCustomerApiConsumeRecordByCustomerId" parameterType="map" resultMap="ApiType_CustomerApiVendor_Map">
-        SELECT cc.apiTypeId,dd.name typeName,cc.apiId,cc.totlePrice,cc.vendorName,cc.vendorId
-        FROM
+        select ee.apiTypeId,ff.name typeName,ee.apiId,ee.reasonId,ee.reasonName,ee.totlePrice,ee.vendorName,ee.vendorId
+        from
         (
-        SELECT aa.apiTypeId,aa.apiId,aa.totlePrice,bb.vendorName,bb.vendorId
-        FROM
-        (
-        SELECT a.apiTypeId,a.apiId,sum(b.price) totlePrice
-        FROM qydata.vwCustomerRequestLog a left join qydata.vwCustomerApi b
-        on a.customerId=b.customerId
-        where a.apiId=b.apiId
-        AND a.customerId=#{customerId}
-        AND a.apiId IS NOT NULL
-        AND a.hasCost=1
-        group by a.apiTypeId,a.apiId
-        ) aa LEFT JOIN qydata.vwApi bb
-        ON aa.apiId = bb.id
-        ) cc LEFT JOIN qydata.vwApiType dd
-        ON cc.apiTypeId=dd.id
+            select cc.apiTypeId,cc.apiId,cc.reasonId,cc.reasonName,cc.totlePrice,dd.vendorName,dd.vendorId
+            from
+            (
+                select aa.apiTypeId,aa.apiId,aa.reasonId,bb.name reasonName,aa.totlePrice
+                from
+                (
+                    select b.apiTypeId,b.apiId,a.reasonId,sum(a.amount) totlePrice
+                    from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+                    ON a.reqId=b.id
+                    where a.reasonId in(-1,-2) and b.hasCost=1
+                    and a.customerId=#{customerId}
+                    group by b.apiTypeId,b.apiId,a.reasonId
+                ) aa LEFT JOIN qydata.CustomerBalanceModifyReason bb
+                ON aa.reasonId=bb.id
+            ) cc LEFT JOIN qydata.vwApi dd
+            ON cc.apiId = dd.id
+        ) ee LEFT JOIN qydata.vwApiType ff
+        ON ee.apiTypeId=ff.id
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
-                cc.apiTypeId=#{apiTypeId}
+                ee.apiTypeId=#{apiTypeId}
             </if>
             <if test="apiVendorId != null and apiVendorId != ''">
-                AND cc.vendorId=#{apiVendorId}
+                AND ee.vendorId=#{apiVendorId}
             </if>
         </where>
     </select>
 
     <!--查询客户的Api消费明细记录-->
     <select id="queryCompanyCustomerApiDetailConsumeRecordByCustomerId" parameterType="map" resultMap="CustomerApiVendor_Map">
-        SELECT cc.apiTypeId,dd.name typeName,cc.apiId,cc.totlePrice,cc.vendorName,cc.vendorId,cc.apiName
-        FROM
+        select ee.apiTypeId,ff.name typeName,ee.apiId,ee.reasonId,ee.reasonName,ee.totlePrice,ee.vendorName,ee.vendorId,ee.apiName
+        from
         (
-        SELECT aa.apiTypeId,aa.apiId,aa.totlePrice,bb.vendorName,bb.vendorId,bb.name apiName
-        FROM
-        (
-        SELECT a.apiTypeId,a.apiId,sum(b.price) totlePrice
-        FROM qydata.vwCustomerRequestLog a left join qydata.vwCustomerApi b
-        on a.customerId=b.customerId
-        WHERE a.apiId=b.apiId
-        AND a.customerId=#{customerId}
-        AND a.apiId IS NOT NULL
-        AND a.hasCost=1
-        group by a.apiTypeId,a.apiId
-        ) aa LEFT JOIN qydata.vwApi bb
-        ON aa.apiId = bb.id
-        ) cc LEFT JOIN qydata.vwApiType dd
-        ON cc.apiTypeId=dd.id
-        WHERE cc.apiTypeId=#{apiTypeId}
+            select cc.apiTypeId,cc.apiId,cc.reasonId,cc.reasonName,cc.totlePrice,dd.vendorName,dd.vendorId,dd.name apiName
+            from
+            (
+                select aa.apiTypeId,aa.apiId,aa.reasonId,bb.name reasonName,aa.totlePrice
+                from
+                (
+                    select b.apiTypeId,b.apiId,a.reasonId,sum(a.amount) totlePrice
+                    from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+                    ON a.reqId=b.id
+                    where a.reasonId in(-1,-2) and b.hasCost=1
+                    and a.customerId=#{customerId}
+                    group by b.apiTypeId,b.apiId,a.reasonId
+                ) aa LEFT JOIN qydata.CustomerBalanceModifyReason bb
+                ON aa.reasonId=bb.id
+            ) cc LEFT JOIN qydata.vwApi dd
+            ON cc.apiId = dd.id
+        ) ee LEFT JOIN qydata.vwApiType ff
+        ON ee.apiTypeId=ff.id
+        WHERE ee.apiTypeId=#{apiTypeId}
+        <if test="reasonIdList != null and reasonIdList.size() > 0">
+            AND ee.reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
     </select>
 
     <!--查询客户的周月记录-->

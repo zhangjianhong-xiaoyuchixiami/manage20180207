@@ -263,6 +263,14 @@ public class FinanceController {
                 for (int i = 0; i < customerApiTypeList.size(); i++) {
                     customerApiType = customerApiTypeList.get(i);
                     customerApiVendorList = customerApiType.getCustomerApiVendors();
+                    if (customerApiVendorList != null){
+                        for (int j=0; j<customerApiVendorList.size(); j++){
+                            CustomerApiVendor customerApiVendor = customerApiVendorList.get(j);
+                            if (customerApiVendor.getVendorName() == null){
+                                customerApiVendorList.remove(j);
+                            }
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -282,10 +290,20 @@ public class FinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail/{customerId}")
-    public String findAllApiConsumeDetailRecordByCustomerId(@PathVariable Integer customerId, Integer apiTypeId, String companyName, String apiTypeName, Model model){
+    public String findAllApiConsumeDetailRecordByCustomerId(@PathVariable Integer customerId, Integer apiTypeId, String companyName, String apiTypeName,Integer [] reasonId, Model model){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("apiTypeId",apiTypeId);
+        List<Integer> reasonIdList = new ArrayList<>();
+        if (reasonId != null && reasonId.length >0) {
+            for(int i=0;i<reasonId.length;i++){
+                reasonIdList.add(reasonId[i]);
+            }
+        }else {
+            reasonIdList.add(-1);
+            reasonIdList.add(-2);
+        }
+        map.put("reasonIdList", reasonIdList);
         List<CustomerApiVendor> customerApiVendorList = null;
         long totleAmount = 0;
         try {
@@ -305,6 +323,7 @@ public class FinanceController {
         model.addAttribute("apiTypeId",apiTypeId);
         model.addAttribute("customerId",customerId);
         model.addAttribute("totleAmount",totleAmount);
+        model.addAttribute("reasonIdArray",reasonId);
         return "/finance/customerApiConsumeDetailRecord";
     }
 

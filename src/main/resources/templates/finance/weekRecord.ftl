@@ -278,6 +278,31 @@
             });
         });
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#exportExcel').on('click', function () {
+                var companyName = $('#companyName').val();
+                var customerId = $('#customerId').val();
+                var years = $('#years').val();
+                var months = $('#months').val();
+                var weeks = $('#weeks').val();
+                var typeId =[];//定义一个数组
+                $('input[name="typeId"]:checked').each(function(){
+                    typeId.push($.trim($(this).val()));
+                });
+                fetch('/excel-finance/find-all-customer/find-week-record-by-customer-id?companyName='+companyName+'&typeId='+typeId+'&customerId='+customerId+'&years='+years+'&months='+months+'&weeks='+weeks).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename = companyName+'周历史记录.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('#customerBalance').addClass('active');
