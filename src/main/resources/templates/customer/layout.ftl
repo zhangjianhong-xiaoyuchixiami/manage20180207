@@ -94,7 +94,7 @@
 
                 </ul>
 
-                <!-- END TOP NAVIGATION MENU -->
+               <span id="username" style="display: none"><@shiro.principal/></span>
 
             </div>
 

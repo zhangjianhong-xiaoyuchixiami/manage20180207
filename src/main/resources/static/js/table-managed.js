@@ -70,25 +70,29 @@ var TableManaged = function () {
 
             //customerFinancialAccount
             $('#sample_2').dataTable({
-                "aoColumns": [
-                    { "bSortable": false },
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    { "bSortable": false }
+                // "aoColumns": [
+                //     { "bSortable": false },
+                //     null,
+                //     null,
+                //     null,
+                //     null,
+                //     null,
+                //     null,
+                //     null,
+                //     { "bSortable": false }
+                // ],
+                "aoColumnDefs": [
+                    { "bSortable": false, "aTargets": [ 0 ,8] }
                 ],
                 "aaSorting": [[7, 'asc']],
+                "bSort ": true,
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
                 // set the initial value
                 "iDisplayLength": 10, //每页显示多少行
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+                "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 "oLanguage" : {  //设置语言
                     "sLengthMenu" : "每页显示 _MENU_ 条记录",
@@ -105,14 +109,7 @@ var TableManaged = function () {
                         "sLast" : " 最后一页 "
                     }
                 },
-                "bFilter" : false, //设置全文搜索框，默认true
-
-                "aoColumnDefs": [{
-                    'bSortable': false,
-                    'aTargets': [0]
-                }
-                ]
-
+                "bFilter" : false //设置全文搜索框，默认true
             });
 
 

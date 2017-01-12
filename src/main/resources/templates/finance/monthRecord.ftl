@@ -151,7 +151,7 @@
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_8">
                                 <thead>
                                 <tr>
-                                    <th style="width: 25%;">年-月</th>
+                                    <th style="width: 25%;">周期</th>
                                     <th style="width: 15%;">金额（单位/元）</th>
                                     <th style="width: 20%;">开始时间</th>
                                     <th style="width: 20%;">结束时间</th>

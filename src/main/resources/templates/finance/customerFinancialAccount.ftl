@@ -22,14 +22,6 @@
 
                 <#--搜索框-->
                     <#if deptIdList??>
-                        <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px; display: none">
-                            <label class="control-label">username</label>
-                            <div class="controls">
-                                <div class="input-append">
-                                    <input class="m-wrap" <#if Session.userInfo?exists>value="${Session.userInfo.username}"</#if> type="text" id="username" name="username">
-                                </div>
-                            </div>
-                        </div>
 
                         <form action="/finance/find-all-customer-by-dept-id" method="get">
 
@@ -121,13 +113,13 @@
                                         <#list customerFinanceList as customer>
                                         <tr>
                                             <td data-title="公司名称">${customer.companyName}</td>
-                                            <td data-title="周充值总额"><#if customer.chargeWeekTotleAmount??>${customer.chargeWeekTotleAmount/100.0}<#else >0</#if></td>
-                                            <td data-title="周消费总额"><#if customer.consumeWeekTotleAmount??>${customer.consumeWeekTotleAmount/100.0}<#else >0</#if></td>
-                                            <td data-title="月充值总额"><#if customer.chargeMonthTotleAmount??>${customer.chargeMonthTotleAmount/100.0}<#else >0</#if></td>
-                                            <td data-title="月消费总额"><#if customer.consumeMonthTotleAmount??>${customer.consumeMonthTotleAmount/100.0}<#else >0</#if></td>
-                                            <td data-title="充值总额"><#if customer.chargeTotleAmount??>${customer.chargeTotleAmount/100.0}<#else >0</#if></td>
-                                            <td data-title="消费总额"><#if customer.consumeTotleAmount??>${customer.consumeTotleAmount/100.0}<#else >0</#if></td>
-                                            <td data-title="账号余额"><#if customer.balance??>${customer.balance/100.0}<#else >0</#if></td>
+                                            <td data-title="周充值总额"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="周消费总额"><#if customer.consumeWeekTotleAmount??>${(customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="月充值总额"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="月消费总额"><#if customer.consumeMonthTotleAmount??>${(customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="充值总额"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="消费总额"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center">
                                                 <ul class="nav nav-tabs" style="margin-bottom: 0px; min-width: 94px; border-bottom: 0px solid #f4f4f4;">
                                                     <li class="dropdown" style="float: none;">
@@ -137,7 +129,7 @@
                                                         <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
                                                             <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id?c}&reasonId=1&companyName=${customer.companyName}">充值记录</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}">消费记录</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">周历史数据</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">周历史</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">月历史数据</a></li>
                                                         </ul>
                                                     </li>
@@ -196,7 +188,7 @@
 
             $('#exportExcelByDeptId').on('click', function () {
                 var companyName = $('#companyName').val();
-                var username = $('#username').val();
+                var username = $('#username').text();
                 fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName+'&username='+username).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);

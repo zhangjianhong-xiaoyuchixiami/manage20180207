@@ -11,15 +11,14 @@ import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.UserService;
-import org.qydata.tools.ExcelUtil;
+import org.qydata.tools.ExportIoOperate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,43 +111,7 @@ public class ExcelFinanceController {
         String fileName = "客户财务报表文件";
         String columnNames[]= {"公司名称","周充值（单位：元）","周消费（单位：元）","月充值（单位：元）","月消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
         String keys[] = {"companyName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byte[] content = os.toByteArray();
-        InputStream is = new ByteArrayInputStream(content);
-        // 设置response参数，可以打开下载页面
-        response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-        ServletOutputStream out = null;
-        try {
-            out = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            bis = new BufferedInputStream(is);
-            bos = new BufferedOutputStream(out);
-            byte[] buff = new byte[2048];
-            int bytesRead;
-            // Simple read/write loop.
-            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                bos.write(buff, 0, bytesRead);
-            }
-        } catch (final IOException e) {
-            throw e;
-        } finally {
-            if (bis != null)
-                bis.close();
-            if (bos != null)
-                bos.close();
-        }
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**
      * 通过部门编号查找公司财务账单
@@ -164,7 +127,6 @@ public class ExcelFinanceController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(user.getName());
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
         if (deptList.size() > 0) {
@@ -234,43 +196,7 @@ public class ExcelFinanceController {
             String fileName = "客户财务报表文件";
             String columnNames[]= {"公司名称","周充值（单位：元）","周消费（单位：元）","月充值（单位：元）","月消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
             String keys[] = {"companyName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            try {
-                ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            byte[] content = os.toByteArray();
-            InputStream is = new ByteArrayInputStream(content);
-            // 设置response参数，可以打开下载页面
-            response.reset();
-            response.setContentType("application/vnd.ms-excel;charset=utf-8");
-            response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-            ServletOutputStream out = null;
-            try {
-                out = response.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            BufferedInputStream bis = null;
-            BufferedOutputStream bos = null;
-            try {
-                bis = new BufferedInputStream(is);
-                bos = new BufferedOutputStream(out);
-                byte[] buff = new byte[2048];
-                int bytesRead;
-                // Simple read/write loop.
-                while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                    bos.write(buff, 0, bytesRead);
-                }
-            } catch (final IOException e) {
-                throw e;
-            } finally {
-                if (bis != null)
-                    bis.close();
-                if (bos != null)
-                    bos.close();
-            }
+            ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
         }
     }
     /**
@@ -330,43 +256,7 @@ public class ExcelFinanceController {
         String fileName = companyName+"充值记录";
         String columnNames[]= {"金额（单位：元）","时间","理由"};//列名
         String keys[] = {"amount","createTime","reasonName"};//map中的key
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byte[] content = os.toByteArray();
-        InputStream is = new ByteArrayInputStream(content);
-        // 设置response参数，可以打开下载页面
-        response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-        ServletOutputStream out = null;
-        try {
-            out = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            bis = new BufferedInputStream(is);
-            bos = new BufferedOutputStream(out);
-            byte[] buff = new byte[2048];
-            int bytesRead;
-            // Simple read/write loop.
-            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                bos.write(buff, 0, bytesRead);
-            }
-        } catch (final IOException e) {
-            throw e;
-        } finally {
-            if (bis != null)
-                bis.close();
-            if (bos != null)
-                bos.close();
-        }
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**
      * 指定账号Api消费记录
@@ -417,43 +307,7 @@ public class ExcelFinanceController {
         String fileName = companyName+"消费记录";
         String columnNames[]= {"产品类型","产品供应商","金额（单位：元）"};//列名
         String keys[] = {"apiType","apiVendor","price"};//map中的key
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byte[] content = os.toByteArray();
-        InputStream is = new ByteArrayInputStream(content);
-        // 设置response参数，可以打开下载页面
-        response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-        ServletOutputStream out = null;
-        try {
-            out = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            bis = new BufferedInputStream(is);
-            bos = new BufferedOutputStream(out);
-            byte[] buff = new byte[2048];
-            int bytesRead;
-            // Simple read/write loop.
-            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                bos.write(buff, 0, bytesRead);
-            }
-        } catch (final IOException e) {
-            throw e;
-        } finally {
-            if (bis != null)
-                bis.close();
-            if (bos != null)
-                bos.close();
-        }
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**
      * 指定账号Api消费明细记录
@@ -505,43 +359,7 @@ public class ExcelFinanceController {
         String fileName = companyName+"消费明细记录";
         String columnNames[]= {"产品供应商","产品名称","金额（单位：元）","类型"};//列名
         String keys[] = {"apiVendor","apiName","price","reasonName"};//map中的key
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byte[] content = os.toByteArray();
-        InputStream is = new ByteArrayInputStream(content);
-        // 设置response参数，可以打开下载页面
-        response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-        ServletOutputStream out = null;
-        try {
-            out = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            bis = new BufferedInputStream(is);
-            bos = new BufferedOutputStream(out);
-            byte[] buff = new byte[2048];
-            int bytesRead;
-            // Simple read/write loop.
-            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                bos.write(buff, 0, bytesRead);
-            }
-        } catch (final IOException e) {
-            throw e;
-        } finally {
-            if (bis != null)
-                bis.close();
-            if (bos != null)
-                bos.close();
-        }
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**
      * 周历史记录
@@ -614,43 +432,7 @@ public class ExcelFinanceController {
         String fileName = companyName+"周历史记录";
         String columnNames[]= {"年月周","金额（单位：元）","开始时间","结束时间","类型"};//列名
         String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime","type"};//map中的key
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byte[] content = os.toByteArray();
-        InputStream is = new ByteArrayInputStream(content);
-        // 设置response参数，可以打开下载页面
-        response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-        ServletOutputStream out = null;
-        try {
-            out = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            bis = new BufferedInputStream(is);
-            bos = new BufferedOutputStream(out);
-            byte[] buff = new byte[2048];
-            int bytesRead;
-            // Simple read/write loop.
-            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                bos.write(buff, 0, bytesRead);
-            }
-        } catch (final IOException e) {
-            throw e;
-        } finally {
-            if (bis != null)
-                bis.close();
-            if (bos != null)
-                bos.close();
-        }
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**
      * 月历史记录
@@ -717,43 +499,7 @@ public class ExcelFinanceController {
         String fileName = companyName+"月历史记录";
         String columnNames[]= {"年月","金额（单位：元）","开始时间","结束时间","类型"};//列名
         String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime","type"};//map中的key
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ExcelUtil.createWorkBook(list,keys,columnNames).write(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byte[] content = os.toByteArray();
-        InputStream is = new ByteArrayInputStream(content);
-        // 设置response参数，可以打开下载页面
-        response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-        ServletOutputStream out = null;
-        try {
-            out = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            bis = new BufferedInputStream(is);
-            bos = new BufferedOutputStream(out);
-            byte[] buff = new byte[2048];
-            int bytesRead;
-            // Simple read/write loop.
-            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                bos.write(buff, 0, bytesRead);
-            }
-        } catch (final IOException e) {
-            throw e;
-        } finally {
-            if (bis != null)
-                bis.close();
-            if (bos != null)
-                bos.close();
-        }
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
 
 }

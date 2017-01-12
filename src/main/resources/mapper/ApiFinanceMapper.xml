@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.qydata.mapper.CustomerFinanceMapper">
+<mapper namespace="org.qydata.mapper.ApiFinanceMapper">
 
     <resultMap id="CustomerFinance_Map" type="org.qydata.dst.CustomerFinance">
         <result column="id" property="id"/>
@@ -54,83 +54,10 @@
         <result column="reasonName" property="reasonName"/>
     </resultMap>
     <!--查询客户的财务总览-->
-    <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_Map">
-        SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
-        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount
-        FROM
-        (SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
-        ii.consumeMonthTotleAmount,jj.chargeTotleAmount
-        FROM
-        (SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
-        hh.consumeMonthTotleAmount
-        FROM
-        (SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount
-        FROM
-        (SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount
-        FROM
-        (SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,bb.chargeWeekTotleAmount
-        FROM
-        (SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
-        b.deptId,b.deptName
-        FROM qydata.vwCustomer a,qyauth.vwCustomerDept b
-        WHERE a.id=b.customerId
-        <if test="deptIdList!=null and deptIdList.size()!=0">
-            and b.deptId in
-            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                #{deptId}
-            </foreach>
-        </if>
-        <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
-            and a.typeId in
-            <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
-                #{customerTypeId}
-            </foreach>
-        </if>
-        <if test="content!=null and content!=''">
-            and a.companyName like '%${content}%'
-        </if>
-        ) aa LEFT JOIN
-        (SELECT customerId,totleAmount chargeWeekTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=1 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m') AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%u')
-        ) bb
-        ON aa.id=bb.customerId
-        ) cc LEFT JOIN
-        (SELECT customerId,totleAmount chargeMonthTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=2 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m')
-        ) dd
-        ON cc.id=dd.customerId
-        ) ee LEFT JOIN
-        (SELECT customerId,totleAmount consumeWeekTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=1 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m') AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%u')
-        ) ff
-        ON ee.id=ff.customerId
-        ) gg LEFT JOIN
-        (SELECT customerId,totleAmount consumeMonthTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=2 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m')
-        ) hh
-        ON gg.id=hh.customerId
-        ) ii LEFT JOIN
-        (SELECT customerId,sum(amount) chargeTotleAmount
-        FROM qydata.vwCustomerBalanceLog
-        WHERE reasonId in (1,2,3)
-        GROUP BY customerId
-        ) jj
-        ON ii.id=jj.customerId
-        ) kk LEFT JOIN
-        (SELECT customerId,sum(amount) consumeTotleAmount
-        FROM qydata.vwCustomerBalanceLog
-        WHERE reasonId in (-1,-2)
-        GROUP BY customerId
-        ) ll
-        ON kk.id=ll.customerId
+    <select id="queryApiOverAllFinance" parameterType="map" resultMap="CustomerApiVendor_Map">
+       SELECT a.id,a.name apiName,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,c.balance
+       FROM qydata.vwApi a LEFT JOIN qydata.vwApiType b
+       ON a.apiTypeId=b.id LEFT JOIN qyfinance.ApiBalance c ON a.id=c.apiId
     </select>
 
     <!--查询客户的充值记录-->

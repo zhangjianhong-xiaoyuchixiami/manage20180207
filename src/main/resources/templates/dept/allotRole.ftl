@@ -132,41 +132,12 @@
 
     </div>
 
-    <#--<div id="form_modal4" class="modal hide fade in" tabindex="-1" aria-labelledby="myModalLabel4" aria-hidden="false" style="display: none; margin-top: -125px;">-->
+    <#elseif section = "footer">
 
-        <#--<div class="modal-header">-->
+    <#elseif section = "publicJs">
 
-            <#--<button type="button" id="validButton" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
+    <#elseif section = "privateJs">
 
-            <#--<h3 id="myModalLabel4">提示信息</h3>-->
-
-        <#--</div>-->
-
-        <#--<div class="modal-body">-->
-
-            <#--<div class="control-group">-->
-
-                <#--<div class="controls">-->
-
-                    <#--<div class="input-append bootstrap-timepicker-component">-->
-
-                        <#--<label class="control-label">请输入用户名！</label>-->
-
-                    <#--</div>-->
-
-                <#--</div>-->
-
-            <#--</div>-->
-
-        <#--</div>-->
-
-        <#--<div class="modal-footer">-->
-
-            <#--<button class="btn" id="validBtn" data-dismiss="modal" aria-hidden="true">关闭</button>-->
-
-        <#--</div>-->
-
-    <#--</div>-->
     <script type="text/javascript" src="/js/myjs/allotrole.js"></script>
 
     <script>
@@ -178,18 +149,9 @@
             $('#userManageSelect').addClass('selected');
 
             $('#userManageArrow').addClass('arrow open');
-//
-//        $('#validButton').click(function () {
-//            $('#form_modal4').css('display','none');
-//        });
-//
-//        $('#validBtn').click(function () {
-//            $('#form_modal4').css('display','none');
-//        });
         });
     </script>
 
-    <#elseif section = "footer">
 
     </#if>
 

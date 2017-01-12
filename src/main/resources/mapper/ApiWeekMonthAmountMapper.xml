@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.ApiWeekMonthAmountMapper">
+
+    <resultMap id="ApiWeekMonthAmount_Map" type="ApiWeekMonthAmount">
+        <result column="years" property="years"/>
+        <result column="months" property="months"/>
+        <result column="weeks" property="weeks"/>
+        <result column="totleCost" property="totleCost"/>
+        <result column="apiId" property="apiId"/>
+        <result column="temporal" property="temporal"/>
+    </resultMap>
+
+
+    <!--统计Api每周的消费数据-->
+    <select id="getAllApiWeekConsumeRecord" resultMap="ApiWeekMonthAmount_Map">
+       SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,DATE_FORMAT(createTime,'%u') weeks,
+       SUM(cost) totleCost,apiId,GROUP_CONCAT(DISTINCT(DATE(createTime)) ORDER BY DATE(createTime) ASC) temporal
+       FROM qydata.vwApiRequestLog
+       WHERE ok=1
+       GROUP BY DATE_FORMAT(createTime,'%Y-%m-%u'),apiId
+    </select>
+
+    <!--统计Api每月的消费数据-->
+    <select id="getAllApiMonthConsumeRecord" resultMap="ApiWeekMonthAmount_Map">
+        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,SUM(cost) totleCost,apiId,
+        GROUP_CONCAT(DISTINCT(DATE(createTime)) ORDER BY DATE(createTime) ASC) temporal
+        FROM qydata.vwApiRequestLog
+        WHERE ok=1
+        GROUP BY DATE_FORMAT(createTime,'%Y-%m'),apiId
+    </select>
+
+    <!--删除Api每周月的数据-->
+    <delete id="deleteApiRecord" parameterType="map">
+        DELETE FROM qyfinance.ApiWeekMonthAmount WHERE typeId=#{typeId} AND tableId=#{tableId}
+    </delete>
+
+    <!--插入Api每周的数据-->
+    <insert id="addApiWeekRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiWeekMonthAmount(years,months,weeks,totleCost,tableId,TypeId,
+        beginTime,endTime,createTime)
+        VALUES
+        <foreach collection="list" item="apiWeekMonthAmount" index="index" separator=",">
+            (
+            #{apiWeekMonthAmount.years},#{apiWeekMonthAmount.months},#{apiWeekMonthAmount.weeks},#{apiWeekMonthAmount.totleCost},
+            #{apiWeekMonthAmount.tableId},#{apiWeekMonthAmount.typeId},#{apiWeekMonthAmount.beginTime},
+            #{apiWeekMonthAmount.endTime},sysdate()
+            )
+        </foreach>
+    </insert>
+
+    <!--插入Api每月的数据-->
+    <insert id="addApiMonthRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiWeekMonthAmount(years,months,totleCost,tableId,TypeId,
+        beginTime,endTime,createTime)
+        VALUES
+        <foreach collection="list" item="apiWeekMonthAmount" index="index" separator=",">
+            (
+            #{apiWeekMonthAmount.years},#{apiWeekMonthAmount.months},#{apiWeekMonthAmount.totleCost},
+            #{apiWeekMonthAmount.tableId},#{apiWeekMonthAmount.typeId},#{apiWeekMonthAmount.beginTime},
+            #{apiWeekMonthAmount.endTime},sysdate()
+            )
+        </foreach>
+    </insert>
+
+
+
+</mapper>

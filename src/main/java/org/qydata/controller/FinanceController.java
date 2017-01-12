@@ -51,6 +51,7 @@ public class FinanceController {
      */
     @RequestMapping(value = "/find-all-customer")
     public String findAllCustomer(HttpServletRequest request, Model model, String content){
+
         try {
             Map<String,Object> map = new HashMap<String,Object>();
             List customerTypeIdList = new ArrayList();
@@ -81,6 +82,7 @@ public class FinanceController {
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
+        System.out.println(deptList.size());
         if (deptList.size() > 0) {
             for (int i = 0; i < deptList.size(); i++) {
                 deptIdList.add(deptList.get(i).getId());
