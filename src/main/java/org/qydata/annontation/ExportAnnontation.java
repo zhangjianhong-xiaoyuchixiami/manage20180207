@@ -12,8 +12,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExportAnnontation {
     /**
-     *
      * @return
      */
+    String view();
+
     String value() default "";
 }
