@@ -114,9 +114,9 @@
                                         <tr>
                                             <td data-title="公司名称">${customer.companyName}</td>
                                             <td data-title="周充值总额"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="周消费总额"><#if customer.consumeWeekTotleAmount??>${(customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="周消费总额"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="月充值总额"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="月消费总额"><#if customer.consumeMonthTotleAmount??>${(customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="月消费总额"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="充值总额"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="消费总额"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>

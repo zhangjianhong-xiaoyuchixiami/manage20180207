@@ -99,8 +99,8 @@
         ) cc LEFT JOIN
         (SELECT customerId,totleAmount chargeMonthTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=2 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m')
+        WHERE weekMonthTypeId=2 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
         ) dd
         ON cc.id=dd.customerId
         ) ee LEFT JOIN
@@ -113,8 +113,8 @@
         ) gg LEFT JOIN
         (SELECT customerId,totleAmount consumeMonthTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=2 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m')
+        WHERE weekMonthTypeId=2 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
         ) hh
         ON gg.id=hh.customerId
         ) ii LEFT JOIN
