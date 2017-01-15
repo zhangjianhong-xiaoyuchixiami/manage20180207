@@ -93,6 +93,43 @@
 
                         <div class="portlet-body no-more-tables">
 
+                            <div class="clearfix margin-bottom-20">
+
+                                <div class="control-group pull-right">
+
+                                    <label class="control-label">
+
+                                        <a id="months-account" href="#form_modalA" data-toggle="modal">
+
+                                            <img src="/image/t04.png" alt="" />月账单
+
+                                        </a>
+
+                                    </label>
+
+                                    <div id="form_modalA" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabelA" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabelA">&nbsp;</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div id="months-container">
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                             <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
 
                                 <thead>
@@ -129,8 +166,8 @@
                                                         <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
                                                             <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id?c}&reasonId=1&companyName=${customer.companyName}">充值记录</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}">消费记录</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">周历史</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">月历史数据</a></li>
+                                                            <#--<li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">周历史</a></li>-->
+                                                            <#--<li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">月历史数据</a></li>-->
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -165,6 +202,58 @@
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
     <script src="/js/table-managed.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#months-account').on('click',function () {
+                $.ajax({
+                    type: "post",
+                    url: "/finance/months-charge-consume-toward",
+                    dataType: 'json',
+                    success: function (result) {
+                        var json = result;
+                        $('#months-container').highcharts({
+                            chart: {
+                                type: 'line'
+                            },
+                            title: {
+                                text: '客户充值消费走势'
+                            },
+                            exporting: {
+                                enabled: false
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            xAxis: {
+                                categories: json.xList
+                            },
+                            yAxis: {
+                                title: {
+                                    text: '金额 (单位：元)'
+                                }
+                            },
+                            plotOptions: {
+                                line: {
+                                    dataLabels: {
+                                        enabled: true
+                                    },
+                                    enableMouseTracking: false
+                                }
+                            },
+                            series: json.yList
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
 
     <script>
 

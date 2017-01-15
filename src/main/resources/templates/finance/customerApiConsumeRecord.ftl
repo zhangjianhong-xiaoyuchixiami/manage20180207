@@ -124,6 +124,18 @@
 
                                 </div>
 
+                                <div class="control-group pull-right" style="margin-bottom: -10px;">
+
+                                    <label class="control-label">&nbsp;&nbsp;<a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=2">月历史记录</a></label>
+
+                                </div>
+
+                                <div class="control-group pull-right" style="margin-bottom: -10px;">
+
+                                    <label class="control-label"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=2">周历史记录</a></label>
+
+                                </div>
+
                             </div>
 
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_5">

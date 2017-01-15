@@ -92,8 +92,8 @@
         ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=1 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m') AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%u')
+        WHERE weekMonthTypeId=1 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+        AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
         ) bb
         ON aa.id=bb.customerId
         ) cc LEFT JOIN
@@ -106,8 +106,8 @@
         ) ee LEFT JOIN
         (SELECT customerId,totleAmount consumeWeekTotleAmount
         FROM qyfinance.vwWeekMonthAmount
-        WHERE weekMonthTypeId=1 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%m') AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%u')
+        WHERE weekMonthTypeId=1 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+        AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
         ) ff
         ON ee.id=ff.customerId
         ) gg LEFT JOIN
@@ -303,6 +303,14 @@
         </if>
     </select>
 
-
+    <select id="monthChargeConsumeToward" parameterType="Integer" resultType="WeekMonthAmount">
+        SELECT years,months,totleAmount
+        FROM qyfinance.vwWeekMonthAmount
+        WHERE customerId=#{param1}
+        AND weekMonthTypeId=2
+        AND tableId=#{param2}
+        AND DATE_FORMAT(endTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval #{param3} month),'%Y-%m')
+        ORDER BY endTime DESC
+    </select>
 </mapper>
 

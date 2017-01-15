@@ -135,4 +135,8 @@
         </foreach>
     </select>
 
+    <select id="findAllCustomerId" resultType="Integer">
+        SELECT id from qydata.vwCustomer
+    </select>
+
 </mapper>

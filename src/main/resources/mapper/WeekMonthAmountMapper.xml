@@ -13,21 +13,31 @@
     </resultMap>
 
     <!--统计客户每周的充值数据-->
-    <select id="getAllCustomerWeekRechargeRecord" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
-        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,DATE_FORMAT(createTime,'%u') weeks,sum(amount) totleAmount,customerId,
-        GROUP_CONCAT(DISTINCT DATE(createTime) ORDER BY DATE(createTime) ASC) temporal
-        FROM qydata.CustomerBalanceLog
-        WHERE reasonId IN(1,2,3)
-        GROUP BY DATE_FORMAT(createTime,'%Y-%m-%u'),customerId
+    <select id="getAllCustomerWeekRechargeRecord" parameterType="Integer" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
+       SELECT a.id customerId,b.years,b.weeks,b.totleAmount,b.temporal
+        FROM qydata.vwCustomer a LEFT JOIN
+        (
+            SELECT DATE_FORMAT(createTime,'%x') years,DATE_FORMAT(createTime,'%v')weeks,sum(amount) totleAmount,customerId,
+            GROUP_CONCAT(DISTINCT DATE(createTime) ORDER BY DATE(createTime) ASC) temporal
+            FROM qydata.CustomerBalanceLog
+            WHERE reasonId IN(1,2,3)
+            AND DATE_FORMAT(createTime,'%x-%v')=DATE_FORMAT(date_sub(sysdate(),interval #{param} week),'%x-%v')
+            GROUP BY DATE_FORMAT(createTime,'%x-%v'),customerId
+        ) b ON a.id=b.customerId
     </select>
 
     <!--统计客户每月的充值数据-->
-    <select id="getAllCustomerMonthRechargeRecord" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
-        SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(amount) totleAmount,customerId,
-        GROUP_CONCAT(DISTINCT DATE(createTime) ORDER BY DATE(createTime) ASC) temporal
-        FROM qydata.CustomerBalanceLog
-        WHERE reasonId IN(1,2,3)
-        GROUP BY DATE_FORMAT(createTime,'%Y-%m'),customerId
+    <select id="getAllCustomerMonthRechargeRecord" parameterType="Integer" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
+        SELECT a.id customerId,b.years,b.months,b.totleAmount,b.temporal
+        FROM qydata.vwCustomer a LEFT JOIN
+        (
+            SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(amount) totleAmount,customerId,
+            GROUP_CONCAT(DISTINCT DATE(createTime) ORDER BY DATE(createTime) ASC) temporal
+            FROM qydata.CustomerBalanceLog
+            WHERE reasonId IN(1,2,3)
+            AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval #{param} month),'%Y-%m')
+            GROUP BY DATE_FORMAT(createTime,'%Y-%m'),customerId
+        ) b ON a.id=b.customerId
     </select>
 
     <!--删除客户每周月的数据-->
@@ -37,12 +47,12 @@
 
     <!--插入客户每周的数据-->
     <insert id="addWeekRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qyfinance.WeekMonthAmount(years,months,weeks,totleAmount,customerId,tableId,weekMonthTypeId,
+        INSERT INTO qyfinance.WeekMonthAmount(years,weeks,totleAmount,customerId,tableId,weekMonthTypeId,
         beginTime,endTime,createTime)
         VALUES
         <foreach collection="list" item="weekMonthAmount" index="index" separator=",">
             (
-            #{weekMonthAmount.years},#{weekMonthAmount.months},#{weekMonthAmount.weeks},#{weekMonthAmount.totleAmount},
+            #{weekMonthAmount.years},#{weekMonthAmount.weeks},#{weekMonthAmount.totleAmount},
             #{weekMonthAmount.customerId},#{weekMonthAmount.tableId},#{weekMonthAmount.weekMonthTypeId},#{weekMonthAmount.beginTime},
             #{weekMonthAmount.endTime},sysdate()
             )
@@ -64,23 +74,33 @@
     </insert>
 
     <!--统计客户每周的Api消费数据-->
-    <select id="getAllCustomerApiWeekConsumeRecord" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
-        SELECT DATE_FORMAT(a.createTime,'%Y') years,DATE_FORMAT(a.createTime,'%m') months,DATE_FORMAT(a.createTime,'%u') weeks,
-        sum(a.amount) totleAmount,a.customerId,GROUP_CONCAT(DISTINCT(DATE(a.createTime)) ORDER BY DATE(a.createTime) ASC) temporal
-        FROM qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
-        ON a.reqId=b.id
-        where a.reasonId in(-1,-2) and b.hasCost=1
-        GROUP BY DATE_FORMAT(a.createTime,'%Y-%m-%u'),a.customerId
+    <select id="getAllCustomerApiWeekConsumeRecord" parameterType="Integer" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
+        SELECT a.id customerId,b.years,b.weeks,b.totleAmount,b.temporal
+        FROM qydata.vwCustomer a LEFT JOIN
+        (
+            SELECT DATE_FORMAT(a.createTime,'%x') years,DATE_FORMAT(a.createTime,'%v') weeks,
+            sum(a.amount) totleAmount,a.customerId,GROUP_CONCAT(DISTINCT(DATE(a.createTime)) ORDER BY DATE(a.createTime) ASC) temporal
+            FROM qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+            ON a.reqId=b.id
+            where a.reasonId in(-1,-2) and b.hasCost=1
+            AND DATE_FORMAT(a.createTime,'%x-%v')=DATE_FORMAT(date_sub(sysdate(),interval #{param} week),'%x-%v')
+            GROUP BY DATE_FORMAT(a.createTime,'%x-%v'),a.customerId
+        ) b ON a.id=b.customerId
     </select>
 
     <!--统计客户每月的Api消费数据-->
-    <select id="getAllCustomerApiMonthConsumeRecord" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
-       SELECT DATE_FORMAT(a.createTime,'%Y') years,DATE_FORMAT(a.createTime,'%m') months,
-       sum(a.amount) totleAmount,a.customerId,GROUP_CONCAT(DISTINCT(DATE(a.createTime)) ORDER BY DATE(a.createTime) ASC) temporal
-       FROM qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
-       ON a.reqId=b.id
-       where a.reasonId in(-1,-2) and b.hasCost=1
-       GROUP BY DATE_FORMAT(a.createTime,'%Y-%m'),a.customerId
+    <select id="getAllCustomerApiMonthConsumeRecord" parameterType="Integer" resultMap="WeekMonthAmount_CustomerBalanceLog_Map">
+       SELECT a.id customerId,b.years,b.months,b.totleAmount,b.temporal
+        FROM qydata.vwCustomer a LEFT JOIN
+        (
+            SELECT DATE_FORMAT(a.createTime,'%Y') years,DATE_FORMAT(a.createTime,'%m') months,
+            sum(a.amount) totleAmount,a.customerId,GROUP_CONCAT(DISTINCT(DATE(a.createTime)) ORDER BY DATE(a.createTime) ASC) temporal
+            FROM qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+            ON a.reqId=b.id
+            where a.reasonId in(-1,-2) and b.hasCost=1
+            AND DATE_FORMAT(a.createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval #{param} month),'%Y-%m')
+            GROUP BY DATE_FORMAT(a.createTime,'%Y-%m'),a.customerId
+        ) b ON a.id=b.customerId
     </select>
 
 </mapper>

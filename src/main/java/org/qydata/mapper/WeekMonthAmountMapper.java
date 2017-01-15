@@ -15,14 +15,14 @@ public interface WeekMonthAmountMapper {
      * @return
      * @throws Exception
      */
-    public List<WeekMonthAmount> getAllCustomerWeekRechargeRecord()throws Exception;
+    public List<WeekMonthAmount> getAllCustomerWeekRechargeRecord(Integer result)throws Exception;
 
     /**
      * 统计客户每月的充值数据
      * @return
      * @throws Exception
      */
-    public List<WeekMonthAmount> getAllCustomerMonthRechargeRecord()throws Exception;
+    public List<WeekMonthAmount> getAllCustomerMonthRechargeRecord(Integer result)throws Exception;
 
     /**
      * 删除客户周月的数据
@@ -53,13 +53,16 @@ public interface WeekMonthAmountMapper {
      * @return
      * @throws Exception
      */
-    public List<WeekMonthAmount> getAllCustomerApiWeekConsumeRecord()throws Exception;
+    public List<WeekMonthAmount> getAllCustomerApiWeekConsumeRecord(Integer result)throws Exception;
 
     /**
      * 统计客户每月的Api消费数据
      * @return
      * @throws Exception
      */
-    public List<WeekMonthAmount> getAllCustomerApiMonthConsumeRecord()throws Exception;
+    public List<WeekMonthAmount> getAllCustomerApiMonthConsumeRecord(Integer result)throws Exception;
+
+
+
 
 }

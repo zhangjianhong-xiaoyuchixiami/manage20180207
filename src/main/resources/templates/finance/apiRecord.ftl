@@ -233,39 +233,39 @@
 
                                 </div>
 
-                            <#--表字段总额-->
-                                <div class="control-group pull-right">
+                            <#--&lt;#&ndash;表字段总额&ndash;&gt;-->
+                                <#--<div class="control-group pull-right">-->
 
-                                    <label class="control-label">
+                                    <#--<label class="control-label">-->
 
-                                        <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
+                                        <#--<a id="columnHistogram" href="#form_modal7" data-toggle="modal">-->
 
-                                            <img src="/image/t04.png" alt="" />表字段统计
+                                            <#--<img src="/image/t04.png" alt="" />表字段统计-->
 
-                                        </a>
+                                        <#--</a>-->
 
-                                    </label>
+                                    <#--</label>-->
 
-                                    <div id="form_modal7" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+                                    <#--<div id="form_modal7" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">-->
 
-                                        <div class="modal-header">
+                                        <#--<div class="modal-header">-->
 
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                            <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
 
-                                            <h3 id="myModalLabel7">&nbsp;</h3>
+                                            <#--<h3 id="myModalLabel7">&nbsp;</h3>-->
 
-                                        </div>
+                                        <#--</div>-->
 
-                                        <div class="modal-body">
-                                            <div id="columnHistogramContainer">
+                                        <#--<div class="modal-body">-->
+                                            <#--<div id="columnHistogramContainer">-->
 
-                                            </div>
+                                            <#--</div>-->
 
-                                        </div>
+                                        <#--</div>-->
 
-                                    </div>
+                                    <#--</div>-->
 
-                                </div>
+                                <#--</div>-->
 
                             <#--总额共计-->
                                 <div class="control-group pull-right">

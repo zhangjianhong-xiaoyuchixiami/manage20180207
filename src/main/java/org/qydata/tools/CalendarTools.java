@@ -54,6 +54,32 @@ public class CalendarTools {
         return  cal.getTime();
     }
 
+    /**
+     * 计算某年某月的起始日期
+     * @param yearNum
+     * @param monthNum
+     * @return
+     * @throws ParseException
+     */
+    public static Date getYearMonthFirstDay(int yearNum,int monthNum) throws ParseException {
+        if(yearNum<1900 || yearNum >9999){
+            throw new NullPointerException("年度必须大于等于1900年小于等于9999年");
+        }
+        if(monthNum<1||monthNum>12){
+            throw new NullPointerException("月份必须大于等于1月小于等于12月");
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String yearMonthFirstDay = yearNum+"-"+monthNum+"-"+1;
+        return sdf.parse(yearMonthFirstDay);
+    }
+
+    /**
+     * 计算某年某月的结束日期
+     * @param yearNum
+     * @param monthNum
+     * @return
+     * @throws ParseException
+     */
     public static Date getYearMonthEndDay(int yearNum,int monthNum) throws ParseException {
         if(yearNum<1900 || yearNum >9999){
             throw new NullPointerException("年度必须大于等于1900年小于等于9999年");
@@ -79,15 +105,90 @@ public class CalendarTools {
         return sdf.parse(yearMonthEndDay);
     }
 
-    public static Date getYearMonthFirstDay(int yearNum,int monthNum) throws ParseException {
-        if(yearNum<1900 || yearNum >9999){
-            throw new NullPointerException("年度必须大于等于1900年小于等于9999年");
+    /**
+     * 根据系统时间获取上一周属于第几周
+     * @return
+     */
+    public static Integer getYearWeekCount(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");//可以方便地修改日期格
+        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
+        c.add(Calendar.WEEK_OF_MONTH,-1);
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH)+1;
+        int date = c.get(Calendar.DATE);
+        String today = year + "/" + month + "/" + date;
+        //String today = "2017/01/01";
+        System.out.println(today);
+        Date data = null;
+        try {
+            data = dateFormat.parse(today);
+            c.setFirstDayOfWeek(Calendar.MONDAY);
+            c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//每周从周一开始
+            c.setMinimalDaysInFirstWeek(7);  //设置每周最少为7天
+            c.setTime(data);
+            System.out.println(c.get(Calendar.WEEK_OF_YEAR));
+            System.out.println(c.get(Calendar.YEAR));
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        if(monthNum<1||monthNum>12){
-            throw new NullPointerException("月份必须大于等于1月小于等于12月");
+        return c.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    /**
+     * 根据系统时间获取上一周的年份
+     * @return
+     */
+    public static Integer getYearCount(){
+        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
+        c.add(Calendar.WEEK_OF_MONTH,-1);
+        String str = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONDAY)+1)+"-"+c.get(Calendar.DATE);
+        if (str.equals(c.get(Calendar.YEAR)+"-"+1+"-"+1)){
+            if (!CalendarTools.booleanWeek(str)){
+                return (c.get(Calendar.YEAR)-1);
+            }
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String yearMonthFirstDay = yearNum+"-"+monthNum+"-"+1;
-        return sdf.parse(yearMonthFirstDay);
+        System.out.println(str);
+        System.out.println(c.get(Calendar.YEAR)+"-"+1+"-"+1);
+        return c.get(Calendar.YEAR);
+    }
+
+    /**
+     * 判断每年一月一号是周几
+     * @param str
+     * @return
+     */
+    public static boolean booleanWeek(String str){
+        Calendar c = Calendar.getInstance(java.util.Locale.CHINA);
+        String[] sp = str.split("-");
+        c.set(Calendar.YEAR,Integer.parseInt(sp[0]));
+        c.set(Calendar.MONTH,Integer.parseInt(sp[1])-1);
+        c.set(Calendar.DATE,Integer.parseInt(sp[2]));
+        int wd = c.get(Calendar.DAY_OF_WEEK);
+        if (wd == 2){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 根据系统时间获取上一月的月份
+     * @return
+     */
+    public static Integer getYearMonthCount(){
+        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
+        c.add(Calendar.MONTH,-1);
+        Integer year = c.get(Calendar.YEAR);
+       return year;
+    }
+
+    /**
+     * 根据系统时间获取上一月的年份
+     * @return
+     */
+    public static Integer getMonthCount(){
+        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
+        c.add(Calendar.MONTH,-1);
+        Integer month = c.get(Calendar.MONTH)+1;
+        return month;
     }
 }

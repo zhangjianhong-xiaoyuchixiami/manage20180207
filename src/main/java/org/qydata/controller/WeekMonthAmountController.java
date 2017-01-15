@@ -27,7 +27,8 @@ public class WeekMonthAmountController {
     @ResponseBody
     public String getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(){
         try {
-          weekMonthAmountService.getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount();
+            Integer result = 1;
+          weekMonthAmountService.getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount:统计和插入客户每周的充值数据异常");
 
@@ -45,7 +46,8 @@ public class WeekMonthAmountController {
     @ResponseBody
     public String getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(){
         try {
-           weekMonthAmountService.getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount();
+            Integer result = 1;
+           weekMonthAmountService.getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount:统计和插入客户每月的充值数据异常");
             e.printStackTrace();
@@ -62,7 +64,8 @@ public class WeekMonthAmountController {
     @ResponseBody
     public String getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(){
         try {
-            weekMonthAmountService.getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount();
+            Integer result = 1;
+            weekMonthAmountService.getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount:统计和插入客户每周的Api消费数据异常");
             e.printStackTrace();
@@ -79,7 +82,8 @@ public class WeekMonthAmountController {
     @ResponseBody
     public String getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(){
         try {
-            weekMonthAmountService.getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount();
+            Integer result = 1;
+            weekMonthAmountService.getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount:统计和插入客户每月的Api消费数据异常");
             e.printStackTrace();

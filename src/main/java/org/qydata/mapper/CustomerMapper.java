@@ -60,6 +60,12 @@ public interface CustomerMapper {
      */
     public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList)throws Exception;
 
+    /**
+     * 查询所有的客户账号Id
+     * @return
+     */
+    public List<Integer> findAllCustomerId();
+
 
 
 

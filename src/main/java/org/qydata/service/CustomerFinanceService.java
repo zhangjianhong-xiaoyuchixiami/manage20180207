@@ -80,5 +80,7 @@ public interface CustomerFinanceService {
      */
     public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String,Object> map) throws Exception;
 
+
+    public Map<String,List> monthChargeConsumeToward(Map<String,Object> map);
 }
 

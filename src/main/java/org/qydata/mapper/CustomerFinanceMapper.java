@@ -79,6 +79,6 @@ public interface CustomerFinanceMapper {
     public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String,Object> map) throws Exception;
 
 
-
+    public WeekMonthAmount monthChargeConsumeToward(Integer customerId,Integer tableId,Integer result);
 
 }

@@ -100,4 +100,9 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList) throws Exception {
         return customerMapper.findAllCustomerIdByDeptId(deptIdList);
     }
+
+    @Override
+    public List<Integer> findAllCustomerId() {
+        return customerMapper.findAllCustomerId();
+    }
 }

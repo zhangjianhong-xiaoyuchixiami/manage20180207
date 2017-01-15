@@ -48,27 +48,27 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <#--<div class="control-group pull-left" style="margin-bottom: -20px;">-->
 
-                                <label class="control-label">类型</label>
+                                <#--<label class="control-label">类型</label>-->
 
-                                <div class="controls">
+                                <#--<div class="controls">-->
 
-                                    <label class="checkbox">
+                                    <#--<label class="checkbox">-->
 
-                                        <input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==1>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="1">充值
+                                        <#--<input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==1>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="1">充值-->
 
-                                    </label>
+                                    <#--</label>-->
 
-                                    <label class="checkbox">
+                                    <#--<label class="checkbox">-->
 
-                                        <input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==2>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="2">消费
+                                        <#--<input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==2>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="2">消费-->
 
-                                    </label>
+                                    <#--</label>-->
 
-                                </div>
+                                <#--</div>-->
 
-                            </div>
+                            <#--</div>-->
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
@@ -89,24 +89,24 @@
 
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <#--<div class="control-group pull-left" style="margin-bottom: -20px;">-->
 
-                                <label class="control-label">月</label>
+                                <#--<label class="control-label">月</label>-->
 
-                                <div class="controls">
+                                <#--<div class="controls">-->
 
-                                    <select id="months" name="months" class="medium m-wrap1" tabindex="1">
-                                        <option value="">请选择...</option>
-                                        <#if monthList??>
-                                            <#list monthList as month>
-                                                <option <#if months?? && month==months>selected="selected"</#if> value="${month?c}">第${month?c}月</option>
-                                            </#list>
-                                        </#if>
-                                    </select>
+                                    <#--<select id="months" name="months" class="medium m-wrap1" tabindex="1">-->
+                                        <#--<option value="">请选择...</option>-->
+                                        <#--<#if monthList??>-->
+                                            <#--<#list monthList as month>-->
+                                                <#--<option <#if months?? && month==months>selected="selected"</#if> value="${month?c}">第${month?c}月</option>-->
+                                            <#--</#list>-->
+                                        <#--</#if>-->
+                                    <#--</select>-->
 
-                                </div>
+                                <#--</div>-->
 
-                            </div>
+                            <#--</div>-->
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
@@ -170,11 +170,11 @@
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_8">
                                 <thead>
                                 <tr>
-                                    <th style="width: 25%;">周期</th>
-                                    <th style="width: 15%;">金额（单位/元）</th>
-                                    <th style="width: 20%;">开始时间</th>
-                                    <th style="width: 20%;">结束时间</th>
-                                    <th style="width: 20%;">类型</th>
+                                    <th style="width: 30%;">周期</th>
+                                    <th style="width: 20%;">金额（单位/元）</th>
+                                    <th style="width: 25%;">开始时间</th>
+                                    <th style="width: 25%;">结束时间</th>
+                                    <#--<th style="width: 20%;">类型</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -185,11 +185,11 @@
                                             <td><#if weekMonthAmount.totleAmount??>${weekMonthAmount.totleAmount/100.0}<#else >0</#if></td>
                                             <td><#if weekMonthAmount.beginTime??>${weekMonthAmount.beginTime?date}</#if></td>
                                             <td><#if weekMonthAmount.endTime??>${weekMonthAmount.endTime?date}</#if></td>
-                                            <#if weekMonthAmount.tableId==1>
-                                                <td>充值</td>
-                                            <#else >
-                                                <td>消费</td>
-                                            </#if>
+                                            <#--<#if weekMonthAmount.tableId==1>-->
+                                                <#--<td>充值</td>-->
+                                            <#--<#else >-->
+                                                <#--<td>消费</td>-->
+                                            <#--</#if>-->
                                         </tr>
                                         </#list>
                                     </#if>
