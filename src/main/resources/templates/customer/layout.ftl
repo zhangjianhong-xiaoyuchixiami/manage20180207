@@ -141,57 +141,57 @@
                     <!-- 搜索框结束 -->
                 </li>
 
-                <@shiro.hasAnyRoles name="sell,backAdmin">
-                    <li class="" id="customerManage">
-                        <a href="javascript:;">
+                <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
+                    <#--<li class="" id="customerManage">-->
+                        <#--<a href="javascript:;">-->
 
-                            <i class="icon-sitemap"></i>
+                            <#--<i class="icon-sitemap"></i>-->
 
-                            <span class="title">客户管理</span>
+                            <#--<span class="title">客户管理</span>-->
 
-                            <span class="" id="customerManageSelect"></span>
+                            <#--<span class="" id="customerManageSelect"></span>-->
 
-                            <span class="arrow " id="customerManageArrow"></span>
+                            <#--<span class="arrow " id="customerManageArrow"></span>-->
 
-                        </a>
+                        <#--</a>-->
 
-                        <ul class="sub-menu">
+                        <#--<ul class="sub-menu">-->
 
-                            <@shiro.hasPermission name="company:addCompanyAllDeptView">
-                                <li id="addCustomer">
-                                    <a href="/company/addCompanyAllDeptView">
-                                        新增客户
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="company:addCompanyAllDeptView">-->
+                                <#--<li id="addCustomer">-->
+                                    <#--<a href="/company/addCompanyAllDeptView">-->
+                                        <#--新增客户-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
-                            <@shiro.hasPermission name="company:addCompanyOnlyDeptView">
-                                <li id="addCustomer">
-                                    <a href="/company/addCompanyOnlyDeptView">
-                                        新增客户
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="company:addCompanyOnlyDeptView">-->
+                                <#--<li id="addCustomer">-->
+                                    <#--<a href="/company/addCompanyOnlyDeptView">-->
+                                        <#--新增客户-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
-                            <@shiro.hasPermission name="company:findAllAction">
-                                <li id="customerList">
-                                    <a href="/company/findAllAction">
-                                        客户信息
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="company:findAllAction">-->
+                                <#--<li id="customerList">-->
+                                    <#--<a href="/company/findAllAction">-->
+                                        <#--客户信息-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
-                            <@shiro.hasPermission name="company:findAllByDeptIdAction">
-                                <li id="customerList">
-                                    <a href="/company/findAllByDeptIdAction">
-                                        客户信息
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="company:findAllByDeptIdAction">-->
+                                <#--<li id="customerList">-->
+                                    <#--<a href="/company/findAllByDeptIdAction">-->
+                                        <#--客户信息-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
-                        </ul>
-                    </li>
-                </@shiro.hasAnyRoles>
+                        <#--</ul>-->
+                    <#--</li>-->
+                <#--</@shiro.hasAnyRoles>-->
 
             <#--财务管理-->
                 <@shiro.hasAnyRoles name="sell,backAdmin">
@@ -227,33 +227,33 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <li id="apiRecordLog">
-                                <a href="/finance/find-all-api-record">
-                                    Api消费账单
-                                </a>
-                            </li>
+                            <#--<li id="apiRecordLog">-->
+                                <#--<a href="/finance/find-all-api-record">-->
+                                    <#--Api消费账单-->
+                                <#--</a>-->
+                            <#--</li>-->
 
-                            <li id="partnersFinancialAccount">
+                            <#--<li id="partnersFinancialAccount">-->
 
-                                <a href="javascript:;">
+                                <#--<a href="javascript:;">-->
 
-                                    合作企业来往账目
+                                    <#--合作企业来往账目-->
 
-                                    <span class="" id="partnersSelect"></span>
+                                    <#--<span class="" id="partnersSelect"></span>-->
 
-                                    <span class="arrow" id="partnersArrow"></span>
+                                    <#--<span class="arrow" id="partnersArrow"></span>-->
 
-                                </a>
+                                <#--</a>-->
 
-                                <ul class="sub-menu">
+                                <#--<ul class="sub-menu">-->
 
-                                    <li id="partnersUp"><a href="/finance/find-all-partners-financial-account">上游企业</a></li>
+                                    <#--<li id="partnersUp"><a href="/finance/find-all-partners-financial-account">上游企业</a></li>-->
 
-                                    <li id="partnersDown"><a href="/finance/find-all-partners-financial-account">下游企业</a></li>
+                                    <#--<li id="partnersDown"><a href="/finance/find-all-partners-financial-account">下游企业</a></li>-->
 
-                                </ul>
+                                <#--</ul>-->
 
-                            </li>
+                            <#--</li>-->
                         </ul>
 
                     </li>
