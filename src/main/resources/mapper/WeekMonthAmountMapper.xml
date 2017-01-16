@@ -47,12 +47,12 @@
 
     <!--插入客户每周的数据-->
     <insert id="addWeekRecord" parameterType="list" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qyfinance.WeekMonthAmount(years,weeks,totleAmount,customerId,tableId,weekMonthTypeId,
+        INSERT INTO qyfinance.WeekMonthAmount(years,months,weeks,totleAmount,customerId,tableId,weekMonthTypeId,
         beginTime,endTime,createTime)
         VALUES
         <foreach collection="list" item="weekMonthAmount" index="index" separator=",">
             (
-            #{weekMonthAmount.years},#{weekMonthAmount.weeks},#{weekMonthAmount.totleAmount},
+            #{weekMonthAmount.years},#{weekMonthAmount.months},#{weekMonthAmount.weeks},#{weekMonthAmount.totleAmount},
             #{weekMonthAmount.customerId},#{weekMonthAmount.tableId},#{weekMonthAmount.weekMonthTypeId},#{weekMonthAmount.beginTime},
             #{weekMonthAmount.endTime},sysdate()
             )

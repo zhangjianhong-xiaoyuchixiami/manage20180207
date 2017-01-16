@@ -25,7 +25,7 @@
 
                         <form action="/finance/find-all-customer-by-dept-id" method="get">
 
-                            <div class="clearfix margin-bottom-20">
+                            <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
                                 <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
 
@@ -92,43 +92,6 @@
                         </div>
 
                         <div class="portlet-body no-more-tables">
-
-                            <div class="clearfix margin-bottom-20">
-
-                                <div class="control-group pull-right">
-
-                                    <label class="control-label">
-
-                                        <a id="months-account" href="#form_modalA" data-toggle="modal">
-
-                                            <img src="/image/t04.png" alt="" />月账单
-
-                                        </a>
-
-                                    </label>
-
-                                    <div id="form_modalA" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabelA" aria-hidden="true">
-
-                                        <div class="modal-header">
-
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                            <h3 id="myModalLabelA">&nbsp;</h3>
-
-                                        </div>
-
-                                        <div class="modal-body">
-                                            <div id="months-container">
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
 
                             <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
 
@@ -207,60 +170,14 @@
 
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            $('#months-account').on('click',function () {
-                $.ajax({
-                    type: "post",
-                    url: "/finance/months-charge-consume-toward",
-                    dataType: 'json',
-                    success: function (result) {
-                        var json = result;
-                        $('#months-container').highcharts({
-                            chart: {
-                                type: 'line'
-                            },
-                            title: {
-                                text: '客户充值消费走势'
-                            },
-                            exporting: {
-                                enabled: false
-                            },
-                            credits: {
-                                enabled: false
-                            },
-                            xAxis: {
-                                categories: json.xList
-                            },
-                            yAxis: {
-                                title: {
-                                    text: '金额 (单位：元)'
-                                }
-                            },
-                            plotOptions: {
-                                line: {
-                                    dataLabels: {
-                                        enabled: true
-                                    },
-                                    enableMouseTracking: false
-                                }
-                            },
-                            series: json.yList
-                        });
-                    }
-                });
-            });
-        });
-
-    </script>
+    <script src="/js/myjs/customerleftbar.js"></script>
 
     <script>
-
         jQuery(document).ready(function() {
             TableManaged.init();
         });
 
+        <#--导出Excel-->
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
                 var companyName = $('#companyName').val();
@@ -290,21 +207,8 @@
             });
         });
 
-
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#customerBalance').addClass('active');
-
-            $('#customerListBalanceLog').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
-
-        });
-    </script>
     </#if>
 
 </@layout>

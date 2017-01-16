@@ -24,7 +24,7 @@
 
                     <form action="/finance//find-all-customer/find-all-customer-api-consume-record-by-customer-id" method="get">
 
-                        <div class="clearfix margin-bottom-20">
+                        <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
                             <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
@@ -120,19 +120,19 @@
 
                                 <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount/100.0}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${(-totleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
                                 <div class="control-group pull-right" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">&nbsp;&nbsp;<a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=2">月历史记录</a></label>
+                                    <label class="control-label">&nbsp;&nbsp;<a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=2"><i class="icon-time"></i>月历史消费记录</a></label>
 
                                 </div>
 
                                 <div class="control-group pull-right" style="margin-bottom: -10px;">
 
-                                    <label class="control-label"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=2">周历史记录</a></label>
+                                    <label class="control-label"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=2"><i class="icon-time"></i>周历史消费记录</a></label>
 
                                 </div>
 
@@ -153,7 +153,7 @@
                                         <tr>
                                             <td>${customerApiType.apiTypeName}</td>
                                             <td><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></td>
-                                            <td><#if customerApiType.totlePrice??>${customerApiType.totlePrice/100.0}<#else >0</#if></td>
+                                            <td><#if customerApiType.totlePrice??>${(-customerApiType.totlePrice/100.0)?c}<#else >0</#if></td>
                                             <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?customerId=${customerId?c}&apiTypeId=${customerApiType.apiTypeId?c}&reasonId=-1<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
                                         </tr>
                                         </#list>
@@ -182,18 +182,21 @@
 
     <script src="/js/myjs/json2.js" type="text/javascript"></script>
 
+    <script src="/js/myjs/customerleftbar.js"></script>
+
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
             TableManaged.init();
 
+            /*下拉框*/
             $("#apiTypeId").change(function () {
                 var param = $("#apiTypeId").val();
                 var param1 = $("#customerId").val();
                 if (param !=null) {
                     $.ajax({
-                        url: '/finance/find-api-vendor-by-api-type-id',//这个就是请求地址对应sAjaxSource
-                        data: {"apiTypeId": param, "customerId": param1},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                        url: '/finance/find-api-vendor-by-api-type-id',
+                        data: {"apiTypeId": param, "customerId": param1},
                         type: 'post',
                         dataType: 'json',
                         success: function (data) {
@@ -214,6 +217,7 @@
         });
     </script>
 
+    <#--导出Excel-->
     <script type="text/javascript">
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
@@ -233,17 +237,7 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#customerBalance').addClass('active');
 
-            $('#customerListBalanceLog').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
-        });
-    </script>
 
     </#if>
 

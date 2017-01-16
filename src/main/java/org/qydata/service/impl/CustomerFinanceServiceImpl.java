@@ -9,6 +9,7 @@ import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
+import org.qydata.tools.CalendarTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -103,16 +104,20 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<Long> yList = new ArrayList<>();
         List<String> xList = new ArrayList<>();
         Map<String, List> stringListMap = new HashedMap();
-        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
-        for (int i = 1; i <= 12; i++) {
+
+        for (int i = 12; i >0; i--) {
             WeekMonthAmount weekMonthAmount = customerFinanceMapper.monthChargeConsumeToward(customerId, tableId, (result+i));
-            c.add(Calendar.MONTH,-i);
+
             if (weekMonthAmount != null) {
-                yList.add(-weekMonthAmount.getTotleAmount());
+                if (weekMonthAmount.getTotleAmount()>0){
+                    yList.add((weekMonthAmount.getTotleAmount()/100));
+                }else{
+                    yList.add(-(weekMonthAmount.getTotleAmount()/100));
+                }
                 xList.add(weekMonthAmount.getYears() + "年" + weekMonthAmount.getMonths() + "月");
             } else {
                 yList.add(0L);
-                xList.add(c.get(Calendar.YEAR) + "年" + c.get(Calendar.MONTH)+1 + "月");
+                xList.add(CalendarTools.getYearMonthCount(result+i) + "年" + CalendarTools.getMonthCount(result+i) + "月");
             }
         }
         stringListMap.put("xPort",xList);

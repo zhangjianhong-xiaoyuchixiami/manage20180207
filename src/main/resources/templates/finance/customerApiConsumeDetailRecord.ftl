@@ -20,7 +20,7 @@
 
                 <div class="span12">
 
-                    <div class="clearfix margin-bottom-20">
+                    <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
                         <form action="" method="get">
 
@@ -127,7 +127,7 @@
 
                                 <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount/100.0}元&nbsp;&nbsp;&nbsp;</span><#else ><span>0元&nbsp;&nbsp;&nbsp;</span></#if></label>
+                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${(-totleAmount/100.0)?c}元&nbsp;&nbsp;&nbsp;</span><#else ><span>0元&nbsp;&nbsp;&nbsp;</span></#if></label>
 
                                 </div>
 
@@ -152,7 +152,7 @@
                                             </#if>
                                             <td>${customerApiVendor.vendorName!'未知产品供应商'}</td>
                                             <td>${customerApiVendor.apiName!'未知产品'}</td>
-                                            <td><#if customerApiVendor.totlePrice??>${customerApiVendor.totlePrice/100.0}<#else >0</#if></td>
+                                            <td><#if customerApiVendor.totlePrice??>${(-customerApiVendor.totlePrice/100.0)?c}<#else >0</#if></td>
                                             <td>${customerApiVendor.reasonName!'未知类型'}</td>
                                         </tr>
                                         </#list>
@@ -179,6 +179,8 @@
 
     <script src="/js/table-managed.js"></script>
 
+    <script src="/js/myjs/customerleftbar.js"></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
@@ -186,6 +188,7 @@
         });
     </script>
 
+    <#--导出Excel-->
     <script type="text/javascript">
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
@@ -209,17 +212,7 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#customerBalance').addClass('active');
 
-            $('#customerListBalanceLog').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
-        });
-    </script>
     </#if>
 
 </@layout>

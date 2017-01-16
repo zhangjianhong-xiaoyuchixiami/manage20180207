@@ -26,7 +26,7 @@
 
                     <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id" method="get">
 
-                        <div class="clearfix margin-bottom-20">
+                        <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
                             <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
@@ -147,19 +147,19 @@
 
                                 <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${totleAmount/100.0}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${(totleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
                                 <div class="control-group pull-right" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">&nbsp;&nbsp;<a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=1">月历史记录</a></label>
+                                    <label class="control-label">&nbsp;&nbsp;<a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=1"><i class="icon-time"></i>月历史充值记录</a></label>
 
                                 </div>
 
                                 <div class="control-group pull-right" style="margin-bottom: -10px;">
 
-                                    <label class="control-label"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=1">周历史记录</a></label>
+                                    <label class="control-label"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customerId?c}&companyName=${companyName}&typeId=1"><i class="icon-time"></i>周历史充值记录</a></label>
 
                                 </div>
 
@@ -177,7 +177,7 @@
                                     <#if customerBalanceLogList??>
                                         <#list customerBalanceLogList as customerBalanceLog>
                                         <tr>
-                                            <td>${customerBalanceLog.amount/100.0}</td>
+                                            <td>${(customerBalanceLog.amount/100.0)?c}</td>
                                             <td>${customerBalanceLog.createTime}</td>
                                             <td>${customerBalanceLog.customerBalanceModifyReason.name}</td>
                                         </tr>
@@ -205,12 +205,15 @@
 
     <script src="/js/table-managed.js"></script>
 
+    <script src="/js/myjs/customerleftbar.js"></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
             TableManaged.init();
         });
 
+        <#--导出Excel-->
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
                 var companyName = $('#companyName').val();
@@ -235,17 +238,7 @@
 
 
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#customerBalance').addClass('active');
 
-            $('#customerListBalanceLog').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
-        });
-    </script>
     </#if>
 
 </@layout>

@@ -41,14 +41,16 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
             weekMonthAmountOne.setTableId(tableId);
             weekMonthAmountOne.setWeekMonthTypeId(weekMonthTypeId);
             if(weekMonthAmount.getYears() == null){
-                weekMonthAmountOne.setYears(CalendarTools.getYearCount());
-                weekMonthAmountOne.setWeeks(CalendarTools.getYearWeekCount());
+                weekMonthAmountOne.setYears(CalendarTools.getYearCount(result));
+                weekMonthAmountOne.setMonths(CalendarTools.getMonthWeekCount(result));
+                weekMonthAmountOne.setWeeks(CalendarTools.getYearWeekCount(result));
                 weekMonthAmountOne.setTotleAmount(0L);
-                weekMonthAmountOne.setBeginTime(CalendarTools.getYearWeekFirstDay(CalendarTools.getYearCount(),CalendarTools.getYearWeekCount()));
-                weekMonthAmountOne.setEndTime(CalendarTools.getYearWeekEndDay(CalendarTools.getYearCount(),CalendarTools.getYearWeekCount()));
+                weekMonthAmountOne.setBeginTime(CalendarTools.getYearWeekFirstDay(CalendarTools.getYearCount(result),CalendarTools.getYearWeekCount(result)));
+                weekMonthAmountOne.setEndTime(CalendarTools.getYearWeekEndDay(CalendarTools.getYearCount(result),CalendarTools.getYearWeekCount(result)));
             }else{
                 List<String> temporalList = IpTool.spiltStr(weekMonthAmount.getTemporal());
                 weekMonthAmountOne.setYears(weekMonthAmount.getYears());
+                weekMonthAmountOne.setMonths(CalendarTools.getMonthWeekCount(result));
                 weekMonthAmountOne.setWeeks(weekMonthAmount.getWeeks());
                 weekMonthAmountOne.setTotleAmount(weekMonthAmount.getTotleAmount());
                 weekMonthAmountOne.setBeginTime(sdf.parse(temporalList.get(0)));
@@ -78,11 +80,11 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
             weekMonthAmountOne.setTableId(tableId);
             weekMonthAmountOne.setWeekMonthTypeId(weekMonthTypeId);
             if(weekMonthAmount.getYears() == null){
-                weekMonthAmountOne.setYears(CalendarTools.getYearMonthCount());
-                weekMonthAmountOne.setMonths(CalendarTools.getMonthCount());
+                weekMonthAmountOne.setYears(CalendarTools.getYearMonthCount(result));
+                weekMonthAmountOne.setMonths(CalendarTools.getMonthCount(result));
                 weekMonthAmountOne.setTotleAmount(0L);
-                weekMonthAmountOne.setBeginTime(CalendarTools.getYearMonthFirstDay(CalendarTools.getYearMonthCount(),CalendarTools.getMonthCount()));
-                weekMonthAmountOne.setEndTime(CalendarTools.getYearMonthEndDay(CalendarTools.getYearMonthCount(),CalendarTools.getMonthCount()));
+                weekMonthAmountOne.setBeginTime(CalendarTools.getYearMonthFirstDay(CalendarTools.getYearMonthCount(result),CalendarTools.getMonthCount(result)));
+                weekMonthAmountOne.setEndTime(CalendarTools.getYearMonthEndDay(CalendarTools.getYearMonthCount(result),CalendarTools.getMonthCount(result)));
             }else{
                 List<String> temporalList = IpTool.spiltStr(weekMonthAmount.getTemporal());
                 weekMonthAmountOne.setYears(weekMonthAmount.getYears());
@@ -115,14 +117,16 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
             weekMonthAmountOne.setTableId(tableId);
             weekMonthAmountOne.setWeekMonthTypeId(weekMonthTypeId);
             if(weekMonthAmount.getYears() == null){
-                weekMonthAmountOne.setYears(CalendarTools.getYearCount());
-                weekMonthAmountOne.setWeeks(CalendarTools.getYearWeekCount());
+                weekMonthAmountOne.setYears(CalendarTools.getYearCount(result));
+                weekMonthAmountOne.setMonths(CalendarTools.getMonthWeekCount(result));
+                weekMonthAmountOne.setWeeks(CalendarTools.getYearWeekCount(result));
                 weekMonthAmountOne.setTotleAmount(0L);
-                weekMonthAmountOne.setBeginTime(CalendarTools.getYearWeekFirstDay(CalendarTools.getYearCount(),CalendarTools.getYearWeekCount()));
-                weekMonthAmountOne.setEndTime(CalendarTools.getYearWeekEndDay(CalendarTools.getYearCount(),CalendarTools.getYearWeekCount()));
+                weekMonthAmountOne.setBeginTime(CalendarTools.getYearWeekFirstDay(CalendarTools.getYearCount(result),CalendarTools.getYearWeekCount(result)));
+                weekMonthAmountOne.setEndTime(CalendarTools.getYearWeekEndDay(CalendarTools.getYearCount(result),CalendarTools.getYearWeekCount(result)));
             }else {
                 List<String> temporalList = IpTool.spiltStr(weekMonthAmount.getTemporal());
                 weekMonthAmountOne.setYears(weekMonthAmount.getYears());
+                weekMonthAmountOne.setMonths(CalendarTools.getMonthWeekCount(result));
                 weekMonthAmountOne.setWeeks(weekMonthAmount.getWeeks());
                 weekMonthAmountOne.setTotleAmount(weekMonthAmount.getTotleAmount());
                 weekMonthAmountOne.setBeginTime(sdf.parse(temporalList.get(0)));
@@ -153,11 +157,11 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
             weekMonthAmountOne.setTableId(tableId);
             weekMonthAmountOne.setWeekMonthTypeId(weekMonthTypeId);
             if(weekMonthAmount.getYears() == null){
-                weekMonthAmountOne.setYears(CalendarTools.getYearMonthCount());
-                weekMonthAmountOne.setMonths(CalendarTools.getMonthCount());
+                weekMonthAmountOne.setYears(CalendarTools.getYearMonthCount(result));
+                weekMonthAmountOne.setMonths(CalendarTools.getMonthCount(result));
                 weekMonthAmountOne.setTotleAmount(0L);
-                weekMonthAmountOne.setBeginTime(CalendarTools.getYearMonthFirstDay(CalendarTools.getYearMonthCount(),CalendarTools.getMonthCount()));
-                weekMonthAmountOne.setEndTime(CalendarTools.getYearMonthEndDay(CalendarTools.getYearMonthCount(),CalendarTools.getMonthCount()));
+                weekMonthAmountOne.setBeginTime(CalendarTools.getYearMonthFirstDay(CalendarTools.getYearMonthCount(result),CalendarTools.getMonthCount(result)));
+                weekMonthAmountOne.setEndTime(CalendarTools.getYearMonthEndDay(CalendarTools.getYearMonthCount(result),CalendarTools.getMonthCount(result)));
             }else{
                 List<String> temporalList = IpTool.spiltStr(weekMonthAmount.getTemporal());
                 weekMonthAmountOne.setYears(weekMonthAmount.getYears());

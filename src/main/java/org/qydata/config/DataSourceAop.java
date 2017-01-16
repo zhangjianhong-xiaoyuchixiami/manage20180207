@@ -18,7 +18,8 @@ public class DataSourceAop {
 
 
     @Before("execution(* org.qydata.mapper.*.find*(..)) " +
-            "or execution(* org.qydata.mapper.*.get*(..))")
+            "or execution(* org.qydata.mapper.*.get*(..))"+
+            "or execution(* org.qydata.mapper.*.query*(..))")
     public void setReadDataSourceType() {
         DataSourceContextHolder.slave();
         log.info("dataSource切换到：slave");

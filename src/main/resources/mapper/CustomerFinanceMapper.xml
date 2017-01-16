@@ -310,7 +310,6 @@
         AND weekMonthTypeId=2
         AND tableId=#{param2}
         AND DATE_FORMAT(endTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval #{param3} month),'%Y-%m')
-        ORDER BY endTime DESC
     </select>
 </mapper>
 

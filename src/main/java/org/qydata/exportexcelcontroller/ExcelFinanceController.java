@@ -372,19 +372,12 @@ public class ExcelFinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-week-record-by-customer-id")
-    public void findWeekRecordByCustomerId(String companyName,Integer [] typeId,Integer customerId,Integer years,Integer months,Integer weeks,HttpServletResponse  response) throws IOException {
+    public void findWeekRecordByCustomerId(String companyName,Integer typeId,Integer customerId,Integer years,Integer months,Integer weeks,HttpServletResponse  response) throws IOException {
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",1);
         List<Integer> tableIdList = new ArrayList();
-        if(typeId != null && typeId.length>0){
-            for(int i=0; i<typeId.length; i++){
-                tableIdList.add(typeId[i]);
-            }
-        }else {
-            tableIdList.add(1);
-            tableIdList.add(2);
-        }
+        tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
 
         if(years != null){
@@ -421,17 +414,12 @@ public class ExcelFinanceController {
             }
             mapValue.put("beginTime", sdf.format(weekMonthAmount.getBeginTime()));
             mapValue.put("endTime", sdf.format(weekMonthAmount.getEndTime()));
-            if (weekMonthAmount.getTableId() == 1){
-                mapValue.put("type", "充值");
-            }
-            if (weekMonthAmount.getTableId() == 2){
-                mapValue.put("type", "消费");
-            }
+
             list.add(mapValue);
         }
         String fileName = companyName+"周历史记录";
-        String columnNames[]= {"年月周","金额（单位：元）","开始时间","结束时间","类型"};//列名
-        String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime","type"};//map中的key
+        String columnNames[]= {"周期","金额（单位：元）","开始时间","结束时间"};//列名
+        String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**
@@ -444,19 +432,12 @@ public class ExcelFinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-month-record-by-customer-id")
-    public void findMonthRecordByCustomerId(String companyName,Integer [] typeId,Integer customerId,Integer years,Integer months,HttpServletResponse response) throws IOException {
+    public void findMonthRecordByCustomerId(String companyName,Integer typeId,Integer customerId,Integer years,Integer months,HttpServletResponse response) throws IOException {
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",2);
         List<Integer> tableIdList = new ArrayList();
-        if(typeId != null && typeId.length>0){
-            for(int i=0; i<typeId.length; i++){
-                tableIdList.add(typeId[i]);
-            }
-        }else {
-            tableIdList.add(1);
-            tableIdList.add(2);
-        }
+        tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
         if(years != null){
             map.put("years",years);
@@ -488,17 +469,11 @@ public class ExcelFinanceController {
             }
             mapValue.put("beginTime", sdf.format(weekMonthAmount.getBeginTime()));
             mapValue.put("endTime", sdf.format(weekMonthAmount.getEndTime()));
-            if (weekMonthAmount.getTableId() == 1){
-                mapValue.put("type", "充值");
-            }
-            if (weekMonthAmount.getTableId() == 2){
-                mapValue.put("type", "消费");
-            }
             list.add(mapValue);
         }
         String fileName = companyName+"月历史记录";
-        String columnNames[]= {"年月","金额（单位：元）","开始时间","结束时间","类型"};//列名
-        String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime","type"};//map中的key
+        String columnNames[]= {"周期","金额（单位：元）","开始时间","结束时间"};//列名
+        String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
 

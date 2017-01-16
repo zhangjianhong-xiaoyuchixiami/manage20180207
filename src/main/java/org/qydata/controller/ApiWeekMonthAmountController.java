@@ -20,7 +20,7 @@ public class ApiWeekMonthAmountController {
     private ApiWeekMonthAmountService apiWeekMonthAmountService;
 
     /**
-     * 统计和插入客户每周的Api消费数据
+     * 统计和插入每周的Api消费数据
      * @return
      */
     @RequestMapping("/get-all-api-week-consume-record-and-add-api-week-month-amount")
@@ -37,7 +37,7 @@ public class ApiWeekMonthAmountController {
     }
 
     /**
-     * 统计和插入客户每月的Api消费数据
+     * 统计和插入每月的Api消费数据
      * @return
      */
     @RequestMapping("/get-all-api-month-consume-record-and-add-api-week-month-amount")

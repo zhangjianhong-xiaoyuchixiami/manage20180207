@@ -17,6 +17,7 @@ import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerBalanceLogService;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerService;
+import org.qydata.tools.CalendarTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -355,14 +356,14 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
-        // List<Integer> monthList = null;
+        List<Integer> monthList = null;
         if(years != null){
             map.put("years",years);
-//            try {
-//                monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            try {
+                monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         List<Integer> weekList = null;
         if(months != null){
@@ -393,12 +394,12 @@ public class FinanceController {
         }
         model.addAttribute("weekMonthAmountList",weekMonthAmountList);
         model.addAttribute("yearList",yearList);
-        //model.addAttribute("monthList",monthList);
+        model.addAttribute("monthList",monthList);
         model.addAttribute("weekList",weekList);
         model.addAttribute("totleAmount",totleAmount);
         model.addAttribute("companyName",companyName);
         model.addAttribute("customerId",customerId);
-        //model.addAttribute("typeIdArray",typeId);
+        model.addAttribute("typeId",typeId);
         model.addAttribute("years",years);
         model.addAttribute("months",months);
         model.addAttribute("weeks",weeks);
@@ -457,7 +458,7 @@ public class FinanceController {
         model.addAttribute("totleAmount",totleAmount);
         model.addAttribute("companyName",companyName);
         model.addAttribute("customerId",customerId);
-       // model.addAttribute("typeIdArray",typeId);
+        model.addAttribute("typeId",typeId);
         model.addAttribute("years",years);
         model.addAttribute("months",months);
         return "/finance/monthRecord";
@@ -470,20 +471,13 @@ public class FinanceController {
      */
     @RequestMapping("/find-company-customer-week-uplink-months-by-customer-id")
     @ResponseBody
-    public String findCompanyCustomerWeekUplinkMonthsByCustomerId(Integer customerId,Integer years,Integer [] typeId,HttpServletRequest request){
+    public String findCompanyCustomerWeekUplinkMonthsByCustomerId(Integer customerId,Integer years,Integer typeId,HttpServletRequest request){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",1);
         map.put("years",years);
         List<Integer> tableIdList = new ArrayList();
-        if(typeId != null && typeId.length>0){
-            for(int i=0; i<typeId.length; i++){
-                tableIdList.add(typeId[i]);
-            }
-        }else {
-            tableIdList.add(1);
-            tableIdList.add(2);
-        }
+        tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
         List<Integer> monthList = null;
         try {
@@ -502,21 +496,14 @@ public class FinanceController {
      */
     @RequestMapping("/find-company-customer-weeks-by-customer-id")
     @ResponseBody
-    public String findCompanyCustomerWeeksByCustomerId(Integer customerId,Integer years,Integer months,Integer [] typeId,HttpServletRequest request){
+    public String findCompanyCustomerWeeksByCustomerId(Integer customerId,Integer years,Integer months,Integer typeId,HttpServletRequest request){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",1);
         map.put("years",years);
         map.put("months",months);
         List<Integer> tableIdList = new ArrayList();
-        if(typeId != null && typeId.length>0){
-            for(int i=0; i<typeId.length; i++){
-                tableIdList.add(typeId[i]);
-            }
-        }else {
-            tableIdList.add(1);
-            tableIdList.add(2);
-        }
+        tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
         List<Integer> weekList = null;
         try {
@@ -536,20 +523,13 @@ public class FinanceController {
      */
     @RequestMapping("/find-company-customer-month-uplink-months-by-customer-id")
     @ResponseBody
-    public String findCompanyCustomerMonthUplinkMonthsByCustomerId(Integer customerId,Integer years,Integer [] typeId,HttpServletRequest request){
+    public String findCompanyCustomerMonthUplinkMonthsByCustomerId(Integer customerId,Integer years,Integer typeId,HttpServletRequest request){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",2);
         map.put("years",years);
         List<Integer> tableIdList = new ArrayList();
-        if(typeId != null && typeId.length>0){
-            for(int i=0; i<typeId.length; i++){
-                tableIdList.add(typeId[i]);
-            }
-        }else {
-            tableIdList.add(1);
-            tableIdList.add(2);
-        }
+        tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
         List<Integer> monthList = null;
         try {
@@ -561,14 +541,40 @@ public class FinanceController {
         return jsonArray.toString();
     }
 
-
+    /**
+     * 客户月账单充值消费走势图
+     * @param customerId
+     * @param typeId
+     * @return
+     */
     @RequestMapping("/months-charge-consume-toward")
     @ResponseBody
-    public String monthsChargeConsumeToward(Integer customerId){
+    public String monthsChargeConsumeToward(Integer customerId,Integer typeId,Integer years,Integer months){
+        System.out.println(customerId);
+        System.out.println(typeId);
+        System.out.println(years);
+        System.out.println(months);
         Map<String,Object> map = new HashedMap();
-        map.put("customerId",7);
-        map.put("tableId",2);
-        map.put("result",0);
+        map.put("customerId",customerId);
+        map.put("tableId",typeId);
+        if(years != null && months == null){
+            if (years < CalendarTools.getYearMonthCount(0)){
+                Integer result =  (CalendarTools.compareDate(years+"-"+12+"-"+31, null, 1)-1);
+                map.put("result",result);
+                System.out.println(result);
+            }else {
+                map.put("result",0);
+            }
+
+        }
+        if(years != null && months != null){
+            Integer result =  (CalendarTools.compareDate(years+"-"+months+"-"+31, null, 1)-1);
+            map.put("result",result);
+            System.out.println(result);
+        }
+        if (years == null && months == null){
+            map.put("result",0);
+        }
         Map<String,List> stringListMap = customerFinanceService.monthChargeConsumeToward(map);
         Set<Map.Entry<String,List>> set = stringListMap.entrySet();
         Iterator<Map.Entry<String,List>> it = set.iterator();
@@ -582,11 +588,16 @@ public class FinanceController {
                 yList = (List) me.getValue();
             }
         }
-        Map map1 = new HashedMap();
-        map1.put("name","消费");
-        map1.put("data",yList);
+        Map mapOne = new HashedMap();
+        if (typeId ==1){
+            mapOne.put("name","充值");
+        }
+        if (typeId ==2){
+            mapOne.put("name","消费");
+        }
+        mapOne.put("data",yList);
         JSONArray jsonArray = JSONArray.fromObject(xList);
-        JSONArray jsonArray1 = JSONArray.fromObject(map1);
+        JSONArray jsonArray1 = JSONArray.fromObject(mapOne);
         JSONObject getObj = new JSONObject();
         getObj.put("xList", jsonArray);
         getObj.put("yList", jsonArray1);

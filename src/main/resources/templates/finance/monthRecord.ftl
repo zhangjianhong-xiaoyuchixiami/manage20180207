@@ -24,7 +24,7 @@
 
                     <form action="/finance/find-all-customer/find-month-record-by-customer-id" method="get">
 
-                        <div class="clearfix margin-bottom-20">
+                        <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
                             <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
@@ -48,27 +48,38 @@
                                 </div>
                             </div>
 
-                            <#--<div class="control-group pull-left" style="margin-bottom: -20px;">-->
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
-                                <#--<label class="control-label">类型</label>-->
+                                <label class="control-label">类型</label>
 
-                                <#--<div class="controls">-->
+                                <div class="controls">
 
-                                    <#--<label class="checkbox">-->
+                                    <input type="text" id="typeId" name="typeId" value="${typeId}" class="m-wrap medium">
 
-                                        <#--<input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==1>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="1">充值-->
+                                </div>
+                            </div>
 
-                                    <#--</label>-->
+                        <#--<div class="control-group pull-left" style="margin-bottom: -20px;">-->
 
-                                    <#--<label class="checkbox">-->
+                        <#--<label class="control-label">类型</label>-->
 
-                                        <#--<input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==2>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="2">消费-->
+                        <#--<div class="controls">-->
 
-                                    <#--</label>-->
+                        <#--<label class="checkbox">-->
 
-                                <#--</div>-->
+                        <#--<input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==1>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="1">充值-->
 
-                            <#--</div>-->
+                        <#--</label>-->
+
+                        <#--<label class="checkbox">-->
+
+                        <#--<input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==2>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="2">消费-->
+
+                        <#--</label>-->
+
+                        <#--</div>-->
+
+                        <#--</div>-->
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
@@ -142,20 +153,68 @@
 
                                 <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${totleAmount/100.0}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">共计&yen;：<#if totleAmount??><span><#if totleAmount<0>${(-totleAmount/100.0)?c}<#else >${(totleAmount/100.0)?c}</#if>元</span><#else ><span>0元</span></#if></label>
+
+                                </div>
+
+                                <div class="control-group pull-right" style="margin-bottom: -10px;">
+
+
+                                    <#if typeId?? && typeId==2>
+                                        <label class="control-label">
+
+                                            <a id="months-account" href="#form_modalA" data-toggle="modal">
+
+                                                <i class="icon-bar-chart"></i>月消费走势图
+
+                                            </a>
+
+                                        </label>
+                                    </#if>
+
+                                    <#if typeId?? && typeId==1>
+                                        <label class="control-label">
+
+                                            <a id="months-account" href="#form_modalA" data-toggle="modal">
+
+                                                <i class="icon-bar-chart"></i>月充值走势图
+
+                                            </a>
+
+                                        </label>
+                                    </#if>
+
+                                    <div id="form_modalA" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabelA" aria-hidden="true">
+
+                                        <div class="modal-header">
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                            <h3 id="myModalLabelA">&nbsp;</h3>
+
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div id="months-container">
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_8">
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_9">
                                 <thead>
                                 <tr>
                                     <th style="width: 30%;">周期</th>
                                     <th style="width: 20%;">金额（单位/元）</th>
                                     <th style="width: 25%;">开始时间</th>
                                     <th style="width: 25%;">结束时间</th>
-                                    <#--<th style="width: 20%;">类型</th>-->
+                                <#--<th style="width: 20%;">类型</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -163,14 +222,14 @@
                                         <#list weekMonthAmountList as weekMonthAmount>
                                         <tr>
                                             <td><#if weekMonthAmount.years??>${weekMonthAmount.years?c}年</#if><#if weekMonthAmount.months??>第${weekMonthAmount.months}月</#if></td>
-                                            <td><#if weekMonthAmount.totleAmount??>${weekMonthAmount.totleAmount/100.0}<#else >0</#if></td>
+                                            <td><#if weekMonthAmount.totleAmount??><#if weekMonthAmount.totleAmount<0>${(-weekMonthAmount.totleAmount/100.0)?c}<#else >${(weekMonthAmount.totleAmount/100.0)?c}</#if><#else >0</#if></td>
                                             <td><#if weekMonthAmount.beginTime??>${weekMonthAmount.beginTime?date}</#if></td>
                                             <td><#if weekMonthAmount.endTime??>${weekMonthAmount.endTime?date}</#if></td>
-                                            <#--<#if weekMonthAmount.tableId==1>-->
-                                                <#--<td>充值</td>-->
-                                            <#--<#else >-->
-                                                <#--<td>消费</td>-->
-                                            <#--</#if>-->
+                                        <#--<#if weekMonthAmount.tableId==1>-->
+                                        <#--<td>充值</td>-->
+                                        <#--<#else >-->
+                                        <#--<td>消费</td>-->
+                                        <#--</#if>-->
                                         </tr>
                                         </#list>
                                     </#if>
@@ -195,41 +254,24 @@
 
     <script src="/js/table-managed.js"></script>
 
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <script src="/js/myjs/customerleftbar.js"></script>
+
+    <script src="/js/myjs/monthRecord.js"></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
+
             TableManaged.init();
-            $("#years").change(function () {
-                var param = $("#years").val();
-                var param1 = $("#customerId").val();
-                var param2 =[];//定义一个数组
-                $('input[name="typeId"]:checked').each(function(){
-                    param2.push($.trim($(this).val()));
-                });
-                if (param !=null) {
-                    $.ajax({
-                        url: '/finance/find-company-customer-month-uplink-months-by-customer-id',
-                        data: {"years": param, "customerId": param1, "typeId": param2},
-                        type: 'post',
-                        dataType: 'json',
-                        success: function (data) {
-                            if(data != null){
-                                $("#months ").empty();
-                                $("#months").append("<option value=''>请选择...</option>");
-                                for (var i=0; i<data.length; i++){
-                                    var op=document.createElement("option");
-                                    op.value=data[i];
-                                    op.innerHTML='第'+data[i]+'月';
-                                    $("#months").append(op);
-                                }
-                            }
-                        }
-                    });
-                }
-            });
+
         });
     </script>
 
+    <#--导出Excel-->
     <script type="text/javascript">
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
@@ -237,10 +279,7 @@
                 var customerId = $('#customerId').val();
                 var years = $('#years').val();
                 var months = $('#months').val();
-                var typeId =[];//定义一个数组
-                $('input[name="typeId"]:checked').each(function(){
-                    typeId.push($.trim($(this).val()));
-                });
+                var typeId = $("#typeId").val();
                 fetch('/excel-finance/find-all-customer/find-month-record-by-customer-id?companyName='+companyName+'&typeId='+typeId+'&customerId='+customerId+'&years='+years+'&months='+months).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
@@ -253,17 +292,7 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#customerBalance').addClass('active');
 
-            $('#customerListBalanceLog').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
-        });
-    </script>
     </#if>
 
 </@layout>
