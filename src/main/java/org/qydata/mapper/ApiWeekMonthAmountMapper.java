@@ -20,32 +20,32 @@ public interface ApiWeekMonthAmountMapper {
 
     /**
      * 插入Api每周的数据
-     * @param weekAmountList
+     * @param apiWeekMonthAmountList
      * @return
      * @throws Exception
      */
-    public boolean addApiWeekRecord(List<ApiWeekMonthAmount> weekAmountList)throws Exception;
+    public boolean addApiWeekRecord(List<ApiWeekMonthAmount> apiWeekMonthAmountList)throws Exception;
 
     /**
      * 插入Api每月的数据
-     * @param monthAmountList
+     * @param apiWeekMonthAmountList
      * @return
      * @throws Exception
      */
-    public boolean addApiMonthRecord(List<ApiWeekMonthAmount> monthAmountList)throws Exception;
+    public boolean addApiMonthRecord(List<ApiWeekMonthAmount> apiWeekMonthAmountList)throws Exception;
 
     /**
      * 统计Api每周的消费数据
      * @return
      * @throws Exception
      */
-    public List<ApiWeekMonthAmount> getAllApiWeekConsumeRecord()throws Exception;
+    public List<ApiWeekMonthAmount> getAllApiWeekConsumeRecord(Integer result)throws Exception;
 
     /**
      * 统计Api每月的消费数据
      * @return
      * @throws Exception
      */
-    public List<ApiWeekMonthAmount> getAllApiMonthConsumeRecord()throws Exception;
+    public List<ApiWeekMonthAmount> getAllApiMonthConsumeRecord(Integer result)throws Exception;
 
 }

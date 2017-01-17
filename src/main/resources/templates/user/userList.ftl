@@ -1,6 +1,8 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -10,45 +12,7 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-
-                <div class="span12">
-
-                    <h3 class="page-title">
-
-                        管理员信息
-
-                    </h3>
-
-                    <ul class="breadcrumb">
-
-                        <li>
-
-                            <i class="icon-home"></i>
-
-                            <a href="/view/successUrl">首页</a>
-
-                            <i class="icon-angle-right"></i>
-
-                        </li>
-
-                        <li>
-
-                            <a href="#">管理员</a>
-
-                            <i class="icon-angle-right"></i>
-
-                        </li>
-
-                        <li><a href="#">用户信息</a></li>
-
-                    </ul>
-
-                    <!-- END PAGE TITLE & BREADCRUMB-->
-
-                </div>
-
-            </div>
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
 
@@ -302,16 +266,22 @@
 
     <#elseif section = "footer">
 
+    <#elseif section = "publicJs">
+
+    <#elseif section = "privateJs">
+
+    <script>
+        $(document).ready(function() {
+            $('#userManage').addClass('active');
+
+            $('#userList').addClass('active');
+
+            $('#userManageSelect').addClass('selected');
+
+            $('#userManageArrow').addClass('arrow open');
+        });
+    </script>
+
     </#if>
-<script>
-    $(document).ready(function() {
-        $('#userManage').addClass('active');
 
-        $('#userList').addClass('active');
-
-        $('#userManageSelect').addClass('selected');
-
-        $('#userManageArrow').addClass('arrow open');
-    });
-</script>
 </@layout>

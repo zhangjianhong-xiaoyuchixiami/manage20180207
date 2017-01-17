@@ -4,7 +4,7 @@
 <mapper namespace="org.qydata.mapper.DeptMapper">
 
 
-    <resultMap type="Dept" id="dept">
+    <resultMap type="org.qydata.entity.Dept" id="dept">
         <id column="id" property="id"/>
         <result column="deptName" property="deptName"/>
         <result column="createTime" property="createTime"/>
@@ -12,12 +12,12 @@
     </resultMap>
 
     <!--新增部门-->
-    <insert id="insertDept" parameterType="Dept" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertDept" parameterType="org.qydata.entity.Dept" useGeneratedKeys="true" keyProperty="id">
         insert into qyauth.Dept(deptName,createTime)
         values(#{deptName},sysdate())
     </insert>
     <!--查找所有的部门-->
-    <select id="findAllDept" resultType="Dept">
+    <select id="findAllDept" resultType="org.qydata.entity.Dept">
         select id,deptName from qyauth.Dept
     </select>
     <!--批量插入用户和部门映射-->
@@ -33,7 +33,7 @@
         delete from qyauth.UserDept where userId=#{param}
     </delete>
     <!---->
-    <select id="findAll" parameterType="Map" resultType="Dept">
+    <select id="findAll" parameterType="Map" resultType="org.qydata.entity.Dept">
         select id,deptName,createTime
         from qyauth.Dept
         order by createTime desc
@@ -45,7 +45,7 @@
         from qyauth.Dept
     </select>
     <!---->
-    <insert id="addUserDeptById" parameterType="UserDept" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addUserDeptById" parameterType="org.qydata.entity.UserDept" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO qyauth.UserDept(userId,deptId,createTime)
         VALUES (#{userId},#{deptId},sysdate())
     </insert>

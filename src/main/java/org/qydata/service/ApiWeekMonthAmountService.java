@@ -13,7 +13,7 @@ public interface ApiWeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount()throws Exception;
+    public boolean getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount(Integer result)throws Exception;
 
     /**
      * 统计和插入Api每月的消费数据
@@ -21,7 +21,7 @@ public interface ApiWeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount()throws Exception;
+    public boolean getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount(Integer result)throws Exception;
 
 
 }

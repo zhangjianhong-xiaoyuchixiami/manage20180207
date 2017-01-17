@@ -1,6 +1,8 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -10,29 +12,7 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-
-                <div class="span12">
-
-                    <h3 class="page-title">
-                        新增管理员
-                    </h3>
-                    <ul class="breadcrumb">
-                        <li>
-                            <i class="icon-home"></i>
-                            <a href="/view/successUrl">首页</a>
-                            <span class="icon-angle-right"></span>
-                        </li>
-                        <li>
-                            <a href="#">管理员</a>
-                            <span class="icon-angle-right"></span>
-                        </li>
-                        <li><a href="#">新增管理员</a></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- END PAGE HEADER-->
-            <!-- BEGIN PAGE CONTENT-->
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
                 <div class="span12">
@@ -127,36 +107,42 @@
                 </div>
             </div>
 
-            <!-- END PAGE CONTENT-->
+
         </div>
-        <!-- END PAGE CONTAINER-->
+
     </div>
 
 
     <#elseif section = "footer">
 
+    <#elseif section = "publicJs">
+
+    <#elseif section = "privateJs">
+
+    <script>
+        $(document).ready(function() {
+            $('#userManage').addClass('active');
+
+            $('#addUser').addClass('active');
+
+            $('#userManageSelect').addClass('selected');
+
+            $('#userManageArrow').addClass('arrow open');
+
+            $("#name").focus(function () {
+                $("#nameMsg").html("");
+            });
+
+            $("#username").focus(function () {
+                $("#usernameMsg").html("");
+            });
+
+            $("#tel").focus(function () {
+                $("#telMsg").html("");
+            });
+        });
+    </script>
+
     </#if>
-<script>
-    $(document).ready(function() {
-        $('#userManage').addClass('active');
 
-        $('#addUser').addClass('active');
-
-        $('#userManageSelect').addClass('selected');
-
-        $('#userManageArrow').addClass('arrow open');
-
-        $("#name").focus(function () {
-            $("#nameMsg").html("");
-        });
-
-        $("#username").focus(function () {
-            $("#usernameMsg").html("");
-        });
-
-        $("#tel").focus(function () {
-            $("#telMsg").html("");
-        });
-    });
-</script>
 </@layout>

@@ -1,6 +1,8 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -10,26 +12,7 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-                <div class="span12">
-
-                    <h3 class="page-title">
-                        新增部门
-                    </h3>
-                    <ul class="breadcrumb">
-                        <li>
-                            <i class="icon-home"></i>
-                            <a href="/view/successUrl">首页</a>
-                            <span class="icon-angle-right"></span>
-                        </li>
-                        <li>
-                            <a href="#">部门管理</a>
-                            <span class="icon-angle-right"></span>
-                        </li>
-                        <li><a href="#">新增部门</a></li>
-                    </ul>
-                </div>
-            </div>
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
                 <div class="span12">
@@ -92,24 +75,30 @@
 
     <#elseif section = "footer">
 
+    <#elseif section = "publicJs">
+
+    <#elseif section = "privateJs">
+
+    <script>
+        $(document).ready(function() {
+            $('#deptManage').addClass('active');
+
+            $('#addDept').addClass('active');
+
+            $('#deptManageSelect').addClass('selected');
+
+            $('#deptManageArrow').addClass('arrow open');
+
+            $("#deptName").focus(function () {
+                $("#deptNameMsg").html("");
+            });
+
+            $("#deptNo").focus(function () {
+                $("#deptNoMsg").html("");
+            });
+        });
+    </script>
+
     </#if>
-<script>
-    $(document).ready(function() {
-        $('#deptManage').addClass('active');
 
-        $('#addDept').addClass('active');
-
-        $('#deptManageSelect').addClass('selected');
-
-        $('#deptManageArrow').addClass('arrow open');
-
-        $("#deptName").focus(function () {
-            $("#deptNameMsg").html("");
-        });
-
-        $("#deptNo").focus(function () {
-            $("#deptNoMsg").html("");
-        });
-    });
-</script>
 </@layout>

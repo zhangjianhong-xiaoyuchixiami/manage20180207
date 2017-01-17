@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.CustomerApiMapper">
 
-    <resultMap id="CustomerApi_Map" type="CustomerApi">
+    <resultMap id="CustomerApi_Map" type="org.qydata.entity.CustomerApi">
         <id column="customerApiId" property="id"/>
         <result column="apiId" property="apiId"/>
         <result column="customerId" property="customerId"/>
@@ -12,34 +12,34 @@
         <result column="createTime" property="createTime"/>
     </resultMap>
 
-    <resultMap id="CustomerApi_Api_ApiType_Map" type="CustomerApi" extends="CustomerApi_Map">
-        <association property="api" javaType="Api">
+    <resultMap id="CustomerApi_Api_ApiType_Map" type="org.qydata.entity.CustomerApi" extends="CustomerApi_Map">
+        <association property="api" javaType="org.qydata.entity.Api">
             <result column="apiTypeId" property="apiTypeId"/>
             <result column="vendorId" property="vendorId"/>
             <result column="apiName" property="name"/>
-            <association property="apiType" javaType="ApiType">
+            <association property="apiType" javaType="org.qydata.entity.ApiType">
                 <result column="apiTypeName" property="name"/>
             </association>
         </association>
     </resultMap>
 
-    <resultMap id="CustomerApi_Api_ApiType_ApiMobileOperator_Map" type="CustomerApi" extends="CustomerApi_Map">
-        <association property="api" javaType="Api">
+    <resultMap id="CustomerApi_Api_ApiType_ApiMobileOperator_Map" type="org.qydata.entity.CustomerApi" extends="CustomerApi_Map">
+        <association property="api" javaType="org.qydata.entity.Api">
             <result column="apiTypeId" property="apiTypeId"/>
             <result column="vendorId" property="vendorId"/>
             <result column="apiName" property="name"/>
-            <association property="apiType" javaType="ApiType">
+            <association property="apiType" javaType="org.qydata.entity.ApiType">
                 <result column="apiTypeName" property="name"/>
             </association>
-            <association property="apiMobileOperator" javaType="ApiMobileOperator">
-                <association property="mobileOperator" javaType="MobileOperator">
+            <association property="apiMobileOperator" javaType="org.qydata.entity.ApiMobileOperator">
+                <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
                     <result column="mobileOperatorName" property="name"/>
                 </association>
             </association>
         </association>
     </resultMap>
 
-    <resultMap id="Api_Map" type="Api">
+    <resultMap id="Api_Map" type="org.qydata.entity.Api">
         <id column="apiId" property="id"/>
         <result column="apiTypeId" property="apiTypeId"/>
         <result column="vendorId" property="vendorId"/>
@@ -47,15 +47,15 @@
         <result column="apiName" property="name"/>
     </resultMap>
 
-    <resultMap id="Api_ApiType_Map" type="Api" extends="Api_Map">
-        <association property="apiType" javaType="ApiType">
+    <resultMap id="Api_ApiType_Map" type="org.qydata.entity.Api" extends="Api_Map">
+        <association property="apiType" javaType="org.qydata.entity.ApiType">
             <result column="apiTypeName" property="name"/>
         </association>
     </resultMap>
 
-    <resultMap id="Api_ApiMobileOperator_Map" type="Api" extends="Api_ApiType_Map">
-        <association property="apiMobileOperator" javaType="ApiMobileOperator">
-            <association property="mobileOperator" javaType="MobileOperator">
+    <resultMap id="Api_ApiMobileOperator_Map" type="org.qydata.entity.Api" extends="Api_ApiType_Map">
+        <association property="apiMobileOperator" javaType="org.qydata.entity.ApiMobileOperator">
+            <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
                 <id column="mobileOperatorId" property="id"/>
                 <result column="mobileOperatorName" property="name"/>
             </association>
@@ -198,16 +198,16 @@
 
     </select>
     <!--根据Id修改-->
-    <update id="updateCustomerApiById" parameterType="CustomerApi">
+    <update id="updateCustomerApiById" parameterType="org.qydata.entity.CustomerApi">
         update qydata.CustomerApi set apiId=#{apiId},price=#{price},enabled=#{enabled} where id=#{id}
     </update>
 
-    <select id="apiList" resultType="Api">
+    <select id="apiList" resultType="org.qydata.entity.Api">
        SELECT apiTypeId
        FROM qydata.Api
     </select>
 
-    <select id="apiList1" resultType="Api">
+    <select id="apiList1" resultType="org.qydata.entity.Api">
         SELECT apiTypeId
         FROM qydata.Api
     </select>

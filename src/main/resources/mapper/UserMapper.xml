@@ -4,7 +4,7 @@
 <mapper namespace="org.qydata.mapper.UserMapper">
 
 
-    <resultMap type="User" id="userMap">
+    <resultMap type="org.qydata.entity.User" id="userMap">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="username" property="username"/>
@@ -14,15 +14,15 @@
         <result column="typeId" property="typeId"/>
     </resultMap>
 
-    <resultMap type="User" id="userDeptMap" extends="userMap">
-        <collection property="dept" ofType="Dept">
+    <resultMap type="org.qydata.entity.User" id="userDeptMap" extends="userMap">
+        <collection property="dept" ofType="org.qydata.entity.Dept">
             <result column="deptId" property="id"/>
             <result column="deptName" property="deptName"/>
         </collection>
     </resultMap>
 
     <!-- 是进行登录认证使用的，即，根据身份信息取得密码进行认证 -->
-    <select id="findById" parameterType="String" resultType="User">
+    <select id="findById" parameterType="String" resultType="org.qydata.entity.User">
         SELECT username,password
         FROM qyauth.User
         WHERE username=#{username} and status=0
@@ -49,7 +49,7 @@
                                       WHERE username=#{username}))
     </select>
     <!--添加管理员-->
-    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addUser" parameterType="org.qydata.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into qyauth.User(name,username,password,tel,status,typeId,createTime)
         values(#{name},#{username},#{password},#{tel},#{status},#{typeId},sysdate())
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
@@ -57,7 +57,7 @@
         </selectKey>
     </insert>
     <!--Common添加管理员-->
-    <insert id="addUserCommon" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addUserCommon" parameterType="org.qydata.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into qyauth.User(name,username,password,tel,status,typeId,createTime)
         values(#{name},#{username},#{password},#{tel},#{status},2,sysdate())
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
@@ -133,7 +133,7 @@
         update qyauth.User set status=1 where username=#{value}
     </update>
 
-    <select id="findAllUser1" parameterType="int" resultType="User">
+    <select id="findAllUser1" parameterType="int" resultType="org.qydata.entity.User">
         SELECT id,name,username,tel
         FROM qyauth.User
         limit #{param1},#{param2}

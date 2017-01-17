@@ -41,6 +41,7 @@ public class MyBatisConfig {
         props.put("minIdle", env.getProperty("datasource.minIdle"));
         props.put("initialSize", env.getProperty("datasource.initialSize"));
         props.put("maxWait", env.getProperty("datasource.maxWait"));
+        //System.out.println(props.getProperty("url"));
         return DruidDataSourceFactory.createDataSource(props);
     }
 
@@ -55,6 +56,7 @@ public class MyBatisConfig {
         props.put("minIdle", env.getProperty("datasource.minIdle"));
         props.put("initialSize", env.getProperty("datasource.initialSize"));
         props.put("maxWait", env.getProperty("datasource.maxWait"));
+        //System.out.println(props.getProperty("url"));
         return DruidDataSourceFactory.createDataSource(props);
     }
 
@@ -63,7 +65,7 @@ public class MyBatisConfig {
     public DynamicDataSource dataSource(@Qualifier("masterDataSource") DataSource masterDataSource, @Qualifier("slaveDataSource") DataSource slaveDataSource) {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(DataSourceType.master.getType(), masterDataSource);
-        targetDataSources.put(DataSourceType.master.getType(), slaveDataSource);
+        targetDataSources.put(DataSourceType.slave.getType(), slaveDataSource);
         DynamicDataSource dataSource = new DynamicDataSource();
         dataSource.setTargetDataSources(targetDataSources);// 该方法是AbstractRoutingDataSource的方法
         dataSource.setDefaultTargetDataSource(masterDataSource);// 默认的datasource设置为masterDataSource

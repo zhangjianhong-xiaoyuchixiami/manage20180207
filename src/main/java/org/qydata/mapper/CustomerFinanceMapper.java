@@ -20,6 +20,14 @@ public interface CustomerFinanceMapper {
      * @return
      * @throws Exception
      */
+    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String,Object> map)throws Exception;
+
+    /**
+     * 查询客户的财务总览
+     * @param map
+     * @return
+     * @throws Exception
+     */
     public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String,Object> map)throws Exception;
 
     /**
@@ -78,7 +86,13 @@ public interface CustomerFinanceMapper {
      */
     public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String,Object> map) throws Exception;
 
-
-    public WeekMonthAmount monthChargeConsumeToward(Integer customerId,Integer tableId,Integer result);
+    /**
+     * 月账单走势
+     * @param customerId
+     * @param tableId
+     * @param result
+     * @return
+     */
+    public WeekMonthAmount queryMonthChargeConsumeToward(Integer customerId,Integer tableId,Integer result);
 
 }

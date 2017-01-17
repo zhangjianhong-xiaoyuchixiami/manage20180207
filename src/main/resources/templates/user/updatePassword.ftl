@@ -163,25 +163,31 @@
 
     <#elseif section = "footer">
 
+    <#elseif section = "publicJs">
+
+    <#elseif section = "privateJs">
+
+    <script>
+        $(document).ready(function() {
+
+            $("#username").focus(function () {
+                $("#usernameMsg").html("");
+            });
+
+            $("#password").focus(function () {
+                $("#passwordMsg").html("");
+            });
+
+            $("#newPassword").focus(function () {
+                $("#newPasswordMsg").html("");
+            });
+
+            $("#rppassword").focus(function () {
+                $("#rppasswordMsg").html("");
+            });
+        });
+    </script>
+
     </#if>
-<script>
-    $(document).ready(function() {
 
-        $("#username").focus(function () {
-            $("#usernameMsg").html("");
-        });
-
-        $("#password").focus(function () {
-            $("#passwordMsg").html("");
-        });
-
-        $("#newPassword").focus(function () {
-            $("#newPasswordMsg").html("");
-        });
-
-        $("#rppassword").focus(function () {
-            $("#rppasswordMsg").html("");
-        });
-    });
-</script>
 </@layout>

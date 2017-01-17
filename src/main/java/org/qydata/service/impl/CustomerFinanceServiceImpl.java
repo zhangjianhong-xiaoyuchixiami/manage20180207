@@ -25,6 +25,11 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     private CustomerFinanceMapper customerFinanceMapper;
 
     @Override
+    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String, Object> map) throws Exception {
+        return customerFinanceMapper.queryCompanyCustomerOverAllFinanceByDept(map);
+    }
+
+    @Override
     public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String, Object> map) throws Exception {
         return customerFinanceMapper.queryCompanyCustomerOverAllFinance(map);
     }
@@ -106,7 +111,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         Map<String, List> stringListMap = new HashedMap();
 
         for (int i = 12; i >0; i--) {
-            WeekMonthAmount weekMonthAmount = customerFinanceMapper.monthChargeConsumeToward(customerId, tableId, (result+i));
+            WeekMonthAmount weekMonthAmount = customerFinanceMapper.queryMonthChargeConsumeToward(customerId, tableId, (result+i));
 
             if (weekMonthAmount != null) {
                 if (weekMonthAmount.getTotleAmount()>0){

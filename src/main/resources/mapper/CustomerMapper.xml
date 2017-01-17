@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.CustomerMapper">
 
-    <resultMap type="Customer" id="Customer_CustomerType_CustomerStatus">
+    <resultMap type="org.qydata.entity.Customer" id="Customer_CustomerType_CustomerStatus">
         <result column="id" property="id"/>
         <result column="typeId" property="typeId"/>
         <result column="name" property="name"/>
@@ -12,16 +12,16 @@
         <result column="balance" property="balance"/>
         <result column="status" property="status"/>
         <result column="createTime" property="createTime"/>
-        <association property="customerType" javaType="CustomerType">
+        <association property="customerType" javaType="org.qydata.entity.CustomerType">
             <result column="qctname" property="name"/>
         </association>
-        <association property="customerStatus" javaType="CustomerStatus">
+        <association property="customerStatus" javaType="org.qydata.entity.CustomerStatus">
             <result column="qcsname" property="name"/>
         </association>
-        <association property="dept" javaType="Dept">
+        <association property="dept" javaType="org.qydata.entity.Dept">
             <result column="deptName" property="deptName"/>
         </association>
-        <association property="company" javaType="Company">
+        <association property="company" javaType="org.qydata.entity.Company">
             <result column="companyName" property="name"/>
         </association>
     </resultMap>
@@ -38,7 +38,7 @@
         where cda.customerId=c.id and cda.deptId=d.id
     </select>
     <!--插入新客户真是账号-->
-    <insert id="insertCustomer" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertCustomer" parameterType="org.qydata.entity.Customer" useGeneratedKeys="true" keyProperty="id">
         insert into qydata.Customer(typeId,authId,authPass,balance,createTime,status,companyId)
         values(1,#{authId},uuid(),0.0,sysdate(),0,#{companyId})
 
@@ -47,7 +47,7 @@
         </selectKey>
     </insert>
     <!--插入新客户测试账号-->
-    <insert id="insertCustomerTest" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertCustomerTest" parameterType="org.qydata.entity.Customer" useGeneratedKeys="true" keyProperty="id">
         insert into qydata.Customer(typeId,authId,authPass,balance,createTime,status,companyId)
         values(2,#{authId},uuid(),100000000,sysdate(),0,#{companyId})
 

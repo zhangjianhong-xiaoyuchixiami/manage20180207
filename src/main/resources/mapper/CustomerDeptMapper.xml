@@ -4,7 +4,7 @@
 <mapper namespace="org.qydata.mapper.CustomerDeptMapper">
 
     <!--插入数据-->
-    <insert id="insertCustomerDept" parameterType="CustomerDept" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertCustomerDept" parameterType="org.qydata.entity.CustomerDept" useGeneratedKeys="true" keyProperty="id">
        insert into qyauth.CustomerDept(customerId,deptId,createTime)
        values(#{customerId},#{deptId},sysdate())
     </insert>

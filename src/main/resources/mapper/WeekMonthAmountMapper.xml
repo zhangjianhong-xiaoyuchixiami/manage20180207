@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.WeekMonthAmountMapper">
 
-    <resultMap id="WeekMonthAmount_CustomerBalanceLog_Map" type="WeekMonthAmount">
+    <resultMap id="WeekMonthAmount_CustomerBalanceLog_Map" type="org.qydata.entity.WeekMonthAmount">
         <result column="years" property="years"/>
         <result column="months" property="months"/>
         <result column="weeks" property="weeks"/>

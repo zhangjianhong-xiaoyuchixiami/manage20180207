@@ -99,7 +99,7 @@ public class FinanceController {
             map.put("customerTypeIdList", customerTypeIdList);
             List<CustomerFinance> customerFinanceList = null;
             try {
-                customerFinanceList = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
+                customerFinanceList = customerFinanceService.queryCompanyCustomerOverAllFinanceByDept(map);
             } catch (Exception e) {
                 e.printStackTrace();
             }

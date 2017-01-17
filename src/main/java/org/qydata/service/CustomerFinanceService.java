@@ -20,9 +20,15 @@ public interface CustomerFinanceService {
      * @return
      * @throws Exception
      */
+    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String,Object> map)throws Exception;
+
+    /**
+     * 查询客户的财务总览
+     * @param map
+     * @return
+     * @throws Exception
+     */
     public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String,Object> map)throws Exception;
-
-
     /**
      * 指定账号余额变动记录
      * @param map
@@ -80,7 +86,11 @@ public interface CustomerFinanceService {
      */
     public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String,Object> map) throws Exception;
 
-
+    /**
+     * 月账单走势
+     * @param map
+     * @return
+     */
     public Map<String,List> monthChargeConsumeToward(Map<String,Object> map);
 }
 

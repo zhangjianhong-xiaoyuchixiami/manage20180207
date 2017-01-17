@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.CustomerIpMapper">
 
-    <resultMap type="CustomerIp" id="customerIpMap">
+    <resultMap type="org.qydata.entity.CustomerIp" id="customerIpMap">
         <id column="id" property="id"/>
         <result column="customerId" property="customerId"/>
         <result column="beginIp" property="beginIp"/>
@@ -14,14 +14,14 @@
 
 
     <!--插入Ip-->
-    <insert id="insertCustomerIp" parameterType="CustomerIp" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertCustomerIp" parameterType="org.qydata.entity.CustomerIp" useGeneratedKeys="true" keyProperty="id">
         insert into qydata.CustomerIp(customerId,beginIp,endIp,beginIpRaw,endIpRaw)
         values(#{customerId},#{beginIp},#{endIp},#{beginIpRaw},#{endIpRaw})
     </insert>
 
 
     <!--查询客户Ip-->
-    <select id="findAllIpByCustomerId" parameterType="Map" resultType="CustomerIp">
+    <select id="findAllIpByCustomerId" parameterType="Map" resultType="org.qydata.entity.CustomerIp">
         select id,customerId,beginIp,endIp,beginIpRaw,endIpRaw
         from qydata.CustomerIp
         where customerId=#{customerId}

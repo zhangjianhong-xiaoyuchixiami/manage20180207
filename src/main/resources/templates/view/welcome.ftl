@@ -27,5 +27,9 @@
 
     <#elseif section = "footer">
 
+    <#elseif section = "publicJs">
+
+    <#elseif section = "privateJs">
+
     </#if>
 </@layout>

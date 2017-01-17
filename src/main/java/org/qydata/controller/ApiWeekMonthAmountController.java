@@ -25,9 +25,12 @@ public class ApiWeekMonthAmountController {
      */
     @RequestMapping("/get-all-api-week-consume-record-and-add-api-week-month-amount")
     @ResponseBody
-    public String getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount(){
+    public String getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount(Integer result){
         try {
-            apiWeekMonthAmountService.getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount();
+            if (result == null) {
+                result = 1;
+            }
+            apiWeekMonthAmountService.getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount:统计和插入每周的Api消费数据异常");
             e.printStackTrace();
@@ -42,9 +45,12 @@ public class ApiWeekMonthAmountController {
      */
     @RequestMapping("/get-all-api-month-consume-record-and-add-api-week-month-amount")
     @ResponseBody
-    public String getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount(){
+    public String getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount(Integer result){
         try {
-            apiWeekMonthAmountService.getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount();
+            if (result == null) {
+                result = 1;
+            }
+            apiWeekMonthAmountService.getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount:统计和插入每月的Api消费数据异常");
             e.printStackTrace();
