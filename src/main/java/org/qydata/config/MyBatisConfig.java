@@ -77,7 +77,7 @@ public class MyBatisConfig {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(ds);
         //类型别名
-        bean.setTypeAliasesPackage("org.qydata.entity");
+        //bean.setTypeAliasesPackage("org.qydata.entity");
 
         //添加XML目录
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

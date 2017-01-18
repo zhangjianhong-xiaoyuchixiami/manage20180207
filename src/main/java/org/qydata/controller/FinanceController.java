@@ -1,6 +1,5 @@
 package org.qydata.controller;
 
-import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
@@ -611,32 +610,7 @@ public class FinanceController {
 
 
 
-    //Api消费账单
-    @RequestMapping("/find-all-api-record")
-    public String findAllApiRecord(){
-        return "/finance/apiRecord";
-    }
 
-    //Api消费账单-消费明细
-    @RequestMapping("/find-all-api-record/detail")
-    public String findAllApiDetailRecord(){
-        return "/finance/apiDetailRecord";
-    }
-
-    //Api消费总额饼状图
-    @RequestMapping("/find-all-api-record/count-result")
-    @ResponseBody
-    public String findApiRecordCountResult(){
-        Gson gson = new Gson();
-        Map<String,Object> map = new HashMap<>();
-        map.put("张建宏",12);
-        map.put("韩立志",23);
-        map.put("王永鹏",15);
-        map.put("王鸿年",10);
-        map.put("张悦",20);
-        map.put("张诗雨",20);
-        return gson.toJson(map);
-    }
 
     //合作伙伴来往账目
     @RequestMapping("/find-all-partners-financial-account")

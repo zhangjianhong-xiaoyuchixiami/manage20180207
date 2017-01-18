@@ -22,7 +22,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance//find-all-customer/find-all-customer-api-consume-record-by-customer-id" method="get">
+                    <form action="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id" method="get">
 
                         <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
@@ -143,7 +143,7 @@
                                 <tr>
                                     <th>产品类型</th>
                                     <th>产品供应商</th>
-                                    <th style="width: 15%">金额（单位/元</th>
+                                    <th style="width: 15%">金额（单位/元）</th>
                                     <th style="text-align: center; width: 13%">操作</th>
                                 </tr>
                                 </thead>
@@ -151,10 +151,10 @@
                                     <#if customerApiTypeList??>
                                         <#list customerApiTypeList as customerApiType>
                                         <tr>
-                                            <td>${customerApiType.apiTypeName}</td>
-                                            <td><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></td>
-                                            <td><#if customerApiType.totlePrice??>${(-customerApiType.totlePrice/100.0)?c}<#else >0</#if></td>
-                                            <td style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?customerId=${customerId?c}&apiTypeId=${customerApiType.apiTypeId?c}&reasonId=-1<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
+                                            <td data-title="产品类型">${customerApiType.apiTypeName}</td>
+                                            <td data-title="产品供应商"><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></td>
+                                            <td data-title="金额（单位/元）"><#if customerApiType.totlePrice??>${(-customerApiType.totlePrice/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="操作" style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?customerId=${customerId?c}&apiTypeId=${customerApiType.apiTypeId?c}&reasonId=-1<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
                                         </tr>
                                         </#list>
                                     </#if>

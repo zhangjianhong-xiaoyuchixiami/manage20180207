@@ -1,6 +1,6 @@
 package org.qydata.mapper;
 
-import org.qydata.entity.ApiWeekMonthAmount;
+import org.qydata.dst.ApiFinance;
 
 import java.util.List;
 import java.util.Map;
@@ -11,10 +11,18 @@ import java.util.Map;
 public interface ApiFinanceMapper {
 
     /**
-     *
+     *Api财务总览
      * @param map
      * @return
      * @throws Exception
      */
-   public List<ApiWeekMonthAmount> queryApiOverAllFinance(Map<String,Object> map)throws Exception;
+   public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map)throws Exception;
+
+    /**
+     * 查询供应商和api
+     * @param map
+     * @return
+     * @throws Exception
+     */
+   public List<ApiFinance> queryApiVendorAndApi(Map<String,Object> map)throws Exception;
 }

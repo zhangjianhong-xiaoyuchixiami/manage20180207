@@ -150,10 +150,10 @@
                                             <#else >
                                             <tr class="danger">
                                             </#if>
-                                            <td>${customerApiVendor.vendorName!'未知产品供应商'}</td>
-                                            <td>${customerApiVendor.apiName!'未知产品'}</td>
-                                            <td><#if customerApiVendor.totlePrice??>${(-customerApiVendor.totlePrice/100.0)?c}<#else >0</#if></td>
-                                            <td>${customerApiVendor.reasonName!'未知类型'}</td>
+                                            <td data-title="产品供应商">${customerApiVendor.vendorName!'未知产品供应商'}</td>
+                                            <td data-title="产品名称">${customerApiVendor.apiName!'未知产品'}</td>
+                                            <td data-title="金额（单位/元）"><#if customerApiVendor.totlePrice??>${(-customerApiVendor.totlePrice/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="类型">${customerApiVendor.reasonName!'未知类型'}</td>
                                         </tr>
                                         </#list>
                                     </#if>

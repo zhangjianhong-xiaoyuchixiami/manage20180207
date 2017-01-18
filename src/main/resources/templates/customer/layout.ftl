@@ -227,33 +227,33 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <#--<li id="apiRecordLog">-->
-                                <#--<a href="/finance/find-all-api-record">-->
-                                    <#--Api消费账单-->
-                                <#--</a>-->
-                            <#--</li>-->
+                            <li id="apiRecordLog">
+                                <a href="/api/find-all-api-record">
+                                    Api消费账单
+                                </a>
+                            </li>
 
-                            <#--<li id="partnersFinancialAccount">-->
+                            <li id="partnersFinancialAccount">
 
-                                <#--<a href="javascript:;">-->
+                                <a href="javascript:;">
 
-                                    <#--合作企业来往账目-->
+                                    合作企业来往账目
 
-                                    <#--<span class="" id="partnersSelect"></span>-->
+                                    <span class="" id="partnersSelect"></span>
 
-                                    <#--<span class="arrow" id="partnersArrow"></span>-->
+                                    <span class="arrow" id="partnersArrow"></span>
 
-                                <#--</a>-->
+                                </a>
 
-                                <#--<ul class="sub-menu">-->
+                                <ul class="sub-menu">
 
-                                    <#--<li id="partnersUp"><a href="/finance/find-all-partners-financial-account">上游企业</a></li>-->
+                                    <li id="partnersUp"><a href="/finance/find-all-partners-financial-account">上游企业</a></li>
 
-                                    <#--<li id="partnersDown"><a href="/finance/find-all-partners-financial-account">下游企业</a></li>-->
+                                    <li id="partnersDown"><a href="/finance/find-all-partners-financial-account">下游企业</a></li>
 
-                                <#--</ul>-->
+                                </ul>
 
-                            <#--</li>-->
+                            </li>
                         </ul>
 
                     </li>

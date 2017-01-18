@@ -1,6 +1,10 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
+<#import "../publicPart/tools.ftl" as d>
+
 <@layout ; section>
 
     <#if section = "head">
@@ -11,45 +15,7 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-
-                <div class="span12">
-
-                    <h3 class="page-title">
-
-                    <#--客户信息-->
-
-                    </h3>
-
-                <#--<ul class="breadcrumb">-->
-
-                <#--<li>-->
-
-                <#--<i class="icon-home"></i>-->
-
-                <#--<a href="/view/successUrl">首页</a>-->
-
-                <#--<i class="icon-angle-right"></i>-->
-
-                <#--</li>-->
-
-                <#--<li>-->
-
-                <#--<a href="#">财务管理</a>-->
-
-                <#--<i class="icon-angle-right"></i>-->
-
-                <#--</li>-->
-
-                <#--<li><a href="#">财务报表</a></li>-->
-
-                <#--</ul>-->
-
-                    <!-- END PAGE TITLE & BREADCRUMB-->
-
-                </div>
-
-            </div>
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
 
@@ -57,89 +23,76 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance/find-all-api-record" method="get">
+                    <form action="/api/find-all-api-record" method="get">
 
-                        <div class="clearfix margin-bottom-20">
+                        <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
-                                <label class="control-label">Api类型</label>
+                                <label class="control-label">产品类型</label>
+
+                                <div class="controls">
+
+                                    <select id="apiTypeId" name="apiTypeId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
+                                        <option value="">请选择...</option>
+                                        <#if apiFinanceList??>
+                                            <#list apiFinanceList as apiFinance>
+                                                <option <#if apiTypeId?? && apiTypeId==apiFinance.apiTypeId>selected="selected"</#if> value="${apiFinance.apiTypeId}">${apiFinance.apiTypeName}</option>
+                                            </#list>
+                                        </#if>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+
+                                <label class="control-label">产品供应商</label>
+
+                                <div class="controls">
+
+                                    <select id="vendorId" name="vendorId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
+                                        <option value="">请选择...</option>
+                                        <#if apiVendorApiList??>
+                                            <#list apiVendorApiList as apiVendor>
+                                                <option <#if vendorId?? && vendorId==apiVendor.vendorId>selected="selected"</#if> value="${apiVendor.vendorId}">${apiVendor.vendorName}</option>
+                                            </#list>
+                                        </#if>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+
+                                <label class="control-label">产品名称</label>
 
                                 <div class="controls">
 
                                     <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
-
-                                        <option value="">二要素</option>
-                                        <option value="">三要素</option>
-                                        <option value="">四要素</option>
-
-                                    <#--</#list>-->
-                                    <#--</#if>-->
+                                        <option value="">请选择...</option>
+                                        <#if apiVendorApiList??>
+                                            <#list apiVendorApiList as apiVendor>
+                                                <option <#if apiId?? && apiId==apiVendor.apiId>selected="selected"</#if> value="${apiVendor.apiId}">${apiVendor.apiName}</option>
+                                            </#list>
+                                        </#if>
                                     </select>
 
                                 </div>
 
                             </div>
 
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">Api供应商</label>
-
-                                <div class="controls">
-
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
-
-                                        <option value="">移动</option>
-                                        <option value="">联通</option>
-                                        <option value="">电信</option>
-
-                                    <#--</#list>-->
-                                    <#--</#if>-->
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-                            <div class="control-group pull-left">
-
-                                <label class="control-label">Api</label>
-
-                                <div class="controls">
-
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                    <#--<#if apiList??>-->
-                                    <#--<#list apiList as api>-->
-
-                                        <option value="">sdsds</option>
-                                        <option value="">gfdgfd</option>
-                                        <option value="">gdfgfd</option>
-
-                                    <#--</#list>-->
-                                    <#--</#if>-->
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
-                            </div>
+                                <div class="controls" >
 
-                            <div class="control-group pull-left">
+                                    <div class="input-append">
 
-                                <label class="control-label">&nbsp;&nbsp;</label>
+                                        <button class="btn black" type="submit">搜索</button>
 
-                                <div class="input-append" >
-
-                                    <button class="btn black" type="submit">搜索</button>
+                                    </div>
 
                                 </div>
 
@@ -156,17 +109,7 @@
 
                             <div class="caption"><i class="icon-cogs"></i></div>
 
-                            <div class="tools">
-
-                            <#--<a href="javascript:;" class="collapse"></a>-->
-
-                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
-
-                                <#--<a href="javascript:;" class="reload"></a>-->
-
-                                <#--<a href="javascript:;" class="remove"></a>-->
-
-                            </div>
+                            <@d.tools idName="exportExcel"></@d.tools>
 
                         </div>
 
@@ -174,44 +117,44 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">周消费总额&yen;123元&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">月消费总额&yen;123元&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">周消费总额&yen;：<#if weekTotleAmount??><span>${(weekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">消费总额&yen;123元&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">月消费总额&yen;：<#if monthTotleAmount??><span>${(monthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">所剩余额&yen;123元&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">消费总额&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                </div>
+
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+
+                                    <label class="control-label">所剩余额&yen;：<#if totleBalance??><span>${(totleBalance/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
                             <#--消费总额-->
-                                <div class="control-group pull-right">
+                                <div class="control-group pull-right" style="margin-bottom: -10px;">
 
                                     <label class="control-label">
 
                                         <a id="tipInfo" href="#form_modal3" data-toggle="modal">
 
-                                            <img src="/image/t04.png" alt="" />消费总额
+                                            <img src="/image/t04.png" alt="" />总消费
 
                                         </a>
 
                                     </label>
 
-                                    <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+                                    <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" style="min-height: 600px;">
 
                                         <div class="modal-header">
 
@@ -230,447 +173,210 @@
 
                                     </div>
 
-
                                 </div>
 
-                            <#--&lt;#&ndash;表字段总额&ndash;&gt;-->
-                                <#--<div class="control-group pull-right">-->
-
-                                    <#--<label class="control-label">-->
-
-                                        <#--<a id="columnHistogram" href="#form_modal7" data-toggle="modal">-->
-
-                                            <#--<img src="/image/t04.png" alt="" />表字段统计-->
-
-                                        <#--</a>-->
-
-                                    <#--</label>-->
-
-                                    <#--<div id="form_modal7" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">-->
-
-                                        <#--<div class="modal-header">-->
-
-                                            <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
-
-                                            <#--<h3 id="myModalLabel7">&nbsp;</h3>-->
-
-                                        <#--</div>-->
-
-                                        <#--<div class="modal-body">-->
-                                            <#--<div id="columnHistogramContainer">-->
-
-                                            <#--</div>-->
-
-                                        <#--</div>-->
-
-                                    <#--</div>-->
-
-                                <#--</div>-->
-
-                            <#--总额共计-->
+                            <#--表字段总额-->
                                 <div class="control-group pull-right">
 
                                     <label class="control-label">
 
-                                        <a id="countResult" href="#form_modal6" data-toggle="modal">
+                                        <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
 
-                                            <i class="icon-reorder"></i>计算统计结果
+                                            <img src="/image/t04.png" alt="" />表字段统计
 
                                         </a>
 
                                     </label>
 
-                                    <div id="form_modal6" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
+                                    <div id="form_modal7" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
 
                                         <div class="modal-header">
 
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 
-                                            <h3 id="myModalLabel6">统计结果</h3>
+                                            <h3 id="myModalLabel7">&nbsp;</h3>
 
                                         </div>
 
                                         <div class="modal-body">
+                                            <div id="columnHistogramContainer">
 
-                                            <table class="table table-striped table-bordered table-hover">
-                                                <tr>
-                                                    <th width="50%">列名</th>
-                                                    <td width="50%">金额（单位：元）</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>周消费总额</td>
-                                                    <td>2345</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>月消费总额</td>
-                                                    <td>5678</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>消费总额</td>
-                                                    <td>8907</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>所剩余额</td>
-                                                    <td>456</td>
-                                                </tr>
+                                            </div>
 
-                                            </table>
                                         </div>
 
                                     </div>
 
                                 </div>
 
+                            <#--总额共计-->
+                            <#--<div class="control-group pull-right">-->
+
+                            <#--<label class="control-label">-->
+
+                            <#--<a id="countResult" href="#form_modal6" data-toggle="modal">-->
+
+                            <#--<i class="icon-reorder"></i>计算统计结果-->
+
+                            <#--</a>-->
+
+                            <#--</label>-->
+
+                            <#--<div id="form_modal6" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">-->
+
+                            <#--<div class="modal-header">-->
+
+                            <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
+
+                            <#--<h3 id="myModalLabel6">统计结果</h3>-->
+
+                            <#--</div>-->
+
+                            <#--<div class="modal-body">-->
+
+                            <#--<table class="table table-striped table-bordered table-hover">-->
+                            <#--<tr>-->
+                            <#--<th width="50%">列名</th>-->
+                            <#--<td width="50%">金额（单位：元）</td>-->
+                            <#--</tr>-->
+                            <#--<tr>-->
+                            <#--<td>周消费总额</td>-->
+                            <#--<td>2345</td>-->
+                            <#--</tr>-->
+                            <#--<tr>-->
+                            <#--<td>月消费总额</td>-->
+                            <#--<td>5678</td>-->
+                            <#--</tr>-->
+                            <#--<tr>-->
+                            <#--<td>消费总额</td>-->
+                            <#--<td>8907</td>-->
+                            <#--</tr>-->
+                            <#--<tr>-->
+                            <#--<td>所剩余额</td>-->
+                            <#--<td>456</td>-->
+                            <#--</tr>-->
+
+                            <#--</table>-->
+                            <#--</div>-->
+
+                            <#--</div>-->
+
+                            <#--</div>-->
+
                             </div>
 
                             <table class="table table-striped table-bordered table-hover table-condensed" id="sample_1">
-
                                 <thead>
                                 <tr>
-                                    <th style="width:20%; text-align: center;">Api</th>
-                                    <th>周消费总额（单位：元）</th>
-                                    <th>月消费总额（单位：元）</th>
-                                    <th>消费总额（单位：元）</th>
-                                    <th>所剩余额（单位：元）</th>
-                                    <th style="width:15%; text-align: center">操作</th>
+                                    <th style="text-align: center; width: 20%;">产品名称</th>
+                                    <th style="text-align: center; width: 15%;">产品类型</th>
+                                    <th style="text-align: center; width: 10%;">产品供应商</th>
+                                    <th style="width: 11%;">周消费总额（单位：元）</th>
+                                    <th style="width: 11%;">月消费总额（单位：元）</th>
+                                    <th style="width: 11%;">消费总额（单位：元）</th>
+                                    <th style="width: 11%;">所剩余额（单位：元）</th>
+                                    <th style="text-align: center; width: 11%;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="odd gradeX">
-                                    <td data-title="Api">asas</td>
-                                    <td data-title="周消费总额">234</td>
-                                    <td data-title="月消费总额">453</td>
-                                    <td data-title="消费总额">523</td>
-                                    <td data-title="所剩余额">890</td>
-                                    <td data-title="操作" style="text-align: center;" >
-                                        <a href="#form_modal4"  data-toggle="modal">充值</a>
+                                    <#if apiFinanceList??>
+                                        <#list apiFinanceList as apiFinance>
+                                        <tr>
+                                            <td data-title="产品名称">${apiFinance.apiName}</td>
+                                            <td data-title="产品类型">${apiFinance.apiTypeName}</td>
+                                            <td data-title="产品供应商">${apiFinance.vendorName}</td>
+                                            <td data-title="周消费总额"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="月消费总额"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="操作" style="text-align: center;" >
+                                                <ul class="nav nav-tabs" style="margin-bottom: 0px; min-width: 94px; border-bottom: 0px solid #f4f4f4;">
+                                                    <li class="dropdown" style="float: none;">
+                                                        <a class="dropdown-toggle" style=" padding-bottom: 0px; padding-top: 0px;" data-toggle="dropdown" href="#">
+                                                            操作 <span class="caret"></span>
+                                                        </a>
+                                                        <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
+                                                            <li style="text-align: left"><a style="color: #08c;" href="#form_modal4" data-toggle="modal">充值</a></li>
+                                                            <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
 
-                                        <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+                                                                <div class="modal-header">
 
-                                            <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                                    <h3 id="myModalLabel4">请填写信息</h3>
 
-                                                <h3 id="myModalLabel4">请填写信息</h3>
+                                                                </div>
 
-                                            </div>
+                                                                <div class="modal-body">
 
-                                            <div class="modal-body">
+                                                                    <form action="#" class="form-horizontal">
 
-                                                <form action="#" class="form-horizontal">
+                                                                        <div class="control-group"></div>
 
-                                                    <div class="control-group"></div>
+                                                                        <div class="control-group"></div>
 
-                                                    <div class="control-group"></div>
+                                                                        <#if msg??>
 
-                                                    <#if msg??>
+                                                                            <div class="alert alert-error show">
 
-                                                        <div class="alert alert-error show">
+                                                                                <button class="close" data-dismiss="alert"></button>
 
-                                                            <button class="close" data-dismiss="alert"></button>
+                                                                            ${msg}
 
-                                                        ${msg}
+                                                                            </div>
 
-                                                        </div>
+                                                                        </#if>
+                                                                        <div class="control-group" style="display: none;">
 
-                                                    </#if>
-                                                    <div class="control-group" style="display: none;">
+                                                                            <label class="control-label">公司id<span class="required">*</span></label>
 
-                                                        <label class="control-label">公司id<span class="required">*</span></label>
+                                                                            <div class="controls">
 
-                                                        <div class="controls">
+                                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
 
-                                                            <input type="text" id="authId" name="authId" class="m-wrap medium">
+                                                                            </div>
 
-                                                        </div>
+                                                                        </div>
 
-                                                    </div>
+                                                                        <div class="control-group">
 
-                                                    <div class="control-group">
+                                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
 
-                                                        <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+                                                                            <div class="controls">
 
-                                                        <div class="controls">
+                                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
 
-                                                            <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
+                                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
 
-                                                            <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
+                                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
 
-                                                            <span class="help-block">只能输入数字类型并且金额大于0</span>
+                                                                            </div>
 
-                                                        </div>
+                                                                        </div>
 
-                                                    </div>
+                                                                    </form>
 
-                                                </form>
+                                                                </div>
 
-                                            </div>
+                                                                <div class="modal-footer">
 
-                                            <div class="modal-footer">
+                                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
 
-                                                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
 
-                                                <button class="btn green btn-primary" data-dismiss="modal">提交</button>
+                                                                </div>
 
-                                            </div>
+                                                            </div>
 
-                                        </div>
-                                        |
-                                        <a href="/finance/find-all-api-record/detail">消费明细</a>
-                                    </td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td data-title="Api">asas</td>
-                                    <td data-title="周消费总额">234</td>
-                                    <td data-title="月消费总额">453</td>
-                                    <td data-title="消费总额">523</td>
-                                    <td data-title="所剩余额">890</td>
-                                    <td data-title="操作" style="text-align: center;" >
-                                        <a href="#form_modal4"  data-toggle="modal">充值</a>
-
-                                        <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-
-                                            <div class="modal-header">
-
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                                <h3 id="myModalLabel4">请填写信息</h3>
-
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <form action="#" class="form-horizontal">
-
-                                                    <div class="control-group"></div>
-
-                                                    <div class="control-group"></div>
-
-                                                    <#if msg??>
-
-                                                        <div class="alert alert-error show">
-
-                                                            <button class="close" data-dismiss="alert"></button>
-
-                                                        ${msg}
-
-                                                        </div>
-
-                                                    </#if>
-                                                    <div class="control-group" style="display: none;">
-
-                                                        <label class="control-label">公司id<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <input type="text" id="authId" name="authId" class="m-wrap medium">
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="control-group">
-
-                                                        <label class="control-label">金&nbsp;额<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
-
-                                                            <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                            <span class="help-block">只能输入数字类型并且金额大于0</span>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </form>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-
-                                                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-
-                                                <button class="btn green btn-primary" data-dismiss="modal">提交</button>
-
-                                            </div>
-
-                                        </div>
-                                        |
-                                        <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
-                                    </td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td data-title="Api">asas</td>
-                                    <td data-title="周消费总额">234</td>
-                                    <td data-title="月消费总额">453</td>
-                                    <td data-title="消费总额">523</td>
-                                    <td data-title="所剩余额">890</td>
-                                    <td data-title="操作" style="text-align: center;" >
-                                        <a href="#form_modal4"  data-toggle="modal">充值</a>
-
-                                        <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-
-                                            <div class="modal-header">
-
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                                <h3 id="myModalLabel4">请填写信息</h3>
-
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <form action="#" class="form-horizontal">
-
-                                                    <div class="control-group"></div>
-
-                                                    <div class="control-group"></div>
-
-                                                    <#if msg??>
-
-                                                        <div class="alert alert-error show">
-
-                                                            <button class="close" data-dismiss="alert"></button>
-
-                                                        ${msg}
-
-                                                        </div>
-
-                                                    </#if>
-                                                    <div class="control-group" style="display: none;">
-
-                                                        <label class="control-label">公司id<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <input type="text" id="authId" name="authId" class="m-wrap medium">
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="control-group">
-
-                                                        <label class="control-label">金&nbsp;额<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
-
-                                                            <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                            <span class="help-block">只能输入数字类型并且金额大于0</span>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </form>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-
-                                                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-
-                                                <button class="btn green btn-primary" data-dismiss="modal">提交</button>
-
-                                            </div>
-
-                                        </div>
-                                        |
-                                        <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
-                                    </td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td data-title="Api">asas</td>
-                                    <td data-title="周消费总额">234</td>
-                                    <td data-title="月消费总额">453</td>
-                                    <td data-title="消费总额">523</td>
-                                    <td data-title="所剩余额">890</td>
-                                    <td data-title="操作" style="text-align: center;" >
-                                        <a href="#form_modal4"  data-toggle="modal">充值</a>
-
-                                        <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-
-                                            <div class="modal-header">
-
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                                <h3 id="myModalLabel4">请填写信息</h3>
-
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <form action="#" class="form-horizontal">
-
-                                                    <div class="control-group"></div>
-
-                                                    <div class="control-group"></div>
-
-                                                    <#if msg??>
-
-                                                        <div class="alert alert-error show">
-
-                                                            <button class="close" data-dismiss="alert"></button>
-
-                                                        ${msg}
-
-                                                        </div>
-
-                                                    </#if>
-                                                    <div class="control-group" style="display: none;">
-
-                                                        <label class="control-label">公司id<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <input type="text" id="authId" name="authId" class="m-wrap medium">
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="control-group">
-
-                                                        <label class="control-label">金&nbsp;额<span class="required">*</span></label>
-
-                                                        <div class="controls">
-
-                                                            <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
-
-                                                            <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                            <span class="help-block">只能输入数字类型并且金额大于0</span>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </form>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-
-                                                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-
-                                                <button class="btn green btn-primary" data-dismiss="modal">提交</button>
-
-                                            </div>
-
-                                        </div>
-                                        |
-                                        <a href="/customer-balance/find-all-api-record/detail">消费明细</a>
-                                    </td>
-                                </tr>
-
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/api/find-all-api-record/detail">消费明细</a></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        </#list>
+                                    </#if>
                                 </tbody>
-
                             </table>
 
                         </div>
@@ -717,7 +423,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/finance/find-all-api-record/count-result",
+                    url: "/api/find-all-api-record/count-result",
                     dataType: 'json',
                     success: function (result) {
                         var json = result;
@@ -729,11 +435,33 @@
                         var chart = new Highcharts.Chart({
                             chart: {
                                 renderTo: 'container',
-                                type: 'pie'
+                                type: 'column'
                             },
                             title: {
-                                text: 'Api消费统计结果',
+                                text: '产品消费统计结果',
                                 margin: 15
+                            },
+                            xAxis: {
+                                type: 'category',
+                                labels: {
+                                    rotation: -45,
+                                    style: {
+                                        fontSize: '13px',
+                                        fontFamily: 'Verdana, sans-serif'
+                                    }
+                                }
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: 'Population (millions)'
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            tooltip: {
+                                pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
                             },
                             exporting: {
                                 enabled: false
@@ -741,27 +469,21 @@
                             credits: {
                                 enabled: false
                             },
-                            tooltip: {
-                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                            },
-                            plotOptions: {
-                                pie: {
-                                    allowPointSelect: true,
-                                    cursor: 'pointer',
-                                    dataLabels: {
-                                        enabled: true,
-                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                        style: {
-                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                                        }
-                                        ,
-                                        connectorColor: 'silver'
+                            series: [{
+                                name: '产品',
+                                data: jsondata,
+                                dataLabels: {
+                                    enabled: true,
+                                    rotation: -90,
+                                    color: '#FFFFFF',
+                                    align: 'right',
+                                    format: '{point.y:.1f}', // one decimal
+                                    y: 10, // 10 pixels down from the top
+                                    style: {
+                                        fontSize: '13px',
+                                        fontFamily: 'Verdana, sans-serif'
                                     }
                                 }
-                            },
-                            series: [{
-                                name: 'Api',
-                                data: jsondata
                             }]
                         });
                     }
@@ -772,72 +494,119 @@
     </script>
 
     <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#apiTypeId").change(function () {
+                var param = $("#apiTypeId").val();
+                if (param !=null) {
+                    $.ajax({
+                        url: '/api/find-api-vendor-by-api-type-id',
+                        data: {"apiTypeId": param},
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data != null){
+                                $("#vendorId ").empty();
+                                $("#vendorId").append("<option value=''>请选择...</option>");
+                                for (var i=0; i<data.length; i++){
+                                    var op=document.createElement("option");
+                                    op.value=data[i].vendorId;
+                                    op.innerHTML=data[i].vendorName;
+                                    $("#vendorId").append(op);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+
+            $("#vendorId").change(function () {
+                var param = $("#apiTypeId").val();
+                var param1 = $("#vendorId").val();
+                if (param !=null && param1 != null) {
+                    $.ajax({
+                        url: '/api/find-api-by-api-type-id',
+                        data: {"apiTypeId": param, "vendorId": param1},
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data != null){
+                                $("#apiId ").empty();
+                                $("#apiId").append("<option value=''>请选择...</option>");
+                                for (var i=0; i<data.length; i++){
+                                    var op=document.createElement("option");
+                                    op.value=data[i].apiId;
+                                    op.innerHTML=data[i].apiName;
+                                    $("#apiId").append(op);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
 
         $(document).ready(function () {
 
-            $(function () {
-
-                var chart = new Highcharts.Chart({
-                    chart: {
-                        renderTo: 'columnHistogramContainer',
-                        type: 'column'
-                    },
-                    title: {
-                        text: '表字段总额统计'
-                    },
-                    exporting: {
-                        enabled: false
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    xAxis: {
-                        categories: ['一要素','二要素', '三要素', '四要素', '五要素', '六要素', '七要素', '八要素', '就要素'],
-                        crosshair: true
-                    },
-                    yAxis: {
-                        min: 0,
+            $.ajax({
+                type: 'post',
+                url: '/api/find-all-api-record/bar-chart',
+                dataType: 'json',
+                success: function (result) {
+                    var json = result;
+                    var chart = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'columnHistogramContainer',
+                            type: 'column'
+                        },
                         title: {
-                            text: '总额（元）'
-                        }
-                    },
-                    tooltip: {
-                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
-                        footerFormat: '</table>',
-                        shared: true,
-                        useHTML: true
-                    },
-                    plotOptions: {
-                        column: {
-                            pointPadding: 0.2,
-                            borderWidth: 0
-                        }
-                    },
-                    series: [{
-                        name: '周消费总额',
-                        data: [800, 456, 106, 6789, 144, 176, 234, 679, 4563]
-
-                    }, {
-                        name: '月消费总额',
-                        data: [8360, 7880, 9850, 9340, 1060, 8450, 1050, 1043, 9120]
-
-                    }, {
-                        name: '消费总额',
-                        data: [4890, 3880, 3930, 4140, 4700, 4830, 5900, 5960, 5240]
-
-                    }, {
-                        name: '所剩余额',
-                        data: [424, 332, 345, 397, 526, 755, 574, 604, 476]
-
-                    }]
-                });
+                            text: '表字段总额统计'
+                        },
+                        exporting: {
+                            enabled: false
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        xAxis: {
+                            categories: json.xList
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: '总额（元）'
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        series: json.yList
+                    });
+                }
             });
-
         });
 
+
+
     </script>
+
+
 
     <script type="text/javascript">
         $(document).ready(function() {

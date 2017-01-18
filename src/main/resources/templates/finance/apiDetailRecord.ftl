@@ -1,6 +1,10 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
+<#import "../publicPart/tools.ftl" as d>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -10,45 +14,7 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-
-                <div class="span12">
-
-                    <h3 class="page-title">
-
-                    <#--客户信息-->
-
-                    </h3>
-
-                <#--<ul class="breadcrumb">-->
-
-                <#--<li>-->
-
-                <#--<i class="icon-home"></i>-->
-
-                <#--<a href="/view/successUrl">首页</a>-->
-
-                <#--<i class="icon-angle-right"></i>-->
-
-                <#--</li>-->
-
-                <#--<li>-->
-
-                <#--<a href="#">财务管理</a>-->
-
-                <#--<i class="icon-angle-right"></i>-->
-
-                <#--</li>-->
-
-                <#--<li><a href="#">财务报表</a></li>-->
-
-                <#--</ul>-->
-
-                    <!-- END PAGE TITLE & BREADCRUMB-->
-
-                </div>
-
-            </div>
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
 
@@ -58,9 +24,9 @@
 
                     <form action="/finance/findAllCustomerBalanceLogByCustomerId" method="get">
 
-                        <div class="clearfix margin-bottom-20">
+                        <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
-                            <div class="control-group pull-left margin-right-20">
+                            <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
 
                                 <label class="control-label">起始日期</label>
 
@@ -76,7 +42,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">结束日期</label>
 
@@ -92,19 +58,17 @@
 
                             </div>
 
-                            <div class="control-group pull-left">
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
-                            </div>
+                                <div class="controls" >
 
-                            <div class="control-group pull-left">
+                                    <div class="input-append">
 
-                                <label class="control-label">&nbsp;&nbsp;</label>
+                                        <button class="btn black" type="submit">搜索</button>
 
-                                <div class="input-append" >
-
-                                    <button class="btn black" type="submit">搜索</button>
+                                    </div>
 
                                 </div>
 
@@ -122,17 +86,7 @@
 
                             <div class="caption"><i class="icon-cogs"></i>三要素</div>
 
-                            <div class="tools">
-
-                            <#--<a href="javascript:;" class="collapse"></a>-->
-
-                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
-
-                                <#--<a href="javascript:;" class="reload"></a>-->
-
-                                <#--<a href="javascript:;" class="remove"></a>-->
-
-                            </div>
+                            <@d.tools idName="exportExcel"></@d.tools>
 
                         </div>
 
@@ -140,39 +94,15 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left">
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
 
                                     <label class="control-label">消费金额共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
-                                <#--<div class="control-group pull-left">-->
-
-                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
-
-                                <#--</div>-->
-
-                                <#--<div class="control-group pull-left">-->
-
-                                    <#--<label class="control-label">平均耗时：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>56毫秒</span></#if></label>-->
-
-                                <#--</div>-->
-
-                                <#--<div class="control-group pull-left">-->
-
-                                    <#--<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
-
-                                <#--</div>-->
-
-                                <#--<div class="control-group pull-left">-->
-
-                                    <#--<label class="control-label">失败次数：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0次</span></#if></label>-->
-
-                                <#--</div>-->
-
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered table-condensed">
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_10">
                                 <thead>
                                 <tr>
 
@@ -189,74 +119,14 @@
                                 <#--<#if customerBalanceLogList??>-->
                                 <#--<#list customerBalanceLogList as customerBalanceLog>-->
                                 <tr>
-
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-
-                                </tr>
-                                <tr>
-
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-
-                                </tr>
-                                <tr>
-
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-
-                                </tr>
-                                <tr>
-
-                                    <td style="text-align: center;">10</td>
-                                    <td style="text-align: center;">2016.12.12</td>
-
+                                    <td data-title="消费金额（单位：元）">10</td>
+                                    <td data-title="创建时间">2016.12.12</td>
                                 </tr>
 
                                 <#--</#list>-->
                                 <#--</#if>-->
                                 </tbody>
                             </table>
-
-                            <div class="row-fluid">
-
-                                <div class="span6">
-
-                                    <div class="dataTables_info" id="sample_1_info">共1234条记录 当前显示第 1 页 共 10 页</div>
-
-                                </div>
-
-                                <div class="span6">
-
-                                    <div class="dataTables_paginate paging_bootstrap pagination pull-right">
-
-                                        <ul>
-
-                                            <li class="prev disabled"><a href="#">首页</a></li>
-
-                                            <li class="prev disabled"><a href="#">← <span class="hidden-480">上一页</span></a></li>
-
-                                            <#--<li class="active"><a href="#">1</a></li>-->
-
-                                            <#--<li><a href="#">2</a></li>-->
-
-                                            <#--<li><a href="#">3</a></li>-->
-
-                                            <#--<li><a href="#">4</a></li>-->
-
-                                            <#--<li><a href="#">5</a></li>-->
-
-                                            <li class="next"><a href="#"><span class="hidden-480">下一页</span> → </a></li>
-
-                                            <li class="next"><a href="#">尾页</a></li>
-
-                                        </ul>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
 
                         </div>
 
@@ -271,6 +141,21 @@
     <#elseif section = "publicJs">
 
     <#elseif section = "privateJs">
+
+    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+
+    <script src="/js/table-managed.js"></script>
+
+    <script type="text/javascript">
+
+        jQuery(document).ready(function() {
+            TableManaged.init();
+        });
+
+    </script>
+
     <script>
         $(document).ready(function() {
             $('#customerBalance').addClass('active');

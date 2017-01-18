@@ -3,7 +3,82 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.ApiFinanceMapper">
 
+    <resultMap id="ApiFinance_Map" type="org.qydata.dst.ApiFinance" >
+        <result column="apiId" property="apiId"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="apiTypeName" property="apiTypeName"/>
+        <result column="vendorId" property="vendorId"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="apiName" property="apiName"/>
+        <result column="balance" property="balance"/>
+        <result column="weekTotleCost" property="weekTotleCost"/>
+        <result column="monthTotleCost" property="monthTotleCost"/>
+        <result column="consumeTotleAmount" property="consumeTotleAmount"/>
+    </resultMap>
 
+    <!--Api财务总览-->
+    <select id="queryApiOverAllFinance" parameterType="map" resultMap="ApiFinance_Map">
+        SELECT ee.id apiId,ee.apiTypeId,ee.apiTypeName,ee.vendorId,ee.vendorName,ee.apiName,ee.balance,ee.weekTotleCost,ee.monthTotleCost,
+        ff.consumeTotleAmount
+        FROM
+        (
+            SELECT cc.id,cc.apiTypeId,cc.apiTypeName,cc.vendorId,cc.vendorName,cc.apiName,cc.balance,cc.weekTotleCost,dd.monthTotleCost
+            FROM
+            (
+                SELECT aa.id,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.apiName,aa.balance,bb.weekTotleCost
+                FROM
+                (
+                    SELECT a.id,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName,c.balance
+                    FROM qydata.vwApi a LEFT JOIN qydata.vwApiType b ON a.apiTypeId=b.id LEFT JOIN qyfinance.vwApiBalance c
+                    ON a.id=c.apiId
+                ) aa LEFT JOIN
+                (
+                    SELECT apiId,totleCost weekTotleCost
+                    FROM qyfinance.vwApiWeekMonthAmount
+                    WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+                    AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+                ) bb ON aa.id=bb.apiId
+            ) cc LEFT JOIN
+            (
+            SELECT apiId,totleCost monthTotleCost
+            FROM qyfinance.vwApiWeekMonthAmount
+            WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+            AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+            ) dd ON cc.id=dd.apiId
+        ) ee LEFT JOIN
+        (
+            SELECT SUM(cost) consumeTotleAmount,apiId
+            FROM qydata.vwApiRequestLog
+            WHERE ok=1
+            GROUP BY apiId
+        ) ff ON ee.id=ff.apiId
+        <where>
+            <if test="apiId != null and apiId != ''">
+                ee.id=#{apiId}
+            </if>
+            <if test="apiTypeId != null and apiTypeId != ''">
+               AND ee.apiTypeId=#{apiTypeId}
+            </if>
+            <if test="vendorId != null and vendorId != ''">
+               AND ee.vendorId=#{vendorId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询供应商和api-->
+    <select id="queryApiVendorAndApi" parameterType="map" resultMap="ApiFinance_Map">
+        SELECT a.id apiId,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName,c.balance
+        FROM qydata.vwApi a LEFT JOIN qydata.vwApiType b ON a.apiTypeId=b.id LEFT JOIN qyfinance.vwApiBalance c
+        ON a.id=c.apiId
+        <where>
+            <if test="apiTypeId != null and apiTypeId != ''">
+                a.apiTypeId=#{apiTypeId}
+            </if>
+            <if test="vendorId != null and vendorId != ''">
+                AND a.vendorId=#{vendorId}
+            </if>
+        </where>
+    </select>
 
 
 </mapper>
