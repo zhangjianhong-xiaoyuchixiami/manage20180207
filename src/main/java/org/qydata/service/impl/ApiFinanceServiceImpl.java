@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.ApiFinance;
+import org.qydata.entity.ApiRequestLog;
 import org.qydata.mapper.ApiFinanceMapper;
 import org.qydata.service.ApiFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,17 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
             return apiFinanceMapper.queryApiVendorAndApi(map);
         } catch (Exception e) {
             e.printStackTrace();
-        return null;
+            return null;
+        }
+    }
+
+    @Override
+    public List<ApiRequestLog> queryApiDetailById(Map<String, Object> map) {
+        try {
+            return apiFinanceMapper.queryApiDetailById(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

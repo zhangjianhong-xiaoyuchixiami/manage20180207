@@ -105,26 +105,37 @@
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_10">
                                 <thead>
                                 <tr>
-
-                                    <th class="sorting" style="text-align: center;">
+                                    <th style="text-align: center;">
+                                        公司名称
+                                    </th>
+                                    <th style="text-align: center;">
                                         消费金额（单位：元）
                                     </th>
-                                    <th class="sorting" style="text-align: center;">
+                                    <th style="text-align: center;">
+                                        响应时间
+                                    </th>
+                                    <th style="text-align: center;">
                                         创建时间
+                                    </th>
+                                    <th style="text-align: center;">
+                                        类型
                                     </th>
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#--<#if customerBalanceLogList??>-->
-                                <#--<#list customerBalanceLogList as customerBalanceLog>-->
+                                <#if apiRequestLogList??>
+                                <#list apiRequestLogList as apiRequestLog>
                                 <tr>
-                                    <td data-title="消费金额（单位：元）">10</td>
-                                    <td data-title="创建时间">2016.12.12</td>
+                                    <td data-title="公司名称">${apiRequestLog.company.name}</td>
+                                    <td data-title="消费金额（单位：元）">${apiRequestLog.apiResponseLog.cost}</td>
+                                    <td data-title="响应时间">${apiRequestLog.apiResponseLog.resTime}</td>
+                                    <td data-title="创建时间">${apiRequestLog.apiResponseLog.createTime}</td>
+                                    <td data-title="类型">${apiRequestLog.apiResponseLog.ok}</td>
                                 </tr>
 
-                                <#--</#list>-->
-                                <#--</#if>-->
+                                </#list>
+                                </#if>
                                 </tbody>
                             </table>
 

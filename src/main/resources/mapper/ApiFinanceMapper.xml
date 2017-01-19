@@ -16,6 +16,26 @@
         <result column="consumeTotleAmount" property="consumeTotleAmount"/>
     </resultMap>
 
+    <resultMap id="ApiRequestLog_Map" type="org.qydata.entity.ApiRequestLog">
+        <result column="customerId" property="customerId"/>
+        <result column="apiId" property="apiId"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <resultMap id="ApiRequestLog_ApiResponseLog_Map" type="org.qydata.entity.ApiRequestLog" extends="ApiRequestLog_Map">
+        <association property="apiResponseLog" javaType="org.qydata.entity.ApiResponseLog">
+            <result column="cost" property="cost"/>
+            <result column="ok" property="ok"/>
+            <result column="restTime" property="restTime"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="ApiRequestLog_ApiResponseLog_Company_Map" type="org.qydata.entity.ApiRequestLog" extends="ApiRequestLog_ApiResponseLog_Map">
+        <association property="company" javaType="org.qydata.entity.Company">
+            <result column="companyName" property="name"/>
+        </association>
+    </resultMap>
+
     <!--Api财务总览-->
     <select id="queryApiOverAllFinance" parameterType="map" resultMap="ApiFinance_Map">
         SELECT ee.id apiId,ee.apiTypeId,ee.apiTypeName,ee.vendorId,ee.vendorName,ee.apiName,ee.balance,ee.weekTotleCost,ee.monthTotleCost,
@@ -78,6 +98,13 @@
                 AND a.vendorId=#{vendorId}
             </if>
         </where>
+    </select>
+
+    <!--查询Api消费详情-->
+    <select id="queryApiDetailById" parameterType="map" resultMap="ApiRequestLog_ApiResponseLog_Company_Map">
+      SELECT a.customerId,a.apiId,a.cost,a.ok,a.restTime,a.createTime,b.companyName
+      FROM qydata.vwApiRequestLog a LEFT JOIN qydata.vwCustomer b ON a.customerId=b.id
+      WHERE a.ok=1 AND a.apiId=#{apiId}
     </select>
 
 

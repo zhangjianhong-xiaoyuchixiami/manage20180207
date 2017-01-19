@@ -11,7 +11,7 @@
 
     <#elseif section = "content" >
 
-    <div class="page-content">
+    <div class="page-content" xmlns="http://www.w3.org/1999/html">
 
         <div class="container-fluid">
 
@@ -141,20 +141,20 @@
 
                                 </div>
 
-                            <#--消费总额-->
+                            <#--总消费-->
                                 <div class="control-group pull-right" style="margin-bottom: -10px;">
 
                                     <label class="control-label">
 
                                         <a id="tipInfo" href="#form_modal3" data-toggle="modal">
 
-                                            <img src="/image/t04.png" alt="" />总消费
+                                            <i class="icon-bar-chart"></i>总消费
 
                                         </a>
 
                                     </label>
 
-                                    <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" style="min-height: 600px;">
+                                    <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
 
                                         <div class="modal-header">
 
@@ -176,15 +176,15 @@
                                 </div>
 
                             <#--表字段总额-->
-                                <div class="control-group pull-right">
+                                <div class="control-group pull-right" style="margin-bottom: -10px;">
 
                                     <label class="control-label">
 
                                         <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
 
-                                            <img src="/image/t04.png" alt="" />表字段统计
+                                            <i class="icon-bar-chart"></i>总消费
 
-                                        </a>
+                                        </a>&nbsp;&nbsp;&nbsp;
 
                                     </label>
 
@@ -296,79 +296,17 @@
                                                             操作 <span class="caret"></span>
                                                         </a>
                                                         <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
-                                                            <li style="text-align: left"><a style="color: #08c;" href="#form_modal4" data-toggle="modal">充值</a></li>
-                                                            <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-
-                                                                <div class="modal-header">
-
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                                                    <h3 id="myModalLabel4">请填写信息</h3>
-
-                                                                </div>
-
-                                                                <div class="modal-body">
-
-                                                                    <form action="#" class="form-horizontal">
-
-                                                                        <div class="control-group"></div>
-
-                                                                        <div class="control-group"></div>
-
-                                                                        <#if msg??>
-
-                                                                            <div class="alert alert-error show">
-
-                                                                                <button class="close" data-dismiss="alert"></button>
-
-                                                                            ${msg}
-
-                                                                            </div>
-
-                                                                        </#if>
-                                                                        <div class="control-group" style="display: none;">
-
-                                                                            <label class="control-label">公司id<span class="required">*</span></label>
-
-                                                                            <div class="controls">
-
-                                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
-
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div class="control-group">
-
-                                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
-
-                                                                            <div class="controls">
-
-                                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
-
-                                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
-
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                    </form>
-
-                                                                </div>
-
-                                                                <div class="modal-footer">
-
-                                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-
-                                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
-
-                                                                </div>
-
-                                                            </div>
-
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/api/find-all-api-record/detail">消费明细</a></li>
+                                                            <li style="text-align: left">
+                                                                <a style="color: #08c;" href="#form_modal4" data-toggle="modal">
+                                                                    <div class="controls">
+                                                                        <label class="radio">
+                                                                            <input type="radio" id="apiId" name="apiId" value="${apiFinance.apiId}"/>
+                                                                            充值
+                                                                        </label>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiName=${apiFinance.apiName}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -378,6 +316,80 @@
                                     </#if>
                                 </tbody>
                             </table>
+
+                            <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                                <div class="modal-header">
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                    <h3 id="myModalLabel4">请填写信息</h3>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <form action="#" class="form-horizontal">
+
+                                        <div class="control-group"></div>
+
+                                        <div class="control-group"></div>
+
+                                        <#if msg??>
+
+                                            <div class="alert alert-error show">
+
+                                                <button class="close" data-dismiss="alert"></button>
+
+                                            ${msg}
+
+                                            </div>
+
+                                        </#if>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                            <div class="controls">
+
+                                                <input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium">
+
+                                                <span class="help-inline" id="amountMsg"></span>
+
+                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+
+                                            <div class="controls">
+
+                                                <textarea class="medium m-wrap" id="remark" name="remark" rows="3"></textarea>
+
+                                                <span class="help-inline" id="remarkMsg"></span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                    <button class="btn black btn-primary" id="btn-black-btn-primary" type="button">提交</button>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -454,14 +466,14 @@
                             yAxis: {
                                 min: 0,
                                 title: {
-                                    text: 'Population (millions)'
+                                    text: '消费总额（单位：元）'
                                 }
                             },
                             legend: {
                                 enabled: false
                             },
                             tooltip: {
-                                pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
+                                pointFormat: '<b>{point.y:.1f} 元</b>'
                             },
                             exporting: {
                                 enabled: false
@@ -565,7 +577,7 @@
                             type: 'column'
                         },
                         title: {
-                            text: '表字段总额统计'
+                            text: ''
                         },
                         exporting: {
                             enabled: false
@@ -579,7 +591,7 @@
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '总额（元）'
+                                text: '消费总额（单位：元）'
                             }
                         },
                         tooltip: {
@@ -604,6 +616,30 @@
 
 
 
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#btn-black-btn-primary").on("click",function () {
+                var apiId = $("input[name='apiId']:checked").val();
+                var amount = $("#amount").val();
+                var remark = $("#remark").text();
+                alert(apiId);
+                alert(amount);
+                alert(remark);
+                $.ajax({
+                    type: "post",
+                    url: "/api/find-all-api-record/charge",
+                    data: {"apiId":apiId,"amount":amount,"remark":remark},
+                    dataType: "json",
+                    success: function () {
+
+                    }
+                })
+            })
+
+        })
     </script>
 
 

@@ -5,6 +5,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.ApiFinance;
+import org.qydata.entity.ApiRequestLog;
 import org.qydata.service.ApiFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -105,13 +106,6 @@ public class ApiFinanceController {
         return jsonArray.toString();
     }
 
-
-    //Api消费账单-消费明细
-    @RequestMapping("/find-all-api-record/detail")
-    public String findAllApiDetailRecord(){
-        return "/finance/apiDetailRecord";
-    }
-
     //Api消费总额饼状图
     @RequestMapping("/find-all-api-record/count-result")
     @ResponseBody
@@ -168,5 +162,33 @@ public class ApiFinanceController {
         getObj.put("xList", jsonArray);
         getObj.put("yList", jsonArray1);
         return getObj.toString();
+    }
+
+    //Api消费账单-消费明细
+    @RequestMapping("/find-all-api-record/detail")
+    public String findAllApiDetailRecord(Integer apiId,String apiName,String apiTypeName,String vendorName,Model model){
+        Map<String,Object> map = new HashedMap();
+        map.put("apiId",apiId);
+        List<ApiRequestLog> apiRequestLogList = apiFinanceService.queryApiDetailById(map);
+        model.addAttribute("apiRequestLogList",apiRequestLogList);
+        model.addAttribute("apiId",apiId);
+        model.addAttribute("apiName",apiName);
+        model.addAttribute("apiTypeName",apiTypeName);
+        model.addAttribute("vendorName",vendorName);
+
+        return "/finance/apiDetailRecord";
+    }
+
+
+    @RequestMapping("/find-all-api-record/charge")
+    @ResponseBody
+    public String chargeApiBalance(Integer apiId,Long amount,String remark){
+        System.out.println(apiId);
+        System.out.println(amount);
+        System.out.println(remark);
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashedMap();
+        map.put("success","成功");
+        return gson.toJson(map);
     }
 }

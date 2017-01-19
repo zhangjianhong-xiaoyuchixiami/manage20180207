@@ -5,23 +5,41 @@ package org.qydata.config;
  */
 public class DataSourceContextHolder {
 
+    //写库对应的数据源key
+    private static final String MASTER = "master";
+
+    //读库对应的数据源key
+    private static final String SLAVE = "slave";
+
     private static final ThreadLocal<String> local = new ThreadLocal<String>();
 
-    public static ThreadLocal<String> getLocal() {
-        return local;
+    /**
+     * 设置数据源key
+     * @param key
+     */
+    public static void putDataSourceKey(String key) {
+        local.set(key);
     }
 
-    /** * 写只有一个库 */
-    public static void master() {
-        local.set(DataSourceType.master.getType());
-    }
-
-    /** * 读可能是多个库 */
-    public static void slave() {
-        local.set(DataSourceType.slave.getType());
-    }
-
-    public static String getJdbcType() {
+    /**
+     * 获取数据源key
+     * @return
+     */
+    public static String getDataSourceKey() {
         return local.get();
+    }
+
+    /**
+     * 标记写库
+     */
+    public static void markMaster(){
+        putDataSourceKey(MASTER);
+    }
+
+    /**
+     * 标记读库
+     */
+    public static void markSlave(){
+        putDataSourceKey(SLAVE);
     }
 }

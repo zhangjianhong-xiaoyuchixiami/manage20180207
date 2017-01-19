@@ -2,6 +2,7 @@ package org.qydata.config;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
+
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -64,8 +65,8 @@ public class MyBatisConfig {
     @Primary
     public DynamicDataSource dataSource(@Qualifier("masterDataSource") DataSource masterDataSource, @Qualifier("slaveDataSource") DataSource slaveDataSource) {
         Map<Object, Object> targetDataSources = new HashMap<>();
-        targetDataSources.put(DataSourceType.master.getType(), masterDataSource);
-        targetDataSources.put(DataSourceType.slave.getType(), slaveDataSource);
+        targetDataSources.put("master", masterDataSource);
+        targetDataSources.put("slave", masterDataSource);
         DynamicDataSource dataSource = new DynamicDataSource();
         dataSource.setTargetDataSources(targetDataSources);// 该方法是AbstractRoutingDataSource的方法
         dataSource.setDefaultTargetDataSource(masterDataSource);// 默认的datasource设置为masterDataSource
@@ -98,4 +99,5 @@ public class MyBatisConfig {
     public DataSourceTransactionManager transactionManager(DynamicDataSource dataSource) throws Exception {
         return new DataSourceTransactionManager(dataSource);
     }
+
 }
