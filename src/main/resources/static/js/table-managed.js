@@ -344,6 +344,9 @@ var TableManaged = function () {
             $('#sample_10').dataTable({
                 "aoColumns": [
                     null,
+                    null,
+                    null,
+                    null,
                     null
                 ],
                 "aaSorting": [[1, 'desc']],

@@ -84,7 +84,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i>三要素</div>
+                            <div class="caption"><i class="icon-cogs"></i><#if apiTypeName??>${apiTypeName}</#if><#if vendorName??>--${vendorName}</#if><#if apiName??>--${apiName}</#if></div>
 
                             <@d.tools idName="exportExcel"></@d.tools>
 
@@ -105,33 +105,22 @@
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_10">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center;">
-                                        公司名称
-                                    </th>
-                                    <th style="text-align: center;">
-                                        消费金额（单位：元）
-                                    </th>
-                                    <th style="text-align: center;">
-                                        响应时间
-                                    </th>
-                                    <th style="text-align: center;">
-                                        创建时间
-                                    </th>
-                                    <th style="text-align: center;">
-                                        类型
-                                    </th>
-
+                                    <th style="text-align: center;">公司名称</th>
+                                    <th style="text-align: center;">消费金额（单位：元）</th>
+                                    <th style="text-align: center;">响应时间</th>
+                                    <th style="text-align: center;">创建时间</th>
+                                    <th style="text-align: center;">类型</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <#if apiRequestLogList??>
                                 <#list apiRequestLogList as apiRequestLog>
                                 <tr>
-                                    <td data-title="公司名称">${apiRequestLog.company.name}</td>
-                                    <td data-title="消费金额（单位：元）">${apiRequestLog.apiResponseLog.cost}</td>
-                                    <td data-title="响应时间">${apiRequestLog.apiResponseLog.resTime}</td>
-                                    <td data-title="创建时间">${apiRequestLog.apiResponseLog.createTime}</td>
-                                    <td data-title="类型">${apiRequestLog.apiResponseLog.ok}</td>
+                                    <td data-title="公司名称">${apiRequestLog.company.name!'null'}</td>
+                                    <td data-title="消费金额（单位：元）">${apiRequestLog.apiResponseLog.cost!'null'}</td>
+                                    <td data-title="响应时间">${apiRequestLog.apiResponseLog.resTime!'null'}</td>
+                                    <td data-title="创建时间">${apiRequestLog.apiResponseLog.createTime!'null'}</td>
+                                    <td data-title="类型">${apiRequestLog.apiResponseLog.ok!'null'}</td>
                                 </tr>
 
                                 </#list>

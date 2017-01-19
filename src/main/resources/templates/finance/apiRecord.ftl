@@ -296,16 +296,7 @@
                                                             操作 <span class="caret"></span>
                                                         </a>
                                                         <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
-                                                            <li style="text-align: left">
-                                                                <a style="color: #08c;" href="#form_modal4" data-toggle="modal">
-                                                                    <div class="controls">
-                                                                        <label class="radio">
-                                                                            <input type="radio" id="apiId" name="apiId" value="${apiFinance.apiId}"/>
-                                                                            充值
-                                                                        </label>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="#form_modal4" onclick="charge(1)" data-toggle="modal">充值</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiName=${apiFinance.apiName}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a></li>
                                                         </ul>
                                                     </li>
@@ -351,15 +342,7 @@
 
                                             <label class="control-label">金&nbsp;额<span class="required">*</span></label>
 
-                                            <div class="controls">
-
-                                                <input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium">
-
-                                                <span class="help-inline" id="amountMsg"></span>
-
-                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
-
-                                            </div>
+                                            <div id="amount-controls" class="controls"></div>
 
                                         </div>
 
@@ -367,13 +350,7 @@
 
                                             <label class="control-label">备&nbsp;注<span class="required">*</span></label>
 
-                                            <div class="controls">
-
-                                                <textarea class="medium m-wrap" id="remark" name="remark" rows="3"></textarea>
-
-                                                <span class="help-inline" id="remarkMsg"></span>
-
-                                            </div>
+                                            <div id="remark-controls" class="controls"></div>
 
                                         </div>
 
@@ -409,15 +386,47 @@
 
     <#elseif section = "privateJs">
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function charge (apiId) {
+                $("#amount-controls").empty();
+                $("#remark-controls").empty();
+                $("#amount-controls").append('<input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium"><span class="help-block">只能输入数字类型并且金额大于0</span>');
+                $("#remark-controls").append('<textarea class="medium m-wrap" id="remark" name="remark" rows="3"></textarea>');
+                var amount = $("#amount").val();
+                var remark = $("#remark").text();
+                alert(apiId);
+                alert(amount);
+                alert(remark);
+            }
+//            $.ajax({
+//                type: "post",
+//                url: "/api/find-all-api-record/charge",
+//                data: {"apiId":apiId,"amount":amount,"remark":remark},
+//                dataType: "json",
+//                success: function (result) {
+//                    if(result.amount != null){
+//                        $("#amount-controls").empty();
+//                        $("#amount-controls").append('<input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium"><span class="help-line">'+result.amount+'</span><span class="help-block">只能输入数字类型并且金额大于0</span>');
+//                    }else {
+//                        window.location.href="/api/find-all-api-record"
+//                    }
+//                }
+//            });
 
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+        });
+    </script>
 
     <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
     <script src="/js/table-managed.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <script type="text/javascript">
 
@@ -618,29 +627,7 @@
 
     </script>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
 
-            $("#btn-black-btn-primary").on("click",function () {
-                var apiId = $("input[name='apiId']:checked").val();
-                var amount = $("#amount").val();
-                var remark = $("#remark").text();
-                alert(apiId);
-                alert(amount);
-                alert(remark);
-                $.ajax({
-                    type: "post",
-                    url: "/api/find-all-api-record/charge",
-                    data: {"apiId":apiId,"amount":amount,"remark":remark},
-                    dataType: "json",
-                    success: function () {
-
-                    }
-                })
-            })
-
-        })
-    </script>
 
 
 

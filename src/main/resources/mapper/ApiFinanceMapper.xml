@@ -26,7 +26,7 @@
         <association property="apiResponseLog" javaType="org.qydata.entity.ApiResponseLog">
             <result column="cost" property="cost"/>
             <result column="ok" property="ok"/>
-            <result column="restTime" property="restTime"/>
+            <result column="resTime" property="resTime"/>
         </association>
     </resultMap>
 
@@ -102,7 +102,7 @@
 
     <!--查询Api消费详情-->
     <select id="queryApiDetailById" parameterType="map" resultMap="ApiRequestLog_ApiResponseLog_Company_Map">
-      SELECT a.customerId,a.apiId,a.cost,a.ok,a.restTime,a.createTime,b.companyName
+      SELECT a.customerId,a.apiId,a.cost,a.ok,a.resTime,a.createTime,b.companyName
       FROM qydata.vwApiRequestLog a LEFT JOIN qydata.vwCustomer b ON a.customerId=b.id
       WHERE a.ok=1 AND a.apiId=#{apiId}
     </select>
