@@ -2,6 +2,7 @@ package org.qydata.service;
 
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -34,4 +35,11 @@ public interface ApiFinanceService {
      * @throws Exception
      */
     public List<ApiRequestLog> queryApiDetailById(Map<String,Object> map);
+
+    /**
+     * Api充值
+     * @return
+     */
+    @Transactional
+    public boolean apiChargeLog(Integer apiId, Long amount, String remark, String chargeDate);
 }

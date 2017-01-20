@@ -13,7 +13,7 @@ public class ApiResponseLog implements Serializable {
     private Integer httpStatus;
     private String content;
     private Integer cost;
-    private Boolean ok;
+    private Integer ok;
     private String code;
     private Integer resTime;
     private Timestamp createTime;
@@ -58,11 +58,11 @@ public class ApiResponseLog implements Serializable {
         this.cost = cost;
     }
 
-    public Boolean getOk() {
+    public Integer getOk() {
         return ok;
     }
 
-    public void setOk(Boolean ok) {
+    public void setOk(Integer ok) {
         this.ok = ok;
     }
 

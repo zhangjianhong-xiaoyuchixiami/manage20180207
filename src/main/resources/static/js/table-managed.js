@@ -49,13 +49,19 @@ var TableManaged = function () {
             });
 
             //customerFinancialAccount
-            $('#sample_2').dataTable({
-
-                "aoColumnDefs": [
-                    { "bSortable": false, "aTargets": [ 0 ,8] }
+            var oTable = $('#sample_2').dataTable({
+                "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bVisible": false },
+                    { "bVisible": false },
+                    null,
+                    null
                 ],
-                "aaSorting": [[7, 'asc']],
-                "bSort ": true,
+                "aaSorting": [[4, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -80,6 +86,17 @@ var TableManaged = function () {
                     }
                 },
                 "bFilter" : false //设置全文搜索框，默认true
+            });
+
+            jQuery('#sample_2_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input
+            jQuery('#sample_2_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            jQuery('#sample_2_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
+            $('#sample_2_column_toggler input[type="checkbox"]').change(function(){
+                /* Get the DataTables object again - this is not a recreation, just a get of the object */
+                var iCol = parseInt($(this).attr("data-column"));
+                var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+                oTable.fnSetColumnVis(iCol, (bVis ? false : true));
             });
 
             //partnersFinancialAccount
@@ -343,7 +360,6 @@ var TableManaged = function () {
             //apiDetailRecord
             $('#sample_10').dataTable({
                 "aoColumns": [
-                    null,
                     null,
                     null,
                     null,

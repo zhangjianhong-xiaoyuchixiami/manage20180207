@@ -22,9 +22,51 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance/findAllCustomerBalanceLogByCustomerId" method="get">
+                    <form action="/api/find-all-api-record/detail" method="get">
 
                         <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                                <label class="control-label">ApiId</label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="apiId" name="apiId" value="${apiId?c}" class="m-wrap medium">
+
+                                </div>
+                            </div>
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                                <label class="control-label">apiTypeName</label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="apiTypeName" name="apiTypeName" value="${apiTypeName}" class="m-wrap medium">
+
+                                </div>
+                            </div>
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                                <label class="control-label">apiName</label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="apiName" name="apiName" value="${apiName}" class="m-wrap medium">
+
+                                </div>
+                            </div>
+                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                                <label class="control-label">vendorName</label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="vendorName" name="vendorName" value="${vendorName}" class="m-wrap medium">
+
+                                </div>
+                            </div>
+
 
                             <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
 
@@ -96,7 +138,7 @@
 
                                 <div class="control-group pull-left" style="margin-bottom: -10px;">
 
-                                    <label class="control-label">消费金额共计&yen;：<#if totleAmount??><span>${totleAmount}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">消费金额共计&yen;：<#if totleAmount??><span>${totleAmount/100.0}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
@@ -107,20 +149,18 @@
                                 <tr>
                                     <th style="text-align: center;">公司名称</th>
                                     <th style="text-align: center;">消费金额（单位：元）</th>
-                                    <th style="text-align: center;">响应时间</th>
+                                    <th style="text-align: center;">响应时间（单位：秒）</th>
                                     <th style="text-align: center;">创建时间</th>
-                                    <th style="text-align: center;">类型</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <#if apiRequestLogList??>
                                 <#list apiRequestLogList as apiRequestLog>
                                 <tr>
-                                    <td data-title="公司名称">${apiRequestLog.company.name!'null'}</td>
-                                    <td data-title="消费金额（单位：元）">${apiRequestLog.apiResponseLog.cost!'null'}</td>
-                                    <td data-title="响应时间">${apiRequestLog.apiResponseLog.resTime!'null'}</td>
-                                    <td data-title="创建时间">${apiRequestLog.apiResponseLog.createTime!'null'}</td>
-                                    <td data-title="类型">${apiRequestLog.apiResponseLog.ok!'null'}</td>
+                                    <td data-title="公司名称"><#if apiRequestLog.company??>${apiRequestLog.company.name!''}<#else></#if></td>
+                                    <td data-title="消费金额（单位：元）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.cost/100.0)!''}<#else></#if></td>
+                                    <td data-title="响应时间（单位：秒）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.resTime/1000.0)!''}<#else></#if></td>
+                                    <td data-title="创建时间">${apiRequestLog.createTime!''}</td>
                                 </tr>
 
                                 </#list>
@@ -154,6 +194,26 @@
             TableManaged.init();
         });
 
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('#exportExcel').on('click', function () {
+                var apiId = $('#apiId').val();
+                var beginDate = $('#beginDate').val();
+                var endDate = $('#endDate').val();
+                fetch('/excel-api-finance/find-all-api-record/detail?apiId='+apiId+'&beginDate='+beginDate+'&endDate='+endDate).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename ='产品消费明细账单.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
+            });
+        });
     </script>
 
     <script>

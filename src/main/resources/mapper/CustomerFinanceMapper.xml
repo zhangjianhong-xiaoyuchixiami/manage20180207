@@ -8,6 +8,8 @@
         <result column="companyId" property="companyId"/>
         <result column="companyName" property="companyName"/>
         <result column="balance" property="balance"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
         <result column="chargeWeekTotleAmount" property="chargeWeekTotleAmount"/>
         <result column="chargeMonthTotleAmount" property="chargeMonthTotleAmount"/>
         <result column="consumeWeekTotleAmount" property="consumeWeekTotleAmount"/>
@@ -55,25 +57,25 @@
     </resultMap>
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinanceByDept" parameterType="map" resultMap="CustomerFinance_Map">
-        SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
+        SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
         kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount
         FROM
-        (SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
+        (SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
         ii.consumeMonthTotleAmount,jj.chargeTotleAmount
         FROM
-        (SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
+        (SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
         hh.consumeMonthTotleAmount
         FROM
-        (SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount
+        (SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount
         FROM
-        (SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount
+        (SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount
         FROM
-        (SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,bb.chargeWeekTotleAmount
+        (SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount
         FROM
-        (SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
+        (SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,c.partnerId,c.name partnerName,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
         b.deptId,b.deptName
-        FROM qydata.vwCustomer a,qyauth.vwCustomerDept b
-        WHERE a.id=b.customerId
+        FROM qydata.vwCustomer a,qyauth.vwCustomerDept b,qydata.vwPartner c
+        WHERE a.id=b.customerId and a.partnerId=c.id
         <if test="deptIdList!=null and deptIdList.size()!=0">
             and b.deptId in
             <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
@@ -135,23 +137,23 @@
 
 
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_Map">
-        SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
+        SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
         kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount
         FROM
-        (SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
+        (SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
         ii.consumeMonthTotleAmount,jj.chargeTotleAmount
         FROM
-        (SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
+        (SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
         hh.consumeMonthTotleAmount
         FROM
-        (SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount
+        (SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount
         FROM
-        (SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount
+        (SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount
         FROM
-        (SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,bb.chargeWeekTotleAmount
+        (SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount
         FROM
-        (SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName
-        FROM qydata.vwCustomer a
+        (SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName,a.partnerId,b.name partnerName
+        FROM qydata.vwCustomer a LEFT JOIN qydata.vwPartner b ON a.partnerId=b.id
         <where>
             <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
                  a.typeId in

@@ -89,6 +89,42 @@
                                 <@d.tools idName="exportExcel"></@d.tools>
                             </#if>
 
+                            <div class="actions">
+
+                                <div class="btn-group">
+
+                                    <a class="btn" href="#" data-toggle="dropdown">
+
+                                        表格显示列
+
+                                        <i class="icon-angle-down"></i>
+
+                                    </a>
+
+                                    <div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                        <label><input type="checkbox" checked data-column="0">公司名称</label>
+
+                                        <label><input type="checkbox" checked data-column="1">合作公司</label>
+
+                                        <label><input type="checkbox" checked data-column="2">充值总额</label>
+
+                                        <label><input type="checkbox" checked data-column="3">消费总额</label>
+
+                                        <label><input type="checkbox" checked data-column="4">余额</label>
+
+                                        <label><input type="checkbox" data-column="5">周充值总额</label>
+
+                                        <label><input type="checkbox" data-column="6">周消费总额</label>
+
+                                        <label><input type="checkbox" checked data-column="7">月充值总额</label>
+
+                                        <label><input type="checkbox" checked data-column="8">月消费总额</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                         </div>
 
                         <div class="portlet-body no-more-tables">
@@ -97,15 +133,15 @@
 
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 10%;">公司名称</th>
+                                    <th style="text-align: center;">公司名称</th>
+                                    <th style="text-align: center;">合作公司</th>
+                                    <th>充值总额（单位：元</th>
+                                    <th>消费总额（单位：元</th>
+                                    <th>余额（单位：元</th>
                                     <th>周充值总额（单位：元</th>
                                     <th>周消费总额（单位：元</th>
                                     <th>月充值总额（单位：元</th>
                                     <th>月消费总额（单位：元</th>
-                                    <th>充值总额（单位：元</th>
-                                    <th>消费总额（单位：元</th>
-                                    <th>余额（单位：元</th>
-                                    <th style="text-align: center; width: 12%;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -113,28 +149,14 @@
                                         <#list customerFinanceList as customer>
                                         <tr>
                                             <td data-title="公司名称">${customer.companyName}</td>
-                                            <td data-title="周充值总额"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="周消费总额"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="月充值总额"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="月消费总额"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="充值总额"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="消费总额"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="合作公司">${customer.partnerName!''}</td>
+                                            <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id?c}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                            <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                             <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="操作" style="text-align: center">
-                                                <ul class="nav nav-tabs" style="margin-bottom: 0px; min-width: 94px; border-bottom: 0px solid #f4f4f4;">
-                                                    <li class="dropdown" style="float: none;">
-                                                        <a class="dropdown-toggle" style=" padding-bottom: 0px; padding-top: 0px;" data-toggle="dropdown" href="#">
-                                                            操作 <span class="caret"></span>
-                                                        </a>
-                                                        <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id?c}&reasonId=1&companyName=${customer.companyName}">充值记录</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}">消费记录</a></li>
-                                                            <#--<li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">周历史</a></li>-->
-                                                            <#--<li style="text-align: left"><a style="color: #08c;" href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1">月历史数据</a></li>-->
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </td>
+                                            <td data-title="周充值总额"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                            <td data-title="周消费总额"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=2"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                            <td data-title="月充值总额"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                            <td data-title="月消费总额"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=2"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                         </tr>
                                         </#list>
                                     </#if>

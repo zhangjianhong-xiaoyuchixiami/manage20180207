@@ -6,6 +6,8 @@ import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
+import org.qydata.entity.ApiResponseLog;
+import org.qydata.regex.RegexUtil;
 import org.qydata.service.ApiFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -166,29 +168,58 @@ public class ApiFinanceController {
 
     //Api消费账单-消费明细
     @RequestMapping("/find-all-api-record/detail")
-    public String findAllApiDetailRecord(Integer apiId,String apiName,String apiTypeName,String vendorName,Model model){
+    public String findAllApiDetailRecord(Integer apiId,String apiName,String apiTypeName,String vendorName,String beginDate,String endDate,Model model){
         Map<String,Object> map = new HashedMap();
         map.put("apiId",apiId);
+        if (beginDate != null && beginDate != "" ) {
+            map.put("beginDate", beginDate+" "+"00:00:00");
+        }
+        if(endDate != null && endDate != ""){
+            map.put("endDate", endDate+" "+"23:59:59");
+        }
+        long totleAmount = 0;
         List<ApiRequestLog> apiRequestLogList = apiFinanceService.queryApiDetailById(map);
+        for (int i=0; i<apiRequestLogList.size(); i++){
+            ApiRequestLog apiRequestLog = apiRequestLogList.get(i);
+            ApiResponseLog apiResponseLog = apiRequestLog.getApiResponseLog();
+            totleAmount = totleAmount + apiResponseLog.getCost();
+        }
         model.addAttribute("apiRequestLogList",apiRequestLogList);
         model.addAttribute("apiId",apiId);
         model.addAttribute("apiName",apiName);
         model.addAttribute("apiTypeName",apiTypeName);
         model.addAttribute("vendorName",vendorName);
-
+        model.addAttribute("beginDate",beginDate);
+        model.addAttribute("endDate",endDate);
+        model.addAttribute("totleAmount",totleAmount);
         return "/finance/apiDetailRecord";
     }
 
-
+    //Api充值
     @RequestMapping("/find-all-api-record/charge")
     @ResponseBody
-    public String chargeApiBalance(Integer apiId,Long amount,String remark){
-        System.out.println(apiId);
-        System.out.println(amount);
-        System.out.println(remark);
+    public String chargeApiBalance(Integer apiIdCharge,String amount,String remark,String chargeDate){
         Gson gson = new Gson();
-        Map<String,Object> map = new HashedMap();
-        map.put("success","成功");
+        Map<String,Object> map = new HashMap();
+        if(RegexUtil.isNull(amount)){
+            map.put("amountMessage","请输入金额");
+            return gson.toJson(map);
+        }
+        if(!RegexUtil.isFloatZero(amount)){
+            map.put("amountMessage","金额格式不正确");
+            return gson.toJson(map);
+        }else {
+            if (Integer.parseInt(amount)<=0){
+                map.put("amountMessage","金额必须大于0");
+                return gson.toJson(map);
+            }
+        }
+        boolean flag = apiFinanceService.apiChargeLog(apiIdCharge, Long.parseLong(amount), remark, chargeDate);
+        if (flag){
+            map.put("successMessage","恭喜你，操作成功！");
+        }else {
+            map.put("errorMessage","操作失败，请检查你的输入");
+        }
         return gson.toJson(map);
     }
 }

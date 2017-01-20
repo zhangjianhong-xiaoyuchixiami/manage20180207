@@ -12,7 +12,6 @@ var TableAdvanced = function () {
             sOut += '<tr><td>CSS grade:</td><td>'+aData[4]+'</td></tr>';
             sOut += '<tr><td>Others:</td><td>Could provide a link here</td></tr>';
             sOut += '</table>';
-             
             return sOut;
         }
 

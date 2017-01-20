@@ -141,39 +141,39 @@
 
                                 </div>
 
-                            <#--总消费-->
-                                <div class="control-group pull-right" style="margin-bottom: -10px;">
+                            <#--&lt;#&ndash;总消费&ndash;&gt;-->
+                                <#--<div class="control-group pull-right" style="margin-bottom: -10px;">-->
 
-                                    <label class="control-label">
+                                    <#--<label class="control-label">-->
 
-                                        <a id="tipInfo" href="#form_modal3" data-toggle="modal">
+                                        <#--<a id="tipInfo" href="#form_modal3" data-toggle="modal">-->
 
-                                            <i class="icon-bar-chart"></i>总消费
+                                            <#--<i class="icon-bar-chart"></i>总消费-->
 
-                                        </a>
+                                        <#--</a>-->
 
-                                    </label>
+                                    <#--</label>-->
 
-                                    <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+                                    <#--<div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">-->
 
-                                        <div class="modal-header">
+                                        <#--<div class="modal-header">-->
 
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                            <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
 
-                                            <h3 id="myModalLabel3">&nbsp;</h3>
+                                            <#--<h3 id="myModalLabel3">&nbsp;</h3>-->
 
-                                        </div>
-                                        <div class="modal-body">
+                                        <#--</div>-->
+                                        <#--<div class="modal-body">-->
 
-                                            <div id="container">
+                                            <#--<div id="container">-->
 
-                                            </div>
+                                            <#--</div>-->
 
-                                        </div>
+                                        <#--</div>-->
 
-                                    </div>
+                                    <#--</div>-->
 
-                                </div>
+                                <#--</div>-->
 
                             <#--表字段总额-->
                                 <div class="control-group pull-right" style="margin-bottom: -10px;">
@@ -296,7 +296,7 @@
                                                             操作 <span class="caret"></span>
                                                         </a>
                                                         <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
-                                                            <li style="text-align: left"><a style="color: #08c;" href="#form_modal4" onclick="charge(1)" data-toggle="modal">充值</a></li>
+                                                            <li style="text-align: left"><a style="color: #08c;" href="#form_modal4" onclick="charge(${apiFinance.apiId})" data-toggle="modal">充值</a></li>
                                                             <li style="text-align: left"><a style="color: #08c;" href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiName=${apiFinance.apiName}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a></li>
                                                         </ul>
                                                     </li>
@@ -326,23 +326,31 @@
 
                                         <div class="control-group"></div>
 
-                                        <#if msg??>
+                                        <div id="error-alert"></div>
 
-                                            <div class="alert alert-error show">
-
-                                                <button class="close" data-dismiss="alert"></button>
-
-                                            ${msg}
-
-                                            </div>
-
-                                        </#if>
+                                        <div id="apiId-controls" class="controls" style="display: none;"></div>
 
                                         <div class="control-group">
 
                                             <label class="control-label">金&nbsp;额<span class="required">*</span></label>
 
                                             <div id="amount-controls" class="controls"></div>
+
+                                        </div>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">充值日期<span class="required">*</span></label>
+
+                                            <div class="controls">
+
+                                                <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                                    <input id="chargeDate" name="chargeDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                                </div>
+
+                                            </div>
 
                                         </div>
 
@@ -386,37 +394,7 @@
 
     <#elseif section = "privateJs">
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            function charge (apiId) {
-                $("#amount-controls").empty();
-                $("#remark-controls").empty();
-                $("#amount-controls").append('<input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium"><span class="help-block">只能输入数字类型并且金额大于0</span>');
-                $("#remark-controls").append('<textarea class="medium m-wrap" id="remark" name="remark" rows="3"></textarea>');
-                var amount = $("#amount").val();
-                var remark = $("#remark").text();
-                alert(apiId);
-                alert(amount);
-                alert(remark);
-            }
-//            $.ajax({
-//                type: "post",
-//                url: "/api/find-all-api-record/charge",
-//                data: {"apiId":apiId,"amount":amount,"remark":remark},
-//                dataType: "json",
-//                success: function (result) {
-//                    if(result.amount != null){
-//                        $("#amount-controls").empty();
-//                        $("#amount-controls").append('<input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium"><span class="help-line">'+result.amount+'</span><span class="help-block">只能输入数字类型并且金额大于0</span>');
-//                    }else {
-//                        window.location.href="/api/find-all-api-record"
-//                    }
-//                }
-//            });
 
-
-        });
-    </script>
 
     <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
@@ -434,6 +412,26 @@
             TableManaged.init();
         });
 
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('#exportExcel').on('click', function () {
+                var apiTypeId = $('#apiTypeId').val();
+                var vendorId = $('#vendorId').val();
+                var apiId = $('#apiId').val();
+                fetch('/excel-api-finance/find-all-api-record?apiTypeId='+apiTypeId+'&vendorId='+vendorId+'&apiId='+apiId).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename ='产品消费账单.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
+            });
+        });
     </script>
 
     <script type="text/javascript">
@@ -627,9 +625,50 @@
 
     </script>
 
+    <script type="text/javascript">
 
+        function charge(apiId) {
+            $("#apiId-controls").empty();
+            $("#amount-controls").empty();
+            $("#remark-controls").empty();
+            $("#error-alert").empty();
+            var op=document.createElement("input");
+            op.value=apiId;
+            op.type="text";
+            op.id="apiIdCharge";
+            op.name="apiIdCharge";
+            $("#apiId-controls").append(op);
+            $("#amount-controls").append('<input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium"><span id="amount-message"></span><span class="help-block">说明：只能输入数字类型并且金额大于0</span>');
+            $("#remark-controls").append('<textarea class="medium m-wrap" id="remark" name="remark" rows="3"></textarea><span class="help-block" style="font-size: 12px;">说明：只能输入255个字符</span>');
 
+        }
 
+        $("#btn-black-btn-primary").on("click",function () {
+            var apiIdCharge=$("#apiIdCharge").val();
+            var amount=$("#amount").val();
+            var chargeDate=$("#chargeDate").val();
+            var remark=$("#remark").attr("value");
+            $.ajax({
+                type: "post",
+                url: "/api/find-all-api-record/charge",
+                data: {"apiIdCharge":apiIdCharge,"amount":amount,"chargeDate":chargeDate,"remark":remark},
+                dataType: "json",
+                success: function (result) {
+                        if(result.amountMessage != null){
+                            $("#amount-message").empty();
+                            $("#amount-message").append('<span class="help-line"><font color="red">'+result.amountMessage+'</font></span>');
+                        }
+                        if(result.successMessage != null){
+                            window.location.href="/api/find-all-api-record"
+                        }
+                        if(result.errorMessage != null) {
+                            $("#error-alert").empty();
+                            $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                        }
+                }
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
