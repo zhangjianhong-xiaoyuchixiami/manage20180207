@@ -349,6 +349,16 @@
             <if test="apiTypeId != null and apiTypeId != ''">
                 aa.apiTypeId=#{apiTypeId}
             </if>
+            <if test="beginDate != null and beginDate != ''">
+                <![CDATA[
+            AND aa.createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+            AND aa.createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+             ]]>
+            </if>
         </where>
     </select>
 
@@ -447,5 +457,24 @@
         AND tableId=#{param2}
         AND DATE_FORMAT(endTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval #{param3} month),'%Y-%m')
     </select>
+
+
+    <select id="queryCustomerConsumeByVendor" parameterType="map" resultMap="CustomerApiVendor_Map">
+        select ee.apiTypeId,ff.name typeName,ee.apiId,ee.totlePrice,ee.vendorName,ee.vendorId,ee.apiName
+        from
+        (
+            select cc.apiTypeId,cc.apiId,cc.totlePrice,dd.vendorName,dd.vendorId,dd.name apiName
+            from
+            (
+                select b.apiTypeId,b.apiId,sum(a.amount) totlePrice
+                from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+                ON a.reqId=b.id
+                where a.customerId=#{customerId} AND b.hasCost=1 AND a.reasonId IN(-1,-2)
+                group by b.apiTypeId,b.apiId
+            ) cc LEFT JOIN qydata.vwApi dd ON cc.apiId = dd.id
+        ) ee LEFT JOIN qydata.vwApiType ff ON ee.apiTypeId=ff.id
+        WHERE ee.apiTypeId=#{apiTypeId}
+    </select>
+
 </mapper>
 

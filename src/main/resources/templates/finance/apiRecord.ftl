@@ -174,40 +174,6 @@
 
                                 </div>
 
-                            <#--&lt;#&ndash;总消费&ndash;&gt;-->
-                            <#--<div class="control-group pull-right" style="margin-bottom: -10px;">-->
-
-                            <#--<label class="control-label">-->
-
-                            <#--<a id="tipInfo" href="#form_modal3" data-toggle="modal">-->
-
-                            <#--<i class="icon-bar-chart"></i>总消费-->
-
-                            <#--</a>-->
-
-                            <#--</label>-->
-
-                            <#--<div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">-->
-
-                            <#--<div class="modal-header">-->
-
-                            <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
-
-                            <#--<h3 id="myModalLabel3">&nbsp;</h3>-->
-
-                            <#--</div>-->
-                            <#--<div class="modal-body">-->
-
-                            <#--<div id="container">-->
-
-                            <#--</div>-->
-
-                            <#--</div>-->
-
-                            <#--</div>-->
-
-                            <#--</div>-->
-
                             <#--表字段总额-->
                                 <div class="control-group pull-right" style="margin-bottom: -10px;">
 
@@ -217,7 +183,7 @@
 
                                             <i class="icon-bar-chart"></i>总消费
 
-                                        </a>&nbsp;&nbsp;&nbsp;
+                                        </a>
 
                                     </label>
 
@@ -241,60 +207,6 @@
                                     </div>
 
                                 </div>
-
-                            <#--总额共计-->
-                            <#--<div class="control-group pull-right">-->
-
-                            <#--<label class="control-label">-->
-
-                            <#--<a id="countResult" href="#form_modal6" data-toggle="modal">-->
-
-                            <#--<i class="icon-reorder"></i>计算统计结果-->
-
-                            <#--</a>-->
-
-                            <#--</label>-->
-
-                            <#--<div id="form_modal6" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">-->
-
-                            <#--<div class="modal-header">-->
-
-                            <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
-
-                            <#--<h3 id="myModalLabel6">统计结果</h3>-->
-
-                            <#--</div>-->
-
-                            <#--<div class="modal-body">-->
-
-                            <#--<table class="table table-striped table-bordered table-hover">-->
-                            <#--<tr>-->
-                            <#--<th width="50%">列名</th>-->
-                            <#--<td width="50%">金额（单位：元）</td>-->
-                            <#--</tr>-->
-                            <#--<tr>-->
-                            <#--<td>周消费总额</td>-->
-                            <#--<td>2345</td>-->
-                            <#--</tr>-->
-                            <#--<tr>-->
-                            <#--<td>月消费总额</td>-->
-                            <#--<td>5678</td>-->
-                            <#--</tr>-->
-                            <#--<tr>-->
-                            <#--<td>消费总额</td>-->
-                            <#--<td>8907</td>-->
-                            <#--</tr>-->
-                            <#--<tr>-->
-                            <#--<td>所剩余额</td>-->
-                            <#--<td>456</td>-->
-                            <#--</tr>-->
-
-                            <#--</table>-->
-                            <#--</div>-->
-
-                            <#--</div>-->
-
-                            <#--</div>-->
 
                             </div>
 
@@ -324,7 +236,8 @@
                                             <td data-title="月消费总额"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center;" >
                                                 <a href="#form_modal4" onclick="charge(${apiFinance.apiId})" data-toggle="modal">充值</a>
-                                                <#--<a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiName=${apiFinance.apiName}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a>-->
+                                                |
+                                                <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiName=${apiFinance.apiName}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a>
                                             </td>
                                         </tr>
                                         </#list>
@@ -418,17 +331,15 @@
 
     <#elseif section = "privateJs">
 
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
     <script src="/js/table-managed.js"></script>
-
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <script type="text/javascript">
 
@@ -438,6 +349,7 @@
 
     </script>
 
+    <#--导出Excel-->
     <script type="text/javascript">
 
         $(document).ready(function() {
@@ -458,84 +370,7 @@
         });
     </script>
 
-    <script type="text/javascript">
-
-        $(document).ready(function() {
-
-            $('#tipInfo').on("click", function () {
-
-                $.ajax({
-                    type: "post",
-                    url: "/api/find-all-api-record/count-result",
-                    dataType: 'json',
-                    success: function (result) {
-                        var json = result;
-                        var jsondata = [];
-                        for (var i in json) {
-                            jsondata.push([i, json[i]]);
-                        }
-
-                        var chart = new Highcharts.Chart({
-                            chart: {
-                                renderTo: 'container',
-                                type: 'column'
-                            },
-                            title: {
-                                text: '产品消费统计结果',
-                                margin: 15
-                            },
-                            xAxis: {
-                                type: 'category',
-                                labels: {
-                                    rotation: -45,
-                                    style: {
-                                        fontSize: '13px',
-                                        fontFamily: 'Verdana, sans-serif'
-                                    }
-                                }
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: '消费总额（单位：元）'
-                                }
-                            },
-                            legend: {
-                                enabled: false
-                            },
-                            tooltip: {
-                                pointFormat: '<b>{point.y:.1f} 元</b>'
-                            },
-                            exporting: {
-                                enabled: false
-                            },
-                            credits: {
-                                enabled: false
-                            },
-                            series: [{
-                                name: '产品',
-                                data: jsondata,
-                                dataLabels: {
-                                    enabled: true,
-                                    rotation: -90,
-                                    color: '#FFFFFF',
-                                    align: 'right',
-                                    format: '{point.y:.1f}', // one decimal
-                                    y: 10, // 10 pixels down from the top
-                                    style: {
-                                        fontSize: '13px',
-                                        fontFamily: 'Verdana, sans-serif'
-                                    }
-                                }
-                            }]
-                        });
-                    }
-                });
-            });
-        });
-
-    </script>
-
+    <#--级联-->
     <script type="text/javascript">
         $(document).ready(function() {
 
@@ -592,63 +427,63 @@
 
     </script>
 
+    <#--总消费柱状图-->
     <script type="text/javascript">
-
         $(document).ready(function () {
 
-            $.ajax({
-                type: 'post',
-                url: '/api/find-all-api-record/bar-chart',
-                dataType: 'json',
-                success: function (result) {
-                    var json = result;
-                    var chart = new Highcharts.Chart({
-                        chart: {
-                            renderTo: 'columnHistogramContainer',
-                            type: 'column'
-                        },
-                        title: {
-                            text: ''
-                        },
-                        exporting: {
-                            enabled: false
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        xAxis: {
-                            categories: json.xList
-                        },
-                        yAxis: {
-                            min: 0,
+            $("#columnHistogram").on("click",function () {
+                $.ajax({
+                    type: 'post',
+                    url: '/api/find-all-api-record/bar-chart',
+                    dataType: 'json',
+                    success: function (result) {
+                        var json = result;
+                        var chart = new Highcharts.Chart({
+                            chart: {
+                                renderTo: 'columnHistogramContainer',
+                                type: 'column'
+                            },
                             title: {
-                                text: '消费总额（单位：元）'
-                            }
-                        },
-                        tooltip: {
-                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                            '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
-                            footerFormat: '</table>',
-                            shared: true,
-                            useHTML: true
-                        },
-                        plotOptions: {
-                            column: {
-                                pointPadding: 0.2,
-                                borderWidth: 0
-                            }
-                        },
-                        series: json.yList
-                    });
-                }
+                                text: ''
+                            },
+                            exporting: {
+                                enabled: false
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            xAxis: {
+                                categories: json.xList
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: '消费总额（单位：元）'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            series: json.yList
+                        });
+                    }
+                });
             });
         });
-
-
-
     </script>
 
+    <#--充值-->
     <script type="text/javascript">
 
         function charge(apiId) {
@@ -694,6 +529,7 @@
         });
     </script>
 
+    <#--左侧导航-->
     <script type="text/javascript">
         $(document).ready(function() {
             $('#customerBalance').addClass('active');

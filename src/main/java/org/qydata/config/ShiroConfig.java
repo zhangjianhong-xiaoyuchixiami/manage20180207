@@ -310,10 +310,17 @@ public class ShiroConfig {
 		chains.put("/finance/find-company-customer-week-uplink-months-by-customer-id", "authc");
 		chains.put("/finance/find-company-customer-weeks-by-customer-id", "authc");
 		chains.put("/finance/find-company-customer-month-uplink-months-by-customer-id", "authc");
+		chains.put("/finance/find-all-vendor-record/count-result", "authc");
 
 		//Api财务账单
 		chains.put("/api/find-all-api-record", "authc,perms");
 		chains.put("/api/find-all-api-record/detail", "authc,perms");
+
+		//ApiAjax
+		chains.put("/api/find-api-vendor-by-api-type-id", "authc");
+		chains.put("/api/find-api-by-api-type-id", "authc");
+		chains.put("/api/find-all-api-record/bar-chart", "authc");
+		chains.put("/api/find-all-api-record/charge", "authc");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

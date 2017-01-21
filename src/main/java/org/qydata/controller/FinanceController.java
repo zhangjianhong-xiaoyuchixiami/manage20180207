@@ -1,5 +1,6 @@
 package org.qydata.controller;
 
+import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
@@ -295,6 +296,37 @@ public class FinanceController {
         return jsonArray.toString();
     }
 
+
+    //客户个供应商消费饼状图
+    @RequestMapping("/find-all-vendor-record/count-result")
+    @ResponseBody
+    public String findVendorRecordCountResult(Integer customerId,Integer apiTypeId){
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        map.put("apiTypeId",apiTypeId);
+        Map<String,Object> map1 = new HashMap<>();
+        long consumeTotleAmount = 0L;
+        List<CustomerApiVendor> customerApiVendorList = customerFinanceService.queryCustomerConsumeByVendor(map);
+        if (customerApiVendorList != null){
+            for (int i=0; i<customerApiVendorList.size(); i++){
+                CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
+                if (customerApiVendor.getTotlePrice() != null){
+                    consumeTotleAmount = consumeTotleAmount + customerApiVendor.getTotlePrice();
+                }
+            }
+            for (int i=0; i<customerApiVendorList.size(); i++){
+                CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
+                if(customerApiVendor.getVendorName() != null){
+                    map1.put(customerApiVendor.getVendorName(),(customerApiVendor.getTotlePrice()/consumeTotleAmount)/100.0);
+                }else {
+                    map1.put("未知供应商",(customerApiVendor.getTotlePrice()/consumeTotleAmount)/100.0);
+                }
+            }
+        }
+        Gson gson = new Gson();
+        return gson.toJson(map1);
+    }
+
     /**
      * 指定账号Api消费明细记录
      * @param customerId
@@ -305,10 +337,16 @@ public class FinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail")
-    public String findAllApiConsumeDetailRecordByCustomerId(Integer customerId, Integer apiTypeId, String companyName, String apiTypeName,Integer [] reasonId, Model model){
+    public String findAllApiConsumeDetailRecordByCustomerId(Integer customerId, Integer apiTypeId, String companyName, String apiTypeName,Integer [] reasonId,String beginDate,String endDate, Model model){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("apiTypeId",apiTypeId);
+        if (beginDate != null && beginDate != "" ) {
+            map.put("beginDate", beginDate+" "+"00:00:00");
+        }
+        if(endDate != null && endDate != ""){
+            map.put("endDate", endDate+" "+"23:59:59");
+        }
         List<Integer> reasonIdList = new ArrayList<>();
         if (reasonId != null && reasonId.length >0) {
             for(int i=0;i<reasonId.length;i++){
@@ -339,6 +377,8 @@ public class FinanceController {
         model.addAttribute("customerId",customerId);
         model.addAttribute("totleAmount",totleAmount);
         model.addAttribute("reasonIdArray",reasonId);
+        model.addAttribute("beginDate",beginDate);
+        model.addAttribute("endDate",endDate);
         return "/finance/customerApiConsumeDetailRecord";
     }
 

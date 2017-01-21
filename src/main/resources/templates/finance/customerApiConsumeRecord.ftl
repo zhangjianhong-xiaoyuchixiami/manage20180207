@@ -65,24 +65,28 @@
                                 </div>
                             </div>
 
-                            <#--<div class="control-group pull-left" style="margin-bottom: -20px;">-->
+                            <@shiro.hasPermission name="customer:findAllCustomer">
 
-                                <#--<label class="control-label">产品供应商</label>-->
+                                <div class="control-group pull-left" style="margin-bottom: -20px;">
 
-                                <#--<div class="controls">-->
-                                    <#--<select id="apiVendorId" name="apiVendorId" class="medium m-wrap1" tabindex="1">-->
-                                        <#--<option value="">请选择...</option>-->
-                                        <#--<#if customerApiVendors??>-->
-                                            <#--<#list customerApiVendors as vendor>-->
+                                    <label class="control-label">产品供应商</label>
 
-                                                <#--<option <#if apiVendorId?? &&vendor.vendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="<#if vendor.vendorId??>${vendor.vendorId?c}</#if>"><#if vendor.vendorName??>${vendor.vendorName}</#if></option>-->
+                                    <div class="controls">
+                                        <select id="apiVendorId" name="apiVendorId" class="medium m-wrap1" tabindex="1">
+                                            <option value="">请选择...</option>
+                                            <#if customerApiVendors??>
+                                                <#list customerApiVendors as vendor>
 
-                                            <#--</#list>-->
-                                        <#--</#if>-->
-                                    <#--</select>-->
-                                <#--</div>-->
+                                                    <option <#if apiVendorId?? &&vendor.vendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="<#if vendor.vendorId??>${vendor.vendorId?c}</#if>"><#if vendor.vendorName??>${vendor.vendorName}</#if></option>
 
-                            <#--</div>-->
+                                                </#list>
+                                            </#if>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                            </@shiro.hasPermission>
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
@@ -130,7 +134,9 @@
                                 <thead>
                                 <tr>
                                     <th>产品类型</th>
-                                    <#--<th>产品供应商</th>-->
+                                    <@shiro.hasPermission name="customer:findAllCustomer">
+                                        <th>产品供应商</th>
+                                    </@shiro.hasPermission>
                                     <th style="width: 20%">金额（单位/元）</th>
                                     <th style="text-align: center; width: 15%">操作</th>
                                 </tr>
@@ -140,7 +146,9 @@
                                         <#list customerApiTypeList as customerApiType>
                                         <tr>
                                             <td data-title="产品类型">${customerApiType.apiTypeName}</td>
-                                            <#--<td data-title="产品供应商"><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></td>-->
+                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                                <td data-title="产品供应商"><a id="tipInfo" href="#form_modal3" onclick="vendorConsume(${customerApiType.apiTypeId?c})" data-toggle="modal"><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></a></td>
+                                            </@shiro.hasPermission>
                                             <td data-title="金额（单位/元）"><#if customerApiType.totlePrice??>${(-customerApiType.totlePrice/100.0)?c}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?customerId=${customerId?c}&apiTypeId=${customerApiType.apiTypeId?c}&reasonId=-1<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
                                         </tr>
@@ -149,6 +157,24 @@
                                 </tbody>
                             </table>
 
+                            <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+
+                                <div class="modal-header">
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                    <h3 id="myModalLabel3">&nbsp;</h3>
+
+                                </div>
+                                <div class="modal-body">
+
+                                    <div id="container">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,15 +188,97 @@
 
     <#elseif section = "privateJs">
 
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
     <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
     <script src="/js/table-managed.js"></script>
 
-    <script src="/js/myjs/json2.js" type="text/javascript"></script>
-
     <script src="/js/myjs/customerleftbar.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function vendorConsume(apiTypeId) {
+                var param = apiTypeId;
+                var param1 = $("#customerId").val();
+                $.ajax({
+                    type: "post",
+                    url: "/finance/find-all-vendor-record/count-result",
+                    data: {"apiTypeId": param,"customerId": param1},
+                    dataType: 'json',
+                    success: function (result) {
+                        var json = result;
+                        var jsondata = [];
+                        for (var i in json) {
+                            jsondata.push([i, json[i]]);
+                        }
+
+                        var chart = new Highcharts.Chart({
+                            chart: {
+                                renderTo: 'container',
+                                type: 'column'
+                            },
+                            title: {
+                                text: '各供应商消费统计',
+                                margin: 15
+                            },
+                            xAxis: {
+                                type: 'category',
+                                labels: {
+                                    rotation: -45,
+                                    style: {
+                                        fontSize: '13px',
+                                        fontFamily: 'Verdana, sans-serif'
+                                    }
+                                }
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: '消费总额（单位：元）'
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            tooltip: {
+                                pointFormat: '<b>{point.y:.1f} 元</b>'
+                            },
+                            exporting: {
+                                enabled: false
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            series: [{
+                                name: '供应商',
+                                data: jsondata,
+                                dataLabels: {
+                                    enabled: true,
+                                    rotation: -90,
+                                    color: '#FFFFFF',
+                                    align: 'right',
+                                    format: '{point.y:.1f}', // one decimal
+                                    y: 10, // 10 pixels down from the top
+                                    style: {
+                                        fontSize: '13px',
+                                        fontFamily: 'Verdana, sans-serif'
+                                    }
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+        });
+
+    </script>
 
     <script type="text/javascript">
         jQuery(document).ready(function() {
@@ -225,7 +333,6 @@
             });
         });
     </script>
-
 
     </#if>
 

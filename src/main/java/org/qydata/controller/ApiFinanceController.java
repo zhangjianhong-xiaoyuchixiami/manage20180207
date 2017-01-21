@@ -108,35 +108,7 @@ public class ApiFinanceController {
         return jsonArray.toString();
     }
 
-    //Api消费总额饼状图
-    @RequestMapping("/find-all-api-record/count-result")
-    @ResponseBody
-    public String findApiRecordCountResult(){
-        Map<String,Object> map = new HashedMap();
-        Map<String,Object> map1 = new HashMap<>();
-        long consumeTotleAmount = 0L;
-        List<ApiFinance> apiFinanceList = apiFinanceService.queryApiOverAllFinance(map);
-        if (apiFinanceList != null){
-            for (int i=0; i<apiFinanceList.size(); i++){
-                ApiFinance apiFinance = apiFinanceList.get(i);
-                if (apiFinance.getConsumeTotleAmount() != null){
-                    consumeTotleAmount = consumeTotleAmount + apiFinance.getConsumeTotleAmount();
-                }
-            }
-            for (int i=0; i<apiFinanceList.size(); i++){
-                ApiFinance apiFinance = apiFinanceList.get(i);
-                if(apiFinance.getConsumeTotleAmount() != null){
-                    map1.put(apiFinance.getApiName(),apiFinance.getConsumeTotleAmount()/100.0);
-                }else {
-                    map1.put(apiFinance.getApiName(),0);
-                }
-            }
-        }
-        Gson gson = new Gson();
-        return gson.toJson(map1);
-    }
-
-    //Api消费总额柱状图图
+    //Api消费总额柱状图
     @RequestMapping("/find-all-api-record/bar-chart")
     @ResponseBody
     public String findApiRecordBarChart(){

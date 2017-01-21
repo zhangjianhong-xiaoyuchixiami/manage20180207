@@ -129,4 +129,14 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         stringListMap.put("type",yList);
         return stringListMap;
     }
+
+    @Override
+    public List<CustomerApiVendor> queryCustomerConsumeByVendor(Map<String, Object> map) {
+        try {
+            return customerFinanceMapper.queryCustomerConsumeByVendor(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

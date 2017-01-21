@@ -416,10 +416,9 @@ var TableManaged = function () {
                 "aoColumns": [
                     null,
                     null,
-                    null,
                     null
                 ],
-                "aaSorting": [[1, 'desc']],
+                "aaSorting": [[2, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

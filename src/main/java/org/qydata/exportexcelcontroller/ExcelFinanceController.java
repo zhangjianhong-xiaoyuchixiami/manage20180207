@@ -317,10 +317,16 @@ public class ExcelFinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail")
-    public void findAllApiConsumeDetailRecordByCustomerId(Integer customerId, Integer apiTypeId, String companyName,Integer [] reasonId,HttpServletResponse response) throws IOException {
+    public void findAllApiConsumeDetailRecordByCustomerId(Integer customerId, Integer apiTypeId, String companyName,Integer [] reasonId,String beginDate,String endDate,HttpServletResponse response) throws IOException {
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("apiTypeId",apiTypeId);
+        if (beginDate != null && beginDate != "" ) {
+            map.put("beginDate", beginDate+" "+"00:00:00");
+        }
+        if(endDate != null && endDate != ""){
+            map.put("endDate", endDate+" "+"23:59:59");
+        }
         List<Integer> reasonIdList = new ArrayList<>();
         if (reasonId != null && reasonId.length >0) {
             for(int i=0;i<reasonId.length;i++){

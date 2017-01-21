@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.CustomerBalanceLog;
@@ -94,4 +95,12 @@ public interface CustomerFinanceMapper {
      */
     public WeekMonthAmount queryMonthChargeConsumeToward(Integer customerId,Integer tableId,Integer result);
 
+    /**
+     * 查询客户各供应商消费情况
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerApiVendor> queryCustomerConsumeByVendor(Map<String,Object> map)throws  Exception;
 }
+

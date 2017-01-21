@@ -22,7 +22,7 @@
 
                     <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
 
-                        <form action="" method="get">
+                        <form action="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail" method="get">
 
                             <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
@@ -89,6 +89,39 @@
                                 </div>
 
                             </div>
+
+                            <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
+
+                                <label class="control-label">起始日期</label>
+
+                                <div class="controls">
+
+                                    <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+
+                                        <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+
+                                <label class="control-label">结束日期</label>
+
+                                <div class="controls">
+
+                                    <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                        <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
