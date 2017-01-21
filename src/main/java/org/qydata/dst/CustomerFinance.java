@@ -2,8 +2,10 @@ package org.qydata.dst;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.qydata.entity.CompanyApi;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jonhn on 2017/1/8.
@@ -22,6 +24,7 @@ public class CustomerFinance implements Serializable {
     private Long consumeMonthTotleAmount;
     private Long chargeTotleAmount;
     private Long consumeTotleAmount;
+    private List<CompanyApi> companyApiList;
 
     public Integer getPartnerId() {
         return partnerId;
@@ -117,6 +120,14 @@ public class CustomerFinance implements Serializable {
 
     public void setConsumeTotleAmount(Long consumeTotleAmount) {
         this.consumeTotleAmount = consumeTotleAmount;
+    }
+
+    public List<CompanyApi> getCompanyApiList() {
+        return companyApiList;
+    }
+
+    public void setCompanyApiList(List<CompanyApi> companyApiList) {
+        this.companyApiList = companyApiList;
     }
 
     @Override

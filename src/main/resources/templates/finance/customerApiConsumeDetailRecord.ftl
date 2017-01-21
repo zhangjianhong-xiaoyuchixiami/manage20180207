@@ -136,24 +136,24 @@
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_7">
                                 <thead>
                                 <tr>
-                                    <th style="width: 30%">产品供应商</th>
-                                    <th style="width: 35%">产品名称</th>
-                                    <th style="width: 15%">金额（单位/元）</th>
+                                    <th style="width: 40%">产品名称</th>
+                                    <th style="width: 20%">消费金额（单位/元）</th>
+                                    <th style="width: 20%">创建时间</th>
                                     <th style="width: 20%">类型</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <#if customerApiVendorList??>
-                                        <#list customerApiVendorList as customerApiVendor>
-                                            <#if customerApiVendor.vendorName??>
+                                    <#if customerBalanceLogList??>
+                                        <#list customerBalanceLogList as customerBalanceLog>
+                                            <#if customerBalanceLog.api??>
                                             <tr>
                                             <#else >
                                             <tr class="danger">
                                             </#if>
-                                            <td data-title="产品供应商">${customerApiVendor.vendorName!'未知产品供应商'}</td>
-                                            <td data-title="产品名称">${customerApiVendor.apiName!'未知产品'}</td>
-                                            <td data-title="金额（单位/元）"><#if customerApiVendor.totlePrice??>${(-customerApiVendor.totlePrice/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="类型">${customerApiVendor.reasonName!'未知类型'}</td>
+                                            <td data-title="产品名称"><#if customerBalanceLog.api??>${customerBalanceLog.api.name!''}</#if></td>
+                                            <td data-title="消费金额（单位/元）"><#if customerBalanceLog.amount??>${(-customerBalanceLog.amount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="创建时间">${customerBalanceLog.createTime!''}</td>
+                                            <td data-title="类型"><#if customerBalanceLog.customerBalanceModifyReason??>${customerBalanceLog.customerBalanceModifyReason.name}</#if></td>
                                         </tr>
                                         </#list>
                                     </#if>

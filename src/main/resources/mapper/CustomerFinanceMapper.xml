@@ -18,6 +18,20 @@
         <result column="consumeTotleAmount" property="consumeTotleAmount"/>
     </resultMap>
 
+    <resultMap id="CustomerFinance_CompanyApi_Map" type="org.qydata.dst.CustomerFinance" extends="CustomerFinance_Map">
+        <collection property="companyApiList" ofType="org.qydata.entity.CompanyApi">
+            <result column="apiTypeId" property="apiTypeId"/>
+            <result column="subTypeId" property="subTypeId"/>
+            <result column="price" property="price"/>
+            <association property="apiType" javaType="org.qydata.entity.ApiType">
+                <result column="apiTypeName" property="name"/>
+            </association>
+            <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+                <result column="subTypeName" property="name"/>
+            </association>
+        </collection>
+    </resultMap>
+
     <resultMap type="org.qydata.entity.CustomerBalanceLog" id="CustomerBalanceLog_Map">
         <id column="id" property="id"/>
         <result column="reasonId" property="reasonId"/>
@@ -55,43 +69,77 @@
         <result column="reasonId" property="reasonId"/>
         <result column="reasonName" property="reasonName"/>
     </resultMap>
+
+    <resultMap id="CustomerBalanceDetailConsume_Map" type="org.qydata.entity.CustomerBalanceLog" >
+        <result column="reasonId" property="reasonId"/>
+        <result column="amount" property="amount"/>
+        <result column="customerId" property="customerId"/>
+        <result column="createTime" property="createTime"/>
+        <association property="customerBalanceModifyReason" javaType="org.qydata.entity.CustomerBalanceModifyReason">
+            <result column="reasonName" property="name"/>
+        </association>
+       <association property="api" javaType="org.qydata.entity.Api">
+           <result column="apiId" property="id"/>
+           <result column="apiName" property="name"/>
+       </association>
+    </resultMap>
+
+
     <!--查询客户的财务总览-->
-    <select id="queryCompanyCustomerOverAllFinanceByDept" parameterType="map" resultMap="CustomerFinance_Map">
+    <select id="queryCompanyCustomerOverAllFinanceByDept" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
-        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount
+        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price
         FROM
-        (SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
-        ii.consumeMonthTotleAmount,jj.chargeTotleAmount
+        (
+        SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
+        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price
         FROM
-        (SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
-        hh.consumeMonthTotleAmount
+        (
+        SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
+        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price
         FROM
-        (SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount
+        (
+        SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount,
+        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price
         FROM
-        (SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount
+        (
+        SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount,
+        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price
         FROM
-        (SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount
+        (
+        SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount,
+        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price
         FROM
-        (SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,c.partnerId,c.name partnerName,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
-        b.deptId,b.deptName
-        FROM qydata.vwCustomer a,qyauth.vwCustomerDept b,qydata.vwPartner c
-        WHERE a.id=b.customerId and a.partnerId=c.id
-        <if test="deptIdList!=null and deptIdList.size()!=0">
-            and b.deptId in
-            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                #{deptId}
-            </foreach>
-        </if>
-        <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
-            and a.typeId in
-            <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
-                #{customerTypeId}
-            </foreach>
-        </if>
-        <if test="content!=null and content!=''">
-            and a.companyName like '%${content}%'
-        </if>
-        ) aa LEFT JOIN
+            (
+                SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.partnerId,c.name partnerName,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
+                b.deptId,b.deptName,z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
+                FROM qydata.vwCustomer a LEFT JOIN qyauth.vwCustomerDept b ON a.id=b.customerId LEFT JOIN qydata.vwPartner c
+                ON a.partnerId=c.id  LEFT JOIN
+                            (
+                                SELECT a.companyId,a.apiTypeId,b.name apiTypeName,a.subTypeId,c.name subTypeName,a.price
+                                FROM qydata.vwCompanyApi a LEFT JOIN qydata.vwApiType b
+                                ON a.apiTypeId=b.id LEFT JOIN qydata.vwMobileOperator c ON a.subTypeId=c.id
+                                WHERE a.enabled=1
+                            ) z ON a.companyId=z.companyId
+                <if test="deptIdList!=null and deptIdList.size()!=0">
+                    and b.deptId in
+                    <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                        #{deptId}
+                    </foreach>
+                </if>
+                <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
+                    and a.typeId in
+                    <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
+                        #{customerTypeId}
+                    </foreach>
+                </if>
+                <if test="partnerId!=null and partnerId!=''">
+                    and a.partnerId=#{partnerId}
+                </if>
+                <if test="content!=null and content!=''">
+                    and a.companyName like '%${content}%'
+                </if>
+            ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
         FROM qyfinance.vwWeekMonthAmount
         WHERE weekMonthTypeId=1 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
@@ -136,35 +184,55 @@
     </select>
 
 
-    <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_Map">
+    <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
-        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount
+        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price
         FROM
-        (SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
-        ii.consumeMonthTotleAmount,jj.chargeTotleAmount
+        (
+        SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
+        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price
         FROM
-        (SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
-        hh.consumeMonthTotleAmount
+        (
+        SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
+        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price
         FROM
-        (SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount
+        (
+        SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount,
+        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price
         FROM
-        (SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount
+        (
+        SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount,
+        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price
         FROM
-        (SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount
+        (
+        SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount,
+        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price
         FROM
-        (SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName,a.partnerId,b.name partnerName
-        FROM qydata.vwCustomer a LEFT JOIN qydata.vwPartner b ON a.partnerId=b.id
-        <where>
-            <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
-                 a.typeId in
-                <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
-                    #{customerTypeId}
-                </foreach>
-            </if>
-            <if test="content!=null and content!=''">
-                and a.companyName like '%${content}%'
-            </if>
-        </where>
+        (
+            SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName,a.partnerId,b.name partnerName,
+            z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
+            FROM qydata.vwCustomer a LEFT JOIN qydata.vwPartner b ON a.partnerId=b.id
+            LEFT JOIN
+            (
+            SELECT a.companyId,a.apiTypeId,b.name apiTypeName,a.subTypeId,c.name subTypeName,a.price
+            FROM qydata.vwCompanyApi a LEFT JOIN qydata.vwApiType b
+            ON a.apiTypeId=b.id LEFT JOIN qydata.vwMobileOperator c ON a.subTypeId=c.id
+            WHERE a.enabled=1
+            ) z ON a.companyId=z.companyId
+            <where>
+                <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
+                     a.typeId in
+                    <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
+                        #{customerTypeId}
+                    </foreach>
+                </if>
+                <if test="partnerId!=null and partnerId!=''">
+                    and a.partnerId=#{partnerId}
+                </if>
+                <if test="content!=null and content!=''">
+                    and a.companyName like '%${content}%'
+                </if>
+            </where>
         ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
         FROM qyfinance.vwWeekMonthAmount
@@ -262,35 +330,26 @@
     </select>
 
     <!--查询客户的Api消费明细记录-->
-    <select id="queryCompanyCustomerApiDetailConsumeRecordByCustomerId" parameterType="map" resultMap="CustomerApiVendor_Map">
-        select ee.apiTypeId,ff.name typeName,ee.apiId,ee.reasonId,ee.reasonName,ee.totlePrice,ee.vendorName,ee.vendorId,ee.apiName
+    <select id="queryCompanyCustomerApiDetailConsumeRecordByCustomerId" parameterType="map" resultMap="CustomerBalanceDetailConsume_Map">
+       select aa.reasonId,aa.amount,aa.customerId,aa.createTime,aa.reasonName,aa.apiTypeId,aa.apiId,bb.name apiName
         from
         (
-            select cc.apiTypeId,cc.apiId,cc.reasonId,cc.reasonName,cc.totlePrice,dd.vendorName,dd.vendorId,dd.name apiName
-            from
-            (
-                select aa.apiTypeId,aa.apiId,aa.reasonId,bb.name reasonName,aa.totlePrice
-                from
-                (
-                    select b.apiTypeId,b.apiId,a.reasonId,sum(a.amount) totlePrice
-                    from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
-                    ON a.reqId=b.id
-                    where a.reasonId in(-1,-2) and b.hasCost=1
-                    and a.customerId=#{customerId}
-                    group by b.apiTypeId,b.apiId,a.reasonId
-                ) aa LEFT JOIN qydata.CustomerBalanceModifyReason bb
-                ON aa.reasonId=bb.id
-            ) cc LEFT JOIN qydata.vwApi dd
-            ON cc.apiId = dd.id
-        ) ee LEFT JOIN qydata.vwApiType ff
-        ON ee.apiTypeId=ff.id
-        WHERE ee.apiTypeId=#{apiTypeId}
-        <if test="reasonIdList != null and reasonIdList.size() > 0">
-            AND ee.reasonId IN
-            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
-                #{reasonId}
-            </foreach>
-        </if>
+            select a.reasonId,a.amount,a.customerId,a.createTime,a.reasonName,b.apiTypeId,b.apiId
+            from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+            ON a.reqId=b.id
+            where b.hasCost=1 and a.customerId=#{customerId}
+            <if test="reasonIdList != null and reasonIdList.size() > 0">
+                AND a.reasonId IN
+                <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                    #{reasonId}
+                </foreach>
+            </if>
+        ) aa left join qydata.vwApi bb on aa.apiId=bb.id
+        <where>
+            <if test="apiTypeId != null and apiTypeId != ''">
+                aa.apiTypeId=#{apiTypeId}
+            </if>
+        </where>
     </select>
 
     <!--查询客户的周月记录-->

@@ -311,8 +311,10 @@ public class ShiroConfig {
 		chains.put("/finance/find-company-customer-weeks-by-customer-id", "authc");
 		chains.put("/finance/find-company-customer-month-uplink-months-by-customer-id", "authc");
 
+		//Api财务账单
+		chains.put("/api/find-all-api-record", "authc,perms");
+		chains.put("/api/find-all-api-record/detail", "authc,perms");
 
-		//chains.put("/excel-finance/find-all-customer-by-dept-id", "authc");
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}

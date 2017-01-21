@@ -126,7 +126,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i><#if apiTypeName??>${apiTypeName}</#if><#if vendorName??>--${vendorName}</#if><#if apiName??>--${apiName}</#if></div>
+                            <div class="caption"><i class="icon-user"></i><#if apiTypeName??>${apiTypeName}</#if><#if vendorName??>--${vendorName}</#if><#if apiName??>--${apiName}</#if></div>
 
                             <@d.tools idName="exportExcel"></@d.tools>
 

@@ -51,13 +51,16 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = "/find-all-customer")
-    public String findAllCustomer(HttpServletRequest request, Model model, String content){
+    public String findAllCustomer(HttpServletRequest request, Model model, String content,Integer partnerId){
 
         try {
             Map<String,Object> map = new HashMap<String,Object>();
             List customerTypeIdList = new ArrayList();
             if(content!=null){
                 map.put("content",content);
+            }
+            if(partnerId!=null){
+                map.put("partnerId",partnerId);
             }
             customerTypeIdList.add(1);
             map.put("customerTypeIdList",customerTypeIdList);
@@ -79,7 +82,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = ("/find-all-customer-by-dept-id"))
-    public String findAllCustomerByDeptId(HttpServletRequest request,Model model,String content){
+    public String findAllCustomerByDeptId(HttpServletRequest request,Model model,String content,Integer partnerId){
         User user = (User)request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
@@ -92,6 +95,9 @@ public class FinanceController {
             map.put("deptIdList", deptIdList);
             if (content != null) {
                 map.put("content", content);
+            }
+            if(partnerId!=null){
+                map.put("partnerId",partnerId);
             }
             List customerTypeIdList = new ArrayList();
             customerTypeIdList.add(1);
@@ -313,20 +319,20 @@ public class FinanceController {
             reasonIdList.add(-2);
         }
         map.put("reasonIdList", reasonIdList);
-        List<CustomerApiVendor> customerApiVendorList = null;
+        List<CustomerBalanceLog> customerBalanceLogList = null;
         long totleAmount = 0;
         try {
-            customerApiVendorList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
-            if(customerApiVendorList != null) {
-                for (int i = 0; i < customerApiVendorList.size(); i++) {
-                    CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
-                    totleAmount = totleAmount + customerApiVendor.getTotlePrice();
+            customerBalanceLogList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
+            if(customerBalanceLogList != null) {
+                for (int i = 0; i < customerBalanceLogList.size(); i++) {
+                    CustomerBalanceLog customerBalanceLog = customerBalanceLogList.get(i);
+                    totleAmount = totleAmount + customerBalanceLog.getAmount();
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("customerApiVendorList",customerApiVendorList);
+        model.addAttribute("customerBalanceLogList",customerBalanceLogList);
         model.addAttribute("companyName",companyName);
         model.addAttribute("apiTypeName",apiTypeName);
         model.addAttribute("apiTypeId",apiTypeId);

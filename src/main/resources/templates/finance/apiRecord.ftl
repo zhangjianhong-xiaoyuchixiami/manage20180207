@@ -63,24 +63,24 @@
 
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <#--<div class="control-group pull-left" style="margin-bottom: -20px;">-->
 
-                                <label class="control-label">产品名称</label>
+                                <#--<label class="control-label">产品名称</label>-->
 
-                                <div class="controls">
+                                <#--<div class="controls">-->
 
-                                    <select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                        <option value="">请选择...</option>
-                                        <#if apiVendorApiList??>
-                                            <#list apiVendorApiList as apiVendor>
-                                                <option <#if apiId?? && apiId==apiVendor.apiId>selected="selected"</#if> value="${apiVendor.apiId}">${apiVendor.apiName}</option>
-                                            </#list>
-                                        </#if>
-                                    </select>
+                                    <#--<select id="apiId" name="apiId" class="medium m-wrap1" tabindex="1" style="width: 105px;">-->
+                                        <#--<option value="">请选择...</option>-->
+                                        <#--<#if apiVendorApiList??>-->
+                                            <#--<#list apiVendorApiList as apiVendor>-->
+                                                <#--<option <#if apiId?? && apiId==apiVendor.apiId>selected="selected"</#if> value="${apiVendor.apiId}">${apiVendor.apiName}</option>-->
+                                            <#--</#list>-->
+                                        <#--</#if>-->
+                                    <#--</select>-->
 
-                                </div>
+                                <#--</div>-->
 
-                            </div>
+                            <#--</div>-->
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
@@ -107,9 +107,42 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i></div>
+                            <div class="caption"><i class="icon-user"></i></div>
 
                             <@d.tools idName="exportExcel"></@d.tools>
+
+                            <div class="actions">
+
+                                <div class="btn-group">
+
+                                    <a class="btn" href="#" data-toggle="dropdown">
+
+                                        表格显示列
+
+                                        <i class="icon-angle-down"></i>
+
+                                    </a>
+
+                                    <div id="sample_1_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                        <label><input type="checkbox" checked data-column="0">产品类型</label>
+
+                                        <label><input type="checkbox" checked data-column="1">产品供应商</label>
+
+                                        <label><input type="checkbox" data-column="2">产品名称</label>
+
+                                        <label><input type="checkbox" checked data-column="3">消费总额</label>
+
+                                        <label><input type="checkbox" checked data-column="4">所剩余额</label>
+
+                                        <label><input type="checkbox" data-column="5">周消费总额</label>
+
+                                        <label><input type="checkbox" checked data-column="6">月消费总额</label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -142,38 +175,38 @@
                                 </div>
 
                             <#--&lt;#&ndash;总消费&ndash;&gt;-->
-                                <#--<div class="control-group pull-right" style="margin-bottom: -10px;">-->
+                            <#--<div class="control-group pull-right" style="margin-bottom: -10px;">-->
 
-                                    <#--<label class="control-label">-->
+                            <#--<label class="control-label">-->
 
-                                        <#--<a id="tipInfo" href="#form_modal3" data-toggle="modal">-->
+                            <#--<a id="tipInfo" href="#form_modal3" data-toggle="modal">-->
 
-                                            <#--<i class="icon-bar-chart"></i>总消费-->
+                            <#--<i class="icon-bar-chart"></i>总消费-->
 
-                                        <#--</a>-->
+                            <#--</a>-->
 
-                                    <#--</label>-->
+                            <#--</label>-->
 
-                                    <#--<div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">-->
+                            <#--<div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">-->
 
-                                        <#--<div class="modal-header">-->
+                            <#--<div class="modal-header">-->
 
-                                            <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
+                            <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>-->
 
-                                            <#--<h3 id="myModalLabel3">&nbsp;</h3>-->
+                            <#--<h3 id="myModalLabel3">&nbsp;</h3>-->
 
-                                        <#--</div>-->
-                                        <#--<div class="modal-body">-->
+                            <#--</div>-->
+                            <#--<div class="modal-body">-->
 
-                                            <#--<div id="container">-->
+                            <#--<div id="container">-->
 
-                                            <#--</div>-->
+                            <#--</div>-->
 
-                                        <#--</div>-->
+                            <#--</div>-->
 
-                                    <#--</div>-->
+                            <#--</div>-->
 
-                                <#--</div>-->
+                            <#--</div>-->
 
                             <#--表字段总额-->
                                 <div class="control-group pull-right" style="margin-bottom: -10px;">
@@ -268,39 +301,30 @@
                             <table class="table table-striped table-bordered table-hover table-condensed" id="sample_1">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 20%;">产品名称</th>
-                                    <th style="text-align: center; width: 15%;">产品类型</th>
-                                    <th style="text-align: center; width: 10%;">产品供应商</th>
-                                    <th style="width: 11%;">周消费总额（单位：元）</th>
-                                    <th style="width: 11%;">月消费总额（单位：元）</th>
-                                    <th style="width: 11%;">消费总额（单位：元）</th>
-                                    <th style="width: 11%;">所剩余额（单位：元）</th>
-                                    <th style="text-align: center; width: 11%;"></th>
+                                    <th style="text-align: center;">产品类型</th>
+                                    <th style="text-align: center;">产品供应商</th>
+                                    <th style="text-align: center;">产品名称</th>
+                                    <th>消费总额（单位：元）</th>
+                                    <th>所剩余额（单位：元）</th>
+                                    <th>周消费总额（单位：元）</th>
+                                    <th>月消费总额（单位：元）</th>
+                                    <th style="text-align: center; width: 13%;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#if apiFinanceList??>
                                         <#list apiFinanceList as apiFinance>
                                         <tr>
-                                            <td data-title="产品名称">${apiFinance.apiName}</td>
                                             <td data-title="产品类型">${apiFinance.apiTypeName}</td>
                                             <td data-title="产品供应商">${apiFinance.vendorName}</td>
-                                            <td data-title="周消费总额"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="月消费总额"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="产品名称">${apiFinance.apiName}</td>
                                             <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="周消费总额"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="月消费总额"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center;" >
-                                                <ul class="nav nav-tabs" style="margin-bottom: 0px; min-width: 94px; border-bottom: 0px solid #f4f4f4;">
-                                                    <li class="dropdown" style="float: none;">
-                                                        <a class="dropdown-toggle" style=" padding-bottom: 0px; padding-top: 0px;" data-toggle="dropdown" href="#">
-                                                            操作 <span class="caret"></span>
-                                                        </a>
-                                                        <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
-                                                            <li style="text-align: left"><a style="color: #08c;" href="#form_modal4" onclick="charge(${apiFinance.apiId})" data-toggle="modal">充值</a></li>
-                                                            <li style="text-align: left"><a style="color: #08c;" href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiName=${apiFinance.apiName}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
+                                                <a href="#form_modal4" onclick="charge(${apiFinance.apiId})" data-toggle="modal">充值</a>
+                                                <#--<a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiName=${apiFinance.apiName}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a>-->
                                             </td>
                                         </tr>
                                         </#list>
@@ -654,17 +678,17 @@
                 data: {"apiIdCharge":apiIdCharge,"amount":amount,"chargeDate":chargeDate,"remark":remark},
                 dataType: "json",
                 success: function (result) {
-                        if(result.amountMessage != null){
-                            $("#amount-message").empty();
-                            $("#amount-message").append('<span class="help-line"><font color="red">'+result.amountMessage+'</font></span>');
-                        }
-                        if(result.successMessage != null){
-                            window.location.href="/api/find-all-api-record"
-                        }
-                        if(result.errorMessage != null) {
-                            $("#error-alert").empty();
-                            $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
-                        }
+                    if(result.amountMessage != null){
+                        $("#amount-message").empty();
+                        $("#amount-message").append('<span class="help-line"><font color="red">'+result.amountMessage+'</font></span>');
+                    }
+                    if(result.successMessage != null){
+                        window.location.href="/api/find-all-api-record"
+                    }
+                    if(result.errorMessage != null) {
+                        $("#error-alert").empty();
+                        $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                    }
                 }
             });
         });

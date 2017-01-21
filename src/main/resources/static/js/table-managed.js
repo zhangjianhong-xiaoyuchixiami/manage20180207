@@ -10,14 +10,14 @@ var TableManaged = function () {
             }
 
             // apiRecord
-            $('#sample_1').dataTable({
+           var oTable1 = $('#sample_1').dataTable({
                 "aoColumns": [
-                    { "bSortable": false },
-                    { "bSortable": false },
-                    { "bSortable": false },
                     null,
                     null,
+                    { "bVisible": false },
                     null,
+                    null,
+                    { "bVisible": false },
                     null,
                     { "bSortable": false }
                 ],
@@ -48,9 +48,60 @@ var TableManaged = function () {
                 "bFilter" : false //设置全文搜索框，默认true
             });
 
+            $('#sample_1_column_toggler input[type="checkbox"]').change(function(){
+                /* Get the DataTables object again - this is not a recreation, just a get of the object */
+                var iCol = parseInt($(this).attr("data-column"));
+                var bVis = oTable1.fnSettings().aoColumns[iCol].bVisible;
+                oTable1.fnSetColumnVis(iCol, (bVis ? false : true));
+            });
+
+
+            /* Formating function for row details */
+            function fnFormatDetails ( oTable, nTr )
+            {
+                var aData = oTable.fnGetData( nTr );
+                var sOut = '<table>';
+                sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 22%;">产品类型</th><th style="width: 10%;">价格</th><th style="width: 60%;">MobileOperator</th></tr>';
+                sOut += '<tr><td></td><td>'+aData[10]+'</td><td>'+aData[11]+'</td><td>'+aData[12]+'</td></tr>';
+                sOut += '</table>';
+                return sOut;
+            }
+
+            /*
+             * Insert a 'details' column to the table
+             */
+            var nCloneTh = document.createElement( 'th' );
+            var nCloneTd = document.createElement( 'td' );
+            nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
+
+            $('#sample_2 thead tr').each( function () {
+                this.insertBefore( nCloneTh, this.childNodes[0] );
+            } );
+
+            $('#sample_2 tbody tr').each( function () {
+                this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
+            } );
+
+            $('#sample_2').on('click', ' tbody td .row-details', function () {
+                var nTr = $(this).parents('tr')[0];
+                if ( oTable.fnIsOpen(nTr) )
+                {
+                    /* This row is already open - close it */
+                    $(this).addClass("row-details-close").removeClass("row-details-open");
+                    oTable.fnClose( nTr );
+                }
+                else
+                {
+                    /* Open this row */
+                    $(this).addClass("row-details-open").removeClass("row-details-close");
+                    oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr), 'details' );
+                }
+            });
+
             //customerFinancialAccount
             var oTable = $('#sample_2').dataTable({
                 "aoColumns": [
+                    {"bSortable": false},
                     null,
                     null,
                     null,
@@ -59,9 +110,12 @@ var TableManaged = function () {
                     { "bVisible": false },
                     { "bVisible": false },
                     null,
-                    null
+                    null,
+                    { "bVisible": false },
+                    { "bVisible": false },
+                    { "bVisible": false }
                 ],
-                "aaSorting": [[4, 'desc']],
+                "aaSorting": [[5, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -98,6 +152,7 @@ var TableManaged = function () {
                 var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
                 oTable.fnSetColumnVis(iCol, (bVis ? false : true));
             });
+
 
             //partnersFinancialAccount
             $('#sample_3').dataTable({
@@ -184,12 +239,11 @@ var TableManaged = function () {
             //customerApiConsumeRecord
             $('#sample_5').dataTable({
                 "aoColumns": [
-                    { "bSortable": false },
-                    { "bSortable": false },
+                    null,
                     null,
                     { "bSortable": false }
                 ],
-                "aaSorting": [[2, 'desc']],
+                "aaSorting": [[1, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -255,8 +309,8 @@ var TableManaged = function () {
             //customerApiConsumeDetailRecord
             $('#sample_7').dataTable({
                 "aoColumns": [
-                    { "bSortable": false },
-                    { "bSortable": false },
+                    null,
+                    null,
                     null,
                     { "bSortable": false }
                 ],

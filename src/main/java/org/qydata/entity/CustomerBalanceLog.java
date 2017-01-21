@@ -19,6 +19,7 @@ public class CustomerBalanceLog implements Serializable{
     private Long reqId;
     private Timestamp createTime;
     private CustomerBalanceModifyReason customerBalanceModifyReason;
+    private Api api;
     public CustomerBalanceLog(){}
 
     public Long getId() {
@@ -76,6 +77,15 @@ public class CustomerBalanceLog implements Serializable{
     public void setCustomerBalanceModifyReason(CustomerBalanceModifyReason customerBalanceModifyReason) {
         this.customerBalanceModifyReason = customerBalanceModifyReason;
     }
+
+    public Api getApi() {
+        return api;
+    }
+
+    public void setApi(Api api) {
+        this.api = api;
+    }
+
     public String toString(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {

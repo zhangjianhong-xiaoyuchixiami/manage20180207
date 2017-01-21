@@ -63,7 +63,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
-    public List<CustomerApiVendor> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String, Object> map) throws Exception {
+    public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String, Object> map) throws Exception {
         return customerFinanceMapper.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
     }
 

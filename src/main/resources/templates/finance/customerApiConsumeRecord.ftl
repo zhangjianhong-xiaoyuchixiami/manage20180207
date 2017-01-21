@@ -65,24 +65,24 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <#--<div class="control-group pull-left" style="margin-bottom: -20px;">-->
 
-                                <label class="control-label">产品供应商</label>
+                                <#--<label class="control-label">产品供应商</label>-->
 
-                                <div class="controls">
-                                    <select id="apiVendorId" name="apiVendorId" class="medium m-wrap1" tabindex="1">
-                                        <option value="">请选择...</option>
-                                        <#if customerApiVendors??>
-                                            <#list customerApiVendors as vendor>
+                                <#--<div class="controls">-->
+                                    <#--<select id="apiVendorId" name="apiVendorId" class="medium m-wrap1" tabindex="1">-->
+                                        <#--<option value="">请选择...</option>-->
+                                        <#--<#if customerApiVendors??>-->
+                                            <#--<#list customerApiVendors as vendor>-->
 
-                                                <option <#if apiVendorId?? &&vendor.vendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="<#if vendor.vendorId??>${vendor.vendorId?c}</#if>"><#if vendor.vendorName??>${vendor.vendorName}</#if></option>
+                                                <#--<option <#if apiVendorId?? &&vendor.vendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="<#if vendor.vendorId??>${vendor.vendorId?c}</#if>"><#if vendor.vendorName??>${vendor.vendorName}</#if></option>-->
 
-                                            </#list>
-                                        </#if>
-                                    </select>
-                                </div>
+                                            <#--</#list>-->
+                                        <#--</#if>-->
+                                    <#--</select>-->
+                                <#--</div>-->
 
-                            </div>
+                            <#--</div>-->
 
                             <div class="control-group pull-left" style="margin-bottom: -20px;">
 
@@ -130,9 +130,9 @@
                                 <thead>
                                 <tr>
                                     <th>产品类型</th>
-                                    <th>产品供应商</th>
-                                    <th style="width: 15%">金额（单位/元）</th>
-                                    <th style="text-align: center; width: 13%">操作</th>
+                                    <#--<th>产品供应商</th>-->
+                                    <th style="width: 20%">金额（单位/元）</th>
+                                    <th style="text-align: center; width: 15%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -140,7 +140,7 @@
                                         <#list customerApiTypeList as customerApiType>
                                         <tr>
                                             <td data-title="产品类型">${customerApiType.apiTypeName}</td>
-                                            <td data-title="产品供应商"><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></td>
+                                            <#--<td data-title="产品供应商"><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></td>-->
                                             <td data-title="金额（单位/元）"><#if customerApiType.totlePrice??>${(-customerApiType.totlePrice/100.0)?c}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?customerId=${customerId?c}&apiTypeId=${customerApiType.apiTypeId?c}&reasonId=-1<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
                                         </tr>

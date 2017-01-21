@@ -331,10 +331,9 @@ public class ExcelFinanceController {
             reasonIdList.add(-2);
         }
         map.put("reasonIdList", reasonIdList);
-        List<CustomerApiVendor> customerApiVendorList = null;
+        List<CustomerBalanceLog> customerBalanceLogList = null;
         try {
-            customerApiVendorList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
-
+            customerBalanceLogList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -342,23 +341,36 @@ public class ExcelFinanceController {
         Map<String, Object> mapA = new HashMap<String, Object>();
         mapA.put("sheetName", "sheet1");
         list.add(mapA);
-        CustomerApiVendor customerApiVendor = null;
-        for (int j = 0; j < customerApiVendorList.size(); j++) {
-            customerApiVendor = customerApiVendorList.get(j);
+        CustomerBalanceLog customerBalanceLog = null;
+        for (int j = 0; j < customerBalanceLogList.size(); j++) {
+            customerBalanceLog = customerBalanceLogList.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
-            mapValue.put("apiVendor", customerApiVendor.getVendorName());
-            mapValue.put("apiName", customerApiVendor.getApiName());
-            if(customerApiVendor.getTotlePrice() != null){
-                mapValue.put("price", customerApiVendor.getTotlePrice()/100.0);
+
+            if(customerBalanceLog.getApi() != null && customerBalanceLog.getApi().getName() != null ){
+                mapValue.put("apiName", customerBalanceLog.getApi().getName());
             }else{
-                mapValue.put("price", 0.0);
+                mapValue.put("apiName", "");
             }
-            mapValue.put("reasonName", customerApiVendor.getReasonName());
+            if(customerBalanceLog.getAmount() != null){
+                mapValue.put("amount", customerBalanceLog.getAmount()/100.0);
+            }else{
+                mapValue.put("amount", 0.0);
+            }
+            if(customerBalanceLog.getCreateTime() != null){
+                mapValue.put("createTime", customerBalanceLog.getCreateTime());
+            }else{
+                mapValue.put("createTime", "");
+            }
+            if(customerBalanceLog.getCustomerBalanceModifyReason() != null && customerBalanceLog.getCustomerBalanceModifyReason().getName() != null ){
+                mapValue.put("reasonName", customerBalanceLog.getCustomerBalanceModifyReason().getName());
+            }else{
+                mapValue.put("reasonName", "");
+            }
             list.add(mapValue);
         }
         String fileName = companyName+"消费明细记录";
-        String columnNames[]= {"产品供应商","产品名称","金额（单位：元）","类型"};//列名
-        String keys[] = {"apiVendor","apiName","price","reasonName"};//map中的key
+        String columnNames[]= {"产品名称","消费金额（单位：元）","创建时间","类型"};//列名
+        String keys[] = {"apiName","amount","createTime","reasonName"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**

@@ -1,7 +1,6 @@
 package org.qydata.service;
 
 import org.qydata.dst.CustomerApiType;
-import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.WeekMonthAmount;
@@ -52,7 +51,7 @@ public interface CustomerFinanceService {
      * @return
      * @throws Exception
      */
-    public List<CustomerApiVendor> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
+    public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
     /**
      * 查询客户的周月记录
