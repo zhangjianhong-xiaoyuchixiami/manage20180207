@@ -1,9 +1,10 @@
 package org.qydata.mapper;
 
 import org.qydata.dst.ApiFinance;
-import org.qydata.entity.ApiBalanceLog;
+import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.entity.ApiRequestLog;
 import org.qydata.entity.ApiType;
+import org.qydata.entity.ApiVendor;
 
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,12 @@ public interface ApiFinanceMapper {
    public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map)throws Exception;
 
     /**
-     * 查询供应商和api
+     * 查询供应商
      * @param map
      * @return
      * @throws Exception
      */
-   public List<ApiFinance> queryApiVendorAndApi(Map<String,Object> map)throws Exception;
+   public List<ApiVendor> queryApiVendorName(Map<String,Object> map)throws Exception;
 
     /**
      *查询Api消费详情
@@ -38,27 +39,27 @@ public interface ApiFinanceMapper {
    public List<ApiRequestLog> queryApiDetailById(Map<String,Object> map) throws Exception;
 
     /**
-     * Api充值
+     * ApiVendor充值
 
      * @return
      * @throws Exception
      */
-   public boolean updateApiBalance(Integer apiId,Long balance ) throws Exception;
-
-    /**
-     * Api充值记录
-     * @return
-     * @throws Exception
-     */
-    public boolean insertApiBalanceLog(ApiBalanceLog apiBalanceLog) throws Exception;
+   public boolean updateApiVendorBalance(Integer vendorId,Long balance ) throws Exception;
 
     /**
-     * 查询Api余额
-     * @param apiId
+     * ApiVendor充值充值记录
      * @return
      * @throws Exception
      */
-    public Long queryApiBalance(Integer apiId)throws Exception;
+    public boolean insertApiVendorBalanceLog(ApiVendorBalanceLog apiVendorBalanceLog) throws Exception;
+
+    /**
+     * 查询ApiVendor余额
+     * @param vendorId
+     * @return
+     * @throws Exception
+     */
+    public Long queryApiVendorBalance(Integer vendorId)throws Exception;
 
     /**
      * 查询Api类型
@@ -66,4 +67,11 @@ public interface ApiFinanceMapper {
      * @throws Exception
      */
     public List<ApiType> queryApiType()throws Exception;
+
+    /**
+     * 以API类型统计消费信息
+     * @return
+     * @throws Exception
+     */
+    public List<ApiFinance> queryApiVendor(Map<String,Object> map)throws Exception;
 }

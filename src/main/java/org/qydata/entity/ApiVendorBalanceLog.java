@@ -6,10 +6,10 @@ import java.util.Date;
 /**
  * Created by jonhn on 2017/1/20.
  */
-public class ApiBalanceLog implements Serializable {
+public class ApiVendorBalanceLog implements Serializable {
 
     private Integer id;
-    private Integer apiId;
+    private Integer vendorId;
     private Long amount;
     private Integer reasonId;
     private String remark;
@@ -24,12 +24,12 @@ public class ApiBalanceLog implements Serializable {
         this.id = id;
     }
 
-    public Integer getApiId() {
-        return apiId;
+    public Integer getVendorId() {
+        return vendorId;
     }
 
-    public void setApiId(Integer apiId) {
-        this.apiId = apiId;
+    public void setVendorId(Integer vendorId) {
+        this.vendorId = vendorId;
     }
 
     public Long getAmount() {

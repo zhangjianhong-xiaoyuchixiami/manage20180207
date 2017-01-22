@@ -8,6 +8,7 @@ import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
 import org.qydata.entity.ApiResponseLog;
 import org.qydata.entity.ApiType;
+import org.qydata.entity.ApiVendor;
 import org.qydata.regex.RegexUtil;
 import org.qydata.service.ApiFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jonhn on 2017/1/18.
@@ -29,26 +33,22 @@ public class ApiFinanceController {
 
     //Api消费账单
     @RequestMapping("/find-all-api-record")
-    public String findAllApiRecord(Integer apiId, Integer apiTypeId, Integer vendorId, Model model){
+    public String findAllApiRecord(Integer vendorId, Integer apiTypeId, Model model){
         List<ApiType> apiTypeList = apiFinanceService.queryApiType();
         System.out.println(apiTypeList);
         Map<String,Object> map = new HashedMap();
-        if (apiId !=null){
-            map.put("apiId",apiId);
-        }
-        List<ApiFinance> apiVendorApiList  = null;
-        if (apiTypeId !=null){
-            map.put("apiTypeId",apiTypeId);
-            apiVendorApiList  = apiFinanceService.queryApiVendorAndApi(map);
-        }
         if (vendorId !=null){
             map.put("vendorId",vendorId);
-            apiVendorApiList  = apiFinanceService.queryApiVendorAndApi(map);
+        }
+        List<ApiVendor> apiVendorList  = null;
+        if (apiTypeId !=null){
+            map.put("apiTypeId",apiTypeId);
+            apiVendorList  = apiFinanceService.queryApiVendorName(map);
         }
         long weekTotleAmount = 0L;
         long monthTotleAmount = 0L;
         long consumeTotleAmount = 0L;
-        long totleBalance = 0L;
+
         List<ApiFinance> apiFinanceList = apiFinanceService.queryApiOverAllFinance(map);
         if (apiFinanceList != null){
             for (int i=0; i<apiFinanceList.size(); i++){
@@ -62,21 +62,16 @@ public class ApiFinanceController {
                 if(apiFinance.getConsumeTotleAmount() != null){
                     consumeTotleAmount = consumeTotleAmount +apiFinance.getConsumeTotleAmount();
                 }
-                if(apiFinance.getBalance() != null){
-                    totleBalance = totleBalance +apiFinance.getBalance();
-                }
             }
         }
         model.addAttribute("apiFinanceList",apiFinanceList);
         model.addAttribute("apiTypeList",apiTypeList);
-        model.addAttribute("apiVendorApiList",apiVendorApiList);
-        model.addAttribute("apiId",apiId);
-        model.addAttribute("apiTypeId",apiTypeId);
+        model.addAttribute("apiVendorList",apiVendorList);
         model.addAttribute("vendorId",vendorId);
+        model.addAttribute("apiTypeId",apiTypeId);
         model.addAttribute("weekTotleAmount",weekTotleAmount);
         model.addAttribute("monthTotleAmount",monthTotleAmount);
         model.addAttribute("consumeTotleAmount",consumeTotleAmount);
-        model.addAttribute("totleBalance",totleBalance);
         return "/finance/apiRecord";
     }
 
@@ -89,23 +84,8 @@ public class ApiFinanceController {
     public String findApiVendorByApiTypeId(Integer apiTypeId){
         Map<String, Object> map = new HashedMap();
         map.put("apiTypeId", apiTypeId);
-        List<ApiFinance> apiVendorList  = apiFinanceService.queryApiVendorAndApi(map);
+        List<ApiVendor> apiVendorList  = apiFinanceService.queryApiVendorName(map);
         JSONArray jsonArray = JSONArray.fromObject(apiVendorList);
-        return jsonArray.toString();
-    }
-
-    /**
-     * api三级级联
-     * @return
-     */
-    @RequestMapping("/find-api-by-api-type-id")
-    @ResponseBody
-    public String findApiByApiTypeId(Integer apiTypeId,Integer vendorId){
-        Map<String, Object> map = new HashedMap();
-        map.put("apiTypeId", apiTypeId);
-        map.put("vendorId",vendorId);
-        List<ApiFinance> apiList  = apiFinanceService.queryApiVendorAndApi(map);
-        JSONArray jsonArray = JSONArray.fromObject(apiList);
         return jsonArray.toString();
     }
 
@@ -168,10 +148,86 @@ public class ApiFinanceController {
         return "/finance/apiDetailRecord";
     }
 
-    //Api充值
-    @RequestMapping("/find-all-api-record/charge")
+
+    /**
+     * 以API类型统计消费信息
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/find-all-api-vendor-consume")
+    public String findAllApiVendorConsume(Integer vendorId,Model model){
+        Map<String,Object> map = new HashMap<>();
+        List<ApiVendor> apiVendorList  = apiFinanceService.queryApiVendorName(map);
+        System.out.println(apiVendorList);
+        if(vendorId != null){
+            map.put("vendorId",vendorId);
+        }
+        List<ApiFinance> apiFinanceList = apiFinanceService.queryApiVendor(map);
+        long weekTotleAmount = 0L;
+        long monthTotleAmount = 0L;
+        long consumeTotleAmount = 0L;
+        long totleBalance = 0L;
+        if (apiFinanceList != null){
+            for (int i=0; i<apiFinanceList.size(); i++){
+                ApiFinance apiFinance = apiFinanceList.get(i);
+                if(apiFinance.getWeekTotleCost() != null){
+                    weekTotleAmount = weekTotleAmount +apiFinance.getWeekTotleCost();
+                }
+                if(apiFinance.getMonthTotleCost() != null){
+                    monthTotleAmount = monthTotleAmount +apiFinance.getMonthTotleCost();
+                }
+                if(apiFinance.getConsumeTotleAmount() != null){
+                    consumeTotleAmount = consumeTotleAmount +apiFinance.getConsumeTotleAmount();
+                }
+                if(apiFinance.getBalance() != null){
+                    totleBalance = totleBalance +apiFinance.getBalance();
+                }
+            }
+        }
+        model.addAttribute("apiFinanceList",apiFinanceList);
+        model.addAttribute("apiVendorList",apiVendorList);
+        model.addAttribute("vendorId",vendorId);
+        model.addAttribute("weekTotleAmount",weekTotleAmount);
+        model.addAttribute("monthTotleAmount",monthTotleAmount);
+        model.addAttribute("consumeTotleAmount",consumeTotleAmount);
+        model.addAttribute("totleBalance",totleBalance);
+        return "/finance/apiVendorRecord";
+    }
+
+    //Api消费总额柱状图
+    @RequestMapping("/find-all-api-vendor-consume/bar-chart")
     @ResponseBody
-    public String chargeApiBalance(Integer apiIdCharge,String amount,String remark,String chargeDate){
+    public String findAllApiVendorConsumeBarChart(){
+        Map<String,Object> map = new HashedMap();
+        List xList = new ArrayList();
+        List yList = new ArrayList();
+        List<ApiFinance> apiFinanceList = apiFinanceService.queryApiVendor(map);
+        if (apiFinanceList != null){
+            for (int i=0; i<apiFinanceList.size(); i++){
+                ApiFinance apiFinance = apiFinanceList.get(i);
+                xList.add(apiFinance.getVendorName());
+                if(apiFinance.getConsumeTotleAmount() != null){
+                    yList.add(apiFinance.getConsumeTotleAmount()/100.0);
+                }else {
+                    yList.add(0);
+                }
+            }
+        }
+        Map mapOne = new HashedMap();
+        mapOne.put("name","供应商消费总额");
+        mapOne.put("data",yList);
+        JSONArray jsonArray = JSONArray.fromObject(xList);
+        JSONArray jsonArray1 = JSONArray.fromObject(mapOne);
+        JSONObject getObj = new JSONObject();
+        getObj.put("xList", jsonArray);
+        getObj.put("yList", jsonArray1);
+        return getObj.toString();
+    }
+
+    //Api充值
+    @RequestMapping("/find-all-vendor-record/charge")
+    @ResponseBody
+    public String chargeApiVendorBalance(Integer vendorIdCharge,String amount,String remark,String chargeDate){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if(RegexUtil.isNull(amount)){
@@ -187,7 +243,7 @@ public class ApiFinanceController {
                 return gson.toJson(map);
             }
         }
-        boolean flag = apiFinanceService.apiChargeLog(apiIdCharge, Long.parseLong(amount), remark, chargeDate);
+        boolean flag = apiFinanceService.apiVendorChargeLog(vendorIdCharge, Long.parseLong(amount), remark, chargeDate);
         if (flag){
             map.put("successMessage","恭喜你，操作成功！");
         }else {
@@ -195,4 +251,6 @@ public class ApiFinanceController {
         }
         return gson.toJson(map);
     }
+
+
 }

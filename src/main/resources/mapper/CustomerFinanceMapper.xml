@@ -458,7 +458,7 @@
         AND DATE_FORMAT(endTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval #{param3} month),'%Y-%m')
     </select>
 
-
+    <!--查询客户各供应商消费情况-->
     <select id="queryCustomerConsumeByVendor" parameterType="map" resultMap="CustomerApiVendor_Map">
         select ee.apiTypeId,ff.name typeName,ee.apiId,ee.totlePrice,ee.vendorName,ee.vendorId,ee.apiName
         from

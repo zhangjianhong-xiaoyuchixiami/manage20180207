@@ -233,6 +233,12 @@
                                 </a>
                             </li>
 
+                            <li id="apiRecordLog">
+                                <a href="/api/find-all-api-vendor-consume">
+                                    供应商财务账单
+                                </a>
+                            </li>
+
                             <#--<li id="partnersFinancialAccount">-->
 
                                 <#--<a href="javascript:;">-->

@@ -147,7 +147,7 @@
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_10">
                                 <thead>
                                 <tr>
-                                    <#--<th style="text-align: center;">公司名称</th>-->
+                                    <th style="text-align: center;">公司名称</th>
                                     <th style="text-align: center;">消费金额（单位：元）</th>
                                     <th style="text-align: center;">响应时间（单位：秒）</th>
                                     <th style="text-align: center;">创建时间</th>
@@ -157,7 +157,7 @@
                                 <#if apiRequestLogList??>
                                 <#list apiRequestLogList as apiRequestLog>
                                 <tr>
-                                    <#--<td data-title="公司名称"><#if apiRequestLog.company??>${apiRequestLog.company.name!''}<#else></#if></td>-->
+                                    <td data-title="公司名称"><#if apiRequestLog.company??>${apiRequestLog.company.name!''}<#else></#if></td>
                                     <td data-title="消费金额（单位：元）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.cost/100.0)!''}<#else></#if></td>
                                     <td data-title="响应时间（单位：秒）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.resTime/1000.0)!''}<#else></#if></td>
                                     <td data-title="创建时间">${apiRequestLog.createTime!''}</td>

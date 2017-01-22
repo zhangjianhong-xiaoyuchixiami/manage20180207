@@ -3,6 +3,7 @@ package org.qydata.service;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
 import org.qydata.entity.ApiType;
+import org.qydata.entity.ApiVendor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,12 +23,12 @@ public interface ApiFinanceService {
     public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map);
 
     /**
-     * 查询供应商和api
+     * 查询供应商
      * @param map
      * @return
      * @throws Exception
      */
-    public List<ApiFinance> queryApiVendorAndApi(Map<String,Object> map);
+    public List<ApiVendor> queryApiVendorName(Map<String,Object> map);
 
     /**
      *查询Api消费详情
@@ -42,7 +43,7 @@ public interface ApiFinanceService {
      * @return
      */
     @Transactional
-    public boolean apiChargeLog(Integer apiId, Long amount, String remark, String chargeDate);
+    public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate);
 
     /**
      * 查询Api类型
@@ -50,4 +51,11 @@ public interface ApiFinanceService {
      * @throws Exception
      */
     public List<ApiType> queryApiType();
+
+    /**
+     * 以API类型统计消费信息
+     * @return
+     * @throws Exception
+     */
+    public List<ApiFinance> queryApiVendor(Map<String,Object> map);
 }

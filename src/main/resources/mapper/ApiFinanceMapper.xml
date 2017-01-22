@@ -30,22 +30,29 @@
         </association>
     </resultMap>
 
+    <resultMap id="ApiType_MobileOperator_Map" type="org.qydata.entity.ApiType">
+        <result column="apiTypeId" property="id"/>
+        <result column="apiTypeName" property="name"/>
+        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorName" property="name"/>
+        </association>
+    </resultMap>
+
 
     <!--Api财务总览-->
     <select id="queryApiOverAllFinance" parameterType="map" resultMap="ApiFinance_Map">
-        SELECT ee.id apiId,ee.apiTypeId,ee.apiTypeName,ee.vendorId,ee.vendorName,ee.apiName,ee.balance,ee.weekTotleCost,ee.monthTotleCost,
+        SELECT ee.id apiId,ee.apiTypeId,ee.apiTypeName,ee.vendorId,ee.vendorName,ee.apiName,ee.weekTotleCost,ee.monthTotleCost,
         ff.consumeTotleAmount
         FROM
         (
-        SELECT cc.id,cc.apiTypeId,cc.apiTypeName,cc.vendorId,cc.vendorName,cc.apiName,cc.balance,cc.weekTotleCost,dd.monthTotleCost
+        SELECT cc.id,cc.apiTypeId,cc.apiTypeName,cc.vendorId,cc.vendorName,cc.apiName,cc.weekTotleCost,dd.monthTotleCost
         FROM
         (
-        SELECT aa.id,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.apiName,aa.balance,bb.weekTotleCost
+        SELECT aa.id,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.apiName,bb.weekTotleCost
         FROM
         (
-        SELECT a.id,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName,c.balance
-        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id LEFT JOIN qyfinance.bkvwApiBalance c
-        ON a.id=c.apiId
+        SELECT a.id,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName
+        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
         ) aa LEFT JOIN
         (
         SELECT apiId,totleCost weekTotleCost
@@ -68,34 +75,36 @@
         GROUP BY apiId
         ) ff ON ee.id=ff.apiId
         <where>
-            <if test="apiId != null and apiId != ''">
-                ee.id=#{apiId}
+            <if test="vendorId != null and vendorId != ''">
+                ee.vendorId=#{vendorId}
             </if>
             <if test="apiTypeId != null and apiTypeId != ''">
                 AND ee.apiTypeId=#{apiTypeId}
             </if>
-            <if test="vendorId != null and vendorId != ''">
-                AND ee.vendorId=#{vendorId}
-            </if>
         </where>
     </select>
 
-    <select id="queryApiType" parameterType="map" resultType="org.qydata.entity.ApiType">
+    <!--&lt;!&ndash;查询Api类型&ndash;&gt;-->
+    <!--<select id="queryApiType" parameterType="map" resultMap="ApiType_MobileOperator_Map">-->
+        <!--SELECT a.apiTypeId,b.name apiTypeName,c.name mobileOperatorName-->
+        <!--FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id-->
+        <!--LEFT JOIN qyfinance.bkvwApiMobileOperator c ON a.id=c.apiId-->
+        <!--GROUP BY a.apiTypeId,b.name,c.name-->
+    <!--</select>-->
+
+    <!--查询Api类型-->
+    <select id="queryApiType" parameterType="map" resultMap="org.qydata.entity.ApiType">
         SELECT distinct(a.apiTypeId) id,b.name
         FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
     </select>
 
-    <!--查询供应商和api-->
-    <select id="queryApiVendorAndApi" parameterType="map" resultMap="ApiFinance_Map">
-        SELECT a.id apiId,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName,c.balance
-        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id LEFT JOIN qyfinance.bkvwApiBalance c
-        ON a.id=c.apiId
+    <!--查询供应商-->
+    <select id="queryApiVendorName" parameterType="map" resultType="org.qydata.entity.ApiVendor">
+        SELECT distinct(vendorId) id,vendorName name
+        FROM qyfinance.bkvwApi
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
-                a.apiTypeId=#{apiTypeId}
-            </if>
-            <if test="vendorId != null and vendorId != ''">
-                AND a.vendorId=#{vendorId}
+                AND apiTypeId=#{apiTypeId}
             </if>
         </where>
     </select>
@@ -117,21 +126,64 @@
         </if>
     </select>
 
-    <!--查询Api余额-->
-    <select id="queryApiBalance" parameterType="Integer" resultType="Long">
-        SELECT balance FROM qyfinance.bkvwApiBalance WHERE apiId=#{param}
+    <!--查询ApiVendor余额-->
+    <select id="queryApiVendorBalance" parameterType="Integer" resultType="Long">
+        SELECT balance FROM qyfinance.bkvwApiVendorBalance WHERE vendorId=#{param}
     </select>
 
-    <!--Api充值-->
-    <update id="updateApiBalance" parameterType="Object">
-      UPDATE qyfinance.ApiBalance SET balance=#{param2} WHERE apiId=#{param1}
+    <!--ApiVendor充值-->
+    <update id="updateApiVendorBalance" parameterType="Object">
+      UPDATE qyfinance.ApiVendorBalance SET balance=#{param2} WHERE vendorId=#{param1}
     </update>
 
-    <!--Api充值记录-->
-    <insert id="insertApiBalanceLog" parameterType="org.qydata.entity.ApiBalanceLog" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qyfinance.ApiBalanceLog(apiId,amount,reasonId,remark,createTime)
-        VALUES(#{apiId},#{amount},1,#{remark},#{createTime})
+    <!--ApiVendor充值充值记录-->
+    <insert id="insertApiVendorBalanceLog" parameterType="org.qydata.entity.ApiVendorBalanceLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiVendorBalanceLog(vendorId,amount,reasonId,remark,createTime)
+        VALUES(#{vendorId},#{amount},1,#{remark},#{createTime})
     </insert>
+
+    <!--以API类型统计消费信息-->
+    <select id="queryApiVendor" parameterType="map" resultMap="ApiFinance_Map">
+        SELECT gg.vendorId,gg.vendorName,gg.weekTotleCost,gg.monthTotleCost,gg.consumeTotleAmount,hh.balance
+        FROM (
+            SELECT ee.vendorId,ee.vendorName,sum(ee.weekTotleCost) weekTotleCost,sum(ee.monthTotleCost) monthTotleCost,
+            sum(ff.consumeTotleAmount) consumeTotleAmount
+            FROM
+            (
+            SELECT cc.id,cc.vendorId,cc.vendorName,cc.weekTotleCost,dd.monthTotleCost
+            FROM
+            (
+            SELECT aa.id,aa.vendorId,aa.vendorName,bb.weekTotleCost
+            FROM qyfinance.bkvwApi aa LEFT JOIN
+            (
+            SELECT apiId,totleCost weekTotleCost
+            FROM qyfinance.bkvwApiWeekMonthAmount
+            WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+            AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+            ) bb ON aa.id=bb.apiId
+            ) cc LEFT JOIN
+            (
+            SELECT apiId,totleCost monthTotleCost
+            FROM qyfinance.bkvwApiWeekMonthAmount
+            WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+            AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+            ) dd ON cc.id=dd.apiId
+            ) ee LEFT JOIN
+            (
+            SELECT SUM(cost) consumeTotleAmount,apiId
+            FROM qyfinance.bkvwApiRequestLog
+            WHERE ok=1
+            GROUP BY apiId
+            ) ff ON ee.id=ff.apiId
+            GROUP BY ee.vendorId,ee.vendorName
+            <where>
+                <if test="vendorId != null and vendorId != ''">
+                    AND ee.vendorId=#{vendorId}
+                </if>
+            </where>
+            ) gg LEFT JOIN qyfinance.bkvwApiVendorBalance hh ON gg.vendorId=hh.vendorId
+
+    </select>
 
 </mapper>
 

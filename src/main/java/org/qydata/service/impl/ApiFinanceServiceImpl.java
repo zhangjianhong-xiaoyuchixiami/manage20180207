@@ -1,9 +1,10 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.ApiFinance;
-import org.qydata.entity.ApiBalanceLog;
+import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.entity.ApiRequestLog;
 import org.qydata.entity.ApiType;
+import org.qydata.entity.ApiVendor;
 import org.qydata.mapper.ApiFinanceMapper;
 import org.qydata.service.ApiFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,9 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
-    public List<ApiFinance> queryApiVendorAndApi(Map<String, Object> map) {
+    public List<ApiVendor> queryApiVendorName(Map<String, Object> map) {
         try {
-            return apiFinanceMapper.queryApiVendorAndApi(map);
+            return apiFinanceMapper.queryApiVendorName(map);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -54,32 +55,32 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
-    public boolean apiChargeLog(Integer apiId, Long amount, String remark, String chargeDate) {
+    public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate) {
         Long balance = null;
         try {
-            balance = apiFinanceMapper.queryApiBalance(apiId);
+            balance = apiFinanceMapper.queryApiVendorBalance(vendorIdCharge);
         } catch (Exception e) {
             e.printStackTrace();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        ApiBalanceLog apiBalanceLog = new ApiBalanceLog();
-        apiBalanceLog.setApiId(apiId);
-        apiBalanceLog.setAmount(amount*100);
-        apiBalanceLog.setRemark(remark);
+        ApiVendorBalanceLog apiVendorBalanceLog = new ApiVendorBalanceLog();
+        apiVendorBalanceLog.setVendorId(vendorIdCharge);
+        apiVendorBalanceLog.setAmount(amount*100);
+        apiVendorBalanceLog.setRemark(remark);
         System.out.println("****************"+chargeDate);
         if (chargeDate == "" || chargeDate == null){
-          apiBalanceLog.setCreateTime(new Date());
+          apiVendorBalanceLog.setCreateTime(new Date());
         }else {
             try {
-                apiBalanceLog.setCreateTime(sdf.parse(chargeDate));
+                apiVendorBalanceLog.setCreateTime(sdf.parse(chargeDate));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
         boolean flag = false;
         try {
-            apiFinanceMapper.updateApiBalance(apiId,((amount*100) + balance));
-            flag = apiFinanceMapper.insertApiBalanceLog(apiBalanceLog);
+            apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((amount*100) + balance));
+            flag = apiFinanceMapper.insertApiVendorBalanceLog(apiVendorBalanceLog);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,6 +91,16 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     public List<ApiType> queryApiType() {
         try {
             return apiFinanceMapper.queryApiType();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<ApiFinance> queryApiVendor(Map<String, Object> map) {
+        try {
+            return apiFinanceMapper.queryApiVendor(map);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
