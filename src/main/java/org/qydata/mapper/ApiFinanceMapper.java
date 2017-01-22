@@ -3,6 +3,7 @@ package org.qydata.mapper;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiBalanceLog;
 import org.qydata.entity.ApiRequestLog;
+import org.qydata.entity.ApiType;
 
 import java.util.List;
 import java.util.Map;
@@ -58,4 +59,11 @@ public interface ApiFinanceMapper {
      * @throws Exception
      */
     public Long queryApiBalance(Integer apiId)throws Exception;
+
+    /**
+     * 查询Api类型
+     * @return
+     * @throws Exception
+     */
+    public List<ApiType> queryApiType()throws Exception;
 }

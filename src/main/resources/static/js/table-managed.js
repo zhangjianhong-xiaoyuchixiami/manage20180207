@@ -61,8 +61,8 @@ var TableManaged = function () {
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table>';
-                sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 22%;">产品类型</th><th style="width: 10%;">价格</th><th style="width: 60%;">MobileOperator</th></tr>';
-                sOut += '<tr><td></td><td>'+aData[10]+'</td><td>'+aData[11]+'</td><td>'+aData[12]+'</td></tr>';
+                sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 22%;">产品类型</th><th style="width: 70%;">价格</th></tr>';
+                sOut += '<tr><td></td><td>'+aData[10]+'</td><td>'+aData[11]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -111,7 +111,6 @@ var TableManaged = function () {
                     { "bVisible": false },
                     null,
                     null,
-                    { "bVisible": false },
                     { "bVisible": false },
                     { "bVisible": false }
                 ],
@@ -241,9 +240,10 @@ var TableManaged = function () {
                 "aoColumns": [
                     null,
                     null,
+                    null,
                     { "bSortable": false }
                 ],
-                "aaSorting": [[1, 'desc']],
+                "aaSorting": [[2, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

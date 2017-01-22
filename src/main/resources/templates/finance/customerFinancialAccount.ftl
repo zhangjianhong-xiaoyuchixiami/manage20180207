@@ -112,13 +112,13 @@
 
                                         <label><input type="checkbox" checked data-column="5">消费总额</label>
 
-                                        <label><input type="checkbox" data-column="6">周充值总额</label>
+                                        <label><input type="checkbox" data-column="6">上周充值</label>
 
-                                        <label><input type="checkbox" data-column="7">周消费总额</label>
+                                        <label><input type="checkbox" data-column="7">上周消费</label>
 
-                                        <label><input type="checkbox" checked data-column="8">月充值总额</label>
+                                        <label><input type="checkbox" checked data-column="8">上月充值</label>
 
-                                        <label><input type="checkbox" checked data-column="9">月消费总额</label>
+                                        <label><input type="checkbox" checked data-column="9">上月消费</label>
                                     </div>
 
                                 </div>
@@ -138,13 +138,12 @@
                                     <th>余额（单位：元）</th>
                                     <th>充值总额（单位：元）</th>
                                     <th>消费总额（单位：元）</th>
-                                    <th>周充值总额（单位：元）</th>
-                                    <th>周消费总额（单位：元）</th>
-                                    <th>月充值总额（单位：元）</th>
-                                    <th>月消费总额（单位：元）</th>
+                                    <th>上周充值（单位：元）</th>
+                                    <th>上周消费（单位：元）</th>
+                                    <th>上月充值（单位：元）</th>
+                                    <th>上月消费（单位：元）</th>
                                     <th>产品类型</th>
                                     <th>产品价格</th>
-                                    <th>MobileOperator</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -153,22 +152,22 @@
                                         <tr>
                                             <td data-title="公司名称">${customer.companyName}</td>
                                             <@shiro.hasPermission name="customer:findAllCustomer">
-                                                <td data-title="合作公司"><a href="/finance/find-all-customer?partnerId=${customer.partnerId?c}">${customer.partnerName!''}</a></td>
+                                                <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</a></td>
                                             </@shiro.hasPermission>
                                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                <td data-title="合作公司"><a href="/finance/find-all-customer-by-dept-id?partnerId=${customer.partnerId?c}">${customer.partnerName!''}</td>
+                                                <td data-title="合作公司"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                             </@shiro.hasPermission>
                                             <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
                                             <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id?c}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                             <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="周充值总额"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="周消费总额"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=2"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="月充值总额"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="月消费总额"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=2"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                            <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                            <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=2"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                            <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=1"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                            <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id?c}&companyName=${customer.companyName}&typeId=2"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                             <td>
                                                 <#if customer.companyApiList??>
                                                     <#list customer.companyApiList as companyApi>
-                                                        <#if companyApi.apiType??>${companyApi.apiType.name!''}</#if><br/>
+                                                        <#if companyApi.apiType??>${companyApi.apiType.name!''}<#if companyApi.mobileOperator??>——${companyApi.mobileOperator.name!''}</#if></#if><br/>
                                                     </#list>
                                                 </#if>
                                             </td>
@@ -176,13 +175,6 @@
                                                 <#if customer.companyApiList??>
                                                     <#list customer.companyApiList as companyApi>
                                                         <#if companyApi.price??>${(companyApi.price/100.0)!''}</#if><br/>
-                                                    </#list>
-                                                </#if>
-                                            </td>
-                                            <td>
-                                                <#if customer.companyApiList??>
-                                                    <#list customer.companyApiList as companyApi>
-                                                        <#if companyApi.mobileOperator??>${companyApi.mobileOperator.name!''}</#if><br/>
                                                     </#list>
                                                 </#if>
                                             </td>

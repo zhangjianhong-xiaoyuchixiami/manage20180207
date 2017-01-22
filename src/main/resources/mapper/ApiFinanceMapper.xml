@@ -44,26 +44,26 @@
         FROM
         (
         SELECT a.id,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName,c.balance
-        FROM qydata.vwApi a LEFT JOIN qydata.vwApiType b ON a.apiTypeId=b.id LEFT JOIN qyfinance.vwApiBalance c
+        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id LEFT JOIN qyfinance.bkvwApiBalance c
         ON a.id=c.apiId
         ) aa LEFT JOIN
         (
         SELECT apiId,totleCost weekTotleCost
-        FROM qyfinance.vwApiWeekMonthAmount
+        FROM qyfinance.bkvwApiWeekMonthAmount
         WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
         AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
         ) bb ON aa.id=bb.apiId
         ) cc LEFT JOIN
         (
         SELECT apiId,totleCost monthTotleCost
-        FROM qyfinance.vwApiWeekMonthAmount
+        FROM qyfinance.bkvwApiWeekMonthAmount
         WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
         ) dd ON cc.id=dd.apiId
         ) ee LEFT JOIN
         (
         SELECT SUM(cost) consumeTotleAmount,apiId
-        FROM qydata.vwApiRequestLog
+        FROM qyfinance.bkvwApiRequestLog
         WHERE ok=1
         GROUP BY apiId
         ) ff ON ee.id=ff.apiId
@@ -80,10 +80,15 @@
         </where>
     </select>
 
+    <select id="queryApiType" parameterType="map" resultType="org.qydata.entity.ApiType">
+        SELECT distinct(a.apiTypeId) id,b.name
+        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+    </select>
+
     <!--查询供应商和api-->
     <select id="queryApiVendorAndApi" parameterType="map" resultMap="ApiFinance_Map">
         SELECT a.id apiId,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName,c.balance
-        FROM qydata.vwApi a LEFT JOIN qydata.vwApiType b ON a.apiTypeId=b.id LEFT JOIN qyfinance.vwApiBalance c
+        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id LEFT JOIN qyfinance.bkvwApiBalance c
         ON a.id=c.apiId
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
@@ -98,7 +103,7 @@
     <!--查询Api消费详情-->
     <select id="queryApiDetailById" parameterType="map" resultMap="ApiRequestLog_Map">
       SELECT a.customerId,a.apiId,a.cost,a.ok,a.resTime,a.createTime,b.companyName
-      FROM qydata.vwApiRequestLog a LEFT JOIN qydata.vwCustomer b ON a.customerId=b.id
+      FROM qyfinance.bkvwApiRequestLog a LEFT JOIN qyfinance.bkvwCustomer b ON a.customerId=b.id
       WHERE a.ok=1 AND a.apiId=#{apiId}
         <if test="beginDate != null and beginDate != ''">
             <![CDATA[
@@ -114,7 +119,7 @@
 
     <!--查询Api余额-->
     <select id="queryApiBalance" parameterType="Integer" resultType="Long">
-        SELECT balance FROM qyfinance.vwApiBalance WHERE apiId=#{param}
+        SELECT balance FROM qyfinance.bkvwApiBalance WHERE apiId=#{param}
     </select>
 
     <!--Api充值-->

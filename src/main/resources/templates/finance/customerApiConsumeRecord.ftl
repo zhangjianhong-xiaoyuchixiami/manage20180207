@@ -202,9 +202,7 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function() {
-
-            function vendorConsume(apiTypeId) {
+            function vendorConsume(apiTypeId){
                 var param = apiTypeId;
                 var param1 = $("#customerId").val();
                 $.ajax({
@@ -222,33 +220,27 @@
                         var chart = new Highcharts.Chart({
                             chart: {
                                 renderTo: 'container',
-                                type: 'column'
+                                type: 'pie'
                             },
                             title: {
                                 text: '各供应商消费统计',
                                 margin: 15
                             },
-                            xAxis: {
-                                type: 'category',
-                                labels: {
-                                    rotation: -45,
-                                    style: {
-                                        fontSize: '13px',
-                                        fontFamily: 'Verdana, sans-serif'
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                        style: {
+                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                        }
                                     }
                                 }
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: '消费总额（单位：元）'
-                                }
-                            },
-                            legend: {
-                                enabled: false
-                            },
-                            tooltip: {
-                                pointFormat: '<b>{point.y:.1f} 元</b>'
                             },
                             exporting: {
                                 enabled: false
@@ -258,25 +250,12 @@
                             },
                             series: [{
                                 name: '供应商',
-                                data: jsondata,
-                                dataLabels: {
-                                    enabled: true,
-                                    rotation: -90,
-                                    color: '#FFFFFF',
-                                    align: 'right',
-                                    format: '{point.y:.1f}', // one decimal
-                                    y: 10, // 10 pixels down from the top
-                                    style: {
-                                        fontSize: '13px',
-                                        fontFamily: 'Verdana, sans-serif'
-                                    }
-                                }
+                                data: jsondata
                             }]
                         });
                     }
                 });
             }
-        });
 
     </script>
 

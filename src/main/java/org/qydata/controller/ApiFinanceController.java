@@ -7,6 +7,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
 import org.qydata.entity.ApiResponseLog;
+import org.qydata.entity.ApiType;
 import org.qydata.regex.RegexUtil;
 import org.qydata.service.ApiFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jonhn on 2017/1/18.
@@ -32,6 +30,8 @@ public class ApiFinanceController {
     //Api消费账单
     @RequestMapping("/find-all-api-record")
     public String findAllApiRecord(Integer apiId, Integer apiTypeId, Integer vendorId, Model model){
+        List<ApiType> apiTypeList = apiFinanceService.queryApiType();
+        System.out.println(apiTypeList);
         Map<String,Object> map = new HashedMap();
         if (apiId !=null){
             map.put("apiId",apiId);
@@ -68,6 +68,7 @@ public class ApiFinanceController {
             }
         }
         model.addAttribute("apiFinanceList",apiFinanceList);
+        model.addAttribute("apiTypeList",apiTypeList);
         model.addAttribute("apiVendorApiList",apiVendorApiList);
         model.addAttribute("apiId",apiId);
         model.addAttribute("apiTypeId",apiTypeId);

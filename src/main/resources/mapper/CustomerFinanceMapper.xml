@@ -113,12 +113,12 @@
             (
                 SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.partnerId,c.name partnerName,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
                 b.deptId,b.deptName,z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
-                FROM qydata.vwCustomer a LEFT JOIN qyauth.vwCustomerDept b ON a.id=b.customerId LEFT JOIN qydata.vwPartner c
+                FROM qyfinance.bkvwCustomer a LEFT JOIN qyauth.bkvwCustomerDept b ON a.id=b.customerId LEFT JOIN qyfinance.bk-bkvwPartner c
                 ON a.partnerId=c.id  LEFT JOIN
                             (
                                 SELECT a.companyId,a.apiTypeId,b.name apiTypeName,a.subTypeId,c.name subTypeName,a.price
-                                FROM qydata.vwCompanyApi a LEFT JOIN qydata.vwApiType b
-                                ON a.apiTypeId=b.id LEFT JOIN qydata.vwMobileOperator c ON a.subTypeId=c.id
+                                FROM qyfinance.bkvwCompanyApi a LEFT JOIN qyfinance.bkvwApiType b
+                                ON a.apiTypeId=b.id LEFT JOIN qyfinance.bkvwMobileOperator c ON a.subTypeId=c.id
                                 WHERE a.enabled=1
                             ) z ON a.companyId=z.companyId
                 <if test="deptIdList!=null and deptIdList.size()!=0">
@@ -141,42 +141,42 @@
                 </if>
             ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=1 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
         AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
         ) bb
         ON aa.id=bb.customerId
         ) cc LEFT JOIN
         (SELECT customerId,totleAmount chargeMonthTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=2 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
         ) dd
         ON cc.id=dd.customerId
         ) ee LEFT JOIN
         (SELECT customerId,totleAmount consumeWeekTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=1 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
         AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
         ) ff
         ON ee.id=ff.customerId
         ) gg LEFT JOIN
         (SELECT customerId,totleAmount consumeMonthTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=2 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
         ) hh
         ON gg.id=hh.customerId
         ) ii LEFT JOIN
         (SELECT customerId,sum(amount) chargeTotleAmount
-        FROM qydata.vwCustomerBalanceLog
+        FROM qyfinance.bkvwCustomerBalanceLog
         WHERE reasonId in (1,2,3)
         GROUP BY customerId
         ) jj
         ON ii.id=jj.customerId
         ) kk LEFT JOIN
         (SELECT customerId,sum(amount) consumeTotleAmount
-        FROM qydata.vwCustomerBalanceLog
+        FROM qyfinance.bkvwCustomerBalanceLog
         WHERE reasonId in (-1,-2)
         GROUP BY customerId
         ) ll
@@ -211,12 +211,12 @@
         (
             SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName,a.partnerId,b.name partnerName,
             z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
-            FROM qydata.vwCustomer a LEFT JOIN qydata.vwPartner b ON a.partnerId=b.id
+            FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
             LEFT JOIN
             (
             SELECT a.companyId,a.apiTypeId,b.name apiTypeName,a.subTypeId,c.name subTypeName,a.price
-            FROM qydata.vwCompanyApi a LEFT JOIN qydata.vwApiType b
-            ON a.apiTypeId=b.id LEFT JOIN qydata.vwMobileOperator c ON a.subTypeId=c.id
+            FROM qyfinance.bkvwCompanyApi a LEFT JOIN qyfinance.bkvwApiType b
+            ON a.apiTypeId=b.id LEFT JOIN qyfinance.bkvwMobileOperator c ON a.subTypeId=c.id
             WHERE a.enabled=1
             ) z ON a.companyId=z.companyId
             <where>
@@ -235,42 +235,42 @@
             </where>
         ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=1 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
         AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
         ) bb
         ON aa.id=bb.customerId
         ) cc LEFT JOIN
         (SELECT customerId,totleAmount chargeMonthTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=2 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
         ) dd
         ON cc.id=dd.customerId
         ) ee LEFT JOIN
         (SELECT customerId,totleAmount consumeWeekTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=1 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
         AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
         ) ff
         ON ee.id=ff.customerId
         ) gg LEFT JOIN
         (SELECT customerId,totleAmount consumeMonthTotleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=2 AND tableId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
         AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
         ) hh
         ON gg.id=hh.customerId
         ) ii LEFT JOIN
         (SELECT customerId,sum(amount) chargeTotleAmount
-        FROM qydata.vwCustomerBalanceLog
+        FROM qyfinance.bkvwCustomerBalanceLog
         WHERE reasonId in (1,2,3)
         GROUP BY customerId
         ) jj
         ON ii.id=jj.customerId
         ) kk LEFT JOIN
         (SELECT customerId,sum(amount) consumeTotleAmount
-        FROM qydata.vwCustomerBalanceLog
+        FROM qyfinance.bkvwCustomerBalanceLog
         WHERE reasonId in (-1,-2)
         GROUP BY customerId
         ) ll
@@ -280,7 +280,7 @@
     <!--查询客户的充值记录-->
     <select id="queryCompanyCustomerRechargeRecordByCustomerId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
         SELECT id,reasonId,amount,customerId,createTime,reasonName
-        FROM qydata.vwCustomerBalanceLog
+        FROM qyfinance.bkvwCustomerBalanceLog
         WHERE customerId=#{customerId}
         <if test="reasonIdList != null and reasonIdList.size() != 0">
             AND reasonId IN
@@ -310,14 +310,14 @@
             from
             (
                 select b.apiTypeId,b.apiId,sum(a.amount) totlePrice
-                from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+                from qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b
                 ON a.reqId=b.id
                 where a.reasonId in(-1,-2) and b.hasCost=1
                 and a.customerId=#{customerId}
                 group by b.apiTypeId,b.apiId
-            ) cc LEFT JOIN qydata.vwApi dd
+            ) cc LEFT JOIN qyfinance.bkvwApi dd
             ON cc.apiId = dd.id
-        ) ee LEFT JOIN qydata.vwApiType ff
+        ) ee LEFT JOIN qyfinance.bkvwApiType ff
         ON ee.apiTypeId=ff.id
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
@@ -335,7 +335,7 @@
         from
         (
             select a.reasonId,a.amount,a.customerId,a.createTime,a.reasonName,b.apiTypeId,b.apiId
-            from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+            from qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b
             ON a.reqId=b.id
             where b.hasCost=1 and a.customerId=#{customerId}
             <if test="reasonIdList != null and reasonIdList.size() > 0">
@@ -344,7 +344,7 @@
                     #{reasonId}
                 </foreach>
             </if>
-        ) aa left join qydata.vwApi bb on aa.apiId=bb.id
+        ) aa left join qyfinance.bkvwApi bb on aa.apiId=bb.id
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
                 aa.apiTypeId=#{apiTypeId}
@@ -365,7 +365,7 @@
     <!--查询客户的周月记录-->
     <select id="queryCompanyCustomerWeekMonthRecordByCustomerId" parameterType="map" resultType="org.qydata.entity.WeekMonthAmount">
         SELECT years,months,weeks,totleAmount,customerId,tableId,weekMonthTypeId,name,beginTime,endTime
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE customerId=#{customerId}
         AND weekMonthTypeId=#{weekMonthTypeId}
         <if test="years != null and years != ''">
@@ -388,7 +388,7 @@
     <!--查询客户的周月记录年级联菜单-->
     <select id="queryCompanyCustomerYearsByCustomerId" parameterType="map" resultType="int">
         SELECT DISTINCT(years)
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE customerId=#{customerId} AND weekMonthTypeId=#{weekMonthTypeId}
         <if test="years != null and years != ''">
             AND years=#{years}
@@ -410,7 +410,7 @@
     <!--查询客户的周月记录月级联菜单-->
     <select id="queryCompanyCustomerMonthsByCustomerId" parameterType="map" resultType="int">
         SELECT DISTINCT(months)
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE customerId=#{customerId}
         <if test="weekMonthTypeId != null and weekMonthTypeId != ''">
             AND weekMonthTypeId=#{weekMonthTypeId}
@@ -429,7 +429,7 @@
     <!--查询客户的周月记录周级联菜单-->
     <select id="queryCompanyCustomerWeeksByCustomerId" parameterType="map" resultType="int">
         SELECT DISTINCT(weeks)
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE customerId=#{customerId} AND weekMonthTypeId=#{weekMonthTypeId}
         <if test="years != null and years != ''">
             AND years=#{years}
@@ -451,7 +451,7 @@
     <!--月账单走势图-->
     <select id="queryMonthChargeConsumeToward" parameterType="Integer" resultType="org.qydata.entity.WeekMonthAmount">
         SELECT years,months,totleAmount
-        FROM qyfinance.vwWeekMonthAmount
+        FROM qyfinance.bkvwWeekMonthAmount
         WHERE customerId=#{param1}
         AND weekMonthTypeId=2
         AND tableId=#{param2}
@@ -467,12 +467,12 @@
             from
             (
                 select b.apiTypeId,b.apiId,sum(a.amount) totlePrice
-                from qydata.vwCustomerBalanceLog a LEFT JOIN qydata.vwCustomerRequestLog b
+                from qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b
                 ON a.reqId=b.id
                 where a.customerId=#{customerId} AND b.hasCost=1 AND a.reasonId IN(-1,-2)
                 group by b.apiTypeId,b.apiId
-            ) cc LEFT JOIN qydata.vwApi dd ON cc.apiId = dd.id
-        ) ee LEFT JOIN qydata.vwApiType ff ON ee.apiTypeId=ff.id
+            ) cc LEFT JOIN qyfinance.bkvwApi dd ON cc.apiId = dd.id
+        ) ee LEFT JOIN qyfinance.bkvwApiType ff ON ee.apiTypeId=ff.id
         WHERE ee.apiTypeId=#{apiTypeId}
     </select>
 

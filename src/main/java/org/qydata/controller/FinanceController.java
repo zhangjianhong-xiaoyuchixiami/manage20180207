@@ -317,9 +317,9 @@ public class FinanceController {
             for (int i=0; i<customerApiVendorList.size(); i++){
                 CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
                 if(customerApiVendor.getVendorName() != null){
-                    map1.put(customerApiVendor.getVendorName(),(customerApiVendor.getTotlePrice()/consumeTotleAmount)/100.0);
+                    map1.put(customerApiVendor.getVendorName(),((customerApiVendor.getTotlePrice()/100.0)/(consumeTotleAmount)/100.0));
                 }else {
-                    map1.put("未知供应商",(customerApiVendor.getTotlePrice()/consumeTotleAmount)/100.0);
+                    map1.put("未知供应商",((customerApiVendor.getTotlePrice()/100.0)/(consumeTotleAmount)/100.0));
                 }
             }
         }

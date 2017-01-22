@@ -68,7 +68,7 @@ public class ExcelApiFinanceController {
             list.add(mapValue);
         }
         String fileName = "产品消费账单";
-        String columnNames[]= {"产品名称","产品类型","产品供应商","周消费（单位：元）","月消费（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
+        String columnNames[]= {"产品名称","产品类型","产品供应商","上周消费（单位：元）","上月消费（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
         String keys[] = {"apiName","apiTypeName","vendorName","wekTotleCost","monthTotleCost","consumeTotleAmount","balance"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
@@ -93,11 +93,6 @@ public class ExcelApiFinanceController {
         for (int j = 0; j < apiRequestLogList.size(); j++) {
             apiRequestLog = apiRequestLogList.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
-            if(apiRequestLog.getCompany() != null){
-                mapValue.put("companyName", apiRequestLog.getCompany().getName());
-            }else {
-                mapValue.put("companyName", "");
-            }
             if(apiRequestLog.getApiResponseLog() != null){
                 mapValue.put("cost", apiRequestLog.getApiResponseLog().getCost()/100.0);
             }else {
@@ -112,8 +107,8 @@ public class ExcelApiFinanceController {
             list.add(mapValue);
         }
         String fileName = "产品消费明细账单";
-        String columnNames[]= {"公司名称","消费金额（单位：元）","响应时间（单位：秒）","创建时间"};//列名
-        String keys[] = {"companyName","cost","vendorName","resTime","createTime"};//map中的key
+        String columnNames[]= {"消费金额（单位：元）","响应时间（单位：秒）","创建时间"};//列名
+        String keys[] = {"cost","vendorName","resTime","createTime"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
 }

@@ -2,6 +2,7 @@ package org.qydata.service;
 
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
+import org.qydata.entity.ApiType;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -42,4 +43,11 @@ public interface ApiFinanceService {
      */
     @Transactional
     public boolean apiChargeLog(Integer apiId, Long amount, String remark, String chargeDate);
+
+    /**
+     * 查询Api类型
+     * @return
+     * @throws Exception
+     */
+    public List<ApiType> queryApiType();
 }

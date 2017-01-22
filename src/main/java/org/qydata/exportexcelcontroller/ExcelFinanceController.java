@@ -3,7 +3,6 @@ package org.qydata.exportexcelcontroller;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.qydata.dst.CustomerApiType;
-import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.Dept;
@@ -71,6 +70,11 @@ public class ExcelFinanceController {
             customerFinance = customerFinances.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
             mapValue.put("companyName", customerFinance.getCompanyName());
+            if(customerFinance.getPartnerName() != null){
+                mapValue.put("partnerName", customerFinance.getPartnerName());
+            }else {
+                mapValue.put("partnerName","");
+            }
             if(customerFinance.getChargeWeekTotleAmount() != null){
                 mapValue.put("chargeWeekTotleAmount", customerFinance.getChargeWeekTotleAmount()/100.0);
             }else {
@@ -109,8 +113,8 @@ public class ExcelFinanceController {
             list.add(mapValue);
         }
         String fileName = "客户财务报表文件";
-        String columnNames[]= {"公司名称","周充值（单位：元）","周消费（单位：元）","月充值（单位：元）","月消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
-        String keys[] = {"companyName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
+        String columnNames[]= {"公司名称","合作公司","上周充值（单位：元）","上周消费（单位：元）","上月充值（单位：元）","上月消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
+        String keys[] = {"companyName","partnerName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**
@@ -156,6 +160,11 @@ public class ExcelFinanceController {
                 customerFinance = customerFinances.get(j);
                 Map<String, Object> mapValue = new HashMap<String, Object>();
                 mapValue.put("companyName", customerFinance.getCompanyName());
+                if(customerFinance.getPartnerName() != null){
+                    mapValue.put("partnerName", customerFinance.getPartnerName());
+                }else {
+                    mapValue.put("partnerName","");
+                }
                 if(customerFinance.getChargeWeekTotleAmount() != null){
                     mapValue.put("chargeWeekTotleAmount", customerFinance.getChargeWeekTotleAmount()/100.0);
                 }else {
@@ -194,8 +203,8 @@ public class ExcelFinanceController {
                 list.add(mapValue);
             }
             String fileName = "客户财务报表文件";
-            String columnNames[]= {"公司名称","周充值（单位：元）","周消费（单位：元）","月充值（单位：元）","月消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
-            String keys[] = {"companyName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
+            String columnNames[]= {"公司名称","合作公司","上周充值（单位：元）","上周消费（单位：元）","上月充值（单位：元）","上月消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
+            String keys[] = {"companyName","partnerName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
             ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
         }
     }
@@ -288,15 +297,15 @@ public class ExcelFinanceController {
             customerApiType = customerApiTypeList.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
             mapValue.put("apiType", customerApiType.getApiTypeName());
-            List<CustomerApiVendor> customerApiVendorList = customerApiType.getCustomerApiVendors();
-            StringBuffer apiVendorName = new StringBuffer();
-            for (int i=0; i<customerApiVendorList.size(); i++){
-                CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
-                if(customerApiVendor.getVendorName() != null) {
-                    apiVendorName = new StringBuffer(customerApiVendor.getVendorName() + "," + apiVendorName);
-                }
-            }
-            mapValue.put("apiVendor", apiVendorName);
+//            List<CustomerApiVendor> customerApiVendorList = customerApiType.getCustomerApiVendors();
+//            StringBuffer apiVendorName = new StringBuffer();
+//            for (int i=0; i<customerApiVendorList.size(); i++){
+//                CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
+//                if(customerApiVendor.getVendorName() != null) {
+//                    apiVendorName = new StringBuffer(customerApiVendor.getVendorName() + "," + apiVendorName);
+//                }
+//            }
+//            mapValue.put("apiVendor", apiVendorName);
             if(customerApiType.getTotlePrice() != null){
                 mapValue.put("price", customerApiType.getTotlePrice()/100.0);
             }else{
@@ -305,8 +314,8 @@ public class ExcelFinanceController {
             list.add(mapValue);
         }
         String fileName = companyName+"消费记录";
-        String columnNames[]= {"产品类型","产品供应商","金额（单位：元）"};//列名
-        String keys[] = {"apiType","apiVendor","price"};//map中的key
+        String columnNames[]= {"产品类型","金额（单位：元）"};//列名
+        String keys[] = {"apiType","price"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
     /**

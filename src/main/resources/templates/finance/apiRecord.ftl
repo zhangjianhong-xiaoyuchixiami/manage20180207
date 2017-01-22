@@ -35,9 +35,9 @@
 
                                     <select id="apiTypeId" name="apiTypeId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
                                         <option value="">请选择...</option>
-                                        <#if apiFinanceList??>
-                                            <#list apiFinanceList as apiFinance>
-                                                <option <#if apiTypeId?? && apiTypeId==apiFinance.apiTypeId>selected="selected"</#if> value="${apiFinance.apiTypeId}">${apiFinance.apiTypeName}</option>
+                                        <#if apiTypeList??>
+                                            <#list apiTypeList as apiType>
+                                                <option <#if apiTypeId?? && apiTypeId==apiType.id>selected="selected"</#if> value="${apiType.id}">${apiType.name}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -134,9 +134,9 @@
 
                                         <label><input type="checkbox" checked data-column="4">所剩余额</label>
 
-                                        <label><input type="checkbox" data-column="5">周消费总额</label>
+                                        <label><input type="checkbox" data-column="5">上周消费</label>
 
-                                        <label><input type="checkbox" checked data-column="6">月消费总额</label>
+                                        <label><input type="checkbox" checked data-column="6">上月消费</label>
 
                                     </div>
 
@@ -218,8 +218,8 @@
                                     <th style="text-align: center;">产品名称</th>
                                     <th>消费总额（单位：元）</th>
                                     <th>所剩余额（单位：元）</th>
-                                    <th>周消费总额（单位：元）</th>
-                                    <th>月消费总额（单位：元）</th>
+                                    <th>上周消费（单位：元）</th>
+                                    <th>上月消费（单位：元）</th>
                                     <th style="text-align: center; width: 13%;">操作</th>
                                 </tr>
                                 </thead>
@@ -232,8 +232,8 @@
                                             <td data-title="产品名称">${apiFinance.apiName}</td>
                                             <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="周消费总额"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="月消费总额"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center;" >
                                                 <a href="#form_modal4" onclick="charge(${apiFinance.apiId})" data-toggle="modal">充值</a>
                                                 |

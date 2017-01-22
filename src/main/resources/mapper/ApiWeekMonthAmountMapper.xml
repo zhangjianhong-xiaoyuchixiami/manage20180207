@@ -16,11 +16,11 @@
     <!--统计Api每周的消费数据-->
     <select id="getAllApiWeekConsumeRecord" parameterType="Integer" resultMap="ApiWeekMonthAmount_Map">
        SELECT a.id apiId,b.years,b.weeks,b.totleCost,b.temporal
-        FROM qydata.vwApi a LEFT JOIN
+        FROM qyfinance.bkvwApi a LEFT JOIN
         (
             SELECT DATE_FORMAT(createTime,'%x') years,DATE_FORMAT(createTime,'%v') weeks,
             SUM(cost) totleCost,apiId,GROUP_CONCAT(DISTINCT(DATE(createTime)) ORDER BY DATE(createTime) ASC) temporal
-            FROM qydata.vwApiRequestLog
+            FROM qyfinance.bkvwApiRequestLog
             WHERE ok=1 AND DATE_FORMAT(createTime,'%x-%v')=DATE_FORMAT(date_sub(sysdate(),interval #{param} week),'%x-%v')
             GROUP BY DATE_FORMAT(createTime,'%x-%v'),apiId
         ) b ON  a.id=b.apiId
@@ -29,11 +29,11 @@
     <!--统计Api每月的消费数据-->
     <select id="getAllApiMonthConsumeRecord" parameterType="Integer" resultMap="ApiWeekMonthAmount_Map">
        SELECT a.id apiId,b.years,b.months,b.totleCost,b.temporal
-        FROM qydata.vwApi a LEFT JOIN
+        FROM qyfinance.bkvwApi a LEFT JOIN
         (
             SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,SUM(cost) totleCost,apiId,
             GROUP_CONCAT(DISTINCT(DATE(createTime)) ORDER BY DATE(createTime) ASC) temporal
-            FROM qydata.vwApiRequestLog
+            FROM qyfinance.bkvwApiRequestLog
             WHERE ok=1 AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval #{param} month),'%Y-%m')
             GROUP BY DATE_FORMAT(createTime,'%Y-%m'),apiId
         ) b ON  a.id=b.apiId
