@@ -3,6 +3,7 @@ package org.qydata.exportexcelcontroller;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
+import org.qydata.entity.ApiVendor;
 import org.qydata.service.ApiFinanceService;
 import org.qydata.tools.ExportIoOperate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,4 +111,62 @@ public class ExcelApiFinanceController {
         String keys[] = {"companyName","cost","vendorName","resTime","createTime"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
+
+    /**
+     * 以APIVendor统计消费信息
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/find-all-api-vendor-consume")
+    public String findAllApiVendorConsume(Integer vendorId,HttpServletResponse response) throws IOException {
+        Map<String,Object> map = new HashMap<>();
+        List<ApiVendor> apiVendorList  = apiFinanceService.queryApiVendorName(map);
+        System.out.println(apiVendorList);
+        if(vendorId != null){
+            map.put("vendorId",vendorId);
+        }
+        List<ApiFinance> apiFinanceList = apiFinanceService.queryApiVendor(map);
+        List<Map<String,Object>> list = new ArrayList<>();
+        Map<String, Object> mapA = new HashMap<String, Object>();
+        mapA.put("sheetName", "sheet1");
+        list.add(mapA);
+        ApiFinance apiFinance=null;
+        for (int j = 0; j < apiFinanceList.size(); j++) {
+            apiFinance = apiFinanceList.get(j);
+            Map<String, Object> mapValue = new HashMap<String, Object>();
+            if(apiFinance.getVendorName() != null){
+                mapValue.put("vendorName", apiFinance.getVendorName());
+            }else{
+                mapValue.put("vendorName", "");
+            }
+            if(apiFinance.getConsumeTotleAmount() != null){
+                mapValue.put("consumeTotleAmount", apiFinance.getConsumeTotleAmount()/100.0);
+            }else {
+                mapValue.put("consumeTotleAmount", 0.0);
+            }
+            if(apiFinance.getBalance() != null){
+                mapValue.put("balance", apiFinance.getBalance()/100.0);
+            }else {
+                mapValue.put("balance", 0.0);
+            }
+            if(apiFinance.getWeekTotleCost() != null){
+                mapValue.put("weekTotleCost", apiFinance.getWeekTotleCost()/100.0);
+            }else {
+                mapValue.put("weekTotleCost", 0.0);
+            }
+            if(apiFinance.getMonthTotleCost() != null){
+                mapValue.put("monthTotleAmount", apiFinance.getMonthTotleCost()/100.0);
+            }else {
+                mapValue.put("monthTotleAmount", 0.0);
+            }
+            list.add(mapValue);
+        }
+        String fileName = "产品供应商财务账单";
+        String columnNames[]= {"产品供应商","消费金额（单位：元）","所剩余额（单位：元）","上周消费（单位：元）","上月消费（单位：元）"};//列名
+        String keys[] = {"vendorName","consumeTotleAmount","balance","weekTotleCost","monthTotleAmount"};//map中的key
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
+
+        return "/finance/apiVendorRecord";
+    }
+
 }

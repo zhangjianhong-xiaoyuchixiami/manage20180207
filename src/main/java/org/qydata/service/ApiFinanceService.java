@@ -53,7 +53,7 @@ public interface ApiFinanceService {
     public List<ApiType> queryApiType();
 
     /**
-     * 以API类型统计消费信息
+     * 以APIVendor统计消费信息
      * @return
      * @throws Exception
      */

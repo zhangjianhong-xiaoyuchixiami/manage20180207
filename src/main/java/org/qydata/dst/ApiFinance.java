@@ -1,5 +1,7 @@
 package org.qydata.dst;
 
+import org.qydata.entity.MobileOperator;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +19,7 @@ public class ApiFinance implements Serializable {
     private Long weekTotleCost;
     private Long monthTotleCost;
     private Long consumeTotleAmount;
+    private MobileOperator mobileOperator;
 
     public Integer getApiId() {
         return apiId;
@@ -96,5 +99,13 @@ public class ApiFinance implements Serializable {
 
     public void setConsumeTotleAmount(Long consumeTotleAmount) {
         this.consumeTotleAmount = consumeTotleAmount;
+    }
+
+    public MobileOperator getMobileOperator() {
+        return mobileOperator;
+    }
+
+    public void setMobileOperator(MobileOperator mobileOperator) {
+        this.mobileOperator = mobileOperator;
     }
 }

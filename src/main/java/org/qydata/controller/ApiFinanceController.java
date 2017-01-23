@@ -100,7 +100,11 @@ public class ApiFinanceController {
         if (apiFinanceList != null){
             for (int i=0; i<apiFinanceList.size(); i++){
                 ApiFinance apiFinance = apiFinanceList.get(i);
-                xList.add(apiFinance.getApiName());
+                if (apiFinance.getMobileOperator() != null){
+                    xList.add(apiFinance.getApiTypeName()+"——"+apiFinance.getMobileOperator().getName()+"@"+apiFinance.getVendorName());
+                }else {
+                    xList.add(apiFinance.getApiTypeName()+"@"+apiFinance.getVendorName());
+                }
                 if(apiFinance.getConsumeTotleAmount() != null){
                     yList.add(apiFinance.getConsumeTotleAmount()/100.0);
                 }else {
@@ -121,7 +125,7 @@ public class ApiFinanceController {
 
     //Api消费账单-消费明细
     @RequestMapping("/find-all-api-record/detail")
-    public String findAllApiDetailRecord(Integer apiId,String apiName,String apiTypeName,String vendorName,String beginDate,String endDate,Model model){
+    public String findAllApiDetailRecord(Integer apiId,String mobileOperatorName,String apiTypeName,String vendorName,String beginDate,String endDate,Model model){
         Map<String,Object> map = new HashedMap();
         map.put("apiId",apiId);
         if (beginDate != null && beginDate != "" ) {
@@ -139,7 +143,7 @@ public class ApiFinanceController {
         }
         model.addAttribute("apiRequestLogList",apiRequestLogList);
         model.addAttribute("apiId",apiId);
-        model.addAttribute("apiName",apiName);
+        model.addAttribute("mobileOperatorName",mobileOperatorName);
         model.addAttribute("apiTypeName",apiTypeName);
         model.addAttribute("vendorName",vendorName);
         model.addAttribute("beginDate",beginDate);
@@ -150,7 +154,7 @@ public class ApiFinanceController {
 
 
     /**
-     * 以API类型统计消费信息
+     * 以APIVendor统计消费信息
      * @return
      * @throws Exception
      */

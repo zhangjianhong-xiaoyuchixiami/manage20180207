@@ -160,7 +160,7 @@
 
                                     </label>
 
-                                    <div id="form_modal7" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+                                    <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
 
                                         <div class="modal-header">
 
@@ -198,15 +198,15 @@
                                 <tbody>
                                     <#if apiFinanceList??>
                                         <#list apiFinanceList as apiFinance>
-                                        <tr>
-                                            <td data-title="产品类型">${apiFinance.apiTypeName}</td>
+                                        <tr class="odd gradeX">
+                                            <td data-title="产品类型">${apiFinance.apiTypeName}<#if apiFinance.mobileOperator??>——${apiFinance.mobileOperator.name!''}</#if></td>
                                             <td data-title="产品供应商">${apiFinance.vendorName}</td>
                                             <td data-title="产品名称">${apiFinance.apiName}</td>
                                             <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
                                             <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                             <td data-title="操作" style="text-align: center;" >
-                                                <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiName=${apiFinance.apiName}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a>
+                                                <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
                                             </td>
                                         </tr>
                                         </#list>
@@ -317,7 +317,8 @@
                         var chart = new Highcharts.Chart({
                             chart: {
                                 renderTo: 'columnHistogramContainer',
-                                type: 'column'
+                                type: 'column',
+                                reflow: true
                             },
                             title: {
                                 text: ''

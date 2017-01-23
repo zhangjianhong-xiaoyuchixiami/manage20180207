@@ -14,6 +14,10 @@
         <result column="weekTotleCost" property="weekTotleCost"/>
         <result column="monthTotleCost" property="monthTotleCost"/>
         <result column="consumeTotleAmount" property="consumeTotleAmount"/>
+        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorId" property="id"/>
+            <result column="mobileOperatorName" property="name"/>
+        </association>
     </resultMap>
 
     <resultMap id="ApiRequestLog_Map" type="org.qydata.entity.ApiRequestLog">
@@ -30,50 +34,43 @@
         </association>
     </resultMap>
 
-    <resultMap id="ApiType_MobileOperator_Map" type="org.qydata.entity.ApiType">
-        <result column="apiTypeId" property="id"/>
-        <result column="apiTypeName" property="name"/>
-        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
-            <result column="mobileOperatorName" property="name"/>
-        </association>
-    </resultMap>
 
 
     <!--Api财务总览-->
     <select id="queryApiOverAllFinance" parameterType="map" resultMap="ApiFinance_Map">
         SELECT ee.id apiId,ee.apiTypeId,ee.apiTypeName,ee.vendorId,ee.vendorName,ee.apiName,ee.weekTotleCost,ee.monthTotleCost,
-        ff.consumeTotleAmount
+        ff.consumeTotleAmount,gg.mobileOperatorId,gg.name mobileOperatorName
         FROM
         (
-        SELECT cc.id,cc.apiTypeId,cc.apiTypeName,cc.vendorId,cc.vendorName,cc.apiName,cc.weekTotleCost,dd.monthTotleCost
-        FROM
-        (
-        SELECT aa.id,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.apiName,bb.weekTotleCost
-        FROM
-        (
-        SELECT a.id,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName
-        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
-        ) aa LEFT JOIN
-        (
-        SELECT apiId,totleCost weekTotleCost
-        FROM qyfinance.bkvwApiWeekMonthAmount
-        WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
-        AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
-        ) bb ON aa.id=bb.apiId
-        ) cc LEFT JOIN
-        (
-        SELECT apiId,totleCost monthTotleCost
-        FROM qyfinance.bkvwApiWeekMonthAmount
-        WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
-        ) dd ON cc.id=dd.apiId
+                SELECT cc.id,cc.apiTypeId,cc.apiTypeName,cc.vendorId,cc.vendorName,cc.apiName,cc.weekTotleCost,dd.monthTotleCost
+                FROM
+                (
+                    SELECT aa.id,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.apiName,bb.weekTotleCost
+                    FROM
+                    (
+                                    SELECT a.id,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.name apiName
+                                    FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+                                    ) aa LEFT JOIN
+                                                (
+                                                SELECT apiId,totleCost weekTotleCost
+                                                FROM qyfinance.bkvwApiWeekMonthAmount
+                                                WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+                                                AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+                                                ) bb ON aa.id=bb.apiId
+                    ) cc LEFT JOIN
+                                (
+                                SELECT apiId,totleCost monthTotleCost
+                                FROM qyfinance.bkvwApiWeekMonthAmount
+                                WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+                                AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+                                ) dd ON cc.id=dd.apiId
         ) ee LEFT JOIN
-        (
-        SELECT SUM(cost) consumeTotleAmount,apiId
-        FROM qyfinance.bkvwApiRequestLog
-        WHERE ok=1
-        GROUP BY apiId
-        ) ff ON ee.id=ff.apiId
+                    (
+                    SELECT SUM(cost) consumeTotleAmount,apiId
+                    FROM qyfinance.bkvwApiRequestLog
+                    WHERE ok=1
+                    GROUP BY apiId
+                    ) ff ON ee.id=ff.apiId LEFT JOIN qyfinance.bkvwApiMobileOperator gg ON ee.id=gg.apiId
         <where>
             <if test="vendorId != null and vendorId != ''">
                 ee.vendorId=#{vendorId}
@@ -93,7 +90,7 @@
     <!--</select>-->
 
     <!--查询Api类型-->
-    <select id="queryApiType" parameterType="map" resultMap="org.qydata.entity.ApiType">
+    <select id="queryApiType" parameterType="map" resultType="org.qydata.entity.ApiType">
         SELECT distinct(a.apiTypeId) id,b.name
         FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
     </select>
@@ -142,7 +139,7 @@
         VALUES(#{vendorId},#{amount},1,#{remark},#{createTime})
     </insert>
 
-    <!--以API类型统计消费信息-->
+    <!--以APIVendor统计消费信息-->
     <select id="queryApiVendor" parameterType="map" resultMap="ApiFinance_Map">
         SELECT gg.vendorId,gg.vendorName,gg.weekTotleCost,gg.monthTotleCost,gg.consumeTotleAmount,hh.balance
         FROM (
@@ -176,13 +173,12 @@
             GROUP BY apiId
             ) ff ON ee.id=ff.apiId
             GROUP BY ee.vendorId,ee.vendorName
+            ) gg LEFT JOIN qyfinance.bkvwApiVendorBalance hh ON gg.vendorId=hh.vendorId
             <where>
                 <if test="vendorId != null and vendorId != ''">
-                    AND ee.vendorId=#{vendorId}
+                    AND gg.vendorId=#{vendorId}
                 </if>
             </where>
-            ) gg LEFT JOIN qyfinance.bkvwApiVendorBalance hh ON gg.vendorId=hh.vendorId
-
     </select>
 
 </mapper>

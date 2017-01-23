@@ -48,6 +48,7 @@
                             </div>
 
                         </form>
+
                     <#else >
                         <form action="/finance/find-all-customer" method="get">
 
@@ -83,11 +84,13 @@
 
                             <div class="caption"><i class="icon-user"></i></div>
 
-                            <#if deptIdList??>
-                                <@d.tools idName="exportExcelByDeptId"></@d.tools>
-                            <#else >
+                            <@shiro.hasPermission name="customer:findAllCustomer">
                                 <@d.tools idName="exportExcel"></@d.tools>
-                            </#if>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                <@d.tools idName="exportExcelByDeptId"></@d.tools>
+                            </@shiro.hasPermission>
 
                             <div class="actions">
 
@@ -149,7 +152,7 @@
                                 <tbody>
                                     <#if customerFinanceList??>
                                         <#list customerFinanceList as customer>
-                                        <tr>
+                                        <tr class="odd gradeX">
                                             <td data-title="公司名称">${customer.companyName}</td>
                                             <@shiro.hasPermission name="customer:findAllCustomer">
                                                 <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</a></td>

@@ -217,18 +217,23 @@ public class ShiroConfig {
 		filters.put("anon", new AnonymousFilter());
 		bean.setFilters(filters);
 		Map<String, String> chains = new HashMap<String,String>();
-		chains.put("/login", "anon");
-		chains.put("/", "authc");
-		chains.put("/view/unauthurl", "authc");
-		chains.put("/view/logout", "authc");
-		chains.put("/view/login-action", "anon");
+
 		//静态资源
 		chains.put("/js/**", "anon");
 		chains.put("/css/**", "anon");
 		chains.put("/image/**", "anon");
+		chains.put("/login", "anon");
+		chains.put("/view/login-action","anon");
+
 		//出错页面
 		chains.put("/error/404", "authc");
 		chains.put("/error/500", "authc");
+
+		//登录
+		chains.put("/", "authc");
+		chains.put("/view/unauthurl", "authc");
+		chains.put("/view/logout", "authc");
+
 		//账号管理
 		chains.put("/customer/addCustomerAccountView/**", "authc,perms");
 		chains.put("/customer/addCustomerAccountAction", "authc,perms");
@@ -315,12 +320,13 @@ public class ShiroConfig {
 		//Api财务账单
 		chains.put("/api/find-all-api-record", "authc,perms");
 		chains.put("/api/find-all-api-record/detail", "authc,perms");
+		chains.put("/api/find-all-api-vendor-consume", "authc,perms");
 
 		//ApiAjax
 		chains.put("/api/find-api-vendor-by-api-type-id", "authc");
-		chains.put("/api/find-api-by-api-type-id", "authc");
 		chains.put("/api/find-all-api-record/bar-chart", "authc");
-		chains.put("/api/find-all-api-record/charge", "authc");
+		chains.put("/api/find-all-api-vendor-consume/bar-chart", "authc");
+		chains.put("/api/find-all-vendor-record/charge", "authc");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

@@ -114,7 +114,13 @@
 
                             <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if></div>
 
-                            <@d.tools idName="exportExcel"></@d.tools>
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <@d.tools idName="exportExcel"></@d.tools>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                <@d.tools idName="exportExcelByDeptId"></@d.tools>
+                            </@shiro.hasPermission>
 
                         </div>
 
@@ -144,7 +150,7 @@
                                 <tbody>
                                     <#if customerApiTypeList??>
                                         <#list customerApiTypeList as customerApiType>
-                                        <tr>
+                                        <tr class="odd gradeX">
                                             <td data-title="产品类型">${customerApiType.apiTypeName}</td>
                                             <@shiro.hasPermission name="customer:findAllCustomer">
                                                 <td data-title="产品供应商"><a id="tipInfo" href="#form_modal3" onclick="vendorConsume(${customerApiType.apiTypeId?c})" data-toggle="modal"><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></a></td>
@@ -157,7 +163,7 @@
                                 </tbody>
                             </table>
 
-                            <div id="form_modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+                            <div id="form_modal3" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
 
                                 <div class="modal-header">
 
@@ -176,10 +182,15 @@
 
                             </div>
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
 
     <#elseif section = "footer">
@@ -202,60 +213,60 @@
 
     <script type="text/javascript">
 
-            function vendorConsume(apiTypeId){
-                var param = apiTypeId;
-                var param1 = $("#customerId").val();
-                $.ajax({
-                    type: "post",
-                    url: "/finance/find-all-vendor-record/count-result",
-                    data: {"apiTypeId": param,"customerId": param1},
-                    dataType: 'json',
-                    success: function (result) {
-                        var json = result;
-                        var jsondata = [];
-                        for (var i in json) {
-                            jsondata.push([i, json[i]]);
-                        }
+        function vendorConsume(apiTypeId){
+            var param = apiTypeId;
+            var param1 = $("#customerId").val();
+            $.ajax({
+                type: "post",
+                url: "/finance/find-all-vendor-record/count-result",
+                data: {"apiTypeId": param,"customerId": param1},
+                dataType: 'json',
+                success: function (result) {
+                    var json = result;
+                    var jsondata = [];
+                    for (var i in json) {
+                        jsondata.push([i, json[i]]);
+                    }
 
-                        var chart = new Highcharts.Chart({
-                            chart: {
-                                renderTo: 'container',
-                                type: 'pie'
-                            },
-                            title: {
-                                text: '各供应商消费统计',
-                                margin: 15
-                            },
-                            tooltip: {
-                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                            },
-                            plotOptions: {
-                                pie: {
-                                    allowPointSelect: true,
-                                    cursor: 'pointer',
-                                    dataLabels: {
-                                        enabled: true,
-                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                        style: {
-                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                                        }
+                    var chart = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'container',
+                            type: 'pie'
+                        },
+                        title: {
+                            text: '各供应商消费统计',
+                            margin: 15
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                                     }
                                 }
-                            },
-                            exporting: {
-                                enabled: false
-                            },
-                            credits: {
-                                enabled: false
-                            },
-                            series: [{
-                                name: '供应商',
-                                data: jsondata
-                            }]
-                        });
-                    }
-                });
-            }
+                            }
+                        },
+                        exporting: {
+                            enabled: false
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        series: [{
+                            name: '供应商',
+                            data: jsondata
+                        }]
+                    });
+                }
+            });
+        }
 
     </script>
 
@@ -294,6 +305,24 @@
 
     <#--导出Excel-->
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('#exportExcelByDeptId').on('click', function () {
+                var companyName = $('#companyName').val();
+                var customerId = $('#customerId').val();
+                var apiTypeId = $('#apiTypeId').val();
+                var apiVendorId = $('#apiVendorId').val();
+                fetch('/excel-finance/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id?companyName='+companyName+'&customerId='+customerId+'&apiTypeId='+apiTypeId+'&apiVendorId='+apiVendorId).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename = companyName+'消费记录.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
+            });
+        });
+
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
                 var companyName = $('#companyName').val();

@@ -148,7 +148,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if><#if apiTypeName??>--${apiTypeName}</#if></div>
+                            <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if><#if apiTypeName??>@${apiTypeName}</#if></div>
 
                             <@d.tools idName="exportExcel"></@d.tools>
 
@@ -179,9 +179,9 @@
                                     <#if customerBalanceLogList??>
                                         <#list customerBalanceLogList as customerBalanceLog>
                                             <#if customerBalanceLog.api??>
-                                            <tr>
+                                            <tr class="odd gradeX">
                                             <#else >
-                                            <tr class="danger">
+                                            <tr class="danger odd gradeX">
                                             </#if>
                                             <td data-title="产品名称"><#if customerBalanceLog.api??>${customerBalanceLog.api.name!''}</#if></td>
                                             <td data-title="消费金额（单位/元）"><#if customerBalanceLog.amount??>${(-customerBalanceLog.amount/100.0)?c}<#else >0</#if></td>
@@ -236,7 +236,7 @@
                 fetch('/excel-finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?companyName='+companyName+'&customerId='+customerId+'&reasonId='+reasonId+'&apiTypeId='+apiTypeId).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
-                var filename = companyName+'-'+apiTypeName+'消费明细记录.xls';
+                var filename = companyName+'@'+apiTypeName+'消费明细记录.xls';
                 a.href = url;
                 a.download = filename;
                 a.click();

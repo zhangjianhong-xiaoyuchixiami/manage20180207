@@ -191,7 +191,7 @@
                                 <tbody>
                                     <#if weekMonthAmountList??>
                                         <#list weekMonthAmountList as weekMonthAmount>
-                                        <tr>
+                                        <tr class="odd gradeX">
                                             <td data-title="周期"><#if weekMonthAmount.years??>${weekMonthAmount.years?c}年</#if><#if weekMonthAmount.months??>第${weekMonthAmount.months?c}月</#if><#if weekMonthAmount.weeks??>第${weekMonthAmount.weeks?c}周</#if></td>
                                             <td data-title="金额（单位/元）"><#if weekMonthAmount.totleAmount??><#if weekMonthAmount.totleAmount<0>${(-weekMonthAmount.totleAmount/100.0)?c}<#else >${(weekMonthAmount.totleAmount/100.0)?c}</#if><#else >0</#if></td>
                                             <td data-title="开始时间"><#if weekMonthAmount.beginTime??>${weekMonthAmount.beginTime?date}</#if></td>

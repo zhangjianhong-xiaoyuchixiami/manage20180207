@@ -184,7 +184,7 @@
                                         </label>
                                     </#if>
 
-                                    <div id="form_modalA" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabelA" aria-hidden="true">
+                                    <div id="form_modalA" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelA" aria-hidden="true">
 
                                         <div class="modal-header">
 
@@ -220,7 +220,7 @@
                                 <tbody>
                                     <#if weekMonthAmountList??>
                                         <#list weekMonthAmountList as weekMonthAmount>
-                                        <tr>
+                                        <tr class="odd gradeX">
                                             <td data-title="周期"><#if weekMonthAmount.years??>${weekMonthAmount.years?c}年</#if><#if weekMonthAmount.months??>第${weekMonthAmount.months}月</#if></td>
                                             <td data-title="金额（单位/元）"><#if weekMonthAmount.totleAmount??><#if weekMonthAmount.totleAmount<0>${(-weekMonthAmount.totleAmount/100.0)?c}<#else >${(weekMonthAmount.totleAmount/100.0)?c}</#if><#else >0</#if></td>
                                             <td data-title="开始时间"><#if weekMonthAmount.beginTime??>${weekMonthAmount.beginTime?date}</#if></td>

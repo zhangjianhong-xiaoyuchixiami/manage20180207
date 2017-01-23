@@ -85,7 +85,7 @@
     </resultMap>
 
 
-    <!--查询客户的财务总览-->
+    <!--查询客户的财务总览通过部门编号-->
     <select id="queryCompanyCustomerOverAllFinanceByDept" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
         kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price
@@ -113,7 +113,7 @@
             (
                 SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.partnerId,c.name partnerName,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
                 b.deptId,b.deptName,z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
-                FROM qyfinance.bkvwCustomer a LEFT JOIN qyauth.bkvwCustomerDept b ON a.id=b.customerId LEFT JOIN qyfinance.bk-bkvwPartner c
+                FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwCustomerDept b ON a.id=b.customerId LEFT JOIN qyfinance.bk-bkvwPartner c
                 ON a.partnerId=c.id  LEFT JOIN
                             (
                                 SELECT a.companyId,a.apiTypeId,b.name apiTypeName,a.subTypeId,c.name subTypeName,a.price
@@ -183,7 +183,7 @@
         ON kk.id=ll.customerId
     </select>
 
-
+    <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
         kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price
@@ -303,48 +303,46 @@
 
     <!--查询客户的Api消费记录-->
     <select id="queryCompanyCustomerApiConsumeRecordByCustomerId" parameterType="map" resultMap="ApiType_CustomerApiVendor_Map">
-        select ee.apiTypeId,ff.name typeName,ee.apiId,ee.totlePrice,ee.vendorName,ee.vendorId
-        from
+        SELECT cc.apiTypeId,dd.name typeName,cc.apiId,cc.totlePrice,cc.vendorName,cc.vendorId
+        FROM
         (
-            select cc.apiTypeId,cc.apiId,cc.totlePrice,dd.vendorName,dd.vendorId
-            from
+            SELECT aa.apiTypeId,aa.apiId,aa.totlePrice,bb.vendorName,bb.vendorId
+            FROM
             (
-                select b.apiTypeId,b.apiId,sum(a.amount) totlePrice
-                from qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b
-                ON a.reqId=b.id
-                where a.reasonId in(-1,-2) and b.hasCost=1
-                and a.customerId=#{customerId}
-                group by b.apiTypeId,b.apiId
-            ) cc LEFT JOIN qyfinance.bkvwApi dd
-            ON cc.apiId = dd.id
-        ) ee LEFT JOIN qyfinance.bkvwApiType ff
-        ON ee.apiTypeId=ff.id
+                SELECT b.apiTypeId,b.apiId,sum(a.amount) totlePrice
+                FROM qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b ON a.reqId=b.id
+                WHERE a.reasonId IN(-1,-2) AND b.hasCost=1 AND a.customerId=#{customerId}
+                GROUP BY b.apiTypeId,b.apiId
+            ) aa LEFT JOIN qyfinance.bkvwApi bb
+            ON aa.apiId = bb.id
+        ) cc LEFT JOIN qyfinance.bkvwApiType dd
+        ON cc.apiTypeId=dd.id
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
-                ee.apiTypeId=#{apiTypeId}
+                cc.apiTypeId=#{apiTypeId}
             </if>
             <if test="apiVendorId != null and apiVendorId != ''">
-                AND ee.vendorId=#{apiVendorId}
+                AND cc.vendorId=#{apiVendorId}
             </if>
         </where>
     </select>
 
     <!--查询客户的Api消费明细记录-->
     <select id="queryCompanyCustomerApiDetailConsumeRecordByCustomerId" parameterType="map" resultMap="CustomerBalanceDetailConsume_Map">
-       select aa.reasonId,aa.amount,aa.customerId,aa.createTime,aa.reasonName,aa.apiTypeId,aa.apiId,bb.name apiName
-        from
+        SELECT aa.reasonId,aa.amount,aa.customerId,aa.createTime,aa.reasonName,aa.apiTypeId,aa.apiId,bb.name apiName
+        FROM
         (
-            select a.reasonId,a.amount,a.customerId,a.createTime,a.reasonName,b.apiTypeId,b.apiId
-            from qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b
+            SELECT a.reasonId,a.amount,a.customerId,a.createTime,a.reasonName,b.apiTypeId,b.apiId
+            FROM qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b
             ON a.reqId=b.id
-            where b.hasCost=1 and a.customerId=#{customerId}
+            WHERE b.hasCost=1 AND a.customerId=#{customerId}
             <if test="reasonIdList != null and reasonIdList.size() > 0">
                 AND a.reasonId IN
                 <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
                     #{reasonId}
                 </foreach>
             </if>
-        ) aa left join qyfinance.bkvwApi bb on aa.apiId=bb.id
+        ) aa LEFT JOIN qyfinance.bkvwApi bb ON aa.apiId=bb.id
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
                 aa.apiTypeId=#{apiTypeId}
@@ -460,17 +458,17 @@
 
     <!--查询客户各供应商消费情况-->
     <select id="queryCustomerConsumeByVendor" parameterType="map" resultMap="CustomerApiVendor_Map">
-        select ee.apiTypeId,ff.name typeName,ee.apiId,ee.totlePrice,ee.vendorName,ee.vendorId,ee.apiName
-        from
+        SELECT ee.apiTypeId,ff.name typeName,ee.apiId,ee.totlePrice,ee.vendorName,ee.vendorId,ee.apiName
+        FROM
         (
-            select cc.apiTypeId,cc.apiId,cc.totlePrice,dd.vendorName,dd.vendorId,dd.name apiName
-            from
+            SELECT cc.apiTypeId,cc.apiId,cc.totlePrice,dd.vendorName,dd.vendorId,dd.name apiName
+            FROM
             (
-                select b.apiTypeId,b.apiId,sum(a.amount) totlePrice
-                from qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b
+                SELECT b.apiTypeId,b.apiId,sum(a.amount) totlePrice
+                FROM qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b
                 ON a.reqId=b.id
-                where a.customerId=#{customerId} AND b.hasCost=1 AND a.reasonId IN(-1,-2)
-                group by b.apiTypeId,b.apiId
+                WHERE a.customerId=#{customerId} AND b.hasCost=1 AND a.reasonId IN(-1,-2)
+                GROUP BY b.apiTypeId,b.apiId
             ) cc LEFT JOIN qyfinance.bkvwApi dd ON cc.apiId = dd.id
         ) ee LEFT JOIN qyfinance.bkvwApiType ff ON ee.apiTypeId=ff.id
         WHERE ee.apiTypeId=#{apiTypeId}

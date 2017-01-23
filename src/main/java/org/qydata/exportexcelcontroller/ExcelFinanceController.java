@@ -3,6 +3,7 @@ package org.qydata.exportexcelcontroller;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.qydata.dst.CustomerApiType;
+import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.Dept;
@@ -297,15 +298,59 @@ public class ExcelFinanceController {
             customerApiType = customerApiTypeList.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
             mapValue.put("apiType", customerApiType.getApiTypeName());
-//            List<CustomerApiVendor> customerApiVendorList = customerApiType.getCustomerApiVendors();
-//            StringBuffer apiVendorName = new StringBuffer();
-//            for (int i=0; i<customerApiVendorList.size(); i++){
-//                CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
-//                if(customerApiVendor.getVendorName() != null) {
-//                    apiVendorName = new StringBuffer(customerApiVendor.getVendorName() + "," + apiVendorName);
-//                }
-//            }
-//            mapValue.put("apiVendor", apiVendorName);
+            List<CustomerApiVendor> customerApiVendorList = customerApiType.getCustomerApiVendors();
+            StringBuffer apiVendorName = new StringBuffer();
+            for (int i=0; i<customerApiVendorList.size(); i++){
+                CustomerApiVendor customerApiVendor = customerApiVendorList.get(i);
+                if(customerApiVendor.getVendorName() != null) {
+                    apiVendorName = new StringBuffer(customerApiVendor.getVendorName() + "," + apiVendorName);
+                }
+            }
+            mapValue.put("apiVendor", apiVendorName);
+            if(customerApiType.getTotlePrice() != null){
+                mapValue.put("price", customerApiType.getTotlePrice()/100.0);
+            }else{
+                mapValue.put("price", 0.0);
+            }
+            list.add(mapValue);
+        }
+        String fileName = companyName+"消费记录";
+        String columnNames[]= {"产品类型","产品供应商","金额（单位：元）"};//列名
+        String keys[] = {"apiType","apiVendor","price"};//map中的key
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
+    }
+
+    /**
+     * 指定账号Api消费记录
+     * @return
+     */
+    @RequestMapping("/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id")
+    public void findAllApiConsumeRecordByCustomerIdByDeptId(Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,HttpServletResponse response) throws IOException {
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        if(apiTypeId != null){
+            map.put("apiTypeId",apiTypeId);
+        }
+        if(apiVendorId != null){
+            map.put("apiVendorId",apiVendorId);
+        }
+        List<CustomerApiType> customerApiTypeList = null;
+        try {
+            customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<Map<String,Object>> list = new ArrayList<>();
+        Map<String, Object> mapA = new HashMap<String, Object>();
+        mapA.put("sheetName", "sheet1");
+        list.add(mapA);
+        CustomerApiType customerApiType = null;
+        for (int j = 0; j < customerApiTypeList.size(); j++) {
+            customerApiType = customerApiTypeList.get(j);
+            Map<String, Object> mapValue = new HashMap<String, Object>();
+            mapValue.put("apiType", customerApiType.getApiTypeName());
+
             if(customerApiType.getTotlePrice() != null){
                 mapValue.put("price", customerApiType.getTotlePrice()/100.0);
             }else{
@@ -318,6 +363,7 @@ public class ExcelFinanceController {
         String keys[] = {"apiType","price"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
+
     /**
      * 指定账号Api消费明细记录
      * @param customerId

@@ -164,7 +164,7 @@
                                 <tbody>
                                     <#if customerBalanceLogList??>
                                         <#list customerBalanceLogList as customerBalanceLog>
-                                        <tr>
+                                        <tr class="odd gradeX">
                                             <td data-title="金额（单位：元）">${(customerBalanceLog.amount/100.0)?c}</td>
                                             <td data-title="时间">${customerBalanceLog.createTime}</td>
                                             <td data-title="理由">${customerBalanceLog.customerBalanceModifyReason.name}</td>

@@ -48,11 +48,11 @@
                             </div>
                             <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
 
-                                <label class="control-label">apiName</label>
+                                <label class="control-label">mobileOperatorName</label>
 
                                 <div class="controls">
 
-                                    <input type="text" id="apiName" name="apiName" value="${apiName}" class="m-wrap medium">
+                                    <input type="text" id="mobileOperatorName" name="mobileOperatorName" <#if mobileOperatorName??>value="${mobileOperatorName}"</#if> class="m-wrap medium">
 
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-user"></i><#if apiTypeName??>${apiTypeName}</#if><#if vendorName??>--${vendorName}</#if><#if apiName??>--${apiName}</#if></div>
+                            <div class="caption"><i class="icon-user"></i><#if apiTypeName??>${apiTypeName!''}<#if mobileOperatorName??>——${mobileOperatorName!''}</#if></#if><#if vendorName??>@${vendorName!''}</#if></div>
 
                             <@d.tools idName="exportExcel"></@d.tools>
 
@@ -156,7 +156,7 @@
                                 <tbody>
                                 <#if apiRequestLogList??>
                                 <#list apiRequestLogList as apiRequestLog>
-                                <tr>
+                                <tr class="odd gradeX">
                                     <td data-title="公司名称"><#if apiRequestLog.company??>${apiRequestLog.company.name!''}<#else></#if></td>
                                     <td data-title="消费金额（单位：元）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.cost/100.0)!''}<#else></#if></td>
                                     <td data-title="响应时间（单位：秒）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.resTime/1000.0)!''}<#else></#if></td>

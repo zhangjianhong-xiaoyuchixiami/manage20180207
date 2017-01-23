@@ -62,7 +62,7 @@ var TableManaged = function () {
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table>';
-                sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 22%;">产品类型</th><th style="width: 70%;">价格</th></tr>';
+                sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 30%;">产品类型</th><th style="width: 62%;">价格</th></tr>';
                 sOut += '<tr><td></td><td>'+aData[10]+'</td><td>'+aData[11]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
@@ -74,7 +74,7 @@ var TableManaged = function () {
             var nCloneTh = document.createElement( 'th' );
             var nCloneTd = document.createElement( 'td' );
             nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
-
+            // nCloneTh.innerHTML = '<span class="row-details row-details-close"></span>';
             $('#sample_2 thead tr').each( function () {
                 this.insertBefore( nCloneTh, this.childNodes[0] );
             } );

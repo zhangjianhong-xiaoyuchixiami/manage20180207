@@ -200,23 +200,19 @@ public class FinanceController {
      */
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id")
     public String findAllApiConsumeRecordByCustomerId(Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
-        Map<String,Object> map = new HashedMap();
-        map.put("customerId",customerId);
-        List<CustomerApiType> customerApiTypes = null;
         try {
+            Map<String,Object> map = new HashMap();
+            map.put("customerId",customerId);
+            List<CustomerApiType> customerApiTypes = null;
             customerApiTypes = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        List<CustomerApiType> customerApiTypes1 = null;
-        List<CustomerApiVendor> customerApiVendors = null;
-        if(apiTypeId != null){
-            map.put("apiTypeId",apiTypeId);
-            try {
-                customerApiTypes1 = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-                if (customerApiTypes1 != null) {
-                    for (int i = 0; i < customerApiTypes1.size(); i++) {
-                        CustomerApiType customerApiType = customerApiTypes1.get(i);
+            List<CustomerApiType> customerApiTypesOne = null;
+            List<CustomerApiVendor> customerApiVendors = null;
+            if(apiTypeId != null){
+                map.put("apiTypeId",apiTypeId);
+                customerApiTypesOne = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+                if (customerApiTypesOne != null) {
+                    for (int i = 0; i < customerApiTypesOne.size(); i++) {
+                        CustomerApiType customerApiType = customerApiTypesOne.get(i);
                         customerApiVendors = customerApiType.getCustomerApiVendors();
                         if (customerApiVendors != null){
                             for (int j=0; j<customerApiVendors.size(); j++){
@@ -228,16 +224,12 @@ public class FinanceController {
                         }
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        }
-        if(apiVendorId != null){
-            map.put("apiVendorId",apiVendorId);
-        }
-        List<CustomerApiType> customerApiTypeList = null;
-        long totleAmount =0;
-        try {
+            if(apiVendorId != null){
+                map.put("apiVendorId",apiVendorId);
+            }
+            List<CustomerApiType> customerApiTypeList = null;
+            long totleAmount =0;
             customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
             if (customerApiTypeList != null) {
                 for (int i = 0; i < customerApiTypeList.size(); i++) {
@@ -245,17 +237,17 @@ public class FinanceController {
                     totleAmount = totleAmount + customerApiType.getTotlePrice();
                 }
             }
+            model.addAttribute("customerApiTypeList", customerApiTypeList);
+            model.addAttribute("customerApiTypes",customerApiTypes);
+            model.addAttribute("customerApiVendors",customerApiVendors);
+            model.addAttribute("customerId",customerId);
+            model.addAttribute("apiTypeId",apiTypeId);
+            model.addAttribute("apiVendorId",apiVendorId);
+            model.addAttribute("companyName",companyName);
+            model.addAttribute("totleAmount",totleAmount);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("customerApiTypeList", customerApiTypeList);
-        model.addAttribute("customerApiTypes",customerApiTypes);
-        model.addAttribute("customerApiVendors",customerApiVendors);
-        model.addAttribute("customerId",customerId);
-        model.addAttribute("apiTypeId",apiTypeId);
-        model.addAttribute("apiVendorId",apiVendorId);
-        model.addAttribute("companyName",companyName);
-        model.addAttribute("totleAmount",totleAmount);
         return "/finance/customerApiConsumeRecord";
     }
 

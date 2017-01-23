@@ -148,7 +148,7 @@
 
                                     </label>
 
-                                    <div id="form_modal7" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+                                    <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
 
                                         <div class="modal-header">
 
@@ -185,8 +185,7 @@
                                 <tbody>
                                     <#if apiFinanceList??>
                                         <#list apiFinanceList as apiFinance>
-                                        <tr>
-
+                                        <tr class="odd gradeX">
                                             <td data-title="产品供应商">${apiFinance.vendorName}</td>
                                             <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
@@ -201,7 +200,7 @@
                                 </tbody>
                             </table>
 
-                            <div id="form_modal4" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+                            <div id="form_modal4" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
 
                                 <div class="modal-header">
 
@@ -310,10 +309,8 @@
 
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
-                var apiTypeId = $('#apiTypeId').val();
                 var vendorId = $('#vendorId').val();
-                var apiId = $('#apiId').val();
-                fetch('/excel-api-finance/find-all-api-record?apiTypeId='+apiTypeId+'&vendorId='+vendorId+'&apiId='+apiId).then(res => res.blob().then(blob => {
+                fetch('/excel-api-finance/find-all-api-vendor-consume?vendorId='+vendorId).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
                 var filename ='产品供应商消费账单.xls';
@@ -417,7 +414,7 @@
                         $("#amount-message").append('<span class="help-line"><font color="red">'+result.amountMessage+'</font></span>');
                     }
                     if(result.successMessage != null){
-                        window.location.href="/api/find-all-api-record"
+                        window.location.href="/api/find-all-api-vendor-consume"
                     }
                     if(result.errorMessage != null) {
                         $("#error-alert").empty();
@@ -433,7 +430,7 @@
         $(document).ready(function() {
             $('#customerBalance').addClass('active');
 
-            $('#apiRecordLog').addClass('active');
+            $('#apiVendorRecordLog').addClass('active');
 
             $('#customerBalanceSelect').addClass('selected');
 

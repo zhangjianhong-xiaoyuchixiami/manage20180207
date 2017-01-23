@@ -71,7 +71,7 @@
                         <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
 
                             <span class="username" style="font-size: 16px;">
-                               <#if Session.userInfo?exists>
+                                <#if Session.userInfo?exists>
                                    ${Session.userInfo.name}
                                </#if>
                             </span>
@@ -94,7 +94,7 @@
 
                 </ul>
 
-               <span id="username" style="display: none"><@shiro.principal/></span>
+                <span id="username" style="display: none"><@shiro.principal/></span>
 
             </div>
 
@@ -141,57 +141,57 @@
                     <!-- 搜索框结束 -->
                 </li>
 
-                <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
-                    <#--<li class="" id="customerManage">-->
-                        <#--<a href="javascript:;">-->
+            <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
+            <#--<li class="" id="customerManage">-->
+            <#--<a href="javascript:;">-->
 
-                            <#--<i class="icon-sitemap"></i>-->
+            <#--<i class="icon-sitemap"></i>-->
 
-                            <#--<span class="title">客户管理</span>-->
+            <#--<span class="title">客户管理</span>-->
 
-                            <#--<span class="" id="customerManageSelect"></span>-->
+            <#--<span class="" id="customerManageSelect"></span>-->
 
-                            <#--<span class="arrow " id="customerManageArrow"></span>-->
+            <#--<span class="arrow " id="customerManageArrow"></span>-->
 
-                        <#--</a>-->
+            <#--</a>-->
 
-                        <#--<ul class="sub-menu">-->
+            <#--<ul class="sub-menu">-->
 
-                            <#--<@shiro.hasPermission name="company:addCompanyAllDeptView">-->
-                                <#--<li id="addCustomer">-->
-                                    <#--<a href="/company/addCompanyAllDeptView">-->
-                                        <#--新增客户-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--</@shiro.hasPermission>-->
+            <#--<@shiro.hasPermission name="company:addCompanyAllDeptView">-->
+            <#--<li id="addCustomer">-->
+            <#--<a href="/company/addCompanyAllDeptView">-->
+            <#--新增客户-->
+            <#--</a>-->
+            <#--</li>-->
+            <#--</@shiro.hasPermission>-->
 
-                            <#--<@shiro.hasPermission name="company:addCompanyOnlyDeptView">-->
-                                <#--<li id="addCustomer">-->
-                                    <#--<a href="/company/addCompanyOnlyDeptView">-->
-                                        <#--新增客户-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--</@shiro.hasPermission>-->
+            <#--<@shiro.hasPermission name="company:addCompanyOnlyDeptView">-->
+            <#--<li id="addCustomer">-->
+            <#--<a href="/company/addCompanyOnlyDeptView">-->
+            <#--新增客户-->
+            <#--</a>-->
+            <#--</li>-->
+            <#--</@shiro.hasPermission>-->
 
-                            <#--<@shiro.hasPermission name="company:findAllAction">-->
-                                <#--<li id="customerList">-->
-                                    <#--<a href="/company/findAllAction">-->
-                                        <#--客户信息-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--</@shiro.hasPermission>-->
+            <#--<@shiro.hasPermission name="company:findAllAction">-->
+            <#--<li id="customerList">-->
+            <#--<a href="/company/findAllAction">-->
+            <#--客户信息-->
+            <#--</a>-->
+            <#--</li>-->
+            <#--</@shiro.hasPermission>-->
 
-                            <#--<@shiro.hasPermission name="company:findAllByDeptIdAction">-->
-                                <#--<li id="customerList">-->
-                                    <#--<a href="/company/findAllByDeptIdAction">-->
-                                        <#--客户信息-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--</@shiro.hasPermission>-->
+            <#--<@shiro.hasPermission name="company:findAllByDeptIdAction">-->
+            <#--<li id="customerList">-->
+            <#--<a href="/company/findAllByDeptIdAction">-->
+            <#--客户信息-->
+            <#--</a>-->
+            <#--</li>-->
+            <#--</@shiro.hasPermission>-->
 
-                        <#--</ul>-->
-                    <#--</li>-->
-                <#--</@shiro.hasAnyRoles>-->
+            <#--</ul>-->
+            <#--</li>-->
+            <#--</@shiro.hasAnyRoles>-->
 
             <#--财务管理-->
                 <@shiro.hasAnyRoles name="sell,backAdmin">
@@ -227,39 +227,43 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <li id="apiRecordLog">
-                                <a href="/api/find-all-api-record">
-                                    产品消费账单
-                                </a>
-                            </li>
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="apiRecordLog">
+                                    <a href="/api/find-all-api-record">
+                                        产品消费账单
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-                            <li id="apiRecordLog">
-                                <a href="/api/find-all-api-vendor-consume">
-                                    供应商财务账单
-                                </a>
-                            </li>
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="apiVendorRecordLog">
+                                    <a href="/api/find-all-api-vendor-consume">
+                                        供应商财务账单
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-                            <#--<li id="partnersFinancialAccount">-->
+                        <#--<li id="partnersFinancialAccount">-->
 
-                                <#--<a href="javascript:;">-->
+                        <#--<a href="javascript:;">-->
 
-                                    <#--合作企业来往账目-->
+                        <#--合作企业来往账目-->
 
-                                    <#--<span class="" id="partnersSelect"></span>-->
+                        <#--<span class="" id="partnersSelect"></span>-->
 
-                                    <#--<span class="arrow" id="partnersArrow"></span>-->
+                        <#--<span class="arrow" id="partnersArrow"></span>-->
 
-                                <#--</a>-->
+                        <#--</a>-->
 
-                                <#--<ul class="sub-menu">-->
+                        <#--<ul class="sub-menu">-->
 
-                                    <#--<li id="partnersUp"><a href="/finance/find-all-partners-financial-account">上游企业</a></li>-->
+                        <#--<li id="partnersUp"><a href="/finance/find-all-partners-financial-account">上游企业</a></li>-->
 
-                                    <#--<li id="partnersDown"><a href="/finance/find-all-partners-financial-account">下游企业</a></li>-->
+                        <#--<li id="partnersDown"><a href="/finance/find-all-partners-financial-account">下游企业</a></li>-->
 
-                                <#--</ul>-->
+                        <#--</ul>-->
 
-                            <#--</li>-->
+                        <#--</li>-->
 
                         </ul>
 
@@ -374,7 +378,7 @@
 
         <div class="footer-inner">
 
-            <#--2016 &copy;-->
+        <#--2016 &copy;-->
         </div>
 
         <div class="footer-tools">
@@ -391,98 +395,98 @@
 
 </div>
 
-<#nested "publicJs" />
+    <#nested "publicJs" />
 
-    <script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+<script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
-    <script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
-    <script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 
-    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/bootstrap.min.js" type="text/javascript"></script>
 
-    <script src="/js/excanvas.min.js"></script>
+<script src="/js/excanvas.min.js"></script>
 
-    <script src="/js/respond.min.js"></script>
+<script src="/js/respond.min.js"></script>
 
-    <script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
 
-    <script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
 
-    <script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
 
-    <script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
+<script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
 
-    <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
 
-    <script src="/js/search.js"></script>
+<script src="/js/search.js"></script>
 
-    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/jquery.validate.min.js"></script>
 
-    <script type="text/javascript" src="/js/select2.min.js"></script>
+<script type="text/javascript" src="/js/select2.min.js"></script>
 
-    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
 
-    <script type="text/javascript" src="/js/ckeditor.js"></script>
+<script type="text/javascript" src="/js/ckeditor.js"></script>
 
-    <script type="text/javascript" src="/js/bootstrap-fileupload.js"></script>
+<script type="text/javascript" src="/js/bootstrap-fileupload.js"></script>
 
-    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
 
-    <script type="text/javascript" src="/js/select2.min.js"></script>
+<script type="text/javascript" src="/js/select2.min.js"></script>
 
-    <script type="text/javascript" src="/js/wysihtml5-0.3.0.js"></script>
+<script type="text/javascript" src="/js/wysihtml5-0.3.0.js"></script>
 
-    <script type="text/javascript" src="/js/bootstrap-wysihtml5.js"></script>
+<script type="text/javascript" src="/js/bootstrap-wysihtml5.js"></script>
 
-    <script type="text/javascript" src="/js/jquery.tagsinput.min.js"></script>
+<script type="text/javascript" src="/js/jquery.tagsinput.min.js"></script>
 
-    <script type="text/javascript" src="/js/jquery.toggle.buttons.js"></script>
+<script type="text/javascript" src="/js/jquery.toggle.buttons.js"></script>
 
-    <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
 
-    <script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
 
-    <script type="text/javascript" src="/js/clockface.js"></script>
+<script type="text/javascript" src="/js/clockface.js"></script>
 
-    <script type="text/javascript" src="/js/date.js"></script>
+<script type="text/javascript" src="/js/date.js"></script>
 
-    <script type="text/javascript" src="/js/daterangepicker.js"></script>
+<script type="text/javascript" src="/js/daterangepicker.js"></script>
 
-    <script type="text/javascript" src="/js/bootstrap-colorpicker.js"></script>
+<script type="text/javascript" src="/js/bootstrap-colorpicker.js"></script>
 
-    <script type="text/javascript" src="/js/bootstrap-timepicker.js"></script>
+<script type="text/javascript" src="/js/bootstrap-timepicker.js"></script>
 
-    <script type="text/javascript" src="/js/jquery.inputmask.bundle.min.js"></script>
+<script type="text/javascript" src="/js/jquery.inputmask.bundle.min.js"></script>
 
-    <script type="text/javascript" src="/js/jquery.input-ip-address-control-1.0.min.js"></script>
+<script type="text/javascript" src="/js/jquery.input-ip-address-control-1.0.min.js"></script>
 
-    <script type="text/javascript" src="/js/jquery.multi-select.js"></script>
+<script type="text/javascript" src="/js/jquery.multi-select.js"></script>
 
-    <script src="/js/bootstrap-modal.js" type="text/javascript" ></script>
+<script src="/js/bootstrap-modal.js" type="text/javascript" ></script>
 
-    <script src="/js/bootstrap-modalmanager.js" type="text/javascript" ></script>
+<script src="/js/bootstrap-modalmanager.js" type="text/javascript" ></script>
 
-    <script src="/js/app.js"></script>
+<script src="/js/app.js"></script>
 
-    <script src="/js/form-validation.js"></script>
+<script src="/js/form-validation.js"></script>
 
-    <script src="/js/form-components.js"></script>
+<script src="/js/form-components.js"></script>
 
-    <script>
+<script>
 
-        jQuery(document).ready(function() {
-            App.init();
+    jQuery(document).ready(function() {
+        App.init();
 
-            Search.init();
+        Search.init();
 
-        });
-    </script>
+    });
+</script>
 
-    <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
-    </script>
+<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
+</script>
 
-<#nested "privateJs" />
+    <#nested "privateJs" />
 </body>
 </html>
 </#macro>
