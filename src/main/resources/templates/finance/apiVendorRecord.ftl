@@ -201,7 +201,7 @@
                                         <#list apiFinanceList as apiFinance>
                                         <tr class="odd gradeX">
                                             <td data-title="供应商">${apiFinance.vendorName}</td>
-                                            <td data-title="合作公司"><a href="/api//find-all-api-vendor-consume<#if apiFinance.partnerId??>?partnerId=${apiFinance.partnerId?c}</#if>">${apiFinance.partnerName!''}</a></td>
+                                            <td data-title="合作公司"><a href="/api/find-all-api-vendor-consume<#if apiFinance.partnerId??>?partnerId=${apiFinance.partnerId?c}</#if>">${apiFinance.partnerName!''}</a></td>
                                             <td data-title="消费总额">${(apiFinance.consumeTotleAmount/100.0)?c}</td>
                                             <td data-title="所剩余额">${(apiFinance.balance/100.0)?c}</td>
                                             <td data-title="上周消费">${(apiFinance.weekTotleCost/100.0)?c}</td>

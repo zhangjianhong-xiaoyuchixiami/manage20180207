@@ -101,7 +101,7 @@ public class ExcelApiFinanceController {
             if(apiRequestLog.getApiResponseLog() != null){
                 mapValue.put("resTime", apiRequestLog.getApiResponseLog().getResTime()/1000.0);
             }else {
-                mapValue.put("consumeTotleAmount", "");
+                mapValue.put("resTime", "");
             }
             mapValue.put("createTime", apiRequestLog.getCreateTime());
             list.add(mapValue);
