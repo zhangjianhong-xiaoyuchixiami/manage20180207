@@ -45,12 +45,15 @@ public class ExcelFinanceController {
      * @return
      */
     @RequestMapping(value = "/find-all-customer")
-    public void findAllCustomer(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void findAllCustomer(Integer partnerId,HttpServletRequest request,HttpServletResponse response) throws IOException {
         String companyName = request.getParameter("content");
         Map<String,Object> map = new HashMap<String,Object>();
         List customerTypeIdList = new ArrayList();
         if(companyName!=null){
             map.put("content",companyName);
+        }
+        if(partnerId!=null){
+            map.put("partnerId",partnerId);
         }
         customerTypeIdList.add(1);
         map.put("customerTypeIdList",customerTypeIdList);
@@ -124,7 +127,7 @@ public class ExcelFinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer-by-dept-id")
-    public void findAllCustomerByDeptId(String username,HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void findAllCustomerByDeptId(String username,Integer partnerId,HttpServletRequest request,HttpServletResponse response) throws IOException {
         String companyName = request.getParameter("content");
         User user = null;
         try {
@@ -142,6 +145,9 @@ public class ExcelFinanceController {
             map.put("deptIdList", deptIdList);
             if (companyName != null) {
                 map.put("content", companyName);
+            }
+            if(partnerId!=null){
+                map.put("partnerId",partnerId);
             }
             List customerTypeIdList = new ArrayList();
             customerTypeIdList.add(1);
@@ -407,10 +413,12 @@ public class ExcelFinanceController {
             customerBalanceLog = customerBalanceLogList.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
 
-            if(customerBalanceLog.getApi() != null && customerBalanceLog.getApi().getName() != null ){
-                mapValue.put("apiName", customerBalanceLog.getApi().getName());
-            }else{
-                mapValue.put("apiName", "");
+            if(customerBalanceLog.getApiType() != null && customerBalanceLog.getApiVendor() != null && customerBalanceLog.getMobileOperator() != null ){
+                mapValue.put("apiName", customerBalanceLog.getApiType().getName()+"——"+customerBalanceLog.getMobileOperator().getName()+"@"+customerBalanceLog.getApiVendor().getName());
+            }else if(customerBalanceLog.getApiType() != null && customerBalanceLog.getApiVendor() != null && customerBalanceLog.getMobileOperator() == null ){
+                mapValue.put("apiName", customerBalanceLog.getApiType().getName()+"@"+customerBalanceLog.getApiVendor().getName());
+            }else {
+                mapValue.put("apiName","");
             }
             if(customerBalanceLog.getAmount() != null){
                 mapValue.put("amount", customerBalanceLog.getAmount()/100.0);
@@ -430,7 +438,7 @@ public class ExcelFinanceController {
             list.add(mapValue);
         }
         String fileName = companyName+"消费明细记录";
-        String columnNames[]= {"产品名称","消费金额（单位：元）","创建时间","类型"};//列名
+        String columnNames[]= {"产品","消费金额（单位：元）","创建时间","类型"};//列名
         String keys[] = {"apiName","amount","createTime","reasonName"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }

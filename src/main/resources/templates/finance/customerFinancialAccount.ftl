@@ -21,6 +21,18 @@
                 <div class="span12">
 
                 <#--搜索框-->
+
+                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+
+                        <label class="control-label">合作公司Id</label>
+
+                        <div class="controls">
+
+                            <input type="text" id="partnerId" name="partnerId" <#if partnerId??>value="${partnerId?c}"</#if> class="m-wrap medium">
+
+                        </div>
+                    </div>
+
                     <#if deptIdList??>
 
                         <form action="/finance/find-all-customer-by-dept-id" method="get">
@@ -227,7 +239,8 @@
         $(document).ready(function() {
             $('#exportExcel').on('click', function () {
                 var companyName = $('#companyName').val();
-                fetch('/excel-finance/find-all-customer?content='+companyName).then(res => res.blob().then(blob => {
+                var partnerId = $('#partnerId').val();
+                fetch('/excel-finance/find-all-customer?content='+companyName+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
                 var filename = '客户财务报表.xls';
@@ -240,8 +253,9 @@
 
             $('#exportExcelByDeptId').on('click', function () {
                 var companyName = $('#companyName').val();
+                var partnerId = $('#partnerId').val();
                 var username = $('#username').text();
-                fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName+'&username='+username).then(res => res.blob().then(blob => {
+                fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName+'&username='+username+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
                 var filename = '客户财务报表.xls';

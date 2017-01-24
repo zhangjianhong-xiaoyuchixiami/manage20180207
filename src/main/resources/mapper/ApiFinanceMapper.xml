@@ -20,6 +20,25 @@
         </association>
     </resultMap>
 
+
+    <resultMap id="ApiFinance_ApiType_Map" type="org.qydata.dst.ApiFinance" >
+        <result column="vendorId" property="vendorId"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="balance" property="balance"/>
+        <result column="weekTotleCost" property="weekTotleCost"/>
+        <result column="monthTotleCost" property="monthTotleCost"/>
+        <result column="consumeTotleAmount" property="consumeTotleAmount"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+        <collection property="apiTypeList" ofType="org.qydata.entity.ApiType">
+            <result column="apiTypeId" property="id"/>
+            <result column="apiTypeName" property="name"/>
+            <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+                <result column="mobileOperatorName" property="name"/>
+            </association>
+        </collection>
+    </resultMap>
+
     <resultMap id="ApiRequestLog_Map" type="org.qydata.entity.ApiRequestLog">
         <result column="customerId" property="customerId"/>
         <result column="apiId" property="apiId"/>
@@ -81,14 +100,6 @@
         </where>
     </select>
 
-    <!--&lt;!&ndash;查询Api类型&ndash;&gt;-->
-    <!--<select id="queryApiType" parameterType="map" resultMap="ApiType_MobileOperator_Map">-->
-        <!--SELECT a.apiTypeId,b.name apiTypeName,c.name mobileOperatorName-->
-        <!--FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id-->
-        <!--LEFT JOIN qyfinance.bkvwApiMobileOperator c ON a.id=c.apiId-->
-        <!--GROUP BY a.apiTypeId,b.name,c.name-->
-    <!--</select>-->
-
     <!--查询Api类型-->
     <select id="queryApiType" parameterType="map" resultType="org.qydata.entity.ApiType">
         SELECT distinct(a.apiTypeId) id,b.name
@@ -124,9 +135,15 @@
     </select>
 
     <!--查询ApiVendor余额-->
-    <select id="queryApiVendorBalance" parameterType="Integer" resultType="Long">
-        SELECT balance FROM qyfinance.bkvwApiVendorBalance WHERE vendorId=#{param}
+    <select id="queryApiVendorBalance" parameterType="Integer" resultType="org.qydata.entity.ApiVendorBalance">
+        SELECT vendorId,balance FROM qyfinance.bkvwApiVendorBalance WHERE vendorId=#{param}
     </select>
+
+    <!--插入ApiVendorBalance-->
+    <insert id="insertApiVendorBalance" parameterType="org.qydata.entity.ApiVendorBalance" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiVendorBalance(vendorId,balance,createTime)
+        VALUES(#{vendorId},0.0,sysdate())
+    </insert>
 
     <!--ApiVendor充值-->
     <update id="updateApiVendorBalance" parameterType="Object">
@@ -140,45 +157,51 @@
     </insert>
 
     <!--以APIVendor统计消费信息-->
-    <select id="queryApiVendor" parameterType="map" resultMap="ApiFinance_Map">
-        SELECT gg.vendorId,gg.vendorName,gg.weekTotleCost,gg.monthTotleCost,gg.consumeTotleAmount,hh.balance
+    <select id="queryApiVendor" parameterType="map" resultMap="ApiFinance_ApiType_Map">
+        SELECT gg.vendorId,gg.vendorName,gg.weekTotleCost,gg.monthTotleCost,gg.consumeTotleAmount,hh.balance,ii.partnerId,ii.partnerName,
+        jj.apiTypeId,kk.name mobileOperatorName,ll.name apiTypeName
         FROM (
-            SELECT ee.vendorId,ee.vendorName,sum(ee.weekTotleCost) weekTotleCost,sum(ee.monthTotleCost) monthTotleCost,
-            sum(ff.consumeTotleAmount) consumeTotleAmount
-            FROM
-            (
-            SELECT cc.id,cc.vendorId,cc.vendorName,cc.weekTotleCost,dd.monthTotleCost
-            FROM
-            (
-            SELECT aa.id,aa.vendorId,aa.vendorName,bb.weekTotleCost
-            FROM qyfinance.bkvwApi aa LEFT JOIN
-            (
-            SELECT apiId,totleCost weekTotleCost
-            FROM qyfinance.bkvwApiWeekMonthAmount
-            WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
-            AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
-            ) bb ON aa.id=bb.apiId
-            ) cc LEFT JOIN
-            (
-            SELECT apiId,totleCost monthTotleCost
-            FROM qyfinance.bkvwApiWeekMonthAmount
-            WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
-            AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
-            ) dd ON cc.id=dd.apiId
-            ) ee LEFT JOIN
-            (
-            SELECT SUM(cost) consumeTotleAmount,apiId
-            FROM qyfinance.bkvwApiRequestLog
-            WHERE ok=1
-            GROUP BY apiId
-            ) ff ON ee.id=ff.apiId
-            GROUP BY ee.vendorId,ee.vendorName
-            ) gg LEFT JOIN qyfinance.bkvwApiVendorBalance hh ON gg.vendorId=hh.vendorId
-            <where>
-                <if test="vendorId != null and vendorId != ''">
-                    AND gg.vendorId=#{vendorId}
-                </if>
-            </where>
+        SELECT ee.vendorId,ee.vendorName,sum(ee.weekTotleCost) weekTotleCost,sum(ee.monthTotleCost) monthTotleCost,
+        sum(ff.consumeTotleAmount) consumeTotleAmount
+        FROM
+        (
+        SELECT cc.id,cc.vendorId,cc.vendorName,cc.weekTotleCost,dd.monthTotleCost
+        FROM
+        (
+        SELECT aa.id,aa.vendorId,aa.vendorName,bb.weekTotleCost
+        FROM qyfinance.bkvwApi aa LEFT JOIN
+        (
+        SELECT apiId,totleCost weekTotleCost
+        FROM qyfinance.bkvwApiWeekMonthAmount
+        WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+        AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+        ) bb ON aa.id=bb.apiId
+        ) cc LEFT JOIN
+        (
+        SELECT apiId,totleCost monthTotleCost
+        FROM qyfinance.bkvwApiWeekMonthAmount
+        WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+        ) dd ON cc.id=dd.apiId
+        ) ee LEFT JOIN
+        (
+        SELECT sum(cost) consumeTotleAmount,apiId
+        FROM qyfinance.bkvwApiRequestLog
+        WHERE ok=1
+        GROUP BY apiId
+        ) ff ON ee.id=ff.apiId
+        GROUP BY ee.vendorId,ee.vendorName
+        ) gg LEFT JOIN qyfinance.bkvwApiVendorBalance hh ON gg.vendorId=hh.vendorId LEFT JOIN qyfinance.bkvwApiVendor ii ON gg.vendorId=ii.vendorId
+        LEFT JOIN qyfinance.bkvwApi jj ON gg.vendorId=jj.vendorId LEFT JOIN qyfinance.bkvwApiMobileOperator kk ON jj.id=kk.apiId
+        LEFT JOIN qyfinance.bkvwApiType ll ON jj.apiTypeId=ll.id
+        <where>
+            <if test="vendorId != null and vendorId != ''">
+              AND gg.vendorId=#{vendorId}
+            </if>
+            <if test="partnerId != null and partnerId != ''">
+                AND ii.partnerId=#{partnerId}
+            </if>
+        </where>
     </select>
 
 </mapper>

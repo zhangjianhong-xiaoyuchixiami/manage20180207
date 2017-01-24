@@ -169,7 +169,7 @@
                             <table class="table table-striped table-hover table-bordered table-condensed" id="sample_7">
                                 <thead>
                                 <tr>
-                                    <th style="width: 40%">产品名称</th>
+                                    <th style="width: 40%">产品</th>
                                     <th style="width: 20%">消费金额（单位/元）</th>
                                     <th style="width: 20%">创建时间</th>
                                     <th style="width: 20%">类型</th>
@@ -178,12 +178,8 @@
                                 <tbody>
                                     <#if customerBalanceLogList??>
                                         <#list customerBalanceLogList as customerBalanceLog>
-                                            <#if customerBalanceLog.api??>
                                             <tr class="odd gradeX">
-                                            <#else >
-                                            <tr class="danger odd gradeX">
-                                            </#if>
-                                            <td data-title="产品名称"><#if customerBalanceLog.api??>${customerBalanceLog.api.name!''}</#if></td>
+                                            <td data-title="产品"><#if customerBalanceLog.apiType??>${customerBalanceLog.apiType.name!''}</#if><#if customerBalanceLog.mobileOperator??>——${customerBalanceLog.mobileOperator.name!''}</#if><#if customerBalanceLog.apiVendor??>@${customerBalanceLog.apiVendor.name!''}</#if></td>
                                             <td data-title="消费金额（单位/元）"><#if customerBalanceLog.amount??>${(-customerBalanceLog.amount/100.0)?c}<#else >0</#if></td>
                                             <td data-title="创建时间">${customerBalanceLog.createTime!''}</td>
                                             <td data-title="类型"><#if customerBalanceLog.customerBalanceModifyReason??>${customerBalanceLog.customerBalanceModifyReason.name}</#if></td>

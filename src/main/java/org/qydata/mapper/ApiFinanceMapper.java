@@ -1,10 +1,7 @@
 package org.qydata.mapper;
 
 import org.qydata.dst.ApiFinance;
-import org.qydata.entity.ApiVendorBalanceLog;
-import org.qydata.entity.ApiRequestLog;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -59,7 +56,15 @@ public interface ApiFinanceMapper {
      * @return
      * @throws Exception
      */
-    public Long queryApiVendorBalance(Integer vendorId)throws Exception;
+    public ApiVendorBalance queryApiVendorBalance(Integer vendorId)throws Exception;
+
+    /**
+     * 插入ApiVendorBalance
+     * @param apiVendorBalance
+     * @return
+     * @throws Exception
+     */
+    public boolean insertApiVendorBalance(ApiVendorBalance apiVendorBalance)throws Exception;
 
     /**
      * 查询Api类型

@@ -20,7 +20,7 @@ var TableManaged = function () {
                     null,
                     { "bSortable": false }
                 ],
-                "aaSorting": [[3, 'asc']],
+                "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -116,6 +116,7 @@ var TableManaged = function () {
                     { "bVisible": false }
                 ],
                 "aaSorting": [[5, 'desc']],
+
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -142,9 +143,9 @@ var TableManaged = function () {
                 "bFilter" : false //设置全文搜索框，默认true
             });
 
-            jQuery('#sample_2_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input
-            jQuery('#sample_2_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
-            jQuery('#sample_2_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+            // jQuery('#sample_2_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input
+            // jQuery('#sample_2_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#sample_2_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
             $('#sample_2_column_toggler input[type="checkbox"]').change(function(){
                 /* Get the DataTables object again - this is not a recreation, just a get of the object */
@@ -275,7 +276,7 @@ var TableManaged = function () {
             //customerBalanceLogRecord
             $('#sample_6').dataTable({
                 "aoColumns": [
-                    { "bSortable": false },
+                    null,
                     null,
                     { "bSortable": false }
                 ],
@@ -420,7 +421,7 @@ var TableManaged = function () {
                     null,
                     null
                 ],
-                "aaSorting": [[2, 'desc']],
+                "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -448,17 +449,62 @@ var TableManaged = function () {
             });
 
 
+            /* Formating function for row details */
+            function fnFormatDetailsVendor ( oTable, nTr )
+            {
+                var aData = oTable2.fnGetData( nTr );
+                var sOut = '<table>';
+                sOut += '<tr><th style="width: 8%;">供应类型:</th><td style="width: 92%;">'+aData[7]+'</td></tr>';
+                sOut += '</table>';
+                return sOut;
+            }
+
+            /*
+             * Insert a 'details' column to the table
+             */
+            var nCloneThV = document.createElement( 'th' );
+            var nCloneTdV = document.createElement( 'td' );
+            nCloneTdV.innerHTML = '<span class="row-details row-details-close"></span>';
+            // nCloneTh.innerHTML = '<span class="row-details row-details-close"></span>';
+            $('#sample_11 thead tr').each( function () {
+                this.insertBefore( nCloneThV, this.childNodes[0] );
+            } );
+
+            $('#sample_11 tbody tr').each( function () {
+                this.insertBefore(  nCloneTdV.cloneNode( true ), this.childNodes[0] );
+            } );
+
+            $('#sample_11').on('click', ' tbody td .row-details', function () {
+                var nTr = $(this).parents('tr')[0];
+                if ( oTable2.fnIsOpen(nTr) )
+                {
+                    /* This row is already open - close it */
+                    $(this).addClass("row-details-close").removeClass("row-details-open");
+                    oTable2.fnClose( nTr );
+                }
+                else
+                {
+                    /* Open this row */
+                    $(this).addClass("row-details-open").removeClass("row-details-close");
+                    oTable2.fnOpen( nTr, fnFormatDetailsVendor(oTable2, nTr), 'details' );
+                }
+            });
+
+
             // apiVendorRecord
             var oTable2 = $('#sample_11').dataTable({
                 "aoColumns": [
+                    { "bSortable": false },
+                    null,
                     null,
                     null,
                     null,
                     { "bVisible": false },
                     null,
+                    { "bVisible": false },
                     { "bSortable": false }
                 ],
-                "aaSorting": [[2, 'asc']],
+                "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

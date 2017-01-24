@@ -1,8 +1,10 @@
 package org.qydata.dst;
 
+import org.qydata.entity.ApiType;
 import org.qydata.entity.MobileOperator;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jonhn on 2017/1/18.
@@ -19,7 +21,10 @@ public class ApiFinance implements Serializable {
     private Long weekTotleCost;
     private Long monthTotleCost;
     private Long consumeTotleAmount;
+    private Integer partnerId;
+    private String partnerName;
     private MobileOperator mobileOperator;
+    private List<ApiType> apiTypeList;
 
     public Integer getApiId() {
         return apiId;
@@ -107,5 +112,29 @@ public class ApiFinance implements Serializable {
 
     public void setMobileOperator(MobileOperator mobileOperator) {
         this.mobileOperator = mobileOperator;
+    }
+
+    public Integer getPartnerId() {
+        return partnerId;
+    }
+
+    public void setPartnerId(Integer partnerId) {
+        this.partnerId = partnerId;
+    }
+
+    public String getPartnerName() {
+        return partnerName;
+    }
+
+    public void setPartnerName(String partnerName) {
+        this.partnerName = partnerName;
+    }
+
+    public List<ApiType> getApiTypeList() {
+        return apiTypeList;
+    }
+
+    public void setApiTypeList(List<ApiType> apiTypeList) {
+        this.apiTypeList = apiTypeList;
     }
 }

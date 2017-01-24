@@ -19,7 +19,9 @@ public class CustomerBalanceLog implements Serializable{
     private Long reqId;
     private Timestamp createTime;
     private CustomerBalanceModifyReason customerBalanceModifyReason;
-    private Api api;
+    private ApiType apiType;
+    private MobileOperator mobileOperator;
+    private ApiVendor apiVendor;
     public CustomerBalanceLog(){}
 
     public Long getId() {
@@ -78,12 +80,28 @@ public class CustomerBalanceLog implements Serializable{
         this.customerBalanceModifyReason = customerBalanceModifyReason;
     }
 
-    public Api getApi() {
-        return api;
+    public ApiType getApiType() {
+        return apiType;
     }
 
-    public void setApi(Api api) {
-        this.api = api;
+    public void setApiType(ApiType apiType) {
+        this.apiType = apiType;
+    }
+
+    public MobileOperator getMobileOperator() {
+        return mobileOperator;
+    }
+
+    public void setMobileOperator(MobileOperator mobileOperator) {
+        this.mobileOperator = mobileOperator;
+    }
+
+    public ApiVendor getApiVendor() {
+        return apiVendor;
+    }
+
+    public void setApiVendor(ApiVendor apiVendor) {
+        this.apiVendor = apiVendor;
     }
 
     public String toString(){

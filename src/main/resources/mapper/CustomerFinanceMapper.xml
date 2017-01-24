@@ -78,10 +78,16 @@
         <association property="customerBalanceModifyReason" javaType="org.qydata.entity.CustomerBalanceModifyReason">
             <result column="reasonName" property="name"/>
         </association>
-       <association property="api" javaType="org.qydata.entity.Api">
-           <result column="apiId" property="id"/>
-           <result column="apiName" property="name"/>
+       <association property="apiType" javaType="org.qydata.entity.ApiType">
+           <result column="apiTypeId" property="id"/>
+           <result column="apiTypeName" property="name"/>
        </association>
+        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorName" property="name"/>
+        </association>
+        <association property="apiVendor" javaType="org.qydata.entity.ApiVendor">
+            <result column="vendorName" property="name"/>
+        </association>
     </resultMap>
 
 
@@ -329,7 +335,8 @@
 
     <!--查询客户的Api消费明细记录-->
     <select id="queryCompanyCustomerApiDetailConsumeRecordByCustomerId" parameterType="map" resultMap="CustomerBalanceDetailConsume_Map">
-        SELECT aa.reasonId,aa.amount,aa.customerId,aa.createTime,aa.reasonName,aa.apiTypeId,aa.apiId,bb.name apiName
+        SELECT aa.reasonId,aa.amount,aa.customerId,aa.createTime,aa.reasonName,aa.apiTypeId,cc.name apiTypeName,bb.name mobileOperatorName,
+        dd.vendorName
         FROM
         (
             SELECT a.reasonId,a.amount,a.customerId,a.createTime,a.reasonName,b.apiTypeId,b.apiId
@@ -342,7 +349,8 @@
                     #{reasonId}
                 </foreach>
             </if>
-        ) aa LEFT JOIN qyfinance.bkvwApi bb ON aa.apiId=bb.id
+        ) aa LEFT JOIN qyfinance.bkvwApiMobileOperator bb ON aa.apiId=bb.apiId LEFT JOIN qyfinance.bkvwApiType cc
+        ON aa.apiTypeId=cc.id LEFT JOIN qyfinance.bkvwApi dd ON  aa.apiId=dd.id
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
                 aa.apiTypeId=#{apiTypeId}

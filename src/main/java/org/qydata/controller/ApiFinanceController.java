@@ -159,38 +159,76 @@ public class ApiFinanceController {
      * @throws Exception
      */
     @RequestMapping("/find-all-api-vendor-consume")
-    public String findAllApiVendorConsume(Integer vendorId,Model model){
+    public String findAllApiVendorConsume(Integer vendorId,Integer partnerId,Model model){
         Map<String,Object> map = new HashMap<>();
         List<ApiVendor> apiVendorList  = apiFinanceService.queryApiVendorName(map);
         System.out.println(apiVendorList);
         if(vendorId != null){
             map.put("vendorId",vendorId);
         }
+        if(partnerId != null){
+            map.put("partnerId",partnerId);
+        }
         List<ApiFinance> apiFinanceList = apiFinanceService.queryApiVendor(map);
+        List<ApiFinance> apiFinances = new ArrayList<>();
+
+        if (apiFinanceList != null){
+            for (int i=0; i<apiFinanceList.size(); i++){
+                ApiFinance apiFinance = apiFinanceList.get(i);
+                ApiFinance apiFinanceOne = new ApiFinance();
+                apiFinanceOne.setVendorId(apiFinance.getVendorId());
+                apiFinanceOne.setVendorName(apiFinance.getVendorName());
+                apiFinanceOne.setApiTypeList(apiFinance.getApiTypeList());
+                if(apiFinance.getPartnerName() != null){
+                    apiFinanceOne.setPartnerName(apiFinance.getPartnerName());
+                }
+                if(apiFinance.getPartnerId() != null){
+                    apiFinanceOne.setPartnerId(apiFinance.getPartnerId());
+                }
+                if(apiFinance.getWeekTotleCost() != null){
+                    apiFinanceOne.setWeekTotleCost(apiFinance.getWeekTotleCost());
+                }else{
+                    apiFinanceOne.setWeekTotleCost(0L);
+                }
+                if(apiFinance.getMonthTotleCost() != null){
+                    apiFinanceOne.setMonthTotleCost(apiFinance.getMonthTotleCost());
+                }else {
+                    apiFinanceOne.setMonthTotleCost(0L);
+                }
+
+                if(apiFinance.getConsumeTotleAmount() != null){
+                    apiFinanceOne.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount());
+                }else {
+                    apiFinanceOne.setConsumeTotleAmount(0L);
+                }
+                if(apiFinance.getBalance() != null && apiFinance.getConsumeTotleAmount() != null){
+                    apiFinanceOne.setBalance(apiFinance.getBalance()-apiFinance.getConsumeTotleAmount());
+                }else if (apiFinance.getBalance() != null && apiFinance.getConsumeTotleAmount() == null){
+                    apiFinanceOne.setBalance(apiFinance.getBalance());
+                }else if (apiFinance.getBalance() == null && apiFinance.getConsumeTotleAmount() == null){
+                    apiFinanceOne.setBalance(0L);
+                }else {
+                    apiFinanceOne.setBalance(-apiFinance.getConsumeTotleAmount());
+                }
+
+                apiFinances.add(apiFinanceOne);
+            }
+        }
         long weekTotleAmount = 0L;
         long monthTotleAmount = 0L;
         long consumeTotleAmount = 0L;
         long totleBalance = 0L;
-        if (apiFinanceList != null){
-            for (int i=0; i<apiFinanceList.size(); i++){
-                ApiFinance apiFinance = apiFinanceList.get(i);
-                if(apiFinance.getWeekTotleCost() != null){
-                    weekTotleAmount = weekTotleAmount +apiFinance.getWeekTotleCost();
-                }
-                if(apiFinance.getMonthTotleCost() != null){
-                    monthTotleAmount = monthTotleAmount +apiFinance.getMonthTotleCost();
-                }
-                if(apiFinance.getConsumeTotleAmount() != null){
-                    consumeTotleAmount = consumeTotleAmount +apiFinance.getConsumeTotleAmount();
-                }
-                if(apiFinance.getBalance() != null){
-                    totleBalance = totleBalance +apiFinance.getBalance();
-                }
-            }
+        for (int j=0; j<apiFinances.size(); j++){
+            ApiFinance apiFinance = apiFinances.get(j);
+            weekTotleAmount = weekTotleAmount + apiFinance.getWeekTotleCost();
+            monthTotleAmount = monthTotleAmount + apiFinance.getMonthTotleCost();
+            consumeTotleAmount = consumeTotleAmount + apiFinance.getConsumeTotleAmount();
+            totleBalance = totleBalance + apiFinance.getBalance();
         }
-        model.addAttribute("apiFinanceList",apiFinanceList);
+        model.addAttribute("apiFinanceList",apiFinances);
         model.addAttribute("apiVendorList",apiVendorList);
         model.addAttribute("vendorId",vendorId);
+        model.addAttribute("partnerId",partnerId);
         model.addAttribute("weekTotleAmount",weekTotleAmount);
         model.addAttribute("monthTotleAmount",monthTotleAmount);
         model.addAttribute("consumeTotleAmount",consumeTotleAmount);

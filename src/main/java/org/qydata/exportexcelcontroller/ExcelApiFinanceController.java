@@ -42,7 +42,7 @@ public class ExcelApiFinanceController {
         for (int j = 0; j < apiFinanceList.size(); j++) {
             apiFinance = apiFinanceList.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
-            mapValue.put("apiName", apiFinance.getApiName());
+            //mapValue.put("apiName", apiFinance.getApiName());
             mapValue.put("apiTypeName", apiFinance.getApiTypeName());
             mapValue.put("vendorName", apiFinance.getVendorName());
             if(apiFinance.getWeekTotleCost() != null){
@@ -63,8 +63,8 @@ public class ExcelApiFinanceController {
             list.add(mapValue);
         }
         String fileName = "产品消费账单";
-        String columnNames[]= {"产品名称","产品类型","产品供应商","上周消费（单位：元）","上月消费（单位：元）","消费总额（单位：元）"};//列名
-        String keys[] = {"apiName","apiTypeName","vendorName","wekTotleCost","monthTotleCost","consumeTotleAmount"};//map中的key
+        String columnNames[]= {"产品类型","产品供应商","上周消费（单位：元）","上月消费（单位：元）","消费总额（单位：元）"};//列名
+        String keys[] = {"apiTypeName","vendorName","wekTotleCost","monthTotleCost","consumeTotleAmount"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
 
@@ -108,7 +108,7 @@ public class ExcelApiFinanceController {
         }
         String fileName = "产品消费明细账单";
         String columnNames[]= {"公司名称","消费金额（单位：元）","响应时间（单位：秒）","创建时间"};//列名
-        String keys[] = {"companyName","cost","vendorName","resTime","createTime"};//map中的key
+        String keys[] = {"companyName","cost","resTime","createTime"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
     }
 
@@ -118,26 +118,78 @@ public class ExcelApiFinanceController {
      * @throws Exception
      */
     @RequestMapping("/find-all-api-vendor-consume")
-    public String findAllApiVendorConsume(Integer vendorId,HttpServletResponse response) throws IOException {
+    public String findAllApiVendorConsume(Integer vendorId,Integer partnerId ,HttpServletResponse response) throws IOException {
         Map<String,Object> map = new HashMap<>();
         List<ApiVendor> apiVendorList  = apiFinanceService.queryApiVendorName(map);
         System.out.println(apiVendorList);
         if(vendorId != null){
             map.put("vendorId",vendorId);
         }
+        if(partnerId != null){
+            map.put("partnerId",partnerId);
+        }
         List<ApiFinance> apiFinanceList = apiFinanceService.queryApiVendor(map);
+        List<ApiFinance> apiFinances = new ArrayList<>();
+        if (apiFinanceList != null){
+            for (int i=0; i<apiFinanceList.size(); i++){
+                ApiFinance apiFinance = apiFinanceList.get(i);
+                ApiFinance apiFinanceOne = new ApiFinance();
+                apiFinanceOne.setVendorId(apiFinance.getVendorId());
+                apiFinanceOne.setVendorName(apiFinance.getVendorName());
+                apiFinanceOne.setApiTypeList(apiFinance.getApiTypeList());
+                if(apiFinance.getPartnerName() != null){
+                    apiFinanceOne.setPartnerName(apiFinance.getPartnerName());
+                }
+                if(apiFinance.getPartnerId() != null){
+                    apiFinanceOne.setPartnerId(apiFinance.getPartnerId());
+                }
+                if(apiFinance.getWeekTotleCost() != null){
+                    apiFinanceOne.setWeekTotleCost(apiFinance.getWeekTotleCost());
+                }else{
+                    apiFinanceOne.setWeekTotleCost(0L);
+                }
+                if(apiFinance.getMonthTotleCost() != null){
+                    apiFinanceOne.setMonthTotleCost(apiFinance.getMonthTotleCost());
+                }else {
+                    apiFinanceOne.setMonthTotleCost(0L);
+                }
+
+                if(apiFinance.getConsumeTotleAmount() != null){
+                    apiFinanceOne.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount());
+                }else {
+                    apiFinanceOne.setConsumeTotleAmount(0L);
+                }
+                if(apiFinance.getBalance() != null && apiFinance.getConsumeTotleAmount() != null){
+                    apiFinanceOne.setBalance(apiFinance.getBalance()-apiFinance.getConsumeTotleAmount());
+                }else if (apiFinance.getBalance() != null && apiFinance.getConsumeTotleAmount() == null){
+                    apiFinanceOne.setBalance(apiFinance.getBalance());
+                }else if (apiFinance.getBalance() == null && apiFinance.getConsumeTotleAmount() == null){
+                    apiFinanceOne.setBalance(0L);
+                }else {
+                    apiFinanceOne.setBalance(-apiFinance.getConsumeTotleAmount());
+                }
+
+                apiFinances.add(apiFinanceOne);
+            }
+        }
+
         List<Map<String,Object>> list = new ArrayList<>();
         Map<String, Object> mapA = new HashMap<String, Object>();
         mapA.put("sheetName", "sheet1");
         list.add(mapA);
         ApiFinance apiFinance=null;
-        for (int j = 0; j < apiFinanceList.size(); j++) {
-            apiFinance = apiFinanceList.get(j);
+        for (int j = 0; j < apiFinances.size(); j++) {
+            apiFinance = apiFinances.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
             if(apiFinance.getVendorName() != null){
                 mapValue.put("vendorName", apiFinance.getVendorName());
             }else{
                 mapValue.put("vendorName", "");
+            }
+            if(apiFinance.getPartnerName() != null){
+                mapValue.put("partnerName", apiFinance.getPartnerName());
+            }else{
+                mapValue.put("partnerName", "");
             }
             if(apiFinance.getConsumeTotleAmount() != null){
                 mapValue.put("consumeTotleAmount", apiFinance.getConsumeTotleAmount()/100.0);
@@ -161,9 +213,9 @@ public class ExcelApiFinanceController {
             }
             list.add(mapValue);
         }
-        String fileName = "产品供应商财务账单";
-        String columnNames[]= {"产品供应商","消费金额（单位：元）","所剩余额（单位：元）","上周消费（单位：元）","上月消费（单位：元）"};//列名
-        String keys[] = {"vendorName","consumeTotleAmount","balance","weekTotleCost","monthTotleAmount"};//map中的key
+        String fileName = "供应商财务账单";
+        String columnNames[]= {"供应商","合作公司","消费金额（单位：元）","所剩余额（单位：元）","上周消费（单位：元）","上月消费（单位：元）"};//列名
+        String keys[] = {"vendorName","partnerName","consumeTotleAmount","balance","weekTotleCost","monthTotleAmount"};//map中的key
         ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
 
         return "/finance/apiVendorRecord";
