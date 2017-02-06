@@ -1,6 +1,10 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
+<#import "../publicPart/tools.ftl" as d>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -10,57 +14,18 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-
-                <div class="span12">
-
-                    <h3 class="page-title">
-
-                    <#--客户信息-->
-
-                    </h3>
-
-                <#--<ul class="breadcrumb">-->
-
-                <#--<li>-->
-
-                <#--<i class="icon-home"></i>-->
-
-                <#--<a href="/view/successUrl">首页</a>-->
-
-                <#--<i class="icon-angle-right"></i>-->
-
-                <#--</li>-->
-
-                <#--<li>-->
-
-                <#--<a href="#">财务管理</a>-->
-
-                <#--<i class="icon-angle-right"></i>-->
-
-                <#--</li>-->
-
-                <#--<li><a href="#">账号列表</a></li>-->
-
-                <#--</ul>-->
-
-                    <!-- END PAGE TITLE & BREADCRUMB-->
-
-                </div>
-
-            </div>
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
 
                 <div class="span12">
 
-                <#--搜索框-->
-                    <#if deptIdList??>
-                        <form action="/customer/findAllCustomerByDeptNo" method="get">
 
-                            <div class="clearfix margin-bottom-20">
+                        <form action="/#/#" method="get">
 
-                                <div class="control-group pull-left">
+                            <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
+
+                                <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -81,50 +46,44 @@
                             </div>
 
                         </form>
-                    <#else >
-                        <form action="/customer/findAllCustomer" method="get">
 
-                            <div class="clearfix margin-bottom-20">
-
-                                <div class="control-group pull-left">
-
-                                    <label class="control-label">&nbsp;&nbsp;</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append">
-
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" name="content" placeholder="请输入公司名称">
-
-                                            <button class="btn black" type="submit">搜索</button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-                    </#if>
-
-                <#--表格-->
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
 
                             <div class="caption"><i class="icon-cogs"></i></div>
 
-                            <div class="tools">
+                            <@d.tools idName="exportExcelByDeptId"></@d.tools>
 
-                            <#--<a href="javascript:;" class="collapse"></a>-->
+                            <div class="actions">
 
-                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
+                                <div class="btn-group">
 
-                                <#--<a href="javascript:;" class="reload"></a>-->
+                                    <a class="btn" href="#" data-toggle="dropdown">
 
-                                <#--<a href="javascript:;" class="remove"></a>-->
+                                        表格显示列
+
+                                        <i class="icon-angle-down"></i>
+
+                                    </a>
+
+                                    <div id="sample_3_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                        <label><input type="checkbox" checked data-column="0">公司名称</label>
+
+                                        <label><input type="checkbox" checked data-column="1">收入总额</label>
+
+                                        <label><input type="checkbox" checked data-column="2">支出总额</label>
+
+                                        <label><input type="checkbox" data-column="3">上周收入</label>
+
+                                        <label><input type="checkbox" data-column="4">上周支出</label>
+
+                                        <label><input type="checkbox" checked data-column="5">上月收入</label>
+
+                                        <label><input type="checkbox" checked data-column="6">上月支出</label>
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -132,7 +91,7 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <div class="clearfix margin-bottom-20">
+                            <div class="clearfix margin-bottom-5">
 
                                 <div class="btn-group">
 
@@ -193,17 +152,18 @@
                                 <thead>
 
                                 <tr>
-                                    <th style="text-align: center; width: 15%">公司名称</th>
-                                    <th>周收入总额（单位：元）</th>
-                                    <th>周支出总额（单位：元）</th>
-                                    <th>月收入总额（单位：元）</th>
-                                    <th>月支出总额（单位：元）</th>
+                                    <th style="text-align: center;">公司名称</th>
                                     <th>收入总额（单位：元）</th>
                                     <th>支出总额（单位：元）</th>
+                                    <th>上周收入（单位：元）</th>
+                                    <th>上周支出（单位：元）</th>
+                                    <th>上月收入（单位：元）</th>
+                                    <th>上月支出（单位：元）</th>
                                     <th style="text-align: center; width: 15%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 <tr class="odd gradeX">
                                     <td data-title="公司名称">gmgc</td>
                                     <td data-title="周收入总额">23</td>
@@ -393,194 +353,6 @@
 
                                     </td>
                                 </tr>
-                                <tr class="odd gradeX">
-                                    <td data-title="公司名称">未来无限</td>
-                                    <td data-title="周收入总额">345</td>
-                                    <td data-title="周支出总额">178</td>
-                                    <td data-title="月收入总额">234</td>
-                                    <td data-title="月支出总额">432</td>
-                                    <td data-title="收入总额">908</td>
-                                    <td data-title="支出总额">657</td>
-                                    <td data-title="操作" style="text-align: center">
-                                        <div>
-                                            <a href="#form_modal2"  data-toggle="modal">付款</a>|
-
-                                            <div id="form_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
-
-                                                <div class="modal-header">
-
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                                    <h3 id="myModalLabel2">请填写信息</h3>
-
-                                                </div>
-
-                                                <div class="modal-body">
-
-                                                    <form action="#" class="form-horizontal">
-
-                                                        <div class="control-group"></div>
-
-                                                        <div class="control-group"></div>
-
-                                                        <#if msg??>
-
-                                                            <div class="alert alert-error show">
-
-                                                                <button class="close" data-dismiss="alert"></button>
-
-                                                            ${msg}
-
-                                                            </div>
-
-                                                        </#if>
-                                                        <div class="control-group" style="display: none;">
-
-                                                            <label class="control-label">公司id<span class="required">*</span></label>
-
-                                                            <div class="controls">
-
-                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="control-group">
-
-                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
-
-                                                            <div class="controls">
-
-                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
-
-                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="control-group">
-
-                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
-
-                                                            <div class="controls">
-
-                                                                <textarea class="medium m-wrap" rows="3"></textarea>
-
-                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    </form>
-
-                                                </div>
-
-                                                <div class="modal-footer">
-
-                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-
-                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
-
-                                                </div>
-
-                                            </div>
-
-                                            <a href="#form_modal5"  data-toggle="modal">收款</a>|
-
-                                            <div id="form_modal5" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
-
-                                                <div class="modal-header">
-
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                                    <h3 id="myModalLabel5">请填写信息</h3>
-
-                                                </div>
-
-                                                <div class="modal-body">
-
-                                                    <form action="#" class="form-horizontal">
-
-                                                        <div class="control-group"></div>
-
-                                                        <div class="control-group"></div>
-
-                                                        <#if msg??>
-
-                                                            <div class="alert alert-error show">
-
-                                                                <button class="close" data-dismiss="alert"></button>
-
-                                                            ${msg}
-
-                                                            </div>
-
-                                                        </#if>
-                                                        <div class="control-group" style="display: none;">
-
-                                                            <label class="control-label">公司id<span class="required">*</span></label>
-
-                                                            <div class="controls">
-
-                                                                <input type="text" id="authId" name="authId" class="m-wrap medium">
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="control-group">
-
-                                                            <label class="control-label">金&nbsp;额<span class="required">*</span></label>
-
-                                                            <div class="controls">
-
-                                                                <input type="text" id="amount" name="amount" <#if amount??>value="${amount}"</#if> placeholder="（单位/元）" class="m-wrap medium">
-
-                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                                <span class="help-block">只能输入数字类型并且金额大于0</span>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="control-group">
-
-                                                            <label class="control-label">备&nbsp;注<span class="required">*</span></label>
-
-                                                            <div class="controls">
-
-                                                                <textarea class="medium m-wrap" rows="3"></textarea>
-
-                                                                <span class="help-inline" id="amountMsg"><#if CustomerMessageAmount??><font color="red">${CustomerMessageAmount}</font></#if></span>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    </form>
-
-                                                </div>
-
-                                                <div class="modal-footer">
-
-                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-
-                                                    <button class="btn green btn-primary" data-dismiss="modal">提交</button>
-
-                                                </div>
-
-                                            </div>
-
-                                            <a href="/finance/find-all-partners-financial-account/receipt-and-paying-record">收支明细</a>
-                                        </div>
-                                    </td>
-                                </tr>
 
                                 </tbody>
 
@@ -629,11 +401,6 @@
 
             $('#customerBalanceArrow').addClass('arrow open');
 
-            $('#partnersSelect').addClass('selected');
-
-            $('#partnersArrow').addClass('arrow open');
-
-            $('#partnersUp').addClass('arrow open');
         });
     </script>
     </#if>

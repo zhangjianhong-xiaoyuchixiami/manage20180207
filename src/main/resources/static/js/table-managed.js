@@ -115,7 +115,7 @@ var TableManaged = function () {
                     { "bVisible": false },
                     { "bVisible": false }
                 ],
-                "aaSorting": [[5, 'desc']],
+                "aaSorting": [[3, 'desc']],
 
                 "aLengthMenu": [
                     [10, 15, 20, -1],
@@ -156,18 +156,18 @@ var TableManaged = function () {
 
 
             //partnersFinancialAccount
-            $('#sample_3').dataTable({
+           var table3 =  $('#sample_3').dataTable({
                 "aoColumns": [
-                    { "bSortable": false },
                     null,
                     null,
                     null,
-                    null,
+                    { "bVisible": false },
+                    { "bVisible": false },
                     null,
                     null,
                     { "bSortable": false }
                 ],
-                "aaSorting": [[5, 'desc']],
+                "aaSorting": [[1, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -183,7 +183,6 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -193,12 +192,13 @@ var TableManaged = function () {
                 },
                 "bFilter" : false, //设置全文搜索框，默认true
 
-                "aoColumnDefs": [{
-                    'bSortable': false,
-                    'aTargets': [0]
-                }
-                ]
+            });
 
+            $('#sample_3_column_toggler input[type="checkbox"]').change(function(){
+                /* Get the DataTables object again - this is not a recreation, just a get of the object */
+                var iCol = parseInt($(this).attr("data-column"));
+                var bVis = table3.fnSettings().aoColumns[iCol].bVisible;
+                table3.fnSetColumnVis(iCol, (bVis ? false : true));
             });
 
             //partnersFinancialAccount

@@ -24,10 +24,6 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
 
     @Override
     public  boolean getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
-//        Map<String,Object> map = new HashedMap();
-//        map.put("weekMonthTypeId",1);
-//        map.put("tableId",1);
-//        weekMonthAmountMapper.deleteRecord(map);
         List<WeekMonthAmount> weekAmountList = weekMonthAmountMapper.getAllCustomerWeekRechargeRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<WeekMonthAmount> weekAmounts = new ArrayList<>();

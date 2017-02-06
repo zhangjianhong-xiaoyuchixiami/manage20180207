@@ -641,24 +641,4 @@ public class FinanceController {
         return getObj.toString();
     }
 
-
-
-
-
-
-
-
-
-
-    //合作伙伴来往账目
-    @RequestMapping("/find-all-partners-financial-account")
-    public String findPartnersFinancialAccount(){
-        return "/finance/partnersFinancialAccount";
-    }
-
-    //合作伙伴来往账目-收支明细
-    @RequestMapping("/find-all-partners-financial-account/receipt-and-paying-record")
-    public String findPartnersReceiptAndPayingRecord(){
-        return "/finance/partnersReceiptAndPayingRecord";
-    }
 }

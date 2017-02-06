@@ -33,8 +33,7 @@
         (
             SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(amount) totleAmount,customerId,
             GROUP_CONCAT(DISTINCT DATE(createTime) ORDER BY DATE(createTime) ASC) temporal
-            FROM qydata
-            .CustomerBalanceLog
+            FROM qydata.CustomerBalanceLog
             WHERE reasonId IN(1,2,3)
             AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval #{param} month),'%Y-%m')
             GROUP BY DATE_FORMAT(createTime,'%Y-%m'),customerId

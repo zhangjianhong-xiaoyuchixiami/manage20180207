@@ -93,12 +93,12 @@ public class ExcelApiFinanceController {
             }else{
                 mapValue.put("companyName", "");
             }
-            if(apiRequestLog.getApiResponseLog() != null){
+            if(apiRequestLog.getApiResponseLog() != null && apiRequestLog.getApiResponseLog().getCost() != null){
                 mapValue.put("cost", apiRequestLog.getApiResponseLog().getCost()/100.0);
             }else {
                 mapValue.put("cost", "");
             }
-            if(apiRequestLog.getApiResponseLog() != null){
+            if(apiRequestLog.getApiResponseLog() != null && apiRequestLog.getApiResponseLog().getResTime() != null){
                 mapValue.put("resTime", apiRequestLog.getApiResponseLog().getResTime()/1000.0);
             }else {
                 mapValue.put("resTime", "");

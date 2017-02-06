@@ -1,6 +1,10 @@
 
 <#include "../customer/layout.ftl">
 
+<#import "../publicPart/headNavigationBars.ftl" as c>
+
+<#import "../publicPart/tools.ftl" as d>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -10,45 +14,7 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-
-                <div class="span12">
-
-                    <h3 class="page-title">
-
-                    <#--客户信息-->
-
-                    </h3>
-
-                <#--<ul class="breadcrumb">-->
-
-                <#--<li>-->
-
-                <#--<i class="icon-home"></i>-->
-
-                <#--<a href="/view/successUrl">首页</a>-->
-
-                <#--<i class="icon-angle-right"></i>-->
-
-                <#--</li>-->
-
-                <#--<li>-->
-
-                <#--<a href="#">财务管理</a>-->
-
-                <#--<i class="icon-angle-right"></i>-->
-
-                <#--</li>-->
-
-                <#--<li><a href="#">账号列表</a></li>-->
-
-                <#--</ul>-->
-
-                    <!-- END PAGE TITLE & BREADCRUMB-->
-
-                </div>
-
-            </div>
+            <@c.navigationBars></@c.navigationBars>
 
             <div class="row-fluid">
 
@@ -63,17 +29,7 @@
 
                             <div class="caption"><i class="icon-cogs"></i>厦门掌讯</div>
 
-                            <div class="tools">
-
-                            <#--<a href="javascript:;" class="collapse"></a>-->
-
-                                <#--<a href="#portlet-config" data-toggle="modal" class="config"></a>-->
-
-                                <#--<a href="javascript:;" class="reload"></a>-->
-
-                                <#--<a href="javascript:;" class="remove"></a>-->
-
-                            </div>
+                            <@d.tools idName="exportExcelByDeptId"></@d.tools>
 
                         </div>
 
@@ -96,30 +52,6 @@
                                     <td data-title="创建时间">2016.12.23 23:45:45</td>
                                     <td data-title="类型">支出</td>
                                     <td data-title="备注">2016年给gmgc付款30000元</td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td data-title="金额">78</td>
-                                    <td data-title="创建时间">2016.12.23 23:45:45</td>
-                                    <td data-title="类型">收入</td>
-                                    <td data-title="备注">2016年gmgc给千眼付款30000元</td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td data-title="金额">54</td>
-                                    <td data-title="创建时间">2016.12.23 23:45:45</td>
-                                    <td data-title="类型">支出</td>
-                                    <td data-title="备注">2016年给gmgc付款30000元</td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td data-title="金额">67</td>
-                                    <td data-title="创建时间">2016.12.23 23:45:45</td>
-                                    <td data-title="类型">收入</td>
-                                    <td data-title="备注">2016年gmgc给千眼付款30000元</td>
-                                </tr>
-                                <tr class="odd gradeX">
-                                    <td data-title="金额">90</td>
-                                    <td data-title="创建时间">2016.12.23 23:45:45</td>
-                                    <td data-title="类型">付款</td>
-                                    <td data-title="备注">2016年gmgc给千眼付款30000元</td>
                                 </tr>
 
                                 </tbody>
@@ -167,12 +99,6 @@
             $('#customerBalanceSelect').addClass('selected');
 
             $('#customerBalanceArrow').addClass('arrow open');
-
-            $('#partnersSelect').addClass('selected');
-
-            $('#partnersArrow').addClass('arrow open');
-
-            $('#partnersUp').addClass('arrow open');
 
         });
     </script>
