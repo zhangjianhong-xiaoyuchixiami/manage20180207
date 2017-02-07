@@ -20,40 +20,77 @@
 
                 <div class="span12">
 
-                <#--搜索框-->
+                    <div class="clearfix margin-bottom-20">
+
+                        <div class="control-group pull-left" style="display: none">
+
+                            <label class="control-label">合作公司Id</label>
+
+                            <div class="controls">
+
+                                <input class="m-wrap" <#if partnerId??>value="${partnerId}" </#if> type="text" id="partnerId" name="partnerId">
+
+                            </div>
+
+                        </div>
+
+                        <div class="control-group pull-left" style="display: none">
+
+                            <label class="control-label">类型Id</label>
+
+                            <div class="controls">
+
+                                <input class="m-wrap" <#if reasonId??>value="${reasonId}" </#if> type="text" id="reasonId" name="reasonId">
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 <#--表单-->
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-cogs"></i>厦门掌讯</div>
+                            <div class="caption"><i class="icon-user"></i><#if partnerName??>${partnerName}</#if></div>
 
-                            <@d.tools idName="exportExcelByDeptId"></@d.tools>
+                            <@d.tools idName="exportExcel"></@d.tools>
 
                         </div>
 
                         <div class="portlet-body no-more-tables">
 
+                            <div class="clearfix margin-bottom-20">
+
+                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+
+                                    <label class="control-label">金额共计&yen;：<#if totleAmount??><span>${(totleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+
+                                </div>
+
+                            </div>
+
                             <table class="table table-striped table-bordered table-hover table-condensed" id="sample_4">
-
                                 <thead>
-
                                 <tr>
                                     <th>金额（单位：元）</th>
                                     <th>创建时间</th>
+                                    <th>备注</th>
                                     <th>类型</th>
-                                    <th style="text-align: center;">备注</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="odd gradeX">
-                                    <td data-title="金额">23</td>
-                                    <td data-title="创建时间">2016.12.23 23:45:45</td>
-                                    <td data-title="类型">支出</td>
-                                    <td data-title="备注">2016年给gmgc付款30000元</td>
-                                </tr>
-
+                                    <#if partnerIncomeExpenditureLogList??>
+                                        <#list partnerIncomeExpenditureLogList as partnerIncomeExpenditureLog>
+                                        <tr class="odd gradeX">
+                                            <td data-title="金额"><#if partnerIncomeExpenditureLog.amount??>${(partnerIncomeExpenditureLog.amount/100.0)?c}<#else >0</#if></td>
+                                            <td data-title="创建时间">${partnerIncomeExpenditureLog.createTime?date}</td>
+                                            <td data-title="备注">${partnerIncomeExpenditureLog.remark!'无'}</td>
+                                            <td data-title="类型">${(partnerIncomeExpenditureLog.partnerIncomeExpenditureReason.name)!"无"}</td>
+                                        </tr>
+                                        </#list>
+                                    </#if>
                                 </tbody>
 
                             </table>
@@ -88,6 +125,26 @@
             TableManaged.init();
         });
 
+    </script>
+
+    <#--导出Excel-->
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('#exportExcel').on('click', function () {
+                var partnerId = $('#partnerId').val();
+                var reasonId = $('#reasonId').val();
+                fetch('/excel-partner-finance/find-all-partner-financial-account/income-and-expenditure-record"?partnerId='+partnerId+'&reasonId='+reasonId).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename ='合作公司财务明细账单.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
+            });
+        });
     </script>
 
     <script>

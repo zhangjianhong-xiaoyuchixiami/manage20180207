@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.PartnerFinanceMapper">
+
+    <resultMap id="PartnerFinance_Map" type="org.qydata.dst.PartnerFinance">
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+        <result column="weekIncomeAmount" property="weekIncomeAmount"/>
+        <result column="monthIncomeAmount" property="monthIncomeAmount"/>
+        <result column="weekExpenditureAmount" property="weekExpenditureAmount"/>
+        <result column="monthExpenditureAmount" property="monthExpenditureAmount"/>
+        <result column="totleIncomeAmount" property="totleIncomeAmount"/>
+        <result column="totleExpenditureAmount" property="totleExpenditureAmount"/>
+    </resultMap>
+
+    <resultMap id="PartnerIncomeExpenditure_Map" type="org.qydata.entity.PartnerIncomeExpenditureLog">
+        <result column="id" property="id"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="amount" property="amount"/>
+        <result column="reasonId" property="reasonId"/>
+        <result column="remark" property="remark"/>
+        <result column="createTime" property="createTime"/>
+        <association property="partnerIncomeExpenditureReason" javaType="org.qydata.entity.PartnerIncomeExpenditureReason">
+            <result column="reasonName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="Partner_PartnerIncomeExpenditure_Map" type="org.qydata.entity.Partner">
+        <result column="partnerName" property="name"/>
+        <association property="partnerIncomeExpenditureLog" javaType="org.qydata.entity.PartnerIncomeExpenditureLog">
+            <result column="partnerId" property="partnerId"/>
+            <result column="amount" property="amount"/>
+        </association>
+    </resultMap>
+
+    <!--查询合作公司的财务总览-->
+    <select id="queryPartnerOverFinance" parameterType="map" resultMap="PartnerFinance_Map">
+        SELECT kk.partnerId,kk.partnerName,kk.weekIncomeAmount,kk.monthIncomeAmount,kk.weekExpenditureAmount,
+        kk.monthExpenditureAmount,kk.totleIncomeAmount,ll.totleExpenditureAmount
+        FROM
+        (
+        SELECT ii.partnerId,ii.partnerName,ii.weekIncomeAmount,ii.monthIncomeAmount,ii.weekExpenditureAmount,
+        ii.monthExpenditureAmount,jj.totleIncomeAmount
+        FROM
+        (
+        SELECT gg.partnerId,gg.partnerName,gg.weekIncomeAmount,gg.monthIncomeAmount,gg.weekExpenditureAmount,
+        hh.monthExpenditureAmount
+        FROM
+        (
+        SELECT ee.partnerId,ee.partnerName,ee.weekIncomeAmount,ee.monthIncomeAmount,ff.weekExpenditureAmount
+        FROM
+        (
+        SELECT cc.partnerId,cc.partnerName,cc.weekIncomeAmount,dd.monthIncomeAmount
+        FROM
+        (
+        SELECT aa.id partnerId,aa.name partnerName,bb.weekIncomeAmount
+        FROM qyfinance.bkvwPartner aa LEFT JOIN
+        (
+        SELECT partnerId,totleAmount weekIncomeAmount
+        FROM qyfinance.bkvwPartnerWeekMonthAmount
+        WHERE typeId=1 AND reasonId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+        AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+        ) bb ON aa.id=bb.partnerId
+        ) cc LEFT JOIN
+        (
+        SELECT partnerId,totleAmount monthIncomeAmount
+        FROM qyfinance.bkvwPartnerWeekMonthAmount
+        WHERE typeId=2 AND reasonId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+        ) dd ON cc.partnerId=dd.partnerId
+        ) ee LEFT JOIN
+        (
+        SELECT partnerId,totleAmount weekExpenditureAmount
+        FROM qyfinance.bkvwPartnerWeekMonthAmount
+        WHERE typeId=1 AND reasonId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+        AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+        ) ff ON ee.partnerId=ff.partnerId
+        ) gg LEFT JOIN
+        (
+        SELECT partnerId,totleAmount monthExpenditureAmount
+        FROM qyfinance.bkvwPartnerWeekMonthAmount
+        WHERE typeId=2 AND reasonId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+        ) hh ON gg.partnerId=hh.partnerId
+        ) ii LEFT JOIN
+        (
+        SELECT partnerId,sum(amount) totleIncomeAmount
+        FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+        WHERE reasonId=1
+        GROUP BY partnerId
+        ) jj ON ii.partnerId=jj.partnerId
+        ) kk LEFT JOIN
+        (
+        SELECT partnerId,sum(amount) totleExpenditureAmount
+        FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+        WHERE reasonId=2
+        GROUP BY partnerId
+        ) ll ON kk.partnerId=ll.partnerId
+        <where>
+            <if test="partnerName!=null and partnerName!=''">
+                 kk.partnerName like '%${partnerName}%'
+            </if>
+        </where>
+    </select>
+
+    <!--付款和收款-->
+    <insert id="addPartnerIncomeExpenditureLog" parameterType="org.qydata.entity.PartnerIncomeExpenditureLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.PartnerIncomeExpenditureLog(partnerId,amount,reasonId,remark,createTime)
+        VALUES(#{partnerId},#{amount},#{reasonId},#{remark},#{createTime})
+    </insert>
+
+    <!--新增合作公司-->
+    <insert id="addPartner" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qydata.Partner(name) VALUES(#{param})
+    </insert>
+
+    <!--合作公司明细-->
+    <select id="queryPartnerDetailLog" parameterType="map" resultMap="PartnerIncomeExpenditure_Map">
+        SELECT id,partnerId,amount,reasonId,reasonName,remark,createTime
+        FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+        WHERE reasonId=#{reasonId} AND partnerId=#{partnerId}
+    </select>
+
+    <!--收入支出走势-->
+    <select id="queryPartnerBarChart" parameterType="map" resultMap="Partner_PartnerIncomeExpenditure_Map">
+        SELECT a.name partnerName,a.id partnerId,b.amount
+        FROM qyfinance.bkvwPartner a LEFT JOIN
+                                        (
+                                          SELECT partnerId,sum(amount) amount
+                                          FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+                                          WHERE reasonId=#{reasonId}
+                                          GROUP BY partnerId
+                                        ) b
+        ON a.id=b.partnerId
+    </select>
+
+</mapper>
