@@ -147,10 +147,10 @@
 
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center;">公司名称</th>
+                                    <th style="text-align: center;">companyName</th>
                                     <th style="text-align: center;">合作公司</th>
                                     <th>余额（单位：元）</th>
-                                    <th>充值总额（单位：元）</th>
+                                    <th>chargeTotleAmount</th>
                                     <th>消费总额（单位：元）</th>
                                     <th>上周充值（单位：元）</th>
                                     <th>上周消费（单位：元）</th>

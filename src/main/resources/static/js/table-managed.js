@@ -153,17 +153,44 @@ var TableManaged = function () {
                 "aoColumnDefs": [
                     {
                         "aTargets": [ 4 ],
-                        "data": "充值总额（单位：元）",
+                        //"mDataProp": "chargeTotleAmount",
                         "mRender": function ( data,type, full) {
                             if(type === "display"){
-                                return '<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId='+data+'&reasonId=1&companyName='+data+'">'+data+'</a>';
+                                return '<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=' +
+                                    '' + full[12] + '&reasonId=1&companyName=' + full[2] + '">' + data + '</a>';
                             }
                             return data;
                         }
                     },
                     {
                         "aTargets": [ 5 ],
-                        "mData": "消费总额（单位：元）",
+                        "mRender": function ( data, type, full) {
+                            if(type === "display"){
+                                return "<a href='#'>"+data+"</a>";
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "aTargets": [ 6 ],
+                        "mRender": function ( data, type, full) {
+                            if(type === "display"){
+                                return "<a href='#'>"+data+"</a>";
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "aTargets": [ 7 ],
+                        "mRender": function ( data, type, full) {
+                            if(type === "display"){
+                                return "<a href='#'>"+data+"</a>";
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "aTargets": [ 8 ],
                         "mRender": function ( data, type, full) {
                             if(type === "display"){
                                 return "<a href='#'>"+data+"</a>";
@@ -171,6 +198,7 @@ var TableManaged = function () {
                             return data;
                         }
                     }
+
                 ],
                 "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [
