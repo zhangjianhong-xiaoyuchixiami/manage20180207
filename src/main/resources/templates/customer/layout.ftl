@@ -405,6 +405,16 @@
 
 <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
 
+<script type="text/javascript" src="/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+
+<script type="text/javascript">
+    $('.date-picker').datepicker({
+        language: 'zh-CN',
+        autoclose: true,
+        todayHighlight: false
+    })
+</script>
+
 <script src="/js/search.js"></script>
 
 <script type="text/javascript" src="/js/jquery.validate.min.js"></script>

@@ -74,7 +74,7 @@
 
                                 <div class="controls">
 
-                                    <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+                                    <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
 
                                         <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
 
@@ -90,7 +90,7 @@
 
                                 <div class="controls">
 
-                                    <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+                                    <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
 
                                         <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
 

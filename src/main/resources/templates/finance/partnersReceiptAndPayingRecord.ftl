@@ -134,7 +134,7 @@
             $('#exportExcel').on('click', function () {
                 var partnerId = $('#partnerId').val();
                 var reasonId = $('#reasonId').val();
-                fetch('/excel-partner-finance/find-all-partner-financial-account/income-and-expenditure-record"?partnerId='+partnerId+'&reasonId='+reasonId).then(res => res.blob().then(blob => {
+                fetch('/excel-partner-finance/find-all-partner-financial-account/income-and-expenditure-record?partnerId='+partnerId+'&reasonId='+reasonId).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
                 var filename ='合作公司财务明细账单.xls';

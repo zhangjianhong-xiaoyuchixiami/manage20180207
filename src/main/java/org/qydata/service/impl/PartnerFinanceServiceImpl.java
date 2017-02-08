@@ -34,7 +34,7 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     @Override
     public boolean addPartnerIncomeExpenditureLog(Integer partnerId,String amount,String remark,String date,Integer reasonId) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             PartnerIncomeExpenditureLog partnerIncomeExpenditureLog = new PartnerIncomeExpenditureLog();
             partnerIncomeExpenditureLog.setPartnerId(partnerId);
             partnerIncomeExpenditureLog.setAmount(Long.parseLong(amount)*100);

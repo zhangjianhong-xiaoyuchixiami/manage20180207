@@ -9,8 +9,41 @@ var TableManaged = function () {
                 return;
             }
 
+            // var lang = {
+            //     "oLanguage" : {  //设置语言
+            //         "sLengthMenu" : "每页显示 _MENU_ 条记录",
+            //         "sZeroRecords" : "对不起，没有匹配的数据",
+            //         "sInfo" : "第 _START_ - _END_ 条 / 共 _TOTAL_ 条数据",
+            //         "sInfoEmpty" : "没有匹配的数据",
+            //         "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
+            //         "sProcessing" : "正在加载中...",
+            //         "sSearch" : "全文搜索：",
+            //         "oPaginate" : {
+            //             "sFirst" : "第一页",
+            //             "sPrevious" : " 上一页 ",
+            //             "sNext" : " 下一页 ",
+            //             "sLast" : " 最后一页 "
+            //         }
+            //     }
+            // };
+            // var menu = {
+            //     "aLengthMenu": [
+            //         [10, 15, 20, -1],
+            //         [10, 15, 20, "全部"] // change per page values here
+            //     ]
+            // };
+            // var length = {
+            //     "iDisplayLength": 15 //每页显示多少行
+            // };
+            // var stype = {
+            //     "sPaginationType": "bootstrap"
+            // };
+            // var sdom = {
+            //     "sDom": "t<'row-fluid'<'span6'il><'span6'p>>"
+            // };
+
             // apiRecord
-           var oTable1 = $('#sample_1').dataTable({
+            var oTable1 = $('#sample_1').dataTable({
                 "aoColumns": [
                     null,
                     null,
@@ -25,7 +58,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -57,7 +89,12 @@ var TableManaged = function () {
 
 
 
-            /* Formating function for row details */
+
+
+
+
+
+
             function fnFormatDetails ( oTable, nTr )
             {
                 var aData = oTable.fnGetData( nTr );
@@ -68,9 +105,6 @@ var TableManaged = function () {
                 return sOut;
             }
 
-            /*
-             * Insert a 'details' column to the table
-             */
             var nCloneTh = document.createElement( 'th' );
             var nCloneTd = document.createElement( 'td' );
             nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
@@ -108,20 +142,41 @@ var TableManaged = function () {
                     null,
                     null,
                     null,
-                    { "bVisible": false },
-                    { "bVisible": false },
+                    { "bVisible": false},
+                    { "bVisible": false},
                     null,
                     null,
+                    { "bVisible": false },
                     { "bVisible": false },
                     { "bVisible": false }
                 ],
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [ 4 ],
+                        "data": "充值总额（单位：元）",
+                        "mRender": function ( data,type, full) {
+                            if(type === "display"){
+                                return '<a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId='+data+'&reasonId=1&companyName='+data+'">'+data+'</a>';
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "aTargets": [ 5 ],
+                        "mData": "消费总额（单位：元）",
+                        "mRender": function ( data, type, full) {
+                            if(type === "display"){
+                                return "<a href='#'>"+data+"</a>";
+                            }
+                            return data;
+                        }
+                    }
+                ],
                 "aaSorting": [[3, 'desc']],
-
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -132,7 +187,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -156,7 +211,7 @@ var TableManaged = function () {
 
 
             //partnersFinancialAccount
-           var table3 =  $('#sample_3').dataTable({
+            var table3 =  $('#sample_3').dataTable({
                 "aoColumns": [
                     null,
                     null,
@@ -172,7 +227,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -183,6 +237,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -190,7 +245,7 @@ var TableManaged = function () {
                         "sLast" : " 最后一页 "
                     }
                 },
-                "bFilter" : false, //设置全文搜索框，默认true
+                "bFilter" : false//设置全文搜索框，默认true
 
             });
 
@@ -201,7 +256,7 @@ var TableManaged = function () {
                 table3.fnSetColumnVis(iCol, (bVis ? false : true));
             });
 
-            //partnersFinancialAccount
+            //partnersReceiptAndPayingRecord
             $('#sample_4').dataTable({
                 "aoColumns": [
                     null,
@@ -214,7 +269,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -225,7 +279,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -250,7 +304,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -261,7 +314,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -285,7 +338,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -296,7 +348,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -321,7 +373,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -332,7 +383,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -356,7 +407,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -367,7 +417,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -391,7 +441,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -402,7 +451,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -426,7 +475,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -437,7 +485,7 @@ var TableManaged = function () {
                     "sInfoEmpty" : "没有匹配的数据",
                     "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
                     "sProcessing" : "正在加载中...",
-                    "sSearch" : "请输入公司名称：",
+                    "sSearch" : "全文搜索：",
                     "oPaginate" : {
                         "sFirst" : "第一页",
                         "sPrevious" : " 上一页 ",
@@ -509,7 +557,6 @@ var TableManaged = function () {
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
-                // set the initial value
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -539,7 +586,6 @@ var TableManaged = function () {
             });
 
         }
-
     };
 
 }();

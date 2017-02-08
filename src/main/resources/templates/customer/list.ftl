@@ -218,8 +218,11 @@
                 { "mDataProp" : "tel","bSortable": false}
             ],
             "aoColumnDefs":[
-                {"aTargets":[4],"mRender":function(){
-                    return "<a href='ttt?id=4567'>删除</a>"}
+                {"aTargets":[4],
+                    "data": "mDataProp"
+                    "mRender":function(data){
+                        return "<a href='ttt?id='+data.id+'>删除</a>"
+                    }
                 }
             ]
 

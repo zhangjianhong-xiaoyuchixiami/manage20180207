@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jonhn on 2017/1/20.
@@ -83,6 +87,7 @@ public class ExcelPartnerFinanceController {
         map.put("partnerId",partnerId);
         map.put("reasonId",reasonId);
         List<PartnerIncomeExpenditureLog> partnerIncomeExpenditureLogList = partnerFinanceService.queryPartnerDetailLog(map);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<Map<String,Object>> list = new ArrayList<>();
         Map<String, Object> mapA = new HashMap<String, Object>();
         mapA.put("sheetName", "sheet1");
@@ -92,7 +97,7 @@ public class ExcelPartnerFinanceController {
             partnerIncomeExpenditureLog = partnerIncomeExpenditureLogList.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
             mapValue.put("amount", partnerIncomeExpenditureLog.getAmount()/100.0);
-            mapValue.put("createTime", (Date)partnerIncomeExpenditureLog.getCreateTime());
+            mapValue.put("createTime", sdf.format(partnerIncomeExpenditureLog.getCreateTime()));
             if(partnerIncomeExpenditureLog.getRemark() == null){
                 mapValue.put("remark", "");
             }else {

@@ -336,7 +336,7 @@
 
                                             <div class="controls">
 
-                                                <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+                                                <div class="input-append date date-picker"  data-date-viewmode="years" data-date-minviewmode="months">
 
                                                     <input id="date" name="date" class="m-wrap m-ctrl-medium date-picker" size="16" type="text"><span class="add-on"><i class="icon-calendar"></i></span>
 
@@ -396,14 +396,18 @@
 
     <script src="/js/table-managed.js"></script>
 
-    <script>
+    <script src="/js/myjs/partnersfinanceaccount.js"></script>
+
+    <script type="text/javascript">
         jQuery(document).ready(function() {
             TableManaged.init();
+            PartnerFinanceAccount.init();
         });
     </script>
 
     <script type="text/javascript">
 
+        /*创建收款付款*/
         function paymentReceipt(partnerId,reasonId) {
             $("#partnerId-controls").empty();
             $("#reasonId-controls").empty();
@@ -427,177 +431,9 @@
 
         }
 
-        $("#btn-black-btn-primary").on("click",function () {
-            var partnerId=$("#partnerId").val();
-            var reasonId=$("#reasonId").val();
-            var amount=$("#amount-flag").val();
-            var date=$("#date").val();
-            var remark=$("#remark").attr("value");
-            $.ajax({
-                type: "post",
-                url: "/partner/find-all-partner-financial-account/payment-receipt",
-                data: {"partnerId":partnerId,"amount":amount,"date":date,"remark":remark,"reasonId":reasonId},
-                dataType: "json",
-                success: function (result) {
-                    if(result.amountMessage != null){
-                        $("#amount-message").empty();
-                        $("#amount-message").append('<span class="help-line"><font color="red">'+result.amountMessage+'</font></span>');
-                    }
-                    if(result.successMessage != null){
-                        window.location.href="/partner/find-all-partner-financial-account"
-                    }
-                    if(result.errorMessage != null) {
-                        $("#error-alert").empty();
-                        $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
-                    }
-                }
-            });
-        });
-
-        $("#add-partner").on("click",function () {
-            $("#partnerNameMsg").empty();
-        });
-
-        $("#add-btn-black-btn-primary").on("click",function () {
-            var partnerName=$("#partnerName").val();
-            $.ajax({
-                type: "post",
-                url: "/partner/find-all-partner-financial-account/add-partner",
-                data: {"partnerName":partnerName},
-                dataType: "json",
-                success: function (result) {
-                    if(result.partnerMessage != null){
-                        $("#partnerNameMsg").html('<font color="red">'+result.partnerMessage+'</font>');
-                    }
-                    if(result.successMessage != null){
-                        window.location.href="/partner/find-all-partner-financial-account"
-                    }
-                    if(result.errorMessage != null) {
-                        $("#error-alert").empty();
-                        $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
-                    }
-                }
-            });
-        });
-
-    </script>
-
-    <#--支出走势-->
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $("#columnExpenditureHistogram").on("click",function () {
-                $.ajax({
-                    type: 'post',
-                    url: '/partner/find-all-partner-financial-account/expenditure-bar-chart',
-                    dataType: 'json',
-                    success: function (result) {
-                        var json = result;
-                        var chart = new Highcharts.Chart({
-                            chart: {
-                                renderTo: 'columnExpenditureHistogramContainer',
-                                type: 'column'
-                            },
-                            title: {
-                                text: ''
-                            },
-                            exporting: {
-                                enabled: false
-                            },
-                            credits: {
-                                enabled: false
-                            },
-                            xAxis: {
-                                categories: json.xList
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: '支出总额（单位：元）'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: json.yList
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-
-    <#--收入走势-->
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $("#columnIncomeHistogram").on("click",function () {
-                $.ajax({
-                    type: 'post',
-                    url: '/partner/find-all-partner-financial-account/income-bar-chart',
-                    dataType: 'json',
-                    success: function (result) {
-                        var json = result;
-                        var chart = new Highcharts.Chart({
-                            chart: {
-                                renderTo: 'columnIncomeHistogramContainer',
-                                type: 'column'
-                            },
-                            title: {
-                                text: ''
-                            },
-                            exporting: {
-                                enabled: false
-                            },
-                            credits: {
-                                enabled: false
-                            },
-                            xAxis: {
-                                categories: json.xList
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: '支出总额（单位：元）'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: json.yList
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-
-    <#--导出Excel-->
-    <script type="text/javascript">
-
         $(document).ready(function() {
+
+            /*导出Excel*/
             $('#exportExcel').on('click', function () {
                 var partnerName = $('#partnerName').val();
                 fetch('/excel-partner-finance/find-all-partner-financial-account?partnerName='+partnerName).then(res => res.blob().then(blob => {
@@ -610,21 +446,10 @@
                 window.URL.revokeObjectURL(url);
             }))
             });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#customerBalance').addClass('active');
-
-            $('#partnersFinancialAccount').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
 
         });
     </script>
+
     </#if>
 
 </@layout>

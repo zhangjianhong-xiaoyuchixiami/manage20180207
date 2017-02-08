@@ -55,7 +55,7 @@ window.onload = function(){
     document.getElementById("user.tel").addEventListener("blur",validateTelBlue,false);
     document.getElementById("user.tel").addEventListener("focus",validateTelFocus,false);
 
-}
+};
 
 
 function validateNameBlue(){

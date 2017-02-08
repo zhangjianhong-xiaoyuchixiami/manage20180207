@@ -258,7 +258,7 @@
 
                                             <div class="controls">
 
-                                                <div class="input-append date date-picker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+                                                <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
 
                                                     <input id="chargeDate" name="chargeDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text"><span class="add-on"><i class="icon-calendar"></i></span>
 

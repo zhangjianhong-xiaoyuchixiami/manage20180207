@@ -54,7 +54,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate) {
         boolean flag = false;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             ApiVendorBalanceLog apiVendorBalanceLog = new ApiVendorBalanceLog();
             apiVendorBalanceLog.setVendorId(vendorIdCharge);
             apiVendorBalanceLog.setAmount(amount*100);
