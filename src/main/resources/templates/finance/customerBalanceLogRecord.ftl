@@ -199,6 +199,7 @@
 
         jQuery(document).ready(function() {
             TableManaged.init();
+            CustomerLeftBar.init();
         });
 
         <#--导出Excel-->

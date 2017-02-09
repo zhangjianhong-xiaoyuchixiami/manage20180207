@@ -268,6 +268,8 @@
 
             TableManaged.init();
 
+            CustomerLeftBar.init();
+
         });
     </script>
 

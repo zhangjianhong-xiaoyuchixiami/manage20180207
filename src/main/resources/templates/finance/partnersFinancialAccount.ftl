@@ -394,13 +394,12 @@
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
-    <script src="/js/table-managed.js"></script>
-
     <script src="/js/myjs/partnersfinanceaccount.js"></script>
+
+    <script src="/js/locales/dataTables-sort-plungin.js"></script>
 
     <script type="text/javascript">
         jQuery(document).ready(function() {
-            TableManaged.init();
             PartnerFinanceAccount.init();
         });
     </script>
@@ -448,6 +447,7 @@
             });
 
         });
+
     </script>
 
     </#if>

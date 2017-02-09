@@ -274,6 +274,7 @@
         jQuery(document).ready(function() {
 
             TableManaged.init();
+            CustomerLeftBar.init();
 
             /*下拉框*/
             $("#apiTypeId").change(function () {

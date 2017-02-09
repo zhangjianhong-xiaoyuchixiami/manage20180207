@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -115,8 +114,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUser(int iDisplayStart, int iDisplayLength) {
-        return userMapper.findAllUser1(iDisplayStart,iDisplayLength);
+    public Map<String,Object> findAllUserTest(Map<String,Object> map) {
+        Map<String,Object> mapTran = new HashMap();
+        mapTran.put("findAllUser",userMapper.findAllUserTest(map));
+        mapTran.put("getAllCount",userMapper.getAllCountTest());
+        return mapTran;
+    }
+
+    @Override
+    public boolean deleteTest(Integer id) {
+        return userMapper.deleteTest(id);
     }
 
 }

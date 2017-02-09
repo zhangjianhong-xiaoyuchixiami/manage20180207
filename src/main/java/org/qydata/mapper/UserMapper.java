@@ -97,6 +97,19 @@ public interface UserMapper {
      */
     public boolean updateStatusforbid(String username)throws Exception;
 
-    public List<User> findAllUser1(int iDisplayStart, int iDisplayLength);
+    /**
+     * dataTable后端分页测试
+     * @return
+     */
+    public List<User> findAllUserTest(Map<String,Object> map);
+
+    /**
+     * dataTable后端分页测试
+     * @return
+     */
+    public Integer getAllCountTest();
+
+    public boolean deleteTest(Integer id);
+
 
 }

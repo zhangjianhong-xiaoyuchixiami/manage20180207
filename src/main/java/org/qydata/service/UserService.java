@@ -4,7 +4,6 @@ import org.qydata.entity.User;
 import org.qydata.tools.PageModel;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,7 +97,8 @@ public interface UserService {
     @Transactional
     public boolean updateStatusForbid(String username)throws Exception;
 
-    public List<User> findAllUser(int iDisplayStart, int iDisplayLength);
 
+    public Map<String,Object> findAllUserTest(Map<String,Object> map);
 
+    public boolean deleteTest(Integer id);
 }

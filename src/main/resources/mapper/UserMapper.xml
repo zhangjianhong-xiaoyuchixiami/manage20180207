@@ -133,9 +133,31 @@
         update qyauth.User set status=1 where username=#{value}
     </update>
 
-    <select id="findAllUser1" parameterType="int" resultType="org.qydata.entity.User">
+    <!--dataTable后端分页测试-->
+    <select id="findAllUserTest" parameterType="map" resultType="org.qydata.entity.User">
         SELECT id,name,username,tel
         FROM qyauth.User
-        limit #{param1},#{param2}
+        <if test="id != null and id != ''">
+            ORDER BY id ${id}
+        </if>
+        <if test="name != null and name != ''">
+            ORDER BY name ${name}
+        </if>
+        <if test="username != null and username != ''">
+            ORDER BY username ${username}
+        </if>
+        <if test="tel != null and tel != ''">
+            ORDER BY tel ${tel}
+        </if>
+        limit #{pageSize},#{lineSize}
     </select>
+
+    <!--dataTable后端分页测试-->
+    <select id="getAllCountTest" resultType="int">
+        SELECT count(id) FROM qyauth.User
+    </select>
+
+    <delete id="deleteTest" parameterType="int">
+        DELETE FROM qyauth.User WHERE id=#{param}
+    </delete>
 </mapper>

@@ -214,6 +214,7 @@
 
         jQuery(document).ready(function() {
             TableManaged.init();
+            CustomerLeftBar.init();
         });
     </script>
 
