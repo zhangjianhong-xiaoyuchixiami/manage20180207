@@ -101,6 +101,7 @@ var CustomerFinanceAccount = function () {
                     [10, 15, 20, "全部"] // change per page values here
                 ],
                 "bFilter" : false, //设置全文搜索框，默认true
+
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
@@ -120,6 +121,7 @@ var CustomerFinanceAccount = function () {
                         "sLast" : " 最后一页 "
                     }
                 }
+
 
             });
 
