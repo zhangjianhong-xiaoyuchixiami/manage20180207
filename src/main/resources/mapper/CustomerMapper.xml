@@ -3,40 +3,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.CustomerMapper">
 
-    <resultMap type="org.qydata.entity.Customer" id="Customer_CustomerType_CustomerStatus">
-        <result column="id" property="id"/>
-        <result column="typeId" property="typeId"/>
-        <result column="name" property="name"/>
-        <result column="authId" property="authId"/>
-        <result column="authPass" property="authPass"/>
-        <result column="balance" property="balance"/>
-        <result column="status" property="status"/>
-        <result column="createTime" property="createTime"/>
-        <association property="customerType" javaType="org.qydata.entity.CustomerType">
-            <result column="qctname" property="name"/>
-        </association>
-        <association property="customerStatus" javaType="org.qydata.entity.CustomerStatus">
-            <result column="qcsname" property="name"/>
-        </association>
-        <association property="dept" javaType="org.qydata.entity.Dept">
-            <result column="deptName" property="deptName"/>
-        </association>
-        <association property="company" javaType="org.qydata.entity.Company">
-            <result column="companyName" property="name"/>
-        </association>
-    </resultMap>
+
     <!--查询指定客户信息-->
-    <select id="findByAuthId" parameterType="java.lang.String" resultMap="Customer_CustomerType_CustomerStatus">
-        select c.id,c.typeId,c.name,c.authId,c.authPass,c.balance,c.createTime,c.qctname,c.qcsname,d.deptName,
-        c.companyName
-        from qyauth.CustomerDept cda,qyauth.Dept d,(
-                                                        select qc.id,qc.typeId,qc.name,qc.authId,qc.authPass,qc.balance,qc.createTime,qc.status,qct.name qctname,qcs.name qcsname,
-                                                        company.name companyName
-                                                        from qydata.Customer qc,qydata.CustomerType qct,qydata.CustomerStatus qcs,qydata.Company company
-                                                        where qc.typeId=qct.id and qc.status=qcs.id and qc.companyId=company.id and qc.authId=#{value}
-                                                       ) c
-        where cda.customerId=c.id and cda.deptId=d.id
+    <select id="findCustomerByAuthId" parameterType="java.lang.String" resultType="org.qydata.entity.Customer">
+        SELECT authId
+        FROM qyfinance.bkvwCustomer
+        WHERE authId=#{param}
     </select>
+
     <!--插入新客户真是账号-->
     <insert id="insertCustomer" parameterType="org.qydata.entity.Customer" useGeneratedKeys="true" keyProperty="id">
         insert into qydata.Customer(typeId,authId,authPass,balance,createTime,status,companyId)
@@ -55,62 +29,6 @@
             select LAST_INSERT_ID()
         </selectKey>
     </insert>
-    <!--查询当前登录着可见的客户信息并分页显示-->
-    <select id="findAllCustomer" parameterType="map" resultMap="Customer_CustomerType_CustomerStatus">
-        select c.id,c.typeId,c.name,c.authId,c.authPass,c.balance,c.createTime,c.qctname,c.status,c.qcsname,
-        d.deptName,c.companyName
-        from qyauth.CustomerDept cda,qyauth.Dept d,(
-                                                        select customer.id,customer.typeId,customer.name,customer.authId,customer.authPass,customer.balance,
-                                                        customer.createTime,customer.status,qct.name qctname,qcs.name qcsname,company.name companyName
-                                                        from qydata.Customer customer,qydata.CustomerType qct,qydata.CustomerStatus qcs,qydata.CustomerCompany company
-                                                        where customer.typeId=qct.id and customer.status=qcs.id and customer.companyId=company.id
-                                                        ) c
-        where cda.customerId=c.id and cda.deptId=d.id
-        <if test="deptIdList!=null and deptIdList.size()!=0">
-            and cda.deptId in
-            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                #{deptId}
-            </foreach>
-        </if>
-        <if test="content!=null and content!=''">
-            and c.companyName like '%${content}%'
-        </if>
-        <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
-            and c.typeId in
-            <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
-                #{customerTypeId}
-            </foreach>
-        </if>
-        order by c.createTime desc
-        limit #{beginIndex},#{lineSize}
-
-    </select>
-    <!--统计当前登陆者可见客户的所有数据-->
-    <select id="getAllCount" parameterType="map" resultType="Integer">
-        select count(c.id)
-        from qyauth.CustomerDept cda,qyauth.Dept d,(
-                                    select customer.id,customer.typeId,customer.name,customer.authId,customer.authPass,customer.balance,
-                                    customer.createTime,customer.status,qct.name qctname,qcs.name qcsname,company.name companyName
-                                    from qydata.Customer customer,qydata.CustomerType qct,qydata.CustomerStatus qcs,qydata.CustomerCompany company
-                                    where customer.typeId=qct.id and customer.status=qcs.id and customer.companyId=company.id
-                                  ) c
-        where cda.customerId=c.id and cda.deptId=d.id
-        <if test="deptIdList!=null and deptIdList.size()!=0">
-            and cda.deptId in
-            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                #{deptId}
-            </foreach>
-        </if>
-        <if test="content!=null and content!=''">
-            and c.companyName like '%${content}%'
-        </if>
-        <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
-            and c.typeId in
-            <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
-                #{customerTypeId}
-            </foreach>
-        </if>
-    </select>
 
     <!--根据客户Id查找对应的部门Id-->
     <select id="findDeptIdByCompanyId" parameterType="Integer" resultType="Integer">
@@ -133,10 +51,6 @@
         <foreach collection="list" item="deptId" index="index" open="(" close=")" separator=",">
             #{deptId}
         </foreach>
-    </select>
-
-    <select id="findAllCustomerId" resultType="Integer">
-        SELECT id from qydata.vwCustomer
     </select>
 
 </mapper>

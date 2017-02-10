@@ -6,6 +6,7 @@
 <#import "../publicPart/tools.ftl" as d>
 
 <@layout ; section>
+
     <#if section = "head">
 
     <#elseif section = "content" >
@@ -120,8 +121,7 @@
 
                     </form>
 
-
-                <#--表单-->
+                <#--表格-->
                     <div class="portlet box grey">
 
                         <div class="portlet-title">
@@ -171,9 +171,13 @@
                         </div>
 
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
 
     <#elseif section = "footer">
@@ -186,7 +190,7 @@
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
-    <script src="/js/table-managed.js"></script>
+    <script src="/js/myjs/customer-company.js"></script>
 
     <script type="text/javascript">
 
@@ -199,6 +203,7 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
+
             $('#exportExcel').on('click', function () {
                 var apiId = $('#apiId').val();
                 var beginDate = $('#beginDate').val();

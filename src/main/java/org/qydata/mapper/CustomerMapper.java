@@ -16,7 +16,7 @@ public interface CustomerMapper {
      * @param authId 要查找客户的authId
      * @return 如果有数据，则数据以Customer对象的形式返回，如果没有返回空；
      */
-    public Customer findByAuthId(String authId);
+    public Customer findCustomerByAuthId(String authId);
     /**
      * 添加新客户--真实
      * @param vo 包含了要添加数据的Customer类对象

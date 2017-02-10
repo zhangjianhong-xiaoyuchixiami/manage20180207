@@ -34,7 +34,7 @@
         </collection>
     </resultMap>
 
-    <resultMap type="org.qydata.entity.Customer" id="Customer_CustomerType_CustomerStatus">
+    <resultMap id="Customer_CustomerType_CustomerStatus" type="org.qydata.entity.Customer" >
         <result column="id" property="id"/>
         <result column="typeId" property="typeId"/>
         <result column="name" property="name"/>
@@ -106,72 +106,114 @@
        </collection>
     </resultMap>
 
+
+    <resultMap id="CustomerCompany_Map" type="org.qydata.dst.CustomerCompanyPartner">
+        <result column="companyId" property="companyId"/>
+        <result column="companyBalance" property="companyBalance"/>
+        <result column="companyName" property="companyName"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+        <result column="companyCreateTime" property="companyCreateTime"/>
+    </resultMap>
+
+    <resultMap id="CustomerCompany_Customer_Map" type="org.qydata.dst.CustomerCompanyPartner" extends="CustomerCompany_Map">
+       <collection property="customerList" ofType="org.qydata.entity.Customer">
+           <result column="customerId" property="id"/>
+           <result column="authId" property="authId"/>
+           <result column="authPass" property="authPass"/>
+           <result column="balance" property="balance"/>
+           <result column="customerCreateTime" property="createTime"/>
+           <association property="customerType" javaType="org.qydata.entity.CustomerType">
+               <result column="typeId" property="id"/>
+               <result column="typeName" property="name"/>
+           </association>
+           <association property="customerStatus" javaType="org.qydata.entity.CustomerStatus">
+               <result column="status" property="id"/>
+               <result column="statusName" property="name"/>
+           </association>
+       </collection>
+    </resultMap>
+
+
+    <!--查找客户信息-->
+    <select id="findAllCompany" parameterType="map" resultMap="CustomerCompany_Customer_Map">
+        SELECT cc.customerId,cc.typeId,cc.typeName,cc.authId,cc.authPass,cc.balance,cc.createTime customerCreateTime,cc.status,cc.statusName,
+        dd.companyId,dd.companyBalance,dd.companyName,dd.partnerId,dd.partnerName,dd.timestamp companyCreateTime
+        FROM
+        (
+        SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,
+        a.companyId,a.companyName,a.partnerId,b.name partnerName
+        FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        ) cc  LEFT JOIN
+        (
+        SELECT aa.companyId,aa.companyBalance,bb.companyName,bb.partnerId,bb.partnerName,bb.timestamp
+        FROM
+        (
+        SELECT companyId,sum(balance) companyBalance
+        FROM qyfinance.bkvwCustomer
+        WHERE typeId=1 AND status=0
+        GROUP BY companyId
+        ) aa LEFT JOIN qyfinance.bkvw_company_customer bb ON aa.companyId=bb.companyId
+        ) dd ON cc.companyId=dd.companyId
+        <where>
+            <if test="content!=null and content!=''">
+                dd.companyName like '%${content}%'
+            </if>
+        </where>
+    </select>
+
+    <!--通过部门编号查找客户信息-->
+    <select id="findAllCompanyByDeptId" parameterType="map" resultMap="CustomerCompany_Customer_Map">
+        SELECT cc.customerId,cc.typeId,cc.typeName,cc.authId,cc.authPass,cc.balance,cc.createTime customerCreateTime,cc.status,cc.statusName,
+        dd.companyId,dd.companyBalance,dd.companyName,dd.partnerId,dd.partnerName,dd.timestamp companyCreateTime
+        FROM
+        (
+        SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,
+        a.companyId,a.companyName,a.partnerId,b.name partnerName
+        FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        WHERE a.id IN
+                        (
+                            SELECT customerId
+                            FROM qyfinance.bkvwCustomerDept
+                            WHERE deptId IN
+                                        <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                                            #{deptId}
+                                        </foreach>
+                        )
+        ) cc  LEFT JOIN
+        (
+        SELECT aa.companyId,aa.companyBalance,bb.companyName,bb.partnerId,bb.partnerName,bb.timestamp
+        FROM
+        (
+        SELECT companyId,sum(balance) companyBalance
+        FROM qyfinance.bkvwCustomer
+        WHERE typeId=1 AND status=0
+        GROUP BY companyId
+        ) aa LEFT JOIN qyfinance.bkvw_company_customer bb ON aa.companyId=bb.companyId
+        ) dd ON cc.companyId=dd.companyId
+        <where>
+            <if test="content!=null and content!=''">
+                dd.companyName like '%${content}%'
+            </if>
+        </where>
+    </select>
+
     <!--添加客户信息-->
     <insert id="addCompany" parameterType="org.qydata.entity.Company" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qydata.Company(name,createTime)
-        VALUES (#{name},sysdate())
+        INSERT INTO qydata.CustomerCompany(name)
+        VALUES (#{name})
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+
 
     <!--根据Id查找指定客户信息-->
     <select id="findById" parameterType="Integer" resultType="org.qydata.entity.Company">
         SELECT id,name,createTime
         FROM qydata.Company
         WHERE id=#{param}
-    </select>
-
-    <!--根据条件查找客户信息-->
-    <select id="findAllCompany" parameterType="map" resultType="org.qydata.entity.Company">
-        SELECT id,name,createTime
-        FROM qydata.Company
-        WHERE id IN (
-                        SELECT companyId
-                        FROM qydata.Customer
-                        WHERE id IN (
-                                        SELECT customerId
-                                        FROM qyauth.CustomerDept customerDept
-                                        <where>
-                                            <if test="deptIdList!=null and deptIdList.size()!=0">
-                                                deptId in
-                                                <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                                                    #{deptId}
-                                                </foreach>
-                                            </if>
-                                        </where>
-                                      )
-                     )
-        <if test="content!=null and content!=''">
-            AND name LIKE '%${content}%'
-        </if>
-        ORDER BY createTime DESC
-        limit #{beginIndex},#{lineSize}
-    </select>
-
-    <!--根据条件统计数据量-->
-    <select id="getAllCountCompany" parameterType="map" resultType="Integer">
-        SELECT count(id)
-        FROM qydata.Company
-        WHERE id IN (
-                        SELECT companyId
-                        FROM qydata.Customer
-                        WHERE id IN (
-                                        SELECT customerId
-                                        FROM qyauth.CustomerDept customerDept
-                                        <where>
-                                            <if test="deptIdList!=null and deptIdList.size()!=0">
-                                                deptId in
-                                                <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                                                    #{deptId}
-                                                </foreach>
-                                            </if>
-                                        </where>
-                                        )
-                      )
-        <if test="content!=null and content!=''">
-            AND name LIKE '%${content}%'
-        </if>
     </select>
 
     <!--根据客户公司Id查找全部的账号-->

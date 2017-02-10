@@ -1,6 +1,7 @@
 package org.qydata.service;
 
 import org.qydata.dst.CustomerApiInfo;
+import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.Api;
 import org.qydata.entity.Company;
 import org.qydata.entity.Customer;
@@ -26,12 +27,20 @@ public interface CompanyService {
     public Company findById(String id)throws Exception;
 
     /**
-     * 查询全部客户并分页显示
+     * 查询全部客户
      * @param map
      * @return
      * @throws Exception
      */
-    public PageModel<Company> findAllCompany(Map<String,Object> map)throws Exception;
+    public List<CustomerCompanyPartner> findAllCompany(Map<String,Object> map);
+
+    /**
+     * 通过部门编号查询客户
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerCompanyPartner> findAllCompanyByDeptId(Map<String,Object> map);
 
     /**
      * 根据客户公司Id查找全部的账号
@@ -42,14 +51,14 @@ public interface CompanyService {
 
     /**
      * 新增客户和账户
-     * @param name
+     * @param companyName
      * @param authId
      * @param deptId
      * @return
      * @throws Exception
      */
     @Transactional
-    public boolean addCompanyAndCustomer(String name,String authId,String deptId)throws Exception;
+    public boolean addCompanyCustomer(String companyName,String authId,String deptId);
     /**
      * 查询供应商Api所有数据
      * @return

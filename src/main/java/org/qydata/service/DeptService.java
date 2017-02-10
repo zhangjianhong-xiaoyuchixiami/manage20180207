@@ -25,7 +25,7 @@ public interface DeptService {
      * @return
      * @throws Exception
      */
-    public List<Dept> findAllDept()throws Exception;
+    public List<Dept> findAllDept();
     /**
      * 批量插入用户和部门映射
      * @param

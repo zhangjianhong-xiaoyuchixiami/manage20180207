@@ -47,7 +47,7 @@ public class CustomerController {
      */
     @RequestMapping(value = "/findCustomerByAuthId/{authId}")
     public void findCustomerByAuthIdAdd(@PathVariable("authId") String authId,HttpServletResponse response){
-        Customer customer = customerService.findByAuthId(authId);
+        Customer customer = customerService.findCustomerByAuthId(authId);
         PrintWriter out = null;
         try {
             out = response.getWriter();
@@ -99,13 +99,7 @@ public class CustomerController {
 
     }
 
-    //通过authId查找账号详细信息
-    @RequestMapping(value = "/findCustomerDetailInfo/{authId}")
-    public String findCustomerDetailInfo(@PathVariable String authId,Model model){
-        Customer customer = customerService.findByAuthId(authId);
-        model.addAttribute("customer",customer);
-        return "/customerBalanceLog/detailCustomerInfo";
-    }
+
 
 
 

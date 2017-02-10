@@ -1,6 +1,7 @@
 package org.qydata.mapper;
 
 import org.qydata.dst.CustomerApiInfo;
+import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.Api;
 import org.qydata.entity.Company;
 import org.qydata.entity.Customer;
@@ -13,6 +14,22 @@ import java.util.Map;
  * Created by jonhn on 2016/12/15.
  */
 public interface CompanyMapper {
+
+    /**
+     * 查找客户信息
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerCompanyPartner> findAllCompany(Map<String,Object> map)throws Exception;
+
+    /**
+     * 查找客户信息
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerCompanyPartner> findAllCompanyByDeptId(Map<String,Object> map)throws Exception;
     /**
      * 新增客户
      * @param company
@@ -29,21 +46,6 @@ public interface CompanyMapper {
      */
     public Company findById(Integer id)throws Exception;
 
-    /**
-     * 根据条件查找客户信息
-     * @param map
-     * @return
-     * @throws Exception
-     */
-    public List<Company> findAllCompany(Map<String,Object> map)throws Exception;
-
-    /**
-     * 根据条件统计数据量
-     * @param map
-     * @return
-     * @throws Exception
-     */
-    public Integer getAllCountCompany(Map<String,Object> map)throws Exception;
 
     /**
      * 根据客户公司Id查找全部的账号

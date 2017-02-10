@@ -150,7 +150,13 @@
 
                             <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if><#if apiTypeName??>@${apiTypeName}</#if></div>
 
-                            <@d.tools idName="exportExcel"></@d.tools>
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <@d.tools idName="exportExcel"></@d.tools>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                <@d.tools idName="exportExcelByDeptId"></@d.tools>
+                            </@shiro.hasPermission>
 
                         </div>
 
@@ -221,6 +227,7 @@
     <#--导出Excel-->
     <script type="text/javascript">
         $(document).ready(function() {
+
             $('#exportExcel').on('click', function () {
                 var companyName = $('#companyName').val();
                 var customerId = $('#customerId').val();
@@ -231,6 +238,26 @@
                     reasonId.push($.trim($(this).val()));
                 });
                 fetch('/excel-finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?companyName='+companyName+'&customerId='+customerId+'&reasonId='+reasonId+'&apiTypeId='+apiTypeId).then(res => res.blob().then(blob => {
+                    var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename = companyName+'@'+apiTypeName+'消费明细记录.xls';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }))
+            });
+
+            $('#exportExcelByDeptId').on('click', function () {
+                var companyName = $('#companyName').val();
+                var customerId = $('#customerId').val();
+                var apiTypeId = $('#apiTypeId').val();
+                var apiTypeName = $('#apiTypeName').val();
+                var reasonId =[];//定义一个数组
+                $('input[name="reasonId"]:checked').each(function(){
+                    reasonId.push($.trim($(this).val()));
+                });
+                fetch('/excel-finance/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id/detail?companyName='+companyName+'&customerId='+customerId+'&reasonId='+reasonId+'&apiTypeId='+apiTypeId).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
                 var filename = companyName+'@'+apiTypeName+'消费明细记录.xls';

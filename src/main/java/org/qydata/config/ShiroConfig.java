@@ -328,6 +328,20 @@ public class ShiroConfig {
 		chains.put("/api/find-all-api-vendor-consume/bar-chart", "authc");
 		chains.put("/api/find-all-vendor-record/charge", "authc");
 
+		//合作伙伴
+		chains.put("/partner/find-all-partner-financial-account", "authc,perms");
+		chains.put("/partner/find-all-partner-financial-account/income-and-expenditure-record", "authc,perms");
+
+		//合作伙伴Ajax
+		chains.put("/partner/find-all-partner-financial-account/payment-receipt", "authc");
+		chains.put("/partner/find-all-partner-financial-account/add-partner", "authc");
+		chains.put("/partner/find-all-partner-financial-account/expenditure-bar-chart", "authc");
+		chains.put("/partner/find-all-partner-financial-account/income-bar-chart", "authc");
+
+		//客户管理
+		chains.put("/company/find-all-company-customer", "authc,perms");
+		chains.put("/company/find-all-company-customer-by-dept-id", "authc,perms");
+
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}

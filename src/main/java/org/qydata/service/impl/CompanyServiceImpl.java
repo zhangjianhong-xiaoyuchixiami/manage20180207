@@ -2,6 +2,7 @@ package org.qydata.service.impl;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.CustomerApiInfo;
+import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.*;
 import org.qydata.mapper.CompanyMapper;
 import org.qydata.mapper.CustomerApiMapper;
@@ -36,11 +37,23 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PageModel<Company> findAllCompany(Map<String, Object> map) throws Exception {
-        PageModel<Company> pageModel = new PageModel<>();
-        pageModel.setList(companyMapper.findAllCompany(map));
-        pageModel.setCount(companyMapper.getAllCountCompany(map));
-        return pageModel;
+    public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {
+        try {
+            return companyMapper.findAllCompany(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<CustomerCompanyPartner> findAllCompanyByDeptId(Map<String, Object> map) {
+        try {
+            return companyMapper.findAllCompanyByDeptId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -52,32 +65,37 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean addCompanyAndCustomer(String name, String authId, String deptId) throws Exception {
-        Company company = new Company();
-        company.setName(name.trim());
-        companyMapper.addCompany(company);
+    public boolean addCompanyCustomer(String name, String authId, String deptId) {
+        try {
+            Company company = new Company();
+            company.setName(name.trim());
+            companyMapper.addCompany(company);
 
-        //向客户表中插入数据
-        Customer customerB = new Customer();
-        customerB.setAuthId(authId.trim() + "_test");
-        customerB.setCompanyId(company.getId());
-        customerMapper.insertCustomerTest(customerB);
+            //向客户表中插入数据
+            Customer customerB = new Customer();
+            customerB.setAuthId(authId.trim() + "_test");
+            customerB.setCompanyId(company.getId());
+            customerMapper.insertCustomerTest(customerB);
 
-        Customer customerA = new Customer();
-        customerA.setAuthId(authId.trim());
-        customerA.setCompanyId(company.getId());
-        customerMapper.insertCustomer(customerA);
+            Customer customerA = new Customer();
+            customerA.setAuthId(authId.trim());
+            customerA.setCompanyId(company.getId());
+            customerMapper.insertCustomer(customerA);
 
-        //向部门客户映射表中插入数据
-        CustomerDept customerDeptA = new CustomerDept();
-        customerDeptA.setCustomerId(customerA.getId());
-        customerDeptA.setDeptId(Integer.parseInt(deptId.trim()));
-        customerDeptMapper.insertCustomerDept(customerDeptA);
+            //向部门客户映射表中插入数据
+            CustomerDept customerDeptA = new CustomerDept();
+            customerDeptA.setCustomerId(customerA.getId());
+            customerDeptA.setDeptId(Integer.parseInt(deptId.trim()));
+            customerDeptMapper.insertCustomerDept(customerDeptA);
 
-        CustomerDept customerDeptB = new CustomerDept();
-        customerDeptB.setCustomerId(customerB.getId());
-        customerDeptB.setDeptId(Integer.parseInt(deptId.trim()));
-        return customerDeptMapper.insertCustomerDept(customerDeptB);
+            CustomerDept customerDeptB = new CustomerDept();
+            customerDeptB.setCustomerId(customerB.getId());
+            customerDeptB.setDeptId(Integer.parseInt(deptId.trim()));
+            return customerDeptMapper.insertCustomerDept(customerDeptB);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

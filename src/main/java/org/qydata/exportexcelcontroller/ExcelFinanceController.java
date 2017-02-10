@@ -327,11 +327,11 @@ public class ExcelFinanceController {
     }
 
     /**
-     * 指定账号Api消费记录
+     * 指定账号Api消费记录通过部门编号
      * @return
      */
     @RequestMapping("/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id")
-    public void findAllApiConsumeRecordByCustomerIdByDeptId(Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,HttpServletResponse response) throws IOException {
+    public void findAllApiConsumeRecordByCustomerIdAndDeptId(Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,HttpServletResponse response) throws IOException {
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         if(apiTypeId != null){
@@ -417,6 +417,79 @@ public class ExcelFinanceController {
                 mapValue.put("apiName", customerBalanceLog.getApiType().getName()+"——"+customerBalanceLog.getMobileOperator().getName()+"@"+customerBalanceLog.getApiVendor().getName());
             }else if(customerBalanceLog.getApiType() != null && customerBalanceLog.getApiVendor() != null && customerBalanceLog.getMobileOperator() == null ){
                 mapValue.put("apiName", customerBalanceLog.getApiType().getName()+"@"+customerBalanceLog.getApiVendor().getName());
+            }else {
+                mapValue.put("apiName","");
+            }
+            if(customerBalanceLog.getAmount() != null){
+                mapValue.put("amount", customerBalanceLog.getAmount()/100.0);
+            }else{
+                mapValue.put("amount", 0.0);
+            }
+            if(customerBalanceLog.getCreateTime() != null){
+                mapValue.put("createTime", customerBalanceLog.getCreateTime());
+            }else{
+                mapValue.put("createTime", "");
+            }
+            if(customerBalanceLog.getCustomerBalanceModifyReason() != null && customerBalanceLog.getCustomerBalanceModifyReason().getName() != null ){
+                mapValue.put("reasonName", customerBalanceLog.getCustomerBalanceModifyReason().getName());
+            }else{
+                mapValue.put("reasonName", "");
+            }
+            list.add(mapValue);
+        }
+        String fileName = companyName+"消费明细记录";
+        String columnNames[]= {"产品","消费金额（单位：元）","创建时间","类型"};//列名
+        String keys[] = {"apiName","amount","createTime","reasonName"};//map中的key
+        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
+    }
+
+    /**
+     * 指定账号Api消费明细记录通过部门编号
+     * @param customerId
+     * @param apiTypeId
+     * @param companyName
+     * @return
+     */
+    @RequestMapping("/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id/detail")
+    public void findAllApiConsumeDetailRecordByCustomerIdAndByDeptId(Integer customerId, Integer apiTypeId, String companyName,Integer [] reasonId,String beginDate,String endDate,HttpServletResponse response) throws IOException {
+        Map<String,Object> map = new HashedMap();
+        map.put("customerId",customerId);
+        map.put("apiTypeId",apiTypeId);
+        if (beginDate != null && beginDate != "" ) {
+            map.put("beginDate", beginDate+" "+"00:00:00");
+        }
+        if(endDate != null && endDate != ""){
+            map.put("endDate", endDate+" "+"23:59:59");
+        }
+        List<Integer> reasonIdList = new ArrayList<>();
+        if (reasonId != null && reasonId.length >0) {
+            for(int i=0;i<reasonId.length;i++){
+                reasonIdList.add(reasonId[i]);
+            }
+        }else {
+            reasonIdList.add(-1);
+            reasonIdList.add(-2);
+        }
+        map.put("reasonIdList", reasonIdList);
+        List<CustomerBalanceLog> customerBalanceLogList = null;
+        try {
+            customerBalanceLogList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<Map<String,Object>> list = new ArrayList<>();
+        Map<String, Object> mapA = new HashMap<String, Object>();
+        mapA.put("sheetName", "sheet1");
+        list.add(mapA);
+        CustomerBalanceLog customerBalanceLog = null;
+        for (int j = 0; j < customerBalanceLogList.size(); j++) {
+            customerBalanceLog = customerBalanceLogList.get(j);
+            Map<String, Object> mapValue = new HashMap<String, Object>();
+
+            if(customerBalanceLog.getApiType() != null && customerBalanceLog.getMobileOperator() != null ){
+                mapValue.put("apiName", customerBalanceLog.getApiType().getName()+"——"+customerBalanceLog.getMobileOperator().getName());
+            }else if(customerBalanceLog.getApiType() != null && customerBalanceLog.getMobileOperator() == null ){
+                mapValue.put("apiName", customerBalanceLog.getApiType().getName());
             }else {
                 mapValue.put("apiName","");
             }

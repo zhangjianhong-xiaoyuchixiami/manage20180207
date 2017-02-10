@@ -18,7 +18,7 @@ public interface CustomerService {
      * @param authId 要查找客户的authId
      * @return 如果有数据，则数据以Customer对象的形式返回，如果没有返回空；
      */
-    public Customer findByAuthId(String authId);
+    public Customer findCustomerByAuthId(String authId);
 
     /**
      * 添加账户

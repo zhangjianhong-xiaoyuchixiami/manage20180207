@@ -106,92 +106,51 @@
 
         <div class="page-sidebar nav-collapse collapse">
 
-            <!-- BEGIN SIDEBAR MENU -->
-
             <ul class="page-sidebar-menu">
 
                 <li>
 
-                    <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-
                     <div class="sidebar-toggler hidden-phone"></div>
 
-                    <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-
                 </li>
 
-                <li>
+                <@shiro.hasAnyRoles name="sell,backAdmin">
 
-                    <!-- 搜索框 -->
+                    <li class="" id="customerManage">
+                        <a href="javascript:;">
 
-                    <form class="sidebar-search" action="#">
+                            <i class="icon-sitemap"></i>
 
-                        <div class="input-box">
+                            <span class="title">客户管理</span>
 
-                        <#--<a href="#" class="remove"></a>-->
+                            <span class="" id="customerManageSelect"></span>
 
-                            <#--<input type="text" placeholder="Search..." />-->
+                            <span class="arrow " id="customerManageArrow"></span>
 
-                            <#--<input type="submit" class="submit" value=" " />-->
+                        </a>
 
-                        </div>
+                        <ul class="sub-menu">
 
-                    </form>
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="customerList">
+                                    <a href="/company/find-all-company-customer">
+                                        客户信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-                    <!-- 搜索框结束 -->
-                </li>
+                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                <li id="customerList">
+                                    <a href="/company/find-all-company-customer-by-dept-id">
+                                        客户信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-            <#--<@shiro.hasAnyRoles name="sell,backAdmin">-->
-            <#--<li class="" id="customerManage">-->
-            <#--<a href="javascript:;">-->
+                        </ul>
+                    </li>
 
-            <#--<i class="icon-sitemap"></i>-->
-
-            <#--<span class="title">客户管理</span>-->
-
-            <#--<span class="" id="customerManageSelect"></span>-->
-
-            <#--<span class="arrow " id="customerManageArrow"></span>-->
-
-            <#--</a>-->
-
-            <#--<ul class="sub-menu">-->
-
-            <#--<@shiro.hasPermission name="company:addCompanyAllDeptView">-->
-            <#--<li id="addCustomer">-->
-            <#--<a href="/company/addCompanyAllDeptView">-->
-            <#--新增客户-->
-            <#--</a>-->
-            <#--</li>-->
-            <#--</@shiro.hasPermission>-->
-
-            <#--<@shiro.hasPermission name="company:addCompanyOnlyDeptView">-->
-            <#--<li id="addCustomer">-->
-            <#--<a href="/company/addCompanyOnlyDeptView">-->
-            <#--新增客户-->
-            <#--</a>-->
-            <#--</li>-->
-            <#--</@shiro.hasPermission>-->
-
-            <#--<@shiro.hasPermission name="company:findAllAction">-->
-            <#--<li id="customerList">-->
-            <#--<a href="/company/findAllAction">-->
-            <#--客户信息-->
-            <#--</a>-->
-            <#--</li>-->
-            <#--</@shiro.hasPermission>-->
-
-            <#--<@shiro.hasPermission name="company:findAllByDeptIdAction">-->
-            <#--<li id="customerList">-->
-            <#--<a href="/company/findAllByDeptIdAction">-->
-            <#--客户信息-->
-            <#--</a>-->
-            <#--</li>-->
-            <#--</@shiro.hasPermission>-->
-
-            <#--</ul>-->
-            <#--</li>-->
-            <#--</@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>
 
             <#--财务管理-->
                 <@shiro.hasAnyRoles name="sell,backAdmin">
@@ -243,21 +202,23 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <li id="partnersFinancialAccount">
-
-                                <a href="/partner/find-all-partner-financial-account">
-                                    合作公司来往账目
-                                </a>
-
-                            </li>
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="partnersFinancialAccount">
+                                    <a href="/partner/find-all-partner-financial-account">
+                                        合作公司来往账目
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
                         </ul>
 
                     </li>
+
                 </@shiro.hasAnyRoles>
 
             <#--用户管理-->
                 <@shiro.hasAnyRoles name="backAdmin,technology">
+
                     <li class="" id="userManage">
                         <a href="javascript:;">
 
@@ -307,10 +268,12 @@
                         </ul>
 
                     </>
+
                 </@shiro.hasAnyRoles>
 
             <#--部门管理-->
                 <@shiro.hasAnyRoles name="backAdmin">
+
                     <li class="" id="deptManage">
                         <a href="javascript:;">
 
@@ -344,6 +307,7 @@
                         </ul>
 
                     </li>
+
                 </@shiro.hasAnyRoles>
 
             </ul>

@@ -31,8 +31,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public Customer findByAuthId(String authId) {
-        return customerMapper.findByAuthId(authId);
+    public Customer findCustomerByAuthId(String authId) {
+        return customerMapper.findCustomerByAuthId(authId);
     }
 
     @Override

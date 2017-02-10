@@ -49,7 +49,7 @@ public class DataSourceAop {
      */
     private Boolean isSlave(String methodName) {
         // 方法名以query、find、get开头的方法名走从库
-        return StringUtils.startsWithAny(methodName, "query", "find", "get");
+        return StringUtils.startsWithAny(methodName, "query", "find", "get","add");
     }
 
 

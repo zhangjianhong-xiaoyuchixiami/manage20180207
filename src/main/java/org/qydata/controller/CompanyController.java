@@ -1,6 +1,8 @@
 package org.qydata.controller;
 
+import com.google.gson.Gson;
 import org.qydata.dst.CustomerApiInfo;
+import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.*;
 import org.qydata.regex.RegexUtil;
 import org.qydata.service.CompanyService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,241 +31,102 @@ import java.util.Map;
 @RequestMapping(value = "/company")
 public class CompanyController {
 
-    @Autowired
-    private DeptService deptService;
-    @Autowired
-    private CompanyService companyService;
-    @Autowired
-    private CustomerApiService customerApiService;
+    @Autowired private DeptService deptService;
+    @Autowired private CompanyService companyService;
+    @Autowired private CustomerApiService customerApiService;
 
-    //新增客户AllDeptView
-    @RequestMapping(value = "/addCompanyAllDeptView")
-    public String addCompanyAllDeptView(Model model){
-        List<Dept> deptList = null;
-        try {
-            deptList = deptService.findAllDept();
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * 查找客户
+     * @param request
+     * @param content
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/find-all-company-customer")
+    public String findAllCompanyCustomer(HttpServletRequest request,String content,Model model){
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(content!=null){
+            map.put("content",content);
         }
+        List<CustomerCompanyPartner> customerCompanyPartnerList = companyService.findAllCompany(map);
+        List<Dept> deptList = deptService.findAllDept();
         model.addAttribute("deptList",deptList);
-        return "/company/addCompanyAndCustomerAllDept";
+        model.addAttribute("content",content);
+        model.addAttribute("companyList",customerCompanyPartnerList);
+        return "/company/company";
     }
 
-    //新增客户OnlyDeptView
-    @RequestMapping(value = "/addCompanyOnlyDeptView")
-    public String addCompanyOnlyDeptView(HttpServletRequest request,Model model){
-        User user = (User)request.getSession().getAttribute("userInfo");
-        List<Dept> deptList = user.getDept();
-        model.addAttribute("deptList",deptList);
-        return "/company/addCompanyAndCustomerOnlyDept";
-    }
-
-    //新增客户AllDeptAction
-    @RequestMapping(value = "/addCompanyAndCustomerAllDeptAction")
-    public String addCompanyAndCustomerAllDeptAction(String name,String authId,String deptId,RedirectAttributes model){
-        if(RegexUtil.isNull(name)){
-            model.addFlashAttribute("CompanyCustomerMessageName","请输入公司名称!");
-            return "redirect:/company/addCompanyAllDeptView";
-        }
-        if(RegexUtil.isNull(authId)){
-            model.addFlashAttribute("name",name);
-            model.addFlashAttribute("CompanyCustomerMessageAuthId","请输入账户!");
-            return "redirect:/company/addCompanyAllDeptView";
-        }
-        if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("name",name);
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CompanyCustomerMessageAuthId","账户格式输入不正确!");
-            return "redirect:/company/addCompanyAllDeptView";
-        }
-        if(RegexUtil.isNull(deptId)){
-            model.addFlashAttribute("name",name);
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CompanyCustomerMessageDeptId","请选择所属部门!");
-            return "redirect:/company/addCompanyAllDeptView";
-        }
-        try{
-            boolean flag = companyService.addCompanyAndCustomer(name,authId,deptId);
-            if (!flag) {
-                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-                return "redirect:/company/addCompanyAllDeptView";
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-            return "redirect:/company/addCompanyAllDeptView";
-        }
-        return "redirect:/company/findAllAction";
-    }
-
-    //新增客户OnlyDeptAction
-    @RequestMapping(value = "/addCompanyAndCustomerOnlyDeptAction")
-    public String addCompanyAndCustomerOnlyDeptAction(String name,String authId,String deptId,RedirectAttributes model){
-
-        System.out.println(name);
-        System.out.println(authId);
-        System.out.println(deptId);
-        if(RegexUtil.isNull(name)){
-            model.addFlashAttribute("CompanyCustomerMessageName","请输入公司名称!");
-            return "redirect:/company/addCompanyOnlyDeptView";
-        }
-        if(RegexUtil.isNull(authId)){
-            model.addFlashAttribute("name",name);
-            model.addFlashAttribute("CompanyCustomerMessageAuthId","请输入账户!");
-            return "redirect:/company/addCompanyOnlyDeptView";
-        }
-        if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("name",name);
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CompanyCustomerMessageAuthId","账户格式输入不正确!");
-            return "redirect:/company/addCompanyOnlyDeptView";
-        }
-        if(RegexUtil.isNull(deptId)){
-            model.addFlashAttribute("name",name);
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CompanyCustomerMessageDeptId","请选择所属部门!");
-            return "redirect:/company/addCompanyOnlyDeptView";
-        }
-        try{
-            boolean flag = companyService.addCompanyAndCustomer(name,authId,deptId);
-            if (!flag) {
-                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-                return "redirect:/company/addCompanyOnlyDeptView";
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-            return "redirect:/company/addCompanyOnlyDeptView";
-        }
-        return "redirect:/company/findAllByDeptIdAction";
-    }
-
-    //通过部门编号查找客户（带模糊搜索）
-    @RequestMapping(value = "/findAllByDeptIdAction")
-    public String findAllByDeptIdAction(HttpServletRequest request,String content,Model model){
+    /**
+     * 通过部门编号查找客户
+     * @param request
+     * @param content
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/find-all-company-customer-by-dept-id")
+    public String findAllCompanyCustomerByDeptId(HttpServletRequest request,String content,Model model){
         User user = (User) request.getSession().getAttribute("userInfo");
         List<Dept> deptList = user.getDept();
         List deptIdList = new ArrayList();
         if (deptList.size() > 0) {
-
             for (int i = 0; i < deptList.size(); i++) {
                 deptIdList.add(deptList.get(i).getId());
             }
-            PageModel pageModel = new PageModel();
-            String pageSize = request.getParameter("pageSize");//当前页
-            String lineSize = "8";//每页显示条数
-            pageModel.setPageSize(pageSize);
-            pageModel.setLineSize(lineSize);
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("beginIndex", pageModel.getBeginIndex());
-            map.put("lineSize", pageModel.getLineSize());
             map.put("deptIdList", deptIdList);
             if (content != null) {
                 map.put("content", content);
             }
-            PageModel<Company> pageModelOne = null;
-            try {
-                pageModelOne = companyService.findAllCompany(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            model.addAttribute("deptIdList", deptIdList);
-            model.addAttribute("content", content);
-            model.addAttribute("count", pageModelOne.getCount());
-            model.addAttribute("companyList", pageModelOne.getList());
-            Integer totalPage = null;
-            Integer count = pageModelOne.getCount();
-
-            if (count % Integer.parseInt(lineSize) == 0) {
-                totalPage = (count / Integer.parseInt(lineSize));
-            } else {
-                totalPage = (count / Integer.parseInt(lineSize)) + 1;
-            }
-            model.addAttribute("totlePage", totalPage);
-            model.addAttribute("pageSize", pageModel.getPageSize());
-            return "/company/companyList";
+            List<CustomerCompanyPartner> customerCompanyPartnerList = companyService.findAllCompanyByDeptId(map);
+            model.addAttribute("content",content);
+            model.addAttribute("companyList",customerCompanyPartnerList);
+            return "/company/company";
         }else{
-            model.addAttribute("deptIdList", deptIdList);
-            model.addAttribute("count", 0);
             model.addAttribute("companyList", null);
-            return "/company/companyList";
+            return "/company/company";
         }
     }
 
-    //查找全部客户（带模糊搜索）
-    @RequestMapping(value = "/findAllAction")
-    public String findAllAction(HttpServletRequest request,String content,Model model){
-
-        PageModel pageModel = new PageModel();
-        String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-
-        if(content!=null){
-            map.put("content",content);
+    /**
+     * 新增客户
+     * @param companyName
+     * @param authId
+     * @param deptId
+     * @return
+     */
+    @RequestMapping(value = "/add-company-customer")
+    @ResponseBody
+    public String addCompanyCustomer(String companyName,String authId,String deptId){
+        System.out.println(companyName);
+        System.out.println(authId);
+        System.out.println(deptId);
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        if(RegexUtil.isNull(companyName)){
+            map.put("companyNameMessage","请输入公司名称!");
+            return gson.toJson(map);
         }
-        PageModel<Company> pageModelOne = null;
-        try {
-            pageModelOne = companyService.findAllCompany(map);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(RegexUtil.isNull(authId)){
+            map.put("authIdMessage","请输入账户!");
+            return gson.toJson(map);
         }
-        model.addAttribute("content",content);
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("companyList",pageModelOne.getList());
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
-
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
+        if(!RegexUtil.stringCheck(authId)){
+            map.put("authIdMessage","账户格式输入不正确!");
+            return gson.toJson(map);
         }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/company/companyList";
+        if(RegexUtil.isNull(deptId)){
+            map.put("deptMessage","请选择所属部门!");
+            return gson.toJson(map);
+        }
+        boolean flag = companyService.addCompanyCustomer(companyName,authId,deptId);
+        if (flag){
+            map.put("successMessage","恭喜你，操作成功！");
+        }else {
+            map.put("errorMessage","操作失败，请检查你的输入");
+        }
+        return gson.toJson(map);
     }
 
-    //通过客户Id查找公司所有的账号
-    @RequestMapping(value = "/findAllCustomerAccountByCompanyId/{companyId}")
-    public String findAllCustomerAccountByCompanyId(@PathVariable String companyId,String content,HttpServletRequest request,Model model){
-        PageModel pageModel = new PageModel();
-        String pageSize= request.getParameter("pageSize");//当前页
-        String lineSize = "8";//每页显示条数
-        pageModel.setPageSize(pageSize);
-        pageModel.setLineSize(lineSize);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("beginIndex",pageModel.getBeginIndex());
-        map.put("lineSize",pageModel.getLineSize());
-        map.put("companyId",Integer.parseInt(companyId));
-        if(content != null && content != ""){
-            map.put("content",content);
-        }
-        PageModel<Customer> pageModelOne = new PageModel<>();
-        try {
-            pageModelOne = companyService.findAllCustomerAccountByCompanyId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("count",pageModelOne.getCount());
-        model.addAttribute("customerList",pageModelOne.getList());
-        model.addAttribute("companyId",companyId);
-        Integer totalPage= null;
-        Integer count = pageModelOne.getCount();
-
-        if (count%Integer.parseInt(lineSize) == 0) {
-            totalPage = (count/Integer.parseInt(lineSize));
-        } else {
-            totalPage = (count/Integer.parseInt(lineSize)) + 1;
-        }
-        model.addAttribute("totlePage",totalPage);
-        model.addAttribute("pageSize",pageModel.getPageSize());
-        return "/company/accountList";
-    }
 
     //给所有账号添加ApiView
     @RequestMapping(value = "/addCustomerApiView/{companyId}")

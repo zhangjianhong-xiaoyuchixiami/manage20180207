@@ -27,9 +27,13 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public List<Dept> findAllDept() throws Exception {
-
-        return deptMapper.findAllDept();
+    public List<Dept> findAllDept(){
+        try {
+            return deptMapper.findAllDept();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
