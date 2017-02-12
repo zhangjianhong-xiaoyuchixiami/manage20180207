@@ -40,9 +40,16 @@
         ) b ON a.id=b.customerId
     </select>
 
-    <!--删除客户每周月的数据-->
-    <delete id="deleteRecord" parameterType="map">
-        DELETE FROM qyfinance.WeekMonthAmount WHERE  weekMonthTypeId=#{weekMonthTypeId} AND tableId=#{tableId}
+    <!--删除客户每周的数据-->
+    <delete id="deleteWeekRecord" parameterType="map">
+        DELETE FROM qyfinance.WeekMonthAmount WHERE years=#{year} AND months=#{month}
+        AND weeks=#{week} AND weekMonthTypeId=#{weekMonthTypeId} AND tableId=#{tableId}
+    </delete>
+
+    <!--删除客户每月的数据-->
+    <delete id="deleteMonthRecord" parameterType="map">
+        DELETE FROM qyfinance.WeekMonthAmount WHERE years=#{year} AND months=#{month}
+        AND weekMonthTypeId=#{weekMonthTypeId} AND tableId=#{tableId}
     </delete>
 
     <!--插入客户每周的数据-->

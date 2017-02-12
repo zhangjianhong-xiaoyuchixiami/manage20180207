@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jonhn on 2017/1/6.
@@ -23,6 +21,13 @@ public class PartnerWeekMonthAmountServiceImpl implements PartnerWeekMonthAmount
 
     @Override
     public boolean getAllPartnerWeekPaymentRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("week",CalendarTools.getYearWeekCount(result));
+        map.put("typeId",1);
+        map.put("reasonId",2);
+        partnerWeekMonthAmountMapper.deletePartnerWeekRecord(map);
         List<PartnerWeekMonthAmount> partnerWeekMonthAmountList = partnerWeekMonthAmountMapper.getAllPartnerWeekPaymentRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<PartnerWeekMonthAmount> partnerWeekMonthAmounts = new ArrayList<>();
@@ -58,6 +63,12 @@ public class PartnerWeekMonthAmountServiceImpl implements PartnerWeekMonthAmount
 
     @Override
     public boolean getAllPartnerMonthPaymentRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("typeId",2);
+        map.put("reasonId",2);
+        partnerWeekMonthAmountMapper.deletePartnerWeekRecord(map);
         List<PartnerWeekMonthAmount> partnerWeekMonthAmountList = partnerWeekMonthAmountMapper.getAllPartnerMonthPaymentRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<PartnerWeekMonthAmount> partnerWeekMonthAmounts = new ArrayList<>();
@@ -91,6 +102,13 @@ public class PartnerWeekMonthAmountServiceImpl implements PartnerWeekMonthAmount
 
     @Override
     public boolean getAllPartnerWeekReceiptRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("week",CalendarTools.getYearWeekCount(result));
+        map.put("typeId",1);
+        map.put("reasonId",1);
+        partnerWeekMonthAmountMapper.deletePartnerWeekRecord(map);
         List<PartnerWeekMonthAmount> partnerWeekMonthAmountList = partnerWeekMonthAmountMapper.getAllPartnerWeekReceiptRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<PartnerWeekMonthAmount> partnerWeekMonthAmounts = new ArrayList<>();
@@ -126,6 +144,12 @@ public class PartnerWeekMonthAmountServiceImpl implements PartnerWeekMonthAmount
 
     @Override
     public boolean getAllPartnerMonthReceiptRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("typeId",2);
+        map.put("reasonId",1);
+        partnerWeekMonthAmountMapper.deletePartnerWeekRecord(map);
         List<PartnerWeekMonthAmount> partnerWeekMonthAmountList = partnerWeekMonthAmountMapper.getAllPartnerMonthReceiptRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<PartnerWeekMonthAmount> partnerWeekMonthAmounts = new ArrayList<>();

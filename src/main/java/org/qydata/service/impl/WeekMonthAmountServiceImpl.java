@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jonhn on 2017/1/6.
@@ -24,6 +22,13 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
 
     @Override
     public  boolean getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("week",CalendarTools.getYearWeekCount(result));
+        map.put("tableId",1);
+        map.put("weekMonthTypeId",1);
+        weekMonthAmountMapper.deleteWeekRecord(map);
         List<WeekMonthAmount> weekAmountList = weekMonthAmountMapper.getAllCustomerWeekRechargeRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<WeekMonthAmount> weekAmounts = new ArrayList<>();
@@ -59,6 +64,12 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
 
     @Override
     public boolean getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("tableId",1);
+        map.put("weekMonthTypeId",2);
+        weekMonthAmountMapper.deleteMonthRecord(map);
         List<WeekMonthAmount> monthAmountList = weekMonthAmountMapper.getAllCustomerMonthRechargeRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<WeekMonthAmount> monthAmounts = new ArrayList<>();
@@ -92,10 +103,13 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
 
     @Override
     public boolean getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
-//        Map<String,Object> map = new HashedMap();
-//        map.put("weekMonthTypeId",1);
-//        map.put("tableId",2);
-//        weekMonthAmountMapper.deleteRecord(map);
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("week",CalendarTools.getYearWeekCount(result));
+        map.put("tableId",2);
+        map.put("weekMonthTypeId",1);
+        weekMonthAmountMapper.deleteWeekRecord(map);
         List<WeekMonthAmount> weekAmountList = weekMonthAmountMapper.getAllCustomerApiWeekConsumeRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<WeekMonthAmount> weekAmounts = new ArrayList<>();
@@ -132,10 +146,12 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
 
     @Override
     public boolean getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
-//        Map<String,Object> map = new HashedMap();
-//        map.put("weekMonthTypeId",2);
-//        map.put("tableId",2);
-//        weekMonthAmountMapper.deleteRecord(map);
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("tableId",2);
+        map.put("weekMonthTypeId",2);
+        weekMonthAmountMapper.deleteMonthRecord(map);
         List<WeekMonthAmount> monthAmountList = weekMonthAmountMapper.getAllCustomerApiMonthConsumeRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<WeekMonthAmount> monthAmounts = new ArrayList<>();

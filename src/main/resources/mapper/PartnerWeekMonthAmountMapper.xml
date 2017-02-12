@@ -96,4 +96,15 @@
         ) b ON a.id=b.partnerId
     </select>
 
+    <!--删除合作伙伴每周的数据-->
+    <delete id="deleteApiWeekRecord" parameterType="map">
+        DELETE FROM qyfinance.PartnerWeekMonthAmount WHERE years=#{year} AND months=#{month}
+        AND weeks=#{week} AND typeId=#{typeId} AND reasonId=#{reasonId}
+    </delete>
+
+    <!--删除合作伙伴每月的数据-->
+    <delete id="deleteApiMonthRecord" parameterType="map">
+        DELETE FROM qyfinance.PartnerWeekMonthAmount WHERE years=#{year} AND months=#{month}
+        AND typeId=#{typeId} AND reasonId=#{reasonId}
+    </delete>
 </mapper>

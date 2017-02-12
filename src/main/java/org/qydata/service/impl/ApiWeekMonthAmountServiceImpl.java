@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jonhn on 2017/1/12.
@@ -24,7 +22,13 @@ public class ApiWeekMonthAmountServiceImpl implements ApiWeekMonthAmountService 
 
     @Override
     public boolean getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount(Integer result) throws Exception {
-
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("week",CalendarTools.getYearWeekCount(result));
+        map.put("tableId",3);
+        map.put("typeId",1);
+        apiWeekMonthAmountMapper.deleteApiWeekRecord(map);
         List<ApiWeekMonthAmount> apiWeekMonthAmountList = apiWeekMonthAmountMapper.getAllApiWeekConsumeRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<ApiWeekMonthAmount> apiWeekMonthAmounts = new ArrayList<>();
@@ -60,6 +64,12 @@ public class ApiWeekMonthAmountServiceImpl implements ApiWeekMonthAmountService 
 
     @Override
     public boolean getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount(Integer result) throws Exception {
+        Map<String,Object> map = new HashMap();
+        map.put("year",CalendarTools.getYearCount(result));
+        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("tableId",3);
+        map.put("typeId",2);
+        apiWeekMonthAmountMapper.deleteApiMonthRecord(map);
         List<ApiWeekMonthAmount> apiWeekMonthAmountList = apiWeekMonthAmountMapper.getAllApiMonthConsumeRecord(result);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<ApiWeekMonthAmount> apiWeekMonthAmounts = new ArrayList<>();

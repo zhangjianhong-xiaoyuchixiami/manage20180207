@@ -12,8 +12,8 @@ var Company = function () {
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table>';
-                sOut += '<tr><th>账号</th><th>账号类型</th><th>密码</th><th>余额</th><th>状态</th><th>创建时间</th></tr>';
-                sOut += '<tr><td>'+aData[8]+'</td><td>'+aData[7]+'</td><td>'+aData[9]+'</td><td>'+aData[10]+'</td><td>'+aData[12]+'</td><td>'+aData[13]+'</td></tr>';
+                sOut += '<tr><th>账号</th><th>账号类型</th><th>密码</th><th>余额</th><th>状态</th><th>创建时间</th><th>操作</th></tr>';
+                sOut += '<tr><td>'+aData[8]+'</td><td>'+aData[7]+'</td><td>'+aData[9]+'</td><td>'+aData[10]+'</td><td>'+aData[12]+'</td><td>'+aData[13]+'</td><td>'+aData[14]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -63,7 +63,8 @@ var Company = function () {
                     { "bVisible": false},  //11 status
                     { "bVisible": false },  //12 statusName
                     { "bVisible": false },  //13 customerCreateTime
-                    { "bSortable": false}  //操作
+                    { "bVisible": false },  //14 操作
+                    { "bSortable": false}  // 15操作
                 ],
                 "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [

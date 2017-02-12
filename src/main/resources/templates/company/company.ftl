@@ -148,7 +148,7 @@
 
                                                     <span id="authIdMsg" class="help-line"></span>
 
-                                                    <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
+                                                    <span class="help-block">说明：只能有数字、字母、下划线组成</span>
 
                                                 </div>
 
@@ -240,6 +240,7 @@
                                     <th>status</th>
                                     <th>statusName</th>
                                     <th>customerCreateTime</th>
+                                    <th>操作</th>
                                     <th style="text-align: center; width: 10%;">操作</th>
                                 </tr>
                                 </thead>
@@ -314,6 +315,13 @@
                                                     </#list>
                                                 </#if>
                                             </td>
+                                            <td>
+                                                <#if company.customerList??>
+                                                    <#list company.customerList as customer>
+                                                    <a href="">充值${customer.id}</a>| <a href="">消费${customer.id}</a><br/>
+                                                    </#list>
+                                                </#if>
+                                            </td>
                                             <td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>
                                         </tr>
                                         </#list>
@@ -355,7 +363,7 @@
 
                                                 <span id="authId-accountMsg" class="help-line"></span>
 
-                                                <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
+                                                <span class="help-block">说明：只能有数字、字母、下划线组成</span>
 
                                             </div>
 
@@ -375,6 +383,85 @@
 
                             </div>
 
+                            <div id="form_modal_update_balance" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_update_balance" aria-hidden="true">
+
+                                <div class="modal-header">
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                    <h3 id="myModalLabel_update_balance">请填写信息</h3>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <form action="#" class="form-horizontal">
+
+                                        <div class="control-group"></div>
+
+                                        <div class="control-group"></div>
+
+                                        <div id="error_alert_update_balance"></div>
+
+                                        <div id="update_balance_customerId" class="controls" style="display: none;"></div>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">请输入金额<span class="required">*</span></label>
+
+                                            <div class="controls">
+
+                                                <input type="text" id="update_balance_amount" name="update_balance_amount" class="m-wrap medium">
+
+                                                <span id="update_balance_amountMsg" class="help-line"></span>
+
+                                                <span class="help-block">说明：只能输入数字类型并且金额大于0</span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">请选择理由<span class="required">*</span></label>
+
+                                            <div class="controls">
+
+                                                <select id="update_balance_reasonId" name="update_balance_reasonId" class="medium m-wrap" tabindex="1">
+
+                                                    <option value="">请选择...</option>
+
+                                                    <#if customerBalanceModifyReasonList??>
+
+                                                        <#list customerBalanceModifyReasonList as customerBalanceModifyReason>
+
+                                                            <option value="${customerBalanceModifyReason.id}">${customerBalanceModifyReason.name}</option>
+
+                                                        </#list>
+
+                                                    </#if>
+
+                                                </select>
+
+                                                <span id="update_balance_reasonIdMsg" class="help-inline"></span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                    <button class="btn black btn-primary" id="update-balance-btn-black-btn-primary" type="button">提交</button>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -519,6 +606,69 @@
                 }
             });
         });
+
+        /*以下操作为添加账号*/
+        function chargeBalance(customerId) {
+            $("#authId-account-controls").empty();
+            $("#error-alert-account").empty();
+            var op=document.createElement("input");
+            op.value=companyId;
+            op.type="text";
+            op.id="companyId";
+            op.name="companyId";
+            $("#authId-account-controls").append(op);
+        }
+        function consumeBalance(customerId) {
+            $("#authId-account-controls").empty();
+            $("#error-alert-account").empty();
+            var op=document.createElement("input");
+            op.value=companyId;
+            op.type="text";
+            op.id="companyId";
+            op.name="companyId";
+            $("#authId-account-controls").append(op);
+        }
+
+        $("#authId-account").focus(function () {
+            $("#authId-accountMsg").html("");
+        });
+
+        $("#authId-account").blur(function(){
+            $("#authId-accountMsg").load("/customer/findCustomerByAuthId/"+$("#authId-account").val(),
+                    function(responseTxt){
+                        if(responseTxt=="yes")
+                            $("#authId-accountMsg").html("<font color='red'>该账号已被使用，请重新输入！</font>");
+                        if(responseTxt=="no")
+                            $("#authId-accountMsg").html("");
+                    });
+        });
+
+        $("#add-account-btn-black-btn-primary").on("click",function () {
+            var companyId=$("#companyId").val();
+            var authId=$("#authId-account").val();
+            $.ajax({
+                type: "post",
+                url: "/company/add-customer-account",
+                data: {"companyId":companyId,"authId":authId},
+                dataType: "json",
+                success: function (result) {
+                    if(result.authIdMessage != null){
+                        $("#authId-accountMsg").empty();
+                        $("#authId-accountMsg").html('<font color="red">'+result.authIdMessage+'</font>');
+                        return;
+                    }
+                    if(result.errorMessage != null) {
+                        $("#error-alert-account").empty();
+                        $("#error-alert-account").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                        return;
+                    }
+                    if (result.successMessage != null){
+                        window.location.href=window.location.href
+                    }
+                }
+            });
+        });
+
 
     </script>
 
