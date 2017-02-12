@@ -64,7 +64,13 @@ public interface DeptMapper {
      */
     public boolean addUserDeptById(UserDept userDept)throws Exception;
 
-
+    /**
+     * 根据用户Id查找所属部门
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public List<Dept> findDeptByUserId(Integer userId)throws Exception;
 
 
 

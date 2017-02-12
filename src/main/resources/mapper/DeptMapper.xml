@@ -49,4 +49,9 @@
         INSERT INTO qyauth.UserDept(userId,deptId,createTime)
         VALUES (#{userId},#{deptId},sysdate())
     </insert>
+
+    <!--根据用户Id查找所属部门-->
+    <select id="findDeptByUserId" parameterType="int" resultType="org.qydata.entity.Dept">
+       SELECT deptId id,deptName FROM qyfinance.bkvw_user_dept WHERE userId=#{param}
+    </select>
 </mapper>

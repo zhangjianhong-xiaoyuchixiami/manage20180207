@@ -49,7 +49,7 @@ var Company = function () {
 
             var oTable = $('#companySample_1').dataTable({
                 "aoColumns": [
-                    {"bSortable": false},  //0  展开符号
+                    { "bSortable": false},  //0  展开符号
                     null,  //1  companyName
                     null,  //2  partnerName
                     null,  //3  companyBalance
@@ -62,7 +62,8 @@ var Company = function () {
                     { "bVisible": false },  //10 balance
                     { "bVisible": false},  //11 status
                     { "bVisible": false },  //12 statusName
-                    { "bVisible": false }  //13 customerCreateTime
+                    { "bVisible": false },  //13 customerCreateTime
+                    { "bSortable": false}  //操作
                 ],
                 "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [

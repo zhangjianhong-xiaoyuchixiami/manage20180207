@@ -1,12 +1,7 @@
 package org.qydata.service;
 
-import org.qydata.dst.CustomerApiInfo;
 import org.qydata.dst.CustomerCompanyPartner;
-import org.qydata.entity.Api;
-import org.qydata.entity.Company;
-import org.qydata.entity.Customer;
-import org.qydata.entity.CustomerApi;
-import org.qydata.tools.PageModel;
+import org.qydata.entity.Partner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,15 +11,6 @@ import java.util.Map;
  * Created by jonhn on 2016/12/15.
  */
 public interface CompanyService {
-
-
-    /**
-     * 根据Id查找指定的客户信息
-     * @param id
-     * @return
-     * @throws Exception
-     */
-    public Company findById(String id)throws Exception;
 
     /**
      * 查询全部客户
@@ -43,63 +29,75 @@ public interface CompanyService {
     public List<CustomerCompanyPartner> findAllCompanyByDeptId(Map<String,Object> map);
 
     /**
-     * 根据客户公司Id查找全部的账号
-     * @return
-     * @throws Exception
-     */
-    public PageModel<Customer> findAllCustomerAccountByCompanyId(Map<String,Object> map)throws Exception;
-
-    /**
      * 新增客户和账户
      * @param companyName
      * @param authId
+     * @param partnerId
      * @param deptId
      * @return
-     * @throws Exception
      */
     @Transactional
-    public boolean addCompanyCustomer(String companyName,String authId,String deptId);
-    /**
-     * 查询供应商Api所有数据
-     * @return
-     */
-    public List<Api> findAllApi(String companyId)throws Exception;
+    public boolean addCompanyCustomer(String companyName,String authId,Integer partnerId,Integer deptId);
 
     /**
-     * 插入
-     * @param price
+     * 查找全部的合作公司
+     * @return
+     */
+    public List<Partner> findAllPartner();
+
+    /**
+     * 添加账号
+     * @param authId
      * @param companyId
-     * @param apiId
-     * @param enabled
      * @return
      */
-    @Transactional
-    public boolean insertCustomerApi(String companyId, String price, String apiId, String enabled)throws Exception;
+    public boolean addCustomer(String authId,Integer companyId);
 
-    /**
-     * 根据客户Id查找指定客户的所有CustomerApi
-     * @param map
-     * @return
-     */
-    public PageModel<CustomerApi> findAllCustomerApiByCompanyIdOne(Map<String,Object> map)throws Exception;
-    /**
-     * 根据Id查找
-     * @param apiId
-     * @return
-     */
-    public CustomerApi findById(String apiId,String companyId)throws Exception;
-    /**
-     * 根据Id修改
-     * @return
-     */
-    @Transactional
-    public boolean updateCustomerApiById(String beforApiId,String companyId,String price,String afterApiId,String enabled)throws Exception;
 
-    /**
-     * 根据companyId查询对应的CustomerApi
-     * @param map
-     * @return
-     * @throws Exception
-     */
-    public PageModel<CustomerApiInfo> findAllCustomerApiByCompanyId(Map<String,Object> map) throws Exception;
+
+//    /**
+//     * 查询供应商Api所有数据
+//     * @return
+//     */
+//    public List<Api> findAllApi(String companyId)throws Exception;
+//
+//    /**
+//     * 插入
+//     * @param price
+//     * @param companyId
+//     * @param apiId
+//     * @param enabled
+//     * @return
+//     */
+//    @Transactional
+//    public boolean insertCustomerApi(String companyId, String price, String apiId, String enabled)throws Exception;
+//
+//    /**
+//     * 根据客户Id查找指定客户的所有CustomerApi
+//     * @param map
+//     * @return
+//     */
+//    public PageModel<CustomerApi> findAllCustomerApiByCompanyIdOne(Map<String,Object> map)throws Exception;
+//    /**
+//     * 根据Id查找
+//     * @param apiId
+//     * @return
+//     */
+//    public CustomerApi findById(String apiId,String companyId)throws Exception;
+//    /**
+//     * 根据Id修改
+//     * @return
+//     */
+//    @Transactional
+//    public boolean updateCustomerApiById(String beforApiId,String companyId,String price,String afterApiId,String enabled)throws Exception;
+//
+//    /**
+//     * 根据companyId查询对应的CustomerApi
+//     * @param map
+//     * @return
+//     * @throws Exception
+//     */
+//    public PageModel<CustomerApiInfo> findAllCustomerApiByCompanyId(Map<String,Object> map) throws Exception;
+
+
 }

@@ -57,4 +57,14 @@ public class DeptServiceImpl implements DeptService {
         pageModel.setCount(deptMapper.getAllCount(map));
         return pageModel;
     }
+
+    @Override
+    public List<Dept> findDeptByUserId(Integer userId) {
+        try {
+            return deptMapper.findDeptByUserId(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

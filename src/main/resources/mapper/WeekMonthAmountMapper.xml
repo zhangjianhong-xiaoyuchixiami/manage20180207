@@ -42,7 +42,7 @@
 
     <!--删除客户每周月的数据-->
     <delete id="deleteRecord" parameterType="map">
-        DELETE FROM qyfinance.WeekMonthAmount WHERE weekMonthTypeId=#{weekMonthTypeId} AND tableId=#{tableId}
+        DELETE FROM qyfinance.WeekMonthAmount WHERE  weekMonthTypeId=#{weekMonthTypeId} AND tableId=#{tableId}
     </delete>
 
     <!--插入客户每周的数据-->

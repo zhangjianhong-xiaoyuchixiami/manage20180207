@@ -37,4 +37,11 @@ public interface DeptService {
 
     public PageModel<Dept> findAll(Map<String,Object> map)throws Exception;
 
+    /**
+     * 根据用户Id查找所属部门
+     * @param userId
+     * @return
+     */
+    public List<Dept> findDeptByUserId(Integer userId);
+
 }

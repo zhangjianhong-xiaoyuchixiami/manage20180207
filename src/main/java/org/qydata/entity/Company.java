@@ -13,7 +13,7 @@ public class Company implements Serializable {
 
     private Integer id;
     private String name;
-    private Timestamp createTime;
+    private Integer partnerId;
     private Timestamp timestamp;
 
     public Integer getId() {
@@ -32,12 +32,12 @@ public class Company implements Serializable {
         this.name = name;
     }
 
-    public Timestamp getCreateTime() {
-        return createTime;
+    public Integer getPartnerId() {
+        return partnerId;
     }
 
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
+    public void setPartnerId(Integer partnerId) {
+        this.partnerId = partnerId;
     }
 
     public Timestamp getTimestamp() {

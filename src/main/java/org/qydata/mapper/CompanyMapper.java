@@ -4,8 +4,8 @@ import org.qydata.dst.CustomerApiInfo;
 import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.Api;
 import org.qydata.entity.Company;
-import org.qydata.entity.Customer;
 import org.qydata.entity.CustomerApi;
+import org.qydata.entity.Partner;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,7 @@ public interface CompanyMapper {
      * @throws Exception
      */
     public List<CustomerCompanyPartner> findAllCompanyByDeptId(Map<String,Object> map)throws Exception;
+
     /**
      * 新增客户
      * @param company
@@ -39,37 +40,25 @@ public interface CompanyMapper {
     public boolean addCompany(Company company)throws Exception;
 
     /**
-     * 根据Id查找指定客户信息
-     * @param id
+     * 查找全部的合作公司
      * @return
      * @throws Exception
      */
-    public Company findById(Integer id)throws Exception;
-
+    public List<Partner> findAllPartner()throws Exception;
 
     /**
-     * 根据客户公司Id查找全部的账号
+     * 根据公司Id查找部门编号
      * @param companyId
      * @return
      * @throws Exception
      */
-    public List<Customer> findAllCustomerByCompanyId(Integer companyId)throws Exception;
+    public Integer findDeptIdByCompanyId(Integer companyId)throws Exception;
 
-    /**
-     * 根据客户公司Id查找全部的账号
-     * @param map
-     * @return
-     * @throws Exception
-     */
-    public List<Customer> findAllCustomerAccountByCompanyId(Map<String,Object> map)throws Exception;
 
-    /**
-     * 根据客户公司Id统计全部的账号的数据量
-     * @param map
-     * @return
-     * @throws Exception
-     */
-    public Integer getAllCustomerAccountByCompanyId(Map<String,Object> map)throws Exception;
+
+
+
+
 
     /**
      * 查询非mobileApi所有数据

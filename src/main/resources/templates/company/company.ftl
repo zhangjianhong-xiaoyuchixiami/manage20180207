@@ -156,6 +156,32 @@
 
                                             <div class="control-group">
 
+                                                <label class="control-label">请选择合作公司<span class="required">*</span></label>
+
+                                                <div class="controls">
+
+                                                    <select id="partnerId" name="partnerId" class="medium m-wrap" tabindex="1">
+
+                                                        <option value="">请选择...</option>
+
+                                                        <#if deptList??>
+
+                                                            <#list partnerList as partner>
+
+                                                                <option value="${partner.id}">${partner.name}</option>
+
+                                                            </#list>
+
+                                                        </#if>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="control-group">
+
                                                 <label class="control-label">请选择部门<span class="required">*</span></label>
 
                                                 <div class="controls">
@@ -214,6 +240,7 @@
                                     <th>status</th>
                                     <th>statusName</th>
                                     <th>customerCreateTime</th>
+                                    <th style="text-align: center; width: 10%;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -287,6 +314,7 @@
                                                     </#list>
                                                 </#if>
                                             </td>
+                                            <td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>
                                         </tr>
                                         </#list>
                                     </#if>
@@ -294,6 +322,59 @@
                                 </tbody>
 
                             </table>
+
+                            <div id="form_modal_add_account" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_account" aria-hidden="true">
+
+                                <div class="modal-header">
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                    <h3 id="myModalLabel_add_account">请填写信息</h3>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <form action="#" class="form-horizontal">
+
+                                        <div class="control-group"></div>
+
+                                        <div class="control-group"></div>
+
+                                        <div id="error-alert-account"></div>
+
+                                        <div id="authId-account-controls" class="controls" style="display: none;"></div>
+
+                                        <div class="control-group">
+
+                                            <label class="control-label">请输入账号<span class="required">*</span></label>
+
+                                            <div class="controls">
+
+                                                <input type="text" id="authId-account" name="authId-account" class="m-wrap medium">
+
+                                                <span id="authId-accountMsg" class="help-line"></span>
+
+                                                <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                                    <button class="btn black btn-primary" id="add-account-btn-black-btn-primary" type="button">提交</button>
+
+                                </div>
+
+                            </div>
+
 
                         </div>
 
@@ -325,6 +406,7 @@
             Company.init();
         });
 
+        /*以下操作是新增公司*/
         $("#companyCustomerName").focus(function () {
             $("#companyNameMsg").html("");
         });
@@ -350,11 +432,12 @@
         $("#add-btn-black-btn-primary").on("click",function () {
             var companyCustomerName=$("#companyCustomerName").val();
             var authId=$("#authId").val();
+            var partnerId=$("#partnerId").val();
             var deptId=$("#deptId").val();
             $.ajax({
                 type: "post",
                 url: "/company/add-company-customer",
-                data: {"companyName":companyCustomerName,"authId":authId,"deptId":deptId},
+                data: {"companyName":companyCustomerName,"authId":authId,"partnerId":partnerId,"deptId":deptId},
                 dataType: "json",
                 success: function (result) {
                     if(result.companyNameMessage != null){
@@ -375,6 +458,59 @@
                     if(result.errorMessage != null) {
                         $("#error-alert").empty();
                         $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                        return;
+                    }
+                    if (result.successMessage != null){
+                        window.location.href=window.location.href
+                    }
+                }
+            });
+        });
+
+
+        /*以下操作为添加账号*/
+        function addAccount(companyId) {
+            $("#authId-account-controls").empty();
+            $("#error-alert-account").empty();
+            var op=document.createElement("input");
+            op.value=companyId;
+            op.type="text";
+            op.id="companyId";
+            op.name="companyId";
+            $("#authId-account-controls").append(op);
+        }
+
+        $("#authId-account").focus(function () {
+            $("#authId-accountMsg").html("");
+        });
+
+        $("#authId-account").blur(function(){
+            $("#authId-accountMsg").load("/customer/findCustomerByAuthId/"+$("#authId-account").val(),
+                    function(responseTxt){
+                        if(responseTxt=="yes")
+                            $("#authId-accountMsg").html("<font color='red'>该账号已被使用，请重新输入！</font>");
+                        if(responseTxt=="no")
+                            $("#authId-accountMsg").html("");
+                    });
+        });
+
+        $("#add-account-btn-black-btn-primary").on("click",function () {
+            var companyId=$("#companyId").val();
+            var authId=$("#authId-account").val();
+            $.ajax({
+                type: "post",
+                url: "/company/add-customer-account",
+                data: {"companyId":companyId,"authId":authId},
+                dataType: "json",
+                success: function (result) {
+                    if(result.authIdMessage != null){
+                        $("#authId-accountMsg").empty();
+                        $("#authId-accountMsg").html('<font color="red">'+result.authIdMessage+'</font>');
+                        return;
+                    }
+                    if(result.errorMessage != null) {
+                        $("#error-alert-account").empty();
+                        $("#error-alert-account").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
                         return;
                     }
                     if (result.successMessage != null){

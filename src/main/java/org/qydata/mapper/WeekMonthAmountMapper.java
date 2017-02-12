@@ -25,12 +25,20 @@ public interface WeekMonthAmountMapper {
     public List<WeekMonthAmount> getAllCustomerMonthRechargeRecord(Integer result)throws Exception;
 
     /**
-     * 删除客户周月的数据
+     * 删除客户周的数据
      * @param map
      * @return
      * @throws Exception
      */
-    public boolean deleteRecord(Map<String,Object> map)throws Exception;
+    public boolean deleteWeekRecord(Map<String,Object> map)throws Exception;
+
+    /**
+     * 删除客户月的数据
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteMonthRecord(Map<String,Object> map)throws Exception;
 
     /**
      * 插入客户每周的数据

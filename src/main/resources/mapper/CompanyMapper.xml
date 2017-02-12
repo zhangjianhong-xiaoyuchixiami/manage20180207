@@ -200,12 +200,29 @@
 
     <!--添加客户信息-->
     <insert id="addCompany" parameterType="org.qydata.entity.Company" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qydata.CustomerCompany(name)
-        VALUES (#{name})
+        INSERT INTO qydata.CustomerCompany(partnerId,name)
+        VALUES (#{partnerId},#{name})
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <!--查找全部的合作公司-->
+    <select id="findAllPartner" resultType="org.qydata.entity.Partner">
+        SELECT id,name FROM qyfinance.bkvwPartner
+    </select>
+
+    <!--根据公司Id查找部门编号-->
+    <select id="findDeptIdByCompanyId" parameterType="int" resultType="java.lang.Integer">
+        SELECT DISTINCT(deptId) FROM qyfinance.bkvwCustomerDept WHERE customerId IN
+        (SELECT id FROM qyfinance.bkvwCustomer WHERE companyId=#{param})
+    </select>
+
+
+
+
+
+
 
 
 

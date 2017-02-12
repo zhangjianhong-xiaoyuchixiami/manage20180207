@@ -11,12 +11,20 @@ import java.util.Map;
 public interface ApiWeekMonthAmountMapper {
 
     /**
-     * 删除Api周月的数据
+     * 删除Api周的数据
      * @param map
      * @return
      * @throws Exception
      */
-    public boolean deleteApiRecord(Map<String,Object> map)throws Exception;
+    public boolean deleteApiWeekRecord(Map<String,Object> map)throws Exception;
+
+    /**
+     * 删除Api月的数据
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteApiMonthRecord(Map<String,Object> map)throws Exception;
 
     /**
      * 插入Api每周的数据
