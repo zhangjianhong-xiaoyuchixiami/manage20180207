@@ -241,7 +241,7 @@
                                     <th>statusName</th>
                                     <th>customerCreateTime</th>
                                     <th>操作</th>
-                                    <th style="text-align: center; width: 10%;">操作</th>
+                                   <#-- <th style="text-align: center; width: 10%;">操作</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -249,7 +249,15 @@
                                         <#list companyList as company>
                                         <tr class="odd gradeX">
                                             <td>${company.companyName!''}</td>
-                                            <td>${company.partnerName!''}</td>
+
+                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                                <td><a href="/company/find-all-company-customer<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!''}</a></td>
+                                            </@shiro.hasPermission>
+
+                                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                <td><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!''}</a></td>
+                                            </@shiro.hasPermission>
+
                                             <td><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
                                             <td>${company.companyCreateTime!''}</td>
                                             <td>
@@ -318,13 +326,13 @@
                                             <td>
                                                 <#if company.customerList??>
                                                     <#list company.customerList as customer>
-                                                        <a href="#form_modal_update_balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
+                                                        <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
                                                         |
-                                                        <a href="#form_modal_update_balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
+                                                        <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
                                                     </#list>
                                                 </#if>
                                             </td>
-                                            <td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>
+                                        <#--<td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>-->
                                         </tr>
                                         </#list>
                                     </#if>
@@ -482,6 +490,13 @@
         jQuery(document).ready(function() {
             Company.init();
         });
+
+        $("#add-partner").click(function(){return false;});
+
+        $("#charge_Balance").click(function(){return false;});
+
+        $("#consume_Balance").click(function(){return false;});
+
 
         /*以下操作为添加账号*/
         function addAccount(companyId) {

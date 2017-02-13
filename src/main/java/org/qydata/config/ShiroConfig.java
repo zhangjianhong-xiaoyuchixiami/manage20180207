@@ -342,6 +342,13 @@ public class ShiroConfig {
 		chains.put("/company/find-all-company-customer", "authc,perms");
 		chains.put("/company/find-all-company-customer-by-dept-id", "authc,perms");
 
+		//客户管理Ajax
+		chains.put("/company/add-company-customer", "authc,perms");
+		chains.put("/company/add-customer-account", "authc,perms");
+		chains.put("/company/update-customer-balance", "authc,perms");
+		chains.put("/company/charge-customer-balance", "authc,perms");
+		chains.put("/company/consume-customer-balance", "authc,perms");
+
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}

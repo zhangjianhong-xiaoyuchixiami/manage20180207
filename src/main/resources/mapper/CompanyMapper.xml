@@ -156,8 +156,11 @@
         ) aa LEFT JOIN qyfinance.bkvw_company_customer bb ON aa.companyId=bb.companyId
         ) dd ON cc.companyId=dd.companyId
         <where>
+            <if test="partnerId!=null and partnerId!=''">
+                cc.partnerId=#{partnerId}
+            </if>
             <if test="content!=null and content!=''">
-                dd.companyName like '%${content}%'
+                AND dd.companyName like '%${content}%'
             </if>
         </where>
     </select>
@@ -192,8 +195,11 @@
         ) aa LEFT JOIN qyfinance.bkvw_company_customer bb ON aa.companyId=bb.companyId
         ) dd ON cc.companyId=dd.companyId
         <where>
+            <if test="partnerId!=null and partnerId!=''">
+                cc.partnerId=#{partnerId}
+            </if>
             <if test="content!=null and content!=''">
-                dd.companyName like '%${content}%'
+                AND dd.companyName like '%${content}%'
             </if>
         </where>
     </select>
@@ -247,10 +253,6 @@
         INSERT INTO qydata.CustomerBalanceLog(customerId,amount,reasonId,createTime)
         VALUES(#{customerId},#{amount},#{reasonId},sysdate())
     </insert>
-
-
-
-
 
 
     <!--根据Id查找指定客户信息-->

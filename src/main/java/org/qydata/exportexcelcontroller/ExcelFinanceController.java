@@ -46,6 +46,7 @@ public class ExcelFinanceController {
      */
     @RequestMapping(value = "/find-all-customer")
     public void findAllCustomer(Integer partnerId,HttpServletRequest request,HttpServletResponse response) throws IOException {
+        System.out.println(partnerId);
         String companyName = request.getParameter("content");
         Map<String,Object> map = new HashMap<String,Object>();
         List customerTypeIdList = new ArrayList();
@@ -128,6 +129,7 @@ public class ExcelFinanceController {
      */
     @RequestMapping("/find-all-customer-by-dept-id")
     public void findAllCustomerByDeptId(String username,Integer partnerId,HttpServletRequest request,HttpServletResponse response) throws IOException {
+        System.out.println(partnerId);
         String companyName = request.getParameter("content");
         User user = null;
         try {
@@ -154,7 +156,7 @@ public class ExcelFinanceController {
             map.put("customerTypeIdList", customerTypeIdList);
             List<CustomerFinance> customerFinances = null;
             try {
-                customerFinances = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
+                customerFinances = customerFinanceService.queryCompanyCustomerOverAllFinanceByDept(map);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -331,14 +333,11 @@ public class ExcelFinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id")
-    public void findAllApiConsumeRecordByCustomerIdAndDeptId(Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,HttpServletResponse response) throws IOException {
+    public void findAllApiConsumeRecordByCustomerIdAndDeptId(Integer customerId,Integer apiTypeId,String companyName,HttpServletResponse response) throws IOException {
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         if(apiTypeId != null){
             map.put("apiTypeId",apiTypeId);
-        }
-        if(apiVendorId != null){
-            map.put("apiVendorId",apiVendorId);
         }
         List<CustomerApiType> customerApiTypeList = null;
         try {

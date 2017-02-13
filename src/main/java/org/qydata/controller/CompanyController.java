@@ -47,6 +47,7 @@ public class CompanyController {
         if(content!=null){
             map.put("content",content);
         }
+        map.put("partnerId",partnerId);
         List<CustomerCompanyPartner> customerCompanyPartnerList = companyService.findAllCompany(map);
         List<Dept> deptList = deptService.findAllDept();
         List<Partner> partnerList = companyService.findAllPartner();
@@ -75,6 +76,7 @@ public class CompanyController {
             }
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("deptIdList", deptIdList);
+            map.put("partnerId",partnerId);
             if (content != null) {
                 map.put("content", content);
             }

@@ -118,33 +118,36 @@
         FROM
             (
                 SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.partnerId,c.name partnerName,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
-                b.deptId,b.deptName,z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
-                FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwCustomerDept b ON a.id=b.customerId LEFT JOIN qyfinance.bk-bkvwPartner c
-                ON a.partnerId=c.id  LEFT JOIN
-                            (
-                                SELECT a.companyId,a.apiTypeId,b.name apiTypeName,a.subTypeId,c.name subTypeName,a.price
-                                FROM qyfinance.bkvwCompanyApi a LEFT JOIN qyfinance.bkvwApiType b
-                                ON a.apiTypeId=b.id LEFT JOIN qyfinance.bkvwMobileOperator c ON a.subTypeId=c.id
-                                WHERE a.enabled=1
-                            ) z ON a.companyId=z.companyId
-                <if test="deptIdList!=null and deptIdList.size()!=0">
-                    and b.deptId in
-                    <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                        #{deptId}
-                    </foreach>
-                </if>
-                <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
-                    and a.typeId in
-                    <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
-                        #{customerTypeId}
-                    </foreach>
-                </if>
-                <if test="partnerId!=null and partnerId!=''">
-                    and a.partnerId=#{partnerId}
-                </if>
-                <if test="content!=null and content!=''">
-                    and a.companyName like '%${content}%'
-                </if>
+                z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
+                FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwCustomerDept b ON a.id=b.customerId LEFT JOIN qyfinance.bkvwPartner c
+                ON a.partnerId=c.id
+                LEFT JOIN
+                (
+                    SELECT a.companyId,a.apiTypeId,b.name apiTypeName,a.subTypeId,c.name subTypeName,a.price
+                    FROM qyfinance.bkvwCompanyApi a LEFT JOIN qyfinance.bkvwApiType b
+                    ON a.apiTypeId=b.id LEFT JOIN qyfinance.bkvwMobileOperator c ON a.subTypeId=c.id
+                    WHERE a.enabled=1
+                ) z ON a.companyId=z.companyId
+                <where>
+                    <if test="deptIdList!=null and deptIdList.size()!=0">
+                        and b.deptId in
+                        <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                            #{deptId}
+                        </foreach>
+                    </if>
+                    <if test="customerTypeIdList!=null and customerTypeIdList.size()!=0">
+                        and a.typeId in
+                        <foreach collection="customerTypeIdList" item="customerTypeId" index="index" open="(" close=")" separator=",">
+                            #{customerTypeId}
+                        </foreach>
+                    </if>
+                    <if test="partnerId!=null and partnerId!=''">
+                        and a.partnerId=#{partnerId}
+                    </if>
+                    <if test="content!=null and content!=''">
+                        and a.companyName like '%${content}%'
+                    </if>
+                </where>
             ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
         FROM qyfinance.bkvwWeekMonthAmount

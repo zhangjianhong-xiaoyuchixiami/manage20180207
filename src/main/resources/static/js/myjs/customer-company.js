@@ -63,8 +63,8 @@ var Company = function () {
                     { "bVisible": false},  //11 status
                     { "bVisible": false },  //12 statusName
                     { "bVisible": false },  //13 customerCreateTime
-                    { "bVisible": false },  //14 操作
-                    { "bSortable": false}  // 15操作
+                    { "bVisible": false }  //14 操作
+                   /* { "bSortable": false}  // 15操作*/
                 ],
                 "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [

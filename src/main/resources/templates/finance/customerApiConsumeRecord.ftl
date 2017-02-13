@@ -136,32 +136,57 @@
 
                             </div>
 
-                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_5">
-                                <thead>
-                                <tr>
-                                    <th>产品类型</th>
-                                    <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+
+                                <table class="table table-striped table-hover table-bordered table-condensed" id="sample_5">
+                                    <thead>
+                                    <tr>
+                                        <th>产品类型</th>
                                         <th>产品供应商</th>
-                                    </@shiro.hasPermission>
-                                    <th style="width: 20%">金额（单位/元）</th>
-                                    <th style="text-align: center; width: 15%">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if customerApiTypeList??>
-                                        <#list customerApiTypeList as customerApiType>
-                                        <tr class="odd gradeX">
-                                            <td data-title="产品类型">${customerApiType.apiTypeName}</td>
-                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                        <th>金额（单位/元）</th>
+                                        <th style="text-align: center; width: 15%">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#if customerApiTypeList??>
+                                            <#list customerApiTypeList as customerApiType>
+                                            <tr class="odd gradeX">
+                                                <td data-title="产品类型">${customerApiType.apiTypeName}</td>
                                                 <td data-title="产品供应商"><a id="tipInfo" href="#form_modal3" onclick="vendorConsume(${customerApiType.apiTypeId?c})" data-toggle="modal"><#if customerApiType.customerApiVendors??><#list customerApiType.customerApiVendors as vendor><#if vendor.vendorName??>${vendor.vendorName}，&nbsp;</#if></#list></#if></a></td>
-                                            </@shiro.hasPermission>
-                                            <td data-title="金额（单位/元）"><#if customerApiType.totlePrice??>${(-customerApiType.totlePrice/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="操作" style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?customerId=${customerId?c}&apiTypeId=${customerApiType.apiTypeId?c}&reasonId=-1<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
-                                        </tr>
-                                        </#list>
-                                    </#if>
-                                </tbody>
-                            </table>
+                                                <td data-title="金额（单位/元）"><#if customerApiType.totlePrice??>${(-customerApiType.totlePrice/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="操作" style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?customerId=${customerId?c}&apiTypeId=${customerApiType.apiTypeId?c}&reasonId=-1<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
+                                            </tr>
+                                            </#list>
+                                        </#if>
+                                    </tbody>
+                                </table>
+
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+
+                                <table class="table table-striped table-hover table-bordered table-condensed" id="sample_5_dept">
+                                    <thead>
+                                    <tr>
+                                        <th>产品类型</th>
+                                        <th>金额（单位/元）</th>
+                                        <th style="text-align: center; width: 15%">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#if customerApiTypeList??>
+                                            <#list customerApiTypeList as customerApiType>
+                                            <tr class="odd gradeX">
+                                                <td data-title="产品类型">${customerApiType.apiTypeName}</td>
+                                                <td data-title="金额（单位/元）"><#if customerApiType.totlePrice??>${(-customerApiType.totlePrice/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="操作" style="text-align: center;"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail?customerId=${customerId?c}&apiTypeId=${customerApiType.apiTypeId?c}&reasonId=-1<#if companyName??>&companyName=${companyName}</#if>&apiTypeName=${customerApiType.apiTypeName}">明细</a></td>
+                                            </tr>
+                                            </#list>
+                                        </#if>
+                                    </tbody>
+                                </table>
+
+                            </@shiro.hasPermission>
 
                             <div id="form_modal3" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
 
@@ -210,6 +235,16 @@
     <script src="/js/table-managed.js"></script>
 
     <script src="/js/myjs/customerleftbar.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+
+            TableManaged.init();
+
+            CustomerLeftBar.init();
+
+        });
+    </script>
 
     <script type="text/javascript">
 
@@ -273,9 +308,6 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
-            TableManaged.init();
-            CustomerLeftBar.init();
-
             /*下拉框*/
             $("#apiTypeId").change(function () {
                 var param = $("#apiTypeId").val();
@@ -311,8 +343,7 @@
                 var companyName = $('#companyName').val();
                 var customerId = $('#customerId').val();
                 var apiTypeId = $('#apiTypeId').val();
-                var apiVendorId = $('#apiVendorId').val();
-                fetch('/excel-finance/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id?companyName='+companyName+'&customerId='+customerId+'&apiTypeId='+apiTypeId+'&apiVendorId='+apiVendorId).then(res => res.blob().then(blob => {
+                fetch('/excel-finance/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id?companyName='+companyName+'&customerId='+customerId+'&apiTypeId='+apiTypeId).then(res => res.blob().then(blob => {
                     var a = document.createElement('a');
                 var url = window.URL.createObjectURL(blob);
                 var filename = companyName+'消费记录.xls';

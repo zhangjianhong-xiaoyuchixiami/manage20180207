@@ -67,6 +67,7 @@ public class FinanceController {
             List<CustomerFinance> customerFinanceList = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
             model.addAttribute("customerFinanceList",customerFinanceList);
             model.addAttribute("content",content);
+            model.addAttribute("partnerId",partnerId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,6 +111,7 @@ public class FinanceController {
             model.addAttribute("customerFinanceList",customerFinanceList);
             model.addAttribute("deptIdList", deptIdList);
             model.addAttribute("content",content);
+            model.addAttribute("partnerId",partnerId);
             return "/finance/customerFinancialAccount";
         }else {
             model.addAttribute("deptIdList", deptIdList);
