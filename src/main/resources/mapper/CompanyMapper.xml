@@ -218,8 +218,35 @@
         (SELECT id FROM qyfinance.bkvwCustomer WHERE companyId=#{param})
     </select>
 
+    <!--查询充值或扣费理由-->
+    <select id="findBalanceReason" parameterType="list" resultType="org.qydata.entity.CustomerBalanceModifyReason">
+        SELECT id,name
+        FROM qyfinance.bkvwCustomerBalanceModifyReason
+        <where>
+            <if test="list != null and list.size() > 0">
+                id IN
+                <foreach collection="list" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
 
+    <!--查询账号余额-->
+    <select id="findCustomerBalanceByCustomerId" parameterType="int" resultType="Long">
+        SELECT balance FROM qyfinance.bkvwCustomer WHERE id=#{value}
+    </select>
 
+    <!--根据账号修改余额-->
+    <update id="updateCustomerBalance" parameterType="Object">
+        UPDATE qydata.Customer SET balance=#{param2} where id=#{param1}
+    </update>
+
+    <!--余额变动日志-->
+    <insert id="addCustomerBalanceLog" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qydata.CustomerBalanceLog(customerId,amount,reasonId,createTime)
+        VALUES(#{customerId},#{amount},#{reasonId},sysdate())
+    </insert>
 
 
 

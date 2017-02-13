@@ -65,8 +65,8 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
     @Override
     public boolean getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
-        map.put("year",CalendarTools.getYearCount(result));
-        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("year",CalendarTools.getYearMonthCount(result));
+        map.put("month",CalendarTools.getMonthCount(result));
         map.put("tableId",1);
         map.put("weekMonthTypeId",2);
         weekMonthAmountMapper.deleteMonthRecord(map);
@@ -147,8 +147,8 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
     @Override
     public boolean getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
-        map.put("year",CalendarTools.getYearCount(result));
-        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("year",CalendarTools.getYearMonthCount(result));
+        map.put("month",CalendarTools.getMonthCount(result));
         map.put("tableId",2);
         map.put("weekMonthTypeId",2);
         weekMonthAmountMapper.deleteMonthRecord(map);

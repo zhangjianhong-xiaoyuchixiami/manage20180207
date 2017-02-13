@@ -1,6 +1,7 @@
 package org.qydata.service;
 
 import org.qydata.dst.CustomerCompanyPartner;
+import org.qydata.entity.CustomerBalanceModifyReason;
 import org.qydata.entity.Partner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +52,25 @@ public interface CompanyService {
      * @param companyId
      * @return
      */
+    @Transactional
     public boolean addCustomer(String authId,Integer companyId);
+
+    /**
+     * 查询充值或扣费理由
+     * @param list
+     * @return
+     */
+    public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list);
+
+    /**
+     * 修改账号余额，同时添加日志
+     * @param customerId
+     * @param reason
+     * @param amount
+     * @return
+     */
+    @Transactional
+    public boolean updateCustomerBalance(Integer customerId,Integer reason,Long amount);
 
 
 

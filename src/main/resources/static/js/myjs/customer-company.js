@@ -94,6 +94,153 @@ var Company = function () {
                 }
             });
 
+            /*以下操作是新增公司*/
+            $("#companyCustomerName").focus(function () {
+                $("#companyNameMsg").html("");
+            });
+
+            $("#authId").focus(function () {
+                $("#authIdMsg").html("");
+            });
+
+            $("#deptId").focus(function () {
+                $("#deptIdMsg").html("");
+            });
+
+            $("#authId").blur(function(){
+                $("#authIdMsg").load("/customer/findCustomerByAuthId/"+$("#authId").val(),
+                    function(responseTxt){
+                        if(responseTxt=="yes")
+                            $("#authIdMsg").html("<font color='red'>该账号已被使用，请重新输入！</font>");
+                        if(responseTxt=="no")
+                            $("#authIdMsg").html("");
+                    });
+            });
+
+            $("#add-btn-black-btn-primary").on("click",function () {
+                var companyCustomerName=$("#companyCustomerName").val();
+                var authId=$("#authId").val();
+                var partnerId=$("#partnerId").val();
+                var deptId=$("#deptId").val();
+                $.ajax({
+                    type: "post",
+                    url: "/company/add-company-customer",
+                    data: {"companyName":companyCustomerName,"authId":authId,"partnerId":partnerId,"deptId":deptId},
+                    dataType: "json",
+                    success: function (result) {
+                        if(result.companyNameMessage != null){
+                            $("#companyNameMsg").empty();
+                            $("#companyNameMsg").html('<font color="red">'+result.companyNameMessage+'</font>');
+                            return;
+                        }
+                        if(result.authIdMessage != null){
+                            $("#authIdMsg").empty();
+                            $("#authIdMsg").html('<font color="red">'+result.authIdMessage+'</font>');
+                            return;
+                        }
+                        if(result.deptMessage != null){
+                            $("#deptIdMsg").empty();
+                            $("#deptIdMsg").html('<font color="red">'+result.deptMessage+'</font>');
+                            return;
+                        }
+                        if(result.errorMessage != null) {
+                            $("#error-alert").empty();
+                            $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                            return;
+                        }
+                        if (result.successMessage != null){
+                            window.location.href=window.location.href
+                        }
+                    }
+                });
+            });
+
+
+            /*以下操作为添加账号*/
+            $("#authId-account").focus(function () {
+                $("#authId-accountMsg").html("");
+            });
+
+            $("#authId-account").blur(function(){
+                $("#authId-accountMsg").load("/customer/findCustomerByAuthId/"+$("#authId-account").val(),
+                    function(responseTxt){
+                        if(responseTxt=="yes")
+                            $("#authId-accountMsg").html("<font color='red'>该账号已被使用，请重新输入！</font>");
+                        if(responseTxt=="no")
+                            $("#authId-accountMsg").html("");
+                    });
+            });
+
+            $("#add-account-btn-black-btn-primary").on("click",function () {
+                var companyId=$("#companyId").val();
+                var authId=$("#authId-account").val();
+                $.ajax({
+                    type: "post",
+                    url: "/company/add-customer-account",
+                    data: {"companyId":companyId,"authId":authId},
+                    dataType: "json",
+                    success: function (result) {
+                        if(result.authIdMessage != null){
+                            $("#authId-accountMsg").empty();
+                            $("#authId-accountMsg").html('<font color="red">'+result.authIdMessage+'</font>');
+                            return;
+                        }
+                        if(result.errorMessage != null) {
+                            $("#error-alert-account").empty();
+                            $("#error-alert-account").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                            return;
+                        }
+                        if (result.successMessage != null){
+                            window.location.href=window.location.href
+                        }
+                    }
+                });
+            });
+
+
+            /*以下操作是给账号充值或扣费*/
+            $("#update_balance_amount").focus(function () {
+                $("#update_balance_amountMsg").html("");
+            });
+
+            $("#update_balance_reasonId").focus(function () {
+                $("#update_balance_reasonIdMsg").html("");
+            });
+
+            $("#update-balance-btn-black-btn-primary").on("click",function () {
+                var customerId=$("#customerId").val();
+                var amount=$("#update_balance_amount").val();
+                var reason=$("#update_balance_reasonId").val();
+                $.ajax({
+                    type: "post",
+                    url: "/company/update-customer-balance",
+                    data: {"customerId":customerId,"amount":amount,"reason":reason},
+                    dataType: "json",
+                    success: function (result) {
+                        if(result.amountMessage != null){
+                            $("#update_balance_amountMsg").empty();
+                            $("#update_balance_amountMsg").html('<font color="red">'+result.amountMessage+'</font>');
+                            return;
+                        }
+                        if(result.reasonMessage != null){
+                            $("#update_balance_reasonIdMsg").empty();
+                            $("#update_balance_reasonIdMsg").html('<font color="red">'+result.reasonMessage+'</font>');
+                            return;
+                        }
+                        if(result.errorMessage != null) {
+                            $("#error_alert_update_balance").empty();
+                            $("#error_alert_update_balance").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                            return;
+                        }
+                        if (result.successMessage != null){
+                            window.location.href=window.location.href
+                        }
+                    }
+                });
+            });
+
+
+            /*左侧导航*/
             $('#customerManage').addClass('active');
 
             $('#customerList').addClass('active');

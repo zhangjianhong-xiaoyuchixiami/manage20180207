@@ -1,10 +1,7 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.CustomerCompanyPartner;
-import org.qydata.entity.Company;
-import org.qydata.entity.Customer;
-import org.qydata.entity.CustomerDept;
-import org.qydata.entity.Partner;
+import org.qydata.entity.*;
 import org.qydata.mapper.CompanyMapper;
 import org.qydata.mapper.CustomerApiMapper;
 import org.qydata.mapper.CustomerDeptMapper;
@@ -22,14 +19,13 @@ import java.util.Map;
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
-    @Autowired
-    private CompanyMapper companyMapper;
-    @Autowired
-    private CustomerApiMapper customerApiMapper;
-    @Autowired
-    private CustomerDeptMapper customerDeptMapper;
-    @Autowired
-    private CustomerMapper customerMapper;
+    @Autowired private CompanyMapper companyMapper;
+
+    @Autowired private CustomerApiMapper customerApiMapper;
+
+    @Autowired  private CustomerDeptMapper customerDeptMapper;
+
+    @Autowired  private CustomerMapper customerMapper;
 
     @Override
     public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {
@@ -124,6 +120,39 @@ public class CompanyServiceImpl implements CompanyService {
             }
             return true;
         }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list) {
+        try {
+            return companyMapper.findBalanceReason(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean updateCustomerBalance(Integer customerId, Integer reason, Long amount) {
+        try {
+            CustomerBalanceLog customerBalanceLog = new CustomerBalanceLog();
+            customerBalanceLog.setCustomerId(customerId);
+            customerBalanceLog.setReasonId(reason);
+            Long balance = companyMapper.findCustomerBalanceByCustomerId(customerId);
+            if (reason < 0){
+                companyMapper.updateCustomerBalance(customerId, (balance-(amount*100)));
+                customerBalanceLog.setAmount((0-amount*100));
+                companyMapper.addCustomerBalanceLog(customerBalanceLog);
+            }else {
+                companyMapper.updateCustomerBalance(customerId, (balance+(amount*100)));
+                customerBalanceLog.setAmount(amount*100);
+                companyMapper.addCustomerBalanceLog(customerBalanceLog);
+            }
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;

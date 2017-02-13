@@ -209,7 +209,7 @@
                                             <td data-title="类型">
                                                 <#if apiFinance.apiTypeList??>
                                                     <#list apiFinance.apiTypeList as apiType>
-                                                        ${apiType.name!''}<#if apiType.mobileOperator??>——${apiType.mobileOperator.name!''}</#if></br>
+                                                    ${apiType.name!''}<#if apiType.mobileOperator??>——${apiType.mobileOperator.name!''}</#if></br>
                                                     </#list>
                                                 </#if>
                                             </td>
@@ -399,6 +399,7 @@
                     }
                 });
             });
+
         });
     </script>
 
@@ -435,17 +436,20 @@
                     if(result.amountMessage != null){
                         $("#amount-message").empty();
                         $("#amount-message").append('<span class="help-line"><font color="red">'+result.amountMessage+'</font></span>');
-                    }
-                    if(result.successMessage != null){
-                        window.location.href="/api/find-all-api-vendor-consume"
+                        return;
                     }
                     if(result.errorMessage != null) {
                         $("#error-alert").empty();
                         $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                        return;
+                    }
+                    if(result.successMessage != null){
+                        window.location.href="/api/find-all-api-vendor-consume"
                     }
                 }
             });
         });
+
     </script>
 
     <#--左侧导航-->

@@ -1,7 +1,9 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
+import net.sf.json.JSONArray;
 import org.qydata.dst.CustomerCompanyPartner;
+import org.qydata.entity.CustomerBalanceModifyReason;
 import org.qydata.entity.Dept;
 import org.qydata.entity.Partner;
 import org.qydata.entity.User;
@@ -151,6 +153,72 @@ public class CompanyController {
             return gson.toJson(map);
         }
         boolean flag = companyService.addCustomer(authId, companyId);
+        if (flag){
+            map.put("successMessage","恭喜你，操作成功！");
+        }else {
+            map.put("errorMessage","操作失败，请检查你的输入");
+        }
+        return gson.toJson(map);
+    }
+
+    /**
+     * 充值
+     * @return
+     */
+    @RequestMapping("/charge-customer-balance")
+    @ResponseBody
+    public String chargeCustomerBalance(){
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        List<CustomerBalanceModifyReason> customerBalanceModifyReasonList = companyService.findBalanceReason(list);
+        JSONArray jsonArray = JSONArray.fromObject(customerBalanceModifyReasonList);
+        return jsonArray.toString();
+    }
+
+    /**
+     * 扣费
+     * @return
+     */
+    @RequestMapping("/consume-customer-balance")
+    @ResponseBody
+    public String consumeCustomerBalance(){
+        List<Integer> list = new ArrayList<>();
+        list.add(-1);
+        list.add(-2);
+        List<CustomerBalanceModifyReason> customerBalanceModifyReasonList = companyService.findBalanceReason(list);
+        JSONArray jsonArray = JSONArray.fromObject(customerBalanceModifyReasonList);
+        return jsonArray.toString();
+    }
+
+
+    @RequestMapping("/update-customer-balance")
+    @ResponseBody
+    public String updateCustomerBalance(Integer customerId,Integer reason,String amount){
+        System.out.println(customerId);
+        System.out.println(reason);
+        System.out.println(amount);
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        if(RegexUtil.isNull(amount)){
+            map.put("amountMessage","请输入金额!");
+            return gson.toJson(map);
+        }
+        if(!RegexUtil.isFloatZero(amount)){
+            map.put("amountMessage","金额格式不正确!");
+            return gson.toJson(map);
+        }else {
+            if (Long.parseLong(amount)<=0){
+                map.put("amountMessage","金额必须大于0!");
+                return gson.toJson(map);
+            }
+        }
+        if(RegexUtil.isNull(reason)){
+            map.put("reasonMessage","请选择理由!");
+            return gson.toJson(map);
+        }
+        boolean flag = companyService.updateCustomerBalance(customerId, reason, Long.parseLong(amount));
         if (flag){
             map.put("successMessage","恭喜你，操作成功！");
         }else {

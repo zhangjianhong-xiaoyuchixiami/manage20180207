@@ -14,7 +14,6 @@ import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
-import org.qydata.service.CustomerBalanceLogService;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerService;
 import org.qydata.tools.CalendarTools;
@@ -37,8 +36,7 @@ import static java.lang.Integer.parseInt;
 public class FinanceController {
 
     private final Logger log = Logger.getLogger(this.getClass());
-    @Autowired
-    private CustomerBalanceLogService customerBalanceLogService;
+
     @Autowired
     private CustomerService customerService;
     @Autowired

@@ -65,8 +65,8 @@ public class ApiWeekMonthAmountServiceImpl implements ApiWeekMonthAmountService 
     @Override
     public boolean getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
-        map.put("year",CalendarTools.getYearCount(result));
-        map.put("month",CalendarTools.getMonthWeekCount(result));
+        map.put("year",CalendarTools.getYearMonthCount(result));
+        map.put("month",CalendarTools.getMonthCount(result));
         map.put("tableId",3);
         map.put("typeId",2);
         apiWeekMonthAmountMapper.deleteApiMonthRecord(map);

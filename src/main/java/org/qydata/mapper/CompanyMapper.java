@@ -2,10 +2,7 @@ package org.qydata.mapper;
 
 import org.qydata.dst.CustomerApiInfo;
 import org.qydata.dst.CustomerCompanyPartner;
-import org.qydata.entity.Api;
-import org.qydata.entity.Company;
-import org.qydata.entity.CustomerApi;
-import org.qydata.entity.Partner;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -53,6 +50,39 @@ public interface CompanyMapper {
      * @throws Exception
      */
     public Integer findDeptIdByCompanyId(Integer companyId)throws Exception;
+
+    /**
+     * 查询充值或扣费理由
+     * @param list
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list)throws Exception;
+
+    /**
+     *根据账号Id查询账号余额
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
+    public Long findCustomerBalanceByCustomerId(Integer customerId)throws Exception;
+
+    /**
+     * 修改账号余额
+     * @param customerId
+     * @param amount
+     * @return
+     * @throws Exception
+     */
+    public boolean updateCustomerBalance(Integer customerId,Long amount)throws Exception;
+
+    /**
+     * 添加余额变动日志
+     * @param customerBalanceLog
+     * @return
+     * @throws Exception
+     */
+    public boolean addCustomerBalanceLog(CustomerBalanceLog customerBalanceLog)throws Exception;
 
 
 
