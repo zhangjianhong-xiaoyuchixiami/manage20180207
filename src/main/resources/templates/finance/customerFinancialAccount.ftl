@@ -152,7 +152,13 @@
                                 <thead>
                                 <tr>
                                     <th style="text-align: center;">公司名称</th>
-                                    <th style="text-align: center;">合作公司</th>
+                                    <@shiro.hasPermission name="customer:findAllCustomer">
+                                        <th style="text-align: center;">合作公司</th>
+                                    </@shiro.hasPermission>
+
+                                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                        <th style="display: none">合作公司</th>
+                                    </@shiro.hasPermission>
                                     <th>余额（单位：元）</th>
                                     <th>充值总额（单位：元）</th>
                                     <th>消费总额（单位：元）</th>
@@ -174,7 +180,7 @@
                                                 <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</a></td>
                                             </@shiro.hasPermission>
                                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                <td data-title="合作公司"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
+                                                <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                             </@shiro.hasPermission>
                                             <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
                                             <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>

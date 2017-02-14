@@ -36,9 +36,9 @@ public class TestController {
 //        return modelAndView;
 //    }
 
-    @RequestMapping("/list1")
+    @RequestMapping("/index")
     public String list1(){
-        return "/customer/list";
+        return "/test/index";
     }
 
     @RequestMapping(value = "/list")

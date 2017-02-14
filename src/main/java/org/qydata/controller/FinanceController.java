@@ -5,8 +5,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
@@ -132,25 +130,6 @@ public class FinanceController {
      */
     @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id")
     public String findAllCustomerRechargeLogByCustomerId(Integer customerId,String companyName, String beginDate, String endDate, String [] reasonId, HttpServletRequest request, Model model){
-        Subject subject = SecurityUtils.getSubject();
-        if (subject.hasRole("sell")){
-            User user = (User)request.getSession().getAttribute("userInfo");
-            List<Dept> deptList = user.getDept();
-            List deptIdList = new ArrayList();
-            for(int i =0;i<deptList.size();i++){
-                deptIdList.add(deptList.get(i).getId());
-            }
-            List customerIdList = null;
-            try {
-                customerIdList = customerService.findAllCustomerIdByDeptId(deptIdList);
-                if (!customerIdList.contains(customerId)){
-                    return "../view/unauthUrl";
-                }
-            } catch (Exception e) {
-                log.error("findAllRechargeCustomerBalanceLogByCustomerId:授权失败");
-                e.printStackTrace();
-            }
-        }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("customerId", customerId);
         List<Integer> reasonIdList = new ArrayList<>();

@@ -144,6 +144,7 @@
         SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,
         a.companyId,a.companyName,a.partnerId,b.name partnerName
         FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        WHERE a.companyId IS NOT NULL
         ) cc  LEFT JOIN
         (
         SELECT aa.companyId,aa.companyBalance,bb.companyName,bb.partnerId,bb.partnerName,bb.timestamp
@@ -174,7 +175,7 @@
         SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,
         a.companyId,a.companyName,a.partnerId,b.name partnerName
         FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
-        WHERE a.id IN
+        WHERE a.companyId IS NOT NULL AND a.id IN
                         (
                             SELECT customerId
                             FROM qyfinance.bkvwCustomerDept

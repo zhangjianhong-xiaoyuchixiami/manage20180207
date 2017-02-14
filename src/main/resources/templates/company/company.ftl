@@ -228,7 +228,14 @@
                                 <thead>
                                 <tr>
                                     <th>公司名称</th>
-                                    <th>合作公司</th>
+                                    <@shiro.hasPermission name="customer:findAllCustomer">
+                                        <th>合作公司</th>
+                                    </@shiro.hasPermission>
+
+                                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                        <th style="display: none">合作公司</th>
+                                    </@shiro.hasPermission>
+
                                     <th>余额</th>
                                     <th>创建时间</th>
                                     <th>customerId</th>
@@ -241,7 +248,7 @@
                                     <th>statusName</th>
                                     <th>customerCreateTime</th>
                                     <th>操作</th>
-                                   <#-- <th style="text-align: center; width: 10%;">操作</th>-->
+                                <#-- <th style="text-align: center; width: 10%;">操作</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -255,7 +262,7 @@
                                             </@shiro.hasPermission>
 
                                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                <td><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!''}</a></td>
+                                                <td style="display: none"><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!''}</a></td>
                                             </@shiro.hasPermission>
 
                                             <td><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
@@ -491,11 +498,11 @@
             Company.init();
         });
 
-        $("#add-partner").click(function(){return false;});
-
-        $("#charge_Balance").click(function(){return false;});
-
-        $("#consume_Balance").click(function(){return false;});
+        //        $("#add-partner").click(function(){return false;});
+        //
+        //        $("#charge_Balance").click(function(){return false;});
+        //
+        //        $("#consume_Balance").click(function(){return false;});
 
 
         /*以下操作为添加账号*/
