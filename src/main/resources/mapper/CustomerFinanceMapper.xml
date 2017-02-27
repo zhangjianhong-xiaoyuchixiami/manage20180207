@@ -10,6 +10,7 @@
         <result column="balance" property="balance"/>
         <result column="partnerId" property="partnerId"/>
         <result column="partnerName" property="partnerName"/>
+        <result column="floor" property="floor"/>
         <result column="chargeWeekTotleAmount" property="chargeWeekTotleAmount"/>
         <result column="chargeMonthTotleAmount" property="chargeMonthTotleAmount"/>
         <result column="consumeWeekTotleAmount" property="consumeWeekTotleAmount"/>
@@ -94,31 +95,31 @@
     <!--查询客户的财务总览通过部门编号-->
     <select id="queryCompanyCustomerOverAllFinanceByDept" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
-        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price
+        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price,kk.floor
         FROM
         (
         SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
-        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price
+        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price,ii.floor
         FROM
         (
         SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
-        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price
+        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price,gg.floor
         FROM
         (
         SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount,
-        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price
+        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price,ee.floor
         FROM
         (
         SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount,
-        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price
+        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price,cc.floor
         FROM
         (
         SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount,
-        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price
+        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.floor
         FROM
             (
                 SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.partnerId,c.name partnerName,a.createTime,a.status,a.statusName,a.companyId,a.companyName,
-                z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
+                z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price,a.floor
                 FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwCustomerDept b ON a.id=b.customerId LEFT JOIN qyfinance.bkvwPartner c
                 ON a.partnerId=c.id
                 LEFT JOIN
@@ -195,30 +196,30 @@
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
-        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price
+        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price,kk.floor
         FROM
         (
         SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
-        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price
+        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price,ii.floor
         FROM
         (
         SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
-        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price
+        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price,gg.floor
         FROM
         (
         SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount,
-        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price
+        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price,ee.floor
         FROM
         (
         SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount,
-        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price
+        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price,cc.floor
         FROM
         (
         SELECT aa.id,aa.typeId,aa.typeName,aa.name,aa.authId,aa.authPass,aa.createTime,aa.status,aa.statusName,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount,
-        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price
+        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.floor
         FROM
         (
-            SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName,a.partnerId,b.name partnerName,
+            SELECT a.id,a.typeId,a.typeName,a.name,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,a.companyId,a.companyName,a.partnerId,a.floor,b.name partnerName,
             z.apiTypeId,z.apiTypeName,z.subTypeId,z.subTypeName,z.price
             FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
             LEFT JOIN
@@ -299,12 +300,12 @@
         </if>
         <if test="beginDate != null and beginDate != ''">
             <![CDATA[
-            AND createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
             ]]>
         </if>
         <if test="endDate != null and endDate != ''">
             <![CDATA[
-            AND createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+            AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
              ]]>
         </if>
         ORDER BY createTime DESC
@@ -360,12 +361,12 @@
             </if>
             <if test="beginDate != null and beginDate != ''">
                 <![CDATA[
-            AND aa.createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            AND aa.createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
             ]]>
             </if>
             <if test="endDate != null and endDate != ''">
                 <![CDATA[
-            AND aa.createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+            AND aa.createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
              ]]>
             </if>
         </where>

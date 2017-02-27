@@ -124,12 +124,12 @@
       WHERE a.ok=1 AND a.apiId=#{apiId}
         <if test="beginDate != null and beginDate != ''">
             <![CDATA[
-            AND a.createTime>=str_to_date(#{beginDate},'%m/%d/%Y %H:%i:%s')
+            AND a.createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
             ]]>
         </if>
         <if test="endDate != null and endDate != ''">
             <![CDATA[
-            AND a.createTime<=str_to_date(#{endDate},'%m/%d/%Y %H:%i:%s')
+            AND a.createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
              ]]>
         </if>
     </select>

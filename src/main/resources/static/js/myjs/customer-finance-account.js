@@ -13,7 +13,7 @@ var CustomerFinanceAccount = function () {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table>';
                 sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 30%;">产品类型</th><th style="width: 62%;">价格</th></tr>';
-                sOut += '<tr><td style="width: 8%;"></td><td style="width: 30%;">'+aData[10]+'</td><td style="width: 62%;">'+aData[11]+'</td></tr>';
+                sOut += '<tr><td style="width: 8%;"></td><td style="width: 30%;">'+aData[11]+'</td><td style="width: 62%;">'+aData[12]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -55,8 +55,9 @@ var CustomerFinanceAccount = function () {
                     null,  //3
                     null,  //4
                     null,  //5
-                    { "bVisible": false},  //6
+                    null,  //6
                     { "bVisible": false},  //7
+                    { "bVisible": false},  //8
                     null,  //8
                     null,  //9
                     { "bVisible": false },  //10
@@ -95,7 +96,7 @@ var CustomerFinanceAccount = function () {
                     }
 
                 ],
-                "aaSorting": [[3, 'desc']],
+                "aaSorting": [[4, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

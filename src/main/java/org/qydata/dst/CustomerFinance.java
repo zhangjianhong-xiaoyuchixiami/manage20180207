@@ -18,6 +18,7 @@ public class CustomerFinance implements Serializable {
     private Long balance;
     private Integer partnerId;
     private String partnerName;
+    private Long floor;
     private Long chargeWeekTotleAmount;
     private Long chargeMonthTotleAmount;
     private Long consumeWeekTotleAmount;
@@ -128,6 +129,14 @@ public class CustomerFinance implements Serializable {
 
     public void setCompanyApiList(List<CompanyApi> companyApiList) {
         this.companyApiList = companyApiList;
+    }
+
+    public Long getFloor() {
+        return floor;
+    }
+
+    public void setFloor(Long floor) {
+        this.floor = floor;
     }
 
     @Override

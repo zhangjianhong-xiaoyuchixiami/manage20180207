@@ -124,19 +124,21 @@
 
                                         <label><input type="checkbox" checked data-column="2">合作公司</label>
 
-                                        <label><input type="checkbox" checked data-column="3">余额</label>
+                                        <label><input type="checkbox" checked data-column="3">信用额度</label>
 
-                                        <label><input type="checkbox" checked data-column="4">充值总额</label>
+                                        <label><input type="checkbox" checked data-column="4">余额</label>
 
-                                        <label><input type="checkbox" checked data-column="5">消费总额</label>
+                                        <label><input type="checkbox" checked data-column="5">充值总额</label>
 
-                                        <label><input type="checkbox" data-column="6">上周充值</label>
+                                        <label><input type="checkbox" checked data-column="6">消费总额</label>
 
-                                        <label><input type="checkbox" data-column="7">上周消费</label>
+                                        <label><input type="checkbox" data-column="7">上周充值</label>
 
-                                        <label><input type="checkbox" checked data-column="8">上月充值</label>
+                                        <label><input type="checkbox" data-column="8">上周消费</label>
 
-                                        <label><input type="checkbox" checked data-column="9">上月消费</label>
+                                        <label><input type="checkbox" checked data-column="9">上月充值</label>
+
+                                        <label><input type="checkbox" checked data-column="10">上月消费</label>
                                     </div>
 
                                 </div>
@@ -159,6 +161,7 @@
                                     <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                         <th style="display: none">合作公司</th>
                                     </@shiro.hasPermission>
+                                    <th>信用额度（单位：元）</th>
                                     <th>余额（单位：元）</th>
                                     <th>充值总额（单位：元）</th>
                                     <th>消费总额（单位：元）</th>
@@ -182,6 +185,7 @@
                                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                 <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                             </@shiro.hasPermission>
+                                            <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
                                             <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
                                             <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                             <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
@@ -247,6 +251,9 @@
             CustomerFinanceAccount.init();
             CustomerLeftBar.init();
         });
+    </script>
+
+    <script>
 
         <#--导出Excel-->
         $(document).ready(function() {

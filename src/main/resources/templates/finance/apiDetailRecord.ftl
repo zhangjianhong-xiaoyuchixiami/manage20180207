@@ -154,17 +154,17 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#if apiRequestLogList??>
-                                <#list apiRequestLogList as apiRequestLog>
-                                <tr class="odd gradeX">
-                                    <td data-title="公司名称"><#if apiRequestLog.company??>${apiRequestLog.company.name!''}<#else></#if></td>
-                                    <td data-title="消费金额（单位：元）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.cost/100.0)!''}<#else></#if></td>
-                                    <td data-title="响应时间（单位：秒）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.resTime/1000.0)!''}<#else></#if></td>
-                                    <td data-title="创建时间">${apiRequestLog.createTime!''}</td>
-                                </tr>
+                                    <#if apiRequestLogList??>
+                                        <#list apiRequestLogList as apiRequestLog>
+                                        <tr class="odd gradeX">
+                                            <td data-title="公司名称"><#if apiRequestLog.company??>${apiRequestLog.company.name!''}<#else></#if></td>
+                                            <td data-title="消费金额（单位：元）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.cost/100.0)!''}<#else></#if></td>
+                                            <td data-title="响应时间（单位：秒）"><#if apiRequestLog.apiResponseLog??>${(apiRequestLog.apiResponseLog.resTime/1000.0)!''}<#else></#if></td>
+                                            <td data-title="创建时间">${apiRequestLog.createTime!''}</td>
+                                        </tr>
 
-                                </#list>
-                                </#if>
+                                        </#list>
+                                    </#if>
                                 </tbody>
                             </table>
 
@@ -190,7 +190,7 @@
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
-    <script src="/js/myjs/customer-company.js"></script>
+    <script src="/js/table-managed.js"></script>
 
     <script type="text/javascript">
 

@@ -440,7 +440,7 @@
                     }
                     if(result.errorMessage != null) {
                         $("#error-alert").empty();
-                        $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                        $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>');
                         return;
                     }
                     if(result.successMessage != null){

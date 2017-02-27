@@ -22,8 +22,6 @@
                 <div class="span12">
 
                 <#--搜索框-->
-
-
                     <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id" method="get">
 
                         <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
@@ -175,9 +173,11 @@
                             </table>
 
                         </div>
+
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 

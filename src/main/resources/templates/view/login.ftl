@@ -72,7 +72,7 @@
 
     <!-- BEGIN LOGIN FORM -->
 
-    <form action="/view/login-action" method="post" >
+    <form action="/view/login-action" class="login_form" method="post" >
 
         <h3 class="form-title">欢迎登录</h3>
 
@@ -211,14 +211,9 @@
 <script src="/js/login.js" type="text/javascript"></script>
 
 <script>
-    $(document).ready(function(){
-        $("body").keydown(function(e){
-            var curKey = e.which;
-            if(curKey == 13){
-                $("#subButton").click();
-                return false;
-            }
-        });
+    $(document).keypress(function(e) {
+        if (e.which == 13)
+            $(".login_form").submit();
     });
 </script>
 
