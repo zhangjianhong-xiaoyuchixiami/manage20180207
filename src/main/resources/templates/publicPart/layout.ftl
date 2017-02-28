@@ -13,16 +13,17 @@
     <meta content="width=device-width, height=device-height, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="/css/uniform.default.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="/css/DT_bootstrap.css" />
-
+    <link rel="stylesheet" type="text/css" href="/css/local/main-response-table.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/local/head-search.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style-metro.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/default.css" id="style_color"/>
+    <link rel="stylesheet" type="text/css" href="/css/uniform.default.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/DT_bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-fileupload.css" />
     <link rel="stylesheet" type="text/css" href="/css/jquery.gritter.css" />
     <link rel="stylesheet" type="text/css" href="/css/chosen.css" />
@@ -37,12 +38,9 @@
     <link rel="stylesheet" type="text/css" href="/css/daterangepicker.css" />
     <link rel="stylesheet" type="text/css" href="/css/datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="/css/multi-select-metro.css" />
-    <link href="/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
-
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-modal.css"/>
     <link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
-
-    <link href="/css/search.css" rel="stylesheet" type="text/css"/>
-
+    <link rel="stylesheet" type="text/css" href="/css/search.css"/>
     <link rel="stylesheet" type="text/css" href="/css/icon.css" />
     <link rel="shortcut icon" href="/image/favicon.ico" />
 
