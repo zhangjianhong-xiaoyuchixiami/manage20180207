@@ -372,6 +372,12 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
+        List<Integer> yearList = null;
+        try {
+            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         List<Integer> monthList = null;
         if(years != null){
             map.put("years",years);
@@ -394,10 +400,9 @@ public class FinanceController {
             map.put("weeks",weeks);
         }
         List<WeekMonthAmount> weekMonthAmountList = null;
-        List<Integer> yearList = null;
         long totleAmount = 0;
         try {
-            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
+
             weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
             if(weekMonthAmountList != null){
                 for (int i=0; i<weekMonthAmountList.size(); i++){
@@ -440,6 +445,12 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
+        List<Integer> yearList = null;
+        try {
+            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         List<Integer> monthList = null;
         if(years != null){
             map.put("years",years);
@@ -454,10 +465,8 @@ public class FinanceController {
 
         }
         List<WeekMonthAmount> weekMonthAmountList = null;
-        List<Integer> yearList = null;
         long totleAmount = 0;
         try {
-            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
             weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
             if(weekMonthAmountList != null){
                 for (int i=0; i<weekMonthAmountList.size(); i++){

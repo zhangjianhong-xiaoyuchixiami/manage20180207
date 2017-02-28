@@ -7,7 +7,7 @@ import org.qydata.entity.CustomerBalanceModifyReason;
 import org.qydata.entity.Dept;
 import org.qydata.entity.Partner;
 import org.qydata.entity.User;
-import org.qydata.regex.RegexUtil;
+import org.qydata.tools.RegexUtil;
 import org.qydata.service.CompanyService;
 import org.qydata.service.CustomerApiService;
 import org.qydata.service.DeptService;

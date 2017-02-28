@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
-import org.qydata.regex.RegexUtil;
+import org.qydata.tools.RegexUtil;
 import org.qydata.service.DeptService;
 import org.qydata.service.UserService;
 import org.qydata.tools.PageModel;

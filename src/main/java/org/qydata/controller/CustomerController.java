@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import org.qydata.entity.Customer;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
-import org.qydata.regex.RegexUtil;
+import org.qydata.tools.RegexUtil;
 import org.qydata.service.CustomerService;
 import org.qydata.service.DeptService;
 import org.qydata.service.UserService;

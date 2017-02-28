@@ -2,7 +2,7 @@ package org.qydata.controller;
 
 import org.apache.log4j.Logger;
 import org.qydata.entity.CustomerIp;
-import org.qydata.regex.RegexUtil;
+import org.qydata.tools.RegexUtil;
 import org.qydata.service.CustomerIpService;
 import org.qydata.tools.IpTool;
 import org.qydata.tools.PageModel;
