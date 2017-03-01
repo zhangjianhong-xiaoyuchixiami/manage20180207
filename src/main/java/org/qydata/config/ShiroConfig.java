@@ -12,7 +12,6 @@ import org.apache.shiro.web.filter.authc.AnonymousFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.qydata.shirorealm.UserRealm;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -348,6 +347,10 @@ public class ShiroConfig {
 		chains.put("/company/update-customer-balance", "authc,perms");
 		chains.put("/company/charge-customer-balance", "authc,perms");
 		chains.put("/company/consume-customer-balance", "authc,perms");
+
+		//产品管理
+		chains.put("/api/api-message", "authc,perms");
+		chains.put("/api/api-vendor", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

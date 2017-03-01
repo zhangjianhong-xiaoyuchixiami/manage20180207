@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.css"/>
     <link rel="stylesheet" type="text/css" href="/css/style-metro.css"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/css/style-responsive.css"/>
@@ -68,11 +69,7 @@
 
                         <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
 
-                            <span class="username" style="font-size: 16px;">
-                                <#if Session.userInfo?exists>
-                                   ${Session.userInfo.name}
-                               </#if>
-                            </span>
+                            <span class="username"><@shiro.principal/></span>
 
                             <i class="icon-angle-down"></i>
 
@@ -87,8 +84,6 @@
                         </ul>
 
                     </li>
-
-                    <!-- END USER LOGIN DROPDOWN -->
 
                 </ul>
 
@@ -111,13 +106,13 @@
                     <div class="sidebar-toggler hidden-phone"></div>
 
                 </li>
-
+            <#--客户管理-->
                 <@shiro.hasAnyRoles name="sell,backAdmin">
 
                     <li class="" id="customerManage">
                         <a href="javascript:;">
 
-                            <i class="icon-sitemap"></i>
+                            <i class="icon-group"></i>
 
                             <span class="title">客户管理</span>
 
@@ -214,6 +209,39 @@
 
                 </@shiro.hasAnyRoles>
 
+            <#--产品管理-->
+                <@shiro.hasAnyRoles name="backAdmin">
+
+                    <li id="apiProduct">
+                        <a href="javascript:;">
+
+                            <i class="icon-barcode"></i>
+
+                            <span class="title">产品管理</span>
+
+                            <span class="" id="apiProductSelect"></span>
+
+                            <span class="arrow " id="apiProductArrow"></span>
+
+                        </a>
+
+                        <ul class="sub-menu">
+
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="apiProductList">
+                                    <a href="/api/api-message">
+                                        产品信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                        </ul>
+
+                    </li>
+
+                </@shiro.hasAnyRoles>
+
+
             <#--用户管理-->
                 <@shiro.hasAnyRoles name="backAdmin,technology">
 
@@ -307,6 +335,22 @@
                     </li>
 
                 </@shiro.hasAnyRoles>
+
+           <#-- &lt;#&ndash;消息通知&ndash;&gt;
+                <@shiro.hasAnyRoles name="backAdmin">
+
+                    <li>
+
+                        <a href="index.html">
+
+                            <i class="icon-bullhorn"></i>
+
+                            <span class="title">消息通知</span>
+
+                        </a>
+
+                    </li>
+                </@shiro.hasAnyRoles>-->
 
             </ul>
 

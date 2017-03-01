@@ -1589,7 +1589,7 @@ Box portlet
 
 .portlet.box.grey {  
    border: 1px solid #9d9c9c;
-   border-top: 0;
+   /*border-top: 0;*/
 }
 
 .portlet.box.light-grey .portlet-title {

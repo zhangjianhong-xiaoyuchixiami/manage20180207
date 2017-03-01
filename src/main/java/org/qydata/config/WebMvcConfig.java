@@ -1,7 +1,6 @@
 package org.qydata.config;
 
 import freemarker.template.TemplateException;
-import org.qydata.freemarker.ShiroTagFreeMarkerConfigurer;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;

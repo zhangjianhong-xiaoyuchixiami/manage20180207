@@ -22,7 +22,7 @@
 
                 <#--搜索框-->
 
-                    <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                    <div class="pull-left head-search-bottom head-search-display">
 
                         <label class="control-label">合作公司Id</label>
 
@@ -37,9 +37,9 @@
 
                         <form action="/finance/find-all-customer-by-dept-id" method="get">
 
-                            <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
+                            <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                                <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
+                                <div class="pull-left head-search-bottom head-search-top">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -67,9 +67,9 @@
 
                         <form action="/finance/find-all-customer" method="get">
 
-                            <div class="clearfix margin-bottom-20">
+                            <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                                <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
+                                <div class="pull-left head-search-bottom head-search-top">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -149,71 +149,72 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
 
-                                <thead>
-                                <tr>
-                                    <th style="text-align: center;">公司名称</th>
-                                    <@shiro.hasPermission name="customer:findAllCustomer">
-                                        <th style="text-align: center;">合作公司</th>
-                                    </@shiro.hasPermission>
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center;">公司名称</th>
+                                        <@shiro.hasPermission name="customer:findAllCustomer">
+                                            <th style="text-align: center;">合作公司</th>
+                                        </@shiro.hasPermission>
 
-                                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                        <th style="display: none">合作公司</th>
-                                    </@shiro.hasPermission>
-                                    <th>信用额度（单位：元）</th>
-                                    <th>余额（单位：元）</th>
-                                    <th>充值总额（单位：元）</th>
-                                    <th>消费总额（单位：元）</th>
-                                    <th>上周充值（单位：元）</th>
-                                    <th>上周消费（单位：元）</th>
-                                    <th>上月充值（单位：元）</th>
-                                    <th>上月消费（单位：元）</th>
-                                    <th>产品类型</th>
-                                    <th>产品价格</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if customerFinanceList??>
-                                        <#list customerFinanceList as customer>
-                                        <tr class="odd gradeX">
-                                            <td data-title="公司名称">${customer.companyName}</td>
+                                        <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                            <th style="display: none">合作公司</th>
+                                        </@shiro.hasPermission>
+                                        <th>信用额度（单位：元）</th>
+                                        <th>余额（单位：元）</th>
+                                        <th>充值总额（单位：元）</th>
+                                        <th>消费总额（单位：元）</th>
+                                        <th>上周充值（单位：元）</th>
+                                        <th>上周消费（单位：元）</th>
+                                        <th>上月充值（单位：元）</th>
+                                        <th>上月消费（单位：元）</th>
+                                        <th>产品类型</th>
+                                        <th>产品价格</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#if customerFinanceList??>
+                                            <#list customerFinanceList as customer>
+                                            <tr>
+                                                <td data-title="公司名称">${customer.companyName}</td>
+                                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                                    <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</a></td>
+                                                </@shiro.hasPermission>
+                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                    <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
+                                                </@shiro.hasPermission>
+                                                <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
+                                                <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td>
+                                                    <#if customer.companyApiList??>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            <#if companyApi.apiType??>${companyApi.apiType.name!''}<#if companyApi.mobileOperator??>——${companyApi.mobileOperator.name!''}</#if></#if><br/>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if customer.companyApiList??>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            <#if companyApi.price??>${(companyApi.price/100.0)!''}</#if><br/>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                            </tr>
+                                            </#list>
+                                        </#if>
 
-                                            <@shiro.hasPermission name="customer:findAllCustomer">
-                                                <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</a></td>
-                                            </@shiro.hasPermission>
-                                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
-                                            </@shiro.hasPermission>
-                                            <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
-                                            <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td>
-                                                <#if customer.companyApiList??>
-                                                    <#list customer.companyApiList as companyApi>
-                                                        <#if companyApi.apiType??>${companyApi.apiType.name!''}<#if companyApi.mobileOperator??>——${companyApi.mobileOperator.name!''}</#if></#if><br/>
-                                                    </#list>
-                                                </#if>
-                                            </td>
-                                            <td>
-                                                <#if customer.companyApiList??>
-                                                    <#list customer.companyApiList as companyApi>
-                                                        <#if companyApi.price??>${(companyApi.price/100.0)!''}</#if><br/>
-                                                    </#list>
-                                                </#if>
-                                            </td>
-                                        </tr>
-                                        </#list>
-                                    </#if>
+                                    </tbody>
 
-                                </tbody>
-
-                            </table>
+                                </table>
+                            </div>
 
                         </div>
 
@@ -225,72 +226,69 @@
 
         </div>
 
-    </div>
-
     <#elseif section = "footer">
 
     <#elseif section = "publicJs">
 
     <#elseif section = "privateJs">
-    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
-    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+        <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
 
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-    <script src="/js/myjs/customerleftbar.js"></script>
+        <script src="/js/myjs/customerleftbar.js"></script>
 
-    <script src="/js/myjs/customer-finance-account.js"></script>
+        <script src="/js/myjs/customer-finance-account.js"></script>
 
-    <script src="/js/locales/dataTables-sort-plungin.js"></script>
+        <script src="/js/locales/dataTables-sort-plungin.js"></script>
 
-    <script>
-        jQuery(document).ready(function() {
-            CustomerFinanceAccount.init();
-            CustomerLeftBar.init();
-        });
-    </script>
+        <script>
+            jQuery(document).ready(function() {
+                CustomerFinanceAccount.init();
+                CustomerLeftBar.init();
+            });
+        </script>
 
-    <script>
+        <script>
 
-        <#--导出Excel-->
-        $(document).ready(function() {
+            <#--导出Excel-->
+            $(document).ready(function() {
 
-            $('#exportExcel').on('click', function () {
-                var companyName = $('#companyName').val();
-                var partnerId = $('#partnerId').val();
-                fetch('/excel-finance/find-all-customer?content='+companyName+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename = '客户财务报表.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
+                $('#exportExcel').on('click', function () {
+                    var companyName = $('#companyName').val();
+                    var partnerId = $('#partnerId').val();
+                    fetch('/excel-finance/find-all-customer?content='+companyName+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
+                        var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(blob);
+                    var filename = '客户财务报表.xls';
+                    a.href = url;
+                    a.download = filename;
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                }))
+                });
+
+                $('#exportExcelByDeptId').on('click', function () {
+                    var companyName = $('#companyName').val();
+                    var partnerId = $('#partnerId').val();
+                    var username = $('#username').text();
+                    fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName+'&username='+username+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
+                        var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(blob);
+                    var filename = '客户财务报表.xls';
+                    a.href = url;
+                    a.download = filename;
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                }))
+                });
+
             });
 
-            $('#exportExcelByDeptId').on('click', function () {
-                var companyName = $('#companyName').val();
-                var partnerId = $('#partnerId').val();
-                var username = $('#username').text();
-                fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName+'&username='+username+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename = '客户财务报表.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
-
-
-        });
-
-    </script>
+        </script>
 
     </#if>
 

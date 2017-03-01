@@ -23,9 +23,9 @@
 
                     <form action="/partner/find-all-partner-financial-account" method="get">
 
-                        <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
+                        <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
+                            <div class="pull-left head-search-bottom head-search-top">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -156,45 +156,45 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">周收入总额&yen;：<#if weekIncomeAmount??><span>${(weekIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">周支出总额&yen;：<#if weekExpenditure??><span>${(weekExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">月收入总额&yen;：<#if monthIncomeAmount??><span>${(monthIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">月支出总额&yen;：<#if monthExpenditure??><span>${(monthExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">收入总额&yen;：<#if totleIncomeAmount??><span>${(totleIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">支出余额&yen;：<#if totleExpenditure??><span>${(totleExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 
                             <#--支出总额走势-->
-                                <div class="control-group pull-right" style="margin-bottom: -10px;">
+                                <div class="pull-right table-top-bottom">
 
                                     <label class="control-label">
 
@@ -228,7 +228,7 @@
                                 </div>
 
                             <#--收入总额走势-->
-                                <div class="control-group pull-right" style="margin-bottom: -10px;">
+                                <div class="pull-right table-top-bottom">
 
                                     <label class="control-label">
 
@@ -263,41 +263,41 @@
 
 
                             </div>
-
-                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_3">
-                                <thead>
-                                <tr>
-                                    <th style="text-align: center;">公司名称</th>
-                                    <th>收入总额（单位：元）</th>
-                                    <th>支出总额（单位：元）</th>
-                                    <th>上周收入（单位：元）</th>
-                                    <th>上周支出（单位：元）</th>
-                                    <th>上月收入（单位：元）</th>
-                                    <th>上月支出（单位：元）</th>
-                                    <th style="text-align: center; width: 15%">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if partnerFinanceList??>
-                                        <#list partnerFinanceList as partnerFinance>
-                                        <tr class="odd gradeX">
-                                            <td data-title="公司名称">${partnerFinance.partnerName}</td>
-                                            <td data-title="收入总额"><a href="/partner/find-all-partner-financial-account/income-and-expenditure-record?partnerId=${partnerFinance.partnerId?c}&partnerName=${partnerFinance.partnerName}&reasonId=1"><#if partnerFinance.totleIncomeAmount??>${(partnerFinance.totleIncomeAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="支出总额"><a href="/partner/find-all-partner-financial-account/income-and-expenditure-record?partnerId=${partnerFinance.partnerId?c}&partnerName=${partnerFinance.partnerName}&reasonId=2"><#if partnerFinance.totleExpenditureAmount??>${(partnerFinance.totleExpenditureAmount/100.0)?c}<#else >0</#if></a></td>
-                                            <td data-title="上周收入"><#if partnerFinance.weekIncomeAmount??>${(partnerFinance.weekIncomeAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="上周支出"><#if partnerFinance.weekExpenditureAmount??>${(partnerFinance.weekExpenditureAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="上月收入"><#if partnerFinance.monthIncomeAmount??>${(partnerFinance.monthIncomeAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="上月支出"><#if partnerFinance.monthExpenditureAmount??>${(partnerFinance.monthExpenditureAmount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="操作" style="text-align: center">
-                                                <a href="#form_modal2" onclick="paymentReceipt(${partnerFinance.partnerId?c},2)"  data-toggle="modal">付款</a>|
-                                                <a href="#form_modal2" onclick="paymentReceipt(${partnerFinance.partnerId?c},1)"  data-toggle="modal">收款</a>
-                                            </td>
-                                        </tr>
-                                        </#list>
-                                    </#if>
-                                </tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover table-condensed" id="sample_3">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center;">公司名称</th>
+                                        <th>收入总额（单位：元）</th>
+                                        <th>支出总额（单位：元）</th>
+                                        <th>上周收入（单位：元）</th>
+                                        <th>上周支出（单位：元）</th>
+                                        <th>上月收入（单位：元）</th>
+                                        <th>上月支出（单位：元）</th>
+                                        <th style="text-align: center; width: 15%">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#if partnerFinanceList??>
+                                            <#list partnerFinanceList as partnerFinance>
+                                            <tr class="odd gradeX">
+                                                <td data-title="公司名称">${partnerFinance.partnerName}</td>
+                                                <td data-title="收入总额"><a href="/partner/find-all-partner-financial-account/income-and-expenditure-record?partnerId=${partnerFinance.partnerId?c}&partnerName=${partnerFinance.partnerName}&reasonId=1" data-toggle="tooltip" data-placement="auto" title="点击查看收款记录"><#if partnerFinance.totleIncomeAmount??>${(partnerFinance.totleIncomeAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="支出总额"><a href="/partner/find-all-partner-financial-account/income-and-expenditure-record?partnerId=${partnerFinance.partnerId?c}&partnerName=${partnerFinance.partnerName}&reasonId=2" data-toggle="tooltip" data-placement="auto" title="点击查看付款记录"><#if partnerFinance.totleExpenditureAmount??>${(partnerFinance.totleExpenditureAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上周收入"><#if partnerFinance.weekIncomeAmount??>${(partnerFinance.weekIncomeAmount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="上周支出"><#if partnerFinance.weekExpenditureAmount??>${(partnerFinance.weekExpenditureAmount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="上月收入"><#if partnerFinance.monthIncomeAmount??>${(partnerFinance.monthIncomeAmount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="上月支出"><#if partnerFinance.monthExpenditureAmount??>${(partnerFinance.monthExpenditureAmount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="操作" style="text-align: center">
+                                                    <a href="#form_modal2" onclick="paymentReceipt(${partnerFinance.partnerId?c},2)"  data-toggle="modal">付款</a>|
+                                                    <a href="#form_modal2" onclick="paymentReceipt(${partnerFinance.partnerId?c},1)"  data-toggle="modal">收款</a>
+                                                </td>
+                                            </tr>
+                                            </#list>
+                                        </#if>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div id="form_modal2" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
 
                                 <div class="modal-header">
@@ -398,9 +398,12 @@
 
     <script src="/js/locales/dataTables-sort-plungin.js"></script>
 
-    <script type="text/javascript">
+    <script>
         jQuery(document).ready(function() {
             PartnerFinanceAccount.init();
+
+            $(function () { $("[data-toggle='tooltip']").tooltip(); });
+
         });
     </script>
 

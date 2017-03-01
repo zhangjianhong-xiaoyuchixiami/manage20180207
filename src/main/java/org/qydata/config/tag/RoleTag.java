@@ -1,4 +1,4 @@
-package org.qydata.freemarker.tag;
+package org.qydata.config.tag;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;

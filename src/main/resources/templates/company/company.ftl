@@ -84,11 +84,11 @@
 
                     <div class="portlet box grey">
 
-                        <div class="portlet-title">
+                     <#--   <div class="portlet-title">
 
                             <div class="caption"><i class="icon-user"></i></div>
 
-                        </div>
+                        </div>-->
 
                         <div class="portlet-body no-more-tables">
 

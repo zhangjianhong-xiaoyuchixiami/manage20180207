@@ -49,6 +49,10 @@ var ApiDetailRecord = function () {
 
             $('#customerBalanceArrow').addClass('arrow open');
 
+            $('.api_record_detail').change(function () {
+                $(this).submit();
+            });
+
         }
 
     };

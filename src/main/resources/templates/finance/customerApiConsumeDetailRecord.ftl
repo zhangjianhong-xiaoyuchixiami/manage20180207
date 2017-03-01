@@ -20,11 +20,11 @@
 
                 <div class="span12">
 
-                    <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
+                    <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                        <form action="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail" method="get">
+                        <form action="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail" class="customer_consume_detail" method="get">
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">api类型Id</label>
 
@@ -35,7 +35,7 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">客户账号Id</label>
 
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">公司名称</label>
 
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">api类型名称</label>
 
@@ -68,7 +68,7 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">消费理由</label>
 
@@ -90,7 +90,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
+                            <div class="pull-left margin-right-20 head-search-bottom">
 
                                 <label class="control-label">起始日期</label>
 
@@ -106,7 +106,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">结束日期</label>
 
@@ -123,7 +123,7 @@
                             </div>
 
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -164,42 +164,42 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">共计&yen;：<#if totleAmount??><span>${(-totleAmount/100.0)?c}元&nbsp;&nbsp;&nbsp;</span><#else ><span>0元&nbsp;&nbsp;&nbsp;</span></#if></label>
 
                                 </div>
 
                             </div>
-
-                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_7">
-                                <thead>
-                                <tr>
-                                    <th style="width: 40%">产品</th>
-                                    <th style="width: 20%">消费金额（单位/元）</th>
-                                    <th style="width: 20%">创建时间</th>
-                                    <th style="width: 20%">类型</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if customerBalanceLogList??>
-                                        <#list customerBalanceLogList as customerBalanceLog>
-                                        <tr class="odd gradeX">
-                                            <td data-title="产品">
-                                                <#if customerBalanceLog.apiType??>${customerBalanceLog.apiType.name!''}</#if><#if customerBalanceLog.mobileOperator??>——${customerBalanceLog.mobileOperator.name!''}</#if>
-                                                <@shiro.hasPermission name="customer:findAllCustomer">
-                                                    <#if customerBalanceLog.apiVendor??>@${customerBalanceLog.apiVendor.name!''}</#if>
-                                                </@shiro.hasPermission>
-                                            </td>
-                                            <td data-title="消费金额（单位/元）"><#if customerBalanceLog.amount??>${(-customerBalanceLog.amount/100.0)?c}<#else >0</#if></td>
-                                            <td data-title="创建时间">${customerBalanceLog.createTime!''}</td>
-                                            <td data-title="类型"><#if customerBalanceLog.customerBalanceModifyReason??>${customerBalanceLog.customerBalanceModifyReason.name}</#if></td>
-                                        </tr>
-                                        </#list>
-                                    </#if>
-                                </tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered table-condensed" id="sample_7">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 40%">产品</th>
+                                        <th style="width: 20%">消费金额（单位/元）</th>
+                                        <th style="width: 20%">创建时间</th>
+                                        <th style="width: 20%">类型</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#if customerBalanceLogList??>
+                                            <#list customerBalanceLogList as customerBalanceLog>
+                                            <tr class="odd gradeX">
+                                                <td data-title="产品">
+                                                    <#if customerBalanceLog.apiType??>${customerBalanceLog.apiType.name!''}</#if><#if customerBalanceLog.mobileOperator??>——${customerBalanceLog.mobileOperator.name!''}</#if>
+                                                    <@shiro.hasPermission name="customer:findAllCustomer">
+                                                        <#if customerBalanceLog.apiVendor??>@${customerBalanceLog.apiVendor.name!''}</#if>
+                                                    </@shiro.hasPermission>
+                                                </td>
+                                                <td data-title="消费金额（单位/元）"><#if customerBalanceLog.amount??>${(-customerBalanceLog.amount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="创建时间">${customerBalanceLog.createTime!''}</td>
+                                                <td data-title="类型"><#if customerBalanceLog.customerBalanceModifyReason??>${customerBalanceLog.customerBalanceModifyReason.name}</#if></td>
+                                            </tr>
+                                            </#list>
+                                        </#if>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -217,14 +217,14 @@
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
-    <script src="/js/table-managed.js"></script>
+    <script src="/js/myjs/customer-api-consume-detail.js"></script>
 
     <script src="/js/myjs/customerleftbar.js"></script>
 
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
-            TableManaged.init();
+            CustomerApiConsumeDetail.init();
             CustomerLeftBar.init();
         });
     </script>

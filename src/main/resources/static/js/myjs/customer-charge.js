@@ -1,19 +1,17 @@
-var TableManaged = function () {
+var CustomerCharge = function () {
 
     return {
 
-        //main function to initiate the module
         init: function () {
 
             if (!jQuery().dataTable) {
                 return;
             }
 
-            $('#sample_4').dataTable({
+            var table = $('#sample_6').dataTable({
                 "aoColumns": [
                     null,
                     null,
-                    { "bSortable": false },
                     { "bSortable": false }
                 ],
                 "aaSorting": [[1, 'desc']],
@@ -43,15 +41,12 @@ var TableManaged = function () {
 
             });
 
-            $('#customerBalance').addClass('active');
-
-            $('#partnersFinancialAccount').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
+            $('.customer_charge').change(function () {
+                $(this).submit();
+            });
 
         }
+
     };
 
 }();

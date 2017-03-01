@@ -1,22 +1,21 @@
-var TableManaged = function () {
+var CustomerApiConsume = function () {
 
     return {
 
-        //main function to initiate the module
         init: function () {
 
             if (!jQuery().dataTable) {
                 return;
             }
 
-            $('#sample_4').dataTable({
+            var table = $('#sample_5').dataTable({
                 "aoColumns": [
                     null,
                     null,
-                    { "bSortable": false },
+                    null,
                     { "bSortable": false }
                 ],
-                "aaSorting": [[1, 'desc']],
+                "aaSorting": [[2, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -43,15 +42,38 @@ var TableManaged = function () {
 
             });
 
-            $('#customerBalance').addClass('active');
+            /*下拉框*/
+            $("#apiTypeId").change(function () {
+                var param = $("#apiTypeId").val();
+                var param1 = $("#customerId").val();
+                if (param !=null) {
+                    $.ajax({
+                        url: '/finance/find-api-vendor-by-api-type-id',
+                        data: {"apiTypeId": param, "customerId": param1},
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data != null){
+                                $("#apiVendorId ").empty();
+                                $("#apiVendorId").append("<option value=''>请选择...</option>");
+                                for (var i=0; i<data.length; i++){
+                                    var op=document.createElement("option");
+                                    op.value=data[i].vendorId;
+                                    op.innerHTML=data[i].vendorName;
+                                    $("#apiVendorId").append(op);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
 
-            $('#partnersFinancialAccount').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
+            $('.customer_consume').change(function () {
+                $(this).submit();
+            });
 
         }
+
     };
 
 }();

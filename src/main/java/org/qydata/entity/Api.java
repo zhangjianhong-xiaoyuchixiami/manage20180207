@@ -24,10 +24,13 @@ public class Api implements Serializable {
     private String responseClass;
     private Integer cost;
     private Integer defaultPrice;
+    private Integer proxyApiId;
     private Timestamp createTime;
     private Timestamp timestamp;
     private ApiVendor apiVendor;
     private ApiType apiType;
+    private Api api;
+    private MobileOperator mobileOperator;
     private ApiMobileOperator apiMobileOperator;
     private List<Customer> customerList;
 
@@ -176,6 +179,30 @@ public class Api implements Serializable {
 
     public void setCustomerList(List<Customer> customerList) {
         this.customerList = customerList;
+    }
+
+    public Integer getProxyApiId() {
+        return proxyApiId;
+    }
+
+    public void setProxyApiId(Integer proxyApiId) {
+        this.proxyApiId = proxyApiId;
+    }
+
+    public Api getApi() {
+        return api;
+    }
+
+    public void setApi(Api api) {
+        this.api = api;
+    }
+
+    public MobileOperator getMobileOperator() {
+        return mobileOperator;
+    }
+
+    public void setMobileOperator(MobileOperator mobileOperator) {
+        this.mobileOperator = mobileOperator;
     }
 
     @Override

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.qydata.freemarker.tag;
+package org.qydata.config.tag;
 
 import org.apache.shiro.subject.Subject;
 

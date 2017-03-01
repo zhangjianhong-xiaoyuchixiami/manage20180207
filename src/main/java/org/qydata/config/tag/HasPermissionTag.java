@@ -1,4 +1,4 @@
-package org.qydata.freemarker.tag;
+package org.qydata.config.tag;
 
 /**
  * <p>Equivalent to {@link org.apache.shiro.web.tags.HasPermissionTag}</p>

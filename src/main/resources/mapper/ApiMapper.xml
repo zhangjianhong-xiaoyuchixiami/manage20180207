@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.ApiMapper">
+
+    <resultMap id="Api_Map" type="org.qydata.entity.Api">
+        <result column="apiId" property="id"/>
+        <result column="apiName" property="name"/>
+        <result column="cost" property="cost"/>
+    </resultMap>
+
+    <resultMap id="Api_ApiType_Map" type="org.qydata.entity.Api" extends="Api_Map">
+        <association property="apiType" javaType="org.qydata.entity.ApiType">
+            <result column="apiTypeId" property="id"/>
+            <result column="apiTypeName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="Api_ApiType_ApiVendor_Map" type="org.qydata.entity.Api" extends="Api_ApiType_Map">
+        <association property="apiVendor" javaType="org.qydata.entity.ApiVendor">
+            <result column="vendorId" property="id"/>
+            <result column="vendorName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="Api_ApiType_ApiVendor_ApiProxy_Map" type="org.qydata.entity.Api" extends="Api_ApiType_ApiVendor_Map">
+        <association property="api" javaType="org.qydata.entity.Api">
+            <result column="proxyApiId" property="id"/>
+            <result column="proxyApiName" property="name"/>
+            <result column="minCost" property="cost"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map" type="org.qydata.entity.Api" extends="Api_ApiType_ApiVendor_ApiProxy_Map">
+        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorId" property="id"/>
+            <result column="mobileOperatorName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="ApiType_Map" type="org.qydata.entity.ApiType">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
+    <resultMap id="ApiVendor_Map" type="org.qydata.entity.ApiVendor">
+        <result column="vendorId" property="id"/>
+        <result column="vendorName" property="name"/>
+    </resultMap>
+
+    <!--查询产品-->
+    <select id="queryApi" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
+       SELECT aa.apiId,aa.apiName,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.cost,
+       aa.proxyApiId,aa.proxyApiName,aa.mobileOperatorId,aa.mobileOperatorName,bb.minCost,bb.apiTypeCount
+       FROM
+        (
+        SELECT apiTypeId,min(cost) minCost,count(apiTypeId) apiTypeCount
+        FROM qyfinance.bkvwApi
+        GROUP BY apiTypeId
+        ) bb LEFT JOIN
+       (
+        SELECT a.id apiId,a.name apiName,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.cost,
+        a.proxyApiId,c.name proxyApiName,d.mobileOperatorId,d.name mobileOperatorName
+        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+        LEFT JOIN qyfinance.bkvwApi c ON a.proxyApiId=c.id
+        LEFT JOIN qyfinance.bkvwApiMobileOperator d ON a.id=d.apiId
+        WHERE a.status=0
+        ) aa
+        ON bb.apiTypeId=aa.apiTypeId
+        <where>
+            <if test="vendorId != null and vendorId != ''">
+                aa.vendorId=#{vendorId}
+            </if>
+            <if test="apiTypeId != null and apiTypeId != ''">
+                AND aa.apiTypeId=#{apiTypeId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询产品类型-->
+    <select id="queryApiType" resultMap="ApiType_Map">
+        SELECT id,name
+        FROM qyfinance.bkvwApiType
+    </select>
+
+    <!--根据产品类型查询产品供应商-->
+    <select id="queryApiVendorByApiTypeId" parameterType="Integer" resultMap="ApiVendor_Map">
+        SELECT distinct(vendorId),vendorName
+        FROM qyfinance.bkvwApi
+        WHERE apiTypeId=#{param}
+    </select>
+
+
+</mapper>
+

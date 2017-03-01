@@ -12,8 +12,8 @@ var CustomerFinanceAccount = function () {
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table>';
-                sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 30%;">产品类型</th><th style="width: 62%;">价格</th></tr>';
-                sOut += '<tr><td style="width: 8%;"></td><td style="width: 30%;">'+aData[11]+'</td><td style="width: 62%;">'+aData[12]+'</td></tr>';
+                sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 30%;">产品类型</th><th>价格</th></tr>';
+                sOut += '<tr><td></td><td>'+aData[11]+'</td><td>'+aData[12]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }

@@ -101,7 +101,7 @@
 
                             </div>
 
-                            <div class="pull-left head-search-bottom">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 

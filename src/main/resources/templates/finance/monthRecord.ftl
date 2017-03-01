@@ -22,11 +22,11 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance/find-all-customer/find-month-record-by-customer-id" method="get">
+                    <form action="/finance/find-all-customer/find-month-record-by-customer-id" class="month_record" method="get">
 
-                        <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
+                        <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">客户账号Id</label>
 
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">公司名称</label>
 
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">类型</label>
 
@@ -59,29 +59,7 @@
                                 </div>
                             </div>
 
-                        <#--<div class="control-group pull-left" style="margin-bottom: -20px;">-->
-
-                        <#--<label class="control-label">类型</label>-->
-
-                        <#--<div class="controls">-->
-
-                        <#--<label class="checkbox">-->
-
-                        <#--<input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==1>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="1">充值-->
-
-                        <#--</label>-->
-
-                        <#--<label class="checkbox">-->
-
-                        <#--<input type="checkbox" <#if typeIdArray??><#list typeIdArray as typeId><#if typeId==2>checked="checked"</#if></#list></#if> id="typeId" name="typeId" value="2">消费-->
-
-                        <#--</label>-->
-
-                        <#--</div>-->
-
-                        <#--</div>-->
-
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">年</label>
 
@@ -100,7 +78,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">月</label>
 
@@ -119,7 +97,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -151,14 +129,13 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">共计&yen;：<#if totleAmount??><span><#if totleAmount<0>${(-totleAmount/100.0)?c}<#else >${(totleAmount/100.0)?c}</#if>元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
-                                <div class="control-group pull-right" style="margin-bottom: -10px;">
-
+                                <div class="pull-right table-top-bottom">
 
                                     <#if typeId?? && typeId==2>
                                         <label class="control-label">
@@ -206,35 +183,38 @@
                                 </div>
 
                             </div>
+                            <div class="table-responsive">
 
-                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_9">
-                                <thead>
-                                <tr>
-                                    <th style="width: 30%;">周期</th>
-                                    <th style="width: 20%;">金额（单位/元）</th>
-                                    <th style="width: 25%;">开始时间</th>
-                                    <th style="width: 25%;">结束时间</th>
-                                <#--<th style="width: 20%;">类型</th>-->
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if weekMonthAmountList??>
-                                        <#list weekMonthAmountList as weekMonthAmount>
-                                        <tr class="odd gradeX">
-                                            <td data-title="周期"><#if weekMonthAmount.years??>${weekMonthAmount.years?c}年</#if><#if weekMonthAmount.months??>第${weekMonthAmount.months}月</#if></td>
-                                            <td data-title="金额（单位/元）"><#if weekMonthAmount.totleAmount??><#if weekMonthAmount.totleAmount<0>${(-weekMonthAmount.totleAmount/100.0)?c}<#else >${(weekMonthAmount.totleAmount/100.0)?c}</#if><#else >0</#if></td>
-                                            <td data-title="开始时间"><#if weekMonthAmount.beginTime??>${weekMonthAmount.beginTime?date}</#if></td>
-                                            <td data-title="结束时间"><#if weekMonthAmount.endTime??>${weekMonthAmount.endTime?date}</#if></td>
-                                        <#--<#if weekMonthAmount.tableId==1>-->
-                                        <#--<td>充值</td>-->
-                                        <#--<#else >-->
-                                        <#--<td>消费</td>-->
-                                        <#--</#if>-->
-                                        </tr>
-                                        </#list>
-                                    </#if>
-                                </tbody>
-                            </table>
+                                <table class="table table-striped table-hover table-bordered table-condensed" id="sample_9">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30%;">周期</th>
+                                        <th style="width: 20%;">金额（单位/元）</th>
+                                        <th style="width: 25%;">开始时间</th>
+                                        <th style="width: 25%;">结束时间</th>
+                                    <#--<th style="width: 20%;">类型</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#if weekMonthAmountList??>
+                                            <#list weekMonthAmountList as weekMonthAmount>
+                                            <tr class="odd gradeX">
+                                                <td data-title="周期"><#if weekMonthAmount.years??>${weekMonthAmount.years?c}年</#if><#if weekMonthAmount.months??>第${weekMonthAmount.months}月</#if></td>
+                                                <td data-title="金额（单位/元）"><#if weekMonthAmount.totleAmount??><#if weekMonthAmount.totleAmount<0>${(-weekMonthAmount.totleAmount/100.0)?c}<#else >${(weekMonthAmount.totleAmount/100.0)?c}</#if><#else >0</#if></td>
+                                                <td data-title="开始时间"><#if weekMonthAmount.beginTime??>${weekMonthAmount.beginTime?date}</#if></td>
+                                                <td data-title="结束时间"><#if weekMonthAmount.endTime??>${weekMonthAmount.endTime?date}</#if></td>
+                                            <#--<#if weekMonthAmount.tableId==1>-->
+                                            <#--<td>充值</td>-->
+                                            <#--<#else >-->
+                                            <#--<td>消费</td>-->
+                                            <#--</#if>-->
+                                            </tr>
+                                            </#list>
+                                        </#if>
+                                    </tbody>
+                                </table>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -252,21 +232,19 @@
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
-    <script src="/js/table-managed.js"></script>
-
     <script src="https://code.highcharts.com/highcharts.js"></script>
 
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <script src="/js/myjs/customerleftbar.js"></script>
 
-    <script src="/js/myjs/monthRecord.js"></script>
+    <script src="/js/myjs/month-record.js"></script>
 
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
 
-            TableManaged.init();
+            MonthRecord.init();
 
             CustomerLeftBar.init();
 

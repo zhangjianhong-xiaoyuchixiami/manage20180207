@@ -1,4 +1,4 @@
-package org.qydata.regex;
+package org.qydata.tools;
 
 import org.apache.commons.lang3.StringUtils;
 

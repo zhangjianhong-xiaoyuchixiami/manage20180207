@@ -22,11 +22,11 @@
                 <div class="span12">
 
                 <#--搜索框-->
-                    <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id" method="get">
+                    <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id" class="customer_charge" method="get">
 
-                        <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
+                        <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">客户账号Id</label>
 
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px; display: none">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">公司名称</label>
 
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">充值理由</label>
 
@@ -76,7 +76,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left margin-right-20" style="margin-bottom: -20px;">
+                            <div class="pull-left margin-right-20 head-search-bottom">
 
                                 <label class="control-label">起始日期</label>
 
@@ -92,7 +92,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">结束日期</label>
 
@@ -108,7 +108,7 @@
 
                             </div>
 
-                            <div class="control-group pull-left" style="margin-bottom: -20px;">
+                            <div class="pull-left head-search-bottom head-search-display">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -143,35 +143,35 @@
 
                             <div class="clearfix margin-bottom-20">
 
-                                <div class="control-group pull-left" style="margin-bottom: -10px;">
+                                <div class="pull-left table-top-bottom">
 
                                     <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${(totleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
                             </div>
-
-                            <table class="table table-striped table-hover table-bordered table-condensed" id="sample_6">
-                                <thead>
-                                <tr>
-                                    <th style="width: 30%">金额（单位：元）</th>
-                                    <th style="width: 40%">时间</th>
-                                    <th style="width: 30%">理由</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if customerBalanceLogList??>
-                                        <#list customerBalanceLogList as customerBalanceLog>
-                                        <tr class="odd gradeX">
-                                            <td data-title="金额（单位：元）">${(customerBalanceLog.amount/100.0)?c}</td>
-                                            <td data-title="时间">${customerBalanceLog.createTime}</td>
-                                            <td data-title="理由">${customerBalanceLog.customerBalanceModifyReason.name}</td>
-                                        </tr>
-                                        </#list>
-                                    </#if>
-                                </tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered table-condensed" id="sample_6">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30%">金额（单位：元）</th>
+                                        <th style="width: 40%">时间</th>
+                                        <th style="width: 30%">理由</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#if customerBalanceLogList??>
+                                            <#list customerBalanceLogList as customerBalanceLog>
+                                            <tr class="odd gradeX">
+                                                <td data-title="金额（单位：元）">${(customerBalanceLog.amount/100.0)?c}</td>
+                                                <td data-title="时间">${customerBalanceLog.createTime}</td>
+                                                <td data-title="理由">${customerBalanceLog.customerBalanceModifyReason.name}</td>
+                                            </tr>
+                                            </#list>
+                                        </#if>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                     </div>
@@ -191,14 +191,14 @@
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
-    <script src="/js/table-managed.js"></script>
+    <script src="/js/myjs/customer-charge.js"></script>
 
     <script src="/js/myjs/customerleftbar.js"></script>
 
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
-            TableManaged.init();
+            CustomerCharge.init();
             CustomerLeftBar.init();
         });
 
@@ -224,8 +224,6 @@
             }))
             });
         });
-
-
     </script>
 
     </#if>

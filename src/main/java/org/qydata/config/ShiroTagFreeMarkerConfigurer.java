@@ -1,7 +1,7 @@
-package org.qydata.freemarker;
+package org.qydata.config;
 
 import freemarker.template.TemplateException;
-import org.qydata.freemarker.tag.ShiroTags;
+import org.qydata.config.tag.ShiroTags;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.IOException;

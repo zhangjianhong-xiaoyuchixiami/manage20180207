@@ -1,4 +1,4 @@
-package org.qydata.shirorealm;
+package org.qydata.config;
 
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;

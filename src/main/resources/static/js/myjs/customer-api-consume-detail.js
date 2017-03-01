@@ -1,22 +1,21 @@
-var TableManaged = function () {
+var CustomerApiConsumeDetail = function () {
 
     return {
 
-        //main function to initiate the module
         init: function () {
 
             if (!jQuery().dataTable) {
                 return;
             }
 
-            $('#sample_4').dataTable({
+            var table = $('#sample_7').dataTable({
                 "aoColumns": [
                     null,
                     null,
-                    { "bSortable": false },
+                    null,
                     { "bSortable": false }
                 ],
-                "aaSorting": [[1, 'desc']],
+                "aaSorting": [[2, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -40,18 +39,14 @@ var TableManaged = function () {
                     }
                 },
                 "bFilter" : false //设置全文搜索框，默认true
-
             });
 
-            $('#customerBalance').addClass('active');
-
-            $('#partnersFinancialAccount').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
+            $('.customer_consume_detail').change(function () {
+                $(this).submit();
+            });
 
         }
+
     };
 
 }();
