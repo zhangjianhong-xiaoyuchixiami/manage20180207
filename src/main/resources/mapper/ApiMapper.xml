@@ -24,10 +24,13 @@
     </resultMap>
 
     <resultMap id="Api_ApiType_ApiVendor_ApiProxy_Map" type="org.qydata.entity.Api" extends="Api_ApiType_ApiVendor_Map">
-        <association property="api" javaType="org.qydata.entity.Api">
-            <result column="proxyApiId" property="id"/>
-            <result column="proxyApiName" property="name"/>
-            <result column="minCost" property="cost"/>
+        <association property="proxyApi" javaType="org.qydata.dst.ProxyApi">
+            <result column="proxyApiId" property="proxyApiId"/>
+            <result column="proxyApiTypeId" property="proxyApiTypeId"/>
+            <result column="proxyApiTypeName" property="proxyApiTypeName"/>
+            <result column="proxyMobileOperatorName" property="proxyMobileOperatorName"/>
+            <result column="minCost" property="minCost"/>
+            <result column="apiTypeCount" property="apiTypeCount"/>
         </association>
     </resultMap>
 
@@ -44,29 +47,42 @@
     </resultMap>
 
     <resultMap id="ApiVendor_Map" type="org.qydata.entity.ApiVendor">
-        <result column="vendorId" property="id"/>
-        <result column="vendorName" property="name"/>
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
     </resultMap>
 
     <!--查询产品-->
     <select id="queryApi" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
        SELECT aa.apiId,aa.apiName,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.cost,
-       aa.proxyApiId,aa.proxyApiName,aa.mobileOperatorId,aa.mobileOperatorName,bb.minCost,bb.apiTypeCount
+       aa.proxyApiId,aa.proxyApiTypeId,aa.proxyApiTypeName,aa.proxyMobileOperatorName,
+       aa.mobileOperatorId,aa.mobileOperatorName,ifnull(bb.minCost,hh.minCost) minCost,
+        ifnull(bb.apiTypeCount,hh.apiTypeCount) apiTypeCount
        FROM
+       (
+        SELECT cc.apiId,cc.apiName,cc.apiTypeId,cc.apiTypeName,cc.vendorId,cc.vendorName,cc.cost,
+        cc.proxyApiId,cc.proxyApiTypeId,dd.name proxyApiTypeName,ee.name proxyMobileOperatorName,cc.mobileOperatorId,cc.mobileOperatorName
+        FROM
+          (
+            SELECT a.id apiId,a.name apiName,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.cost,
+            a.proxyApiId,c.apiTypeId proxyApiTypeId,d.mobileOperatorId,d.name mobileOperatorName
+            FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+            LEFT JOIN qyfinance.bkvwApi c ON a.proxyApiId=c.id
+            LEFT JOIN qyfinance.bkvwApiMobileOperator d ON a.id=d.apiId
+            WHERE a.status=0
+          ) cc  LEFT JOIN qyfinance.bkvwApiType dd ON cc.proxyApiTypeId=dd.id
+            LEFT JOIN qyfinance.bkvwApiMobileOperator ee ON cc.proxyApiId=ee.apiId
+        ) aa LEFT JOIN
+        (
+        SELECT a.apiTypeId,b.mobileOperatorId,min(a.cost) minCost,count(a.apiTypeId) apiTypeCount
+        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiMobileOperator b ON a.id=b.apiId
+        GROUP BY a.apiTypeId,b.mobileOperatorId
+        ) bb ON aa.apiTypeId=bb.apiTypeId AND aa.mobileOperatorId=bb.mobileOperatorId
+        LEFT JOIN
         (
         SELECT apiTypeId,min(cost) minCost,count(apiTypeId) apiTypeCount
         FROM qyfinance.bkvwApi
         GROUP BY apiTypeId
-        ) bb LEFT JOIN
-       (
-        SELECT a.id apiId,a.name apiName,a.apiTypeId,b.name apiTypeName,a.vendorId,a.vendorName,a.cost,
-        a.proxyApiId,c.name proxyApiName,d.mobileOperatorId,d.name mobileOperatorName
-        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
-        LEFT JOIN qyfinance.bkvwApi c ON a.proxyApiId=c.id
-        LEFT JOIN qyfinance.bkvwApiMobileOperator d ON a.id=d.apiId
-        WHERE a.status=0
-        ) aa
-        ON bb.apiTypeId=aa.apiTypeId
+        ) hh ON aa.apiTypeId=hh.apiTypeId
         <where>
             <if test="vendorId != null and vendorId != ''">
                 aa.vendorId=#{vendorId}
@@ -84,10 +100,9 @@
     </select>
 
     <!--根据产品类型查询产品供应商-->
-    <select id="queryApiVendorByApiTypeId" parameterType="Integer" resultMap="ApiVendor_Map">
-        SELECT distinct(vendorId),vendorName
-        FROM qyfinance.bkvwApi
-        WHERE apiTypeId=#{param}
+    <select id="queryApiVendor" resultMap="ApiVendor_Map">
+        SELECT id,ifnull(chineseName,name) name
+        FROM qyfinance.bkvwApiVendorChinese
     </select>
 
 

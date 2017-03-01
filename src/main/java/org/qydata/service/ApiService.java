@@ -26,9 +26,8 @@ public interface ApiService {
 
     /**
      * 根据产品类型查询产品供应商
-     * @param apiTypeId
      * @return
      */
-    public List<ApiVendor> queryApiVendorByApiTypeId(Integer apiTypeId);
+    public List<ApiVendor> queryApiVendor();
 
 }

@@ -118,13 +118,10 @@
                                                 <#else >
                                                 <tr>
                                                 </#if>
-
                                                 <td data-title="产品">
                                                 ${api.apiType.name}
                                                     <#if api.mobileOperator??>--${api.mobileOperator.name!''}</#if>
-                                                    <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}
-                                                        <#if api.proxyApi.proxyMobileOperatorName??>--${api.proxyApi.proxyMobileOperatorName!''}</#if>）
-                                                    </#if>
+                                                    <#if api.proxyApi.proxyApiId??>（调用：${api.proxyApi.proxyApiTypeName!''}<#if api.proxyApi.proxyMobileOperatorName??>--${api.proxyApi.proxyMobileOperatorName!''}</#if>）</#if>
                                                 </td>
                                                 <td data-title="产品供应商">${api.apiVendor.name}</td>
                                                 <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>

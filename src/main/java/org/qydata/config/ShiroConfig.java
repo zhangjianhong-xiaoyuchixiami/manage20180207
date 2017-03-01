@@ -350,7 +350,6 @@ public class ShiroConfig {
 
 		//产品管理
 		chains.put("/api/api-message", "authc,perms");
-		chains.put("/api/api-vendor", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

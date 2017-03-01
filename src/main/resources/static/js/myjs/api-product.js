@@ -13,7 +13,6 @@ var ApiProduct = function () {
                 "aoColumns": [
                     null,
                     null,
-                    null,
                     null
                 ],
                 "aaSorting": [[0, 'asc']],
@@ -52,33 +51,33 @@ var ApiProduct = function () {
 
             $('#apiProductArrow').addClass('arrow open');
 
-            $("#apiTypeId").change(function () {
-                var param = $("#apiTypeId").val();
-                if (param !=null) {
-                    $.ajax({
-                        url: '/api/api-vendor',
-                        data: {"apiTypeId": param},
-                        type: 'post',
-                        dataType: 'json',
-                        success: function (data) {
-                            if(data != null){
-                                $("#vendorId ").empty();
-                                $("#vendorId").append("<option value=''>请选择...</option>");
-                                for (var i=0; i<data.length; i++){
-                                    var op=document.createElement("option");
-                                    op.value=data[i].id;
-                                    op.innerHTML=data[i].name;
-                                    $("#vendorId").append(op);
-                                }
-                            }
-                        }
-                    });
-                }
-            });
-
             $('.api_product_record').change(function () {
                 $(this).submit();
             });
+
+            /* $("#apiTypeId").change(function () {
+             var param = $("#apiTypeId").val();
+             if (param !=null) {
+             $.ajax({
+             url: '/api/api-vendor',
+             data: {"apiTypeId": param},
+             type: 'post',
+             dataType: 'json',
+             success: function (data) {
+             if(data != null){
+             $("#vendorId ").empty();
+             $("#vendorId").append("<option value=''>请选择...</option>");
+             for (var i=0; i<data.length; i++){
+             var op=document.createElement("option");
+             op.value=data[i].id;
+             op.innerHTML=data[i].name;
+             $("#vendorId").append(op);
+             }
+             }
+             }
+             });
+             }
+             });*/
 
         }
 

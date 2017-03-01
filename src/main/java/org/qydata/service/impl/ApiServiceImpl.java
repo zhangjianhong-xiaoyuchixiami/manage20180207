@@ -40,9 +40,9 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public List<ApiVendor> queryApiVendorByApiTypeId(Integer apiTypeId) {
+    public List<ApiVendor> queryApiVendor() {
         try {
-            return apiMapper.queryApiVendorByApiTypeId(apiTypeId);
+            return apiMapper.queryApiVendor();
         } catch (Exception e) {
             e.printStackTrace();
         }

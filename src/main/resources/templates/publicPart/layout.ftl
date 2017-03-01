@@ -336,7 +336,7 @@
 
                 </@shiro.hasAnyRoles>
 
-           <#-- &lt;#&ndash;消息通知&ndash;&gt;
+            <#--消息通知-->
                 <@shiro.hasAnyRoles name="backAdmin">
 
                     <li>

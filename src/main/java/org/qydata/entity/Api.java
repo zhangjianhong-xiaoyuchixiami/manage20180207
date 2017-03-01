@@ -2,6 +2,7 @@ package org.qydata.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.qydata.dst.ProxyApi;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -29,9 +30,8 @@ public class Api implements Serializable {
     private Timestamp timestamp;
     private ApiVendor apiVendor;
     private ApiType apiType;
-    private Api api;
+    private ProxyApi proxyApi;
     private MobileOperator mobileOperator;
-    private ApiMobileOperator apiMobileOperator;
     private List<Customer> customerList;
 
     public Api() {
@@ -165,13 +165,6 @@ public class Api implements Serializable {
         this.apiType = apiType;
     }
 
-    public ApiMobileOperator getApiMobileOperator() {
-        return apiMobileOperator;
-    }
-
-    public void setApiMobileOperator(ApiMobileOperator apiMobileOperator) {
-        this.apiMobileOperator = apiMobileOperator;
-    }
 
     public List<Customer> getCustomerList() {
         return customerList;
@@ -189,12 +182,12 @@ public class Api implements Serializable {
         this.proxyApiId = proxyApiId;
     }
 
-    public Api getApi() {
-        return api;
+    public ProxyApi getProxyApi() {
+        return proxyApi;
     }
 
-    public void setApi(Api api) {
-        this.api = api;
+    public void setProxyApi(ProxyApi proxyApi) {
+        this.proxyApi = proxyApi;
     }
 
     public MobileOperator getMobileOperator() {

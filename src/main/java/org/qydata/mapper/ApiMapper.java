@@ -28,10 +28,9 @@ public interface ApiMapper {
 
     /**
      * 根据产品类型查询产品供应商
-     * @param apiTypeId
      * @return
      * @throws Exception
      */
-    public List<ApiVendor> queryApiVendorByApiTypeId(Integer apiTypeId)throws Exception;
+    public List<ApiVendor> queryApiVendor()throws Exception;
 
 }
