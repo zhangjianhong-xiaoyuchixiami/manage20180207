@@ -218,12 +218,9 @@ public class CalendarTools {
      */
     public static int compareDate(String date1,String date2,int stype){
         int n = 0;
-
         String[] u = {"天","月","年"};
         String formatStyle = stype==1?"yyyy-MM":"yyyy-MM-dd";
-
         date2 = date2==null? CalendarTools.getCurrentDate():date2;
-
         DateFormat df = new SimpleDateFormat(formatStyle);
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
@@ -244,13 +241,10 @@ public class CalendarTools {
                 c1.add(Calendar.DATE, 1);           // 比较天数，日期+1
             }
         }
-
         n = n-1;
-
         if(stype==2){
             n = (int)n/365;
         }
-
         System.out.println(date1+" -- "+date2+" 相差多少"+u[stype]+":"+n);
         return n;
     }

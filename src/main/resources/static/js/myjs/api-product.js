@@ -13,6 +13,7 @@ var ApiProduct = function () {
                 "aoColumns": [
                     null,
                     null,
+                    null,
                     null
                 ],
                 "aaSorting": [[0, 'asc']],

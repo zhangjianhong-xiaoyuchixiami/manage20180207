@@ -53,7 +53,7 @@
                                         <option value="">请选择...</option>
                                         <#if apiVendorList??>
                                             <#list apiVendorList as apiVendor>
-                                                <option <#if vendorId?? && vendorId==apiVendor.id>selected="selected"</#if> value="${apiVendor.id}">${apiVendor.name}</option>
+                                                <option <#if vendorId?? && vendorId==apiVendor.id>selected="selected"</#if> value="${apiVendor.id}">${apiVendor.name}<#if apiVendor.partner??>@${apiVendor.partner.name}</#if></option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -106,6 +106,7 @@
                                     <thead>
                                     <tr>
                                         <th>产品</th>
+                                        <th>合作公司</th>
                                         <th>产品供应商</th>
                                         <th>价格（单位：元）</th>
                                     </tr>
@@ -126,7 +127,8 @@
                                                         <#if api.proxyApi.proxyMobileOperatorName??>--${api.proxyApi.proxyMobileOperatorName!''}</#if>）
                                                     </#if>
                                                 </td>
-                                                <td data-title="产品供应商">${api.apiVendor.name}</td>
+                                                <td data-title="合作公司">${(api.apiVendor.partner.name)!''}</td>
+                                                <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
                                                 <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
                                             </tr>
                                             </#list>

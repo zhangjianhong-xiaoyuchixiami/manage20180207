@@ -572,7 +572,7 @@ textarea[class*="span"].m-wrap
 
 .input-append .m-wrap,
 .input-append .m-wrap:focus {
-	border-right: 0 !important;
+	/*border-right: 0 !important;*/
   margin-right: 1px;
 }
 

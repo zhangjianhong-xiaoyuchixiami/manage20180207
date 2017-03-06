@@ -7,11 +7,11 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerApiVendor;
-import org.qydata.dst.CustomerFinance;
+import org.qydata.entity.ApiVendor;
 import org.qydata.entity.CustomerBalanceLog;
-import org.qydata.entity.Dept;
 import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
+import org.qydata.service.ApiService;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerService;
 import org.qydata.tools.CalendarTools;
@@ -39,36 +39,37 @@ public class FinanceController {
     private CustomerService customerService;
     @Autowired
     private CustomerFinanceService customerFinanceService;
-
+    @Autowired
+    private ApiService apiService;
     /**
      * 查找公司财务账单
-     * @param request
      * @param model
      * @param content
      * @return
      */
     @RequestMapping(value = "/find-all-customer")
-    public String findAllCustomer(HttpServletRequest request, Model model, String content,Integer partnerId){
-
-        try {
-            Map<String,Object> map = new HashMap<String,Object>();
-            List customerTypeIdList = new ArrayList();
-            if(content!=null){
-                map.put("content",content);
-            }
-            if(partnerId!=null){
-                map.put("partnerId",partnerId);
-            }
-            customerTypeIdList.add(1);
-            map.put("customerTypeIdList",customerTypeIdList);
-
-            List<CustomerFinance> customerFinanceList = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
-            model.addAttribute("customerFinanceList",customerFinanceList);
-            model.addAttribute("content",content);
-            model.addAttribute("partnerId",partnerId);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public String findAllCustomer(Model model, String content,Integer partnerId,String beginDate,String endDate){
+        Map<String,Object> map = new HashMap<>();
+        if(content != null){
+            map.put("content",content);
         }
+        if(partnerId != null){
+            map.put("partnerId",partnerId);
+        }
+        if(beginDate != null && beginDate != ""){
+            map.put("beginDate", beginDate+" "+"00:00:00");
+        }
+        if(endDate != null && endDate != ""){
+            map.put("endDate", endDate+" "+"23:59:59");
+        }
+        model.addAttribute("customerFinanceList",customerFinanceService.queryCompanyCustomerOverAllFinance(map));
+        model.addAttribute("content",content);
+        model.addAttribute("partnerId",partnerId);
+        model.addAttribute("beginDate",beginDate);
+        model.addAttribute("endDate",endDate);
+        model.addAttribute("year",CalendarTools.getYearMonthCount(1));
+        model.addAttribute("month",CalendarTools.getMonthCount(1));
+        model.addAttribute("week",CalendarTools.getYearWeekCount(1));
         return "/finance/customerFinancialAccount";
     }
 
@@ -80,42 +81,38 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = ("/find-all-customer-by-dept-id"))
-    public String findAllCustomerByDeptId(HttpServletRequest request,Model model,String content,Integer partnerId){
-        User user = (User)request.getSession().getAttribute("userInfo");
-        List<Dept> deptList = user.getDept();
-        List deptIdList = new ArrayList();
-        System.out.println(deptList.size());
-        if (deptList.size() > 0) {
-            for (int i = 0; i < deptList.size(); i++) {
-                deptIdList.add(deptList.get(i).getId());
+    public String findAllCustomerByDeptId(HttpServletRequest request,Model model,String content,Integer partnerId,String beginDate,String endDate){
+        User user = (User) request.getSession().getAttribute("userInfo");
+        List deptList = new ArrayList();
+        Map<String, Object> map = new HashMap<>();
+        if (user.getDept().size() > 0) {
+            for (int i = 0; i < user.getDept().size(); i++) {
+                deptList.add(user.getDept().get(i).getId());
             }
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("deptIdList", deptIdList);
+            map.put("deptIdList", deptList);
             if (content != null) {
                 map.put("content", content);
             }
-            if(partnerId!=null){
-                map.put("partnerId",partnerId);
+            if (partnerId != null) {
+                map.put("partnerId", partnerId);
             }
-            List customerTypeIdList = new ArrayList();
-            customerTypeIdList.add(1);
-            map.put("customerTypeIdList", customerTypeIdList);
-            List<CustomerFinance> customerFinanceList = null;
-            try {
-                customerFinanceList = customerFinanceService.queryCompanyCustomerOverAllFinanceByDept(map);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(beginDate != null && beginDate != ""){
+                map.put("beginDate", beginDate+" "+"00:00:00");
             }
-            model.addAttribute("customerFinanceList",customerFinanceList);
-            model.addAttribute("deptIdList", deptIdList);
-            model.addAttribute("content",content);
-            model.addAttribute("partnerId",partnerId);
-            return "/finance/customerFinancialAccount";
-        }else {
-            model.addAttribute("deptIdList", deptIdList);
-            model.addAttribute("customerFinanceList",null);
+            if(endDate != null && endDate != ""){
+                map.put("endDate", endDate+" "+"23:59:59");
+            }
+            model.addAttribute("customerFinanceList", customerFinanceService.queryCompanyCustomerOverAllFinanceByDept(map));
+            model.addAttribute("content", content);
+            model.addAttribute("partnerId", partnerId);
+            model.addAttribute("beginDate",beginDate);
+            model.addAttribute("endDate",endDate);
+            model.addAttribute("year",CalendarTools.getYearMonthCount(1));
+            model.addAttribute("month",CalendarTools.getMonthCount(1));
+            model.addAttribute("week",CalendarTools.getYearWeekCount(1));
             return "/finance/customerFinancialAccount";
         }
+        return "/finance/customerFinancialAccount";
     }
     /**
      * 指定账号充值记录
@@ -130,7 +127,7 @@ public class FinanceController {
      */
     @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id")
     public String findAllCustomerRechargeLogByCustomerId(Integer customerId,String companyName, String beginDate, String endDate, String [] reasonId, HttpServletRequest request, Model model){
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("customerId", customerId);
         List<Integer> reasonIdList = new ArrayList<>();
         if (reasonId != null && reasonId.length >0) {
@@ -149,19 +146,14 @@ public class FinanceController {
         if(endDate != null && endDate != ""){
             map.put("endDate", endDate+" "+"23:59:59");
         }
-        List<CustomerBalanceLog> customerBalanceLogList = null;
+        List<CustomerBalanceLog> customerBalanceLogList = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
         long totleAmount = 0;
-        try {
-            customerBalanceLogList = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
-            if(customerBalanceLogList != null && customerBalanceLogList.size()>0) {
-                Iterator<CustomerBalanceLog> iterator = customerBalanceLogList.iterator();
-                while (iterator.hasNext()) {
-                    CustomerBalanceLog customerBalanceLog = iterator.next();
-                    totleAmount = totleAmount + customerBalanceLog.getAmount();
-                }
+        if(customerBalanceLogList != null && customerBalanceLogList.size()>0) {
+            Iterator<CustomerBalanceLog> iterator = customerBalanceLogList.iterator();
+            while (iterator.hasNext()) {
+                CustomerBalanceLog customerBalanceLog = iterator.next();
+                totleAmount = totleAmount + customerBalanceLog.getAmount();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         model.addAttribute("customerBalanceLogList",customerBalanceLogList);
         model.addAttribute("customerId",customerId);
@@ -182,34 +174,16 @@ public class FinanceController {
         try {
             Map<String,Object> map = new HashMap();
             map.put("customerId",customerId);
-            List<CustomerApiType> customerApiTypes = null;
-            customerApiTypes = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-            List<CustomerApiType> customerApiTypesOne = null;
-            List<CustomerApiVendor> customerApiVendors = null;
+            List<ApiVendor> apiVendorList = null;
             if(apiTypeId != null){
                 map.put("apiTypeId",apiTypeId);
-                customerApiTypesOne = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-                if (customerApiTypesOne != null) {
-                    for (int i = 0; i < customerApiTypesOne.size(); i++) {
-                        CustomerApiType customerApiType = customerApiTypesOne.get(i);
-                        customerApiVendors = customerApiType.getCustomerApiVendors();
-                        if (customerApiVendors != null){
-                            for (int j=0; j<customerApiVendors.size(); j++){
-                                CustomerApiVendor customerApiVendor = customerApiVendors.get(j);
-                                if (customerApiVendor.getVendorName() == null){
-                                    customerApiVendors.remove(j);
-                                }
-                            }
-                        }
-                    }
-                }
+                apiVendorList = apiService.queryApiVendorByApiTypeId(apiTypeId);
             }
             if(apiVendorId != null){
                 map.put("apiVendorId",apiVendorId);
             }
-            List<CustomerApiType> customerApiTypeList = null;
+            List<CustomerApiType> customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
             long totleAmount =0;
-            customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
             if (customerApiTypeList != null) {
                 for (int i = 0; i < customerApiTypeList.size(); i++) {
                     CustomerApiType customerApiType = customerApiTypeList.get(i);
@@ -217,8 +191,8 @@ public class FinanceController {
                 }
             }
             model.addAttribute("customerApiTypeList", customerApiTypeList);
-            model.addAttribute("customerApiTypes",customerApiTypes);
-            model.addAttribute("customerApiVendors",customerApiVendors);
+            model.addAttribute("customerApiTypes",apiService.queryApiType());
+            model.addAttribute("customerApiVendors",apiVendorList);
             model.addAttribute("customerId",customerId);
             model.addAttribute("apiTypeId",apiTypeId);
             model.addAttribute("apiVendorId",apiVendorId);
@@ -229,44 +203,6 @@ public class FinanceController {
         }
         return "/finance/customerApiConsumeRecord";
     }
-
-    /**
-     * 二级级联
-     * @param request
-     * @return
-     */
-    @RequestMapping("/find-api-vendor-by-api-type-id")
-    @ResponseBody
-    public String findApiVendorByApiTypeId(Integer apiTypeId,Integer customerId,HttpServletRequest request){
-        Map<String, Object> map = new HashedMap();
-        map.put("customerId", customerId);
-        map.put("apiTypeId", apiTypeId);
-        List<CustomerApiType> customerApiTypeList = null;
-        CustomerApiType customerApiType = null;
-        List<CustomerApiVendor> customerApiVendorList = null;
-        try {
-            customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-            if(customerApiTypeList != null) {
-                for (int i = 0; i < customerApiTypeList.size(); i++) {
-                    customerApiType = customerApiTypeList.get(i);
-                    customerApiVendorList = customerApiType.getCustomerApiVendors();
-                    if (customerApiVendorList != null){
-                        for (int j=0; j<customerApiVendorList.size(); j++){
-                            CustomerApiVendor customerApiVendor = customerApiVendorList.get(j);
-                            if (customerApiVendor.getVendorName() == null){
-                                customerApiVendorList.remove(j);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        JSONArray jsonArray = JSONArray.fromObject(customerApiVendorList);
-        return jsonArray.toString();
-    }
-
 
     //客户个供应商消费饼状图
     @RequestMapping("/find-all-vendor-record/count-result")
@@ -328,18 +264,13 @@ public class FinanceController {
             reasonIdList.add(-2);
         }
         map.put("reasonIdList", reasonIdList);
-        List<CustomerBalanceLog> customerBalanceLogList = null;
+        List<CustomerBalanceLog> customerBalanceLogList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
         long totleAmount = 0;
-        try {
-            customerBalanceLogList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
-            if(customerBalanceLogList != null) {
-                for (int i = 0; i < customerBalanceLogList.size(); i++) {
-                    CustomerBalanceLog customerBalanceLog = customerBalanceLogList.get(i);
-                    totleAmount = totleAmount + customerBalanceLog.getAmount();
-                }
+        if(customerBalanceLogList != null) {
+            for (int i = 0; i < customerBalanceLogList.size(); i++) {
+                CustomerBalanceLog customerBalanceLog = customerBalanceLogList.get(i);
+                totleAmount = totleAmount + customerBalanceLog.getAmount();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         model.addAttribute("customerBalanceLogList",customerBalanceLogList);
         model.addAttribute("companyName",companyName);
@@ -372,46 +303,27 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
-        List<Integer> yearList = null;
-        try {
-            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<Integer> yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
         List<Integer> monthList = null;
         if(years != null){
             map.put("years",years);
-            try {
-                monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
         }
         List<Integer> weekList = null;
         if(months != null){
             map.put("months",months);
-            try {
-                weekList = customerFinanceService.queryCompanyCustomerWeeksByCustomerId(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            weekList = customerFinanceService.queryCompanyCustomerWeeksByCustomerId(map);
         }
         if(weeks != null){
             map.put("weeks",weeks);
         }
-        List<WeekMonthAmount> weekMonthAmountList = null;
+        List<WeekMonthAmount> weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
         long totleAmount = 0;
-        try {
-
-            weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
-            if(weekMonthAmountList != null){
-                for (int i=0; i<weekMonthAmountList.size(); i++){
-                    WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
-                    totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
-                }
+        if(weekMonthAmountList != null){
+            for (int i=0; i<weekMonthAmountList.size(); i++){
+                WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
+                totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         model.addAttribute("weekMonthAmountList",weekMonthAmountList);
         model.addAttribute("yearList",yearList);
@@ -446,36 +358,22 @@ public class FinanceController {
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
         List<Integer> yearList = null;
-        try {
-            yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
         List<Integer> monthList = null;
         if(years != null){
             map.put("years",years);
-            try {
-                monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
         }
         if(months != null){
             map.put("months",months);
-
         }
-        List<WeekMonthAmount> weekMonthAmountList = null;
+        List<WeekMonthAmount> weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
         long totleAmount = 0;
-        try {
-            weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
-            if(weekMonthAmountList != null){
-                for (int i=0; i<weekMonthAmountList.size(); i++){
-                    WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
-                    totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
-                }
+        if(weekMonthAmountList != null){
+            for (int i=0; i<weekMonthAmountList.size(); i++){
+                WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
+                totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         model.addAttribute("weekMonthAmountList",weekMonthAmountList);
         model.addAttribute("yearList",yearList);
@@ -504,13 +402,7 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
-        List<Integer> monthList = null;
-        try {
-            monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        JSONArray jsonArray = JSONArray.fromObject(monthList);
+        JSONArray jsonArray = JSONArray.fromObject(customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map));
         return jsonArray.toString();
     }
 
@@ -530,13 +422,7 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
-        List<Integer> weekList = null;
-        try {
-            weekList = customerFinanceService.queryCompanyCustomerWeeksByCustomerId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        JSONArray jsonArray = JSONArray.fromObject(weekList);
+        JSONArray jsonArray = JSONArray.fromObject(customerFinanceService.queryCompanyCustomerWeeksByCustomerId(map));
         return jsonArray.toString();
     }
 
@@ -556,13 +442,7 @@ public class FinanceController {
         List<Integer> tableIdList = new ArrayList();
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
-        List<Integer> monthList = null;
-        try {
-            monthList = customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        JSONArray jsonArray = JSONArray.fromObject(monthList);
+        JSONArray jsonArray = JSONArray.fromObject(customerFinanceService.queryCompanyCustomerMonthsByCustomerId(map));
         return jsonArray.toString();
     }
 
@@ -575,10 +455,6 @@ public class FinanceController {
     @RequestMapping("/months-charge-consume-toward")
     @ResponseBody
     public String monthsChargeConsumeToward(Integer customerId,Integer typeId,Integer years,Integer months){
-        System.out.println(customerId);
-        System.out.println(typeId);
-        System.out.println(years);
-        System.out.println(months);
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("tableId",typeId);
@@ -586,16 +462,13 @@ public class FinanceController {
             if (years < CalendarTools.getYearMonthCount(0)){
                 Integer result =  (CalendarTools.compareDate(years+"-"+12+"-"+31, null, 1)-1);
                 map.put("result",result);
-                System.out.println(result);
             }else {
                 map.put("result",0);
             }
-
         }
         if(years != null && months != null){
             Integer result =  (CalendarTools.compareDate(years+"-"+months+"-"+31, null, 1)-1);
             map.put("result",result);
-            System.out.println(result);
         }
         if (years == null && months == null){
             map.put("result",0);

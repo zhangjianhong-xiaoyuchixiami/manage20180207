@@ -27,10 +27,17 @@ public interface ApiMapper {
     public List<ApiType> queryApiType()throws Exception;
 
     /**
-     * 根据产品类型查询产品供应商
+     * 查询产品供应商
      * @return
      * @throws Exception
      */
     public List<ApiVendor> queryApiVendor()throws Exception;
+
+    /**
+     * 根据产品类型查询产品供应商
+     * @return
+     * @throws Exception
+     */
+    public List<ApiVendor> queryApiVendorByApiTypeId(Integer id)throws Exception;
 
 }

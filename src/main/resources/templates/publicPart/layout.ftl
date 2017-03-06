@@ -336,7 +336,7 @@
 
                 </@shiro.hasAnyRoles>
 
-            <#--消息通知-->
+           <#-- &lt;#&ndash;消息通知&ndash;&gt;
                 <@shiro.hasAnyRoles name="backAdmin">
 
                     <li>
@@ -350,7 +350,7 @@
                         </a>
 
                     </li>
-                </@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>&ndash;&gt;-->
 
             </ul>
 

@@ -35,19 +35,65 @@
 
                     <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
 
-                        <form action="/finance/find-all-customer-by-dept-id" method="get">
+                        <form action="/finance/find-all-customer-by-dept-id" class="find_part_customer" method="get">
 
                             <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                                <div class="pull-left head-search-bottom head-search-top">
+                                <div class="pull-left margin-right-20 head-search-bottom">
 
-                                    <label class="control-label">&nbsp;&nbsp;</label>
+                                    <label class="control-label">起始日期</label>
+
+                                    <div class="controls">
+
+                                        <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                            <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="pull-left head-search-bottom">
+
+                                    <label class="control-label">结束日期</label>
+
+                                    <div class="controls">
+
+                                        <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                            <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="pull-left head-search-bottom">
+
+                                    <label class="control-label">请输入公司名称</label>
 
                                     <div class="controls">
 
                                         <div class="input-append">
 
                                             <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="pull-left head-search-bottom head-search-display">
+
+                                    <label class="control-label">&nbsp;&nbsp;</label>
+
+                                    <div class="controls" >
+
+                                        <div class="input-append">
 
                                             <button class="btn black" type="submit">搜索</button>
 
@@ -65,19 +111,65 @@
 
                     <@shiro.hasPermission name="customer:findAllCustomer">
 
-                        <form action="/finance/find-all-customer" method="get">
+                        <form action="/finance/find-all-customer" class="find_all_customer" method="get">
 
                             <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                                <div class="pull-left head-search-bottom head-search-top">
+                                <div class="pull-left margin-right-20 head-search-bottom">
 
-                                    <label class="control-label">&nbsp;&nbsp;</label>
+                                    <label class="control-label">起始日期</label>
+
+                                    <div class="controls">
+
+                                        <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                            <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="pull-left head-search-bottom">
+
+                                    <label class="control-label">结束日期</label>
+
+                                    <div class="controls">
+
+                                        <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                            <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="pull-left head-search-bottom">
+
+                                    <label class="control-label">请输入公司名称</label>
 
                                     <div class="controls">
 
                                         <div class="input-append">
 
                                             <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="pull-left head-search-bottom head-search-display">
+
+                                    <label class="control-label">&nbsp;&nbsp;</label>
+
+                                    <div class="controls" >
+
+                                        <div class="input-append">
 
                                             <button class="btn black" type="submit">搜索</button>
 
@@ -154,11 +246,10 @@
 
                                     <thead>
                                     <tr>
-                                        <th style="text-align: center;">公司名称</th>
+                                        <th>公司名称</th>
                                         <@shiro.hasPermission name="customer:findAllCustomer">
-                                            <th style="text-align: center;">合作公司</th>
+                                            <th>合作公司</th>
                                         </@shiro.hasPermission>
-
                                         <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                             <th style="display: none">合作公司</th>
                                         </@shiro.hasPermission>
@@ -166,12 +257,15 @@
                                         <th>余额（单位：元）</th>
                                         <th>充值总额（单位：元）</th>
                                         <th>消费总额（单位：元）</th>
-                                        <th>上周充值（单位：元）</th>
-                                        <th>上周消费（单位：元）</th>
-                                        <th>上月充值（单位：元）</th>
-                                        <th>上月消费（单位：元）</th>
+                                        <th>${year!''}年${month!''}月第${week!''}周充值（单位：元）</th>
+                                        <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                        <th>${year!''}年${month!''}月充值（单位：元）</th>
+                                        <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>产品类型</th>
                                         <th>产品价格</th>
+                                        <th>总消费额</th>
+                                        <th>请求次数</th>
+                                        <th>成功次数</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -193,17 +287,38 @@
                                                 <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td>
+                                                <td data-title="产品类型">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
-                                                            <#if companyApi.apiType??>${companyApi.apiType.name!''}<#if companyApi.mobileOperator??>——${companyApi.mobileOperator.name!''}</#if></#if><br/>
+                                                            <#if companyApi.apiType??>${companyApi.apiType.name!''}<#if companyApi.mobileOperator??>--${companyApi.mobileOperator.name!''}</#if></#if><br/>
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td>
+                                                <td data-title="产品价格">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
                                                             <#if companyApi.price??>${(companyApi.price/100.0)!''}</#if><br/>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td data-title="总消费额">
+                                                    <#if customer.companyApiList??>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            ${(-companyApi.companyApiCount.sumApiTypeIdAmount/100.0)!'0'}<br/>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td data-title="请求次数">
+                                                    <#if customer.companyApiList??>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            ${(companyApi.companyApiCount.countTotle)!'0'}<br/>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td data-title="成功次数">
+                                                    <#if customer.companyApiList??>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
                                                         </#list>
                                                     </#if>
                                                 </td>
@@ -249,6 +364,15 @@
             jQuery(document).ready(function() {
                 CustomerFinanceAccount.init();
                 CustomerLeftBar.init();
+
+                $('.find_all_customer').change(function () {
+                    $(this).submit();
+                });
+
+                $('.find_part_customer').change(function () {
+                    $(this).submit();
+                });
+
             });
         </script>
 

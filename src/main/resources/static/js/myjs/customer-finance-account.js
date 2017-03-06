@@ -7,13 +7,23 @@ var CustomerFinanceAccount = function () {
             if (!jQuery().dataTable) {
                 return;
             }
+            var beginDate=null;
+            var endDate=null;
+            if ($('#beginDate').val() != null && $('#beginDate').val() != ''){
+                beginDate = $('#beginDate').val();
+            }
+            if ($('#endDate').val() != null && $('#endDate').val() != ''){
+                endDate = $('#endDate').val();
+            }else {
+                endDate = '至今'
+            }
 
-            function fnFormatDetails ( oTable, nTr )
+            function fnFormatDetails ( oTable, nTr ,beginDate,endDate)
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table>';
-                sOut += '<tr><th style="width: 8%;">购买产品:</th><th style="width: 30%;">产品类型</th><th>价格</th></tr>';
-                sOut += '<tr><td></td><td>'+aData[11]+'</td><td>'+aData[12]+'</td></tr>';
+                sOut += '<tr><th>购买产品</th><th>当前价格</th><th>总消费额（单位：元）</th><th>请求次数（时间范围：'+beginDate+'-'+endDate+'）</th><th>成功次数（时间范围：'+beginDate+'-'+endDate+'）</th></tr>';
+                sOut += '<tr><td>'+aData[11]+'</td><td>'+aData[12]+'</td><td>'+aData[13]+'</td><td>'+aData[14]+'</td><td>'+aData[15]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -42,7 +52,7 @@ var CustomerFinanceAccount = function () {
                 {
                     /* Open this row */
                     $(this).addClass("row-details-open").removeClass("row-details-close");
-                    oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr), 'details' );
+                    oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr,beginDate,endDate), 'details' );
                 }
             });
 
@@ -58,10 +68,13 @@ var CustomerFinanceAccount = function () {
                     null,  //6
                     { "bVisible": false},  //7
                     { "bVisible": false},  //8
-                    null,  //8
                     null,  //9
-                    { "bVisible": false },  //10
-                    { "bVisible": false }  //11
+                    null,  //10
+                    { "bVisible": false },  //11
+                    { "bVisible": false },  //12
+                    { "bVisible": false },  //13
+                    { "bVisible": false },  //14
+                    { "bVisible": false }   //15
                 ],
                 "aoColumnDefs": [
                     {

@@ -199,7 +199,7 @@
                                         <#if apiFinanceList??>
                                             <#list apiFinanceList as apiFinance>
                                             <tr>
-                                                <td data-title="产品类型">${apiFinance.apiTypeName}<#if apiFinance.mobileOperator??>——${apiFinance.mobileOperator.name!''}</#if></td>
+                                                <td data-title="产品类型">${apiFinance.apiTypeName}<#if apiFinance.mobileOperator??>--${apiFinance.mobileOperator.name!''}</#if></td>
                                                 <td data-title="产品供应商">${apiFinance.vendorName}</td>
                                                 <td data-title="产品名称">${apiFinance.apiName}</td>
                                                 <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>

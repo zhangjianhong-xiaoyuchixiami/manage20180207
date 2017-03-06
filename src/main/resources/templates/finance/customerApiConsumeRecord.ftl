@@ -57,8 +57,8 @@
                                     <select id="apiTypeId" name="apiTypeId" class="medium m-wrap1" tabindex="1" >
                                         <option value="">请选择...</option>
                                         <#if customerApiTypes??>
-                                            <#list customerApiTypes as customerApiType>
-                                                <option <#if apiTypeId?? && customerApiType.apiTypeId==apiTypeId>selected="selected"</#if> value="${customerApiType.apiTypeId?c}">${customerApiType.apiTypeName}</option>
+                                            <#list customerApiTypes as apiType>
+                                                <option <#if apiTypeId?? && apiType.id==apiTypeId>selected="selected"</#if> value="${apiType.id?c}">${apiType.name}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -77,7 +77,7 @@
                                             <#if customerApiVendors??>
                                                 <#list customerApiVendors as vendor>
 
-                                                    <option <#if apiVendorId?? &&vendor.vendorId?? && vendor.vendorId==apiVendorId>selected="selected"</#if> value="<#if vendor.vendorId??>${vendor.vendorId?c}</#if>"><#if vendor.vendorName??>${vendor.vendorName}</#if></option>
+                                                    <option <#if apiVendorId?? &&vendor.id?? && vendor.id==apiVendorId>selected="selected"</#if> value="<#if vendor.id??>${vendor.id?c}</#if>"><#if vendor.id??>${vendor.name}</#if></option>
 
                                                 </#list>
                                             </#if>

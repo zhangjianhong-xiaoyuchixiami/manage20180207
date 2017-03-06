@@ -25,22 +25,37 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     private CustomerFinanceMapper customerFinanceMapper;
 
     @Override
-    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String, Object> map) throws Exception {
-        return customerFinanceMapper.queryCompanyCustomerOverAllFinanceByDept(map);
+    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String, Object> map){
+        try {
+            return customerFinanceMapper.queryCompanyCustomerOverAllFinanceByDept(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String, Object> map) throws Exception {
-        return customerFinanceMapper.queryCompanyCustomerOverAllFinance(map);
+    public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String, Object> map){
+        try {
+            return customerFinanceMapper.queryCompanyCustomerOverAllFinance(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String, Object> map) throws Exception {
-        return customerFinanceMapper.queryCompanyCustomerRechargeRecordByCustomerId(map);
+    public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String, Object> map){
+        try {
+            return customerFinanceMapper.queryCompanyCustomerRechargeRecordByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public List<CustomerApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String, Object> map) throws Exception {
+    public List<CustomerApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String, Object> map)throws Exception{
         List<ApiType> apiTypeList = customerFinanceMapper.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
         List<CustomerApiType> customerApiTypeList = new ArrayList<>();
         for (int i = 0; i < apiTypeList.size(); i++) {
@@ -58,33 +73,57 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             customerApiType.setCustomerApiVendors(apiType.getCustomerApiVendorList());
             customerApiTypeList.add(customerApiType);
         }
-
         return customerApiTypeList;
     }
 
     @Override
-    public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String, Object> map) throws Exception {
-        return customerFinanceMapper.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
+    public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String, Object> map){
+        try {
+            return customerFinanceMapper.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public List<WeekMonthAmount> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String, Object> map) throws Exception {
-        return customerFinanceMapper.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
+    public List<WeekMonthAmount> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String, Object> map){
+        try {
+            return customerFinanceMapper.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public List<Integer> queryCompanyCustomerYearsByCustomerId(Map<String, Object> map) throws Exception {
-        return customerFinanceMapper.queryCompanyCustomerYearsByCustomerId(map);
+    public List<Integer> queryCompanyCustomerYearsByCustomerId(Map<String, Object> map){
+        try {
+            return customerFinanceMapper.queryCompanyCustomerYearsByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public List<Integer> queryCompanyCustomerMonthsByCustomerId(Map<String, Object> map) throws Exception {
-        return customerFinanceMapper.queryCompanyCustomerMonthsByCustomerId(map);
+    public List<Integer> queryCompanyCustomerMonthsByCustomerId(Map<String, Object> map){
+        try {
+            return customerFinanceMapper.queryCompanyCustomerMonthsByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String, Object> map) throws Exception {
-        return customerFinanceMapper.queryCompanyCustomerWeeksByCustomerId(map);
+    public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String, Object> map){
+        try {
+            return customerFinanceMapper.queryCompanyCustomerWeeksByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

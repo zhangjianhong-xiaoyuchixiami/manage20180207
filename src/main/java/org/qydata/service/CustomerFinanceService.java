@@ -18,31 +18,27 @@ public interface CustomerFinanceService {
      * 查询客户的财务总览
      * @param map
      * @return
-     * @throws Exception
      */
-    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String,Object> map)throws Exception;
+    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String,Object> map);
 
     /**
      * 查询客户的财务总览
      * @param map
      * @return
-     * @throws Exception
      */
-    public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String,Object> map)throws Exception;
+    public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String,Object> map);
     /**
      * 指定账号余额变动记录
      * @param map
      * @return
-     * @throws Exception
      */
-    public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map)throws Exception;
+    public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
 
 
     /**
      * 查询客户的Api消费记录
      * @param map
      * @return
-     * @throws Exception
      */
     public List<CustomerApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
@@ -50,41 +46,36 @@ public interface CustomerFinanceService {
      * 查询客户的Api消费明细记录
      * @param map
      * @return
-     * @throws Exception
      */
-    public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
+    public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String,Object> map);
 
     /**
      * 查询客户的周月记录
      * @param map
      * @return
-     * @throws Exception
      */
-    public List<WeekMonthAmount> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String,Object> map)throws Exception;
+    public List<WeekMonthAmount> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String,Object> map);
 
     /**
      * 查询客户的周月记录年级联菜单
      * @param map
      * @return
-     * @throws Exception
      */
-    public List<Integer> queryCompanyCustomerYearsByCustomerId(Map<String,Object> map) throws Exception;
+    public List<Integer> queryCompanyCustomerYearsByCustomerId(Map<String,Object> map);
 
     /**
      * 查询客户的周月记录月级联菜单
      * @param map
      * @return
-     * @throws Exception
      */
-    public List<Integer> queryCompanyCustomerMonthsByCustomerId(Map<String,Object> map) throws Exception;
+    public List<Integer> queryCompanyCustomerMonthsByCustomerId(Map<String,Object> map);
 
     /**
      * 查询客户的周月记录周级联菜单
      * @param map
      * @return
-     * @throws Exception
      */
-    public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String,Object> map) throws Exception;
+    public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String,Object> map);
 
     /**
      * 月账单走势

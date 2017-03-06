@@ -48,4 +48,14 @@ public class ApiServiceImpl implements ApiService {
         }
         return null;
     }
+
+    @Override
+    public List<ApiVendor> queryApiVendorByApiTypeId(Integer id) {
+        try {
+            return apiMapper.queryApiVendorByApiTypeId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

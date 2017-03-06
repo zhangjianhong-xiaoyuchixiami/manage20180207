@@ -30,4 +30,10 @@ public interface ApiService {
      */
     public List<ApiVendor> queryApiVendor();
 
+    /**
+     * 根据产品类型查询产品供应商
+     * @return
+     */
+    public List<ApiVendor> queryApiVendorByApiTypeId(Integer id);
+
 }

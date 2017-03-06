@@ -1,5 +1,7 @@
 package org.qydata.entity;
 
+import org.qydata.dst.CompanyApiCount;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -17,6 +19,7 @@ public class CompanyApi implements Serializable {
     private Timestamp createTime;
     private ApiType apiType;
     private MobileOperator mobileOperator;
+    private CompanyApiCount companyApiCount;
 
     public Integer getId() {
         return id;
@@ -88,5 +91,13 @@ public class CompanyApi implements Serializable {
 
     public void setMobileOperator(MobileOperator mobileOperator) {
         this.mobileOperator = mobileOperator;
+    }
+
+    public CompanyApiCount getCompanyApiCount() {
+        return companyApiCount;
+    }
+
+    public void setCompanyApiCount(CompanyApiCount companyApiCount) {
+        this.companyApiCount = companyApiCount;
     }
 }
