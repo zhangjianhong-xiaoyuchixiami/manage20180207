@@ -3,6 +3,7 @@ package org.qydata.service;
 import org.qydata.entity.Api;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
+import org.qydata.entity.CompanyApi;
 
 import java.util.List;
 import java.util.Map;
@@ -35,5 +36,12 @@ public interface ApiService {
      * @return
      */
     public List<ApiVendor> queryApiVendorByApiTypeId(Integer id);
+
+    /**
+     * 以客户纬度查询产品
+     * @param map
+     * @return
+     */
+    public List<CompanyApi> queryApiByCompanyId(Map<String,Object> map);
 
 }

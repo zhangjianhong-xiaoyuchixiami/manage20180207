@@ -42,5 +42,22 @@ public class ApiController {
         return "/api/apiproduct";
     }
 
+    @RequestMapping("/api-message-by-company")
+    public String queryApiByCompanyId(Model model,Integer apiTypeId,Integer companyId){
+        Map<String,Object> map = new HashMap<>();
+        if (apiTypeId != null){
+            map.put("apiTypeId",apiTypeId);
+        }
+        if (companyId != null){
+            map.put("companyId",companyId);
+        }
+        model.addAttribute("companyApiList",apiService.queryApiByCompanyId(map));
+        model.addAttribute("apiTypeList",apiService.queryApiType());
+        model.addAttribute("companyList",apiService.queryApiByCompanyId(map));
+        model.addAttribute("apiTypeId",apiTypeId);
+        model.addAttribute("companyId",companyId);
+        return "api/companyapiproduct";
+    }
+
 
 }

@@ -21,8 +21,8 @@
             <result column="vendorId" property="id"/>
             <result column="vendorName" property="name"/>
             <association property="partner" javaType="org.qydata.entity.Partner">
-                <result column="partnerId" property="partnerId"/>
-                <result column="partnerName" property="partnerName"/>
+                <result column="partnerId" property="id"/>
+                <result column="partnerName" property="name"/>
             </association>
         </association>
     </resultMap>
@@ -117,6 +117,16 @@
         SELECT DISTINCT(vendorId) id,vendorName name
         FROM qyfinance.bkvwApi
         WHERE apiTypeId=#{param}
+    </select>
+
+
+    <select id="">
+        SELECT a.id,a.companyId,a.apiTypeId,a.apiTypeName,a.subTypeId,a.subTypeName,a.price,
+        b.companyName,b.partnerId,b.partnerName
+        FROM qyfinance.bkvwCompanyApi a LEFT JOIN qyfinance.bkvw_company_customer b
+        ON a.companyId=b.companyId
+
+
     </select>
 
 

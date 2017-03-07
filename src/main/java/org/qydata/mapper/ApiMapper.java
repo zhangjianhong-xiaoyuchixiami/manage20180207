@@ -3,6 +3,7 @@ package org.qydata.mapper;
 import org.qydata.entity.Api;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
+import org.qydata.entity.CompanyApi;
 
 import java.util.List;
 import java.util.Map;
@@ -39,5 +40,13 @@ public interface ApiMapper {
      * @throws Exception
      */
     public List<ApiVendor> queryApiVendorByApiTypeId(Integer id)throws Exception;
+
+    /**
+     * 以客户纬度查询产品
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<CompanyApi> queryApiByCompanyId(Map<String,Object> map)throws Exception;
 
 }
