@@ -24,8 +24,8 @@ var CustomerFinanceAccount = function () {
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table>';
-                sOut += '<tr><th style="width: 10%">购买产品</th><th>当前价格</th></tr>';
-                sOut += '<tr><td>'+aData[11]+'</td><td>'+aData[12]+'</td></tr>';
+                sOut += '<tr><th>购买产品</th><th>当前价格</th><th>总消费额</th><th>请求次数</th><th>成功次数</th></tr>';
+                sOut += '<tr><td>'+aData[11]+'</td><td>'+aData[12]+'</td><td>'+aData[13]+'</td><td>'+aData[14]+'</td><td>'+aData[15]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -73,10 +73,10 @@ var CustomerFinanceAccount = function () {
                     null,  //9
                     null,  //10
                     { "bVisible": false },  //11
-                    { "bVisible": false }  //12
-                   /* { "bVisible": false },  //13
+                    { "bVisible": false },  //12
+                    { "bVisible": false },  //13
                     { "bVisible": false },  //14
-                    { "bVisible": false }   //15*/
+                    { "bVisible": false }   //15
                 ],
                 "aoColumnDefs": [
                     {

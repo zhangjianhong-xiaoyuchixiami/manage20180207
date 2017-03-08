@@ -263,9 +263,9 @@
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>产品类型</th>
                                         <th>产品价格</th>
-                                        <#--<th>总消费额</th>
+                                        <th>总消费额</th>
                                         <th>请求次数</th>
-                                        <th>成功次数</th>-->
+                                        <th>成功次数</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -301,10 +301,10 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                               <#-- <td data-title="总消费额">
+                                               <td data-title="总消费额">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
-                                                            ${(-companyApi.companyApiCount.sumApiTypeIdAmount/100.0)!'0'}<br/>
+                                                            ${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}<br/>
                                                         </#list>
                                                     </#if>
                                                 </td>
@@ -321,7 +321,7 @@
                                                             ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
                                                         </#list>
                                                     </#if>
-                                                </td>-->
+                                                </td>
                                             </tr>
                                             </#list>
                                         </#if>

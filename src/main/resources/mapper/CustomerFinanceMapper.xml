@@ -30,11 +30,11 @@
             <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
                 <result column="subTypeName" property="name"/>
             </association>
-           <!-- <association property="companyApiCount" javaType="org.qydata.dst.CompanyApiCount">
-                <result column="sumApiTypeIdAmount" property="sumApiTypeIdAmount"/>
+            <association property="companyApiCount" javaType="org.qydata.dst.CompanyApiCount">
+                <result column="sumAmount" property="sumAmount"/>
                 <result column="countTotle" property="countTotle"/>
                 <result column="countSuccess" property="countSuccess"/>
-            </association>-->
+            </association>
         </collection>
     </resultMap>
 
@@ -100,48 +100,95 @@
     <!--查询客户的财务总览通过部门编号-->
     <select id="queryCompanyCustomerOverAllFinanceByDept" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
-        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price,kk.floor
+        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price,kk.floor,
+        kk.sumAmount,kk.countTotle,kk.countSuccess
         FROM
         (
         SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
-        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price,ii.floor
+        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price,ii.floor,
+        ii.sumAmount,ii.countTotle,ii.countSuccess
         FROM
         (
         SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
-        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price,gg.floor
+        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price,gg.floor,gg.sumAmount,gg.countTotle,
+        gg.countSuccess
         FROM
         (
         SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount,
-        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price,ee.floor
+        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price,ee.floor,ee.sumAmount,ee.countTotle,
+        ee.countSuccess
         FROM
         (
         SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount,
-        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price,cc.floor
+        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price,cc.floor,cc.sumAmount,cc.countTotle,
+        cc.countSuccess
         FROM
         (
-        SELECT aa.id,aa.companyId,aa.companyName,aa.balance,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount,
-        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.floor
+        SELECT aa.id,aa.balance,aa.companyId,aa.companyName,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount,
+        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.floor,aa.sumAmount,aa.countTotle,
+        aa.countSuccess
         FROM
-            (
-                SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,b.name partnerName,
-                c.apiTypeId,c.apiTypeName,c.subTypeId,c.subTypeName,c.price
-                FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
-                LEFT JOIN qyfinance.bkvwCompanyApi c ON a.companyId=c.companyId and c.enabled=1
-                LEFT JOIN qyfinance.bkvwCustomerDept d ON a.id=d.customerId
-                WHERE a.typeId in(1)
-                <if test="deptIdList!=null and deptIdList.size()!=0">
-                    and d.deptId in
-                    <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                        #{deptId}
-                    </foreach>
-                </if>
-                <if test="partnerId!=null and partnerId!=''">
-                    and a.partnerId=#{partnerId}
-                </if>
-                <if test="content!=null and content!=''">
-                    and a.companyName like '%${content}%'
-                </if>
-            ) aa LEFT JOIN
+        (
+        SELECT yy.id,yy.balance,yy.companyId,yy.companyName,yy.partnerId,yy.partnerName,yy.floor,yy.apiTypeId,
+        yy.apiTypeName,yy.subTypeId,yy.subTypeName,yy.price,ifnull(xx.sumAmount,ww.sumAmount) sumAmount,
+        ifnull(xx.countTotle,ww.countTotle) countTotle,ifnull(xx.countSuccess,ww.countSuccess) countSuccess
+        FROM
+        (
+        SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,b.name partnerName,
+        c.apiTypeId,c.apiTypeName,c.subTypeId,c.subTypeName,c.price
+        FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        LEFT JOIN qyfinance.bkvwCompanyApi c ON a.companyId=c.companyId and c.enabled=1
+        LEFT JOIN qyfinance.bkvwCustomerDept d ON a.id=d.customerId
+        WHERE a.typeId in(1)
+        <if test="deptIdList!=null and deptIdList.size()!=0">
+            and d.deptId in
+            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                #{deptId}
+            </foreach>
+        </if>
+        <if test="partnerId!=null and partnerId!=''">
+            and a.partnerId=#{partnerId}
+        </if>
+        <if test="content!=null and content!=''">
+            and a.companyName like '%${content}%'
+        </if>
+        ) yy LEFT JOIN
+        (
+        SELECT a.customerId,a.apiTypeId,a.stid,sum(b.amount) sumAmount,count(a.id) countTotle,count(b.id) countSuccess
+        FROM qyfinance.bkvw_customer_CustomerRequestLog a LEFT JOIN qyfinance.bkvwCustomerBalanceLog b ON a.id=b.reqId
+        <where>
+            <if test="beginDate != null and beginDate != ''">
+                <![CDATA[
+                        AND a.createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                        AND a.createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+            </if>
+        </where>
+        GROUP BY a.customerId,a.apiTypeId,a.stid
+        ) xx ON yy.id=xx.customerId AND yy.apiTypeId=xx.apiTypeId
+        LEFT JOIN
+        (
+        SELECT a.customerId,a.apiTypeId,a.stid,sum(b.amount) sumAmount,count(a.id) countTotle,count(b.id) countSuccess
+        FROM qyfinance.bkvw_customer_CustomerRequestLog a LEFT JOIN qyfinance.bkvwCustomerBalanceLog b ON a.id=b.reqId
+        <where>
+            <if test="beginDate != null and beginDate != ''">
+                <![CDATA[
+                        AND a.createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                       AND a.createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+            </if>
+        </where>
+        GROUP BY a.customerId,a.apiTypeId,a.stid
+        ) ww ON yy.id=ww.customerId AND yy.apiTypeId=ww.apiTypeId AND yy.subTypeId=ww.stid
+        ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
         FROM qyfinance.bkvwWeekMonthAmount
         WHERE weekMonthTypeId=1 AND tableId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
@@ -188,40 +235,87 @@
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT kk.id,kk.companyId,kk.companyName,kk.balance,kk.partnerId,kk.partnerName,kk.chargeWeekTotleAmount,kk.chargeMonthTotleAmount,kk.consumeWeekTotleAmount,
-        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price,kk.floor
+        kk.consumeMonthTotleAmount,kk.chargeTotleAmount,ll.consumeTotleAmount,kk.apiTypeId,kk.apiTypeName,kk.subTypeId,kk.subTypeName,kk.price,kk.floor,
+        kk.sumAmount,kk.countTotle,kk.countSuccess
         FROM
         (
         SELECT ii.id,ii.companyId,ii.companyName,ii.balance,ii.partnerId,ii.partnerName,ii.chargeWeekTotleAmount,ii.chargeMonthTotleAmount,ii.consumeWeekTotleAmount,
-        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price,ii.floor
+        ii.consumeMonthTotleAmount,jj.chargeTotleAmount,ii.apiTypeId,ii.apiTypeName,ii.subTypeId,ii.subTypeName,ii.price,ii.floor,
+        ii.sumAmount,ii.countTotle,ii.countSuccess
         FROM
         (
         SELECT gg.id,gg.companyId,gg.companyName,gg.balance,gg.partnerId,gg.partnerName,gg.chargeWeekTotleAmount,gg.chargeMonthTotleAmount,gg.consumeWeekTotleAmount,
-        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price,gg.floor
+        hh.consumeMonthTotleAmount,gg.apiTypeId,gg.apiTypeName,gg.subTypeId,gg.subTypeName,gg.price,gg.floor,gg.sumAmount,gg.countTotle,
+        gg.countSuccess
         FROM
         (
         SELECT ee.id,ee.companyId,ee.companyName,ee.balance,ee.partnerId,ee.partnerName,ee.chargeWeekTotleAmount,ee.chargeMonthTotleAmount,ff.consumeWeekTotleAmount,
-        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price,ee.floor
+        ee.apiTypeId,ee.apiTypeName,ee.subTypeId,ee.subTypeName,ee.price,ee.floor,ee.sumAmount,ee.countTotle,
+        ee.countSuccess
         FROM
         (
         SELECT cc.id,cc.companyId,cc.companyName,cc.balance,cc.partnerId,cc.partnerName,cc.chargeWeekTotleAmount,dd.chargeMonthTotleAmount,
-        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price,cc.floor
+        cc.apiTypeId,cc.apiTypeName,cc.subTypeId,cc.subTypeName,cc.price,cc.floor,cc.sumAmount,cc.countTotle,
+        cc.countSuccess
         FROM
         (
         SELECT aa.id,aa.balance,aa.companyId,aa.companyName,aa.partnerId,aa.partnerName,bb.chargeWeekTotleAmount,
-        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.floor
+        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.floor,aa.sumAmount,aa.countTotle,
+        aa.countSuccess
         FROM
         (
-            SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,b.name partnerName,
-            c.apiTypeId,c.apiTypeName,c.subTypeId,c.subTypeName,c.price
-            FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
-            LEFT JOIN qyfinance.bkvwCompanyApi c ON a.companyId=c.companyId and c.enabled=1
-            WHERE a.typeId in(1)
-            <if test="partnerId!=null and partnerId!=''">
-                and a.partnerId=#{partnerId}
+        SELECT yy.id,yy.balance,yy.companyId,yy.companyName,yy.partnerId,yy.partnerName,yy.floor,yy.apiTypeId,
+        yy.apiTypeName,yy.subTypeId,yy.subTypeName,yy.price,ifnull(xx.sumAmount,ww.sumAmount) sumAmount,
+        ifnull(xx.countTotle,ww.countTotle) countTotle,ifnull(xx.countSuccess,ww.countSuccess) countSuccess
+        FROM
+        (
+        SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,b.name partnerName,
+        c.apiTypeId,c.apiTypeName,c.subTypeId,c.subTypeName,c.price
+        FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        LEFT JOIN qyfinance.bkvwCompanyApi c ON a.companyId=c.companyId and c.enabled=1
+        WHERE a.typeId in(1)
+        <if test="partnerId!=null and partnerId!=''">
+            and a.partnerId=#{partnerId}
+        </if>
+        <if test="content!=null and content!=''">
+            and a.companyName like '%${content}%'
+        </if>
+        ) yy LEFT JOIN
+        (
+        SELECT a.customerId,a.apiTypeId,a.stid,sum(b.amount) sumAmount,count(a.id) countTotle,count(b.id) countSuccess
+        FROM qyfinance.bkvw_customer_CustomerRequestLog a LEFT JOIN qyfinance.bkvwCustomerBalanceLog b ON a.id=b.reqId
+        <where>
+            <if test="beginDate != null and beginDate != ''">
+                <![CDATA[
+                        AND a.createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
             </if>
-            <if test="content!=null and content!=''">
-                and a.companyName like '%${content}%'
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                        AND a.createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
             </if>
+        </where>
+        GROUP BY a.customerId,a.apiTypeId,a.stid
+        ) xx ON yy.id=xx.customerId AND yy.apiTypeId=xx.apiTypeId
+        LEFT JOIN
+        (
+        SELECT a.customerId,a.apiTypeId,a.stid,sum(b.amount) sumAmount,count(a.id) countTotle,count(b.id) countSuccess
+        FROM qyfinance.bkvw_customer_CustomerRequestLog a LEFT JOIN qyfinance.bkvwCustomerBalanceLog b ON a.id=b.reqId
+        <where>
+            <if test="beginDate != null and beginDate != ''">
+                <![CDATA[
+                        AND a.createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                       AND a.createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+            </if>
+        </where>
+        GROUP BY a.customerId,a.apiTypeId,a.stid
+        ) ww ON yy.id=ww.customerId AND yy.apiTypeId=ww.apiTypeId AND yy.subTypeId=ww.stid
         ) aa LEFT JOIN
         (SELECT customerId,totleAmount chargeWeekTotleAmount
         FROM qyfinance.bkvwWeekMonthAmount

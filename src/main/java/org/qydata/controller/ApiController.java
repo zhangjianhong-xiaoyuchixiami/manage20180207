@@ -34,14 +34,23 @@ public class ApiController {
         if (vendorId != null){
             map.put("vendorId",vendorId);
         }
+
         model.addAttribute("apiList",apiService.queryApi(map));
         model.addAttribute("apiTypeList",apiService.queryApiType());
         model.addAttribute("apiVendorList",apiService.queryApiVendor());
         model.addAttribute("apiTypeId",apiTypeId);
         model.addAttribute("vendorId",vendorId);
+       /* return JSONArray.fromObject(apiService.queryApi(map)).toString();*/
         return "/api/apiproduct";
     }
 
+    /**
+     * 以客户纬度查询产品
+     * @param model
+     * @param apiTypeId
+     * @param companyId
+     * @return
+     */
     @RequestMapping("/api-message-by-company")
     public String queryApiByCompanyId(Model model,Integer apiTypeId,Integer companyId){
         Map<String,Object> map = new HashMap<>();
@@ -53,7 +62,7 @@ public class ApiController {
         }
         model.addAttribute("companyApiList",apiService.queryApiByCompanyId(map));
         model.addAttribute("apiTypeList",apiService.queryApiType());
-        model.addAttribute("companyList",apiService.queryApiByCompanyId(map));
+        model.addAttribute("companyList",apiService.queryCompany());
         model.addAttribute("apiTypeId",apiTypeId);
         model.addAttribute("companyId",companyId);
         return "api/companyapiproduct";

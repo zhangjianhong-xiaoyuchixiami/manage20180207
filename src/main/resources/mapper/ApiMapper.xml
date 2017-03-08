@@ -32,18 +32,18 @@
             <result column="proxyApiId" property="proxyApiId"/>
             <result column="proxyApiTypeId" property="proxyApiTypeId"/>
             <result column="proxyApiTypeName" property="proxyApiTypeName"/>
-            <result column="proxyMobileOperatorName" property="proxyMobileOperatorName"/>
             <result column="minCost" property="minCost"/>
             <result column="apiTypeCount" property="apiTypeCount"/>
         </association>
     </resultMap>
 
     <resultMap id="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map" type="org.qydata.entity.Api" extends="Api_ApiType_ApiVendor_ApiProxy_Map">
-        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+        <collection property="mobileOperatorList" ofType="org.qydata.entity.MobileOperator">
             <result column="mobileOperatorId" property="id"/>
             <result column="mobileOperatorName" property="name"/>
-        </association>
+        </collection>
     </resultMap>
+
 
     <resultMap id="ApiType_Map" type="org.qydata.entity.ApiType">
         <result column="id" property="id"/>
@@ -64,19 +64,28 @@
         <result column="name" property="name"/>
     </resultMap>
 
+    <resultMap id="Company_Partner_Map" type="org.qydata.entity.Company">
+        <result column="companyId" property="id"/>
+        <result column="companyName" property="name"/>
+        <association property="partner" javaType="org.qydata.entity.Partner">
+            <result column="partnerId" property="id"/>
+            <result column="partnerName" property="name"/>
+        </association>
+    </resultMap>
+
     <!--查询产品-->
     <select id="queryApi" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
        SELECT aa.apiId,aa.apiName,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.cost,
-       aa.proxyApiId,aa.partnerId,aa.partnerName,aa.proxyApiTypeId,aa.proxyApiTypeName,aa.proxyMobileOperatorName,
+       aa.proxyApiId,aa.partnerId,aa.partnerName,aa.proxyApiTypeId,aa.proxyApiTypeName,
        aa.mobileOperatorId,aa.mobileOperatorName,ifnull(bb.minCost,hh.minCost) minCost,
-        ifnull(bb.apiTypeCount,hh.apiTypeCount) apiTypeCount
+       ifnull(bb.apiTypeCount,hh.apiTypeCount) apiTypeCount
        FROM
        (
         SELECT cc.apiId,cc.apiName,cc.apiTypeId,cc.apiTypeName,cc.vendorId,cc.vendorName,cc.cost,
-        cc.proxyApiId,cc.partnerId,cc.partnerName,cc.proxyApiTypeId,dd.name proxyApiTypeName,ee.name proxyMobileOperatorName,cc.mobileOperatorId,cc.mobileOperatorName
+        cc.proxyApiId,cc.partnerId,cc.partnerName,cc.proxyApiTypeId,dd.name proxyApiTypeName,
+        cc.mobileOperatorId,cc.mobileOperatorName
         FROM qyfinance.bkvw_api_ApiTypeVendorPartner cc
         LEFT JOIN qyfinance.bkvwApiType dd ON cc.proxyApiTypeId=dd.id
-        LEFT JOIN qyfinance.bkvwApiMobileOperator ee ON cc.proxyApiId=ee.apiId
         ) aa LEFT JOIN
         (
         SELECT a.apiTypeId,b.mobileOperatorId,min(a.cost) minCost,count(a.apiTypeId) apiTypeCount
@@ -119,14 +128,25 @@
         WHERE apiTypeId=#{param}
     </select>
 
-
-    <select id="">
-        SELECT a.id,a.companyId,a.apiTypeId,a.apiTypeName,a.subTypeId,a.subTypeName,a.price,
-        b.companyName,b.partnerId,b.partnerName
-        FROM qyfinance.bkvwCompanyApi a LEFT JOIN qyfinance.bkvw_company_customer b
+    <!--以客户纬度查询产品-->
+    <select id="queryApiByCompanyId" parameterType="map" resultType="org.qydata.dst.CustomerApiPartner">
+        SELECT a.id,a.companyId,b.companyName,a.apiTypeId,a.apiTypeName,a.subTypeId,a.subTypeName,a.price,
+        b.partnerId,b.partnerName
+        FROM qyfinance.bkvw_api_CompanyApi a LEFT JOIN qyfinance.bkvw_api_CustomerCompanyPartner b
         ON a.companyId=b.companyId
+        WHERE a.enabled=1
+        <if test="apiTypeId != null and apiTypeId != ''">
+            AND a.apiTypeId=#{apiTypeId}
+        </if>
+        <if test="companyId != null and companyId != ''">
+            AND a.companyId=#{companyId}
+        </if>
+    </select>
 
-
+    <!--查询所有公司-->
+    <select id="queryCompany" resultMap="Company_Partner_Map">
+        SELECT companyId,companyName,partnerId,partnerName
+        FROM qyfinance.bkvw_api_CustomerCompanyPartner
     </select>
 
 

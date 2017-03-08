@@ -33,6 +33,7 @@ public class Api implements Serializable {
     private ProxyApi proxyApi;
     private MobileOperator mobileOperator;
     private List<Customer> customerList;
+    private List<MobileOperator> mobileOperatorList;
 
     public Api() {
     }
@@ -196,6 +197,14 @@ public class Api implements Serializable {
 
     public void setMobileOperator(MobileOperator mobileOperator) {
         this.mobileOperator = mobileOperator;
+    }
+
+    public List<MobileOperator> getMobileOperatorList() {
+        return mobileOperatorList;
+    }
+
+    public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
+        this.mobileOperatorList = mobileOperatorList;
     }
 
     @Override

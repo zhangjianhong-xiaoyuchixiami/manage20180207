@@ -235,6 +235,14 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="apiCompanyProductList">
+                                    <a href="/api/api-message-by-company">
+                                        公司产品信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
                         </ul>
 
                     </li>

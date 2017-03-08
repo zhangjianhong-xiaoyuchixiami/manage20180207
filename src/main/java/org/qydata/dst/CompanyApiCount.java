@@ -7,16 +7,16 @@ import java.io.Serializable;
  */
 public class CompanyApiCount implements Serializable {
 
-    private Integer sumApiTypeIdAmount;
+    private Integer sumAmount;
     private Integer countTotle;
     private Integer countSuccess;
 
-    public Integer getSumApiTypeIdAmount() {
-        return sumApiTypeIdAmount;
+    public Integer getSumAmount() {
+        return sumAmount;
     }
 
-    public void setSumApiTypeIdAmount(Integer sumApiTypeIdAmount) {
-        this.sumApiTypeIdAmount = sumApiTypeIdAmount;
+    public void setSumAmount(Integer sumAmount) {
+        this.sumAmount = sumAmount;
     }
 
     public Integer getCountTotle() {

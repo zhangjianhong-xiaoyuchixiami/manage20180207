@@ -1,9 +1,6 @@
 package org.qydata.service;
 
-import org.qydata.entity.Api;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
-import org.qydata.entity.CompanyApi;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -43,5 +40,11 @@ public interface ApiService {
      * @return
      */
     public List<CompanyApi> queryApiByCompanyId(Map<String,Object> map);
+
+    /**
+     * 查询所有公司
+     * @return
+     */
+    public List<Company> queryCompany();
 
 }

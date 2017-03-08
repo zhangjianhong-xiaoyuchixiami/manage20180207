@@ -1,9 +1,6 @@
 package org.qydata.mapper;
 
-import org.qydata.entity.Api;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
-import org.qydata.entity.CompanyApi;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -48,5 +45,12 @@ public interface ApiMapper {
      * @throws Exception
      */
     public List<CompanyApi> queryApiByCompanyId(Map<String,Object> map)throws Exception;
+
+    /**
+     * 查询所有公司
+     * @return
+     * @throws Exception
+     */
+    public List<Company> queryCompany()throws Exception;
 
 }

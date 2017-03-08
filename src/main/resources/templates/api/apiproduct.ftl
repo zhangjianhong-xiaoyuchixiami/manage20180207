@@ -105,7 +105,7 @@
                                 <table class="table table-striped table-bordered table-hover table-condensed" id="sample_product_1">
                                     <thead>
                                     <tr>
-                                        <th>产品</th>
+                                        <th>产品类型</th>
                                         <th>合作公司</th>
                                         <th>产品供应商</th>
                                         <th>价格（单位：元）</th>
@@ -120,12 +120,14 @@
                                                 <tr>
                                                 </#if>
 
-                                                <td data-title="产品">
+                                                <td data-title="产品类型">
                                                 ${api.apiType.name}
-                                                    <#if api.mobileOperator??>--${api.mobileOperator.name!''}</#if>
-                                                    <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}
-                                                        <#if api.proxyApi.proxyMobileOperatorName??>--${api.proxyApi.proxyMobileOperatorName!''}</#if>）
+                                                    <#if (api.mobileOperatorList?size>0)>--
+                                                        <#list api.mobileOperatorList as mobileOperator>
+                                                           ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
+                                                        </#list>
                                                     </#if>
+                                                    <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
                                                 </td>
                                                 <td data-title="合作公司">${(api.apiVendor.partner.name)!''}</td>
                                                 <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>

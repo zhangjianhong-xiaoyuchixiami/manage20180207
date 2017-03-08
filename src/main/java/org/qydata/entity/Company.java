@@ -14,6 +14,7 @@ public class Company implements Serializable {
     private Integer id;
     private String name;
     private Integer partnerId;
+    private Partner partner;
     private Timestamp timestamp;
 
     public Integer getId() {
@@ -46,6 +47,14 @@ public class Company implements Serializable {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Partner getPartner() {
+        return partner;
+    }
+
+    public void setPartner(Partner partner) {
+        this.partner = partner;
     }
 
     public String toString(){

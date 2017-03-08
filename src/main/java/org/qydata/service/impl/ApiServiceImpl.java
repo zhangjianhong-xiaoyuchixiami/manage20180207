@@ -1,9 +1,6 @@
 package org.qydata.service.impl;
 
-import org.qydata.entity.Api;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
-import org.qydata.entity.CompanyApi;
+import org.qydata.entity.*;
 import org.qydata.mapper.ApiMapper;
 import org.qydata.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +61,16 @@ public class ApiServiceImpl implements ApiService {
     public List<CompanyApi> queryApiByCompanyId(Map<String, Object> map) {
         try {
             return apiMapper.queryApiByCompanyId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Company> queryCompany() {
+        try {
+            return apiMapper.queryCompany();
         } catch (Exception e) {
             e.printStackTrace();
         }
