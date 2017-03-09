@@ -24,7 +24,8 @@ var CustomerFinanceAccount = function () {
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table>';
-                sOut += '<tr><th>购买产品</th><th>当前价格</th><th>总消费额</th><th>请求次数</th><th>成功次数</th></tr>';
+                sOut += '<tr><td colspan="5">时间范围：'+beginDate+'--'+endDate+'</td></tr>';
+                sOut += '<tr><th>购买产品</th><th>当前价格</th><th>总消费额（单位：元）</th><th>请求次数</th><th>成功次数</th></tr>';
                 sOut += '<tr><td>'+aData[11]+'</td><td>'+aData[12]+'</td><td>'+aData[13]+'</td><td>'+aData[14]+'</td><td>'+aData[15]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;

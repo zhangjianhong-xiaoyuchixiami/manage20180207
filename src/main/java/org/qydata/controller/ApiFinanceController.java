@@ -7,10 +7,9 @@ import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
 import org.qydata.entity.ApiResponseLog;
-import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
-import org.qydata.tools.RegexUtil;
 import org.qydata.service.ApiFinanceService;
+import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,17 +33,19 @@ public class ApiFinanceController {
     //Api消费账单
     @RequestMapping("/find-all-api-record")
     public String findAllApiRecord(Integer vendorId, Integer apiTypeId, Model model){
-        List<ApiType> apiTypeList = apiFinanceService.queryApiType();
-        System.out.println(apiTypeList);
+
         Map<String,Object> map = new HashedMap();
+
         if (vendorId !=null){
             map.put("vendorId",vendorId);
         }
+
         List<ApiVendor> apiVendorList  = null;
         if (apiTypeId !=null){
             map.put("apiTypeId",apiTypeId);
             apiVendorList  = apiFinanceService.queryApiVendorName(map);
         }
+
         long weekTotleAmount = 0L;
         long monthTotleAmount = 0L;
         long consumeTotleAmount = 0L;
@@ -65,7 +66,7 @@ public class ApiFinanceController {
             }
         }
         model.addAttribute("apiFinanceList",apiFinanceList);
-        model.addAttribute("apiTypeList",apiTypeList);
+        model.addAttribute("apiTypeList",apiFinanceService.queryApiType());
         model.addAttribute("apiVendorList",apiVendorList);
         model.addAttribute("vendorId",vendorId);
         model.addAttribute("apiTypeId",apiTypeId);

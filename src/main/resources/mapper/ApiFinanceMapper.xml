@@ -117,7 +117,7 @@
         FROM qyfinance.bkvwApi
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
-                AND apiTypeId=#{apiTypeId}
+                apiTypeId=#{apiTypeId}
             </if>
         </where>
     </select>

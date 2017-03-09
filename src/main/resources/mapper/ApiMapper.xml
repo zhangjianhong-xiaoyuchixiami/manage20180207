@@ -105,6 +105,9 @@
             <if test="apiTypeId != null and apiTypeId != ''">
                 AND aa.apiTypeId=#{apiTypeId}
             </if>
+            <if test="partnerId != null and partnerId != ''">
+                AND aa.partnerId=#{partnerId}
+            </if>
         </where>
     </select>
 
@@ -140,6 +143,9 @@
         </if>
         <if test="companyId != null and companyId != ''">
             AND a.companyId=#{companyId}
+        </if>
+        <if test="partnerId != null and partnerId != ''">
+            AND b.partnerId=#{partnerId}
         </if>
     </select>
 

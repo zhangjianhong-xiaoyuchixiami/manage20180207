@@ -23,14 +23,6 @@ public interface ApiFinanceService {
     public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map);
 
     /**
-     * 查询供应商
-     * @param map
-     * @return
-     * @throws Exception
-     */
-    public List<ApiVendor> queryApiVendorName(Map<String,Object> map);
-
-    /**
      *查询Api消费详情
      * @param map
      * @return
@@ -46,16 +38,22 @@ public interface ApiFinanceService {
     public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate);
 
     /**
+     * 以APIVendor统计消费信息
+     * @return
+     */
+    public List<ApiFinance> queryApiVendor(Map<String,Object> map);
+
+
+    /**
      * 查询Api类型
      * @return
-     * @throws Exception
      */
     public List<ApiType> queryApiType();
 
     /**
-     * 以APIVendor统计消费信息
+     * 通过apiTypeId查询供应商类型
+     * @param map
      * @return
-     * @throws Exception
      */
-    public List<ApiFinance> queryApiVendor(Map<String,Object> map);
+    public List<ApiVendor> queryApiVendorName(Map<String,Object> map);
 }

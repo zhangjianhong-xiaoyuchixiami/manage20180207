@@ -26,7 +26,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping(value = "/api-message")
-    public String queryApi(Model model,Integer apiTypeId,Integer vendorId){
+    public String queryApi(Model model,Integer apiTypeId,Integer vendorId,Integer partnerId){
         Map<String,Object> map = new HashMap<>();
         if (apiTypeId != null){
             map.put("apiTypeId",apiTypeId);
@@ -34,7 +34,9 @@ public class ApiController {
         if (vendorId != null){
             map.put("vendorId",vendorId);
         }
-
+        if (partnerId != null){
+            map.put("partnerId",partnerId);
+        }
         model.addAttribute("apiList",apiService.queryApi(map));
         model.addAttribute("apiTypeList",apiService.queryApiType());
         model.addAttribute("apiVendorList",apiService.queryApiVendor());
@@ -52,13 +54,16 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/api-message-by-company")
-    public String queryApiByCompanyId(Model model,Integer apiTypeId,Integer companyId){
+    public String queryApiByCompanyId(Model model,Integer apiTypeId,Integer companyId,Integer partnerId){
         Map<String,Object> map = new HashMap<>();
         if (apiTypeId != null){
             map.put("apiTypeId",apiTypeId);
         }
         if (companyId != null){
             map.put("companyId",companyId);
+        }
+        if (partnerId != null){
+            map.put("partnerId",partnerId);
         }
         model.addAttribute("companyApiList",apiService.queryApiByCompanyId(map));
         model.addAttribute("apiTypeList",apiService.queryApiType());

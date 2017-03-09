@@ -19,13 +19,6 @@ public interface ApiFinanceMapper {
      */
    public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map)throws Exception;
 
-    /**
-     * 查询供应商
-     * @param map
-     * @return
-     * @throws Exception
-     */
-   public List<ApiVendor> queryApiVendorName(Map<String,Object> map)throws Exception;
 
     /**
      *查询Api消费详情
@@ -67,6 +60,13 @@ public interface ApiFinanceMapper {
     public boolean insertApiVendorBalance(ApiVendorBalance apiVendorBalance)throws Exception;
 
     /**
+     * 以APIVendor统计消费信息
+     * @return
+     * @throws Exception
+     */
+    public List<ApiFinance> queryApiVendor(Map<String,Object> map)throws Exception;
+
+    /**
      * 查询Api类型
      * @return
      * @throws Exception
@@ -74,9 +74,13 @@ public interface ApiFinanceMapper {
     public List<ApiType> queryApiType()throws Exception;
 
     /**
-     * 以APIVendor统计消费信息
+     * 通过apiTypeId查询供应商类型
+     * @param map
      * @return
      * @throws Exception
      */
-    public List<ApiFinance> queryApiVendor(Map<String,Object> map)throws Exception;
+    public List<ApiVendor> queryApiVendorName(Map<String,Object> map)throws Exception;
+
+
+
 }

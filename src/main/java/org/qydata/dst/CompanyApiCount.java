@@ -10,6 +10,7 @@ public class CompanyApiCount implements Serializable {
     private Integer sumAmount;
     private Integer countTotle;
     private Integer countSuccess;
+    private Integer stidSumAmount;
 
     public Integer getSumAmount() {
         return sumAmount;
@@ -33,5 +34,13 @@ public class CompanyApiCount implements Serializable {
 
     public void setCountSuccess(Integer countSuccess) {
         this.countSuccess = countSuccess;
+    }
+
+    public Integer getStidSumAmount() {
+        return stidSumAmount;
+    }
+
+    public void setStidSumAmount(Integer stidSumAmount) {
+        this.stidSumAmount = stidSumAmount;
     }
 }

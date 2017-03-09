@@ -129,7 +129,7 @@
                                                     </#if>
                                                     <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
                                                 </td>
-                                                <td data-title="合作公司">${(api.apiVendor.partner.name)!''}</td>
+                                                <td data-title="合作公司"><a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!''}</a></td>
                                                 <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
                                                 <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
                                             </tr>

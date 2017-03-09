@@ -31,16 +31,6 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
-    public List<ApiVendor> queryApiVendorName(Map<String, Object> map) {
-        try {
-            return apiFinanceMapper.queryApiVendorName(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
     public List<ApiRequestLog> queryApiDetailById(Map<String, Object> map) {
         try {
             return apiFinanceMapper.queryApiDetailById(map);
@@ -82,6 +72,16 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
+    public List<ApiFinance> queryApiVendor(Map<String, Object> map) {
+        try {
+            return apiFinanceMapper.queryApiVendor(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public List<ApiType> queryApiType() {
         try {
             return apiFinanceMapper.queryApiType();
@@ -92,12 +92,14 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
-    public List<ApiFinance> queryApiVendor(Map<String, Object> map) {
+    public List<ApiVendor> queryApiVendorName(Map<String, Object> map) {
         try {
-            return apiFinanceMapper.queryApiVendor(map);
+            return apiFinanceMapper.queryApiVendorName(map);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
+
 }

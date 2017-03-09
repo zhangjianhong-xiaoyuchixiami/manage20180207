@@ -87,7 +87,7 @@
 
                                 </div>
 
-                                <div class="pull-left head-search-bottom head-search-display">
+                                <div class="pull-left head-search-bottom">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -163,7 +163,7 @@
 
                                 </div>
 
-                                <div class="pull-left head-search-bottom head-search-display">
+                                <div class="pull-left head-search-bottom">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
@@ -297,28 +297,52 @@
                                                 <td data-title="产品价格">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
-                                                            ${(companyApi.price/100.0)!''}<br/>
+                                                        ${(companyApi.price/100.0)!''}<br/>
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                               <td data-title="总消费额">
+                                                <td data-title="总消费额">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
-                                                            ${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}<br/>
+                                                            <#if companyApi.companyApiCount??>
+                                                                <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
+                                                                    0</br>
+                                                                <#else >
+                                                                ${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}<br/>
+                                                                </#if>
+                                                            <#else >
+                                                                0</br>
+                                                            </#if>
                                                         </#list>
                                                     </#if>
                                                 </td>
                                                 <td data-title="请求次数">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
-                                                            ${(companyApi.companyApiCount.countTotle)!'0'}<br/>
+                                                            <#if companyApi.companyApiCount??>
+                                                                <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
+                                                                    0</br>
+                                                                <#else >
+                                                                ${(companyApi.companyApiCount.countTotle)!'0'}<br/>
+                                                                </#if>
+                                                            <#else >
+                                                                0</br>
+                                                            </#if>
                                                         </#list>
                                                     </#if>
                                                 </td>
                                                 <td data-title="成功次数">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
-                                                            ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
+                                                            <#if companyApi.companyApiCount??>
+                                                                <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
+                                                                    0</br>
+                                                                <#else >
+                                                                ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
+                                                                </#if>
+                                                            <#else >
+                                                                0</br>
+                                                            </#if>
                                                         </#list>
                                                     </#if>
                                                 </td>
