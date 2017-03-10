@@ -12,24 +12,24 @@ import java.util.Set;
 public interface UserMapper {
     /**
      * 根据登录用户名查找是否有指定用户
-     * @param username
+     * @param email
      * @return
      */
-    public User findById(String username) throws Exception;
+    public User findById(String email) throws Exception;
 
     /**
      * 根据登录用户名匹配角色
-     * @param username
+     * @param userId
      * @return
      */
-    public Set<String> findAllRoleByUser(String username) throws Exception;
+    public Set<String> findAllRoleByUser(Integer userId) throws Exception;
 
     /**
      * 根据登录用户名匹配权限
-     * @param username
+     * @param userId
      * @return
      */
-    public Set<String> findAllActionByUser(String username)throws Exception ;
+    public Set<String> findAllActionByUser(Integer userId)throws Exception ;
 
     /**
      * 添加用户
@@ -54,11 +54,11 @@ public interface UserMapper {
 
     /**
      * 根据用户Id重置密码
-     * @param username
+     * @param userId
      * @return
      * @throws Exception
      */
-    public boolean resetPassword(String username,String password)throws Exception;
+    public boolean resetPassword(Integer userId,String password)throws Exception;
 
     /**
      * 查找全部用户
@@ -76,26 +76,33 @@ public interface UserMapper {
 
     /**
      * 根据用户名查找指定用户信息
-     * @param username
+     * @param userId
      * @return
      * @throws Exception
      */
-    public User findUserByUsername(String username)throws Exception;
-
+    public User findUserByUsername(Integer userId)throws Exception;
 
     /**
      * 启动账号
      * @return
      * @throws Exception
      */
-    public boolean updateStatusStart(String username)throws Exception;
+    public boolean updateStatusStart(Integer userId)throws Exception;
 
     /**
      *禁用账号
      * @return
      * @throws Exception
      */
-    public boolean updateStatusforbid(String username)throws Exception;
+    public boolean updateStatusforbid(Integer userId)throws Exception;
+
+    /**
+     * 根据邮箱查找用户信息
+     * @param email
+     * @return
+     * @throws Exception
+     */
+    public User findUserByEmail(String email)throws Exception;
 
     /**
      * dataTable后端分页测试

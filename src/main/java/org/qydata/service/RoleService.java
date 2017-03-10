@@ -20,17 +20,17 @@ public interface RoleService {
 
     /**
      * 根据用户名匹配所有角色
-     * @param username
+     * @param userId
      * @return
      * @throws Exception
      */
-    public List<UserRole> findAllRoleByUsername(String username)throws Exception;
+    public List<UserRole> findAllRoleByUsername(Integer userId)throws Exception;
     /**
      * 分配角色
-     * @param username
+     * @param userId
      * @return
      * @throws Exception
      */
     @Transactional
-    public boolean addRoleUser(String username,String [] roleId )throws Exception;
+    public boolean addRoleUser(Integer userId,String [] roleId )throws Exception;
 }

@@ -1,16 +1,16 @@
 package org.qydata.controller;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
-import org.qydata.tools.RegexUtil;
 import org.qydata.service.UserService;
 import org.qydata.tools.Md5Tools;
 import org.qydata.tools.PageModel;
+import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,44 +48,12 @@ public class UserController {
 
     //super
     @RequestMapping(value = "/addUserAction")
-    public String addUserAction(User user, RedirectAttributes model){
+    public String addUserAction(String email, Integer status, Integer typeId, RedirectAttributes model){
 
-        if(RegexUtil.isNull(user.getName())){
-            model.addFlashAttribute("UserMessageName","请输入姓名");
-            return "redirect:/user/addUserView";
-        }
-        if(RegexUtil.isNull(user.getUsername())){
-            model.addFlashAttribute("name",user.getName());
-            model.addFlashAttribute("UserMessageUsername","请输入用户名");
-            return "redirect:/user/addUserView";
-        }
-        if(!RegexUtil.stringCheck(user.getUsername())){
-            model.addFlashAttribute("name",user.getName());
-            model.addFlashAttribute("username",user.getUsername());
-            model.addFlashAttribute("UserMessageUsername","用户名格式不正确");
-            return "redirect:/user/addUserView";
-        }
-        if(RegexUtil.isNull(user.getTel())){
-            model.addFlashAttribute("name",user.getName());
-            model.addFlashAttribute("username",user.getUsername());
-            model.addFlashAttribute("UserMessageTel","请输入电话号码");
-            return "redirect:/user/addUserView";
-        }
-        if(!RegexUtil.isTel(user.getTel())){
-            model.addFlashAttribute("name",user.getName());
-            model.addFlashAttribute("username",user.getUsername());
-            model.addFlashAttribute("tel",user.getTel());
-            model.addFlashAttribute("UserMessageTel","电话号码格式不正确");
-            return "redirect:/user/addUserView";
-        }
-
-        if(RegexUtil.isNull(user.getStatus().toString())){
-            return "redirect:/user/addUserView";
-        }
-
-        if(RegexUtil.isNull(user.getTypeId().toString())){
-            return "redirect:/user/addUserView";
-        }
+        User user = new User();
+        user.setEmail(email);
+        user.setStatus(status);
+        user.setTypeId(typeId);
 
         try {
             boolean flag = userService.addUser(user);
@@ -107,34 +75,7 @@ public class UserController {
     @RequestMapping(value = "/addUserCommonAction")
     public String addUserCommonAction(User user,String deptId, RedirectAttributes model){
 
-        if(RegexUtil.isNull(user.getName())){
-            model.addFlashAttribute("UserMessageName","请输入姓名");
-            return "redirect:/user/addUserViewCommon";
-        }
-        if(RegexUtil.isNull(user.getUsername())){
-            model.addFlashAttribute("name",user.getName());
-            model.addFlashAttribute("UserMessageUsername","请输入用户名");
-            return "redirect:/user/addUserViewCommon";
-        }
-        if(!RegexUtil.stringCheck(user.getUsername())){
-            model.addFlashAttribute("name",user.getName());
-            model.addFlashAttribute("username",user.getUsername());
-            model.addFlashAttribute("UserMessageUsername","用户名格式不正确");
-            return "redirect:/user/addUserViewCommon";
-        }
-        if(RegexUtil.isNull(user.getTel())){
-            model.addFlashAttribute("name",user.getName());
-            model.addFlashAttribute("username",user.getUsername());
-            model.addFlashAttribute("UserMessageTel","请输入电话号码");
-            return "redirect:/user/addUserViewCommon";
-        }
-        if(!RegexUtil.isTel(user.getTel())){
-            model.addFlashAttribute("name",user.getName());
-            model.addFlashAttribute("username",user.getUsername());
-            model.addFlashAttribute("tel",user.getTel());
-            model.addFlashAttribute("UserMessageTel","电话号码格式不正确");
-            return "redirect:/user/addUserViewCommon";
-        }
+
         if(RegexUtil.isNull(user.getStatus().toString())){
             return "redirect:/user/addUserViewCommon";
         }
@@ -247,30 +188,30 @@ public class UserController {
     }
 
     //启动账号super
-    @RequestMapping(value = "/statusStart/{username}")
-    public String statusStart(@PathVariable String username){
+    @RequestMapping(value = "/statusStart")
+    public String statusStart(Integer userId){
         try {
-            userService.updateStatusStart(username);
+            userService.updateStatusStart(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/user/findAllUser";
     }
     //禁用账号super
-    @RequestMapping(value = "/statusForbid/{username}")
-    public String statusForbid(@PathVariable String username){
+    @RequestMapping(value = "/statusForbid")
+    public String statusForbid(Integer userId){
         try {
-            userService.updateStatusForbid(username);
+            userService.updateStatusForbid(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/user/findAllUser";
     }
     //重置密码super
-    @RequestMapping(value = "/resetPassword/{username}")
-    public String resetPassword(@PathVariable String username){
+    @RequestMapping(value = "/resetPassword")
+    public String resetPassword(Integer userId){
         try {
-            userService.resetPassword(username);
+            userService.resetPassword(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -278,30 +219,30 @@ public class UserController {
     }
 
     //启动账号common
-    @RequestMapping(value = "/statusStartCommon/{username}")
-    public String statusStartCommon(@PathVariable String username){
+    @RequestMapping(value = "/statusStartCommon")
+    public String statusStartCommon(Integer userId){
         try {
-            userService.updateStatusStart(username);
+            userService.updateStatusStart(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/user/findAllUserCommon";
     }
     //禁用账号common
-    @RequestMapping(value = "/statusForbidCommon/{username}")
-    public String statusForbidCommon(@PathVariable String username){
+    @RequestMapping(value = "/statusForbidCommon")
+    public String statusForbidCommon(Integer userId){
         try {
-            userService.updateStatusForbid(username);
+            userService.updateStatusForbid(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/user/findAllUserCommon";
     }
     //重置密码common
-    @RequestMapping(value = "/resetPasswordCommon/{username}")
-    public String resetPasswordCommon(@PathVariable String username){
+    @RequestMapping(value = "/resetPasswordCommon")
+    public String resetPasswordCommon(Integer userId){
         try {
-            userService.resetPassword(username);
+            userService.resetPassword(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -317,12 +258,6 @@ public class UserController {
     @RequestMapping(value = "/updatePasswordAction")
     public String updatePasswordAction(String password,String newPassword,String
             rppassword,RedirectAttributes model,HttpServletRequest request){
-
-        if(RegexUtil.isNull(password)){
-
-            model.addFlashAttribute("UserMessagePassword","请输入旧密码");
-            return "redirect:/user/updatePasswordView";
-        }
 
         if(RegexUtil.isNull(newPassword)){
 
@@ -350,12 +285,10 @@ public class UserController {
             model.addFlashAttribute("UserMessageRpPassword", "两次密码不一致");
             return "redirect:/user/updatePasswordView";
         }
-        User user = (User) request.getSession().getAttribute("userInfo");
-        String username = user.getUsername();
-        String md5NewPassword = Md5Tools.md5(username.trim()+newPassword.trim());
-        String md5Password = Md5Tools.md5(username.trim()+password.trim());
+        Integer userId = userService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal()).getId();
+        String md5NewPassword = Md5Tools.md5(SecurityUtils.getSubject().getPrincipal()+newPassword.trim());
         try {
-            boolean flag = userService.updatePassword(username.trim(),md5Password,md5NewPassword);
+            boolean flag = userService.updatePassword(userId,md5NewPassword);
             if(!flag){
                 model.addFlashAttribute("msg","修改失败！");
                 return "redirect:/user/updatePasswordView";

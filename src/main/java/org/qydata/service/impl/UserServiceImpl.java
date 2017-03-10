@@ -29,30 +29,28 @@ public class UserServiceImpl implements UserService {
     private DeptMapper deptMapper;
 
     @Override
-    public User get(String username) throws Exception {
-        return this.userMapper.findById(username);
+    public User get(String email) throws Exception {
+        return this.userMapper.findById(email);
     }
     @Override
-    public Map<String, Object> listAuthByUser(String username) throws Exception {
+    public Map<String, Object> listAuthByUser(Integer userId) throws Exception {
         Map<String,Object> map = new HashMap<String,Object>() ;
-        map.put("allRoles", this.userMapper.findAllRoleByUser(username)) ;
-        map.put("allActions", this.userMapper.findAllActionByUser(username)) ;
+        map.put("allRoles", this.userMapper.findAllRoleByUser(userId)) ;
+        map.put("allActions", this.userMapper.findAllActionByUser(userId)) ;
         return map ;
     }
 
     @Override
     public boolean addUser(User user) throws Exception {
         User userA = new User();
-        userA.setPassword(Md5Tools.md5(user.getUsername().trim()+"123456"));
-        userA.setUsername(user.getUsername().trim());
-        userA.setName(user.getName());
-        userA.setTel(user.getTel());
+        userA.setEmail(user.getEmail());
+        userA.setPassword(Md5Tools.md5(user.getEmail().trim()+"123456"));
         userA.setStatus(user.getStatus());
         userA.setTypeId(user.getTypeId());
         try{
             userMapper.addUser(userA);
             if(user.getTypeId() == 1){
-                roleMapper.addRoleSuperUser(user.getUsername());
+                roleMapper.addRoleSuperUser(user.getId());
             }
             return true;
         }catch (Exception e){
@@ -63,10 +61,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean addUserCommon(User user,String deptId) throws Exception {
         User userA = new User();
-        userA.setPassword(Md5Tools.md5(user.getUsername().trim()+"123456"));
-        userA.setUsername(user.getUsername().trim());
-        userA.setName(user.getName());
-        userA.setTel(user.getTel());
+        userA.setPassword(Md5Tools.md5(user.getEmail().trim()+"123456"));
         userA.setStatus(user.getStatus());
         userMapper.addUserCommon(userA);
         UserDept userDept = new UserDept();
@@ -76,18 +71,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePassword(String username, String password, String newPassword) throws Exception {
+    public boolean updatePassword(Integer userId,String newPassword) throws Exception {
         Map<String,Object> map = new HashMap<>();
-        map.put("username",username);
-        map.put("password",password);
+        map.put("userId",userId);
         map.put("newPassword",newPassword);
         return userMapper.updatePassword(map);
     }
 
     @Override
-    public boolean resetPassword(String username) throws Exception {
-        String password = Md5Tools.md5(username+"123456");
-        return userMapper.resetPassword(username,password);
+    public boolean resetPassword(Integer userId) throws Exception {
+        String password = Md5Tools.md5(userMapper.findUserByUsername(userId).getEmail()+"123456");
+        return userMapper.resetPassword(userId,password);
     }
 
     @Override
@@ -99,18 +93,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByUsername(String username) throws Exception {
-        return userMapper.findUserByUsername(username);
+    public User findUserByUsername(Integer userId) throws Exception {
+        return userMapper.findUserByUsername(userId);
     }
 
     @Override
-    public boolean updateStatusStart(String username) throws Exception {
-        return userMapper.updateStatusStart(username);
+    public boolean updateStatusStart(Integer userId) throws Exception {
+        return userMapper.updateStatusStart(userId);
     }
 
     @Override
-    public boolean updateStatusForbid(String username) throws Exception {
-        return userMapper.updateStatusforbid(username);
+    public boolean updateStatusForbid(Integer userId) throws Exception {
+        return userMapper.updateStatusforbid(userId);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        try {
+            return userMapper.findUserByEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

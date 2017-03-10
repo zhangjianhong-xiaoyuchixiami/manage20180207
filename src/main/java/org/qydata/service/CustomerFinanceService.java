@@ -3,6 +3,8 @@ package org.qydata.service;
 import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
+import org.qydata.entity.ApiType;
+import org.qydata.entity.ApiVendor;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.WeekMonthAmount;
 
@@ -91,5 +93,19 @@ public interface CustomerFinanceService {
      * @throws Exception
      */
     public List<CustomerApiVendor> queryCustomerConsumeByVendor(Map<String,Object> map);
+
+    /**
+     *
+     * @param map
+     * @return
+     */
+    public List<ApiType> queryApiTypeByCustomerId(Map<String,Object> map);
+
+    /**
+     *
+     * @param map
+     * @return
+     */
+    public List<ApiVendor> queryApiVendorByCustomerId(Map<String,Object> map);
 }
 

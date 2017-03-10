@@ -46,30 +46,13 @@
                                     </div>
 
                                 </#if>
+
                                 <div class="control-group">
-                                    <label class="control-label">姓名<span class="required">*</span></label>
+                                    <label class="control-label">邮箱<span class="required">*</span></label>
                                     <div class="controls">
-                                        <input type="text" id="name" name="name" <#if name??>value="${name}" </#if> data-required="1" class="span6 m-wrap"/>
+                                        <input id="email" name="email" type="text" <#if email??>value="${email}" </#if> class="span6 m-wrap"/>
 
-                                        <span class="help-inline" id="nameMsg"><#if UserMessageName??><font color="red">${UserMessageName}</font></#if></span>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">用户名<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <input id="username" name="username" type="text" <#if username??>value="${username}" </#if> class="span6 m-wrap"/>
-
-                                        <span class="help-inline" id="usernameMsg"><#if UserMessageUsername??><font color="red">${UserMessageUsername}</font></#if></span>
-
-                                        <span class="help-block">e.g：只能有数字、字母、下划线组成</span>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">电话<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <input id="tel" name="tel" type="text" <#if tel??>value="${tel}" </#if> class="span6 m-wrap"/>
-
-                                        <span class="help-inline" id="telMsg"><#if UserMessageTel??><font color="red">${UserMessageTel}</font></#if></span>
+                                        <span class="help-inline" id="telMsg"><#if UserMessageEmail??><font color="red">${UserMessageEmail}</font></#if></span>
                                     </div>
                                 </div>
                                 <div class="control-group">

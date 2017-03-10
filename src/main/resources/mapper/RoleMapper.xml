@@ -9,24 +9,24 @@
     </select>
     <!--根据用户名匹配所有角色-->
     <select id="findAllRoleByUsername" resultType="org.qydata.entity.UserRole">
-        select roleId,username from qyauth.UserRole where username=#{username}
+        select roleId,userId from qyauth.UserRole where userId=#{userId}
     </select>
 
     <!--分配角色-->
     <insert id="addRoleUser" parameterType="map" useGeneratedKeys="true" keyProperty="id">
-        insert into qyauth.UserRole(username,roleId,createTime)
+        insert into qyauth.UserRole(userId,roleId,createTime)
         values
         <foreach collection="roleId" index="index" item="item" separator=",">
-            ( #{username},#{item},sysdate() )
+            ( #{userId},#{item},sysdate() )
         </foreach>
     </insert>
     <!--根据用户Id删除用户和角色映射-->
-    <delete id="deleteUserRoleByUserId" parameterType="String">
-        delete from qyauth.UserRole where username=#{param}
+    <delete id="deleteUserRoleByUserId" parameterType="Integer">
+        delete from qyauth.UserRole where userId=#{param}
     </delete>
     <!--给super默认添加角色-->
-    <insert id="addRoleSuperUser" parameterType="String" useGeneratedKeys="true" keyProperty="id">
-      INSERT INTO qyauth.UserRole(roleId,username,createTime)
+    <insert id="addRoleSuperUser" parameterType="Integer" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO qyauth.UserRole(roleId,userId,createTime)
       VALUES (3,#{param},sysdate())
     </insert>
 </mapper>

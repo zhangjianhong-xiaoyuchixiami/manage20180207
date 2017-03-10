@@ -7,8 +7,7 @@ $(document).ready(function(){
             deptId_no.push($.trim($(this).val()));
         });
         var userId_id = $('input[name="userId"]').val();
-        var username_id = $('input[name="username"]').val();
-        var indata = {"userId":userId_id, "deptId":deptId_no,"username":username_id};
+        var indata = {"userId":userId_id, "deptId":deptId_no};
         $.ajax({
             type:'post',
             url:"/dept/allotDeptAction",
@@ -17,12 +16,12 @@ $(document).ready(function(){
             success:function(data){
                 if(data!=null && data.result=="ok"){
                     alert("操作成功");
-                    window.location.href="/dept/allotDeptView/"+data.msg;
+                    window.location.href="/dept/allotDeptView?userId="+userId_id;
 //                        $('#form_modal4').css('display','block');
 //                        $('#tiShiXinXi').html("操作成功");
                 }else{
                     alert("操作失败");
-                    window.location.href="/dept/allotDeptView/"+data.msg;
+                    window.location.href="/dept/allotDeptView?userId=/"+userId_id;
 //                        $('#form_modal4').css('display','block');
 //                        $('#tiShiXinXi').html("操作失败");
                 }

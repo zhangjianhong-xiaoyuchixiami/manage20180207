@@ -4,14 +4,13 @@ import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
-import org.qydata.tools.RegexUtil;
 import org.qydata.service.DeptService;
 import org.qydata.service.UserService;
 import org.qydata.tools.PageModel;
+import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -95,14 +94,14 @@ public class DeptController {
         return "/dept/deptList";
     }
     //分配部门
-    @RequestMapping(value = "/allotDeptView/{username}")
-    public String allotDeptView(@PathVariable String username, Model model){
+    @RequestMapping(value = "/allotDeptView")
+    public String allotDeptView(Integer userId, Model model){
         List<Dept> deptList = null;
         List<Integer> userDeptIdList = new ArrayList();
         User user = null;
         try {
             deptList = deptService.findAllDept();
-            user = userService.findUserByUsername(username);
+            user = userService.findUserByUsername(userId);
             List<Dept> list = user.getDept();
             for(int i=0;i< list.size();i++){
                 userDeptIdList.add(list.get(i).getId());
@@ -113,31 +112,22 @@ public class DeptController {
         model.addAttribute("userDeptIdList",userDeptIdList);
         model.addAttribute("deptList",deptList);
         model.addAttribute("userId",user.getId());
-        model.addAttribute("username",user.getUsername());
         return "/dept/allotDept";
     }
 
     @RequestMapping(value = "/allotDeptAction")
     @ResponseBody
-    public String allotDeptAction(HttpServletRequest request){
-        String userId = request.getParameter("userId");
-        String username = request.getParameter("username");
+    public String allotDeptAction(HttpServletRequest request,Integer userId){
         String [] deptId = request.getParameterValues("deptId[]");
         Gson gson = new Gson();
-        Map<String,String> map = new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
         try {
             boolean flag = deptService.insertUserDept(userId,deptId);
             if (flag){
                 map.put("result","ok");
-                map.put("msg",username);
-            }else {
-                map.put("result","fail");
-                map.put("msg",username);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            map.put("result","no");
-            map.put("msg",username);
         }
         return gson.toJson(map);
     }

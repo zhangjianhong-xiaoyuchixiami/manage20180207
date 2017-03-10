@@ -27,21 +27,21 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<UserRole> findAllRoleByUsername(String username) throws Exception {
-        return roleMapper.findAllRoleByUsername(username);
+    public List<UserRole> findAllRoleByUsername(Integer userId) throws Exception {
+        return roleMapper.findAllRoleByUsername(userId);
     }
 
     @Override
-    public boolean addRoleUser(String username,String [] roleId) throws Exception {
+    public boolean addRoleUser(Integer userId,String [] roleId) throws Exception {
         if (roleId != null && roleId.length>0) {
             Integer[] temp = IpTool.intArray(roleId);
             Map<String, Object> map = new HashMap();
-            map.put("username", username);
+            map.put("userId", userId);
             map.put("roleId", temp);
-            roleMapper.deleteUserRoleByUserId(username);
+            roleMapper.deleteUserRoleByUserId(userId);
             return roleMapper.addRoleUser(map);
         }else {
-            return roleMapper.deleteUserRoleByUserId(username);
+            return roleMapper.deleteUserRoleByUserId(userId );
         }
     }
 }

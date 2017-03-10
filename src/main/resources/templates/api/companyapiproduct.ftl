@@ -53,7 +53,7 @@
                                         <option value="">请选择...</option>
                                         <#if companyList??>
                                             <#list companyList as company>
-                                                <option <#if companyId?? && companyId==company.id>selected="selected"</#if> value="${company.id}">${company.name}<#if company.partner??>@${company.partner.name}</#if></option>
+                                                <option <#if companyId?? && companyId==company.id>selected="selected"</#if> value="${company.id}">${company.name}<#if company.partner??>@${(company.partner.name)!''}</#if></option>
                                             </#list>
                                         </#if>
                                     </select>

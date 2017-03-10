@@ -5,6 +5,7 @@ import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
+import org.qydata.entity.ApiVendor;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.mapper.CustomerFinanceMapper;
@@ -177,5 +178,25 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public List<ApiType> queryApiTypeByCustomerId(Map<String, Object> map) {
+        try {
+            return customerFinanceMapper.queryApiTypeByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<ApiVendor> queryApiVendorByCustomerId(Map<String, Object> map) {
+        try {
+            return customerFinanceMapper.queryApiVendorByCustomerId(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

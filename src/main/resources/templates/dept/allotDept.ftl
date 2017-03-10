@@ -53,10 +53,9 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 100px">部门选择</th>
-                                    <th style="text-align: center">部门名称</th>
-                                    <th style="text-align: center; display: none" >用户Id</th>
-                                    <th style="text-align: center; display: none">用户名</th>
+                                    <th>部门选择</th>
+                                    <th>部门名称</th>
+                                    <th style="display: none" >用户Id</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -65,7 +64,7 @@
                                         <#list deptList as dept>
 
                                         <tr>
-                                            <td style="text-align: center">
+                                            <td>
                                                 <input type="checkbox" name="deptId"
                                                     <#list userDeptIdList as deptIdList>
                                                         <#if deptIdList==dept.id>
@@ -77,7 +76,6 @@
 
                                             <td>${dept.deptName}</td>
                                             <td style="display: none"><input type="text" name="userId" value="${userId}" /></td>
-                                            <td style="display: none"><input type="text" name="username" value="${username}" /></td>
                                         </tr>
 
                                         </#list>

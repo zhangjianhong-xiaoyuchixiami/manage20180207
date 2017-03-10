@@ -20,18 +20,18 @@ public interface RoleMapper {
 
     /**
      * 根据用户名匹配所有角色
-     * @param username
+     * @param userId
      * @return
      * @throws Exception
      */
-    public List<UserRole> findAllRoleByUsername(String username)throws Exception;
+    public List<UserRole> findAllRoleByUsername(Integer userId)throws Exception;
 
     /**
      * 根据用户Id删除用户和角色映射
      * @return
      * @throws Exception
      */
-    public boolean deleteUserRoleByUserId(String userId)throws Exception;
+    public boolean deleteUserRoleByUserId(Integer userId)throws Exception;
 
     /**
      * 分配角色
@@ -43,9 +43,9 @@ public interface RoleMapper {
 
     /**
      * 给super默认添加角色
-     * @param username
+     * @param userId
      * @return
      * @throws Exception
      */
-    public boolean addRoleSuperUser(String username)throws Exception;
+    public boolean addRoleSuperUser(Integer userId)throws Exception;
 }

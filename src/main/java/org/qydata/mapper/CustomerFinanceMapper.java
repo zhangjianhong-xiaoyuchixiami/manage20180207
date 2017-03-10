@@ -3,6 +3,7 @@ package org.qydata.mapper;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
+import org.qydata.entity.ApiVendor;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.WeekMonthAmount;
 
@@ -102,5 +103,21 @@ public interface CustomerFinanceMapper {
      * @throws Exception
      */
     public List<CustomerApiVendor> queryCustomerConsumeByVendor(Map<String,Object> map)throws  Exception;
+
+    /**
+     *查询api类型通过账号Id
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<ApiType> queryApiTypeByCustomerId(Map<String,Object> map)throws Exception;
+
+    /**
+     *查询api供应商通过账号Id
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public List<ApiVendor> queryApiVendorByCustomerId(Map<String,Object> map)throws Exception;
 }
 

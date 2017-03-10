@@ -133,7 +133,7 @@ public class ExcelFinanceController {
         String companyName = request.getParameter("content");
         User user = null;
         try {
-            user = userService.findUserByUsername(username);
+            user = userService.findUserByEmail(username);
         } catch (Exception e) {
             e.printStackTrace();
         }

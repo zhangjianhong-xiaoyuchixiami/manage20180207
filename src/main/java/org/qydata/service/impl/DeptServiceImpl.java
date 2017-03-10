@@ -37,16 +37,16 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public boolean insertUserDept(String userId, String [] deptId) throws Exception {
+    public boolean insertUserDept(Integer userId, String [] deptId) throws Exception {
         if (deptId != null && deptId.length>0) {
             Integer[] temp = IpTool.intArray(deptId);
             Map<String, Object> map = new HashMap();
-            map.put("userId", Integer.parseInt(userId));
+            map.put("userId", userId);
             map.put("deptId", temp);
-            deptMapper.deleteUserDeptByUserId(Integer.parseInt(userId));
+            deptMapper.deleteUserDeptByUserId(userId);
             return deptMapper.insertUserDept(map);
         }else{
-            return deptMapper.deleteUserDeptByUserId(Integer.parseInt(userId));
+            return deptMapper.deleteUserDeptByUserId(userId);
         }
     }
 

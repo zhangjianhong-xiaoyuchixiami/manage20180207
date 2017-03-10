@@ -13,24 +13,15 @@ import java.util.List;
 public class User implements Serializable {
 
     private Integer id;
-    private String name;
-    private String username;
+    private String email;
     private String password;
-    private String tel;
-    private Integer status;
     private Timestamp createTime;
-    private Timestamp timestamp;
+    private Integer status;
     private Integer typeId;
     private List<Dept> dept;
     private List<Role> roles;
     public User() {}
 
-    public User(Integer id,String name,String username,String tel) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.tel = getTel();
-    }
 
     public Integer getId() {
         return id;
@@ -38,22 +29,6 @@ public class User implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -64,13 +39,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
 
     public Integer getStatus() {
         return status;
@@ -88,12 +56,12 @@ public class User implements Serializable {
         this.createTime = createTime;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public String getEmail() {
+        return email;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Dept> getDept() {

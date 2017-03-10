@@ -74,26 +74,20 @@
                             <table class="table table-striped table-bordered table-hover table-condensed">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: center; width: 20%;">姓名</th>
+                                    <th>邮箱</th>
 
-                                    <th style="text-align: center">用户名</th>
+                                    <th>部门</th>
 
-                                    <th style="text-align: center">电话</th>
+                                    <th>状态</th>
 
-                                    <th style="text-align: center">部门</th>
-
-                                    <th style="text-align: center">状态</th>
-
-                                    <th style="text-align: center; width: 12%;">操作</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#if userDeptList??>
                                         <#list userDeptList as user>
                                         <tr>
-                                            <td>${user.name}</td>
-                                            <td>${user.username}</td>
-                                            <td>${user.tel}</td>
+                                            <td>${user.email}</td>
                                             <td>
                                                 <#list user.dept as dept>
                                                 ${dept.deptName}<br/>
@@ -113,22 +107,22 @@
                                                             </a>
                                                             <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
                                                                 <@shiro.hasPermission name="user:statusForbid">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/statusForbid/${user.username}">禁用账号</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/statusForbid?userId=${user.id}">禁用账号</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="user:statusForbidCommon">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/statusForbidCommon/${user.username}">禁用账号</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/statusForbidCommon?userId=${user.id}">禁用账号</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="dept:allotDeptView">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/dept/allotDeptView/${user.username}">分配部门</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/dept/allotDeptView?userId=${user.id}">分配部门</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="user:resetPassword">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/resetPassword/${user.username}">重置密码</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/resetPassword?userId=${user.id}">重置密码</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="user:resetPasswordCommon">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/resetPasswordCommon/${user.username}">重置密码</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/resetPasswordCommon?userId=${user.id}">重置密码</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="role:allotRoleView">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/role/allotRoleView/${user.username}">分配角色</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/role/allotRoleView?userId=${user.id}">分配角色</a></li>
                                                                 </@shiro.hasPermission>
                                                             </ul>
                                                         </li>
@@ -143,22 +137,22 @@
                                                             </a>
                                                             <ul class="dropdown-menu" style="min-width: 105px; font-size: 13px;">
                                                                 <@shiro.hasPermission name="user:statusStart">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/statusStart/${user.username}">启用账号</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/statusStart?userId=${user.id}">启用账号</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="user:statusStartCommon">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/statusStartCommon/${user.username}">启用账号</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/statusStartCommon?userId=${user.id}">启用账号</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="dept:allotDeptView">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/dept/allotDeptView/${user.username}">分配部门</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/dept/allotDeptView?userId=${user.id}">分配部门</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="user:resetPassword">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/resetPassword/${user.username}">重置密码</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/resetPassword?userId=${user.id}">重置密码</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="user:resetPasswordCommon">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/resetPasswordCommon/${user.username}">重置密码</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/user/resetPasswordCommon?userId=${user.id}">重置密码</a></li>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="role:allotRoleView">
-                                                                    <li style="text-align: left"><a style="color: #08c;" href="/role/allotRoleView/${user.username}">分配角色</a></li>
+                                                                    <li style="text-align: left"><a style="color: #08c;" href="/role/allotRoleView?userId=${user.id}">分配角色</a></li>
                                                                 </@shiro.hasPermission>
                                                             </ul>
                                                         </li>

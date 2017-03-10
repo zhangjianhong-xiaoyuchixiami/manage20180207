@@ -10,7 +10,7 @@ public class UserRole implements Serializable {
 
     private Integer id;
     private Integer roleId;
-    private String username;
+    private Integer userId;
     private Timestamp createTime;
     private Timestamp timestamp;
 
@@ -33,12 +33,12 @@ public class UserRole implements Serializable {
         this.roleId = roleId;
     }
 
-    public String getUsername() {
-        return username;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Timestamp getCreateTime() {

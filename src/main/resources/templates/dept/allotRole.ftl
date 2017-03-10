@@ -56,7 +56,7 @@
                                     <th style="text-align: center; width: 100px" >角色选择</th>
                                     <th style="text-align: center">角色编号</th>
                                     <th style="text-align: center">角色名称</th>
-                                    <th style="text-align: center; display: none">用户名</th>
+                                    <th style="text-align: center; display: none">用户Id</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -73,7 +73,7 @@
                                             </td>
                                             <td>${role.id}</td>
                                             <td>${role.name}</td>
-                                            <td style="display: none"><input type="text" name="username" value="${username}" /></td>
+                                            <td style="display: none"><input type="text" name="username" value="${userId}" /></td>
                                         </tr>
 
                                         </#list>

@@ -174,10 +174,10 @@ public class FinanceController {
         try {
             Map<String,Object> map = new HashMap();
             map.put("customerId",customerId);
-            List<ApiVendor> apiVendorList = null;
+            List<ApiVendor> vendorList = null;
             if(apiTypeId != null){
                 map.put("apiTypeId",apiTypeId);
-                apiVendorList = apiService.queryApiVendorByApiTypeId(apiTypeId);
+                vendorList = customerFinanceService.queryApiVendorByCustomerId(map);
             }
             if(apiVendorId != null){
                 map.put("apiVendorId",apiVendorId);
@@ -191,8 +191,8 @@ public class FinanceController {
                 }
             }
             model.addAttribute("customerApiTypeList", customerApiTypeList);
-            model.addAttribute("customerApiTypes",apiService.queryApiType());
-            model.addAttribute("customerApiVendors",apiVendorList);
+            model.addAttribute("customerApiTypes",customerFinanceService.queryApiTypeByCustomerId(map));
+            model.addAttribute("customerApiVendors",vendorList);
             model.addAttribute("customerId",customerId);
             model.addAttribute("apiTypeId",apiTypeId);
             model.addAttribute("apiVendorId",apiVendorId);

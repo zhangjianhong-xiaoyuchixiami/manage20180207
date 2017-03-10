@@ -76,9 +76,7 @@
                                             <option value="">请选择...</option>
                                             <#if customerApiVendors??>
                                                 <#list customerApiVendors as vendor>
-
-                                                    <option <#if apiVendorId?? &&vendor.id?? && vendor.id==apiVendorId>selected="selected"</#if> value="<#if vendor.id??>${vendor.id?c}</#if>"><#if vendor.id??>${vendor.name}</#if></option>
-
+                                                    <option <#if apiVendorId?? && vendor.id==apiVendorId>selected="selected"</#if> value="${vendor.id?c}">${vendor.name!''}</option>
                                                 </#list>
                                             </#if>
                                         </select>
