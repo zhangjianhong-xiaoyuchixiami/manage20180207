@@ -54,9 +54,9 @@
                                 <thead>
                                 <tr>
                                     <th style="text-align: center; width: 100px" >角色选择</th>
-                                    <th style="text-align: center">角色编号</th>
-                                    <th style="text-align: center">角色名称</th>
-                                    <th style="text-align: center; display: none">用户Id</th>
+                                    <th>角色编号</th>
+                                    <th>角色名称</th>
+                                    <th style="display: none">用户Id</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -65,15 +65,14 @@
                                         <#list roleList as role>
 
                                         <tr>
-                                            <td style="text-align: center">
+                                            <td>
                                                 <input type="checkbox" name="roleId"  <#list userRoleList as userRoleIdList>
                                                        <#if userRoleIdList.roleId==role.id>checked="checked"</#if>
-
                                                 </#list> value="${role.id}" />
                                             </td>
                                             <td>${role.id}</td>
                                             <td>${role.name}</td>
-                                            <td style="display: none"><input type="text" name="username" value="${userId}" /></td>
+                                            <td style="display: none"><input type="text" name="userId" value="${userId}" /></td>
                                         </tr>
 
                                         </#list>
@@ -82,7 +81,6 @@
                                 </tbody>
 
                             </table>
-
 
                         </div>
 
@@ -105,15 +103,13 @@
     <script type="text/javascript" src="/js/myjs/allotrole.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#userManage').addClass('active');
 
-            $('#userList').addClass('active');
+        $(document).ready(function(){
 
-            $('#userManageSelect').addClass('selected');
+            AllotRole.init();
 
-            $('#userManageArrow').addClass('arrow open');
         });
+
     </script>
 
 

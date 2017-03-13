@@ -70,34 +70,6 @@
 
                                             </#if>
 
-                                            <#--<div class="control-group">-->
-
-                                                <#--<label class="control-label">用户名<span class="required">*</span></label>-->
-
-                                                <#--<div class="controls">-->
-
-                                                    <#--<input type="text" <#if username??>value="${username}" </#if> class="span6 m-wrap" id="username" name="username"/>-->
-
-                                                    <#--<span class="help-inline" id="usernameMsg"><#if UserMessageUsername??><font color="red">${UserMessageUsername}</font></#if></span>-->
-
-                                                <#--</div>-->
-
-                                            <#--</div>-->
-
-                                            <div class="control-group">
-
-                                                <label class="control-label">旧密码<span class="required">*</span></label>
-
-                                                <div class="controls">
-
-                                                    <input type="password" <#if password??>value="${password}" </#if> class="span6 m-wrap" id="password" name="password"/>
-
-                                                    <span class="help-inline" id="passwordMsg"><#if UserMessagePassword??><font color="red">${UserMessagePassword}</font></#if></span>
-
-                                                </div>
-
-                                            </div>
-
                                             <div class="control-group">
 
                                                 <label class="control-label">新密码<span class="required">*</span></label>
@@ -108,7 +80,7 @@
 
                                                     <span class="help-inline" id="newPasswordMsg"><#if UserMessageNewPassword??><font color="red">${UserMessageNewPassword}</font></#if></span>
 
-                                                    <span class="help-block">以字母开头，只能有数字、字母、下划线组成，长度为6-18个字符</span>
+                                                    <span class="help-block">以字母开头，长度为6-18个字符</span>
 
                                                 </div>
 

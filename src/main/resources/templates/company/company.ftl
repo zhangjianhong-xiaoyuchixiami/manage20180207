@@ -24,9 +24,9 @@
 
                         <form action="/company/find-all-company-customer-by-dept-id" method="get">
 
-                            <div class="clearfix margin-bottom-20" style="margin-top: -18px;">
+                            <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                                <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
+                                <div class="pull-left head-search-bottom head-search-top">
 
                                     <label class="control-label">&nbsp;&nbsp;</label>
 

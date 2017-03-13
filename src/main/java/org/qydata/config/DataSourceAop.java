@@ -29,7 +29,6 @@ public class DataSourceAop {
     public void before(JoinPoint point) {
         // 获取到当前执行的方法名
         String methodName = point.getSignature().getName();
-        System.out.println(methodName);
         System.out.println("*********************************开始切入***********************************");
         if (isSlave(methodName)) {
             // 标记为读库

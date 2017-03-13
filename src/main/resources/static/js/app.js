@@ -714,7 +714,7 @@ var App = function () {
 
     return {
 
-        //main function to initiate template pages
+        //main function to initiate template errorpage
         init: function () {
 
             //IMPORTANT!!!: Do not modify the core handlers call order.

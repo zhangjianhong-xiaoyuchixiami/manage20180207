@@ -2,6 +2,7 @@ package org.qydata.mapper;
 
 
 import org.qydata.entity.Customer;
+import org.qydata.entity.CustomerRequestLog;
 
 import java.util.List;
 import java.util.Map;
@@ -66,17 +67,19 @@ public interface CustomerMapper {
      */
     public List<Integer> findAllCustomerId();
 
+    /**
+     * 查询客户请求的日志
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerRequestLog> findAllCustomerRequestLog(Map<String,Object> map)throws Exception;
 
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * 统计客户请求日志的数据量
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountAllCustomerRequestLog(Map<String,Object> map)throws Exception;
 
 }

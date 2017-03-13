@@ -13,6 +13,7 @@ public class CustomerRequestLog implements Serializable {
 
     private Long id;
     private Integer apiTypeId;
+    private Integer stid;
     private Integer chosenApiId;
     private String clientIp;
     private Integer customerId;
@@ -20,7 +21,8 @@ public class CustomerRequestLog implements Serializable {
     private String k;
     private String content;
     private Timestamp createTime;
-    private Timestamp timestamp;
+    private ApiType apiType;
+    private MobileOperator mobileOperator;
 
     public Long getId() {
         return id;
@@ -94,12 +96,28 @@ public class CustomerRequestLog implements Serializable {
         this.createTime = createTime;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Integer getStid() {
+        return stid;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setStid(Integer stid) {
+        this.stid = stid;
+    }
+
+    public ApiType getApiType() {
+        return apiType;
+    }
+
+    public void setApiType(ApiType apiType) {
+        this.apiType = apiType;
+    }
+
+    public MobileOperator getMobileOperator() {
+        return mobileOperator;
+    }
+
+    public void setMobileOperator(MobileOperator mobileOperator) {
+        this.mobileOperator = mobileOperator;
     }
 
     public String toString(){

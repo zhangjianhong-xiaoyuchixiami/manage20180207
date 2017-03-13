@@ -1,16 +1,9 @@
 package org.qydata.controller;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.qydata.entity.User;
 import org.qydata.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
 
 
 /**
@@ -41,10 +34,10 @@ public class TestController {
         return "/test/index";
     }
 
-    @RequestMapping(value = "/list")
+  /*  @RequestMapping(value = "/list")
     @ResponseBody
     public String list(HttpServletRequest request){
-        String aoData = request.getParameter("aoData");
+       String aoData = request.getParameter("aoData");
         JSONArray jsonarray = JSONArray.fromObject(aoData);
         System.out.println(aoData);
         String sEcho = null;
@@ -113,7 +106,7 @@ public class TestController {
         getObj.put("iTotalDisplayRecords", count);//显示的行数,这个要和上面写的一样
         getObj.put("aaData",jsonArray);//要以JSON格式返回
         return getObj.toString();
-    }
+    }*/
 
     @RequestMapping("/delete")
     public void delete(Integer id,String name,String username){

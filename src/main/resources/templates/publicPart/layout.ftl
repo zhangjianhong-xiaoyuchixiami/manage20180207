@@ -249,6 +249,17 @@
 
                 </@shiro.hasAnyRoles>
 
+            <#--客户请求日志-->
+                <@shiro.hasAnyRoles name="backAdmin">
+
+                    <li>
+                        <a href="/customer/find-all-customer-request-log-view">
+                            <i class="icon-bullhorn"></i
+                            <span class="title">客户请求日志</span>
+                        </a>
+                    </li>
+
+                </@shiro.hasAnyRoles>
 
             <#--用户管理-->
                 <@shiro.hasAnyRoles name="backAdmin,technology">
@@ -344,21 +355,21 @@
 
                 </@shiro.hasAnyRoles>
 
-           <#-- &lt;#&ndash;消息通知&ndash;&gt;
-                <@shiro.hasAnyRoles name="backAdmin">
+            <#-- &lt;#&ndash;消息通知&ndash;&gt;
+                 <@shiro.hasAnyRoles name="backAdmin">
 
-                    <li>
+                     <li>
 
-                        <a href="index.html">
+                         <a href="index.html">
 
-                            <i class="icon-bullhorn"></i>
+                             <i class="icon-bullhorn"></i>
 
-                            <span class="title">消息通知</span>
+                             <span class="title">消息通知</span>
 
-                        </a>
+                         </a>
 
-                    </li>
-                </@shiro.hasAnyRoles>&ndash;&gt;-->
+                     </li>
+                 </@shiro.hasAnyRoles>&ndash;&gt;-->
 
             </ul>
 

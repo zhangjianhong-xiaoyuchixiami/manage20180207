@@ -134,6 +134,7 @@ public class UserController {
         model.addAttribute("pageSize",pageModel.getPageSize());
         return "/user/userList";
     }
+
     //common
     @RequestMapping(value = "/findAllUserCommon")
     public String findAllUserCommon(HttpServletRequest request, Model model,String content){
@@ -197,6 +198,7 @@ public class UserController {
         }
         return "redirect:/user/findAllUser";
     }
+
     //禁用账号super
     @RequestMapping(value = "/statusForbid")
     public String statusForbid(Integer userId){
@@ -207,6 +209,7 @@ public class UserController {
         }
         return "redirect:/user/findAllUser";
     }
+
     //重置密码super
     @RequestMapping(value = "/resetPassword")
     public String resetPassword(Integer userId){
@@ -228,6 +231,7 @@ public class UserController {
         }
         return "redirect:/user/findAllUserCommon";
     }
+
     //禁用账号common
     @RequestMapping(value = "/statusForbidCommon")
     public String statusForbidCommon(Integer userId){
@@ -238,6 +242,7 @@ public class UserController {
         }
         return "redirect:/user/findAllUserCommon";
     }
+
     //重置密码common
     @RequestMapping(value = "/resetPasswordCommon")
     public String resetPasswordCommon(Integer userId){
@@ -255,33 +260,34 @@ public class UserController {
         return "/user/updatePassword";
     }
 
+    /**
+     *修改密码
+     * @param newPassword
+     * @param rppassword
+     * @param model
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/updatePasswordAction")
-    public String updatePasswordAction(String password,String newPassword,String
-            rppassword,RedirectAttributes model,HttpServletRequest request){
+    public String updatePasswordAction(String newPassword,String rppassword,RedirectAttributes model,HttpServletRequest request){
 
         if(RegexUtil.isNull(newPassword)){
-
-            model.addFlashAttribute("password",password);
             model.addFlashAttribute("UserMessageNewPassword","请输入新密码");
             return "redirect:/user/updatePasswordView";
         }
         if(!RegexUtil.isPwd(newPassword)){
-
-            model.addFlashAttribute("password",password);
+            model.addFlashAttribute("newPassword",newPassword);
             model.addFlashAttribute("UserMessageNewPassword","新密码格式不正确");
             return "redirect:/user/updatePasswordView";
         }
         if(RegexUtil.isNull(rppassword)){
-
-            model.addFlashAttribute("password",password);
             model.addFlashAttribute("newPassword",newPassword);
             model.addFlashAttribute("UserMessageRpPassword","请再次输入新密码");
             return "redirect:/user/updatePasswordView";
         }
         if(!newPassword.equals(rppassword)) {
-
-            model.addFlashAttribute("password",password);
             model.addFlashAttribute("newPassword",newPassword);
+            model.addFlashAttribute("newPassword",rppassword);
             model.addFlashAttribute("UserMessageRpPassword", "两次密码不一致");
             return "redirect:/user/updatePasswordView";
         }
@@ -299,7 +305,7 @@ public class UserController {
             model.addFlashAttribute("msg","修改失败！");
             return "redirect:/user/updatePasswordView";
         }
-        return "redirect:/";
+        return "redirect:/view/logout";
     }
 
 }

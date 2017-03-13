@@ -11,11 +11,11 @@ public class ErrorPages {
 
     @RequestMapping(value = "/error/404")
     public String get404Error(){
-        return "/pages/404";
+        return "/errorpage/404";
     }
 
     @RequestMapping(value = "/error/500")
     public String get500Error(){
-        return "/pages/500";
+        return "/errorpage/500";
     }
 }

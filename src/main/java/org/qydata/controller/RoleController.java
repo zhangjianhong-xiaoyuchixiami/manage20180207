@@ -52,18 +52,11 @@ public class RoleController {
         Gson gson = new Gson();
         Map<String,String> map = new HashMap<>();
         try {
-            boolean flag = roleService.addRoleUser(userId,roleId);
-            if (flag){
+            if (roleService.addRoleUser(userId,roleId)){
                 map.put("result","ok");
-                map.put("msg","userId");
-            }else {
-                map.put("result","error");
-                map.put("msg","userId");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            map.put("result","no");
-            map.put("msg","userId");
         }
         return gson.toJson(map);
     }

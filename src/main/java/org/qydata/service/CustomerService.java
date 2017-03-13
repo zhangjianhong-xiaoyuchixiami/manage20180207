@@ -44,9 +44,8 @@ public interface CustomerService {
      * 根据部门编号查找对应的customerId
      * @param deptIdList
      * @return
-     * @throws Exception
      */
-    public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList)throws Exception;
+    public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList);
 
 
     /**
@@ -54,6 +53,12 @@ public interface CustomerService {
      * @return
      */
     public List<Integer> findAllCustomerId();
+
+    /**
+     * 查询客户请求的日志
+     * @return
+     */
+    public Map<String,Object> findAllCustomerRequestLog(Map<String,Object> map);
 
 
 

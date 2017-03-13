@@ -71,6 +71,7 @@ public class ShiroConfig {
 	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
 	}
+
 	/**
 	 * 启动在Shiro里面进行Annotation的相关验证处理操作
 	 * @return

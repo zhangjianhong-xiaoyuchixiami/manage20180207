@@ -46,13 +46,15 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
-    public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String, Object> map){
+    public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String, Object> map){
+        Map<String,Object> mapResult = new HashMap<>();
         try {
-            return customerFinanceMapper.queryCompanyCustomerRechargeRecordByCustomerId(map);
+            mapResult.put("queryCompanyCustomerRechargeRecordByCustomerId",customerFinanceMapper.queryCompanyCustomerRechargeRecordByCustomerId(map));
+            mapResult.put("getCountCompanyCustomerRechargeRecordByCustomerId",customerFinanceMapper.getCountCompanyCustomerRechargeRecordByCustomerId(map)) ;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return mapResult;
     }
 
     @Override

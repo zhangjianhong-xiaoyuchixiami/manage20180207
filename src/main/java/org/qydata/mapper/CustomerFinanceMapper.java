@@ -40,6 +40,14 @@ public interface CustomerFinanceMapper {
     public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
     /**
+     * 统计客户的充值记录金额总计
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map)throws Exception;
+
+    /**
      * 查询客户的Api消费记录
      * @param map
      * @return

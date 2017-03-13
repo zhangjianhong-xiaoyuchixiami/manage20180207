@@ -20,10 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -248,10 +245,14 @@ public class ExcelFinanceController {
             map.put("endDate", endDate+" "+"23:59:59");
         }
         List<CustomerBalanceLog> customerBalanceLogList = null;
-        try {
-            customerBalanceLogList = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
+        Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if(me.getKey().equals("queryCompanyCustomerRechargeRecordByCustomerId") ){
+                customerBalanceLogList = (List<CustomerBalanceLog>) me.getValue();
+            }
         }
         List<Map<String,Object>> list = new ArrayList<>();
         Map<String, Object> mapA = new HashMap<String, Object>();

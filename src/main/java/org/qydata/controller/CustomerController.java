@@ -1,11 +1,11 @@
 package org.qydata.controller;
 
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.qydata.entity.Customer;
-import org.qydata.entity.Dept;
-import org.qydata.entity.User;
-import org.qydata.tools.RegexUtil;
+import org.qydata.entity.CustomerRequestLog;
 import org.qydata.service.CustomerService;
 import org.qydata.service.DeptService;
 import org.qydata.service.UserService;
@@ -14,13 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jonhn on 2016/11/8.
@@ -61,141 +60,84 @@ public class CustomerController {
         }
     }
 
-    //添加账号View
-    @RequestMapping(value = "/addCustomerAccountView/{companyId}")
-    public String addCustomerAccountView(@PathVariable String companyId,Model model){
-        model.addAttribute("companyId",companyId);
-        return "customer/addCustomerAccount";
+
+    @RequestMapping(value = "/find-all-customer-request-log-view")
+    public String findAllCustomerRequestLogView(){
+
+        return "/customer/customerrequestlog";
     }
 
-    //添加账号Action
-    @RequestMapping(value = "/addCustomerAccountAction")
-    public String addCustomerAccountAction(String companyId,String authId,RedirectAttributes model){
 
-        if(RegexUtil.isNull(companyId)){
-            return "redirect:/customer/addCustomerAccountView/"+companyId;
-        }
-        if(RegexUtil.isNull(authId)){
-            model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
-            return "redirect:/customer/addCustomerAccountView/"+companyId;
-        }
-        if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
-            return "redirect:/customer/addCustomerAccountView/"+companyId;
-        }
-        try{
-            boolean flag = customerService.insertCustomerAccount(companyId,authId);
-            if (!flag) {
-                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-                return "redirect:/customer/addCustomerViewCommon";
+    @RequestMapping(value = "/find-all-customer-request-log")
+    @ResponseBody
+    public String findAllCustomerRequestLog(Model model,String aoData){
+        Map<String,Object> mapTran = new HashMap<>();
+        JSONArray jsonarray = JSONArray.fromObject(aoData);
+        System.out.println(aoData);
+        String sEcho = null;
+        int iDisplayStart = 0; // 起始索引
+        int iDisplayLength = 0; // 每页显示的行数
+        int iSortCol = 0; //第几列排序
+        String sSortDir = null; //按什么排序
+
+        for (int i = 0; i < jsonarray.size(); i++) {
+            JSONObject obj = (JSONObject) jsonarray.get(i);
+            if (obj.get("name").equals("sEcho")) {
+                sEcho = obj.get("value").toString();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-            return "redirect:/customer/addCustomerViewCommon";
-        }
-        return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
-
-    }
-
-
-
-
-
-    //（暂时没用到）
-    @RequestMapping(value = ("/addCustomerOnlyDeptView/{companyId}"))
-    public String addCustomerViewCommon(Model model,HttpServletRequest request,@PathVariable String companyId){
-        User user = (User)request.getSession().getAttribute("userInfo");
-        List<Dept> deptList = user.getDept();
-        model.addAttribute("companyId",companyId);
-        model.addAttribute("deptList",deptList);
-        return "customer/addCustomerOnlyDept";
-    }
-
-    //（暂时没用到）
-    @RequestMapping(value = ("/addCustomerAllDeptView/{companyId}"))
-    public String addCustomerViewSuper(Model model,HttpServletRequest request,@PathVariable String companyId){
-        List<Dept> deptList = null;
-        try {
-            deptList = deptService.findAllDept();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("companyId",companyId);
-        model.addAttribute("deptList",deptList);
-        return "customer/addCustomerAllDept";
-    }
-
-    //（暂时没用到）
-    @RequestMapping(value = ("/addCustomerOnlyDeptAction"))
-    public String insertCustomerByDeptNo(String companyId, String authId, String deptId, RedirectAttributes model){
-
-        if(RegexUtil.isNull(companyId)){
-            return "redirect:/customer/addCustomerOnlyDeptView/"+companyId;
-        }
-        if(RegexUtil.isNull(authId)){
-            model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
-            return "redirect:/customer/addCustomerOnlyDeptView/"+companyId;
-        }
-        if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
-            return "redirect:/customer/addCustomerOnlyDeptView/"+companyId;
-        }
-        if(RegexUtil.isNull(deptId)){
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CustomerMessageDeptId","请选择所属部门!");
-            return "redirect:/customer/addCustomerOnlyDeptView/"+companyId;
-        }
-        try{
-            boolean flag = customerService.insertCustomer(companyId,authId,deptId);
-            if (!flag) {
-                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-                return "redirect:/customer/addCustomerViewCommon";
+            if (obj.get("name").equals("iDisplayStart")) {
+                iDisplayStart = obj.getInt("value");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-            return "redirect:/customer/addCustomerViewCommon";
-        }
-        return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
-    }
-
-    //（暂时没用到）
-    @RequestMapping(value = ("/addCustomerAllDeptAction"))
-    public String insertCustomer(String companyId, String authId, String deptId, RedirectAttributes model){
-        if(RegexUtil.isNull(companyId)){
-            return "redirect:/customer/addCustomerAllDeptView/"+companyId;
-        }
-        if(RegexUtil.isNull(authId)){
-            model.addFlashAttribute("CustomerMessageAuthId","请输入账户!");
-            return "redirect:/customer/addCustomerAllDeptView/"+companyId;
-        }
-        if(!RegexUtil.stringCheck(authId)){
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CustomerMessageAuthId","账户格式输入不正确!");
-            return "redirect:/customer/addCustomerAllDeptView/"+companyId;
-        }
-        if(RegexUtil.isNull(deptId)){
-            model.addFlashAttribute("authId",authId);
-            model.addFlashAttribute("CustomerMessageDeptId","请选择所属部门!");
-            return "redirect:/customer/addCustomerAllDeptView/"+companyId;
-        }
-
-        try{
-            boolean flag = customerService.insertCustomer(companyId,authId,deptId);
-            if (!flag) {
-                model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-                return "redirect:/customer/addCustomerViewSuper";
+            if (obj.get("name").equals("iDisplayLength")) {
+                iDisplayLength = obj.getInt("value");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            model.addFlashAttribute("msg","对不起，添加失败，请检查你的输入！");
-            return "redirect:/customer/addCustomerViewSuper";
+            if (obj.get("name").equals("iSortCol_0")) {
+                iSortCol = obj.getInt("value");
+            }
+            if (obj.get("name").equals("sSortDir_0")) {
+                sSortDir = obj.get("value").toString();
+            }
         }
-        return "redirect:/company/findAllCustomerAccountByCompanyId/"+companyId;
-    }
 
+        mapTran.put("pageSize", iDisplayStart);
+        mapTran.put("lineSize", iDisplayLength);
+        switch (iSortCol) {
+            case 0:
+                mapTran.put("id", sSortDir);
+                break;
+            case 1:
+                mapTran.put("name", sSortDir);
+                break;
+            case 2:
+                mapTran.put("username", sSortDir);
+                break;
+            case 3:
+                mapTran.put("tel", sSortDir);
+                break;
+            default:
+                break;
+        }
+        Map<String, Object> map = customerService.findAllCustomerRequestLog(mapTran);
+        Set<Map.Entry<String, Object>> set = map.entrySet();
+        Iterator<Map.Entry<String, Object>> it = set.iterator();
+        List<CustomerRequestLog> customerRequestLogList = null;
+        Integer count = null;
+        while (it.hasNext()) {
+            Map.Entry<String, Object> me = it.next();
+            if (me.getKey().equals("findAllCustomerRequestLog")) {
+                customerRequestLogList = (List<CustomerRequestLog>) me.getValue();
+            }
+            if (me.getKey().equals("getCountAllCustomerRequestLog")) {
+                count = (Integer) me.getValue();
+            }
+        }
+        JSONArray jsonArray = JSONArray.fromObject(customerRequestLogList);
+        JSONObject getObj = new JSONObject();
+        getObj.put("sEcho", sEcho);// 不知道这个值有什么用,有知道的请告知一下
+        getObj.put("iTotalRecords", count);//实际的行数
+        getObj.put("iTotalDisplayRecords", count);//显示的行数,这个要和上面写的一样
+        getObj.put("aaData", jsonArray);//要以JSON格式返回
+        return getObj.toString();
+    }
 
 }

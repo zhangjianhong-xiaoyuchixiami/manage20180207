@@ -35,12 +35,10 @@ public class FinanceController {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
-    private CustomerFinanceService customerFinanceService;
-    @Autowired
-    private ApiService apiService;
+    @Autowired private CustomerService customerService;
+    @Autowired private CustomerFinanceService customerFinanceService;
+    @Autowired private ApiService apiService;
+
     /**
      * 查找公司财务账单
      * @param model
@@ -48,7 +46,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = "/find-all-customer")
-    public String findAllCustomer(Model model, String content,Integer partnerId,String beginDate,String endDate){
+    public String queryAllCustomer(Model model, String content,Integer partnerId,String beginDate,String endDate){
         Map<String,Object> map = new HashMap<>();
         if(content != null){
             map.put("content",content);
@@ -81,7 +79,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = ("/find-all-customer-by-dept-id"))
-    public String findAllCustomerByDeptId(HttpServletRequest request,Model model,String content,Integer partnerId,String beginDate,String endDate){
+    public String queryAllCustomerByDeptId(HttpServletRequest request,Model model,String content,Integer partnerId,String beginDate,String endDate){
         User user = (User) request.getSession().getAttribute("userInfo");
         List deptList = new ArrayList();
         Map<String, Object> map = new HashMap<>();
@@ -114,6 +112,8 @@ public class FinanceController {
         }
         return "/finance/customerFinancialAccount";
     }
+
+
     /**
      * 指定账号充值记录
      * @param customerId
@@ -121,12 +121,11 @@ public class FinanceController {
      * @param beginDate
      * @param endDate
      * @param reasonId
-     * @param request
      * @param model
      * @return
      */
     @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id")
-    public String findAllCustomerRechargeLogByCustomerId(Integer customerId,String companyName, String beginDate, String endDate, String [] reasonId, HttpServletRequest request, Model model){
+    public String findAllCustomerRechargeLogByCustomerId(Integer customerId,String companyName, String beginDate, String endDate, String [] reasonId, Model model){
         Map<String, Object> map = new HashMap<>();
         map.put("customerId", customerId);
         List<Integer> reasonIdList = new ArrayList<>();
@@ -146,22 +145,24 @@ public class FinanceController {
         if(endDate != null && endDate != ""){
             map.put("endDate", endDate+" "+"23:59:59");
         }
-        List<CustomerBalanceLog> customerBalanceLogList = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
-        long totleAmount = 0;
-        if(customerBalanceLogList != null && customerBalanceLogList.size()>0) {
-            Iterator<CustomerBalanceLog> iterator = customerBalanceLogList.iterator();
-            while (iterator.hasNext()) {
-                CustomerBalanceLog customerBalanceLog = iterator.next();
-                totleAmount = totleAmount + customerBalanceLog.getAmount();
+        Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if(me.getKey().equals("getCountCompanyCustomerRechargeRecordByCustomerId")){
+                model.addAttribute("totleAmount",(Integer)me.getValue());
+            }
+            if(me.getKey().equals("queryCompanyCustomerRechargeRecordByCustomerId") ){
+                model.addAttribute("customerBalanceLogList",(List)me.getValue());
             }
         }
-        model.addAttribute("customerBalanceLogList",customerBalanceLogList);
         model.addAttribute("customerId",customerId);
         model.addAttribute("reasonIdArray",reasonId);
         model.addAttribute("beginDate",beginDate);
         model.addAttribute("endDate",endDate);
         model.addAttribute("companyName",companyName);
-        model.addAttribute("totleAmount",totleAmount);
+
         return "/finance/customerBalanceLogRecord";
     }
 
@@ -454,7 +455,7 @@ public class FinanceController {
      */
     @RequestMapping("/months-charge-consume-toward")
     @ResponseBody
-    public String monthsChargeConsumeToward(Integer customerId,Integer typeId,Integer years,Integer months){
+    public String findMonthsChargeConsumeToward(Integer customerId,Integer typeId,Integer years,Integer months){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("tableId",typeId);

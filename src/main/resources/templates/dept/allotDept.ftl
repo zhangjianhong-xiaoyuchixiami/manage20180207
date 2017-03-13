@@ -107,14 +107,12 @@
     <script type="text/javascript" src="/js/myjs/allotdept.js"></script>
 
     <script>
+
         $(document).ready(function() {
-            $('#userManage').addClass('active');
 
-            $('#userList').addClass('active');
+            AllotDept.init();
 
-            $('#userManageSelect').addClass('selected');
-
-            $('#userManageArrow').addClass('arrow open');
+        });
 
     </script>
 

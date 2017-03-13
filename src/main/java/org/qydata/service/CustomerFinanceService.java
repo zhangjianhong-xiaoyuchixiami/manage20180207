@@ -34,7 +34,7 @@ public interface CustomerFinanceService {
      * @param map
      * @return
      */
-    public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
+    public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
 
 
     /**

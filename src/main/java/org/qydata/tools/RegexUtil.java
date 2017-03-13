@@ -90,14 +90,14 @@ public class RegexUtil {
 
 
     /**
-     * 匹配密码，以字母开头，长度在6-12之间，只能包含字符、数字和下划线。
+     * 匹配密码，以字母开头，长度在6-18之间，只能包含字符、数字和下划线。
      *
      * @param str
      * @return
      * @author jiqinlin
      */
     public final static boolean isPwd(String str) {
-        return match(str, "^[a-zA-Z]\\w{5,17}$");
+        return match(str, "^[\\w]{6,18}$");
     }
 
     /**

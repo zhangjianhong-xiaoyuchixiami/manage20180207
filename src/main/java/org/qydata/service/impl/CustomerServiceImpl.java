@@ -1,7 +1,6 @@
 package org.qydata.service.impl;
 
 
-
 import org.qydata.entity.Customer;
 import org.qydata.entity.CustomerDept;
 import org.qydata.mapper.CompanyMapper;
@@ -12,6 +11,7 @@ import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -97,12 +97,30 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList) throws Exception {
-        return customerMapper.findAllCustomerIdByDeptId(deptIdList);
+    public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList){
+        try {
+            return customerMapper.findAllCustomerIdByDeptId(deptIdList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public List<Integer> findAllCustomerId() {
         return customerMapper.findAllCustomerId();
+    }
+
+    @Override
+    public Map<String,Object> findAllCustomerRequestLog(Map<String, Object> map) {
+        Map<String,Object> mapResult = new HashMap<>();
+        try {
+            mapResult.put("findAllCustomerRequestLog",customerMapper.findAllCustomerRequestLog(map));
+            mapResult.put("getCountAllCustomerRequestLog",customerMapper.getCountAllCustomerRequestLog(map));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapResult;
     }
 }

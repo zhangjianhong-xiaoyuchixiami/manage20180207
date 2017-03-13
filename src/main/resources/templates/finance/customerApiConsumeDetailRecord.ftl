@@ -41,7 +41,7 @@
 
                                 <div class="controls">
 
-                                    <input type="text" id="customerId" name="customerId" value="${customerId?c}" class="m-wrap medium">
+                                    <input type="text" id="customerId" name="customerId" <#if customerId??>value="${customerId?c}"</#if> class="m-wrap medium">
 
                                 </div>
                             </div>

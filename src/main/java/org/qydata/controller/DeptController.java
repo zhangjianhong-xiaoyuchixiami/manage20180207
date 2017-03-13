@@ -122,8 +122,7 @@ public class DeptController {
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
         try {
-            boolean flag = deptService.insertUserDept(userId,deptId);
-            if (flag){
+            if (deptService.insertUserDept(userId,deptId)){
                 map.put("result","ok");
             }
         } catch (Exception e) {
