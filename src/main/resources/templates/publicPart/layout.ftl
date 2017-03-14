@@ -252,9 +252,9 @@
             <#--客户请求日志-->
                 <@shiro.hasAnyRoles name="backAdmin">
 
-                    <li>
-                        <a href="/customer/find-all-customer-request-log-view">
-                            <i class="icon-bullhorn"></i
+                    <li id="CustomerRequestLog">
+                        <a href="/customer/find-all-customer-request-log">
+                            <i class="icon-cloud"></i
                             <span class="title">客户请求日志</span>
                         </a>
                     </li>

@@ -23,6 +23,7 @@ public class CustomerRequestLog implements Serializable {
     private Timestamp createTime;
     private ApiType apiType;
     private MobileOperator mobileOperator;
+    private Company company;
 
     public Long getId() {
         return id;
@@ -118,6 +119,14 @@ public class CustomerRequestLog implements Serializable {
 
     public void setMobileOperator(MobileOperator mobileOperator) {
         this.mobileOperator = mobileOperator;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public String toString(){

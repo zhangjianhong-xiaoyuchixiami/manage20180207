@@ -82,4 +82,7 @@ public interface CustomerMapper {
      */
     public Integer getCountAllCustomerRequestLog(Map<String,Object> map)throws Exception;
 
+
+    public String findCustomerRequestLogById(Integer id)throws Exception;
+
 }

@@ -123,4 +123,14 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return mapResult;
     }
+
+    @Override
+    public String findCustomerRequestLogById(Integer id){
+        try {
+            return customerMapper.findCustomerRequestLogById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

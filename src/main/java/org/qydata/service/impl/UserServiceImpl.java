@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         try{
             userMapper.addUser(userA);
             if(user.getTypeId() == 1){
-                roleMapper.addRoleSuperUser(user.getId());
+                roleMapper.addRoleSuperUser(userA.getId());
             }
             return true;
         }catch (Exception e){

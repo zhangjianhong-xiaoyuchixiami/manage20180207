@@ -92,7 +92,7 @@
 
                         <div class="portlet-body no-more-tables">
 
-                            <div class="clearfix margin-bottom-5">
+                            <#--<div class="clearfix margin-bottom-5">
 
                                 <div class="btn-group">
 
@@ -222,7 +222,7 @@
 
                                 </div>
 
-                            </div>
+                            </div>-->
 
                             <table class="table table-striped table-hover table-bordered table-condensed" id="companySample_1">
                                 <thead>
@@ -247,7 +247,7 @@
                                     <th>status</th>
                                     <th>statusName</th>
                                     <th>customerCreateTime</th>
-                                    <th>操作</th>
+                                    <#--<th>操作</th>-->
                                 <#-- <th style="text-align: center; width: 10%;">操作</th>-->
                                 </tr>
                                 </thead>
@@ -330,7 +330,7 @@
                                                     </#list>
                                                 </#if>
                                             </td>
-                                            <td>
+                                            <#--<td>
                                                 <#if company.customerList??>
                                                     <#list company.customerList as customer>
                                                         <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
@@ -338,7 +338,7 @@
                                                         <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
                                                     </#list>
                                                 </#if>
-                                            </td>
+                                            </td>-->
                                         <#--<td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>-->
                                         </tr>
                                         </#list>
@@ -348,7 +348,7 @@
 
                             </table>
 
-                            <div id="form_modal_add_account" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_account" aria-hidden="true">
+                           <#-- <div id="form_modal_add_account" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_account" aria-hidden="true">
 
                                 <div class="modal-header">
 
@@ -466,7 +466,7 @@
 
                                 </div>
 
-                            </div>
+                            </div>-->
 
                         </div>
 

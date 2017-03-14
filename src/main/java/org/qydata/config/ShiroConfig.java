@@ -354,6 +354,11 @@ public class ShiroConfig {
 		chains.put("/api/api-message-by-company", "authc,perms");
 
 
+		//客户请求日志
+		chains.put("/customer/find-all-customer-request-log", "authc,perms");
+		chains.put("/customer/find-all-customer-request-log-ajax", "authc,perms");
+		chains.put("/customer/find-all-customer-request-log/content", "authc,perms");
+
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}

@@ -61,19 +61,16 @@ public class CustomerController {
     }
 
 
-    @RequestMapping(value = "/find-all-customer-request-log-view")
-    public String findAllCustomerRequestLogView(){
-
+    @RequestMapping(value = "/find-all-customer-request-log")
+    public String findAllCustomerRequestLog(Model model){
         return "/customer/customerrequestlog";
     }
 
-
-    @RequestMapping(value = "/find-all-customer-request-log")
+    @RequestMapping(value = "/find-all-customer-request-log-ajax")
     @ResponseBody
-    public String findAllCustomerRequestLog(Model model,String aoData){
+    public String findAllCustomerRequestLogAjax(String aoData){
         Map<String,Object> mapTran = new HashMap<>();
         JSONArray jsonarray = JSONArray.fromObject(aoData);
-        System.out.println(aoData);
         String sEcho = null;
         int iDisplayStart = 0; // 起始索引
         int iDisplayLength = 0; // 每页显示的行数
@@ -98,21 +95,24 @@ public class CustomerController {
                 sSortDir = obj.get("value").toString();
             }
         }
-
+        System.out.println(iDisplayStart);
+        System.out.println(iDisplayLength);
+        System.out.println(iSortCol);
+        System.out.println(sSortDir);
         mapTran.put("pageSize", iDisplayStart);
         mapTran.put("lineSize", iDisplayLength);
         switch (iSortCol) {
             case 0:
-                mapTran.put("id", sSortDir);
+                mapTran.put("companyName", sSortDir);
                 break;
             case 1:
-                mapTran.put("name", sSortDir);
+                mapTran.put("apiTypeName", sSortDir);
                 break;
             case 2:
-                mapTran.put("username", sSortDir);
+                mapTran.put("content", sSortDir);
                 break;
             case 3:
-                mapTran.put("tel", sSortDir);
+                mapTran.put("createTime", sSortDir);
                 break;
             default:
                 break;
@@ -138,6 +138,13 @@ public class CustomerController {
         getObj.put("iTotalDisplayRecords", count);//显示的行数,这个要和上面写的一样
         getObj.put("aaData", jsonArray);//要以JSON格式返回
         return getObj.toString();
+    }
+
+    @RequestMapping(value = "/find-all-customer-request-log/content")
+    @ResponseBody
+    public String findCustomerRequestLogById(Integer id){
+        String content = customerService.findCustomerRequestLogById(id);
+        return content;
     }
 
 }

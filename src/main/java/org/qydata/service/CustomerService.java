@@ -60,6 +60,6 @@ public interface CustomerService {
      */
     public Map<String,Object> findAllCustomerRequestLog(Map<String,Object> map);
 
-
+    public String findCustomerRequestLogById(Integer id);
 
 }
