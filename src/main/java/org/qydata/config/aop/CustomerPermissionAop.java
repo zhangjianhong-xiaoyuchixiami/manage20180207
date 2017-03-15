@@ -1,4 +1,4 @@
-package org.qydata.config;
+package org.qydata.config.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -47,7 +47,8 @@ public class CustomerPermissionAop {
                     deptIdList.add(user.getDept().get(i).getId());
                 }
                 if (!customerService.findAllCustomerIdByDeptId(deptIdList).contains(args[0])){
-                    args[0] = -100;
+                    //args[0] = -100;
+                    return "/view/role";
                 }
             }
         }
@@ -55,6 +56,7 @@ public class CustomerPermissionAop {
         System.out.println("@Before：被织入的目标对象为：" + point.getTarget());
         return point.proceed(args);
     }
+
 
 //    @Around("execution(* org.qydata.controller.FinanceController.findAllCustomerRechargeLogByCustomerId(..))")
 //    public Object process(ProceedingJoinPoint point) throws Throwable {

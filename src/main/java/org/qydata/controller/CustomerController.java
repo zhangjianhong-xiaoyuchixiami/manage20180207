@@ -30,14 +30,11 @@ public class CustomerController {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
-    @Autowired
-    private CustomerService customerService;
+    @Autowired private CustomerService customerService;
 
-    @Autowired
-    private DeptService deptService;
+    @Autowired private DeptService deptService;
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     /**
      * 添加新客户时验证账户名是否已存在
@@ -60,12 +57,21 @@ public class CustomerController {
         }
     }
 
-
+    /**
+     * 客户请求日志
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/find-all-customer-request-log")
     public String findAllCustomerRequestLog(Model model){
         return "/customer/customerrequestlog";
     }
 
+    /**
+     * 客户请求日志
+     * @param aoData
+     * @return
+     */
     @RequestMapping(value = "/find-all-customer-request-log-ajax")
     @ResponseBody
     public String findAllCustomerRequestLogAjax(String aoData){
@@ -140,6 +146,11 @@ public class CustomerController {
         return getObj.toString();
     }
 
+    /**
+     * 根据日志Id查询客户请求日志的内容
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/find-all-customer-request-log/content")
     @ResponseBody
     public String findCustomerRequestLogById(Integer id){

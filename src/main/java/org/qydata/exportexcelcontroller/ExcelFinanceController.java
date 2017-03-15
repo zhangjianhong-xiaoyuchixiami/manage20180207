@@ -38,39 +38,28 @@ public class ExcelFinanceController {
     private CustomerFinanceService customerFinanceService;
     /**
      * 查找公司财务账单
-     * @param request
      * @return
      */
     @RequestMapping(value = "/find-all-customer")
-    public void findAllCustomer(Integer partnerId,HttpServletRequest request,HttpServletResponse response) throws IOException {
-        System.out.println(partnerId);
-        String companyName = request.getParameter("content");
-        Map<String,Object> map = new HashMap<String,Object>();
-        List customerTypeIdList = new ArrayList();
-        if(companyName!=null){
-            map.put("content",companyName);
+    public void findAllCustomer(Integer partnerId,String content,HttpServletResponse response) throws IOException {
+        Map<String,Object> map = new HashMap<>();
+        if(content!=null){
+            map.put("content",content);
         }
         if(partnerId!=null){
             map.put("partnerId",partnerId);
         }
-        customerTypeIdList.add(1);
-        map.put("customerTypeIdList",customerTypeIdList);
-
-        List<CustomerFinance> customerFinances = null;
-        try {
-            customerFinances  =customerFinanceService.queryCompanyCustomerOverAllFinance(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<CustomerFinance> customerFinances  =customerFinanceService.queryCompanyCustomerOverAllFinance(map);
 
         List<Map<String,Object>> list = new ArrayList<>();
-        Map<String, Object> mapA = new HashMap<String, Object>();
+
+        Map<String, Object> mapA = new HashMap<>();
         mapA.put("sheetName", "sheet1");
         list.add(mapA);
         CustomerFinance customerFinance=null;
         for (int j = 0; j < customerFinances.size(); j++) {
             customerFinance = customerFinances.get(j);
-            Map<String, Object> mapValue = new HashMap<String, Object>();
+            Map<String, Object> mapValue = new HashMap<>();
             mapValue.put("companyName", customerFinance.getCompanyName());
             if(customerFinance.getPartnerName() != null){
                 mapValue.put("partnerName", customerFinance.getPartnerName());

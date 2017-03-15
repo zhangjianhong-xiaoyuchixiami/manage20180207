@@ -1,117 +1,100 @@
 package org.qydata.controller;
 
+
+import org.qydata.entity.CustomerRequestLog;
+import org.qydata.service.CustomerService;
 import org.qydata.service.UserService;
+import org.qydata.tools.ExportIoOperate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 
 /**
  * Created by jonhn on 2017/1/13.
  */
 @Controller
-@RequestMapping("/test")
 public class TestController {
 
     @Autowired private UserService userService;
 
-//
-//    @RequestMapping("/user")
-//    public ModelAndView user( Model model) throws IOException {
-//        List<User> userList = userService.findAllUser(0, 200);
-//        model.addAttribute("userList", userList);
-//        model.addAttribute("page","page");
-//        model.addAttribute("size","size");
-//        //ViewExcel viewExcel = new ViewExcel();
-//        // ModelMap modelMap = new ModelMap();
-//        //modelMap.put("list",userList);
-//        ModelAndView modelAndView = new ModelAndView("/test/user");
-//        return modelAndView;
-//    }
+    @Autowired private CustomerService customerService;
 
-    @RequestMapping("/index")
-    public String list1(){
-        return "/test/index";
-    }
+    @Autowired private HttpServletResponse response;
 
-  /*  @RequestMapping(value = "/list")
-    @ResponseBody
-    public String list(HttpServletRequest request){
-       String aoData = request.getParameter("aoData");
-        JSONArray jsonarray = JSONArray.fromObject(aoData);
-        System.out.println(aoData);
-        String sEcho = null;
-        int iDisplayStart = 0; // 起始索引
-        int iDisplayLength = 0; // 每页显示的行数
-        int iSortCol_0 = 0; //第几列排序
-        String sSortDir_0 = null; //按什么排序
-
-        for (int i = 0; i < jsonarray.size(); i++) {
-            JSONObject obj = (JSONObject) jsonarray.get(i);
-            if (obj.get("name").equals("sEcho")){
-                sEcho = obj.get("value").toString();
-            }
-            if (obj.get("name").equals("iDisplayStart")){
-                iDisplayStart = obj.getInt("value");
-            }
-            if (obj.get("name").equals("iDisplayLength")){
-                iDisplayLength = obj.getInt("value");
-            }
-            if (obj.get("name").equals("iSortCol_0")){
-                iSortCol_0 = obj.getInt("value");
-            }
-            if (obj.get("name").equals("sSortDir_0")){
-                sSortDir_0 = obj.get("value").toString();
-            }
-        }
-        System.out.println(iDisplayStart);
-        System.out.println(iDisplayLength);
-       System.out.println(iSortCol_0);
-       System.out.println(sSortDir_0);
+    /**
+     * 导出Excel
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/export")
+    public ModelAndView user() throws Exception {
         Map<String,Object> mapTran = new HashMap<>();
-        mapTran.put("pageSize",iDisplayStart);
-        mapTran.put("lineSize",iDisplayLength);
-        switch (iSortCol_0){
-            case 0:
-                mapTran.put("id",sSortDir_0);
-                break;
-            case 1:
-                mapTran.put("name",sSortDir_0);
-                break;
-            case 2:
-                mapTran.put("username",sSortDir_0);
-                break;
-            case 3:
-                mapTran.put("tel",sSortDir_0);
-                break;
-        }
-        Map<String,Object> map = userService.findAllUserTest(mapTran);
-        Set<Map.Entry<String,Object>> set = map.entrySet();
+        mapTran.put("pageSize",0);
+        mapTran.put("lineSize",30);
+        Map<String, Object> map = customerService.findAllCustomerRequestLog(mapTran);
+        Set<Map.Entry<String, Object>> set = map.entrySet();
         Iterator<Map.Entry<String, Object>> it = set.iterator();
-        List<User> userList  = null;
-        Integer count = null;
-        while (it.hasNext()){
-            Map.Entry<String,Object> me = it.next();
-            if(me.getKey().equals("findAllUser")){
-                userList =  (List<User>) me.getValue();
-            }
-            if(me.getKey().equals("getAllCount")){
-                count = (Integer) me.getValue();
+        List<CustomerRequestLog> customerRequestLogList = null;
+        while (it.hasNext()) {
+            Map.Entry<String, Object> me = it.next();
+            if (me.getKey().equals("findAllCustomerRequestLog")) {
+                customerRequestLogList = (List<CustomerRequestLog>) me.getValue();
             }
         }
-        JSONArray jsonArray =JSONArray.fromObject(userList);
-        JSONObject getObj = new JSONObject();
-        getObj.put("sEcho", sEcho);// 不知道这个值有什么用,有知道的请告知一下
-        getObj.put("iTotalRecords", count);//实际的行数
-        getObj.put("iTotalDisplayRecords", count);//显示的行数,这个要和上面写的一样
-        getObj.put("aaData",jsonArray);//要以JSON格式返回
-        return getObj.toString();
-    }*/
+        List<Map<String,Object>> listExport = new ArrayList<>();
+        Map<String, Object> mapExport = new HashMap<>();
+        mapExport.put("sheetName", "sheet1");
+        listExport.add(mapExport);
+        for ( int i = 0; i < customerRequestLogList.size(); i++ ){
+            CustomerRequestLog customerRequestLog = customerRequestLogList.get(i);
+            Map<String, Object> mapValue = new HashMap<>();
+            mapValue.put("id",customerRequestLog.getId());
+            mapValue.put("apiTypeId",customerRequestLog.getApiTypeId());
+            mapValue.put("stid",customerRequestLog.getStid());
+            mapValue.put("customerId",customerRequestLog.getCustomerId());
+            if (customerRequestLog.getMobileOperator() == null){
+                mapValue.put("stidName","");
+            }else {
+                mapValue.put("stidName",customerRequestLog.getMobileOperator().getName());
+            }
 
-    @RequestMapping("/delete")
-    public void delete(Integer id,String name,String username){
-        userService.deleteTest(id);
+            listExport.add(mapValue);
+        }
+        String fileName = "客户请求日志";
+        String columnNames[]= {"id","apiTypeId","stid","customerId","stidName"};//列名
+        String keys[] = {"id","apiTypeId","stid","customerId","stidName"};//map中的key
+        ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
+        return null;
     }
 
+    /**
+     * 视图
+     * @param export
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/user")
+    public ModelAndView userTest(String export, Model model) throws Exception {
+        Map<String,Object> mapTran = new HashMap<>();
+        mapTran.put("pageSize",0);
+        mapTran.put("lineSize",30);
+        Map<String, Object> map = customerService.findAllCustomerRequestLog(mapTran);
+        Set<Map.Entry<String, Object>> set = map.entrySet();
+        Iterator<Map.Entry<String, Object>> it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Object> me = it.next();
+            if (me.getKey().equals("findAllCustomerRequestLog")) {
+                model.addAttribute("customerRequestLogList",me.getValue());
+            }
+        }
+        return new ModelAndView("/test/user");
+    }
 
 }

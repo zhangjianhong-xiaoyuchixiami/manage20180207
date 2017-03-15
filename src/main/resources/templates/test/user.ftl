@@ -4,29 +4,29 @@
     <meta charset="utf-8">
 </head>
 <body>
-<table style="width: 400px; border: 1px solid red">
+<table style="width: 100%; border: 1px solid red" cellpadding="5px" cellspacing="0px">
     <thead>
-    <th>ID</th>
-    <th>姓名</th>
-    <th>用户名</th>
-    <th>电话</th>
+    <th>id</th>
+    <th>apiTypeId</th>
+    <th>stid</th>
+    <th>customerId</th>
     </thead>
     <tbody>
-    <#if userList??>
-        <#list userList as user>
+    <#if customerRequestLogList??>
+        <#list customerRequestLogList as customerRequestLog>
         <tr>
-            <td>${user.id}</td>
-            <td>${user.name}</td>
-            <td>${user.username}</td>
-            <td>${user.tel}</td>
+            <td>${customerRequestLog.id!'null'}</td>
+            <td>${customerRequestLog.apiTypeId!'null'}</td>
+            <td>${customerRequestLog.stid!'null'}</td>
+            <td>${customerRequestLog.customerId!'null'}</td>
         </tr>
         </#list>
     </#if>
     </tbody>
 </table>
-<form action="/test-controller/user">
-    <input type="text" value="true" name="export">
-    <button type="submit">导出Excel</button>
-</form>
+
+
+    <a href="/user?export=true">导出Excel</a>
+
 </body>
 </html>

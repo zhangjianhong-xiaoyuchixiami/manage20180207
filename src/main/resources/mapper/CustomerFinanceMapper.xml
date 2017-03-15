@@ -387,7 +387,7 @@
     </select>
 
     <!--统计客户的充值记录金额总计-->
-    <select id="getCompanyCustomerRechargeRecordByCustomerId" parameterType="map" resultType="Integer">
+    <select id="getCountCompanyCustomerRechargeRecordByCustomerId" parameterType="map" resultType="Integer">
         SELECT sum(amount)
         FROM qyfinance.bkvwCustomerBalanceLog
         WHERE customerId=#{customerId}
