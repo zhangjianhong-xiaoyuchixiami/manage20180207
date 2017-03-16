@@ -113,11 +113,11 @@
                             <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if></div>
 
                             <@shiro.hasPermission name="customer:findAllCustomer">
-                                <@d.tools idName="exportExcel"></@d.tools>
+                                <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?export=true"></@d.tools>
                             </@shiro.hasPermission>
 
                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                <@d.tools idName="exportExcelByDeptId"></@d.tools>
+                                <@d.tools idName="exportExcelByDeptId" hrefName="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?export=true"></@d.tools>
                             </@shiro.hasPermission>
 
                         </div>
@@ -128,7 +128,7 @@
 
                                 <div class="pull-left table-top-bottom">
 
-                                    <label class="control-label">共计&yen;：<#if totleAmount??><span>${(-totleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">共计&yen;：<span>${(-totleAmount/100.0)!'0.0'}元</span></label>
 
                                 </div>
 
@@ -280,39 +280,40 @@
             });
         }
 
-        $(document).ready(function() {
-            $('#exportExcelByDeptId').on('click', function () {
-                var companyName = $('#companyName').val();
-                var customerId = $('#customerId').val();
-                var apiTypeId = $('#apiTypeId').val();
-                fetch('/excel-finance/find-all-customer-by-dept/find-all-customer-api-consume-record-by-customer-id?companyName='+companyName+'&customerId='+customerId+'&apiTypeId='+apiTypeId).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename = companyName+'消费记录.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return '';
+            }
+        })(jQuery);
 
-            $('#exportExcel').on('click', function () {
-                var companyName = $('#companyName').val();
-                var customerId = $('#customerId').val();
-                var apiTypeId = $('#apiTypeId').val();
-                var apiVendorId = $('#apiVendorId').val();
-                fetch('/excel-finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?companyName='+companyName+'&customerId='+customerId+'&apiTypeId='+apiTypeId+'&apiVendorId='+apiVendorId).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename = companyName+'消费记录.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
-
+        $(function(){
+            console.log($.getUrlParam('companyName'));
+            console.log($.getUrlParam('customerId'));
+            console.log($.getUrlParam('apiTypeId'));
+            console.log($.getUrlParam('apiVendorId'));
         });
+
+        var href = $("#exportExcel").attr('href');
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'companyName=' + $.getUrlParam('companyName') +
+                    (href.match(/\?/) ? '&' : '?') + 'customerId=' + $.getUrlParam('customerId') +
+                    (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId');
+            $("#exportExcel"
+            ).attr('href', href);
+        }
+
+        var hrefByDeptId = $("#exportExcelByDeptId").attr('href');
+        if(hrefByDeptId) {
+            hrefByDeptId += (href.match(/\?/) ? '&' : '?') + 'companyName=' + $.getUrlParam('companyName') +
+                            (href.match(/\?/) ? '&' : '?') + 'customerId=' + $.getUrlParam('customerId') +
+                            (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId') +
+                            (href.match(/\?/) ? '&' : '?') + 'apiVendorId=' + $.getUrlParam('apiVendorId');
+            $("#exportExcelByDeptId"
+            ).attr('href', hrefByDeptId);
+        }
 
     </script>
 

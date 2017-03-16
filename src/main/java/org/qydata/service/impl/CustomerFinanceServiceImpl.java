@@ -58,25 +58,34 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
-    public List<CustomerApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String, Object> map)throws Exception{
-        List<ApiType> apiTypeList = customerFinanceMapper.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-        List<CustomerApiType> customerApiTypeList = new ArrayList<>();
-        for (int i = 0; i < apiTypeList.size(); i++) {
-            ApiType apiType = apiTypeList.get(i);
-            List<CustomerApiVendor> customerApiVendorList = apiType.getCustomerApiVendorList();
-            long totlePrice = 0;
-            for (int j = 0; j < customerApiVendorList.size(); j++) {
-                CustomerApiVendor customerApiVendor = customerApiVendorList.get(j);
-                totlePrice = totlePrice + customerApiVendor.getTotlePrice();
+    public Map<String,Object> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String, Object> map){
+        Map<String,Object> mapResult = new HashMap<>();
+        try {
+            List<ApiType> apiTypeList = customerFinanceMapper.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+            List<CustomerApiType> customerApiTypeList = new ArrayList<>();
+            if (apiTypeList != null) {
+                for (int i = 0; i < apiTypeList.size(); i++) {
+                    ApiType apiType = apiTypeList.get(i);
+                    List<CustomerApiVendor> customerApiVendorList = apiType.getCustomerApiVendorList();
+                    long totlePrice = 0;
+                    for (int j = 0; j < customerApiVendorList.size(); j++) {
+                        CustomerApiVendor customerApiVendor = customerApiVendorList.get(j);
+                        totlePrice = totlePrice + customerApiVendor.getTotlePrice();
+                    }
+                    CustomerApiType customerApiType = new CustomerApiType();
+                    customerApiType.setApiTypeId(apiType.getId());
+                    customerApiType.setApiTypeName(apiType.getName());
+                    customerApiType.setTotlePrice(totlePrice);
+                    customerApiType.setCustomerApiVendors(apiType.getCustomerApiVendorList());
+                    customerApiTypeList.add(customerApiType);
+                }
             }
-            CustomerApiType customerApiType = new CustomerApiType();
-            customerApiType.setApiTypeId(apiType.getId());
-            customerApiType.setApiTypeName(apiType.getName());
-            customerApiType.setTotlePrice(totlePrice);
-            customerApiType.setCustomerApiVendors(apiType.getCustomerApiVendorList());
-            customerApiTypeList.add(customerApiType);
+            mapResult.put("queryCompanyCustomerApiConsumeRecordByCustomerId",customerApiTypeList);
+            mapResult.put("getCountCompanyCustomerApiConsumeRecordByCustomerId",customerFinanceMapper.getCountCompanyCustomerApiConsumeRecordByCustomerId(map));
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return customerApiTypeList;
+        return mapResult;
     }
 
     @Override

@@ -4,10 +4,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerApiVendor;
-import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.CustomerBalanceLog;
-import org.qydata.entity.Dept;
-import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.UserService;
@@ -16,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/1/10.
@@ -36,231 +33,9 @@ public class ExcelFinanceController {
     private UserService userService;
     @Autowired
     private CustomerFinanceService customerFinanceService;
-    /**
-     * 查找公司财务账单
-     * @return
-     */
-    @RequestMapping(value = "/find-all-customer")
-    public void findAllCustomer(Integer partnerId,String content,HttpServletResponse response) throws IOException {
-        Map<String,Object> map = new HashMap<>();
-        if(content!=null){
-            map.put("content",content);
-        }
-        if(partnerId!=null){
-            map.put("partnerId",partnerId);
-        }
-        List<CustomerFinance> customerFinances  =customerFinanceService.queryCompanyCustomerOverAllFinance(map);
 
-        List<Map<String,Object>> list = new ArrayList<>();
 
-        Map<String, Object> mapA = new HashMap<>();
-        mapA.put("sheetName", "sheet1");
-        list.add(mapA);
-        CustomerFinance customerFinance=null;
-        for (int j = 0; j < customerFinances.size(); j++) {
-            customerFinance = customerFinances.get(j);
-            Map<String, Object> mapValue = new HashMap<>();
-            mapValue.put("companyName", customerFinance.getCompanyName());
-            if(customerFinance.getPartnerName() != null){
-                mapValue.put("partnerName", customerFinance.getPartnerName());
-            }else {
-                mapValue.put("partnerName","");
-            }
-            if(customerFinance.getChargeWeekTotleAmount() != null){
-                mapValue.put("chargeWeekTotleAmount", customerFinance.getChargeWeekTotleAmount()/100.0);
-            }else {
-                mapValue.put("chargeWeekTotleAmount", 0.0);
-            }
-            if(customerFinance.getConsumeWeekTotleAmount() != null){
-                mapValue.put("consumeWeekTotleAmount", customerFinance.getConsumeWeekTotleAmount()/100.0);
-            }else {
-                mapValue.put("consumeWeekTotleAmount", 0.0);
-            }
-            if(customerFinance.getChargeMonthTotleAmount() != null){
-                mapValue.put("chargeMonthTotleAmount", customerFinance.getChargeMonthTotleAmount()/100.0);
-            }else {
-                mapValue.put("chargeMonthTotleAmount", 0.0);
-            }
-            if(customerFinance.getConsumeMonthTotleAmount() != null){
-                mapValue.put("consumeMonthTotleAmount", customerFinance.getConsumeMonthTotleAmount()/100.0);
-            }else {
-                mapValue.put("consumeMonthTotleAmount", 0.0);
-            }
-            if(customerFinance.getChargeTotleAmount() != null){
-                mapValue.put("chargeTotleAmount", customerFinance.getChargeTotleAmount()/100.0);
-            }else {
-                mapValue.put("chargeTotleAmount", 0.0);
-            }
-            if(customerFinance.getConsumeTotleAmount() != null){
-                mapValue.put("consumeTotleAmount", customerFinance.getConsumeTotleAmount()/100.0);
-            }else {
-                mapValue.put("consumeTotleAmount", 0.0);
-            }
-            if(customerFinance.getBalance() != null){
-                mapValue.put("balance", customerFinance.getBalance()/100.0);
-            }else {
-                mapValue.put("balance", 0.0);
-            }
-            list.add(mapValue);
-        }
-        String fileName = "客户财务报表文件";
-        String columnNames[]= {"公司名称","合作公司","上周充值（单位：元）","上周消费（单位：元）","上月充值（单位：元）","上月消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
-        String keys[] = {"companyName","partnerName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
-        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
-    }
-    /**
-     * 通过部门编号查找公司财务账单
-     * @param request
-     * @return
-     */
-    @RequestMapping("/find-all-customer-by-dept-id")
-    public void findAllCustomerByDeptId(String username,Integer partnerId,HttpServletRequest request,HttpServletResponse response) throws IOException {
-        System.out.println(partnerId);
-        String companyName = request.getParameter("content");
-        User user = null;
-        try {
-            user = userService.findUserByEmail(username);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        List<Dept> deptList = user.getDept();
-        List deptIdList = new ArrayList();
-        if (deptList.size() > 0) {
-            for (int i = 0; i < deptList.size(); i++) {
-                deptIdList.add(deptList.get(i).getId());
-            }
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("deptIdList", deptIdList);
-            if (companyName != null) {
-                map.put("content", companyName);
-            }
-            if(partnerId!=null){
-                map.put("partnerId",partnerId);
-            }
-            List customerTypeIdList = new ArrayList();
-            customerTypeIdList.add(1);
-            map.put("customerTypeIdList", customerTypeIdList);
-            List<CustomerFinance> customerFinances = null;
-            try {
-                customerFinances = customerFinanceService.queryCompanyCustomerOverAllFinanceByDept(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            List<Map<String,Object>> list = new ArrayList<>();
-            Map<String, Object> mapA = new HashMap<String, Object>();
-            mapA.put("sheetName", "sheet1");
-            list.add(mapA);
-            CustomerFinance customerFinance=null;
-            for (int j = 0; j < customerFinances.size(); j++) {
-                customerFinance = customerFinances.get(j);
-                Map<String, Object> mapValue = new HashMap<String, Object>();
-                mapValue.put("companyName", customerFinance.getCompanyName());
-                if(customerFinance.getChargeWeekTotleAmount() != null){
-                    mapValue.put("chargeWeekTotleAmount", customerFinance.getChargeWeekTotleAmount()/100.0);
-                }else {
-                    mapValue.put("chargeWeekTotleAmount", 0.0);
-                }
-                if(customerFinance.getConsumeWeekTotleAmount() != null){
-                    mapValue.put("consumeWeekTotleAmount", customerFinance.getConsumeWeekTotleAmount()/100.0);
-                }else {
-                    mapValue.put("consumeWeekTotleAmount", 0.0);
-                }
-                if(customerFinance.getChargeMonthTotleAmount() != null){
-                    mapValue.put("chargeMonthTotleAmount", customerFinance.getChargeMonthTotleAmount()/100.0);
-                }else {
-                    mapValue.put("chargeMonthTotleAmount", 0.0);
-                }
-                if(customerFinance.getConsumeMonthTotleAmount() != null){
-                    mapValue.put("consumeMonthTotleAmount", customerFinance.getConsumeMonthTotleAmount()/100.0);
-                }else {
-                    mapValue.put("consumeMonthTotleAmount", 0.0);
-                }
-                if(customerFinance.getChargeTotleAmount() != null){
-                    mapValue.put("chargeTotleAmount", customerFinance.getChargeTotleAmount()/100.0);
-                }else {
-                    mapValue.put("chargeTotleAmount", 0.0);
-                }
-                if(customerFinance.getConsumeTotleAmount() != null){
-                    mapValue.put("consumeTotleAmount", customerFinance.getConsumeTotleAmount()/100.0);
-                }else {
-                    mapValue.put("consumeTotleAmount", 0.0);
-                }
-                if(customerFinance.getBalance() != null){
-                    mapValue.put("balance", customerFinance.getBalance()/100.0);
-                }else {
-                    mapValue.put("balance", 0.0);
-                }
-                list.add(mapValue);
-            }
-            String fileName = "客户财务报表文件";
-            String columnNames[]= {"公司名称","上周充值（单位：元）","上周消费（单位：元）","上月充值（单位：元）","上月消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
-            String keys[] = {"companyName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
-            ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
-        }
-    }
-    /**
-     * 指定账号充值记录
-     * @param customerId
-     * @param beginDate
-     * @param endDate
-     * @param reasonId
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id")
-    public void findAllCustomerRechargeLogByCustomerId(HttpServletRequest request,HttpServletResponse response,Integer customerId,String companyName, String beginDate, String endDate, String [] reasonId) throws IOException {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("customerId", customerId);
-        List<Integer> reasonIdList = new ArrayList<>();
-        if (reasonId != null && reasonId.length >0) {
-            for(int i=0;i<reasonId.length;i++){
-                reasonIdList.add(parseInt(reasonId[i]));
-            }
-        }else {
-            reasonIdList.add(1);
-            reasonIdList.add(2);
-            reasonIdList.add(3);
-        }
-        map.put("reasonIdList", reasonIdList);
-        if (beginDate != null && beginDate != "" ) {
-            map.put("beginDate", beginDate+" "+"00:00:00");
-        }
-        if(endDate != null && endDate != ""){
-            map.put("endDate", endDate+" "+"23:59:59");
-        }
-        List<CustomerBalanceLog> customerBalanceLogList = null;
-        Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
-        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
-        Iterator<Map.Entry<String,Object>> it = set.iterator();
-        while(it.hasNext()){
-            Map.Entry<String,Object> me = it.next();
-            if(me.getKey().equals("queryCompanyCustomerRechargeRecordByCustomerId") ){
-                customerBalanceLogList = (List<CustomerBalanceLog>) me.getValue();
-            }
-        }
-        List<Map<String,Object>> list = new ArrayList<>();
-        Map<String, Object> mapA = new HashMap<String, Object>();
-        mapA.put("sheetName", "sheet1");
-        list.add(mapA);
-        CustomerBalanceLog customerBalanceLog=null;
-        for (int j = 0; j < customerBalanceLogList.size(); j++) {
-            customerBalanceLog = customerBalanceLogList.get(j);
-            Map<String, Object> mapValue = new HashMap<String, Object>();
 
-            if (customerBalanceLog.getAmount() != null){
-                mapValue.put("amount", customerBalanceLog.getAmount()/100.0);
-            }else{
-                mapValue.put("amount", 0.0);
-            }
-            mapValue.put("createTime", customerBalanceLog.getCreateTime());
-            mapValue.put("reasonName", customerBalanceLog.getCustomerBalanceModifyReason().getName());
-            list.add(mapValue);
-        }
-        String fileName = companyName+"充值记录";
-        String columnNames[]= {"金额（单位：元）","时间","理由"};//列名
-        String keys[] = {"amount","createTime","reasonName"};//map中的key
-        ExportIoOperate.excelEndOperator(list,keys,columnNames,fileName,response);
-    }
     /**
      * 指定账号Api消费记录
      * @return

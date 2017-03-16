@@ -55,6 +55,15 @@ public interface CustomerFinanceMapper {
      */
     public List<ApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
+
+    /**
+     * 统计客户的Api消费记录金额总计
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountCompanyCustomerApiConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
+
     /**
      * 查询客户的Api消费明细记录
      * @param map

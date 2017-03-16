@@ -45,7 +45,7 @@ public class ViewController {
         try {
             String url = null;
             Session session = subject.getSession(false);
-            if (session != null){
+            if (session != null && WebUtils.getSavedRequest(request) != null){
                 url = WebUtils.getSavedRequest(request).getRequestUrl();
             }
 

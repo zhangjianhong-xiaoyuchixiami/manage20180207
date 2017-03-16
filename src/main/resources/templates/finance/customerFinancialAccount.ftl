@@ -192,11 +192,11 @@
                             <div class="caption"><i class="icon-user"></i></div>
 
                             <@shiro.hasPermission name="customer:findAllCustomer">
-                                <@d.tools idName="exportExcel"></@d.tools>
+                                <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer?export=true"></@d.tools>
                             </@shiro.hasPermission>
 
                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                <@d.tools idName="exportExcelByDeptId"></@d.tools>
+                                <@d.tools idName="exportExcelByDeptId" hrefName="/finance/find-all-customer-by-dept-id?export=true"></@d.tools>
                             </@shiro.hasPermission>
 
                             <div class="actions">
@@ -274,7 +274,7 @@
                                             <tr>
                                                 <td data-title="公司名称">${customer.companyName}</td>
                                                 <@shiro.hasPermission name="customer:findAllCustomer">
-                                                    <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</a></td>
+                                                    <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!'无'}</a></td>
                                                 </@shiro.hasPermission>
                                                 <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                     <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
@@ -388,53 +388,37 @@
             jQuery(document).ready(function() {
                 CustomerFinanceAccount.init();
                 CustomerLeftBar.init();
-
-                $('.find_all_customer').change(function () {
-                    $(this).submit();
-                });
-
-                $('.find_part_customer').change(function () {
-                    $(this).submit();
-                });
-
             });
-        </script>
 
-        <script>
+            (function($){
+                $.getUrlParam = function(name)
+                {
+                    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r!=null) return unescape(r[2]); return '';
+                }
+            })(jQuery);
 
-            <#--导出Excel-->
-            $(document).ready(function() {
-
-                $('#exportExcel').on('click', function () {
-                    var companyName = $('#companyName').val();
-                    var partnerId = $('#partnerId').val();
-                    fetch('/excel-finance/find-all-customer?content='+companyName+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
-                        var a = document.createElement('a');
-                    var url = window.URL.createObjectURL(blob);
-                    var filename = '客户财务报表.xls';
-                    a.href = url;
-                    a.download = filename;
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                }))
-                });
-
-                $('#exportExcelByDeptId').on('click', function () {
-                    var companyName = $('#companyName').val();
-                    var partnerId = $('#partnerId').val();
-                    var username = $('#username').text();
-                    fetch('/excel-finance/find-all-customer-by-dept-id?content='+companyName+'&username='+username+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
-                        var a = document.createElement('a');
-                    var url = window.URL.createObjectURL(blob);
-                    var filename = '客户财务报表.xls';
-                    a.href = url;
-                    a.download = filename;
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                }))
-                });
-
+            $(function(){
+                console.log($.getUrlParam('content'));
+                console.log($.getUrlParam('partnerId'));
             });
+
+            var href = $("#exportExcel").attr('href');
+            if(href) {
+                href += (href.match(/\?/) ? '&' : '?') + 'partnerId=' + $.getUrlParam('partnerId') +
+                        (href.match(/\?/) ? '&' : '?') + 'content=' + $.getUrlParam('content');
+                $("#exportExcel"
+                ).attr('href', href);
+            }
+
+            var hrefByDeptId = $("#exportExcelByDeptId").attr('href');
+            if(hrefByDeptId) {
+                hrefByDeptId += (hrefByDeptId.match(/\?/) ? '&' : '?') + 'partnerId=' + $.getUrlParam('partnerId') +
+                        (hrefByDeptId.match(/\?/) ? '&' : '?') + 'content=' + $.getUrlParam('content');
+                $("#exportExcelByDeptId"
+                ).attr('href', hrefByDeptId);
+            }
 
         </script>
 

@@ -1,6 +1,5 @@
 package org.qydata.service;
 
-import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
@@ -42,7 +41,7 @@ public interface CustomerFinanceService {
      * @param map
      * @return
      */
-    public List<CustomerApiType> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
+    public Map<String,Object> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String,Object> map);
 
     /**
      * 查询客户的Api消费明细记录

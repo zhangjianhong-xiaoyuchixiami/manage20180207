@@ -133,9 +133,9 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if></div>
+                            <div class="caption"><i class="icon-user"></i>${companyName!''}</div>
 
-                            <@d.tools idName="exportExcel"></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?export=true"></@d.tools>
 
                         </div>
 
@@ -145,7 +145,7 @@
 
                                 <div class="pull-left table-top-bottom">
 
-                                    <label class="control-label">金额总计&yen;：<#if totleAmount??><span>${(totleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">金额总计&yen;：<span>${(totleAmount/100.0)!'0.0'}元</span></label>
 
                                 </div>
 
@@ -154,15 +154,15 @@
                                 <table class="table table-striped table-hover table-bordered table-condensed" id="sample_6">
                                     <thead>
                                     <tr>
-                                        <th style="width: 30%">金额（单位：元）</th>
-                                        <th style="width: 40%">时间</th>
-                                        <th style="width: 30%">理由</th>
+                                        <th>金额（单位：元）</th>
+                                        <th>时间</th>
+                                        <th>理由</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                         <#if customerBalanceLogList??>
                                             <#list customerBalanceLogList as customerBalanceLog>
-                                            <tr class="odd gradeX">
+                                            <tr>
                                                 <td data-title="金额（单位：元）">${(customerBalanceLog.amount/100.0)?c}</td>
                                                 <td data-title="时间">${customerBalanceLog.createTime}</td>
                                                 <td data-title="理由">${customerBalanceLog.customerBalanceModifyReason.name}</td>
@@ -202,28 +202,38 @@
             CustomerLeftBar.init();
         });
 
-        <#--导出Excel-->
-        $(document).ready(function() {
-            $('#exportExcel').on('click', function () {
-                var companyName = $('#companyName').val();
-                var reasonId =[];//定义一个数组
-                $('input[name="reasonId"]:checked').each(function(){
-                    reasonId.push($.trim($(this).val()));
-                });
-                var customerId = $('#customerId').val();
-                var beginDate = $('#beginDate').val();
-                var endDate = $('#endDate').val();
-                fetch('/excel-finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?companyName='+companyName+'&reasonId='+reasonId+'&customerId='+customerId+'&beginDate='+beginDate+'&endDate='+endDate).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename = companyName+'充值记录.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return '';
+            }
+        })(jQuery);
+
+        $(function(){
+            console.log($.getUrlParam('companyName'));
+            console.log($.getUrlParam('customerId'));
+            console.log($.getUrlParam('beginDate'));
+            console.log($.getUrlParam('endDate'));
         });
+        var reasonId =[];//定义一个数组
+        $('input[name="reasonId"]:checked').each(function(){
+            reasonId.push($.trim($(this).val()));
+        });
+
+        var href = $("#exportExcel").attr('href');
+
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'companyName=' + $.getUrlParam('companyName') +
+                    (href.match(/\?/) ? '&' : '?') + 'customerId=' + $.getUrlParam('customerId') +
+                    (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate')+
+                    (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate')+
+                    (href.match(/\?/) ? '&' : '?') + 'reasonId=' + reasonId;
+            $("#exportExcel"
+            ).attr('href', href);
+        }
+
     </script>
 
     </#if>

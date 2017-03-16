@@ -150,6 +150,14 @@ var CustomerFinanceAccount = function () {
                 oTable.fnSetColumnVis(iCol, (bVis ? false : true));
             });
 
+            $('.find_all_customer').change(function () {
+                $(this).submit();
+            });
+
+            $('.find_part_customer').change(function () {
+                $(this).submit();
+            });
+
         }
 
     };

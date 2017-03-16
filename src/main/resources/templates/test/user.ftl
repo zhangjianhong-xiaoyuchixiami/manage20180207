@@ -24,9 +24,66 @@
     </#if>
     </tbody>
 </table>
-
-
-    <a href="/user?export=true">导出Excel</a>
-
+<a href="/user/href?export=true">导出Excel</a>
 </body>
+
+<script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $(function () {
+            var pageSize = "${Request.pageSize!''}";
+            console.log(pageSize);
+            var lineSize = "${Request.lineSize!''}";
+            console.log(lineSize);
+
+        });
+    });
+
+   /* function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return unescape(r[2]); return null;
+    }
+
+    var myurl=GetQueryString("cid");
+    if(myurl !=null && myurl.toString().length>1)
+    {
+        console.log(GetQueryString("cid"));
+    }*/
+
+
+
+</script>
+
+<script type="text/javascript">
+
+    (function($){
+        $.getUrlParam = function(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r!=null) return unescape(r[2]); return '';
+        }
+    })(jQuery);
+
+    $(function(){
+        $.each(function () {
+            console.log($.getUrlParam('aaa'));
+        });
+        console.log("***"+$.getUrlParam('aaa'));
+    });
+
+    $('a').each(function(){
+        var href = $(this).attr('href');
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'aaa=' + $.getUrlParam('aaa') +
+                    (href.match(/\?/) ? '&' : '?') + 'bbb=' + $.getUrlParam('bbb');
+            $(this).attr('href', href);
+        }
+    });
+</script>
+
 </html>

@@ -4,22 +4,21 @@ import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.log4j.Logger;
-import org.qydata.dst.CustomerApiType;
+import org.apache.shiro.SecurityUtils;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
-import org.qydata.service.ApiService;
 import org.qydata.service.CustomerFinanceService;
-import org.qydata.service.CustomerService;
+import org.qydata.service.UserService;
 import org.qydata.tools.CalendarTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -33,12 +32,8 @@ import static java.lang.Integer.parseInt;
 @RequestMapping("/finance")
 public class FinanceController {
 
-    private final Logger log = Logger.getLogger(this.getClass());
-
-    @Autowired private CustomerService customerService;
     @Autowired private CustomerFinanceService customerFinanceService;
-    @Autowired private ApiService apiService;
-
+    @Autowired private UserService userService;
     /**
      * 查找公司财务账单
      * @param model
@@ -46,7 +41,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = "/find-all-customer")
-    public String queryAllCustomer(Model model, String content,Integer partnerId,String beginDate,String endDate){
+    public ModelAndView queryAllCustomer(String export, String content, Integer partnerId, String beginDate, String endDate, Model model){
         Map<String,Object> map = new HashMap<>();
         if(content != null){
             map.put("content",content);
@@ -68,7 +63,7 @@ public class FinanceController {
         model.addAttribute("year",CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));
-        return "/finance/customerFinancialAccount";
+        return new ModelAndView("/finance/customerFinancialAccount");
     }
 
     /**
@@ -79,8 +74,8 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = ("/find-all-customer-by-dept-id"))
-    public String queryAllCustomerByDeptId(HttpServletRequest request,Model model,String content,Integer partnerId,String beginDate,String endDate){
-        User user = (User) request.getSession().getAttribute("userInfo");
+    public String queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,HttpServletRequest request,Model model){
+        User user = userService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
         List deptList = new ArrayList();
         Map<String, Object> map = new HashMap<>();
         if (user.getDept().size() > 0) {
@@ -125,7 +120,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id")
-    public String findAllCustomerRechargeLogByCustomerId(Integer customerId,String companyName, String beginDate, String endDate, String [] reasonId, Model model){
+    public String findAllCustomerRechargeLogByCustomerId(Integer customerId,String export,String companyName, String beginDate, String endDate, String [] reasonId, Model model){
         Map<String, Object> map = new HashMap<>();
         map.put("customerId", customerId);
         List<Integer> reasonIdList = new ArrayList<>();
@@ -151,10 +146,10 @@ public class FinanceController {
         while(it.hasNext()){
             Map.Entry<String,Object> me = it.next();
             if(me.getKey().equals("getCountCompanyCustomerRechargeRecordByCustomerId")){
-                model.addAttribute("totleAmount",(Integer)me.getValue());
+                model.addAttribute("totleAmount", me.getValue());
             }
             if(me.getKey().equals("queryCompanyCustomerRechargeRecordByCustomerId") ){
-                model.addAttribute("customerBalanceLogList",(List)me.getValue());
+                model.addAttribute("customerBalanceLogList",me.getValue());
             }
         }
         model.addAttribute("customerId",customerId);
@@ -162,7 +157,6 @@ public class FinanceController {
         model.addAttribute("beginDate",beginDate);
         model.addAttribute("endDate",endDate);
         model.addAttribute("companyName",companyName);
-
         return "/finance/customerBalanceLogRecord";
     }
 
@@ -171,7 +165,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id")
-    public String findAllApiConsumeRecordByCustomerId(Integer customerId,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
+    public String findAllApiConsumeRecordByCustomerId(Integer customerId,String export,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
         try {
             Map<String,Object> map = new HashMap();
             map.put("customerId",customerId);
@@ -183,27 +177,30 @@ public class FinanceController {
             if(apiVendorId != null){
                 map.put("apiVendorId",apiVendorId);
             }
-            List<CustomerApiType> customerApiTypeList = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-            long totleAmount =0;
-            if (customerApiTypeList != null) {
-                for (int i = 0; i < customerApiTypeList.size(); i++) {
-                    CustomerApiType customerApiType = customerApiTypeList.get(i);
-                    totleAmount = totleAmount + customerApiType.getTotlePrice();
+            Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+            Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+            Iterator<Map.Entry<String,Object>> it = set.iterator();
+            while(it.hasNext()){
+                Map.Entry<String,Object> me = it.next();
+                if(me.getKey().equals("getCountCompanyCustomerApiConsumeRecordByCustomerId")){
+                    model.addAttribute("totleAmount", me.getValue());
+                }
+                if(me.getKey().equals("queryCompanyCustomerApiConsumeRecordByCustomerId") ){
+                    model.addAttribute("customerApiTypeList",me.getValue());
                 }
             }
-            model.addAttribute("customerApiTypeList", customerApiTypeList);
             model.addAttribute("customerApiTypes",customerFinanceService.queryApiTypeByCustomerId(map));
             model.addAttribute("customerApiVendors",vendorList);
             model.addAttribute("customerId",customerId);
             model.addAttribute("apiTypeId",apiTypeId);
             model.addAttribute("apiVendorId",apiVendorId);
             model.addAttribute("companyName",companyName);
-            model.addAttribute("totleAmount",totleAmount);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "/finance/customerApiConsumeRecord";
     }
+
 
     //客户个供应商消费饼状图
     @RequestMapping("/find-all-vendor-record/count-result")

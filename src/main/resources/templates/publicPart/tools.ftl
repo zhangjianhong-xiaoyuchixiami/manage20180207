@@ -1,4 +1,4 @@
-<#macro tools idName>
+<#macro tools idName hrefName>
 <div class="actions">
 
     <div class="btn-group">
@@ -15,15 +15,15 @@
 
         <#--<li><a href="#"><i class="icon-print"></i> 打印</a></li>-->
 
+        <#--  <li>
+              <a id="${idName}" href="javaScript:;" ><i class="icon-share icon-black"></i> 导出Excel</a>
+
+          </li>-->
+
             <li>
-                <a id="${idName}" href="javaScript:;" ><i class="icon-share icon-black"></i> 导出Excel</a>
+                <a id="${idName}" href="${hrefName}" ><i class="icon-share icon-black"></i> 导出Excel</a>
 
             </li>
-
-        <#--     <li>
-                 <a id="${idName}" href="/excel-finance/find-all-customer" ><i class="icon-share icon-black"></i> 导出Excel</a>
-
-             </li>-->
 
         <#--<li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>-->
 

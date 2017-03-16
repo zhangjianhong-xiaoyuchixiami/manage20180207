@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -94,7 +95,20 @@ public class TestController {
                 model.addAttribute("customerRequestLogList",me.getValue());
             }
         }
+        model.addAttribute("pageSize",0);
+        model.addAttribute("lineSize",30);
         return new ModelAndView("/test/user");
+    }
+
+
+    @RequestMapping("/user/href")
+    @ResponseBody
+    public String userHref(String aaa,String bbb){
+        System.out.println(aaa);
+        if (bbb != null && bbb != ""){
+            System.out.println(bbb);
+        }
+        return "nihao";
     }
 
 }

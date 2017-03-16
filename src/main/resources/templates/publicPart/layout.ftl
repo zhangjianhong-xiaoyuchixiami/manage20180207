@@ -87,8 +87,6 @@
 
                 </ul>
 
-                <span id="username" style="display: none"><@shiro.principal/></span>
-
             </div>
 
         </div>

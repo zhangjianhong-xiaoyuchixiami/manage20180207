@@ -2,7 +2,6 @@
  * Created by jonhn on 2017/1/16.
  */
 
-
 var CustomerLeftBar = function () {
 
     return {
