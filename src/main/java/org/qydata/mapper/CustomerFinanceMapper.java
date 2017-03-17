@@ -72,6 +72,15 @@ public interface CustomerFinanceMapper {
      */
     public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
+
+    /**
+     * 统计客户的Api消费明细记录金额总计
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String,Object> map)throws Exception;
+
     /**
      * 查询客户的周月记录
      * @param map
@@ -79,6 +88,15 @@ public interface CustomerFinanceMapper {
      * @throws Exception
      */
     public List<WeekMonthAmount> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String,Object> map)throws Exception;
+
+    /**
+     * 统计客客户的周月记录金额总计
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountCompanyCustomerWeekMonthRecordByCustomerId(Map<String,Object> map)throws Exception;
+
 
     /**
      * 查询客户的周月记录年级联菜单

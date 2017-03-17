@@ -6,7 +6,6 @@ import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
-import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
@@ -89,23 +88,28 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
-    public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String, Object> map){
+    public Map<String,Object> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String, Object> map){
+        Map<String,Object> mapTran = new HashMap<>();
+
         try {
-            return customerFinanceMapper.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
+            mapTran.put("queryCompanyCustomerApiDetailConsumeRecordByCustomerId",customerFinanceMapper.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map));
+            mapTran.put("getCountCompanyCustomerApiDetailConsumeRecordByCustomerId",customerFinanceMapper.getCountCompanyCustomerApiDetailConsumeRecordByCustomerId(map));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return mapTran;
     }
 
     @Override
-    public List<WeekMonthAmount> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String, Object> map){
+    public Map<String,Object> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String, Object> map){
+        Map<String,Object> mapTran = new HashMap<>();
         try {
-            return customerFinanceMapper.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
+            mapTran.put("queryCompanyCustomerWeekMonthRecordByCustomerId",customerFinanceMapper.queryCompanyCustomerWeekMonthRecordByCustomerId(map));
+            mapTran.put("getCountCompanyCustomerWeekMonthRecordByCustomerId",customerFinanceMapper.getCountCompanyCustomerWeekMonthRecordByCustomerId(map));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return mapTran;
     }
 
     @Override

@@ -7,9 +7,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.SecurityUtils;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.entity.ApiVendor;
-import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.User;
-import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.UserService;
 import org.qydata.tools.CalendarTools;
@@ -74,7 +72,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = ("/find-all-customer-by-dept-id"))
-    public String queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,HttpServletRequest request,Model model){
+    public ModelAndView queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,HttpServletRequest request,Model model){
         User user = userService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
         List deptList = new ArrayList();
         Map<String, Object> map = new HashMap<>();
@@ -103,9 +101,9 @@ public class FinanceController {
             model.addAttribute("year",CalendarTools.getYearMonthCount(1));
             model.addAttribute("month",CalendarTools.getMonthCount(1));
             model.addAttribute("week",CalendarTools.getYearWeekCount(1));
-            return "/finance/customerFinancialAccount";
+            return new ModelAndView("/finance/customerFinancialAccount");
         }
-        return "/finance/customerFinancialAccount";
+        return new ModelAndView("/finance/customerFinancialAccount");
     }
 
 
@@ -120,7 +118,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = "/find-all-customer/find-all-customer-recharge-log-by-customer-id")
-    public String findAllCustomerRechargeLogByCustomerId(Integer customerId,String export,String companyName, String beginDate, String endDate, String [] reasonId, Model model){
+    public ModelAndView findAllCustomerRechargeLogByCustomerId(Integer customerId,String export,String companyName, String beginDate, String endDate, String [] reasonId, Model model){
         Map<String, Object> map = new HashMap<>();
         map.put("customerId", customerId);
         List<Integer> reasonIdList = new ArrayList<>();
@@ -157,7 +155,7 @@ public class FinanceController {
         model.addAttribute("beginDate",beginDate);
         model.addAttribute("endDate",endDate);
         model.addAttribute("companyName",companyName);
-        return "/finance/customerBalanceLogRecord";
+        return new ModelAndView("/finance/customerBalanceLogRecord");
     }
 
     /**
@@ -165,40 +163,36 @@ public class FinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id")
-    public String findAllApiConsumeRecordByCustomerId(Integer customerId,String export,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
-        try {
-            Map<String,Object> map = new HashMap();
-            map.put("customerId",customerId);
-            List<ApiVendor> vendorList = null;
-            if(apiTypeId != null){
-                map.put("apiTypeId",apiTypeId);
-                vendorList = customerFinanceService.queryApiVendorByCustomerId(map);
-            }
-            if(apiVendorId != null){
-                map.put("apiVendorId",apiVendorId);
-            }
-            Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
-            Set<Map.Entry<String,Object>> set = mapResult.entrySet();
-            Iterator<Map.Entry<String,Object>> it = set.iterator();
-            while(it.hasNext()){
-                Map.Entry<String,Object> me = it.next();
-                if(me.getKey().equals("getCountCompanyCustomerApiConsumeRecordByCustomerId")){
-                    model.addAttribute("totleAmount", me.getValue());
-                }
-                if(me.getKey().equals("queryCompanyCustomerApiConsumeRecordByCustomerId") ){
-                    model.addAttribute("customerApiTypeList",me.getValue());
-                }
-            }
-            model.addAttribute("customerApiTypes",customerFinanceService.queryApiTypeByCustomerId(map));
-            model.addAttribute("customerApiVendors",vendorList);
-            model.addAttribute("customerId",customerId);
-            model.addAttribute("apiTypeId",apiTypeId);
-            model.addAttribute("apiVendorId",apiVendorId);
-            model.addAttribute("companyName",companyName);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public ModelAndView findAllApiConsumeRecordByCustomerId(Integer customerId,String export,Integer apiTypeId,Integer apiVendorId,String companyName,Model model){
+        Map<String,Object> map = new HashMap();
+        map.put("customerId",customerId);
+        List<ApiVendor> vendorList = null;
+        if(apiTypeId != null){
+            map.put("apiTypeId",apiTypeId);
+            vendorList = customerFinanceService.queryApiVendorByCustomerId(map);
         }
-        return "/finance/customerApiConsumeRecord";
+        if(apiVendorId != null){
+            map.put("apiVendorId",apiVendorId);
+        }
+        Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if(me.getKey().equals("getCountCompanyCustomerApiConsumeRecordByCustomerId")){
+                model.addAttribute("totleAmount", me.getValue());
+            }
+            if(me.getKey().equals("queryCompanyCustomerApiConsumeRecordByCustomerId") ){
+                model.addAttribute("customerApiTypeList",me.getValue());
+            }
+        }
+        model.addAttribute("customerApiTypes",customerFinanceService.queryApiTypeByCustomerId(map));
+        model.addAttribute("customerApiVendors",vendorList);
+        model.addAttribute("customerId",customerId);
+        model.addAttribute("apiTypeId",apiTypeId);
+        model.addAttribute("apiVendorId",apiVendorId);
+        model.addAttribute("companyName",companyName);
+        return new ModelAndView("/finance/customerApiConsumeRecord");
     }
 
 
@@ -242,7 +236,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail")
-    public String findAllApiConsumeDetailRecordByCustomerId(Integer customerId, Integer apiTypeId, String companyName, String apiTypeName,Integer [] reasonId,String beginDate,String endDate, Model model){
+    public ModelAndView findAllApiConsumeDetailRecordByCustomerId(Integer customerId,String export, Integer apiTypeId, String companyName, String apiTypeName,Integer [] reasonId,String beginDate,String endDate, Model model){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("apiTypeId",apiTypeId);
@@ -257,29 +251,31 @@ public class FinanceController {
             for(int i=0;i<reasonId.length;i++){
                 reasonIdList.add(reasonId[i]);
             }
-        }else {
+        }else{
             reasonIdList.add(-1);
             reasonIdList.add(-2);
         }
         map.put("reasonIdList", reasonIdList);
-        List<CustomerBalanceLog> customerBalanceLogList = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
-        long totleAmount = 0;
-        if(customerBalanceLogList != null) {
-            for (int i = 0; i < customerBalanceLogList.size(); i++) {
-                CustomerBalanceLog customerBalanceLog = customerBalanceLogList.get(i);
-                totleAmount = totleAmount + customerBalanceLog.getAmount();
+        Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if(me.getKey().equals("getCountCompanyCustomerApiDetailConsumeRecordByCustomerId")){
+                model.addAttribute("totleAmount", me.getValue());
+            }
+            if(me.getKey().equals("queryCompanyCustomerApiDetailConsumeRecordByCustomerId") ){
+                model.addAttribute("customerBalanceLogList",me.getValue());
             }
         }
-        model.addAttribute("customerBalanceLogList",customerBalanceLogList);
         model.addAttribute("companyName",companyName);
         model.addAttribute("apiTypeName",apiTypeName);
         model.addAttribute("apiTypeId",apiTypeId);
         model.addAttribute("customerId",customerId);
-        model.addAttribute("totleAmount",totleAmount);
         model.addAttribute("reasonIdArray",reasonId);
         model.addAttribute("beginDate",beginDate);
         model.addAttribute("endDate",endDate);
-        return "/finance/customerApiConsumeDetailRecord";
+        return new ModelAndView("/finance/customerApiConsumeDetailRecord");
     }
 
     /**
@@ -294,7 +290,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-week-record-by-customer-id")
-    public String findWeekRecordByCustomerId(Integer customerId,Integer years,Integer months,Integer weeks,Integer typeId,String companyName,Model model){
+    public ModelAndView findWeekRecordByCustomerId(Integer customerId,String export,Integer years,Integer months,Integer weeks,Integer typeId,String companyName,Model model){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",1);
@@ -315,26 +311,28 @@ public class FinanceController {
         if(weeks != null){
             map.put("weeks",weeks);
         }
-        List<WeekMonthAmount> weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
-        long totleAmount = 0;
-        if(weekMonthAmountList != null){
-            for (int i=0; i<weekMonthAmountList.size(); i++){
-                WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
-                totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
+        Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if(me.getKey().equals("getCountCompanyCustomerWeekMonthRecordByCustomerId")){
+                model.addAttribute("totleAmount", me.getValue());
+            }
+            if(me.getKey().equals("queryCompanyCustomerWeekMonthRecordByCustomerId") ){
+                model.addAttribute("weekMonthAmountList",me.getValue());
             }
         }
-        model.addAttribute("weekMonthAmountList",weekMonthAmountList);
         model.addAttribute("yearList",yearList);
         model.addAttribute("monthList",monthList);
         model.addAttribute("weekList",weekList);
-        model.addAttribute("totleAmount",totleAmount);
         model.addAttribute("companyName",companyName);
         model.addAttribute("customerId",customerId);
         model.addAttribute("typeId",typeId);
         model.addAttribute("years",years);
         model.addAttribute("months",months);
         model.addAttribute("weeks",weeks);
-        return "/finance/weekRecord";
+        return new ModelAndView("/finance/weekRecord");
     }
 
     /**
@@ -348,15 +346,14 @@ public class FinanceController {
      * @return
      */
     @RequestMapping("/find-all-customer/find-month-record-by-customer-id")
-    public String findMonthRecordByCustomerId(Integer customerId,Integer years,Integer months, Integer typeId,String companyName,Model model){
+    public ModelAndView findMonthRecordByCustomerId(Integer customerId,String export,Integer years,Integer months, Integer typeId,String companyName,Model model){
         Map<String,Object> map = new HashedMap();
         map.put("customerId",customerId);
         map.put("weekMonthTypeId",2);
         List<Integer> tableIdList = new ArrayList();
         tableIdList.add(typeId);
         map.put("tableIdList",tableIdList);
-        List<Integer> yearList = null;
-        yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
+        List<Integer> yearList = customerFinanceService.queryCompanyCustomerYearsByCustomerId(map);
         List<Integer> monthList = null;
         if(years != null){
             map.put("years",years);
@@ -365,24 +362,26 @@ public class FinanceController {
         if(months != null){
             map.put("months",months);
         }
-        List<WeekMonthAmount> weekMonthAmountList = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
-        long totleAmount = 0;
-        if(weekMonthAmountList != null){
-            for (int i=0; i<weekMonthAmountList.size(); i++){
-                WeekMonthAmount weekMonthAmount = weekMonthAmountList.get(i);
-                totleAmount = totleAmount + weekMonthAmount.getTotleAmount();
+        Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerWeekMonthRecordByCustomerId(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if(me.getKey().equals("queryCompanyCustomerWeekMonthRecordByCustomerId") ){
+                model.addAttribute("weekMonthAmountList",me.getValue());
+            }
+            if(me.getKey().equals("getCountCompanyCustomerWeekMonthRecordByCustomerId")){
+                model.addAttribute("totleAmount", me.getValue());
             }
         }
-        model.addAttribute("weekMonthAmountList",weekMonthAmountList);
         model.addAttribute("yearList",yearList);
         model.addAttribute("monthList",monthList);
-        model.addAttribute("totleAmount",totleAmount);
         model.addAttribute("companyName",companyName);
         model.addAttribute("customerId",customerId);
         model.addAttribute("typeId",typeId);
         model.addAttribute("years",years);
         model.addAttribute("months",months);
-        return "/finance/monthRecord";
+        return new ModelAndView("/finance/monthRecord");
     }
 
     /**

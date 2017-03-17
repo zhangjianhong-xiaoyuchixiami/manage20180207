@@ -32,7 +32,7 @@
 
                                 <div class="controls">
 
-                                    <input type="text" id="customerId" name="customerId" <#if customerId??>value="${customerId?c}"</#if>" class="m-wrap medium">
+                                <input type="text" id="customerId" name="customerId" <#if customerId??>value="${customerId?c}"</#if>" class="m-wrap medium">
 
                                 </div>
                             </div>
@@ -112,13 +112,7 @@
 
                             <div class="caption"><i class="icon-user"></i><#if companyName??>${companyName}</#if></div>
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
-                                <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?export=true"></@d.tools>
-                            </@shiro.hasPermission>
-
-                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                <@d.tools idName="exportExcelByDeptId" hrefName="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?export=true"></@d.tools>
-                            </@shiro.hasPermission>
+                            <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?export=true"></@d.tools>
 
                         </div>
 
@@ -300,21 +294,10 @@
         if(href) {
             href += (href.match(/\?/) ? '&' : '?') + 'companyName=' + $.getUrlParam('companyName') +
                     (href.match(/\?/) ? '&' : '?') + 'customerId=' + $.getUrlParam('customerId') +
-                    (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId');
-            $("#exportExcel"
-            ).attr('href', href);
+                    (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId') +
+                    (href.match(/\?/) ? '&' : '?') + 'apiVendorId=' + $.getUrlParam('apiVendorId');
+            $("#exportExcel").attr('href', href);
         }
-
-        var hrefByDeptId = $("#exportExcelByDeptId").attr('href');
-        if(hrefByDeptId) {
-            hrefByDeptId += (href.match(/\?/) ? '&' : '?') + 'companyName=' + $.getUrlParam('companyName') +
-                            (href.match(/\?/) ? '&' : '?') + 'customerId=' + $.getUrlParam('customerId') +
-                            (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId') +
-                            (href.match(/\?/) ? '&' : '?') + 'apiVendorId=' + $.getUrlParam('apiVendorId');
-            $("#exportExcelByDeptId"
-            ).attr('href', hrefByDeptId);
-        }
-
     </script>
 
     </#if>

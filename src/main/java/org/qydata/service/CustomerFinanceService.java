@@ -4,8 +4,6 @@ import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
-import org.qydata.entity.CustomerBalanceLog;
-import org.qydata.entity.WeekMonthAmount;
 
 import java.util.List;
 import java.util.Map;
@@ -48,14 +46,14 @@ public interface CustomerFinanceService {
      * @param map
      * @return
      */
-    public List<CustomerBalanceLog> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String,Object> map);
+    public Map<String,Object> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String,Object> map);
 
     /**
      * 查询客户的周月记录
      * @param map
      * @return
      */
-    public List<WeekMonthAmount> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String,Object> map);
+    public Map<String,Object> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String,Object> map);
 
     /**
      * 查询客户的周月记录年级联菜单

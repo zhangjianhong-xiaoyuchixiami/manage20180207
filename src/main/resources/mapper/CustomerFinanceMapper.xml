@@ -414,10 +414,10 @@
         SELECT aa.apiTypeId,cc.name typeName,aa.apiId,aa.totlePrice,bb.vendorName,bb.vendorId
         FROM
         (
-            SELECT b.apiTypeId,b.apiId,sum(a.amount) totlePrice
-            FROM qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b ON a.reqId=b.id
-            WHERE a.reasonId IN(-1,-2) AND b.hasCost=1 AND a.customerId=#{customerId}
-            GROUP BY b.apiTypeId,b.apiId
+        SELECT b.apiTypeId,b.apiId,sum(a.amount) totlePrice
+        FROM qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b ON a.reqId=b.id
+        WHERE a.reasonId IN(-1,-2) AND b.hasCost=1 AND a.customerId=#{customerId}
+        GROUP BY b.apiTypeId,b.apiId
         ) aa
         LEFT JOIN qyfinance.bkvwApi bb ON aa.apiId = bb.id
         LEFT JOIN qyfinance.bkvwApiType cc ON aa.apiTypeId=cc.id
@@ -436,10 +436,10 @@
         SELECT sum(aa.totlePrice)
         FROM
         (
-            SELECT b.apiTypeId,b.apiId,sum(a.amount) totlePrice
-            FROM qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b ON a.reqId=b.id
-            WHERE a.reasonId IN(-1,-2) AND b.hasCost=1 AND a.customerId=#{customerId}
-            GROUP BY b.apiTypeId,b.apiId
+        SELECT b.apiTypeId,b.apiId,sum(a.amount) totlePrice
+        FROM qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b ON a.reqId=b.id
+        WHERE a.reasonId IN(-1,-2) AND b.hasCost=1 AND a.customerId=#{customerId}
+        GROUP BY b.apiTypeId,b.apiId
         ) aa
         LEFT JOIN qyfinance.bkvwApi bb ON aa.apiId = bb.id
         <where>
@@ -482,24 +482,26 @@
 
     </select>
 
-
     <!--查询客户的Api消费明细记录-->
     <select id="queryCompanyCustomerApiDetailConsumeRecordByCustomerId" parameterType="map" resultMap="CustomerBalanceDetailConsume_Map">
         SELECT aa.reasonId,aa.amount,aa.customerId,aa.createTime,aa.reasonName,aa.apiTypeId,cc.name apiTypeName,bb.name mobileOperatorName,
         dd.vendorName
         FROM
         (
-            SELECT a.reasonId,a.amount,a.customerId,a.createTime,a.reasonName,b.apiTypeId,b.apiId
-            FROM qyfinance.bkvwCustomerBalanceLog a LEFT JOIN qyfinance.bkvwCustomerRequestLog b ON a.reqId=b.id
-            WHERE b.hasCost=1 AND a.customerId=#{customerId}
-            <if test="reasonIdList != null and reasonIdList.size() > 0">
-                AND a.reasonId IN
-                <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
-                    #{reasonId}
-                </foreach>
-            </if>
-        ) aa LEFT JOIN qyfinance.bkvwApiMobileOperator bb ON aa.apiId=bb.apiId LEFT JOIN qyfinance.bkvwApiType cc
-        ON aa.apiTypeId=cc.id LEFT JOIN qyfinance.bkvwApi dd ON  aa.apiId=dd.id
+        SELECT a.reasonId,a.amount,a.customerId,a.createTime,a.reasonName,b.apiTypeId,b.apiId
+        FROM qyfinance.bkvwCustomerBalanceLog a
+        LEFT JOIN qyfinance.bkvwCustomerRequestLog b ON a.reqId=b.id
+        WHERE b.hasCost=1 AND a.customerId=#{customerId}
+        <if test="reasonIdList != null and reasonIdList.size() > 0">
+            AND a.reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
+        ) aa
+        LEFT JOIN qyfinance.bkvwApiMobileOperator bb ON aa.apiId=bb.apiId
+        LEFT JOIN qyfinance.bkvwApiType cc ON aa.apiTypeId=cc.id
+        LEFT JOIN qyfinance.bkvwApi dd ON  aa.apiId=dd.id
         <where>
             <if test="apiTypeId != null and apiTypeId != ''">
                 aa.apiTypeId=#{apiTypeId}
@@ -517,12 +519,56 @@
         </where>
     </select>
 
+    <!--统计客户的Api消费明细记录金额总计-->
+    <select id="getCountCompanyCustomerApiDetailConsumeRecordByCustomerId" parameterType="map" resultType="Integer">
+        SELECT sum(a.amount)
+        FROM qyfinance.bkvwCustomerBalanceLog a
+        LEFT JOIN qyfinance.bkvwCustomerRequestLog b ON a.reqId=b.id
+        WHERE b.hasCost=1 AND a.customerId=#{customerId} AND b.apiTypeId=#{apiTypeId}
+        <if test="reasonIdList != null and reasonIdList.size() > 0">
+            AND a.reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            <![CDATA[
+            AND a.createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND a.createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+             ]]>
+        </if>
+    </select>
+
     <!--查询客户的周月记录-->
     <select id="queryCompanyCustomerWeekMonthRecordByCustomerId" parameterType="map" resultType="org.qydata.entity.WeekMonthAmount">
         SELECT years,months,weeks,totleAmount,customerId,tableId,weekMonthTypeId,name,beginTime,endTime
         FROM qyfinance.bkvwWeekMonthAmount
-        WHERE customerId=#{customerId}
-        AND weekMonthTypeId=#{weekMonthTypeId}
+        WHERE customerId=#{customerId} AND weekMonthTypeId=#{weekMonthTypeId}
+        <if test="years != null and years != ''">
+            AND years=#{years}
+        </if>
+        <if test="months != null and months != ''">
+            AND months=#{months}
+        </if>
+        <if test="weeks != null and weeks != ''">
+            AND weeks=#{weeks}
+        </if>
+        <if test="tableIdList != null and tableIdList.size() > 0">
+            AND tableId IN
+            <foreach collection="tableIdList" item="tableId" index="index" open="(" close=")" separator=",">
+                #{tableId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getCountCompanyCustomerWeekMonthRecordByCustomerId" parameterType="map" resultType="Integer">
+        SELECT sum(totleAmount)
+        FROM qyfinance.bkvwWeekMonthAmount
+        WHERE customerId=#{customerId} AND weekMonthTypeId=#{weekMonthTypeId}
         <if test="years != null and years != ''">
             AND years=#{years}
         </if>

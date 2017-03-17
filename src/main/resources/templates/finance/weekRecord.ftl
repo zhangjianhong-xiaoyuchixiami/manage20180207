@@ -140,7 +140,7 @@
 
                             <div class="caption"><i class="icon-user"></i></i><#if companyName??>${companyName}</#if></div>
 
-                            <@d.tools idName="exportExcel"></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer/find-week-record-by-customer-id?export=true"></@d.tools>
 
                         </div>
 
@@ -160,26 +160,20 @@
                                 <table class="table table-striped table-hover table-bordered table-condensed" id="sample_8">
                                     <thead>
                                     <tr>
-                                        <th style="width: 30%;">周期</th>
-                                        <th style="width: 20%;">金额（单位/元）</th>
-                                        <th style="width: 25%;">开始时间</th>
-                                        <th style="width: 25%;">结束时间</th>
-                                    <#--<th style="width: 20%;">类型</th>-->
+                                        <th>周期</th>
+                                        <th>金额（单位/元）</th>
+                                        <th>开始时间</th>
+                                        <th>结束时间</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                         <#if weekMonthAmountList??>
                                             <#list weekMonthAmountList as weekMonthAmount>
-                                            <tr class="odd gradeX">
+                                            <tr>
                                                 <td data-title="周期"><#if weekMonthAmount.years??>${weekMonthAmount.years?c}年</#if><#if weekMonthAmount.months??>第${weekMonthAmount.months?c}月</#if><#if weekMonthAmount.weeks??>第${weekMonthAmount.weeks?c}周</#if></td>
                                                 <td data-title="金额（单位/元）"><#if weekMonthAmount.totleAmount??><#if weekMonthAmount.totleAmount<0>${(-weekMonthAmount.totleAmount/100.0)?c}<#else >${(weekMonthAmount.totleAmount/100.0)?c}</#if><#else >0</#if></td>
                                                 <td data-title="开始时间"><#if weekMonthAmount.beginTime??>${weekMonthAmount.beginTime?date}</#if></td>
                                                 <td data-title="结束时间"><#if weekMonthAmount.endTime??>${weekMonthAmount.endTime?date}</#if></td>
-                                            <#--<#if weekMonthAmount.tableId==1>-->
-                                            <#--<td>充值</td>-->
-                                            <#--<#else >-->
-                                            <#--<td>消费</td>-->
-                                            <#--</#if>-->
                                             </tr>
                                             </#list>
                                         </#if>
@@ -213,30 +207,39 @@
             WeekRecord.init();
             CustomerLeftBar.init();
         });
+
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return '';
+            }
+        })(jQuery);
+
+        $(function(){
+            console.log($.getUrlParam('companyName'));
+            console.log($.getUrlParam('customerId'));
+            console.log($.getUrlParam('years'));
+            console.log($.getUrlParam('months'));
+            console.log($.getUrlParam('weeks'));
+            console.log($.getUrlParam('typeId'));
+
+        });
+
+        var href = $("#exportExcel").attr('href');
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'companyName=' + $.getUrlParam('companyName') +
+                    (href.match(/\?/) ? '&' : '?') + 'customerId=' + $.getUrlParam('customerId') +
+                    (href.match(/\?/) ? '&' : '?') + 'years=' + $.getUrlParam('years') +
+                    (href.match(/\?/) ? '&' : '?') + 'months=' + $.getUrlParam('months') +
+                    (href.match(/\?/) ? '&' : '?') + 'weeks=' + $.getUrlParam('weeks') +
+                    (href.match(/\?/) ? '&' : '?') + 'typeId=' + $.getUrlParam('typeId');
+            $("#exportExcel").attr('href', href);
+        }
+
     </script>
 
-    <#--导出Excel-->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#exportExcel').on('click', function () {
-                var companyName = $('#companyName').val();
-                var customerId = $('#customerId').val();
-                var years = $('#years').val();
-                var months = $('#months').val();
-                var weeks = $('#weeks').val();
-                var typeId = $("#typeId").val();
-                fetch('/excel-finance/find-all-customer/find-week-record-by-customer-id?companyName='+companyName+'&typeId='+typeId+'&customerId='+customerId+'&years='+years+'&months='+months+'&weeks='+weeks).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename = companyName+'周历史记录.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
-        });
-    </script>
     </#if>
 
 </@layout>
