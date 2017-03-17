@@ -42,29 +42,7 @@ public class PartnerFinanceController {
         long monthExpenditure = 0L;
         long totleIncomeAmount = 0L;
         long totleExpenditure = 0L;
-        if (partnerFinanceList != null){
-            for (int i=0; i<partnerFinanceList.size(); i++){
-                PartnerFinance partnerFinance = partnerFinanceList.get(i);
-                if(partnerFinance.getWeekIncomeAmount() != null){
-                    weekIncomeAmount = weekIncomeAmount + partnerFinance.getWeekIncomeAmount();
-                }
-                if(partnerFinance.getWeekExpenditureAmount() != null){
-                    weekExpenditure = weekExpenditure + partnerFinance.getWeekIncomeAmount();
-                }
-                if(partnerFinance.getMonthIncomeAmount() != null){
-                    monthIncomeAmount = monthIncomeAmount + partnerFinance.getMonthIncomeAmount();
-                }
-                if(partnerFinance.getMonthExpenditureAmount() != null){
-                    monthExpenditure = monthExpenditure + partnerFinance.getMonthExpenditureAmount();
-                }
-                if(partnerFinance.getTotleIncomeAmount() != null){
-                    totleIncomeAmount = totleIncomeAmount + partnerFinance.getTotleIncomeAmount();
-                }
-                if(partnerFinance.getTotleExpenditureAmount() != null){
-                    totleExpenditure = totleExpenditure + partnerFinance.getTotleExpenditureAmount();
-                }
-            }
-        }
+
         model.addAttribute("partnerFinanceList",partnerFinanceList);
         model.addAttribute("partnerName",partnerName);
         model.addAttribute("weekIncomeAmount",weekIncomeAmount);

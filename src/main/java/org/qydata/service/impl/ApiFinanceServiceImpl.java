@@ -1,7 +1,9 @@
 package org.qydata.service.impl;
 
-import org.qydata.dst.ApiFinance;
-import org.qydata.entity.*;
+import org.qydata.entity.ApiType;
+import org.qydata.entity.ApiVendor;
+import org.qydata.entity.ApiVendorBalance;
+import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.mapper.ApiFinanceMapper;
 import org.qydata.service.ApiFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,23 +24,43 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @Autowired private ApiFinanceMapper apiFinanceMapper;
 
     @Override
-    public List<ApiFinance> queryApiOverAllFinance(Map<String, Object> map){
+    public Map<String,Object> queryApiOverAllFinance(Map<String, Object> map){
+        Map<String,Object> mapTran = new HashMap<>();
         try {
-            return apiFinanceMapper.queryApiOverAllFinance(map);
+            mapTran.put("queryApiOverAllFinance",apiFinanceMapper.queryApiOverAllFinance(map));
+            mapTran.put("getCountApiWeekFinance",apiFinanceMapper.getCountApiWeekFinance(map));
+            mapTran.put("getCountApiMonthFinance",apiFinanceMapper.getCountApiMonthFinance(map));
+            mapTran.put("getCountApiTotleFinance",apiFinanceMapper.getCountApiTotleFinance(map));
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return mapTran;
     }
 
     @Override
-    public List<ApiRequestLog> queryApiDetailById(Map<String, Object> map) {
+    public Map<String,Object> queryApiDetailById(Map<String, Object> map) {
+        Map<String,Object> mapTran = new HashMap<>();
         try {
-            return apiFinanceMapper.queryApiDetailById(map);
+            mapTran.put("queryApiDetailById",apiFinanceMapper.queryApiDetailById(map));
+            mapTran.put("getCountApiDetailById",apiFinanceMapper.getCountApiDetailById(map));
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return mapTran;
+    }
+
+    @Override
+    public Map<String,Object> queryApiVendor(Map<String, Object> map) {
+        Map<String,Object> mapTran = new HashMap<>();
+        try {
+            mapTran.put("queryApiVendor",apiFinanceMapper.queryApiVendor(map));
+            mapTran.put("getCountWeekApiVendor",apiFinanceMapper.getCountWeekApiVendor(map));
+            mapTran.put("getCountMonthApiVendor",apiFinanceMapper.getCountMonthApiVendor(map));
+            mapTran.put("getCountTotleApiVendor",apiFinanceMapper.getCountTotleApiVendor(map));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapTran;
     }
 
     @Override
@@ -69,16 +92,6 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
             e.printStackTrace();
         }
         return flag;
-    }
-
-    @Override
-    public List<ApiFinance> queryApiVendor(Map<String, Object> map) {
-        try {
-            return apiFinanceMapper.queryApiVendor(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override

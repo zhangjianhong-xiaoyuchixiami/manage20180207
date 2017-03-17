@@ -83,7 +83,7 @@
 
                             <div class="caption"><i class="icon-user"></i></div>
 
-                            <@d.tools idName="exportExcel"></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName=""></@d.tools>
 
                             <div class="actions">
 
@@ -187,8 +187,8 @@
                                 <table class="table table-striped table-bordered table-hover table-condensed" id="sample_11">
                                     <thead>
                                     <tr>
-                                        <th style="text-align: center;">供应商</th>
-                                        <th style="text-align: center;">合作公司</th>
+                                        <th>供应商</th>
+                                        <th>合作公司</th>
                                         <th>消费总额（单位：元）</th>
                                         <th>所剩余额（单位：元）</th>
                                         <th>上周消费（单位：元）</th>
@@ -203,18 +203,18 @@
                                             <tr class="odd gradeX">
                                                 <td data-title="供应商">${apiFinance.vendorName}</td>
                                                 <td data-title="合作公司"><a href="/api/find-all-api-vendor-consume<#if apiFinance.partnerId??>?partnerId=${apiFinance.partnerId?c}</#if>">${apiFinance.partnerName!'无'}</a></td>
-                                                <td data-title="消费总额">${(apiFinance.consumeTotleAmount/100.0)?c}</td>
-                                                <td data-title="所剩余额">${(apiFinance.balance/100.0)?c}</td>
-                                                <td data-title="上周消费">${(apiFinance.weekTotleCost/100.0)?c}</td>
-                                                <td data-title="上月消费">${(apiFinance.monthTotleCost/100.0)?c}</td>
+                                                <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="类型">
                                                     <#if apiFinance.apiTypeList??>
                                                         <#list apiFinance.apiTypeList as apiType>
-                                                        ${apiType.name!''}<#if apiType.mobileOperator??>——${apiType.mobileOperator.name!''}</#if></br>
+                                                        ${apiType.name!''}<#if apiType.mobileOperator??>--${apiType.mobileOperator.name!''}</#if></br>
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="操作" style="text-align: center;" >
+                                                <td data-title="操作">
                                                     <a href="#form_modal4" onclick="charge(${apiFinance.vendorId})" data-toggle="modal">充值</a>
                                                 </td>
                                             </tr>

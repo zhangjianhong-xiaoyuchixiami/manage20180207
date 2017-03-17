@@ -21,6 +21,61 @@ public interface PartnerFinanceMapper {
     public List<PartnerFinance> queryPartnerOverFinance(Map<String,Object> map)throws Exception;
 
     /**
+     * 合作公司的财务总览-周收入总额
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountWeekIncomePartnerOverFinance(Map<String,Object> map)throws Exception;
+
+    /**
+     * 合作公司的财务总览-周支出总额
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountWeekExpenditurePartnerOverFinance(Map<String,Object> map)throws Exception;
+
+    /**
+     * 合作公司的财务总览-月收入总额
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountMonthIncomePartnerOverFinance(Map<String,Object> map)throws Exception;
+
+    /**
+     * 合作公司的财务总览-月支出总额
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountMonthExpenditurePartnerOverFinance(Map<String,Object> map)throws Exception;
+
+    /**
+     * 合作公司的财务总览-收入总额
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountTotleIncomePartnerOverFinance(Map<String,Object> map)throws Exception;
+
+    /**
+     * 合作公司的财务总览-支出总额
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountTotleExpenditurePartnerOverFinance(Map<String,Object> map)throws Exception;
+
+    /**
+     * 合作公司明细
+     * @return
+     * @throws Exception
+     */
+    public List<PartnerIncomeExpenditureLog> queryPartnerDetailLog(Map<String,Object> map)throws Exception;
+
+    /**
      * 付款和收款
      * @param partnerIncomeExpenditureLog
      * @return
@@ -34,13 +89,6 @@ public interface PartnerFinanceMapper {
      * @return
      */
     public boolean addPartner(String partnerName)throws Exception;
-
-    /**
-     * 合作公司明细
-     * @return
-     * @throws Exception
-     */
-    public List<PartnerIncomeExpenditureLog> queryPartnerDetailLog(Map<String,Object> map)throws Exception;
 
     /**
      * 收入支出走势

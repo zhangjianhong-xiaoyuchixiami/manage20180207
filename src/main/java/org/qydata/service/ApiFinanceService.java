@@ -1,7 +1,5 @@
 package org.qydata.service;
 
-import org.qydata.dst.ApiFinance;
-import org.qydata.entity.ApiRequestLog;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +18,7 @@ public interface ApiFinanceService {
      * @return
      * @throws Exception
      */
-    public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map);
+    public Map<String,Object> queryApiOverAllFinance(Map<String,Object> map);
 
     /**
      *查询Api消费详情
@@ -28,7 +26,13 @@ public interface ApiFinanceService {
      * @return
      * @throws Exception
      */
-    public List<ApiRequestLog> queryApiDetailById(Map<String,Object> map);
+    public Map<String,Object> queryApiDetailById(Map<String,Object> map);
+
+    /**
+     * 以APIVendor统计消费信息
+     * @return
+     */
+    public Map<String,Object> queryApiVendor(Map<String,Object> map);
 
     /**
      * Api充值
@@ -36,13 +40,6 @@ public interface ApiFinanceService {
      */
     @Transactional
     public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate);
-
-    /**
-     * 以APIVendor统计消费信息
-     * @return
-     */
-    public List<ApiFinance> queryApiVendor(Map<String,Object> map);
-
 
     /**
      * 查询Api类型

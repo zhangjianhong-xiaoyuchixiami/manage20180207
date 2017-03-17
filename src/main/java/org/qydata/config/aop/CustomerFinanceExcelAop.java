@@ -33,8 +33,7 @@ import static java.lang.Integer.parseInt;
 @Slf4j
 public class CustomerFinanceExcelAop {
 
-    @Autowired
-    private CustomerFinanceService customerFinanceService;
+    @Autowired private CustomerFinanceService customerFinanceService;
 
     @Autowired private HttpServletResponse response;
 

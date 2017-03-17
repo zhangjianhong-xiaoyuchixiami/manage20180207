@@ -53,7 +53,7 @@
 
                             <div class="caption"><i class="icon-user"></i></div>
 
-                            <@d.tools idName="exportExcel"></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName=""></@d.tools>
 
                             <div class="actions">
 
@@ -189,7 +189,7 @@
 
                                 <div class="pull-left table-top-bottom">
 
-                                    <label class="control-label">支出余额&yen;：<#if totleExpenditure??><span>${(totleExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">支出总额&yen;：<#if totleExpenditure??><span>${(totleExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                 </div>
 

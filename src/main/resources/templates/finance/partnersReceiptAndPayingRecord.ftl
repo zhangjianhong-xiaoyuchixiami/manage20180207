@@ -51,7 +51,7 @@
 
                             <div class="caption"><i class="icon-user"></i><#if partnerName??>${partnerName}</#if></div>
 
-                            <@d.tools idName="exportExcel"></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName=""></@d.tools>
 
                         </div>
 

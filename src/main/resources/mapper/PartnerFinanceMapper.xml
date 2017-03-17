@@ -36,70 +36,163 @@
 
     <!--查询合作公司的财务总览-->
     <select id="queryPartnerOverFinance" parameterType="map" resultMap="PartnerFinance_Map">
-        SELECT kk.partnerId,kk.partnerName,kk.weekIncomeAmount,kk.monthIncomeAmount,kk.weekExpenditureAmount,
-        kk.monthExpenditureAmount,kk.totleIncomeAmount,ll.totleExpenditureAmount
-        FROM
-        (
-        SELECT ii.partnerId,ii.partnerName,ii.weekIncomeAmount,ii.monthIncomeAmount,ii.weekExpenditureAmount,
-        ii.monthExpenditureAmount,jj.totleIncomeAmount
-        FROM
-        (
-        SELECT gg.partnerId,gg.partnerName,gg.weekIncomeAmount,gg.monthIncomeAmount,gg.weekExpenditureAmount,
-        hh.monthExpenditureAmount
-        FROM
-        (
-        SELECT ee.partnerId,ee.partnerName,ee.weekIncomeAmount,ee.monthIncomeAmount,ff.weekExpenditureAmount
-        FROM
-        (
-        SELECT cc.partnerId,cc.partnerName,cc.weekIncomeAmount,dd.monthIncomeAmount
-        FROM
-        (
-        SELECT aa.id partnerId,aa.name partnerName,bb.weekIncomeAmount
-        FROM qyfinance.bkvwPartner aa LEFT JOIN
-        (
-        SELECT partnerId,totleAmount weekIncomeAmount
-        FROM qyfinance.bkvwPartnerWeekMonthAmount
-        WHERE typeId=1 AND reasonId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
-        AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
-        ) bb ON aa.id=bb.partnerId
-        ) cc LEFT JOIN
-        (
-        SELECT partnerId,totleAmount monthIncomeAmount
-        FROM qyfinance.bkvwPartnerWeekMonthAmount
-        WHERE typeId=2 AND reasonId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
-        ) dd ON cc.partnerId=dd.partnerId
-        ) ee LEFT JOIN
-        (
-        SELECT partnerId,totleAmount weekExpenditureAmount
-        FROM qyfinance.bkvwPartnerWeekMonthAmount
-        WHERE typeId=1 AND reasonId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
-        AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
-        ) ff ON ee.partnerId=ff.partnerId
-        ) gg LEFT JOIN
-        (
-        SELECT partnerId,totleAmount monthExpenditureAmount
-        FROM qyfinance.bkvwPartnerWeekMonthAmount
-        WHERE typeId=2 AND reasonId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
-        AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
-        ) hh ON gg.partnerId=hh.partnerId
-        ) ii LEFT JOIN
-        (
-        SELECT partnerId,sum(amount) totleIncomeAmount
-        FROM qyfinance.bkvwPartnerIncomeExpenditureLog
-        WHERE reasonId=1
-        GROUP BY partnerId
-        ) jj ON ii.partnerId=jj.partnerId
-        ) kk LEFT JOIN
-        (
-        SELECT partnerId,sum(amount) totleExpenditureAmount
-        FROM qyfinance.bkvwPartnerIncomeExpenditureLog
-        WHERE reasonId=2
-        GROUP BY partnerId
-        ) ll ON kk.partnerId=ll.partnerId
+        SELECT aa.id partnerId,aa.name partnerName,bb.weekIncomeAmount,cc.monthIncomeAmount,
+        dd.weekExpenditureAmount,ee.monthExpenditureAmount,ff.totleIncomeAmount,gg.totleExpenditureAmount
+        FROM qyfinance.bkvwPartner aa
+        LEFT JOIN
+                (
+                    SELECT partnerId,totleAmount weekIncomeAmount
+                    FROM qyfinance.bkvwPartnerWeekMonthAmount
+                    WHERE typeId=1 AND reasonId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+                    AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+                ) bb ON aa.id=bb.partnerId
+        LEFT JOIN
+                (
+                    SELECT partnerId,totleAmount monthIncomeAmount
+                    FROM qyfinance.bkvwPartnerWeekMonthAmount
+                    WHERE typeId=2 AND reasonId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+                    AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+                ) cc ON aa.id=cc.partnerId
+       LEFT JOIN
+                (
+                    SELECT partnerId,totleAmount weekExpenditureAmount
+                    FROM qyfinance.bkvwPartnerWeekMonthAmount
+                    WHERE typeId=1 AND reasonId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+                    AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+                ) dd ON aa.id=dd.partnerId
+        LEFT JOIN
+                (
+                    SELECT partnerId,totleAmount monthExpenditureAmount
+                    FROM qyfinance.bkvwPartnerWeekMonthAmount
+                    WHERE typeId=2 AND reasonId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+                    AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+                ) ee ON aa.id=ee.partnerId
+        LEFT JOIN
+                (
+                    SELECT partnerId,sum(amount) totleIncomeAmount
+                    FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+                    WHERE reasonId=1
+                    GROUP BY partnerId
+                ) ff ON aa.id=ff.partnerId
+        LEFT JOIN
+                (
+                    SELECT partnerId,sum(amount) totleExpenditureAmount
+                    FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+                    WHERE reasonId=2
+                    GROUP BY partnerId
+                ) gg ON aa.id=gg.partnerId
         <where>
             <if test="partnerName!=null and partnerName!=''">
-                 kk.partnerName like '%${partnerName}%'
+                 aa.partnerName like '%${partnerName}%'
+            </if>
+        </where>
+    </select>
+
+    <!--合作公司的财务总览-周收入总额-->
+    <select id="getCountWeekIncomePartnerOverFinance">
+        SELECT sum(bb.weekIncomeAmount)
+        FROM qyfinance.bkvwPartner aa
+        LEFT JOIN
+                (
+                SELECT partnerId,totleAmount weekIncomeAmount
+                FROM qyfinance.bkvwPartnerWeekMonthAmount
+                WHERE typeId=1 AND reasonId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+                AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+                ) bb ON aa.id=bb.partnerId
+
+        <where>
+            <if test="partnerName!=null and partnerName!=''">
+                aa.partnerName like '%${partnerName}%'
+            </if>
+        </where>
+    </select>
+
+    <!--合作公司的财务总览-周支出总额-->
+    <select id="getCountWeekExpenditurePartnerOverFinance">
+        SELECT sum(dd.weekExpenditureAmount)
+        FROM qyfinance.bkvwPartner aa
+        LEFT JOIN
+                (
+                SELECT partnerId,totleAmount weekExpenditureAmount
+                FROM qyfinance.bkvwPartnerWeekMonthAmount
+                WHERE typeId=1 AND reasonId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
+                AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+                ) dd ON aa.id=dd.partnerId
+        <where>
+            <if test="partnerName!=null and partnerName!=''">
+                aa.partnerName like '%${partnerName}%'
+            </if>
+        </where>
+    </select>
+
+    <!--合作公司的财务总览-月收入总额-->
+    <select id="getCountMonthIncomePartnerOverFinance">
+        SELECT sum(cc.monthIncomeAmount)
+        FROM qyfinance.bkvwPartner aa
+        LEFT JOIN
+                (
+                SELECT partnerId,totleAmount monthIncomeAmount
+                FROM qyfinance.bkvwPartnerWeekMonthAmount
+                WHERE typeId=2 AND reasonId=1 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+                AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+                ) cc ON aa.id=cc.partnerId
+        <where>
+            <if test="partnerName!=null and partnerName!=''">
+                aa.partnerName like '%${partnerName}%'
+            </if>
+        </where>
+    </select>
+
+    <!--合作公司的财务总览-月支出总额-->
+    <select id="getCountMonthExpenditurePartnerOverFinance">
+        SELECT sum(ee.monthExpenditureAmount)
+        FROM qyfinance.bkvwPartner aa
+        LEFT JOIN
+                (
+                SELECT partnerId,totleAmount monthExpenditureAmount
+                FROM qyfinance.bkvwPartnerWeekMonthAmount
+                WHERE typeId=2 AND reasonId=2 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
+                AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+                ) ee ON aa.id=ee.partnerId
+        <where>
+            <if test="partnerName!=null and partnerName!=''">
+                aa.partnerName like '%${partnerName}%'
+            </if>
+        </where>
+    </select>
+
+    <!--合作公司的财务总览-收入总额-->
+    <select id="getCountTotleIncomePartnerOverFinance">
+        SELECT sum(ff.totleIncomeAmount)
+        FROM qyfinance.bkvwPartner aa
+        LEFT JOIN
+                (
+                SELECT partnerId,sum(amount) totleIncomeAmount
+                FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+                WHERE reasonId=1
+                GROUP BY partnerId
+                ) ff ON aa.id=ff.partnerId
+        <where>
+            <if test="partnerName!=null and partnerName!=''">
+                aa.partnerName like '%${partnerName}%'
+            </if>
+        </where>
+    </select>
+
+    <!--合作公司的财务总览-支出总额-->
+    <select id="getCountTotleExpenditurePartnerOverFinance">
+        SELECT sum(gg.totleExpenditureAmount)
+        FROM qyfinance.bkvwPartner aa
+        LEFT JOIN
+                (
+                SELECT partnerId,sum(amount) totleExpenditureAmount
+                FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+                WHERE reasonId=2
+                GROUP BY partnerId
+                ) gg ON aa.id=gg.partnerId
+        <where>
+            <if test="partnerName!=null and partnerName!=''">
+                aa.partnerName like '%${partnerName}%'
             </if>
         </where>
     </select>
