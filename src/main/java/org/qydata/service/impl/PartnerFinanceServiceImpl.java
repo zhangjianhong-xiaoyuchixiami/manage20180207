@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.dst.PartnerFinance;
 import org.qydata.entity.Partner;
 import org.qydata.entity.PartnerIncomeExpenditureLog;
 import org.qydata.mapper.PartnerFinanceMapper;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,13 +22,21 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     @Autowired private PartnerFinanceMapper partnerFinanceMapper;
 
     @Override
-    public List<PartnerFinance> queryPartnerOverFinance(Map<String, Object> map) {
+    public Map<String,Object> queryPartnerOverFinance(Map<String, Object> map) {
+        Map<String,Object> mapTran = new HashMap<>();
         try {
-            return partnerFinanceMapper.queryPartnerOverFinance(map);
+            mapTran.put("queryPartnerOverFinance",partnerFinanceMapper.queryPartnerOverFinance(map));
+            mapTran.put("getCountWeekIncomePartnerOverFinance",partnerFinanceMapper.getCountWeekIncomePartnerOverFinance(map));
+            mapTran.put("getCountWeekExpenditurePartnerOverFinance",partnerFinanceMapper.getCountWeekExpenditurePartnerOverFinance(map));
+            mapTran.put("getCountMonthIncomePartnerOverFinance",partnerFinanceMapper.getCountMonthIncomePartnerOverFinance(map));
+            mapTran.put("getCountMonthExpenditurePartnerOverFinance",partnerFinanceMapper.getCountMonthExpenditurePartnerOverFinance(map));
+            mapTran.put("getCountTotleIncomePartnerOverFinance",partnerFinanceMapper.getCountTotleIncomePartnerOverFinance(map));
+            mapTran.put("getCountTotleExpenditurePartnerOverFinance",partnerFinanceMapper.getCountTotleExpenditurePartnerOverFinance(map));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return mapTran;
     }
 
     @Override
@@ -65,13 +73,15 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     }
 
     @Override
-    public List<PartnerIncomeExpenditureLog> queryPartnerDetailLog(Map<String, Object> map) {
+    public Map<String,Object> queryPartnerDetailLog(Map<String, Object> map) {
+        Map<String,Object> mapTran = new HashMap<>();
         try {
-            return partnerFinanceMapper.queryPartnerDetailLog(map);
+            map.put("queryPartnerDetailLog",partnerFinanceMapper.queryPartnerDetailLog(map));
+            mapTran.put("getCountPartnerDetailLog",partnerFinanceMapper.getCountPartnerDetailLog(map));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return mapTran;
     }
 
     @Override

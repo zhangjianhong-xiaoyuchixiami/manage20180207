@@ -89,7 +89,7 @@
     </select>
 
     <!--合作公司的财务总览-周收入总额-->
-    <select id="getCountWeekIncomePartnerOverFinance">
+    <select id="getCountWeekIncomePartnerOverFinance" parameterType="map" resultType="Integer">
         SELECT sum(bb.weekIncomeAmount)
         FROM qyfinance.bkvwPartner aa
         LEFT JOIN
@@ -108,7 +108,7 @@
     </select>
 
     <!--合作公司的财务总览-周支出总额-->
-    <select id="getCountWeekExpenditurePartnerOverFinance">
+    <select id="getCountWeekExpenditurePartnerOverFinance" parameterType="map" resultType="Integer">
         SELECT sum(dd.weekExpenditureAmount)
         FROM qyfinance.bkvwPartner aa
         LEFT JOIN
@@ -126,7 +126,7 @@
     </select>
 
     <!--合作公司的财务总览-月收入总额-->
-    <select id="getCountMonthIncomePartnerOverFinance">
+    <select id="getCountMonthIncomePartnerOverFinance" parameterType="map" resultType="Integer">
         SELECT sum(cc.monthIncomeAmount)
         FROM qyfinance.bkvwPartner aa
         LEFT JOIN
@@ -144,7 +144,7 @@
     </select>
 
     <!--合作公司的财务总览-月支出总额-->
-    <select id="getCountMonthExpenditurePartnerOverFinance">
+    <select id="getCountMonthExpenditurePartnerOverFinance" parameterType="map" resultType="Integer">
         SELECT sum(ee.monthExpenditureAmount)
         FROM qyfinance.bkvwPartner aa
         LEFT JOIN
@@ -162,7 +162,7 @@
     </select>
 
     <!--合作公司的财务总览-收入总额-->
-    <select id="getCountTotleIncomePartnerOverFinance">
+    <select id="getCountTotleIncomePartnerOverFinance" parameterType="map" resultType="Integer">
         SELECT sum(ff.totleIncomeAmount)
         FROM qyfinance.bkvwPartner aa
         LEFT JOIN
@@ -180,7 +180,7 @@
     </select>
 
     <!--合作公司的财务总览-支出总额-->
-    <select id="getCountTotleExpenditurePartnerOverFinance">
+    <select id="getCountTotleExpenditurePartnerOverFinance" parameterType="map" resultType="Integer">
         SELECT sum(gg.totleExpenditureAmount)
         FROM qyfinance.bkvwPartner aa
         LEFT JOIN
@@ -211,6 +211,13 @@
     <!--合作公司明细-->
     <select id="queryPartnerDetailLog" parameterType="map" resultMap="PartnerIncomeExpenditure_Map">
         SELECT id,partnerId,amount,reasonId,reasonName,remark,createTime
+        FROM qyfinance.bkvwPartnerIncomeExpenditureLog
+        WHERE reasonId=#{reasonId} AND partnerId=#{partnerId}
+    </select>
+
+    <!--合作公司明细-金额总计-->
+    <select id="getCountPartnerDetailLog" parameterType="map" resultType="Integer">
+        SELECT sum(amount)
         FROM qyfinance.bkvwPartnerIncomeExpenditureLog
         WHERE reasonId=#{reasonId} AND partnerId=#{partnerId}
     </select>

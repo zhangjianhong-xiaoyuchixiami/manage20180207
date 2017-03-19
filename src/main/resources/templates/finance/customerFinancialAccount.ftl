@@ -261,11 +261,11 @@
                                         <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
                                         <th>${year!''}年${month!''}月充值（单位：元）</th>
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
-                                        <th>产品类型</th>
-                                        <th>产品价格</th>
-                                        <th>总消费额</th>
-                                        <th>请求次数</th>
-                                        <th>成功次数</th>
+                                        <th class="table-td-none">产品类型</th>
+                                        <th class="table-td-none">产品价格</th>
+                                        <th class="table-td-none">总消费额</th>
+                                        <th class="table-td-none">请求次数</th>
+                                        <th class="table-td-none">成功次数</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -287,21 +287,21 @@
                                                 <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td data-title="产品类型">
+                                                <td data-title="产品类型" class="table-td-none">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
                                                             <#if companyApi.apiType??>${companyApi.apiType.name!''}<#if companyApi.mobileOperator??>--${companyApi.mobileOperator.name!''}</#if></#if><br/>
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="产品价格">
+                                                <td data-title="产品价格" class="table-td-none">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
                                                         ${(companyApi.price/100.0)!''}<br/>
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="总消费额">
+                                                <td data-title="总消费额" class="table-td-none">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
                                                             <#if companyApi.companyApiCount??>
@@ -316,7 +316,7 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="请求次数">
+                                                <td data-title="请求次数" class="table-td-none">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
                                                             <#if companyApi.companyApiCount??>
@@ -331,7 +331,7 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="成功次数">
+                                                <td data-title="成功次数" class="table-td-none">
                                                     <#if customer.companyApiList??>
                                                         <#list customer.companyApiList as companyApi>
                                                             <#if companyApi.companyApiCount??>

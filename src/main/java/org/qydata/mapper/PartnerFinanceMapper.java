@@ -76,6 +76,15 @@ public interface PartnerFinanceMapper {
     public List<PartnerIncomeExpenditureLog> queryPartnerDetailLog(Map<String,Object> map)throws Exception;
 
     /**
+     * 合作公司明细-金额总计
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    public Integer getCountPartnerDetailLog(Map<String,Object> map)throws Exception;
+
+
+    /**
      * 付款和收款
      * @param partnerIncomeExpenditureLog
      * @return

@@ -1,8 +1,6 @@
 package org.qydata.service;
 
-import org.qydata.dst.PartnerFinance;
 import org.qydata.entity.Partner;
-import org.qydata.entity.PartnerIncomeExpenditureLog;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,7 +17,7 @@ public interface PartnerFinanceService {
      * @return
      * @throws Exception
      */
-    public List<PartnerFinance> queryPartnerOverFinance(Map<String,Object> map);
+    public Map<String,Object> queryPartnerOverFinance(Map<String,Object> map);
 
     /**
      * 付款和收款
@@ -46,7 +44,7 @@ public interface PartnerFinanceService {
      * @return
      * @throws Exception
      */
-    public List<PartnerIncomeExpenditureLog> queryPartnerDetailLog(Map<String,Object> map);
+    public Map<String,Object> queryPartnerDetailLog(Map<String,Object> map);
 
     /**
      * 收入支出走势

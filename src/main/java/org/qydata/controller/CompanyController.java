@@ -49,6 +49,7 @@ public class CompanyController {
         model.addAttribute("partnerList",companyService.findAllPartner());
         model.addAttribute("companyList",companyService.findAllCompany(map));
         model.addAttribute("content",content);
+        model.addAttribute("pageSize",20);
         return "/company/company";
     }
 

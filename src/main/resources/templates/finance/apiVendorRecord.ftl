@@ -83,7 +83,7 @@
 
                             <div class="caption"><i class="icon-user"></i></div>
 
-                            <@d.tools idName="exportExcel" hrefName=""></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName="/api/find-all-api-vendor-consume?export=true"></@d.tools>
 
                             <div class="actions">
 
@@ -193,7 +193,7 @@
                                         <th>所剩余额（单位：元）</th>
                                         <th>上周消费（单位：元）</th>
                                         <th>上月消费（单位：元）</th>
-                                        <th>类型</th>
+                                        <th class="table-td-none">类型</th>
                                         <th style="text-align: center; width: 13%;">操作</th>
                                     </tr>
                                     </thead>
@@ -207,14 +207,14 @@
                                                 <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="类型">
+                                                <td data-title="类型" class="table-td-none">
                                                     <#if apiFinance.apiTypeList??>
                                                         <#list apiFinance.apiTypeList as apiType>
                                                         ${apiType.name!''}<#if apiType.mobileOperator??>--${apiType.mobileOperator.name!''}</#if></br>
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="操作">
+                                                <td data-title="操作" style="text-align: center;">
                                                     <a href="#form_modal4" onclick="charge(${apiFinance.vendorId})" data-toggle="modal">充值</a>
                                                 </td>
                                             </tr>
@@ -325,26 +325,27 @@
             ApiVendorRecord.init();
         });
 
-    </script>
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return '';
+            }
+        })(jQuery);
 
-    <#--导出Excel-->
-    <script type="text/javascript">
-
-        $(document).ready(function() {
-            $('#exportExcel').on('click', function () {
-                var vendorId = $('#vendorId').val();
-                var partnerId = $('#partnerId').val();
-                fetch('/excel-api-finance/find-all-api-vendor-consume?vendorId='+vendorId+'&partnerId='+partnerId).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename ='产品供应商消费账单.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
+        $(function(){
+            console.log($.getUrlParam('vendorId'));
+            console.log($.getUrlParam('partnerId'));
         });
+
+        var href = $("#exportExcel").attr('href');
+
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'vendorId=' + $.getUrlParam('vendorId') +
+                    (href.match(/\?/) ? '&' : '?') + 'partnerId=' + $.getUrlParam('partnerId');
+            $("#exportExcel").attr('href', href);
+        }
 
     </script>
 

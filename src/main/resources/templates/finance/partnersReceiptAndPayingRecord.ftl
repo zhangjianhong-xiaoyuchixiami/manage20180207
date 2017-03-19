@@ -51,7 +51,7 @@
 
                             <div class="caption"><i class="icon-user"></i><#if partnerName??>${partnerName}</#if></div>
 
-                            <@d.tools idName="exportExcel" hrefName=""></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName="/partner/find-all-partner-financial-account/income-and-expenditure-record?export=true"></@d.tools>
 
                         </div>
 
@@ -121,26 +121,29 @@
             TableManaged.init();
         });
 
-    </script>
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return '';
+            }
+        })(jQuery);
 
-    <#--导出Excel-->
-    <script type="text/javascript">
-
-        $(document).ready(function() {
-            $('#exportExcel').on('click', function () {
-                var partnerId = $('#partnerId').val();
-                var reasonId = $('#reasonId').val();
-                fetch('/excel-partner-finance/find-all-partner-financial-account/income-and-expenditure-record?partnerId='+partnerId+'&reasonId='+reasonId).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename ='合作公司财务明细账单.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
+        $(function(){
+            console.log($.getUrlParam('partnerId'));
+            console.log($.getUrlParam('reasonId'));
         });
+
+        var href = $("#exportExcel").attr('href');
+
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'partnerId=' + $.getUrlParam('partnerId') +
+                    (href.match(/\?/) ? '&' : '?') + 'reasonId=' + $.getUrlParam('reasonId');
+            $("#exportExcel").attr('href', href);
+        }
+
+
     </script>
 
     </#if>

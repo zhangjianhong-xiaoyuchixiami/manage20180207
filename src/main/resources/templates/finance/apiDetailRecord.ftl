@@ -127,7 +127,7 @@
 
                             <div class="caption"><i class="icon-user"></i><#if apiTypeName??>${apiTypeName!''}<#if mobileOperatorName??>——${mobileOperatorName!''}</#if></#if><#if vendorName??>@${vendorName!''}</#if></div>
 
-                            <@d.tools idName="exportExcel" hrefName=""></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName="/api/find-all-api-record/detail?export=true"></@d.tools>
 
                         </div>
 
@@ -196,27 +196,31 @@
             ApiDetailRecord.init();
         });
 
-    </script>
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return '';
+            }
+        })(jQuery);
 
-    <script type="text/javascript">
-
-        $(document).ready(function() {
-
-            $('#exportExcel').on('click', function () {
-                var apiId = $('#apiId').val();
-                var beginDate = $('#beginDate').val();
-                var endDate = $('#endDate').val();
-                fetch('/excel-api-finance/find-all-api-record/detail?apiId='+apiId+'&beginDate='+beginDate+'&endDate='+endDate).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename ='产品消费明细账单.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
+        $(function(){
+            console.log($.getUrlParam('apiId'));
+            console.log($.getUrlParam('beginDate'));
+            console.log($.getUrlParam('endDate'));
         });
+
+        var href = $("#exportExcel").attr('href');
+
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'apiId=' + $.getUrlParam('apiId') +
+                    (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate') +
+                    (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate');
+            $("#exportExcel").attr('href', href);
+        }
+
+
     </script>
 
     </#if>

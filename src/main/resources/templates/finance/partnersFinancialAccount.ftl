@@ -53,7 +53,7 @@
 
                             <div class="caption"><i class="icon-user"></i></div>
 
-                            <@d.tools idName="exportExcel" hrefName=""></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName="/partner/find-all-partner-financial-account?export=true"></@d.tools>
 
                             <div class="actions">
 
@@ -405,9 +405,6 @@
             $(function () { $("[data-toggle='tooltip']").tooltip(); });
 
         });
-    </script>
-
-    <script type="text/javascript">
 
         /*创建收款付款*/
         function paymentReceipt(partnerId,reasonId) {
@@ -433,23 +430,26 @@
 
         }
 
-        $(document).ready(function() {
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return '';
+            }
+        })(jQuery);
 
-            /*导出Excel*/
-            $('#exportExcel').on('click', function () {
-                var partnerName = $('#partnerName').val();
-                fetch('/excel-partner-finance/find-all-partner-financial-account?partnerName='+partnerName).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename ='合作公司财务账单.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
-
+        $(function(){
+            console.log($.getUrlParam('partnerName'));
         });
+
+        var href = $("#exportExcel").attr('href');
+
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'partnerName=' + $.getUrlParam('partnerName');
+            $("#exportExcel").attr('href', href);
+        }
+
 
     </script>
 

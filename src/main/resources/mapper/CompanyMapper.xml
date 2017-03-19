@@ -131,78 +131,73 @@
                <result column="status" property="id"/>
                <result column="statusName" property="name"/>
            </association>
+           <collection property="customerIpList" ofType="org.qydata.entity.CustomerIp">
+               <result column="beginIpRaw" property="beginIpRaw"/>
+               <result column="endIpRaw" property="endIpRaw"/>
+           </collection>
        </collection>
     </resultMap>
 
 
     <!--查找客户信息-->
     <select id="findAllCompany" parameterType="map" resultMap="CustomerCompany_Customer_Map">
-        SELECT cc.customerId,cc.typeId,cc.typeName,cc.authId,cc.authPass,cc.balance,cc.createTime customerCreateTime,cc.status,cc.statusName,
-        dd.companyId,dd.companyBalance,dd.companyName,dd.partnerId,dd.partnerName,dd.timestamp companyCreateTime
-        FROM
-        (
-        SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,
-        a.companyId,a.companyName,a.partnerId,b.name partnerName
-        FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime customerCreateTime,
+        a.status,a.statusName,
+        c.companyName,c.partnerId,c.partnerName,c.timestamp companyCreateTime,d.companyBalance,
+        e.beginIpRaw,e.endIpRaw
+        FROM qyfinance.bkvwCustomer a
+        LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        LEFT JOIN qyfinance.bkvw_company_customer c ON a.companyId=c.companyId
+        LEFT JOIN
+                (
+                    SELECT companyId,sum(balance) companyBalance
+                    FROM qyfinance.bkvwCustomer
+                    WHERE typeId=1 AND status=0
+                    GROUP BY companyId
+                ) d ON a.companyId=d.companyId
+        LEFT JOIN qyfinance.bkvwCustomerIp e ON a.id=e.customerId
         WHERE a.companyId IS NOT NULL
-        ) cc  LEFT JOIN
-        (
-        SELECT aa.companyId,aa.companyBalance,bb.companyName,bb.partnerId,bb.partnerName,bb.timestamp
-        FROM
-        (
-        SELECT companyId,sum(balance) companyBalance
-        FROM qyfinance.bkvwCustomer
-        WHERE typeId=1 AND status=0
-        GROUP BY companyId
-        ) aa LEFT JOIN qyfinance.bkvw_company_customer bb ON aa.companyId=bb.companyId
-        ) dd ON cc.companyId=dd.companyId
-        <where>
-            <if test="partnerId!=null and partnerId!=''">
-                cc.partnerId=#{partnerId}
-            </if>
-            <if test="content!=null and content!=''">
-                AND dd.companyName like '%${content}%'
-            </if>
-        </where>
+        <if test="partnerId!=null and partnerId!=''">
+            AND a.partnerId=#{partnerId}
+        </if>
+        <if test="content!=null and content!=''">
+            AND a.companyName like '%${content}%'
+        </if>
     </select>
 
     <!--通过部门编号查找客户信息-->
     <select id="findAllCompanyByDeptId" parameterType="map" resultMap="CustomerCompany_Customer_Map">
-        SELECT cc.customerId,cc.typeId,cc.typeName,cc.authId,cc.authPass,cc.balance,cc.createTime customerCreateTime,cc.status,cc.statusName,
-        dd.companyId,dd.companyBalance,dd.companyName,dd.partnerId,dd.partnerName,dd.timestamp companyCreateTime
-        FROM
-        (
-        SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime,a.status,a.statusName,
-        a.companyId,a.companyName,a.partnerId,b.name partnerName
-        FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
-        WHERE a.companyId IS NOT NULL AND a.id IN
-                        (
-                            SELECT customerId
-                            FROM qyfinance.bkvwCustomerDept
-                            WHERE deptId IN
-                                        <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                                            #{deptId}
-                                        </foreach>
-                        )
-        ) cc  LEFT JOIN
-        (
-        SELECT aa.companyId,aa.companyBalance,bb.companyName,bb.partnerId,bb.partnerName,bb.timestamp
-        FROM
-        (
-        SELECT companyId,sum(balance) companyBalance
-        FROM qyfinance.bkvwCustomer
-        WHERE typeId=1 AND status=0
-        GROUP BY companyId
-        ) aa LEFT JOIN qyfinance.bkvw_company_customer bb ON aa.companyId=bb.companyId
-        ) dd ON cc.companyId=dd.companyId
-        <where>
-            <if test="partnerId!=null and partnerId!=''">
-                cc.partnerId=#{partnerId}
-            </if>
-            <if test="content!=null and content!=''">
-                AND dd.companyName like '%${content}%'
-            </if>
-        </where>
+        SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime customerCreateTime,
+        a.status,a.statusName,
+        c.companyName,c.partnerId,c.partnerName,c.timestamp companyCreateTime,d.companyBalance,
+        e.beginIpRaw,e.endIpRaw
+        FROM qyfinance.bkvwCustomer a
+        LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        LEFT JOIN qyfinance.bkvw_company_customer c ON a.companyId=c.companyId
+        LEFT JOIN
+                (
+                    SELECT companyId,sum(balance) companyBalance
+                    FROM qyfinance.bkvwCustomer
+                    WHERE typeId=1 AND status=0
+                    GROUP BY companyId
+                ) d ON a.companyId=d.companyId
+        LEFT JOIN qyfinance.bkvwCustomerIp e ON a.id=e.customerId
+        WHERE a.companyId IS NOT NULL
+        AND a.id IN
+                    (
+                        SELECT customerId
+                        FROM qyfinance.bkvwCustomerDept
+                        WHERE deptId IN
+                        <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                            #{deptId}
+                        </foreach>
+                    )
+        <if test="partnerId!=null and partnerId!=''">
+            AND a.partnerId=#{partnerId}
+        </if>
+        <if test="content!=null and content!=''">
+            AND a.companyName like '%${content}%'
+        </if>
     </select>
 
     <!--添加客户信息-->

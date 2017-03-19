@@ -4,21 +4,17 @@ import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
-import org.qydata.dst.PartnerFinance;
 import org.qydata.entity.Partner;
-import org.qydata.entity.PartnerIncomeExpenditureLog;
-import org.qydata.tools.RegexUtil;
 import org.qydata.service.PartnerFinanceService;
+import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jonhn on 2017/2/6.
@@ -32,27 +28,64 @@ public class PartnerFinanceController {
 
     //合作伙伴来往账目
     @RequestMapping("/find-all-partner-financial-account")
-    public String findPartnersFinancialAccount(Model model,String partnerName){
+    public ModelAndView findPartnersFinancialAccount(String export,String partnerName,Model model){
         Map<String,Object> map = new HashMap<>();
         map.put("partnerName",partnerName);
-        List<PartnerFinance>  partnerFinanceList = partnerFinanceService.queryPartnerOverFinance(map);
-        long weekIncomeAmount = 0L;
-        long weekExpenditure = 0L;
-        long monthIncomeAmount = 0L;
-        long monthExpenditure = 0L;
-        long totleIncomeAmount = 0L;
-        long totleExpenditure = 0L;
-
-        model.addAttribute("partnerFinanceList",partnerFinanceList);
+        Map<String,Object> mapResult = partnerFinanceService.queryPartnerOverFinance(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while (it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if (me.getKey().equals("queryPartnerOverFinance")){
+                model.addAttribute("partnerFinanceList",me.getValue());
+            }
+            if (me.getKey().equals("getCountWeekIncomePartnerOverFinance")){
+                model.addAttribute("weekIncomeAmount",me.getValue());
+            }
+            if (me.getKey().equals("getCountWeekExpenditurePartnerOverFinance")){
+                model.addAttribute("weekExpenditure",me.getValue());
+            }
+            if (me.getKey().equals("getCountMonthIncomePartnerOverFinance")){
+                model.addAttribute("monthIncomeAmount",me.getValue());
+            }
+            if (me.getKey().equals("getCountMonthExpenditurePartnerOverFinance")){
+                model.addAttribute("monthExpenditure",me.getValue());
+            }
+            if (me.getKey().equals("getCountTotleIncomePartnerOverFinance")){
+                model.addAttribute("totleIncomeAmount",me.getValue());
+            }
+            if (me.getKey().equals("getCountTotleExpenditurePartnerOverFinance")){
+                model.addAttribute("totleExpenditure",me.getValue());
+            }
+        }
         model.addAttribute("partnerName",partnerName);
-        model.addAttribute("weekIncomeAmount",weekIncomeAmount);
-        model.addAttribute("weekExpenditure",weekExpenditure);
-        model.addAttribute("monthIncomeAmount",monthIncomeAmount);
-        model.addAttribute("monthExpenditure",monthExpenditure);
-        model.addAttribute("totleIncomeAmount",totleIncomeAmount);
-        model.addAttribute("totleExpenditure",totleExpenditure);
-        return "/finance/partnersFinancialAccount";
+        return new ModelAndView("/finance/partnersFinancialAccount");
     }
+
+    //合作伙伴来往账目-收支明细
+    @RequestMapping("/find-all-partner-financial-account/income-and-expenditure-record")
+    public ModelAndView findPartnerIncomeAndExpenditureRecord(String export, Integer partnerId,Integer reasonId,String partnerName,Model model){
+        Map<String,Object> map = new HashMap<>();
+        map.put("partnerId",partnerId);
+        map.put("reasonId",reasonId);
+        Map<String,Object> mapResult = partnerFinanceService.queryPartnerDetailLog(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while (it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if (me.getKey().equals("queryPartnerDetailLog")){
+                model.addAttribute("partnerIncomeExpenditureLogList",me.getValue());
+            }
+            if (me.getKey().equals("getCountPartnerDetailLog")){
+                model.addAttribute("totleAmount",me.getValue());
+            }
+        }
+        model.addAttribute("partnerName",partnerName);
+        model.addAttribute("partnerId",partnerId);
+        model.addAttribute("reasonId",reasonId);
+        return new ModelAndView("/finance/partnersReceiptAndPayingRecord");
+    }
+
 
     //付款和收款
     @RequestMapping("/find-all-partner-financial-account/payment-receipt")
@@ -99,30 +132,6 @@ public class PartnerFinanceController {
             map.put("errorMessage","操作失败，请检查你的输入");
         }
         return gson.toJson(map);
-    }
-
-    //合作伙伴来往账目-收支明细
-    @RequestMapping("/find-all-partner-financial-account/income-and-expenditure-record")
-    public String findPartnerIncomeAndExpenditureRecord(Model model,Integer partnerId,Integer reasonId,String partnerName){
-        Map<String,Object> map = new HashMap<>();
-        map.put("partnerId",partnerId);
-        map.put("reasonId",reasonId);
-        List<PartnerIncomeExpenditureLog> partnerIncomeExpenditureLogList = partnerFinanceService.queryPartnerDetailLog(map);
-       long totleAmount = 0L;
-        if (partnerIncomeExpenditureLogList != null){
-            for (int i=0; i<partnerIncomeExpenditureLogList.size(); i++){
-                PartnerIncomeExpenditureLog partnerIncomeExpenditureLog = partnerIncomeExpenditureLogList.get(i);
-                if(partnerIncomeExpenditureLog.getAmount() != null){
-                    totleAmount = totleAmount + partnerIncomeExpenditureLog.getAmount();
-                }
-            }
-        }
-        model.addAttribute("partnerIncomeExpenditureLogList",partnerIncomeExpenditureLogList);
-        model.addAttribute("partnerName",partnerName);
-        model.addAttribute("totleAmount",totleAmount);
-        model.addAttribute("partnerId",partnerId);
-        model.addAttribute("reasonId",reasonId);
-        return "/finance/partnersReceiptAndPayingRecord";
     }
 
     //支出

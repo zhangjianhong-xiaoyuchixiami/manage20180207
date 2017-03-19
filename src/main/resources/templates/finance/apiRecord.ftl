@@ -90,7 +90,7 @@
 
                             <div class="caption"><i class="icon-user"></i></div>
 
-                            <@d.tools idName="exportExcel" hrefName=""></@d.tools>
+                            <@d.tools idName="exportExcel" hrefName="/api/find-all-api-record?export=true"></@d.tools>
 
                             <div class="actions">
 
@@ -205,7 +205,7 @@
                                                 <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="操作">
+                                                <td data-title="操作" style="text-align: center;">
                                                     <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
                                                 </td>
                                             </tr>
@@ -248,29 +248,31 @@
             Api.init();
         });
 
-    </script>
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return '';
+            }
+        })(jQuery);
 
-    <#--导出Excel-->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#exportExcel').on('click', function () {
-                var apiTypeId = $('#apiTypeId').val();
-                var vendorId = $('#vendorId').val();
-                var apiId = $('#apiId').val();
-                fetch('/excel-api-finance/find-all-api-record?apiTypeId='+apiTypeId+'&vendorId='+vendorId+'&apiId='+apiId).then(res => res.blob().then(blob => {
-                    var a = document.createElement('a');
-                var url = window.URL.createObjectURL(blob);
-                var filename ='产品消费账单.xls';
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }))
-            });
+        $(function(){
+            console.log($.getUrlParam('apiTypeId'));
+            console.log($.getUrlParam('vendorId'));
+            console.log($.getUrlParam('apiId'));
         });
+
+        var href = $("#exportExcel").attr('href');
+
+        if(href) {
+            href += (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId') +
+                    (href.match(/\?/) ? '&' : '?') + 'vendorId=' + $.getUrlParam('vendorId') +
+                    (href.match(/\?/) ? '&' : '?') + 'apiId=' + $.getUrlParam('apiId');
+            $("#exportExcel").attr('href', href);
+        }
+
     </script>
-
-
 
     </#if>
 
