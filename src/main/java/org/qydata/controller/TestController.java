@@ -85,7 +85,7 @@ public class TestController {
     public ModelAndView userTest(String export, Model model) throws Exception {
         Map<String,Object> mapTran = new HashMap<>();
         mapTran.put("pageSize",0);
-        mapTran.put("lineSize",30);
+        mapTran.put("lineSize",15);
         Map<String, Object> map = customerService.findAllCustomerRequestLog(mapTran);
         Set<Map.Entry<String, Object>> set = map.entrySet();
         Iterator<Map.Entry<String, Object>> it = set.iterator();
@@ -96,7 +96,7 @@ public class TestController {
             }
         }
         model.addAttribute("pageSize",0);
-        model.addAttribute("lineSize",30);
+        model.addAttribute("lineSize",15);
         return new ModelAndView("/test/user");
     }
 
