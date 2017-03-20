@@ -160,6 +160,7 @@
                                     <thead>
                                     <tr>
                                         <th>公司名称</th>
+                                        <th>信用额度</th>
                                         <@shiro.hasPermission name="customer:findAllCustomer">
                                             <th>合作公司</th>
                                         </@shiro.hasPermission>
@@ -189,6 +190,7 @@
                                             <#list companyList as company>
                                             <tr>
                                                 <td data-title="公司名称">${company.companyName!''}</td>
+                                                <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                     <td data-title="合作公司"><a href="/company/find-all-company-customer<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
                                                 </@shiro.hasPermission>
@@ -277,7 +279,7 @@
                                                                     <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
                                                                         <span class="username">点击查看Ip段</span>
                                                                     </a>
-                                                                    <ul class="dropdown-menu" style="min-width: 200px;">
+                                                                    <ul class="dropdown-menu" style="min-width: 250px;">
                                                                         <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
                                                                             <#list customer.customerIpList as customerIp>
                                                                                 <li>${customerIp.beginIpRaw!''}-${customerIp.endIpRaw!''}</li>
@@ -394,82 +396,15 @@
 
     <script src="/js/myjs/customer-company.js"></script>
 
+    <script src="/js/oldlocal/company.js"></script>
+
     <script type="text/javascript">
         jQuery(document).ready(function() {
             Company.init();
         });
 
-        /*以下操作为添加账号*/
-        function addAccount(companyId) {
-            $("#authId-account-controls").empty();
-            $("#error-alert-account").empty();
-            var op=document.createElement("input");
-            op.value=companyId;
-            op.type="text";
-            op.id="companyId";
-            op.name="companyId";
-            $("#authId-account-controls").append(op);
-        }
-        /*以下操作是给账号充值或扣费*/
-        function chargeBalance(customerId) {
-            $.ajax({
-                type: "post",
-                url: "/company/charge-customer-balance",
-                dataType: "json",
-                success: function (data) {
-                    $("#error_alert_update_balance").empty();
-                    $("#update_balance_customerId").empty();
-                    $("#update_balance_amountMsg").empty();
-                    var op=document.createElement("input");
-                    op.value=customerId;
-                    op.type="text";
-                    op.id="customerId";
-                    op.name="customerId";
-                    $("#authId-account-controls").append(op);
-                    if(data != null){
-                        $("#update_balance_reasonId ").empty();
-                        $("#update_balance_reasonId").append("<option value=''>请选择...</option>");
-                        for (var i=0; i<data.length; i++){
-                            var opSelect=document.createElement("option");
-                            opSelect.value=data[i].id;
-                            opSelect.innerHTML=data[i].name;
-                            $("#update_balance_reasonId").append(opSelect);
-                        }
-                    }
-                }
-            });
-        }
-        function consumeBalance(customerId) {
-            $.ajax({
-                type: "post",
-                url: "/company/consume-customer-balance",
-                dataType: "json",
-                success: function (data) {
-                    $("#error_alert_update_balance").empty();
-                    $("#update_balance_customerId").empty();
-                    $("#update_balance_amountMsg").empty();
-                    var op=document.createElement("input");
-                    op.value=customerId;
-                    op.type="text";
-                    op.id="customerId";
-                    op.name="customerId";
-                    $("#authId-account-controls").append(op);
-                    if(data != null){
-                        $("#update_balance_reasonId ").empty();
-                        $("#update_balance_reasonId").append("<option value=''>请选择...</option>");
-                        for (var i=0; i<data.length; i++){
-                            var opSelect=document.createElement("option");
-                            opSelect.value=data[i].id;
-                            opSelect.innerHTML=data[i].name;
-                            $("#update_balance_reasonId").append(opSelect);
-                        }
-                    }
-                }
-            });
-        }
     </script>
 
     </#if>
-
 
 </@layout>

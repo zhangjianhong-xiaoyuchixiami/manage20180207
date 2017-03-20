@@ -119,8 +119,11 @@
                                                 <#else >
                                                 <tr>
                                                 </#if>
-
+                                                <#if api.status==0>
                                                 <td data-title="产品类型">
+                                                <#else >
+                                                <td data-title="产品类型" class="font-text-decoration">
+                                                </#if>
                                                 ${api.apiType.name}
                                                     <#if (api.mobileOperatorList?size>0)>--
                                                         <#list api.mobileOperatorList as mobileOperator>

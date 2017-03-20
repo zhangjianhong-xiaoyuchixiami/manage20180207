@@ -24,6 +24,7 @@ public class Api implements Serializable {
     private String requestClass;
     private String responseClass;
     private Integer cost;
+    private Integer status;
     private Integer defaultPrice;
     private Integer proxyApiId;
     private Timestamp createTime;
@@ -205,6 +206,14 @@ public class Api implements Serializable {
 
     public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
         this.mobileOperatorList = mobileOperatorList;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override

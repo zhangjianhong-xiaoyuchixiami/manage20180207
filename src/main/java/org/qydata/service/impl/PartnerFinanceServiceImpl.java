@@ -76,7 +76,7 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     public Map<String,Object> queryPartnerDetailLog(Map<String, Object> map) {
         Map<String,Object> mapTran = new HashMap<>();
         try {
-            map.put("queryPartnerDetailLog",partnerFinanceMapper.queryPartnerDetailLog(map));
+            mapTran.put("queryPartnerDetailLog",partnerFinanceMapper.queryPartnerDetailLog(map));
             mapTran.put("getCountPartnerDetailLog",partnerFinanceMapper.getCountPartnerDetailLog(map));
         } catch (Exception e) {
             e.printStackTrace();

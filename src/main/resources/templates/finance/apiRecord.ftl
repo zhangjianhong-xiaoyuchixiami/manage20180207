@@ -190,8 +190,8 @@
                                         <th>产品供应商</th>
                                         <th>产品名称</th>
                                         <th>消费总额（单位：元）</th>
-                                        <th>上周消费（单位：元）</th>
-                                        <th>上月消费（单位：元）</th>
+                                        <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                        <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th style="text-align: center; width: 13%;">操作</th>
                                     </tr>
                                     </thead>
@@ -199,7 +199,12 @@
                                         <#if apiFinanceList??>
                                             <#list apiFinanceList as apiFinance>
                                             <tr>
-                                                <td data-title="产品类型">${apiFinance.apiTypeName}<#if apiFinance.mobileOperator??>--${apiFinance.mobileOperator.name!''}</#if></td>
+                                                <#if apiFinance.status==-1>
+                                                <td data-title="产品类型" class="font-text-decoration">
+                                                <#else >
+                                                <td data-title="产品类型">
+                                                </#if>
+                                                ${apiFinance.apiTypeName}<#if apiFinance.mobileOperator??>--${apiFinance.mobileOperator.name!''}</#if></td>
                                                 <td data-title="产品供应商">${apiFinance.vendorName}</td>
                                                 <td data-title="产品名称">${apiFinance.apiName}</td>
                                                 <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
@@ -242,36 +247,13 @@
 
     <script src="/js/myjs/api.js"></script>
 
+    <script src="/js/oldlocal/api-Record.js"></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
             Api.init();
         });
-
-        (function($){
-            $.getUrlParam = function(name)
-            {
-                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-                var r = window.location.search.substr(1).match(reg);
-                if (r!=null) return unescape(r[2]); return '';
-            }
-        })(jQuery);
-
-        $(function(){
-            console.log($.getUrlParam('apiTypeId'));
-            console.log($.getUrlParam('vendorId'));
-            console.log($.getUrlParam('apiId'));
-        });
-
-        var href = $("#exportExcel").attr('href');
-
-        if(href) {
-            href += (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId') +
-                    (href.match(/\?/) ? '&' : '?') + 'vendorId=' + $.getUrlParam('vendorId') +
-                    (href.match(/\?/) ? '&' : '?') + 'apiId=' + $.getUrlParam('apiId');
-            $("#exportExcel").attr('href', href);
-        }
-
     </script>
 
     </#if>

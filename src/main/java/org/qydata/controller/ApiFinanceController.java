@@ -7,6 +7,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiVendor;
 import org.qydata.service.ApiFinanceService;
+import org.qydata.tools.CalendarTools;
 import org.qydata.tools.ExportDataHander;
 import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,9 @@ public class ApiFinanceController {
         model.addAttribute("apiVendorList",apiVendorList);
         model.addAttribute("vendorId",vendorId);
         model.addAttribute("apiTypeId",apiTypeId);
+        model.addAttribute("year", CalendarTools.getYearMonthCount(1));
+        model.addAttribute("month",CalendarTools.getMonthCount(1));
+        model.addAttribute("week",CalendarTools.getYearWeekCount(1));
         return new ModelAndView("/finance/apiRecord");
     }
 
@@ -157,6 +161,9 @@ public class ApiFinanceController {
         model.addAttribute("vendorId",vendorId);
         model.addAttribute("partnerId",partnerId);
         model.addAttribute("totleBalance",totleBalance);
+        model.addAttribute("year",CalendarTools.getYearMonthCount(1));
+        model.addAttribute("month",CalendarTools.getMonthCount(1));
+        model.addAttribute("week",CalendarTools.getYearWeekCount(1));
         return new ModelAndView("/finance/apiVendorRecord");
     }
 

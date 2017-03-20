@@ -5,7 +5,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.entity.Partner;
+import org.qydata.entity.PartnerIncomeExpenditureLog;
 import org.qydata.service.PartnerFinanceService;
+import org.qydata.tools.CalendarTools;
 import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,6 +61,9 @@ public class PartnerFinanceController {
             }
         }
         model.addAttribute("partnerName",partnerName);
+        model.addAttribute("year", CalendarTools.getYearMonthCount(1));
+        model.addAttribute("month",CalendarTools.getMonthCount(1));
+        model.addAttribute("week",CalendarTools.getYearWeekCount(1));
         return new ModelAndView("/finance/partnersFinancialAccount");
     }
 
@@ -75,6 +80,9 @@ public class PartnerFinanceController {
             Map.Entry<String,Object> me = it.next();
             if (me.getKey().equals("queryPartnerDetailLog")){
                 model.addAttribute("partnerIncomeExpenditureLogList",me.getValue());
+                List<PartnerIncomeExpenditureLog> list = (List<PartnerIncomeExpenditureLog>) me.getValue();
+
+                System.out.println(list.size());
             }
             if (me.getKey().equals("getCountPartnerDetailLog")){
                 model.addAttribute("totleAmount",me.getValue());

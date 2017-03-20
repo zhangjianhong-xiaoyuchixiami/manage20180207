@@ -191,8 +191,8 @@
                                         <th>合作公司</th>
                                         <th>消费总额（单位：元）</th>
                                         <th>所剩余额（单位：元）</th>
-                                        <th>上周消费（单位：元）</th>
-                                        <th>上月消费（单位：元）</th>
+                                        <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                        <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th class="table-td-none">类型</th>
                                         <th style="text-align: center; width: 13%;">操作</th>
                                     </tr>
@@ -200,8 +200,13 @@
                                     <tbody>
                                         <#if apiFinanceList??>
                                             <#list apiFinanceList as apiFinance>
-                                            <tr class="odd gradeX">
-                                                <td data-title="供应商">${apiFinance.vendorName}</td>
+                                            <tr>
+                                                <#if apiFinance.status==0>
+                                                <td data-title="供应商">
+                                                <#else >
+                                                <td data-title="供应商" class="font-text-decoration">
+                                                </#if>
+                                            ${apiFinance.vendorName}</td>
                                                 <td data-title="合作公司"><a href="/api/find-all-api-vendor-consume<#if apiFinance.partnerId??>?partnerId=${apiFinance.partnerId?c}</#if>">${apiFinance.partnerName!'无'}</a></td>
                                                 <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
@@ -210,7 +215,12 @@
                                                 <td data-title="类型" class="table-td-none">
                                                     <#if apiFinance.apiTypeList??>
                                                         <#list apiFinance.apiTypeList as apiType>
-                                                        ${apiType.name!''}<#if apiType.mobileOperator??>--${apiType.mobileOperator.name!''}</#if></br>
+                                                            <#if apiType.apiVendor.status==-1>
+                                                            <span class="font-text-decoration">
+                                                            <#else>
+                                                            <span>
+                                                            </#if>
+                                                            ${apiType.name!''}<#if apiType.mobileOperator??>--${apiType.mobileOperator.name!''}</#if></span><br/>
                                                         </#list>
                                                     </#if>
                                                 </td>
@@ -319,81 +329,12 @@
 
     <script src="/js/myjs/api-vendor.js"></script>
 
+    <script src="/js/oldlocal/api-vendor-Record.js"></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
             ApiVendorRecord.init();
-        });
-
-        (function($){
-            $.getUrlParam = function(name)
-            {
-                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-                var r = window.location.search.substr(1).match(reg);
-                if (r!=null) return unescape(r[2]); return '';
-            }
-        })(jQuery);
-
-        $(function(){
-            console.log($.getUrlParam('vendorId'));
-            console.log($.getUrlParam('partnerId'));
-        });
-
-        var href = $("#exportExcel").attr('href');
-
-        if(href) {
-            href += (href.match(/\?/) ? '&' : '?') + 'vendorId=' + $.getUrlParam('vendorId') +
-                    (href.match(/\?/) ? '&' : '?') + 'partnerId=' + $.getUrlParam('partnerId');
-            $("#exportExcel").attr('href', href);
-        }
-
-    </script>
-
-    <#--充值-->
-    <script type="text/javascript">
-
-        function charge(vendorId) {
-            $("#apiId-controls").empty();
-            $("#amount-controls").empty();
-            $("#remark-controls").empty();
-            $("#error-alert").empty();
-            var op=document.createElement("input");
-            op.value=vendorId;
-            op.type="text";
-            op.id="vendorIdCharge";
-            op.name="vendorIdCharge";
-            $("#apiId-controls").append(op);
-            $("#amount-controls").append('<input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium"><span id="amount-message"></span><span class="help-block">说明：只能输入数字类型并且金额大于0</span>');
-            $("#remark-controls").append('<textarea class="medium m-wrap" id="remark" name="remark" rows="3"></textarea><span class="help-block" style="font-size: 12px;">说明：只能输入255个字符</span>');
-
-        }
-
-        $("#btn-black-btn-primary").on("click",function () {
-            var vendorIdCharge=$("#vendorIdCharge").val();
-            var amount=$("#amount").val();
-            var chargeDate=$("#chargeDate").val();
-            var remark=$("#remark").attr("value");
-            $.ajax({
-                type: "post",
-                url: "/api/find-all-vendor-record/charge",
-                data: {"vendorIdCharge":vendorIdCharge,"amount":amount,"chargeDate":chargeDate,"remark":remark},
-                dataType: "json",
-                success: function (result) {
-                    if(result.amountMessage != null){
-                        $("#amount-message").empty();
-                        $("#amount-message").append('<span class="help-line"><font color="red">'+result.amountMessage+'</font></span>');
-                        return;
-                    }
-                    if(result.errorMessage != null) {
-                        $("#error-alert").empty();
-                        $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>');
-                        return;
-                    }
-                    if(result.successMessage != null){
-                        window.location.href="/api/find-all-api-vendor-consume"
-                    }
-                }
-            });
         });
 
     </script>

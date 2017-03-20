@@ -234,6 +234,8 @@
 
     <script src="/js/myjs/month-record.js"></script>
 
+    <script src="/js/oldlocal/month-Record.js"></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
@@ -241,34 +243,6 @@
             MonthRecord.init();
 
             CustomerLeftBar.init();
-
-            (function($){
-                $.getUrlParam = function(name)
-                {
-                    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-                    var r = window.location.search.substr(1).match(reg);
-                    if (r!=null) return unescape(r[2]); return '';
-                }
-            })(jQuery);
-
-            $(function(){
-                console.log($.getUrlParam('companyName'));
-                console.log($.getUrlParam('customerId'));
-                console.log($.getUrlParam('years'));
-                console.log($.getUrlParam('months'));
-                console.log($.getUrlParam('typeId'));
-
-            });
-
-            var href = $("#exportExcel").attr('href');
-            if(href) {
-                href += (href.match(/\?/) ? '&' : '?') + 'companyName=' + $.getUrlParam('companyName') +
-                        (href.match(/\?/) ? '&' : '?') + 'customerId=' + $.getUrlParam('customerId') +
-                        (href.match(/\?/) ? '&' : '?') + 'years=' + $.getUrlParam('years') +
-                        (href.match(/\?/) ? '&' : '?') + 'months=' + $.getUrlParam('months') +
-                        (href.match(/\?/) ? '&' : '?') + 'typeId=' + $.getUrlParam('typeId');
-                $("#exportExcel").attr('href', href);
-            }
 
         });
     </script>

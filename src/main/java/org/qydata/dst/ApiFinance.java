@@ -17,6 +17,7 @@ public class ApiFinance implements Serializable {
     private Integer vendorId;
     private String vendorName;
     private String apiName;
+    private Integer status;
     private Long balance;
     private Long weekTotleCost;
     private Long monthTotleCost;
@@ -136,5 +137,13 @@ public class ApiFinance implements Serializable {
 
     public void setApiTypeList(List<ApiType> apiTypeList) {
         this.apiTypeList = apiTypeList;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

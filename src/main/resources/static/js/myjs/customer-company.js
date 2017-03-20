@@ -22,13 +22,13 @@ var Company = function () {
                     '</tr>';
 
                 sOut += '<tr>' +
-                    '<td>'+aData[8]+'</td>' +
-                    '<td>'+aData[7]+'</td>' +
                     '<td>'+aData[9]+'</td>' +
+                    '<td>'+aData[8]+'</td>' +
                     '<td>'+aData[10]+'</td>' +
-                    '<td>'+aData[12]+'</td>' +
-                    '<td>'+aData[14]+'</td>' +
+                    '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[13]+'</td>' +
+                    '<td>'+aData[15]+'</td>' +
+                    '<td>'+aData[14]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -67,23 +67,24 @@ var Company = function () {
                 "aoColumns": [
                     { "bSortable": false},  //0  展开符号
                     null,  //1  companyName
+                    null,
                     null,  //2  partnerName
                     null,  //3  companyBalance
                     null,  //4  companyCreateTime
                     { "bVisible": false},  //5 customerId
                     { "bVisible": false},  //6 typeId
-                    { "bVisible": false},  //7 typeName
-                    { "bVisible": false},  //8 authId
-                    { "bVisible": false },  //9 authPass
-                    { "bVisible": false },  //10 balance
-                    { "bVisible": false},  //11 status
-                    { "bVisible": false },  //12 statusName
-                    { "bVisible": false }, //13 customerCreateTime
-                    { "bVisible": false } //14 customerCreateTime
+                    { "bVisible": false},  //8 typeName
+                    { "bVisible": false},  //9 authId
+                    { "bVisible": false },  //10 authPass
+                    { "bVisible": false },  //11 balance
+                    { "bVisible": false},  //12 status
+                    { "bVisible": false },  //13 statusName
+                    { "bVisible": false }, //14 customerCreateTime
+                    { "bVisible": false } //15 ip
                     /* { "bVisible": false }  //15 操作*/
                     /* { "bSortable": false}  // 16*/
                 ],
-                "aaSorting": [[3, 'desc']],
+                "aaSorting": [[4, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

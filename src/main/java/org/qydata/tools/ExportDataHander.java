@@ -26,6 +26,7 @@ public class ExportDataHander {
                 ApiFinance apiFinanceOne = new ApiFinance();
                 apiFinanceOne.setVendorId(apiFinance.getVendorId());
                 apiFinanceOne.setVendorName(apiFinance.getVendorName());
+                apiFinanceOne.setStatus(apiFinance.getStatus());
                 apiFinanceOne.setApiTypeList(apiFinance.getApiTypeList());
                 apiFinanceOne.setPartnerName(apiFinance.getPartnerName());
                 apiFinanceOne.setPartnerId(apiFinance.getPartnerId());

@@ -110,6 +110,7 @@
     <resultMap id="CustomerCompany_Map" type="org.qydata.dst.CustomerCompanyPartner">
         <result column="companyId" property="companyId"/>
         <result column="companyBalance" property="companyBalance"/>
+        <result column="floor" property="floor"/>
         <result column="companyName" property="companyName"/>
         <result column="partnerId" property="partnerId"/>
         <result column="partnerName" property="partnerName"/>
@@ -143,14 +144,14 @@
     <select id="findAllCompany" parameterType="map" resultMap="CustomerCompany_Customer_Map">
         SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime customerCreateTime,
         a.status,a.statusName,
-        c.companyName,c.partnerId,c.partnerName,c.timestamp companyCreateTime,d.companyBalance,
+        c.companyName,c.partnerId,c.partnerName,c.timestamp companyCreateTime,d.companyBalance,d.floor,
         e.beginIpRaw,e.endIpRaw
         FROM qyfinance.bkvwCustomer a
         LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
         LEFT JOIN qyfinance.bkvw_company_customer c ON a.companyId=c.companyId
         LEFT JOIN
                 (
-                    SELECT companyId,sum(balance) companyBalance
+                    SELECT companyId,sum(balance) companyBalance,sum(floor) floor
                     FROM qyfinance.bkvwCustomer
                     WHERE typeId=1 AND status=0
                     GROUP BY companyId
@@ -168,15 +169,15 @@
     <!--通过部门编号查找客户信息-->
     <select id="findAllCompanyByDeptId" parameterType="map" resultMap="CustomerCompany_Customer_Map">
         SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime customerCreateTime,
-        a.status,a.statusName,
-        c.companyName,c.partnerId,c.partnerName,c.timestamp companyCreateTime,d.companyBalance,
+        a.status,a.statusName,a.floor
+        c.companyName,c.partnerId,c.partnerName,c.timestamp companyCreateTime,d.companyBalance,d.floor,
         e.beginIpRaw,e.endIpRaw
         FROM qyfinance.bkvwCustomer a
         LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
         LEFT JOIN qyfinance.bkvw_company_customer c ON a.companyId=c.companyId
         LEFT JOIN
                 (
-                    SELECT companyId,sum(balance) companyBalance
+                    SELECT companyId,sum(balance) companyBalance,sum(floor) floor
                     FROM qyfinance.bkvwCustomer
                     WHERE typeId=1 AND status=0
                     GROUP BY companyId

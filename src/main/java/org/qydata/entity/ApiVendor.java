@@ -13,6 +13,7 @@ public class ApiVendor implements Serializable {
     private Integer id;
     private String name;
     private Partner partner;
+    private Integer status;
 
     public Integer getId() {
         return id;
@@ -36,6 +37,14 @@ public class ApiVendor implements Serializable {
 
     public void setPartner(Partner partner) {
         this.partner = partner;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String toString(){

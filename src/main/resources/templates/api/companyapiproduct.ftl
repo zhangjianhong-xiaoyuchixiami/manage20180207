@@ -99,7 +99,12 @@
                                         <#if companyApiList??>
                                             <#list companyApiList as company>
                                             <tr>
-                                                <td data-title="产品类型">${company.apiTypeName}<#if company.subTypeName??>--${company.subTypeName!''}</#if></td>
+                                                <#if company.enabled==1>
+                                                <td data-title="产品类型">
+                                                <#else >
+                                                <td data-title="产品类型" class="font-text-decoration">
+                                                </#if>
+                                                ${company.apiTypeName}<#if company.subTypeName??>--${company.subTypeName!''}</#if></td>
                                                 <td data-title="公司名称">${(company.companyName)!''}<#if company.partnerName??>@${company.partnerName}</#if></td>
                                                 <td data-title="合作公司"><a href="/api/api-message-by-company?partnerId=${(company.partnerId)!''}">${(company.partnerName)!'无'}</a></td>
                                                 <td data-title="价格（单位：元）">${(company.price/100.0)?c}</td>

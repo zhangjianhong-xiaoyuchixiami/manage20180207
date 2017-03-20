@@ -17,6 +17,7 @@ public class CustomerApiPartner implements Serializable {
     private Integer price;
     private Integer partnerId;
     private String partnerName;
+    private Integer enabled;
 
     public Integer getId() {
         return id;
@@ -96,5 +97,13 @@ public class CustomerApiPartner implements Serializable {
 
     public void setPartnerName(String partnerName) {
         this.partnerName = partnerName;
+    }
+
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 }
