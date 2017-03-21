@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jonhn on 2017/1/17.
@@ -25,12 +22,33 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
 
     @Override
     public Map<String,Object> queryApiOverAllFinance(Map<String, Object> map){
+        Map<String,Object> mapValue = new HashMap<>();
+        Map<String,Object> mapValueDead = new HashMap<>();
         Map<String,Object> mapTran = new HashMap<>();
         try {
-            mapTran.put("queryApiOverAllFinance",apiFinanceMapper.queryApiOverAllFinance(map));
-            mapTran.put("getCountApiWeekFinance",apiFinanceMapper.getCountApiWeekFinance(map));
-            mapTran.put("getCountApiMonthFinance",apiFinanceMapper.getCountApiMonthFinance(map));
-            mapTran.put("getCountApiTotleFinance",apiFinanceMapper.getCountApiTotleFinance(map));
+            Set<Map.Entry<String,Object>> set = map.entrySet();
+            Iterator<Map.Entry<String,Object>> it = set.iterator();
+            while (it.hasNext()){
+                Map.Entry<String,Object> me = it.next();
+                if (me.getKey().equals("vendorId")){
+                    mapValue.put("vendorId",me.getValue());
+                    mapValueDead.put("vendorId",me.getValue());
+                }
+                if (me.getKey().equals("apiTypeId")){
+                    mapValue.put("apiTypeId",me.getValue());
+                    mapValueDead.put("apiTypeId",me.getValue());
+                }
+            }
+            mapValue.put("status",0);
+            mapTran.put("queryApiOverAllFinance",apiFinanceMapper.queryApiOverAllFinance(mapValue));
+            mapTran.put("getCountApiWeekFinance",apiFinanceMapper.getCountApiWeekFinance(mapValue));
+            mapTran.put("getCountApiMonthFinance",apiFinanceMapper.getCountApiMonthFinance(mapValue));
+            mapTran.put("getCountApiTotleFinance",apiFinanceMapper.getCountApiTotleFinance(mapValue));
+            mapValueDead.put("status",-1);
+            mapTran.put("queryApiOverAllFinanceDead",apiFinanceMapper.queryApiOverAllFinance(mapValueDead));
+            mapTran.put("getCountApiWeekFinanceDead",apiFinanceMapper.getCountApiWeekFinance(mapValueDead));
+            mapTran.put("getCountApiMonthFinanceDead",apiFinanceMapper.getCountApiMonthFinance(mapValueDead));
+            mapTran.put("getCountApiTotleFinanceDead",apiFinanceMapper.getCountApiTotleFinance(mapValueDead));
         } catch (Exception e) {
             e.printStackTrace();
         }

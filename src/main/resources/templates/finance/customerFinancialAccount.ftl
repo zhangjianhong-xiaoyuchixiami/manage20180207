@@ -35,7 +35,7 @@
 
                     <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
 
-                        <form action="/finance/find-all-customer-by-dept-id" class="find_part_customer" method="get">
+                        <form action="/finance/find-all-customer-by-dept-id" class="form-bottom find_part_customer" method="get">
 
                             <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
@@ -111,7 +111,7 @@
 
                     <@shiro.hasPermission name="customer:findAllCustomer">
 
-                        <form action="/finance/find-all-customer" class="find_all_customer" method="get">
+                        <form action="/finance/find-all-customer" class="form-bottom find_all_customer" method="get">
 
                             <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
@@ -189,7 +189,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-user"></i></div>
+                            <div class="caption"></div>
 
                             <@shiro.hasPermission name="customer:findAllCustomer">
                                 <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer?export=true"></@d.tools>

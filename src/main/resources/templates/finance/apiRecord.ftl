@@ -23,7 +23,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/api/find-all-api-record" class="api_record" method="get">
+                    <form action="/api/find-all-api-record" class="form-bottom api_record" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
@@ -83,95 +83,53 @@
 
                     </form>
 
-                <#--表格-->
-                    <div class="portlet box grey">
+                    <div class="tabbable tabbable-custom boxless">
 
-                        <div class="portlet-title">
+                        <ul class="nav nav-tabs">
 
-                            <div class="caption"><i class="icon-user"></i></div>
+                            <li class="active"><a href="#tab_1" data-toggle="tab">正在使用的产品</a></li>
 
-                            <@d.tools idName="exportExcel" hrefName="/api/find-all-api-record?export=true"></@d.tools>
+                            <li><a class="" href="#tab_2" data-toggle="tab">已停用的产品</a></li>
 
-                            <div class="actions">
+                        </ul>
 
-                                <div class="btn-group">
+                        <div class="tab-content">
 
-                                    <a class="btn" href="#" data-toggle="dropdown">
+                            <div class="tab-pane active" id="tab_1">
 
-                                        表格显示列
+                            <#--正在使用的产品-->
+                                <div class="portlet box grey">
 
-                                        <i class="icon-angle-down"></i>
+                                    <div class="portlet-title">
 
-                                    </a>
+                                        <@d.tools idName="exportExcel" hrefName="/api/find-all-api-record?export=true"></@d.tools>
 
-                                    <div id="sample_1_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
-                                        <label><input type="checkbox" checked data-column="0">产品类型</label>
+                                        <div class="actions">
 
-                                        <label><input type="checkbox" checked data-column="1">产品供应商</label>
+                                            <div class="btn-group">
 
-                                        <label><input type="checkbox" data-column="2">产品名称</label>
+                                                <a class="btn" href="#" data-toggle="dropdown">
 
-                                        <label><input type="checkbox" checked data-column="3">消费总额</label>
+                                                    表格显示列
 
-                                        <label><input type="checkbox" data-column="4">上周消费</label>
+                                                    <i class="icon-angle-down"></i>
 
-                                        <label><input type="checkbox" checked data-column="5">上月消费</label>
+                                                </a>
 
-                                    </div>
+                                                <div id="sample_1_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                                    <label><input type="checkbox" checked data-column="0">产品类型</label>
 
-                                </div>
+                                                    <label><input type="checkbox" checked data-column="1">产品供应商</label>
 
-                            </div>
+                                                    <label><input type="checkbox" data-column="2">产品名称</label>
 
-                        </div>
+                                                    <label><input type="checkbox" checked data-column="3">消费总额</label>
 
-                        <div class="portlet-body no-more-tables">
+                                                    <label><input type="checkbox" data-column="4">上周消费</label>
 
-                            <div class="clearfix margin-bottom-20">
+                                                    <label><input type="checkbox" checked data-column="5">上月消费</label>
 
-                                <div class="pull-left table-top-bottom">
-
-                                    <label class="control-label">周消费总额&yen;：<#if weekTotleAmount??><span>${(weekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="pull-left table-top-bottom">
-
-                                    <label class="control-label">月消费总额&yen;：<#if monthTotleAmount??><span>${(monthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="pull-left table-top-bottom">
-
-                                    <label class="control-label">消费总额&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                            <#--表字段总额-->
-                                <div class="pull-right table-top-bottom">
-
-                                    <label class="control-label">
-
-                                        <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
-
-                                            <i class="icon-bar-chart"></i>总消费
-
-                                        </a>
-
-                                    </label>
-
-                                    <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
-
-                                        <div class="modal-header">
-
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                            <h3 id="myModalLabel7">&nbsp;</h3>
-
-                                        </div>
-
-                                        <div class="modal-body">
-                                            <div id="columnHistogramContainer">
+                                                </div>
 
                                             </div>
 
@@ -179,46 +137,206 @@
 
                                     </div>
 
+                                    <div class="portlet-body no-more-tables">
+
+                                        <div class="clearfix margin-bottom-20">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">周消费总额&yen;：<#if weekTotleAmount??><span>${(weekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">月消费总额&yen;：<#if monthTotleAmount??><span>${(monthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">消费总额&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                        <#--表字段总额-->
+                                            <div class="pull-right table-top-bottom">
+
+                                                <label class="control-label">
+
+                                                    <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
+
+                                                        <i class="icon-bar-chart"></i>总消费
+
+                                                    </a>
+
+                                                </label>
+
+                                                <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+
+                                                    <div class="modal-header">
+
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                                        <h3 id="myModalLabel7">&nbsp;</h3>
+
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <div id="columnHistogramContainer">
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_1">
+                                                <thead>
+                                                <tr>
+                                                    <th>产品类型</th>
+                                                    <th>产品供应商</th>
+                                                    <th>产品名称</th>
+                                                    <th>消费总额（单位：元）</th>
+                                                    <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                                    <th>${year!''}年${month!''}月消费（单位：元）</th>
+                                                    <th style="text-align: center; width: 13%;">操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <#if apiFinanceList??>
+                                                        <#list apiFinanceList as apiFinance>
+                                                            <tr>
+                                                                <td data-title="产品类型">${apiFinance.apiTypeName}<#if apiFinance.mobileOperator??>--${apiFinance.mobileOperator.name!''}</#if></td>
+                                                                <td data-title="产品供应商">${apiFinance.vendorName}</td>
+                                                                <td data-title="产品名称">${apiFinance.apiName}</td>
+                                                                <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                                                <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
+                                                                <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
+                                                                <td data-title="操作" style="text-align: center;">
+                                                                    <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
+                                                                </td>
+                                                            </tr>
+                                                        </#list>
+                                                    </#if>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
                                 </div>
 
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover table-condensed" id="sample_1">
-                                    <thead>
-                                    <tr>
-                                        <th>产品类型</th>
-                                        <th>产品供应商</th>
-                                        <th>产品名称</th>
-                                        <th>消费总额（单位：元）</th>
-                                        <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
-                                        <th>${year!''}年${month!''}月消费（单位：元）</th>
-                                        <th style="text-align: center; width: 13%;">操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <#if apiFinanceList??>
-                                            <#list apiFinanceList as apiFinance>
-                                            <tr>
-                                                <#if apiFinance.status==-1>
-                                                <td data-title="产品类型" class="font-text-decoration">
-                                                <#else >
-                                                <td data-title="产品类型">
-                                                </#if>
-                                                ${apiFinance.apiTypeName}<#if apiFinance.mobileOperator??>--${apiFinance.mobileOperator.name!''}</#if></td>
-                                                <td data-title="产品供应商">${apiFinance.vendorName}</td>
-                                                <td data-title="产品名称">${apiFinance.apiName}</td>
-                                                <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="操作" style="text-align: center;">
-                                                    <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
-                                                </td>
-                                            </tr>
-                                            </#list>
-                                        </#if>
-                                    </tbody>
-                                </table>
+
+                            <div class="tab-pane " id="tab_2">
+
+                            <#--已停用的产品-->
+                                <div class="portlet box grey">
+
+                                    <div class="portlet-title">
+
+                                        <@d.tools idName="exportExcel" hrefName="/api/find-all-api-record?export=true&dead=true"></@d.tools>
+
+                                        <div class="actions">
+
+                                            <div class="btn-group">
+
+                                                <a class="btn" href="#" data-toggle="dropdown">
+
+                                                    表格显示列
+
+                                                    <i class="icon-angle-down"></i>
+
+                                                </a>
+
+                                                <div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                                    <label><input type="checkbox" checked data-column="0">产品类型</label>
+
+                                                    <label><input type="checkbox" checked data-column="1">产品供应商</label>
+
+                                                    <label><input type="checkbox" data-column="2">产品名称</label>
+
+                                                    <label><input type="checkbox" checked data-column="3">消费总额</label>
+
+                                                    <label><input type="checkbox" data-column="4">上周消费</label>
+
+                                                    <label><input type="checkbox" checked data-column="5">上月消费</label>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="portlet-body no-more-tables">
+
+                                        <div class="clearfix margin-bottom-20">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">周消费总额&yen;：<#if weekTotleAmountDead??><span>${(weekTotleAmountDead/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">月消费总额&yen;：<#if monthTotleAmountDead??><span>${(monthTotleAmountDead/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">消费总额&yen;：<#if consumeTotleAmountDead??><span>${(consumeTotleAmountDead/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
+                                                <thead>
+                                                <tr>
+                                                    <th>产品类型</th>
+                                                    <th>产品供应商</th>
+                                                    <th>产品名称</th>
+                                                    <th>消费总额（单位：元）</th>
+                                                    <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                                    <th>${year!''}年${month!''}月消费（单位：元）</th>
+                                                    <th style="text-align: center; width: 13%;">操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <#if apiFinanceListDead??>
+                                                        <#list apiFinanceListDead as apiFinance>
+                                                            <tr>
+                                                                <td data-title="产品类型" class="font-text-decoration">${apiFinance.apiTypeName}<#if apiFinance.mobileOperator??>--${apiFinance.mobileOperator.name!''}</#if></td>
+                                                                <td data-title="产品供应商">${apiFinance.vendorName}</td>
+                                                                <td data-title="产品名称">${apiFinance.apiName}</td>
+                                                                <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                                                <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
+                                                                <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
+                                                                <td data-title="操作" style="text-align: center;">
+                                                                    <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
+                                                                </td>
+                                                            </tr>
+                                                        </#list>
+                                                    </#if>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
+
                         </div>
 
                     </div>

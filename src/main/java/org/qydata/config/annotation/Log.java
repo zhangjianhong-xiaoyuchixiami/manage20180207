@@ -1,3 +1,4 @@
+/*
 package org.qydata.config.annotation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -6,9 +7,11 @@ import org.apache.commons.lang.StringUtils;
 import java.io.Serializable;
 import java.util.Date;
 
+*/
 /**
  * Created by jonhn on 2017/3/20.
- */
+ *//*
+
 public class Log implements Serializable {
 
     private String logId;           //日志主键
@@ -79,7 +82,8 @@ public class Log implements Serializable {
         this.params = params;
     }
 
-  /*
+  */
+/*
     public void setMapToParams(Map<String, String[]> paramMap) {
         if (paramMap == null){
             return;
@@ -91,7 +95,8 @@ public class Log implements Serializable {
             params.append(StringUtils.abbr(StringUtils.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue, 100));
         }
         this.params = params.toString();
-    }*/
+    }*//*
+
 
 
     public String getException() {
@@ -126,3 +131,4 @@ public class Log implements Serializable {
     }
 
 }
+*/

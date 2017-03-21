@@ -36,7 +36,7 @@ public class ApiFinanceController {
      * @return
      */
     @RequestMapping("/find-all-api-record")
-    public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId, Model model){
+    public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId,String dead, Model model){
         Map<String,Object> map = new HashedMap();
         if (vendorId !=null){
             map.put("vendorId",vendorId);
@@ -62,6 +62,20 @@ public class ApiFinanceController {
             }
             if (me.getKey().equals("getCountApiTotleFinance")){
                 model.addAttribute("consumeTotleAmount",me.getValue());
+            }
+
+
+            if (me.getKey().equals("queryApiOverAllFinanceDead")){
+                model.addAttribute("apiFinanceListDead",me.getValue());
+            }
+            if (me.getKey().equals("getCountApiWeekFinanceDead")){
+                model.addAttribute("weekTotleAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("getCountApiMonthFinanceDead")){
+                model.addAttribute("monthTotleAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("getCountApiTotleFinanceDead")){
+                model.addAttribute("consumeTotleAmountDead",me.getValue());
             }
         }
         model.addAttribute("apiTypeList",apiFinanceService.queryApiType());
@@ -123,7 +137,7 @@ public class ApiFinanceController {
      * @throws Exception
      */
     @RequestMapping("/find-all-api-vendor-consume")
-    public ModelAndView findAllApiVendorConsume(String export,Integer vendorId,Integer partnerId,Model model){
+    public ModelAndView findAllApiVendorConsume(String export,Integer vendorId,Integer partnerId,String dead,Model model){
         Map<String,Object> map = new HashMap<>();
         if(vendorId != null){
             map.put("vendorId",vendorId);

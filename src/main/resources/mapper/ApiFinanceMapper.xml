@@ -92,8 +92,11 @@
             GROUP BY apiId
         ) dd ON aa.id=dd.apiId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                aa.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
-                aa.vendorId=#{vendorId}
+                AND aa.vendorId=#{vendorId}
             </if>
             <if test="apiTypeId != null and apiTypeId != ''">
                 AND aa.apiTypeId=#{apiTypeId}
@@ -104,12 +107,7 @@
     <!--Api财务总览-周消费总额-->
     <select id="getCountApiWeekFinance" parameterType="map" resultType="Integer">
         SELECT sum(bb.weekTotleCost)
-        FROM
-        (
-            SELECT a.id
-            FROM qyfinance.bkvwApi a
-            WHERE a.status=0
-        ) aa
+        FROM qyfinance.bkvwApi aa
         LEFT JOIN
         (
             SELECT apiId,totleCost weekTotleCost
@@ -118,8 +116,11 @@
             AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
         ) bb ON aa.id=bb.apiId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                aa.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
-                aa.vendorId=#{vendorId}
+                AND aa.vendorId=#{vendorId}
             </if>
             <if test="apiTypeId != null and apiTypeId != ''">
                 AND aa.apiTypeId=#{apiTypeId}
@@ -130,11 +131,7 @@
     <!--Api财务总览-月消费总额-->
     <select id="getCountApiMonthFinance" parameterType="map" resultType="Integer">
         SELECT sum(cc.monthTotleCost)
-        FROM
-        (
-            SELECT a.id
-            FROM qyfinance.bkvwApi a
-        ) aa
+        FROM qyfinance.bkvwApi aa
         LEFT JOIN
         (
             SELECT apiId,totleCost monthTotleCost
@@ -143,8 +140,11 @@
             AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
         ) cc ON aa.id=cc.apiId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                aa.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
-                aa.vendorId=#{vendorId}
+                AND aa.vendorId=#{vendorId}
             </if>
             <if test="apiTypeId != null and apiTypeId != ''">
                 AND aa.apiTypeId=#{apiTypeId}
@@ -155,11 +155,7 @@
     <!--Api财务总览-消费总额-->
     <select id="getCountApiTotleFinance" parameterType="map" resultType="Integer">
         SELECT sum(dd.consumeTotleAmount)
-        FROM
-        (
-        SELECT a.id
-        FROM qyfinance.bkvwApi a
-        ) aa
+        FROM qyfinance.bkvwApi aa
         LEFT JOIN
         (
         SELECT sum(cost) consumeTotleAmount,apiId
@@ -168,8 +164,11 @@
         GROUP BY apiId
         ) dd ON aa.id=dd.apiId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                aa.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
-                aa.vendorId=#{vendorId}
+                AND aa.vendorId=#{vendorId}
             </if>
             <if test="apiTypeId != null and apiTypeId != ''">
                 AND aa.apiTypeId=#{apiTypeId}
@@ -180,23 +179,26 @@
     <!--查询Api类型-->
     <select id="queryApiType" parameterType="map" resultType="org.qydata.entity.ApiType">
         SELECT distinct(a.apiTypeId) id,b.name
-        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+        FROM qyfinance.bkvwApi a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
     </select>
 
     <!--查询供应商-->
     <select id="queryApiVendorName" parameterType="map" resultType="org.qydata.entity.ApiVendor">
         SELECT distinct(vendorId) id,vendorName name
         FROM qyfinance.bkvwApi
-        <if test="apiTypeId != null and apiTypeId != ''">
-            AND apiTypeId=#{apiTypeId}
-        </if>
+        <where>
+            <if test="apiTypeId != null and apiTypeId != ''">
+                AND apiTypeId=#{apiTypeId}
+            </if>
+        </where>
     </select>
-
 
     <!--查询Api消费详情-->
     <select id="queryApiDetailById" parameterType="map" resultMap="ApiRequestLog_Map">
         SELECT a.customerId,a.apiId,a.cost,a.ok,a.resTime,a.createTime,b.companyName
-        FROM qyfinance.bkvwApiRequestLog a LEFT JOIN qyfinance.bkvwCustomer b ON a.customerId=b.id
+        FROM qyfinance.bkvwApiRequestLog a
+        LEFT JOIN qyfinance.bkvwCustomer b ON a.customerId=b.id
         WHERE a.ok=1 AND a.apiId=#{apiId}
         <if test="beginDate != null and beginDate != ''">
             <![CDATA[
@@ -251,10 +253,10 @@
 
     <!--以APIVendor统计消费信息-->
     <select id="queryApiVendor" parameterType="map" resultMap="ApiFinance_ApiType_Map">
-        SELECT ee.vendorId,ee.vendorName,ee.status apiStatus,ee.weekTotleCost,ee.monthTotleCost,ee.consumeTotleAmount,
+        SELECT ee.vendorId,ee.vendorName,hh.status apiStatus,ee.weekTotleCost,ee.monthTotleCost,ee.consumeTotleAmount,
         ff.balance,gg.partnerId,gg.partnerName,gg.status apiVendorStatus,hh.apiTypeId,ii.name mobileOperatorName,jj.name apiTypeName
         FROM (
-            SELECT aa.vendorId,aa.vendorName,aa.status,sum(bb.weekTotleCost) weekTotleCost,sum(cc.monthTotleCost) monthTotleCost,
+            SELECT aa.vendorId,aa.vendorName,sum(bb.weekTotleCost) weekTotleCost,sum(cc.monthTotleCost) monthTotleCost,
             sum(dd.consumeTotleAmount) consumeTotleAmount
             FROM qyfinance.bkvwApi aa
             LEFT JOIN

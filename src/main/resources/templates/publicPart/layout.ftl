@@ -259,6 +259,38 @@
 
                 </@shiro.hasAnyRoles>
 
+          <#--  &lt;#&ndash;日志管理&ndash;&gt;
+                <@shiro.hasAnyRoles name="backAdmin">
+
+                    <li id="logManage">
+                        <a href="javascript:;">
+
+                            <i class="icon-barcode"></i>
+
+                            <span class="title">日志管理</span>
+
+                            <span class="" id="logSelect"></span>
+
+                            <span class="arrow " id="logArrow"></span>
+
+                        </a>
+
+                        <ul class="sub-menu">
+
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="logMessage">
+                                    <a href="/log/log-message">
+                                        日志信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                        </ul>
+
+                    </li>
+
+                </@shiro.hasAnyRoles>-->
+
             <#--用户管理-->
                 <@shiro.hasAnyRoles name="backAdmin,technology">
 

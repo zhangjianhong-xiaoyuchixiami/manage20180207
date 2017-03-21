@@ -22,7 +22,7 @@
                 <div class="span12">
 
                 <#--搜索框-->
-                    <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id" class="customer_charge" method="get">
+                    <form action="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id" class="form-bottom customer_charge" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 

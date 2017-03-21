@@ -52,8 +52,14 @@ public class ApiFinanceExcelAop {
             Iterator<Map.Entry<String,Object>> it = set.iterator();
             while(it.hasNext()){
                 Map.Entry<String,Object> me = it.next();
-                if (me.getKey().equals("queryApiOverAllFinance")){
-                    apiFinanceList = (List<ApiFinance>) me.getValue();
+                if (args[3] != null && args[3].getClass() == String.class && args[3].equals("true")){
+                    if (me.getKey().equals("queryApiOverAllFinanceDead")){
+                        apiFinanceList = (List<ApiFinance>) me.getValue();
+                    }
+                }else {
+                    if (me.getKey().equals("queryApiOverAllFinance")){
+                        apiFinanceList = (List<ApiFinance>) me.getValue();
+                    }
                 }
             }
             List<Map<String,Object>> listExport = new ArrayList<>();
