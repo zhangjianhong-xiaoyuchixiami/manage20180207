@@ -1,7 +1,5 @@
 package org.qydata.service;
 
-import org.qydata.dst.CustomerApiPartner;
-import org.qydata.entity.Api;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.Company;
@@ -18,7 +16,7 @@ public interface ApiService {
      * 查询产品
      * @return
      */
-    public List<Api> queryApi(Map<String,Object> map);
+    public Map<String,Object> queryApi(Map<String,Object> map);
 
     /**
      * 查询产品类型
@@ -43,7 +41,7 @@ public interface ApiService {
      * @param map
      * @return
      */
-    public List<CustomerApiPartner> queryApiByCompanyId(Map<String,Object> map);
+    public Map<String,Object> queryApiByCompanyId(Map<String,Object> map);
 
     /**
      * 查询所有公司

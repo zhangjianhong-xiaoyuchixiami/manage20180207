@@ -22,7 +22,7 @@
 
                     <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                        <form action="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail" class="customer_consume_detail" method="get">
+                        <form action="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail" class="form-bottom customer_consume_detail" method="get">
 
                             <div class="pull-left head-search-bottom head-search-display">
 

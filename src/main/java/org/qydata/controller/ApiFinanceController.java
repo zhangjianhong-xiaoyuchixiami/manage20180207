@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
+import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiVendor;
 import org.qydata.service.ApiFinanceService;
@@ -146,6 +147,7 @@ public class ApiFinanceController {
             map.put("partnerId",partnerId);
         }
         List<ApiFinance> apiFinanceList = null;
+        List<ApiFinance> apiFinanceListDead = null;
         Map<String,Object> mapResult = apiFinanceService.queryApiVendor(map);
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
         Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -163,18 +165,41 @@ public class ApiFinanceController {
             if (me.getKey().equals("getCountTotleApiVendor")){
                 model.addAttribute("consumeTotleAmount",me.getValue());
             }
+
+
+            if (me.getKey().equals("queryApiVendorDead")){
+                apiFinanceListDead = (List<ApiFinance>) me.getValue();
+            }
+            if (me.getKey().equals("getCountWeekApiVendorDead")){
+                model.addAttribute("weekTotleAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("getCountMonthApiVendorDead")){
+                model.addAttribute("monthTotleAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("getCountTotleApiVendorDead")){
+                model.addAttribute("consumeTotleAmountDead",me.getValue());
+            }
         }
         List<ApiFinance> apiFinances = ExportDataHander.processApiFinance(apiFinanceList);
+        List<ApiFinance> apiFinancesDead = ExportDataHander.processApiFinance(apiFinanceListDead);
         long totleBalance = 0L;
         for (int j=0; j<apiFinances.size(); j++){
             ApiFinance apiFinance = apiFinances.get(j);
             totleBalance = totleBalance + apiFinance.getBalance();
         }
+
+        long totleBalanceDead = 0L;
+        for (int j=0; j<apiFinancesDead.size(); j++){
+            ApiFinance apiFinance = apiFinancesDead.get(j);
+            totleBalanceDead = totleBalanceDead + apiFinance.getBalance();
+        }
         model.addAttribute("apiFinanceList",apiFinances);
+        model.addAttribute("apiFinanceListDead",apiFinancesDead);
         model.addAttribute("apiVendorList",apiFinanceService.queryApiVendorName(map));
         model.addAttribute("vendorId",vendorId);
         model.addAttribute("partnerId",partnerId);
         model.addAttribute("totleBalance",totleBalance);
+        model.addAttribute("totleBalanceDead",totleBalanceDead);
         model.addAttribute("year",CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));
@@ -219,11 +244,13 @@ public class ApiFinanceController {
         if (apiFinanceList != null){
             for (int i=0; i<apiFinanceList.size(); i++){
                 ApiFinance apiFinance = apiFinanceList.get(i);
-                if (apiFinance.getMobileOperator() != null){
-                    xList.add(apiFinance.getApiTypeName()+"——"+apiFinance.getMobileOperator().getName()+"@"+apiFinance.getVendorName());
+              /*  if (apiFinance.getMobileOperatorList() != null && apiFinance.getMobileOperatorList().size() >0){
+
+                    xList.add(apiFinance.getApiTypeName()+"--"+apiFinance.getMobileOperator().getName()+"@"+apiFinance.getVendorName());
                 }else {
                     xList.add(apiFinance.getApiTypeName()+"@"+apiFinance.getVendorName());
-                }
+                }*/
+                xList.add(apiFinance.getApiTypeName()+"@"+apiFinance.getVendorName());
                 if(apiFinance.getConsumeTotleAmount() != null){
                     yList.add(apiFinance.getConsumeTotleAmount()/100.0);
                 }else {
@@ -295,7 +322,8 @@ public class ApiFinanceController {
      */
     @RequestMapping("/find-all-vendor-record/charge")
     @ResponseBody
-    public String chargeApiVendorBalance(Integer vendorIdCharge,String amount,String remark,String chargeDate){
+    @SystemControllerLog(description="供应商充值")
+    public String chargeApiVendorBalance(Integer vendorIdCharge,String amount,String remark,String chargeDate,Model model){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if(RegexUtil.isNull(amount)){

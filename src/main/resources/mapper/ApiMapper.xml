@@ -96,6 +96,9 @@
                     GROUP BY apiTypeId
                 ) dd ON aa.apiTypeId=dd.apiTypeId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                aa.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
                 aa.vendorId=#{vendorId}
             </if>
@@ -135,6 +138,9 @@
         FROM qyfinance.bkvw_api_CompanyApi a
         LEFT JOIN qyfinance.bkvw_api_CustomerCompanyPartner b ON a.companyId=b.companyId
         <where>
+            <if test="enabled != null and enabled != '' or enabled == 0">
+                a.enabled=#{enabled}
+            </if>
             <if test="apiTypeId != null and apiTypeId != ''">
                 AND a.apiTypeId=#{apiTypeId}
             </if>

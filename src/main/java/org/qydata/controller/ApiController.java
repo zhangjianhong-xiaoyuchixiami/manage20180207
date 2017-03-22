@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by jonhn on 2017/2/28.
@@ -37,12 +39,22 @@ public class ApiController {
         if (partnerId != null){
             map.put("partnerId",partnerId);
         }
-        model.addAttribute("apiList",apiService.queryApi(map));
+        Map<String,Object> mapResult = apiService.queryApi(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if (me.getKey().equals("queryApi")){
+                model.addAttribute("apiList",me.getValue());
+            }
+            if (me.getKey().equals("queryApiDead")){
+                model.addAttribute("apiListDead",me.getValue());
+            }
+        }
         model.addAttribute("apiTypeList",apiService.queryApiType());
         model.addAttribute("apiVendorList",apiService.queryApiVendor());
         model.addAttribute("apiTypeId",apiTypeId);
         model.addAttribute("vendorId",vendorId);
-       /* return JSONArray.fromObject(apiService.queryApi(map)).toString();*/
         return "/api/apiproduct";
     }
 
@@ -65,7 +77,18 @@ public class ApiController {
         if (partnerId != null){
             map.put("partnerId",partnerId);
         }
-        model.addAttribute("companyApiList",apiService.queryApiByCompanyId(map));
+        Map<String,Object> mapResult = apiService.queryApiByCompanyId(map);
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if (me.getKey().equals("queryApiByCompanyId")){
+                model.addAttribute("companyApiList",me.getValue());
+            }
+            if (me.getKey().equals("queryApiByCompanyIdDead")){
+                model.addAttribute("companyApiListDead",me.getValue());
+            }
+        }
         model.addAttribute("apiTypeList",apiService.queryApiType());
         model.addAttribute("companyList",apiService.queryCompany());
         model.addAttribute("apiTypeId",apiTypeId);

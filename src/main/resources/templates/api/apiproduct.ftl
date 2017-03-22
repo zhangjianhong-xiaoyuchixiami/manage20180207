@@ -21,7 +21,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/api/api-message" class="api_product_record" method="get">
+                    <form action="/api/api-message" class="form-bottom api_product_record" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
@@ -81,66 +81,133 @@
 
                     </form>
 
-                <#--表格-->
-                    <div class="portlet box grey">
+                    <div class="tabbable tabbable-custom boxless">
 
-                    <#-- <div class="portlet-title">
+                        <ul class="nav nav-tabs">
 
-                         <div class="caption"><i class="icon-user"></i></div>
+                            <li class="active"><a href="#tab_1" data-toggle="tab">正在使用的产品</a></li>
 
-                     </div>-->
+                            <li><a class="" href="#tab_2" data-toggle="tab">已停用的产品</a></li>
 
-                        <div class="portlet-body no-more-tables">
-                            <div class="clearfix margin-bottom-20">
+                        </ul>
 
-                                <div class="pull-left table-top-bottom">
+                        <div class="tab-content">
 
-                                    <label class="control-label">注：用绿色标注的行是产品主通道</label>
+                            <div class="tab-pane active" id="tab_1">
+
+                            <#--正在使用的产品-->
+                                <div class="portlet box grey">
+
+                                    <div class="portlet-body no-more-tables">
+                                        <div class="clearfix margin-bottom-20">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">注：用绿色标注的行是产品主通道</label>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_product_1">
+                                                <thead>
+                                                <tr>
+                                                    <th>产品类型</th>
+                                                    <th>合作公司</th>
+                                                    <th>产品供应商</th>
+                                                    <th>价格（单位：元）</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <#if apiList??>
+                                                        <#list apiList as api>
+                                                            <#if api.proxyApi.minCost==api.cost>
+                                                            <tr class="success">
+                                                            <#else >
+                                                            <tr>
+                                                            </#if>
+
+                                                            <td data-title="产品类型">${api.apiType.name}
+                                                            <#if (api.mobileOperatorList?size>0)>--
+                                                                <#list api.mobileOperatorList as mobileOperator>
+                                                                ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
+                                                                </#list>
+                                                            </#if>
+                                                            <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                        </td>
+                                                            <td data-title="合作公司"><a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a></td>
+                                                            <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
+                                                            <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
+                                                        </tr>
+                                                        </#list>
+                                                    </#if>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover table-condensed" id="sample_product_1">
-                                    <thead>
-                                    <tr>
-                                        <th>产品类型</th>
-                                        <th>合作公司</th>
-                                        <th>产品供应商</th>
-                                        <th>价格（单位：元）</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <#if apiList??>
-                                            <#list apiList as api>
-                                                <#if api.proxyApi.minCost==api.cost>
-                                                <tr class="success">
-                                                <#else >
+                            <div class="tab-pane " id="tab_2">
+
+                            <#--已停用的产品-->
+                                <div class="portlet box grey">
+
+                                    <div class="portlet-body no-more-tables">
+                                        <div class="clearfix margin-bottom-20">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">注：用绿色标注的行是产品主通道</label>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_product_2">
+                                                <thead>
                                                 <tr>
-                                                </#if>
-                                                <#if api.status==0>
-                                                <td data-title="产品类型">
-                                                <#else >
-                                                <td data-title="产品类型" class="font-text-decoration">
-                                                </#if>
-                                                ${api.apiType.name}
-                                                    <#if (api.mobileOperatorList?size>0)>--
-                                                        <#list api.mobileOperatorList as mobileOperator>
-                                                           ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
+                                                    <th>产品类型</th>
+                                                    <th>合作公司</th>
+                                                    <th>产品供应商</th>
+                                                    <th>价格（单位：元）</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <#if apiListDead??>
+                                                        <#list apiListDead as api>
+                                                            <#if api.proxyApi.minCost==api.cost>
+                                                            <tr class="success">
+                                                            <#else >
+                                                            <tr>
+                                                            </#if>
+                                                            <td data-title="产品类型" class="font-text-decoration">${api.apiType.name}
+                                                            <#if (api.mobileOperatorList?size>0)>--
+                                                                <#list api.mobileOperatorList as mobileOperator>
+                                                                ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
+                                                                </#list>
+                                                            </#if>
+                                                            <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                        </td>
+                                                            <td data-title="合作公司"><a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a></td>
+                                                            <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
+                                                            <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
+                                                        </tr>
                                                         </#list>
                                                     </#if>
-                                                    <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
-                                                </td>
-                                                <td data-title="合作公司"><a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a></td>
-                                                <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
-                                                <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
-                                            </tr>
-                                            </#list>
-                                        </#if>
-                                    </tbody>
-                                </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+
                             </div>
+
                         </div>
 
                     </div>

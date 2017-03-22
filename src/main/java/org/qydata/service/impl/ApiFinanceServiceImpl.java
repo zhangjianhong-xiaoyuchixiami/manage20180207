@@ -69,12 +69,33 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
 
     @Override
     public Map<String,Object> queryApiVendor(Map<String, Object> map) {
+        Map<String,Object> mapValue = new HashMap<>();
+        Map<String,Object> mapValueDead = new HashMap<>();
         Map<String,Object> mapTran = new HashMap<>();
         try {
-            mapTran.put("queryApiVendor",apiFinanceMapper.queryApiVendor(map));
-            mapTran.put("getCountWeekApiVendor",apiFinanceMapper.getCountWeekApiVendor(map));
-            mapTran.put("getCountMonthApiVendor",apiFinanceMapper.getCountMonthApiVendor(map));
-            mapTran.put("getCountTotleApiVendor",apiFinanceMapper.getCountTotleApiVendor(map));
+            Set<Map.Entry<String,Object>> set = map.entrySet();
+            Iterator<Map.Entry<String,Object>> it = set.iterator();
+            while (it.hasNext()){
+                Map.Entry<String,Object> me = it.next();
+                if (me.getKey().equals("vendorId")){
+                    mapValue.put("vendorId",me.getValue());
+                    mapValueDead.put("vendorId",me.getValue());
+                }
+                if (me.getKey().equals("partnerId")){
+                    mapValue.put("partnerId",me.getValue());
+                    mapValueDead.put("partnerId",me.getValue());
+                }
+            }
+            mapValue.put("status",0);
+            mapTran.put("queryApiVendor",apiFinanceMapper.queryApiVendor(mapValue));
+            mapTran.put("getCountWeekApiVendor",apiFinanceMapper.getCountWeekApiVendor(mapValue));
+            mapTran.put("getCountMonthApiVendor",apiFinanceMapper.getCountMonthApiVendor(mapValue));
+            mapTran.put("getCountTotleApiVendor",apiFinanceMapper.getCountTotleApiVendor(mapValue));
+            mapValueDead.put("status",-1);
+            mapTran.put("queryApiVendorDead",apiFinanceMapper.queryApiVendor(mapValueDead));
+            mapTran.put("getCountWeekApiVendorDead",apiFinanceMapper.getCountWeekApiVendor(mapValueDead));
+            mapTran.put("getCountMonthApiVendorDead",apiFinanceMapper.getCountMonthApiVendor(mapValueDead));
+            mapTran.put("getCountTotleApiVendorDead",apiFinanceMapper.getCountTotleApiVendor(mapValueDead));
         } catch (Exception e) {
             e.printStackTrace();
         }

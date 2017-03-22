@@ -169,7 +169,7 @@
     <!--通过部门编号查找客户信息-->
     <select id="findAllCompanyByDeptId" parameterType="map" resultMap="CustomerCompany_Customer_Map">
         SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime customerCreateTime,
-        a.status,a.statusName,a.floor
+        a.status,a.statusName,
         c.companyName,c.partnerId,c.partnerName,c.timestamp companyCreateTime,d.companyBalance,d.floor,
         e.beginIpRaw,e.endIpRaw
         FROM qyfinance.bkvwCustomer a

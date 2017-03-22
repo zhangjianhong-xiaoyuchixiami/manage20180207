@@ -16,8 +16,8 @@ public class ApiType implements Serializable {
     private String name;
     private String description;
     private List<CustomerApiVendor> customerApiVendorList;
-    private MobileOperator mobileOperator;
-    private ApiVendor apiVendor;
+    private List<MobileOperator> mobileOperatorList;
+    private Api api;
 
     public Integer getId() {
         return id;
@@ -51,20 +51,20 @@ public class ApiType implements Serializable {
         this.customerApiVendorList = customerApiVendorList;
     }
 
-    public MobileOperator getMobileOperator() {
-        return mobileOperator;
+    public List<MobileOperator> getMobileOperatorList() {
+        return mobileOperatorList;
     }
 
-    public void setMobileOperator(MobileOperator mobileOperator) {
-        this.mobileOperator = mobileOperator;
+    public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
+        this.mobileOperatorList = mobileOperatorList;
     }
 
-    public ApiVendor getApiVendor() {
-        return apiVendor;
+    public Api getApi() {
+        return api;
     }
 
-    public void setApiVendor(ApiVendor apiVendor) {
-        this.apiVendor = apiVendor;
+    public void setApi(Api api) {
+        this.api = api;
     }
 
     public String toString(){

@@ -21,7 +21,7 @@
                 <#--搜索框-->
                     <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
 
-                        <form action="/company/find-all-company-customer-by-dept-id" method="get">
+                        <form action="/company/find-all-company-customer-by-dept-id" class="form-bottom" method="get">
 
                             <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 

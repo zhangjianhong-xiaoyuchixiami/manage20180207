@@ -21,7 +21,7 @@
                 <div class="span12">
 
 
-                    <form action="/partner/find-all-partner-financial-account" method="get">
+                    <form action="/partner/find-all-partner-financial-account" class="form-bottom" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
@@ -51,7 +51,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-user"></i></div>
+                            <div class="caption"></div>
 
                             <@d.tools idName="exportExcel" hrefName="/partner/find-all-partner-financial-account?export=true"></@d.tools>
 

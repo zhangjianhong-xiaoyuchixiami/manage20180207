@@ -24,7 +24,7 @@ public class ApiFinance implements Serializable {
     private Long consumeTotleAmount;
     private Integer partnerId;
     private String partnerName;
-    private MobileOperator mobileOperator;
+    private List<MobileOperator> mobileOperatorList;
     private List<ApiType> apiTypeList;
 
     public Integer getApiId() {
@@ -107,12 +107,12 @@ public class ApiFinance implements Serializable {
         this.consumeTotleAmount = consumeTotleAmount;
     }
 
-    public MobileOperator getMobileOperator() {
-        return mobileOperator;
+    public List<MobileOperator> getMobileOperatorList() {
+        return mobileOperatorList;
     }
 
-    public void setMobileOperator(MobileOperator mobileOperator) {
-        this.mobileOperator = mobileOperator;
+    public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
+        this.mobileOperatorList = mobileOperatorList;
     }
 
     public Integer getPartnerId() {

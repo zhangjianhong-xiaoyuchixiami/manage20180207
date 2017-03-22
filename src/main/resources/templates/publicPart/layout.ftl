@@ -259,7 +259,7 @@
 
                 </@shiro.hasAnyRoles>
 
-          <#--  &lt;#&ndash;日志管理&ndash;&gt;
+            <#--日志管理-->
                 <@shiro.hasAnyRoles name="backAdmin">
 
                     <li id="logManage">
@@ -289,7 +289,7 @@
 
                     </li>
 
-                </@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>
 
             <#--用户管理-->
                 <@shiro.hasAnyRoles name="backAdmin,technology">

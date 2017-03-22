@@ -1,7 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.dst.CustomerApiPartner;
-import org.qydata.entity.Api;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.Company;
@@ -10,8 +8,7 @@ import org.qydata.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jonhn on 2017/2/28.
@@ -22,13 +19,36 @@ public class ApiServiceImpl implements ApiService {
     @Autowired private ApiMapper apiMapper;
 
     @Override
-    public List<Api> queryApi(Map<String,Object> map) {
+    public Map<String,Object> queryApi(Map<String,Object> map) {
+        Map<String,Object> mapValue = new HashMap<>();
+        Map<String,Object> mapValueDead = new HashMap<>();
+        Map<String,Object> mapTran = new HashMap<>();
         try {
-            return apiMapper.queryApi(map);
+            Set<Map.Entry<String,Object>> set = map.entrySet();
+            Iterator<Map.Entry<String,Object>> it = set.iterator();
+            while (it.hasNext()){
+                Map.Entry<String,Object> me = it.next();
+                if (me.getKey().equals("apiTypeId")){
+                    mapValue.put("apiTypeId",me.getValue());
+                    mapValueDead.put("apiTypeId",me.getValue());
+                }
+                if (me.getKey().equals("vendorId")){
+                    mapValue.put("vendorId",me.getValue());
+                    mapValueDead.put("vendorId",me.getValue());
+                }
+                if (me.getKey().equals("partnerId")){
+                    mapValue.put("partnerId",me.getValue());
+                    mapValueDead.put("partnerId",me.getValue());
+                }
+            }
+            mapValue.put("status",0);
+            mapTran.put("queryApi",apiMapper.queryApi(mapValue));
+            mapValueDead.put("status",-1);
+            mapTran.put("queryApiDead",apiMapper.queryApi(mapValueDead));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return mapTran;
     }
 
     @Override
@@ -62,13 +82,36 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public List<CustomerApiPartner> queryApiByCompanyId(Map<String, Object> map) {
+    public Map<String,Object> queryApiByCompanyId(Map<String, Object> map) {
+        Map<String,Object> mapValue = new HashMap<>();
+        Map<String,Object> mapValueDead = new HashMap<>();
+        Map<String,Object> mapTran = new HashMap<>();
         try {
-            return apiMapper.queryApiByCompanyId(map);
+            Set<Map.Entry<String,Object>> set = map.entrySet();
+            Iterator<Map.Entry<String,Object>> it = set.iterator();
+            while (it.hasNext()){
+                Map.Entry<String,Object> me = it.next();
+                if (me.getKey().equals("apiTypeId")){
+                    mapValue.put("apiTypeId",me.getValue());
+                    mapValueDead.put("apiTypeId",me.getValue());
+                }
+                if (me.getKey().equals("companyId")){
+                    mapValue.put("companyId",me.getValue());
+                    mapValueDead.put("companyId",me.getValue());
+                }
+                if (me.getKey().equals("partnerId")){
+                    mapValue.put("partnerId",me.getValue());
+                    mapValueDead.put("partnerId",me.getValue());
+                }
+            }
+            mapValue.put("enabled",1);
+            mapTran.put("queryApiByCompanyId",apiMapper.queryApiByCompanyId(mapValue));
+            mapValueDead.put("enabled",0);
+            mapTran.put("queryApiByCompanyIdDead",apiMapper.queryApiByCompanyId(mapValueDead));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return mapTran;
     }
 
     @Override

@@ -22,7 +22,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance/find-all-customer/find-week-record-by-customer-id" class="week_record" method="get">
+                    <form action="/finance/find-all-customer/find-week-record-by-customer-id" class="form-bottom week_record" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 

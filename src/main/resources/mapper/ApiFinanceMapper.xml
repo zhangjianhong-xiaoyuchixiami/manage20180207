@@ -15,10 +15,10 @@
         <result column="weekTotleCost" property="weekTotleCost"/>
         <result column="monthTotleCost" property="monthTotleCost"/>
         <result column="consumeTotleAmount" property="consumeTotleAmount"/>
-        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+        <collection property="mobileOperatorList" ofType="org.qydata.entity.MobileOperator">
             <result column="mobileOperatorId" property="id"/>
             <result column="mobileOperatorName" property="name"/>
-        </association>
+        </collection>
     </resultMap>
 
 
@@ -35,12 +35,12 @@
         <collection property="apiTypeList" ofType="org.qydata.entity.ApiType">
             <result column="apiTypeId" property="id"/>
             <result column="apiTypeName" property="name"/>
-            <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
-                <result column="mobileOperatorName" property="name"/>
-            </association>
-            <association property="apiVendor" javaType="org.qydata.entity.ApiVendor">
+            <association property="api" javaType="org.qydata.entity.Api">
                 <result column="apiStatus" property="status"/>
             </association>
+            <collection property="mobileOperatorList" ofType="org.qydata.entity.MobileOperator">
+                <result column="mobileOperatorName" property="name"/>
+            </collection>
         </collection>
     </resultMap>
 
@@ -253,8 +253,9 @@
 
     <!--以APIVendor统计消费信息-->
     <select id="queryApiVendor" parameterType="map" resultMap="ApiFinance_ApiType_Map">
-        SELECT ee.vendorId,ee.vendorName,hh.status apiStatus,ee.weekTotleCost,ee.monthTotleCost,ee.consumeTotleAmount,
-        ff.balance,gg.partnerId,gg.partnerName,gg.status apiVendorStatus,hh.apiTypeId,ii.name mobileOperatorName,jj.name apiTypeName
+        SELECT ee.vendorId,ee.vendorName,ee.weekTotleCost,ee.monthTotleCost,ee.consumeTotleAmount,
+        ff.balance,gg.partnerId,gg.partnerName,gg.status apiVendorStatus,hh.apiTypeId,hh.apiTypeName,hh.mobileOperatorName,
+        hh.status apiStatus
         FROM (
             SELECT aa.vendorId,aa.vendorName,sum(bb.weekTotleCost) weekTotleCost,sum(cc.monthTotleCost) monthTotleCost,
             sum(dd.consumeTotleAmount) consumeTotleAmount
@@ -284,10 +285,11 @@
         ) ee
         LEFT JOIN qyfinance.bkvwApiVendorBalance ff ON ee.vendorId=ff.vendorId
         LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
-        LEFT JOIN qyfinance.bkvwApi hh ON ee.vendorId=hh.vendorId
-        LEFT JOIN qyfinance.bkvwApiMobileOperator ii ON hh.id=ii.apiId
-        LEFT JOIN qyfinance.bkvwApiType jj ON hh.apiTypeId=jj.id
+        LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner hh ON ee.vendorId=hh.vendorId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                gg.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
                 AND ee.vendorId=#{vendorId}
             </if>
@@ -295,6 +297,7 @@
                 AND gg.partnerId=#{partnerId}
             </if>
         </where>
+        ORDER BY hh.status DESC
     </select>
 
     <!--以APIVendor统计消费信息-周消费总额-->
@@ -314,6 +317,9 @@
         ) ee
         LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                gg.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
                 AND ee.vendorId=#{vendorId}
             </if>
@@ -340,6 +346,9 @@
         ) ee
         LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                gg.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
                 AND ee.vendorId=#{vendorId}
             </if>
@@ -366,6 +375,9 @@
         ) ee
         LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
         <where>
+            <if test="status != null and status != '' or status == 0">
+                gg.status=#{status}
+            </if>
             <if test="vendorId != null and vendorId != ''">
                 AND ee.vendorId=#{vendorId}
             </if>

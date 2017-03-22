@@ -22,7 +22,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance/find-all-customer/find-month-record-by-customer-id" class="month_record" method="get">
+                    <form action="/finance/find-all-customer/find-month-record-by-customer-id" class="form-bottom month_record" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 

@@ -192,7 +192,7 @@ public class CustomerFinanceExcelAop {
                 mapValue.put("reasonName", customerBalanceLog.getCustomerBalanceModifyReason().getName());
                 listExport.add(mapValue);
             }
-            String fileName = args[2] +"充值记录";
+            String fileName = args[2] + "充值记录";
             String columnNames[]= {"金额（单位：元）","时间","理由"};//列名
             String keys[] = {"amount","createTime","reasonName"};//map中的key
             ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
