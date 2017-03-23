@@ -134,7 +134,7 @@
 
                                     </div>
 
-                                    <div class="portlet-body no-more-tables">
+                                    <div class="portlet-body">
 
                                         <div class="clearfix margin-bottom-20">
 
@@ -301,7 +301,7 @@
 
                                     </div>
 
-                                    <div class="portlet-body no-more-tables">
+                                    <div class="portlet-body">
 
                                         <div class="clearfix margin-bottom-20">
 

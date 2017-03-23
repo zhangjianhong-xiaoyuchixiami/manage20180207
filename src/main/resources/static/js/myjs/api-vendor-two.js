@@ -11,8 +11,8 @@ var ApiVendorRecordTwo = function () {
             function fnFormatDetailsVendor ( oTable, nTr )
             {
                 var aData = oTable.fnGetData( nTr );
-                var sOut = '<table>';
-                sOut += '<tr><th style="width: 80px;">供应类型:</th><td>'+aData[7]+'</td></tr>';
+                var sOut = '<table style="width: 100%">';
+                sOut += '<tr><th style="width: 8%;">供应类型:</th><td>'+aData[7]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }

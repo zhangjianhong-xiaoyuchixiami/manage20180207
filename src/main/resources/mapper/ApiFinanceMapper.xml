@@ -248,7 +248,7 @@
     <!--ApiVendor充值充值记录-->
     <insert id="insertApiVendorBalanceLog" parameterType="org.qydata.entity.ApiVendorBalanceLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO qyfinance.ApiVendorBalanceLog(vendorId,amount,reasonId,remark,createTime)
-        VALUES(#{vendorId},#{amount},1,#{remark},#{createTime})
+        VALUES(#{vendorId},#{amoun},1,#{remark},#{createTime})
     </insert>
 
     <!--以APIVendor统计消费信息-->

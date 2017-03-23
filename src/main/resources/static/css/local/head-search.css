@@ -7,3 +7,11 @@
 .table-td-none{display: none;}
 .font-text-decoration{text-decoration:line-through;}
 .form-bottom{margin-bottom: -20px;}
+.table-layout-fixed{
+    table-layout: fixed;
+}
+.table-td-layout-fixed{
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

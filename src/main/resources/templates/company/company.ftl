@@ -87,7 +87,7 @@
                            <div class="caption"><i class="icon-user"></i></div>
                        </div>-->
 
-                        <div class="portlet-body no-more-tables">
+                        <div class="portlet-body">
 
                         <#--<div class="clearfix margin-bottom-5">
                             <div class="btn-group">

@@ -10,7 +10,7 @@ var Company = function () {
 
             function fnFormatDetails ( oTable, nTr ) {
                 var aData = oTable.fnGetData( nTr );
-                var sOut = '<table>';
+                var sOut = '<table style="width: 100%">';
                 sOut += '<tr>' +
                     '<th>账号</th>' +
                     '<th>账号类型</th>' +

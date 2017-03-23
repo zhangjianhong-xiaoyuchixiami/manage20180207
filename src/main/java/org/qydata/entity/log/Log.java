@@ -1,37 +1,46 @@
 package org.qydata.entity.log;
 
+import org.qydata.entity.User;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
  
 
 public class Log implements Serializable {
 
-    private String id;           //日志主键
-    private String type;            //日志类型
+    private Integer id;           //日志主键
+    private Integer typeId;            //日志类型
     private String title;           //日志标题
     private String remoteAddr;          //请求地址(Ip)
     private String requestUri;          //URI
     private String method;          //请求方式
     private String params;          //提交参数
+    private String operationBeforData; //操作前数据
+    private String operationAfterData; //操作后数据
+    private String error;        //错误
     private Date beginTime;           //开始时间
     private Date endTime;         //结束时间
     private Integer userId;          //用户邮箱
+    private Timestamp createTime;
+    private User user;
+    private LogType logType;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public Integer getTypeId() {
+        return typeId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
     public String getTitle() {
@@ -74,6 +83,30 @@ public class Log implements Serializable {
         this.params = params;
     }
 
+    public String getOperationBeforData() {
+        return operationBeforData;
+    }
+
+    public void setOperationBeforData(String operationBeforData) {
+        this.operationBeforData = operationBeforData;
+    }
+
+    public String getOperationAfterData() {
+        return operationAfterData;
+    }
+
+    public void setOperationAfterData(String operationAfterData) {
+        this.operationAfterData = operationAfterData;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public Date getBeginTime() {
         return beginTime;
     }
@@ -96,5 +129,29 @@ public class Log implements Serializable {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LogType getLogType() {
+        return logType;
+    }
+
+    public void setLogType(LogType logType) {
+        this.logType = logType;
     }
 }

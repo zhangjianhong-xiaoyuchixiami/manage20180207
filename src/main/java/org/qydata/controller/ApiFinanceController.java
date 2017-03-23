@@ -323,7 +323,7 @@ public class ApiFinanceController {
     @RequestMapping("/find-all-vendor-record/charge")
     @ResponseBody
     @SystemControllerLog(description="供应商充值")
-    public String chargeApiVendorBalance(Integer vendorIdCharge,String amount,String remark,String chargeDate,Model model){
+    public String chargeApiVendorBalance(Integer vendorIdCharge,String amount,String remark,String chargeDate,Model model)throws Exception{
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if(RegexUtil.isNull(amount)){
@@ -340,6 +340,7 @@ public class ApiFinanceController {
             }
         }
         boolean flag = apiFinanceService.apiVendorChargeLog(vendorIdCharge, Long.parseLong(amount), remark, chargeDate);
+
         if (flag){
             map.put("successMessage","恭喜你，操作成功！");
         }else {

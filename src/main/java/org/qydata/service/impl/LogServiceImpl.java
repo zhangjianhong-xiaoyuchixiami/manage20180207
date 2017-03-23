@@ -6,6 +6,9 @@ import org.qydata.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by jonhn on 2017/3/22.
  */
@@ -21,6 +24,11 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public boolean updateLog(Log log) {
-        return false;
+        return logMapper.updateLog(log);
+    }
+
+    @Override
+    public List<Log> queryLog(Map<String, Object> map) {
+        return logMapper.queryLog(map);
     }
 }

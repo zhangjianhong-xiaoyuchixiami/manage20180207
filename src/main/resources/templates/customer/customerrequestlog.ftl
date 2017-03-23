@@ -51,7 +51,7 @@
 
                     <div class="portlet box grey">
 
-                        <div class="portlet-body no-more-tables">
+                        <div class="portlet-body">
 
                             <table class="table table-striped table-hover table-bordered table-condensed" id="customerRequestLogSample_1">
                                 <thead>

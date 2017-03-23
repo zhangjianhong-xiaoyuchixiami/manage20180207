@@ -4,11 +4,46 @@
 <mapper namespace="org.qydata.mapper.LogMapper">
 
 
+    <resultMap id="Log_Map" type="org.qydata.entity.log.Log">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="typeId" property="typeId"/>
+        <result column="remoteAddr" property="remoteAddr"/>
+        <result column="requestUri" property="requestUri"/>
+        <result column="method" property="method"/>
+        <result column="params" property="params"/>
+        <result column="operationBeforData" property="operationBeforData"/>
+        <result column="operationAfterData" property="operationAfterData"/>
+        <result column="error" property="error"/>
+        <result column="beginTime" property="beginTime"/>
+        <result column="endTime" property="endTime"/>
+        <result column="userId" property="userId"/>
+        <result column="createTime" property="createTime"/>
+        <association property="logType" javaType="org.qydata.entity.log.LogType">
+            <result column="typeName" property="name"/>
+        </association>
+        <association property="user" javaType="org.qydata.entity.User">
+            <result column="email" property="email"/>
+        </association>
+    </resultMap>
 
+    <!--新增日志-->
     <insert id="createLog" parameterType="org.qydata.entity.log.Log" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qyfinance.Log(type,title,remoteAddr,requestUri,method,params,beginTime,endTime,userId,createTime)
-        VALUES(#{type},#{title},#{remoteAddr},#{requestUri},#{method},#{params},#{beginTime},#{endTime},#{userId},sysdate())
+        INSERT INTO qyfinance.Log(typeId,title,remoteAddr,requestUri,method,params,operationBeforData,operationAfterData,error,beginTime,endTime,userId,createTime)
+        VALUES(#{typeId},#{title},#{remoteAddr},#{requestUri},#{method},#{params},#{operationBeforData},#{operationAfterData},#{error},#{beginTime},#{endTime},#{userId},now())
     </insert>
+
+
+    <update id="updateLog" parameterType="org.qydata.entity.log.Log">
+        UPDATE qyfinance.Log SET error=#{error},typeId=#{typeId} WHERE id=#{id}
+    </update>
+
+    <!--查询日志-->
+    <select id="queryLog" parameterType="map" resultMap="Log_Map">
+        SELECT a.id,a.title,a.typeId,a.remoteAddr,a.requestUri,a.method,a.params,a.operationBeforData,a.operationAfterData,
+        a.error,a.beginTime,a.endTime,a.userId,a.typeName,a.email,a.createTime
+        FROM qyfinance.bkvwLog a
+    </select>
 
 </mapper>
 

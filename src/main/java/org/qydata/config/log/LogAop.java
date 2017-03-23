@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -16,11 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -36,6 +37,8 @@ public class LogAop {
 
     private static final ThreadLocal<Date> beginTimeThreadLocal = new NamedThreadLocal<Date>("ThreadLocal beginTime");
 
+    private static final ThreadLocal<Log> logThreadLocal = new NamedThreadLocal<Log>("ThreadLocal log");
+
     @Autowired private HttpServletRequest request;
 
     @Autowired private UserService userService;
@@ -48,12 +51,10 @@ public class LogAop {
      * @throws InterruptedException
      */
     @Before("execution(* org.qydata.controller.ApiFinanceController.chargeApiVendorBalance(..))")
+    @Order(value = 1)
     public void doBefore(JoinPoint joinPoint) throws InterruptedException{
         Date beginTime=new Date();
         beginTimeThreadLocal.set(beginTime);//线程绑定变量（该数据只有当前请求的线程可见）
-        if (logger.isDebugEnabled()){//这里日志级别为debug
-            logger.debug("开始计时: {}  URI: {}", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(beginTime), request.getRequestURI());
-        }
     }
 
     /**
@@ -62,49 +63,57 @@ public class LogAop {
      */
     @SuppressWarnings("unchecked")
     @After("execution(* org.qydata.controller.ApiFinanceController.chargeApiVendorBalance(..))")
+    @Order(value = 1)
     public void doAfter(JoinPoint joinPoint) {
-        User user = userService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
-        if(user !=null){
-            String title="";
-            String type="info";                       //日志类型(info:入库,error:错误)
-            String remoteAddr=request.getRemoteAddr();//请求的IP
-            String requestUri=request.getRequestURI();//请求的Uri
-            String method=request.getMethod();        //请求的方法类型(post/get)
-            Map<String,String[]> params=request.getParameterMap(); //请求提交的参数
-            System.out.println(params.toString());
-            try {
-                title=getControllerMethodDescription2(joinPoint);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            // 打印JVM信息。
-            long beginTime = beginTimeThreadLocal.get().getTime();//得到线程绑定的局部变量（开始时间）
-            long endTime = System.currentTimeMillis();  //2、结束时间
-            if (logger.isDebugEnabled()){
-                logger.debug("计时结束：{}  URI: {}  耗时： {}   最大内存: {}m  已分配内存: {}m  已分配内存中的剩余空间: {}m  最大可用内存: {}m",
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(endTime),
-                        request.getRequestURI(),
-                        Runtime.getRuntime().maxMemory()/1024/1024,
-                        Runtime.getRuntime().totalMemory()/1024/1024,
-                        Runtime.getRuntime().freeMemory()/1024/1024,
-                        (Runtime.getRuntime().maxMemory()-Runtime.getRuntime().totalMemory()+Runtime.getRuntime().freeMemory())/1024/1024);
-            }
+        try {
+            User user = userService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
+            if(user !=null){
+                Integer typeId=1;                       //日志类型(info:入库,error:错误)
+                String remoteAddr=request.getRemoteAddr();//请求的IP
+                String requestUri=request.getRequestURI();//请求的Uri
+                String method=request.getMethod();        //请求的方法类型(post/get)
+                Map<String,String[]> params=request.getParameterMap(); //请求提交的参数
+                String operationBeforData = "";
+                String operationAfterData = "";
+                String error = "";
+                long beginTime = beginTimeThreadLocal.get().getTime();//得到线程绑定的局部变量（开始时间）
+                long endTime = System.currentTimeMillis();  //2、结束时间
 
-            Log log=new Log();
-            log.setTitle(title);
-            log.setType(type);
-            log.setRemoteAddr(remoteAddr);
-            log.setRequestUri(requestUri);
-            log.setMethod(method);
-            log.setParams("111");
-            log.setUserId(user.getId());
-            Date operateDate=beginTimeThreadLocal.get();
-            log.setBeginTime(operateDate);
-            log.setEndTime(new Date(endTime));
-            new SaveLogThread(log, logService).start();
+                Log log=new Log();
+                log.setTitle(getControllerMethodDescription2(joinPoint));
+                log.setTypeId(typeId);
+                log.setRemoteAddr(remoteAddr);
+                log.setRequestUri(requestUri);
+                log.setMethod(method);
+                log.setParams("111");
+                log.setOperationBeforData(operationBeforData);
+                log.setOperationAfterData(operationAfterData);
+                log.setError(error);
+                log.setUserId(user.getId());
+                log.setBeginTime(new Date((beginTime)));
+                log.setEndTime(new Date(endTime));
+                new SaveLogThread(log, logService).start();
+                logThreadLocal.set(log);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
+    /**
+     *  异常通知 记录操作报错日志
+     * @param joinPoint
+     * @param e
+     */
+    @AfterThrowing(value = "execution(* org.qydata.controller.ApiFinanceController.chargeApiVendorBalance(..))", throwing = "e")
+    @Order(value = 10)
+    public  void doAfterThrowing(JoinPoint joinPoint, Exception  e) {
+        System.out.println("*********************************异常*************************************");
+        Log log = logThreadLocal.get();
+        log.setTypeId(2);
+        log.setError(e.toString());
+        new UpdateLogThread(log, logService).start();
+    }
 
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
