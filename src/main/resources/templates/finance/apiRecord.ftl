@@ -139,28 +139,62 @@
 
                                     <div class="portlet-body no-more-tables">
 
-                                        <div class="clearfix margin-bottom-20">
+                                        <div class="clearfix margin-bottom-5">
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：<#if weekTotleAmount??><span>${(weekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label" style="width: 115px;">总产品：</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：<#if monthTotleAmount??><span>${(monthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${(weekTotleAmount!0+weekTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${(monthTotleAmount!0+monthTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
-                                        <#--表字段总额-->
-                                            <div class="pull-right table-top-bottom">
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">消费总额&yen;：${(consumeTotleAmount!0+consumeTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="clearfix margin-bottom-5">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label" style="width: 115px;">正在使用的产品：</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">周消费总额&yen;：${(weekTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">月消费总额&yen;：${(monthTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">消费总额&yen;：${(consumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                        <#--总消费-->
+                                            <div class="pull-left table-top-bottom">
 
                                                 <label class="control-label">
 
@@ -194,6 +228,7 @@
                                             </div>
 
                                         </div>
+
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover table-condensed" id="sample_1">
                                                 <thead>
@@ -210,23 +245,23 @@
                                                 <tbody>
                                                     <#if apiFinanceList??>
                                                         <#list apiFinanceList as apiFinance>
-                                                            <tr>
-                                                                <td data-title="产品类型">${apiFinance.apiTypeName}
-                                                                    <#if (apiFinance.mobileOperatorList?size>0)>--
-                                                                        <#list apiFinance.mobileOperatorList as mobileOperator>
-                                                                        ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
-                                                                        </#list>
-                                                                    </#if>
-                                                                </td>
-                                                                <td data-title="产品供应商">${apiFinance.vendorName}</td>
-                                                                <td data-title="产品名称">${apiFinance.apiName}</td>
-                                                                <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
-                                                                <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
-                                                                <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
-                                                                <td data-title="操作" style="text-align: center;">
-                                                                    <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
-                                                                </td>
-                                                            </tr>
+                                                        <tr>
+                                                            <td data-title="产品类型">${apiFinance.apiTypeName}
+                                                                <#if (apiFinance.mobileOperatorList?size>0)>--
+                                                                    <#list apiFinance.mobileOperatorList as mobileOperator>
+                                                                    ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
+                                                                    </#list>
+                                                                </#if>
+                                                            </td>
+                                                            <td data-title="产品供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName!'无'}</a></td>
+                                                            <td data-title="产品名称">${apiFinance.apiName}</td>
+                                                            <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                                            <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
+                                                            <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
+                                                            <td data-title="操作" style="text-align: center;">
+                                                                <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
+                                                            </td>
+                                                        </tr>
                                                         </#list>
                                                     </#if>
                                                 </tbody>
@@ -283,27 +318,61 @@
 
                                     <div class="portlet-body no-more-tables">
 
-                                        <div class="clearfix margin-bottom-20">
+                                        <div class="clearfix margin-bottom-5">
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：<#if weekTotleAmountDead??><span>${(weekTotleAmountDead/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label" style="width: 105px;">总产品：</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：<#if monthTotleAmountDead??><span>${(monthTotleAmountDead/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${(weekTotleAmount!0+weekTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：<#if consumeTotleAmountDead??><span>${(consumeTotleAmountDead/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${(monthTotleAmount!0+monthTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">消费总额&yen;：${(consumeTotleAmount!0+consumeTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="clearfix margin-bottom-5">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label" style="width: 105px;">已停用的产品：</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">周消费总额&yen;：${(weekTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">月消费总额&yen;：${(monthTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">消费总额&yen;：${(consumeTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                         </div>
+
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
                                                 <thead>
@@ -320,23 +389,23 @@
                                                 <tbody>
                                                     <#if apiFinanceListDead??>
                                                         <#list apiFinanceListDead as apiFinance>
-                                                            <tr>
-                                                                <td data-title="产品类型" class="font-text-decoration">${apiFinance.apiTypeName}
-                                                                    <#if (apiFinance.mobileOperatorList?size>0)>--
-                                                                        <#list apiFinance.mobileOperatorList as mobileOperator>
-                                                                        ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
-                                                                        </#list>
-                                                                    </#if>
-                                                                </td>
-                                                                <td data-title="产品供应商">${apiFinance.vendorName}</td>
-                                                                <td data-title="产品名称">${apiFinance.apiName}</td>
-                                                                <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
-                                                                <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
-                                                                <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
-                                                                <td data-title="操作" style="text-align: center;">
-                                                                    <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
-                                                                </td>
-                                                            </tr>
+                                                        <tr>
+                                                            <td data-title="产品类型" class="font-text-decoration">${apiFinance.apiTypeName}
+                                                                <#if (apiFinance.mobileOperatorList?size>0)>--
+                                                                    <#list apiFinance.mobileOperatorList as mobileOperator>
+                                                                    ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
+                                                                    </#list>
+                                                                </#if>
+                                                            </td>
+                                                            <td data-title="产品供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName!'无'}</a></td>
+                                                            <td data-title="产品名称">${apiFinance.apiName}</td>
+                                                            <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
+                                                            <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
+                                                            <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
+                                                            <td data-title="操作" style="text-align: center;">
+                                                                <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
+                                                            </td>
+                                                        </tr>
                                                         </#list>
                                                     </#if>
                                                 </tbody>

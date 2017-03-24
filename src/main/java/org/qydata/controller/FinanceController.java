@@ -11,6 +11,7 @@ import org.qydata.entity.User;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.UserService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.ExportDataHander;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +54,56 @@ public class FinanceController {
         if(endDate != null && endDate != ""){
             map.put("endDate", endDate+" "+"23:59:59");
         }
-        model.addAttribute("customerFinanceList",customerFinanceService.queryCompanyCustomerOverAllFinance(map));
+        Map<String,Object> mapResult = ExportDataHander.processCompanyFinanceData(customerFinanceService.queryCompanyCustomerOverAllFinance(map));
+        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while (it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if (me.getKey().equals("weekChargeAmount")){
+                model.addAttribute("weekChargeAmount",me.getValue());
+            }
+            if (me.getKey().equals("weekConsumeAmount")){
+                model.addAttribute("weekConsumeAmount",me.getValue());
+            }
+            if (me.getKey().equals("monthChargeAmount")){
+                model.addAttribute("monthChargeAmount",me.getValue());
+            }
+            if (me.getKey().equals("monthConsumeAmount")){
+                model.addAttribute("monthConsumeAmount",me.getValue());
+            }
+            if (me.getKey().equals("totleChargeAmount")){
+                model.addAttribute("totleChargeAmount",me.getValue());
+            }
+            if (me.getKey().equals("totleConsumeAmount")){
+                model.addAttribute("totleConsumeAmount",me.getValue());
+            }
+            if (me.getKey().equals("customerFinanceList")){
+                model.addAttribute("customerFinanceList",me.getValue());
+            }
+
+            if (me.getKey().equals("weekChargeAmountDead")){
+                model.addAttribute("weekChargeAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("weekConsumeAmountDead")){
+                model.addAttribute("weekConsumeAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("monthChargeAmountDead")){
+                model.addAttribute("monthChargeAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("monthConsumeAmountDead")){
+                model.addAttribute("monthConsumeAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("totleChargeAmountDead")){
+                model.addAttribute("totleChargeAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("totleConsumeAmountDead")){
+                model.addAttribute("totleConsumeAmountDead",me.getValue());
+            }
+            if (me.getKey().equals("customerFinanceListDead")){
+                model.addAttribute("customerFinanceListDead",me.getValue());
+            }
+
+        }
         model.addAttribute("content",content);
         model.addAttribute("partnerId",partnerId);
         model.addAttribute("beginDate",beginDate);

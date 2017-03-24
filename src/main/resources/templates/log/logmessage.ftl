@@ -110,7 +110,11 @@
                                     <tbody>
                                         <#if logList??>
                                             <#list  logList as log>
-                                            <tr>
+                                                <#if log.typeId==2>
+                                                <tr class="danger">
+                                                <#else >
+                                                <tr>
+                                                </#if>
                                                 <td class="table-td-layout-fixed">${log.title!'无'}</td>
                                                 <td class="table-td-layout-fixed">${(log.logType.name)!'无'}</td>
                                                 <td class="table-td-layout-fixed">${log.remoteAddr!'无'}</td>

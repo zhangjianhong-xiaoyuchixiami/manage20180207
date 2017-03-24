@@ -133,8 +133,8 @@
 
     <!--以客户纬度查询产品-->
     <select id="queryApiByCompanyId" parameterType="map" resultType="org.qydata.dst.CustomerApiPartner">
-        SELECT a.id,a.companyId,b.companyName,a.apiTypeId,a.apiTypeName,a.subTypeId,a.subTypeName,a.price,
-        a.enabled,b.partnerId,b.partnerName
+        SELECT a.id,a.companyId,a.apiTypeId,a.apiTypeName,a.subTypeId,a.subTypeName,a.price,a.enabled,
+        b.partnerId,b.partnerName,b.companyName,b.companyStatus
         FROM qyfinance.bkvw_api_CompanyApi a
         LEFT JOIN qyfinance.bkvw_api_CustomerCompanyPartner b ON a.companyId=b.companyId
         <where>

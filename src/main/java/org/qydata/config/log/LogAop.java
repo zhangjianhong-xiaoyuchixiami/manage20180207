@@ -73,9 +73,9 @@ public class LogAop {
                 String requestUri=request.getRequestURI();//请求的Uri
                 String method=request.getMethod();        //请求的方法类型(post/get)
                 Map<String,String[]> params=request.getParameterMap(); //请求提交的参数
-                String operationBeforData = "";
-                String operationAfterData = "";
-                String error = "";
+                String operationBeforData = null;
+                String operationAfterData = null;
+                String error = null;
                 long beginTime = beginTimeThreadLocal.get().getTime();//得到线程绑定的局部变量（开始时间）
                 long endTime = System.currentTimeMillis();  //2、结束时间
 

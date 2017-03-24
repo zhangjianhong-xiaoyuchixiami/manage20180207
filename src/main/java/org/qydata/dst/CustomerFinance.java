@@ -19,6 +19,7 @@ public class CustomerFinance implements Serializable {
     private Integer partnerId;
     private String partnerName;
     private Long floor;
+    private Integer companyStatus;
     private Long chargeWeekTotleAmount;
     private Long chargeMonthTotleAmount;
     private Long consumeWeekTotleAmount;
@@ -137,6 +138,14 @@ public class CustomerFinance implements Serializable {
 
     public void setFloor(Long floor) {
         this.floor = floor;
+    }
+
+    public Integer getCompanyStatus() {
+        return companyStatus;
+    }
+
+    public void setCompanyStatus(Integer companyStatus) {
+        this.companyStatus = companyStatus;
     }
 
     @Override

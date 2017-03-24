@@ -340,7 +340,7 @@ public class ApiFinanceController {
             }
         }
         boolean flag = apiFinanceService.apiVendorChargeLog(vendorIdCharge, Long.parseLong(amount), remark, chargeDate);
-
+        System.out.println(flag);
         if (flag){
             map.put("successMessage","恭喜你，操作成功！");
         }else {
@@ -348,6 +348,5 @@ public class ApiFinanceController {
         }
         return gson.toJson(map);
     }
-
 
 }

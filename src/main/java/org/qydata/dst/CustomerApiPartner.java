@@ -18,6 +18,7 @@ public class CustomerApiPartner implements Serializable {
     private Integer partnerId;
     private String partnerName;
     private Integer enabled;
+    private Integer companyStatus;
 
     public Integer getId() {
         return id;
@@ -105,5 +106,13 @@ public class CustomerApiPartner implements Serializable {
 
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
+    }
+
+    public Integer getCompanyStatus() {
+        return companyStatus;
+    }
+
+    public void setCompanyStatus(Integer companyStatus) {
+        this.companyStatus = companyStatus;
     }
 }

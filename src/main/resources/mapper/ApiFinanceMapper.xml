@@ -105,7 +105,7 @@
     </select>
 
     <!--Api财务总览-周消费总额-->
-    <select id="getCountApiWeekFinance" parameterType="map" resultType="Integer">
+    <select id="getCountApiWeekFinance" parameterType="map" resultType="int">
         SELECT sum(bb.weekTotleCost)
         FROM qyfinance.bkvwApi aa
         LEFT JOIN
@@ -129,7 +129,7 @@
     </select>
 
     <!--Api财务总览-月消费总额-->
-    <select id="getCountApiMonthFinance" parameterType="map" resultType="Integer">
+    <select id="getCountApiMonthFinance" parameterType="map" resultType="int">
         SELECT sum(cc.monthTotleCost)
         FROM qyfinance.bkvwApi aa
         LEFT JOIN
@@ -153,7 +153,7 @@
     </select>
 
     <!--Api财务总览-消费总额-->
-    <select id="getCountApiTotleFinance" parameterType="map" resultType="Integer">
+    <select id="getCountApiTotleFinance" parameterType="map" resultType="int">
         SELECT sum(dd.consumeTotleAmount)
         FROM qyfinance.bkvwApi aa
         LEFT JOIN

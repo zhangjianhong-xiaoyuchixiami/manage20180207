@@ -7,6 +7,7 @@
         <result column="id" property="id"/>
         <result column="companyId" property="companyId"/>
         <result column="companyName" property="companyName"/>
+        <result column="companyStatus" property="companyStatus"/>
         <result column="balance" property="balance"/>
         <result column="partnerId" property="partnerId"/>
         <result column="partnerName" property="partnerName"/>
@@ -102,18 +103,19 @@
     <!--查询客户的财务总览通过部门编号-->
     <select id="queryCompanyCustomerOverAllFinanceByDept" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT aa.id,aa.balance,aa.companyId,aa.companyName,aa.partnerId,aa.partnerName,
-        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.enabled,aa.floor,aa.sumAmount,aa.countTotle,
+        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.enabled,aa.floor,aa.companyStatus,aa.sumAmount,aa.countTotle,
         aa.countSuccess,aa.stidSumAmount,bb.chargeWeekTotleAmount,cc.chargeMonthTotleAmount,
         dd.consumeWeekTotleAmount,ee.consumeMonthTotleAmount,ff.chargeTotleAmount,gg.consumeTotleAmount
         FROM
         (
         SELECT yy.id,yy.balance,yy.companyId,yy.companyName,yy.partnerId,yy.partnerName,yy.floor,yy.apiTypeId,
-        yy.apiTypeName,yy.subTypeId,yy.subTypeName,yy.price,yy.enabled,ifnull(ww.sumAmount,xx.sumAmount) sumAmount,
+        yy.apiTypeName,yy.subTypeId,yy.subTypeName,yy.price,yy.enabled,yy.companyStatus,ifnull(ww.sumAmount,xx.sumAmount) sumAmount,
         ifnull(ww.countTotle,xx.countTotle) countTotle,ifnull(ww.countSuccess,xx.countSuccess) countSuccess,
         ww.sumAmount stidSumAmount
         FROM
         (
-            SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,b.name partnerName,
+            SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,a.companyStatus,
+            b.name partnerName,
             c.apiTypeId,c.apiTypeName,c.subTypeId,c.subTypeName,c.price,c.enabled
             FROM qyfinance.bkvwCustomer a LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
             LEFT JOIN qyfinance.bkvwCompanyApi c ON a.companyId=c.companyId
@@ -216,18 +218,19 @@
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT aa.id,aa.balance,aa.companyId,aa.companyName,aa.partnerId,aa.partnerName,
-        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.enabled,aa.floor,aa.sumAmount,aa.countTotle,
+        aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.enabled,aa.floor,aa.companyStatus,aa.sumAmount,aa.countTotle,
         aa.countSuccess,aa.stidSumAmount,bb.chargeWeekTotleAmount,cc.chargeMonthTotleAmount,
         dd.consumeWeekTotleAmount,ee.consumeMonthTotleAmount,ff.chargeTotleAmount,gg.consumeTotleAmount
         FROM
         (
         SELECT yy.id,yy.balance,yy.companyId,yy.companyName,yy.partnerId,yy.partnerName,yy.floor,yy.apiTypeId,
-        yy.apiTypeName,yy.subTypeId,yy.subTypeName,yy.price,yy.enabled,ifnull(ww.sumAmount,xx.sumAmount) sumAmount,
+        yy.apiTypeName,yy.subTypeId,yy.subTypeName,yy.price,yy.enabled,yy.companyStatus,ifnull(ww.sumAmount,xx.sumAmount) sumAmount,
         ifnull(ww.countTotle,xx.countTotle) countTotle,ifnull(ww.countSuccess,xx.countSuccess) countSuccess,
         ww.sumAmount stidSumAmount
         FROM
         (
-            SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,b.name partnerName,
+            SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,a.companyStatus,
+            b.name partnerName,
             c.apiTypeId,c.apiTypeName,c.subTypeId,c.subTypeName,c.price,c.enabled
             FROM qyfinance.bkvwCustomer a
             LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
