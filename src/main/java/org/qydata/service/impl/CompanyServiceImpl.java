@@ -38,16 +38,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<CustomerCompanyPartner> findAllCompanyByDeptId(Map<String, Object> map) {
-        try {
-            return companyMapper.findAllCompanyByDeptId(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
     public boolean addCompanyCustomer(String companyName,String authId,Integer partnerId,Integer deptId) {
         try {
             Company company = new Company();

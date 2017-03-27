@@ -39,6 +39,10 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                     mapValueDead.put("apiTypeId",me.getValue());
                 }
             }
+            mapTran.put("getAllCountApiWeekFinance",apiFinanceMapper.getCountApiWeekFinance(mapValue));
+            mapTran.put("getAllCountApiMonthFinance",apiFinanceMapper.getCountApiMonthFinance(mapValue));
+            mapTran.put("getAllCountApiTotleFinance",apiFinanceMapper.getCountApiTotleFinance(mapValue));
+
             mapValue.put("status",0);
             mapTran.put("queryApiOverAllFinance",apiFinanceMapper.queryApiOverAllFinance(mapValue));
             mapTran.put("getCountApiWeekFinance",apiFinanceMapper.getCountApiWeekFinance(mapValue));
@@ -86,6 +90,9 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                     mapValueDead.put("partnerId",me.getValue());
                 }
             }
+            mapTran.put("getAllCountWeekApiVendor",apiFinanceMapper.getCountWeekApiVendor(mapValue));
+            mapTran.put("getAllCountMonthApiVendor",apiFinanceMapper.getCountMonthApiVendor(mapValue));
+            mapTran.put("getAllCountTotleApiVendor",apiFinanceMapper.getCountTotleApiVendor(mapValue));
             mapValue.put("status",0);
             mapTran.put("queryApiVendor",apiFinanceMapper.queryApiVendor(mapValue));
             mapTran.put("getCountWeekApiVendor",apiFinanceMapper.getCountWeekApiVendor(mapValue));

@@ -78,6 +78,17 @@ public class ApiFinanceController {
             if (me.getKey().equals("getCountApiTotleFinanceDead")){
                 model.addAttribute("consumeTotleAmountDead",me.getValue());
             }
+
+            if (me.getKey().equals("getAllCountApiWeekFinance")){
+                model.addAttribute("allWeekTotleAmount",me.getValue());
+            }
+            if (me.getKey().equals("getAllCountApiMonthFinance")){
+                model.addAttribute("allMonthTotleAmount",me.getValue());
+            }
+            if (me.getKey().equals("getAllCountApiTotleFinance")){
+                model.addAttribute("allConsumeTotleAmount",me.getValue());
+            }
+
         }
         model.addAttribute("apiTypeList",apiFinanceService.queryApiType());
         model.addAttribute("apiVendorList",apiVendorList);
@@ -179,6 +190,16 @@ public class ApiFinanceController {
             if (me.getKey().equals("getCountTotleApiVendorDead")){
                 model.addAttribute("consumeTotleAmountDead",me.getValue());
             }
+
+            if (me.getKey().equals("getAllCountWeekApiVendor")){
+                model.addAttribute("allWeekTotleAmount",me.getValue());
+            }
+            if (me.getKey().equals("getAllCountMonthApiVendor")){
+                model.addAttribute("allMonthTotleAmount",me.getValue());
+            }
+            if (me.getKey().equals("getAllCountTotleApiVendor")){
+                model.addAttribute("allConsumeTotleAmount",me.getValue());
+            }
         }
         List<ApiFinance> apiFinances = ExportDataHander.processApiFinance(apiFinanceList);
         List<ApiFinance> apiFinancesDead = ExportDataHander.processApiFinance(apiFinanceListDead);
@@ -200,6 +221,7 @@ public class ApiFinanceController {
         model.addAttribute("partnerId",partnerId);
         model.addAttribute("totleBalance",totleBalance);
         model.addAttribute("totleBalanceDead",totleBalanceDead);
+        model.addAttribute("allTotleBalance",totleBalance+totleBalanceDead);
         model.addAttribute("year",CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));

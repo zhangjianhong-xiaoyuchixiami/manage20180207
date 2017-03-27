@@ -56,7 +56,22 @@ public class CustomerFinanceExcelAop {
             if(args[2] != null){
                 map.put("partnerId",args[2]);
             }
-            List<CustomerFinance> customerFinanceList = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
+            List<CustomerFinance> customerFinanceList = null;
+            Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
+            Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+            Iterator<Map.Entry<String,Object>> it = set.iterator();
+            while(it.hasNext()){
+                Map.Entry<String,Object> me = it.next();
+                if (args[5] != null && args[5].getClass() == String.class && args[5].equals("true")){
+                    if (me.getKey().equals("customerFinanceListDead")){
+                        customerFinanceList = (List<CustomerFinance>) me.getValue();
+                    }
+                }else {
+                    if (me.getKey().equals("customerFinanceList")){
+                        customerFinanceList = (List<CustomerFinance>) me.getValue();
+                    }
+                }
+            }
             List<Map<String,Object>> listExport = new ArrayList<>();
             Map<String, Object> mapExport = new HashMap<>();
             mapExport.put("sheetName", "sheet1");
@@ -108,7 +123,22 @@ public class CustomerFinanceExcelAop {
             if(args[2] != null){
                 map.put("partnerId",args[2]);
             }
-            List<CustomerFinance> customerFinanceList = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
+            List<CustomerFinance> customerFinanceList = null;
+            Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
+            Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+            Iterator<Map.Entry<String,Object>> it = set.iterator();
+            while(it.hasNext()){
+                Map.Entry<String,Object> me = it.next();
+                if (args[5] != null && args[5].getClass() == String.class && args[5].equals("true")){
+                    if (me.getKey().equals("customerFinanceListDead")){
+                        customerFinanceList = (List<CustomerFinance>) me.getValue();
+                    }
+                }else {
+                    if (me.getKey().equals("customerFinanceList")){
+                        customerFinanceList = (List<CustomerFinance>) me.getValue();
+                    }
+                }
+            }
             List<Map<String,Object>> listExport = new ArrayList<>();
             Map<String, Object> mapExport = new HashMap<>();
             mapExport.put("sheetName", "sheet1");

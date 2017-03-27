@@ -77,7 +77,7 @@ public class CompanyController {
             }
             model.addAttribute("deptList",deptService.findDeptByUserId(user.getId()));
             model.addAttribute("partnerList",companyService.findAllPartner());
-            model.addAttribute("companyList",companyService.findAllCompanyByDeptId(map));
+            model.addAttribute("companyList",companyService.findAllCompany(map));
             model.addAttribute("content",content);
             return "/company/company";
         }

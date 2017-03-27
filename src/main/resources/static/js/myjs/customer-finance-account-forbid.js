@@ -1,4 +1,4 @@
-var CustomerFinanceAccount = function () {
+var CustomerFinanceAccountForbid = function () {
 
     return {
 
@@ -35,15 +35,15 @@ var CustomerFinanceAccount = function () {
             var nCloneTd = document.createElement( 'td' );
             nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
             // nCloneTh.innerHTML = '<span class="row-details row-details-close"></span>';
-            $('#sample_2 thead tr').each( function () {
+            $('#sample_3 thead tr').each( function () {
                 this.insertBefore( nCloneTh, this.childNodes[0] );
             } );
 
-            $('#sample_2 tbody tr').each( function () {
+            $('#sample_3 tbody tr').each( function () {
                 this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
             } );
 
-            $('#sample_2').on('click', ' tbody td .row-details', function () {
+            $('#sample_3').on('click', ' tbody td .row-details', function () {
                 var nTr = $(this).parents('tr')[0];
                 if ( oTable.fnIsOpen(nTr) )
                 {
@@ -60,14 +60,14 @@ var CustomerFinanceAccount = function () {
             });
 
             //customerFinancialAccount表格配置
-            var oTable = $('#sample_2').dataTable({
+            var oTable = $('#sample_3').dataTable({
                 "aoColumns": [
                     {"bSortable": false},  //0
                     null,  //1
                     null,  //2
                     null,  //3
-                    null,  //4
                     null,
+                    null,   //4
                     null,  //5
                     null,  //6
                     { "bVisible": false},  //7
@@ -144,21 +144,13 @@ var CustomerFinanceAccount = function () {
             });
 
             /*表格显示列控制*/
-            $('#sample_2_column_toggler input[type="checkbox"]').change(function(){
+            $('#sample_3_column_toggler input[type="checkbox"]').change(function(){
                 /* Get the DataTables object again - this is not a recreation, just a get of the object */
                 var iCol = parseInt($(this).attr("data-column"));
                 var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
                 oTable.fnSetColumnVis(iCol, (bVis ? false : true));
             });
 
-
-            $('.find_all_customer').change(function () {
-                $(this).submit();
-            });
-
-            $('.find_part_customer').change(function () {
-                $(this).submit();
-            });
 
         }
 

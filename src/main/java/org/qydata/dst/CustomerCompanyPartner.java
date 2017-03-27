@@ -18,6 +18,8 @@ public class CustomerCompanyPartner implements Serializable {
     private Long floor;
     private Integer partnerId;
     private String partnerName;
+    private Integer companyStatus;
+    private Long surplusFloor;
     private Timestamp companyCreateTime;
     private List<Customer> customerList;
 
@@ -83,5 +85,21 @@ public class CustomerCompanyPartner implements Serializable {
 
     public void setFloor(Long floor) {
         this.floor = floor;
+    }
+
+    public Integer getCompanyStatus() {
+        return companyStatus;
+    }
+
+    public void setCompanyStatus(Integer companyStatus) {
+        this.companyStatus = companyStatus;
+    }
+
+    public Long getSurplusFloor() {
+        return surplusFloor;
+    }
+
+    public void setSurplusFloor(Long surplusFloor) {
+        this.surplusFloor = surplusFloor;
     }
 }

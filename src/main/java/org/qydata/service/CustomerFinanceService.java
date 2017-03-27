@@ -1,7 +1,6 @@
 package org.qydata.service;
 
 import org.qydata.dst.CustomerApiVendor;
-import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 
@@ -13,19 +12,13 @@ import java.util.Map;
  */
 public interface CustomerFinanceService {
 
-    /**
-     * 查询客户的财务总览
-     * @param map
-     * @return
-     */
-    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String,Object> map);
 
     /**
      * 查询客户的财务总览
      * @param map
      * @return
      */
-    public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String,Object> map);
+    public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String,Object> map)throws Exception;
     /**
      * 指定账号余额变动记录
      * @param map

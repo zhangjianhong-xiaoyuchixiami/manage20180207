@@ -21,13 +21,6 @@ public interface CompanyService {
      */
     public List<CustomerCompanyPartner> findAllCompany(Map<String,Object> map);
 
-    /**
-     * 通过部门编号查询客户
-     * @param map
-     * @return
-     * @throws Exception
-     */
-    public List<CustomerCompanyPartner> findAllCompanyByDeptId(Map<String,Object> map);
 
     /**
      * 新增客户和账户

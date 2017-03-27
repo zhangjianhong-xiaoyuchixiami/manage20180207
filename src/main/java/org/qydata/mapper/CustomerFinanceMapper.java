@@ -21,14 +21,6 @@ public interface CustomerFinanceMapper {
      * @return
      * @throws Exception
      */
-    public List<CustomerFinance> queryCompanyCustomerOverAllFinanceByDept(Map<String,Object> map)throws Exception;
-
-    /**
-     * 查询客户的财务总览
-     * @param map
-     * @return
-     * @throws Exception
-     */
     public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String,Object> map)throws Exception;
 
     /**

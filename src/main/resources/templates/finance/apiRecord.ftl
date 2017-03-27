@@ -149,19 +149,19 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：${(weekTotleAmount!0+weekTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${(allWeekTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：${(monthTotleAmount!0+monthTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${(allMonthTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(consumeTotleAmount!0+consumeTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额&yen;：${(allConsumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -171,7 +171,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label" style="width: 115px;">正在使用的产品：</label>
+                                                <label class="control-label" style="width: 115px;">正在使用统计：</label>
 
                                             </div>
 
@@ -194,38 +194,38 @@
                                             </div>
 
                                         <#--总消费-->
-                                            <div class="pull-left table-top-bottom">
+                                        <#--  <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">
+                                              <label class="control-label">
 
-                                                    <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
+                                                  <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
 
-                                                        <i class="icon-bar-chart"></i>总消费
+                                                      <i class="icon-bar-chart"></i>总消费
 
-                                                    </a>
+                                                  </a>
 
-                                                </label>
+                                              </label>
 
-                                                <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+                                              <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
 
-                                                    <div class="modal-header">
+                                                  <div class="modal-header">
 
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 
-                                                        <h3 id="myModalLabel7">&nbsp;</h3>
+                                                      <h3 id="myModalLabel7">&nbsp;</h3>
 
-                                                    </div>
+                                                  </div>
 
-                                                    <div class="modal-body">
-                                                        <div id="columnHistogramContainer">
+                                                  <div class="modal-body">
+                                                      <div id="columnHistogramContainer">
 
-                                                        </div>
+                                                      </div>
 
-                                                    </div>
+                                                  </div>
 
-                                                </div>
+                                              </div>
 
-                                            </div>
+                                          </div>-->
 
                                         </div>
 
@@ -246,12 +246,15 @@
                                                     <#if apiFinanceList??>
                                                         <#list apiFinanceList as apiFinance>
                                                         <tr>
-                                                            <td data-title="产品类型">${apiFinance.apiTypeName}
-                                                                <#if (apiFinance.mobileOperatorList?size>0)>--
-                                                                    <#list apiFinance.mobileOperatorList as mobileOperator>
-                                                                    ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
-                                                                    </#list>
-                                                                </#if>
+                                                            <td data-title="产品类型">
+                                                                <a href="/api/find-all-api-record<#if apiFinance.apiTypeId??>?apiTypeId=${apiFinance.apiTypeId}</#if>">
+                                                                ${apiFinance.apiTypeName}
+                                                                    <#if (apiFinance.mobileOperatorList?size>0)>--
+                                                                        <#list apiFinance.mobileOperatorList as mobileOperator>
+                                                                        ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
+                                                                        </#list>
+                                                                    </#if>
+                                                                </a>
                                                             </td>
                                                             <td data-title="产品供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName!'无'}</a></td>
                                                             <td data-title="产品名称">${apiFinance.apiName}</td>
@@ -328,19 +331,19 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：${(weekTotleAmount!0+weekTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${(allWeekTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：${(monthTotleAmount!0+monthTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${(allMonthTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(consumeTotleAmount!0+consumeTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额&yen;：${(allConsumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
                                         </div>
@@ -349,7 +352,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label" style="width: 105px;">已停用的产品：</label>
+                                                <label class="control-label" style="width: 105px;">已停用统计：</label>
 
                                             </div>
 
@@ -390,12 +393,15 @@
                                                     <#if apiFinanceListDead??>
                                                         <#list apiFinanceListDead as apiFinance>
                                                         <tr>
-                                                            <td data-title="产品类型" class="font-text-decoration">${apiFinance.apiTypeName}
-                                                                <#if (apiFinance.mobileOperatorList?size>0)>--
-                                                                    <#list apiFinance.mobileOperatorList as mobileOperator>
-                                                                    ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
-                                                                    </#list>
-                                                                </#if>
+                                                            <td data-title="产品类型" class="font-text-decoration">
+                                                                <a href="/api/find-all-api-record<#if apiFinance.apiTypeId??>?apiTypeId=${apiFinance.apiTypeId}</#if>">
+                                                                ${apiFinance.apiTypeName}
+                                                                    <#if (apiFinance.mobileOperatorList?size>0)>--
+                                                                        <#list apiFinance.mobileOperatorList as mobileOperator>
+                                                                        ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
+                                                                        </#list>
+                                                                    </#if>
+                                                                </a>
                                                             </td>
                                                             <td data-title="产品供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName!'无'}</a></td>
                                                             <td data-title="产品名称">${apiFinance.apiName}</td>

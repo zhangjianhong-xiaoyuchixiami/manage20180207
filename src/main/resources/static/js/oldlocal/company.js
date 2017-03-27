@@ -13,7 +13,9 @@ function addAccount(companyId) {
     op.name="companyId";
     $("#authId-account-controls").append(op);
 }
+
 /*以下操作是给账号充值或扣费*/
+
 function chargeBalance(customerId) {
     $.ajax({
         type: "post",
@@ -42,6 +44,8 @@ function chargeBalance(customerId) {
         }
     });
 }
+
+
 function consumeBalance(customerId) {
     $.ajax({
         type: "post",
@@ -69,4 +73,26 @@ function consumeBalance(customerId) {
             }
         }
     });
+}
+
+$(function () { $("[data-toggle='tooltip']").tooltip(); });
+
+
+function showPassword(id) {
+    $("#table_vis_password_"+id).html('<a href="javaScript:;" onclick="hidePassword('+id+')" data-toggle="tooltip" data-placement="auto" title="点击隐藏密码">'+$("#table_content_password_"+id).text()+'</a>');
+    $("#table_password_"+id).empty();
+}
+
+function hidePassword(id) {
+    $("#table_vis_password_"+id).empty();
+    $("#table_password_"+id).html('<a href="javaScript:;" onclick="showPassword('+id+')" data-toggle="tooltip" data-placement="auto" title="点击显示密码">显示密码</a>');
+}
+
+function showIp(id) {
+    if($("#customerIpContent_"+id).css('display')=='none'){
+
+        $("#customerIpContent_"+id).show();
+    }else{
+        $("#customerIpContent_"+id).hide();
+    }
 }

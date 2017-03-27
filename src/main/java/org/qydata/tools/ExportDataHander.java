@@ -2,9 +2,9 @@ package org.qydata.tools;
 
 
 import org.qydata.dst.ApiFinance;
-import org.qydata.dst.CustomerFinance;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jonhn on 2017/3/15.
@@ -59,101 +59,6 @@ public class ExportDataHander {
     }
 
 
-    public static Map<String,Object> processCompanyFinanceData(List<CustomerFinance> list){
-        long weekChargeAmount = 0L;
-        long weekConsumeAmount = 0L;
-        long monthChargeAmount = 0L;
-        long monthConsumeAmount = 0L;
-        long totleChargeAmount = 0L;
-        long totleConsumeAmount = 0L;
-        List<CustomerFinance> customerFinanceList = new ArrayList<>();
-
-        long weekChargeAmountDead = 0L;
-        long weekConsumeAmountDead = 0L;
-        long monthChargeAmountDead = 0L;
-        long monthConsumeAmountDead = 0L;
-        long totleChargeAmountDead = 0L;
-        long totleConsumeAmountDead = 0L;
-        List<CustomerFinance> customerFinanceListDead = new ArrayList<>();
-        if (list != null){
-            Iterator<CustomerFinance> it = list.iterator();
-            while (it.hasNext()){
-                CustomerFinance customerFinance = it.next();
-                if (customerFinance.getCompanyStatus() == 0){
-                    if (customerFinance.getChargeWeekTotleAmount() != null){
-                        weekChargeAmount += customerFinance.getChargeWeekTotleAmount();
-                    }
-                    if (customerFinance.getConsumeWeekTotleAmount() != null){
-                        weekConsumeAmount += customerFinance.getConsumeWeekTotleAmount();
-                    }
-                    if (customerFinance.getChargeMonthTotleAmount() != null){
-                        monthChargeAmount += customerFinance.getChargeMonthTotleAmount();
-                    }
-                    if (customerFinance.getConsumeMonthTotleAmount() != null){
-                        monthConsumeAmount += customerFinance.getConsumeMonthTotleAmount();
-                    }
-                    if (customerFinance.getChargeTotleAmount() != null){
-                        totleChargeAmount += customerFinance.getChargeTotleAmount();
-                    }
-                    if (customerFinance.getConsumeTotleAmount() != null){
-                        totleConsumeAmount = totleConsumeAmount + customerFinance.getConsumeTotleAmount();
-                    }
-                    customerFinanceList.add(customerFinance);
-                }else {
-                    if (customerFinance.getChargeWeekTotleAmount() != null){
-                        weekChargeAmountDead += customerFinance.getChargeWeekTotleAmount();
-                    }
-                    if (customerFinance.getConsumeWeekTotleAmount() != null){
-                        weekConsumeAmountDead += customerFinance.getConsumeWeekTotleAmount();
-                    }
-                    if (customerFinance.getChargeMonthTotleAmount() != null){
-                        monthChargeAmountDead += customerFinance.getChargeMonthTotleAmount();
-                    }
-                    if (customerFinance.getConsumeMonthTotleAmount() != null){
-                        monthConsumeAmountDead += customerFinance.getConsumeMonthTotleAmount();
-                    }
-                    if (customerFinance.getChargeTotleAmount() != null){
-                        totleChargeAmountDead += customerFinance.getChargeTotleAmount();
-                    }
-                    if (customerFinance.getConsumeTotleAmount() != null){
-                        totleConsumeAmountDead += customerFinance.getConsumeTotleAmount();
-                    }
-                    customerFinanceListDead.add(customerFinance);
-                }
-
-            }
-        }
-        System.out.println(weekChargeAmount);
-        System.out.println(weekConsumeAmount);
-        System.out.println(monthChargeAmount);
-        System.out.println(monthConsumeAmount);
-        System.out.println(totleChargeAmount);
-        System.out.println(totleConsumeAmount);
-
-        System.out.println(weekChargeAmountDead);
-        System.out.println(weekConsumeAmountDead);
-        System.out.println(monthChargeAmountDead);
-        System.out.println(monthConsumeAmountDead);
-        System.out.println(totleChargeAmountDead);
-        System.out.println(totleConsumeAmountDead);
-        Map<String,Object> mapTran = new HashMap<>();
-        mapTran.put("weekChargeAmount",weekChargeAmount);
-        mapTran.put("weekConsumeAmount",weekConsumeAmount);
-        mapTran.put("monthChargeAmount",monthChargeAmount);
-        mapTran.put("monthConsumeAmount",monthConsumeAmount);
-        mapTran.put("totleChargeAmount",totleChargeAmount);
-        mapTran.put("totleConsumeAmount",totleConsumeAmount);
-        mapTran.put("customerFinanceList",customerFinanceList);
-
-        mapTran.put("weekChargeAmountDead",weekChargeAmountDead);
-        mapTran.put("weekConsumeAmountDead",weekConsumeAmountDead);
-        mapTran.put("monthChargeAmountDead",monthChargeAmountDead);
-        mapTran.put("monthConsumeAmountDead",monthConsumeAmountDead);
-        mapTran.put("totleChargeAmountDead",totleChargeAmountDead);
-        mapTran.put("totleConsumeAmountDead",totleConsumeAmountDead);
-        mapTran.put("customerFinanceListDead",customerFinanceListDead);
-        return mapTran;
-    }
 
 
 }

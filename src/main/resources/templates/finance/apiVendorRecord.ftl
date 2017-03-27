@@ -136,7 +136,47 @@
 
                                     <div class="portlet-body">
 
-                                        <div class="clearfix margin-bottom-20">
+                                        <div class="clearfix margin-bottom-5">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label" style="width: 105px;">总统计：</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">周消费总额&yen;：<#if allWeekTotleAmount??><span>${(allWeekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">月消费总额&yen;：<#if allMonthTotleAmount??><span>${(allMonthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">消费总额&yen;：<#if allConsumeTotleAmount??><span>${(allConsumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">所剩余额&yen;：<#if allTotleBalance??><span>${(allTotleBalance/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="clearfix margin-bottom-5">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label" style="width: 105px;">正在使用统计：</label>
+
+                                            </div>
 
                                             <div class="pull-left table-top-bottom">
 
@@ -163,7 +203,7 @@
                                             </div>
 
                                         <#--表字段总额-->
-                                            <div class="pull-right table-top-bottom">
+                                           <#-- <div class="pull-right table-top-bottom">
 
                                                 <label class="control-label">
 
@@ -194,7 +234,7 @@
 
                                                 </div>
 
-                                            </div>
+                                            </div>-->
 
                                         </div>
 
@@ -216,7 +256,7 @@
                                                     <#if apiFinanceList??>
                                                         <#list apiFinanceList as apiFinance>
                                                         <tr>
-                                                            <td data-title="供应商">${apiFinance.vendorName}</td>
+                                                            <td data-title="供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName}</a></td>
                                                             <td data-title="合作公司"><a href="/api/find-all-api-vendor-consume<#if apiFinance.partnerId??>?partnerId=${apiFinance.partnerId?c}</#if>">${apiFinance.partnerName!'无'}</a></td>
                                                             <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                                             <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
@@ -303,7 +343,47 @@
 
                                     <div class="portlet-body">
 
-                                        <div class="clearfix margin-bottom-20">
+                                        <div class="clearfix margin-bottom-5">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label" style="width: 105px;">总统计：</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">周消费总额&yen;：<#if allWeekTotleAmount??><span>${(allWeekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">月消费总额&yen;：<#if allMonthTotleAmount??><span>${(allMonthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">消费总额&yen;：<#if allConsumeTotleAmount??><span>${(allConsumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label">所剩余额&yen;：<#if allTotleBalance??><span>${(allTotleBalance/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="clearfix margin-bottom-5">
+
+                                            <div class="pull-left table-top-bottom">
+
+                                                <label class="control-label" style="width: 105px;">已停用统计：</label>
+
+                                            </div>
 
                                             <div class="pull-left table-top-bottom">
 
@@ -349,7 +429,7 @@
                                                     <#if apiFinanceListDead??>
                                                         <#list apiFinanceListDead as apiFinance>
                                                         <tr>
-                                                            <td data-title="供应商" class="font-text-decoration">${apiFinance.vendorName}</td>
+                                                            <td data-title="供应商" class="font-text-decoration"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName}</a></td>
                                                             <td data-title="合作公司"><a href="/api/find-all-api-vendor-consume<#if apiFinance.partnerId??>?partnerId=${apiFinance.partnerId?c}</#if>">${apiFinance.partnerName!'无'}</a></td>
                                                             <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                                             <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>

@@ -266,37 +266,37 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：${(((weekConsumeAmount!'0')?number)+((weekConsumeAmountDead!'0')?number))/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${-allWeekConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周充值总额&yen;：${(weekChargeAmount!0+weekChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周充值总额&yen;：${allWeekChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：${(monthConsumeAmount!0+monthConsumeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${-allMonthConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月充值总额&yen;：${(monthChargeAmount!0+monthChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月充值总额&yen;：${allMonthChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${-((((totleConsumeAmount!'0')?c)?number)+(((totleConsumeAmountDead!'0')?c)?number))/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额&yen;：${-allTotleConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">充值总额&yen;：${(totleChargeAmount!0+totleChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">充值总额&yen;：${allTotleChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -312,37 +312,37 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：${(-weekConsumeAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${-weekConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周充值总额&yen;：${(weekChargeAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周充值总额&yen;：${weekChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：${(-monthConsumeAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${-monthConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月充值总额&yen;：${(monthChargeAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月充值总额&yen;：${monthChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(-totleConsumeAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额&yen;：${-totleConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">充值总额&yen;：${(totleChargeAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">充值总额&yen;：${totleChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -361,6 +361,7 @@
                                                         <th style="display: none">合作公司</th>
                                                     </@shiro.hasPermission>
                                                     <th>信用额度（单位：元）</th>
+                                                    <th>剩余信用额度（单位：元）</th>
                                                     <th>余额（单位：元）</th>
                                                     <th>充值总额（单位：元）</th>
                                                     <th>消费总额（单位：元）</th>
@@ -387,6 +388,7 @@
                                                                 <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                                             </@shiro.hasPermission>
                                                             <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
+                                                            <td data-title="剩余信用额度">${(customer.surplusFloor/100.0)?c}</td>
                                                             <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
                                                             <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                             <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
@@ -483,11 +485,11 @@
                                         <div class="caption"></div>
 
                                         <@shiro.hasPermission name="customer:findAllCustomer">
-                                            <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer?export=true"></@d.tools>
+                                            <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer?export=true&dead=true"></@d.tools>
                                         </@shiro.hasPermission>
 
                                         <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                            <@d.tools idName="exportExcelByDeptId" hrefName="/finance/find-all-customer-by-dept-id?export=true"></@d.tools>
+                                            <@d.tools idName="exportExcelByDeptId" hrefName="/finance/find-all-customer-by-dept-id?export=true&dead=true"></@d.tools>
                                         </@shiro.hasPermission>
 
                                         <div class="actions">
@@ -502,7 +504,7 @@
 
                                                 </a>
 
-                                                <div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                                <div id="sample_3_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
                                                     <label><input type="checkbox" checked data-column="1">公司名称</label>
 
                                                     <label><input type="checkbox" checked data-column="2">合作公司</label>
@@ -542,40 +544,39 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：${(weekConsumeAmount!0+weekConsumeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${allWeekConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周充值总额&yen;：${(weekChargeAmount!0+weekChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周充值总额&yen;：${allWeekChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：${(monthConsumeAmount!0+monthConsumeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${allMonthConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月充值总额&yen;：${(monthChargeAmount!0+monthChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月充值总额&yen;：${allMonthChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(totleConsumeAmount!0+totleConsumeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额&yen;：${allTotleConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">充值总额&yen;：${(totleChargeAmount!0+totleChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">充值总额&yen;：${allTotleChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
-
                                         </div>
 
                                         <div class="clearfix margin-bottom-5">
@@ -588,44 +589,44 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：${(-weekConsumeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${weekConsumeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周充值总额&yen;：${(weekChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周充值总额&yen;：${weekChargeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：${(-monthConsumeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${-monthConsumeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月充值总额&yen;：${(monthChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月充值总额&yen;：${monthChargeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(-totleConsumeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额&yen;：${-totleConsumeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">充值总额&yen;：${(totleChargeAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">充值总额&yen;：${totleChargeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
                                         </div>
 
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
+                                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_3">
 
                                                 <thead>
                                                 <tr>
@@ -637,6 +638,7 @@
                                                         <th style="display: none">合作公司</th>
                                                     </@shiro.hasPermission>
                                                     <th>信用额度（单位：元）</th>
+                                                    <th>剩余信用额度（单位：元）</th>
                                                     <th>余额（单位：元）</th>
                                                     <th>充值总额（单位：元）</th>
                                                     <th>消费总额（单位：元）</th>
@@ -663,6 +665,7 @@
                                                                 <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                                             </@shiro.hasPermission>
                                                             <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
+                                                            <td data-title="剩余信用额度">${(customer.surplusFloor/100.0)?c}</td>
                                                             <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
                                                             <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                             <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
@@ -753,8 +756,6 @@
 
                     </div>
 
-
-
                 </div>
 
             </div>
@@ -778,6 +779,8 @@
 
         <script src="/js/myjs/customer-finance-account.js"></script>
 
+        <script src="/js/myjs/customer-finance-account-forbid.js"></script>
+
         <script src="/js/oldlocal/customer-finance-account.js"></script>
 
         <script src="/js/locales/dataTables-sort-plungin.js"></script>
@@ -785,6 +788,7 @@
         <script>
             jQuery(document).ready(function() {
                 CustomerFinanceAccount.init();
+                CustomerFinanceAccountForbid.init();
                 CustomerLeftBar.init();
             });
 
