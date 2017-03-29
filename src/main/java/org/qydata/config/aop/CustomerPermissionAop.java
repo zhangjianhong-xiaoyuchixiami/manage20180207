@@ -10,6 +10,7 @@ import org.qydata.entity.User;
 import org.qydata.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class CustomerPermissionAop {
                 }
                 if (!customerService.findAllCustomerIdByDeptId(deptIdList).contains(args[0])){
                     //args[0] = -100;
-                    return "/view/role";
+                    return new ModelAndView("/view/role");
                 }
             }
         }

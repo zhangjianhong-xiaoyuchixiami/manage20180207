@@ -1,7 +1,6 @@
 package org.qydata.config.aop;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -19,6 +18,7 @@ import org.qydata.tools.ExportIoOperate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -36,6 +36,8 @@ public class CustomerFinanceExcelAop {
     @Autowired private CustomerFinanceService customerFinanceService;
 
     @Autowired private HttpServletResponse response;
+
+    @Autowired private HttpServletRequest request;
 
     @Autowired private UserService userService;
 
@@ -171,7 +173,10 @@ public class CustomerFinanceExcelAop {
      * 指定账号充值记录导出Excel
      * @param point
      */
-    @Around("execution(* org.qydata.controller.FinanceController.findAllCustomerRechargeLogByCustomerId(..))")
+
+
+
+@Around("execution(* org.qydata.controller.FinanceController.findAllCustomerRechargeLogByCustomerId(..))")
     public Object findAllCustomerRechargeLogByCustomerIdExportExcel(ProceedingJoinPoint point) throws Throwable {
         Object args [] = point.getArgs();
         System.out.println("************* 判断是否是执行导出操作 *************");
@@ -222,7 +227,7 @@ public class CustomerFinanceExcelAop {
                 mapValue.put("reasonName", customerBalanceLog.getCustomerBalanceModifyReason().getName());
                 listExport.add(mapValue);
             }
-            String fileName = args[2] + "充值记录";
+            String fileName = "充值记录";
             String columnNames[]= {"金额（单位：元）","时间","理由"};//列名
             String keys[] = {"amount","createTime","reasonName"};//map中的key
             ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
@@ -282,7 +287,7 @@ public class CustomerFinanceExcelAop {
                 mapValue.put("price", ExportDataHander.pointsIntoRMB(customerApiType.getTotlePrice()));
                 listExport.add(mapValue);
             }
-            String fileName = args[4] + "消费记录";
+            String fileName = "消费记录";
             if (SecurityUtils.getSubject().hasRole("sell")){
                 String columnNames [] = {"产品类型","金额（单位：元）"};//列名
                 String keys [] = {"apiType","price"};//map中的key
@@ -367,7 +372,7 @@ public class CustomerFinanceExcelAop {
                 }
                 listExport.add(mapValue);
             }
-            String fileName = args[3] + "@" + args[4] + "消费明细记录";
+            String fileName = "消费明细记录";
             String columnNames[]= {"产品","消费金额（单位：元）","创建时间","类型"};//列名
             String keys[] = {"apiName","amount","createTime","reasonName"};//map中的key
             ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
@@ -387,7 +392,7 @@ public class CustomerFinanceExcelAop {
         System.out.println("************* 判断是否是执行导出操作 *************");
         if (args[1] != null && args[1].getClass() == String.class && args[1].equals("true")) {
             System.out.println("************* 执行导出操作 *************");
-            Map<String,Object> map = new HashedMap();
+            Map<String,Object> map = new HashMap();
             if (args[0] != null){
                 map.put("customerId",args[0]);
             }
@@ -430,7 +435,7 @@ public class CustomerFinanceExcelAop {
                 mapValue.put("endTime", sdf.format(weekMonthAmount.getEndTime()));
                 listExport.add(mapValue);
             }
-            String fileName = args[6] + "周历史记录";
+            String fileName = "周历史记录";
             String columnNames[]= {"周期","金额（单位：元）","开始时间","结束时间"};//列名
             String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime"};//map中的key
             ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
@@ -450,7 +455,7 @@ public class CustomerFinanceExcelAop {
         System.out.println("************* 判断是否是执行导出操作 *************");
         if (args[1] != null && args[1].getClass() == String.class && args[1].equals("true")) {
             System.out.println("************* 执行导出操作 *************");
-            Map<String,Object> map = new HashedMap();
+            Map<String,Object> map = new HashMap();
             if (args[0] != null){
                 map.put("customerId",args[0]);
             }
@@ -490,7 +495,7 @@ public class CustomerFinanceExcelAop {
                 mapValue.put("endTime", sdf.format(weekMonthAmount.getEndTime()));
                 listExport.add(mapValue);
             }
-            String fileName = args[5] + "月历史记录";
+            String fileName = "月历史记录";
             String columnNames[]= {"周期","金额（单位：元）","开始时间","结束时间"};//列名
             String keys[] = {"yearMonthWeek","totleAmount","beginTime","endTime"};//map中的key
             ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);

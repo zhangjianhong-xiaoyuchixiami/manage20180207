@@ -16,7 +16,7 @@
         <result column="operationAfterData" property="operationAfterData"/>
         <result column="error" property="error"/>
         <result column="beginTime" property="beginTime"/>
-        <result column="endTime" property="endTime"/>
+        <result column="timeOut" property="timeOut"/>
         <result column="userId" property="userId"/>
         <result column="createTime" property="createTime"/>
         <association property="logType" javaType="org.qydata.entity.log.LogType">
@@ -29,8 +29,11 @@
 
     <!--新增日志-->
     <insert id="createLog" parameterType="org.qydata.entity.log.Log" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qyfinance.Log(typeId,title,remoteAddr,requestUri,method,params,operationBeforData,operationAfterData,error,beginTime,endTime,userId,createTime)
-        VALUES(#{typeId},#{title},#{remoteAddr},#{requestUri},#{method},#{params},#{operationBeforData},#{operationAfterData},#{error},#{beginTime},#{endTime},#{userId},now())
+        INSERT INTO qyfinance.Log(typeId,title,remoteAddr,requestUri,method,params,operationBeforData,operationAfterData,error,beginTime,timeOut,userId,createTime)
+        VALUES(#{typeId},#{title},#{remoteAddr},#{requestUri},#{method},#{params},#{operationBeforData},#{operationAfterData},#{error},#{beginTime},#{timeOut},#{userId},now())
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
 
@@ -41,7 +44,7 @@
     <!--查询日志-->
     <select id="queryLog" parameterType="map" resultMap="Log_Map">
         SELECT a.id,a.title,a.typeId,a.remoteAddr,a.requestUri,a.method,a.params,a.operationBeforData,a.operationAfterData,
-        a.error,a.beginTime,a.endTime,a.userId,a.typeName,a.email,a.createTime
+        a.error,a.beginTime,a.timeOut,a.userId,a.typeName,a.email,a.createTime
         FROM qyfinance.bkvwLog a
     </select>
 

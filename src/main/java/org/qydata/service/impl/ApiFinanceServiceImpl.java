@@ -110,34 +110,30 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
-    public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate)throws Exception {
-        try{
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            ApiVendorBalanceLog apiVendorBalanceLog = new ApiVendorBalanceLog();
-            apiVendorBalanceLog.setVendorId(vendorIdCharge);
-            apiVendorBalanceLog.setAmount(amount*100);
-            apiVendorBalanceLog.setRemark(remark);
-            if (chargeDate == "" || chargeDate == null){
-                apiVendorBalanceLog.setCreateTime(new Date());
-            }else {
-                apiVendorBalanceLog.setCreateTime(sdf.parse(chargeDate));
-            }
-            ApiVendorBalance apiVendorBalance = null;
-            apiVendorBalance = apiFinanceMapper.queryApiVendorBalance(vendorIdCharge);
-            if (apiVendorBalance == null){
-                ApiVendorBalance apiVendorBalanceOne = new ApiVendorBalance();
-                apiVendorBalanceOne.setVendorId(vendorIdCharge);
-                apiFinanceMapper.insertApiVendorBalance(apiVendorBalanceOne);
-                apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((amount*100)));
-            }else {
-                apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((amount*100) + apiVendorBalance.getBalance()));
-            }
-            apiFinanceMapper.insertApiVendorBalanceLog(apiVendorBalanceLog);
-            return true;
-        }catch (Exception e){
-           e.printStackTrace();
+    public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate)throws Exception{
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        ApiVendorBalanceLog apiVendorBalanceLog = new ApiVendorBalanceLog();
+        apiVendorBalanceLog.setVendorId(vendorIdCharge);
+        apiVendorBalanceLog.setAmount(amount*100);
+        apiVendorBalanceLog.setRemark(remark);
+        if (chargeDate == "" || chargeDate == null){
+            apiVendorBalanceLog.setCreateTime(new Date());
+        }else {
+            apiVendorBalanceLog.setCreateTime(sdf.parse(chargeDate));
         }
-        return false;
+        ApiVendorBalance apiVendorBalance = null;
+        apiVendorBalance = apiFinanceMapper.queryApiVendorBalance(vendorIdCharge);
+        if (apiVendorBalance == null){
+            ApiVendorBalance apiVendorBalanceOne = new ApiVendorBalance();
+            apiVendorBalanceOne.setVendorId(vendorIdCharge);
+            apiFinanceMapper.insertApiVendorBalance(apiVendorBalanceOne);
+            apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((amount*100)));
+        }else {
+            apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((amount*100) + apiVendorBalance.getBalance()));
+        }
+        return apiFinanceMapper.insertApiVendorBalanceLog(apiVendorBalanceLog);
+
     }
 
     @Override

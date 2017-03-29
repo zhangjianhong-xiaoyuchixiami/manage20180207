@@ -260,7 +260,7 @@
                 </@shiro.hasAnyRoles>
 
             <#--日志管理-->
-                <@shiro.hasAnyRoles name="backAdmin">
+               <#-- <@shiro.hasAnyRoles name="backAdmin">
 
                     <li id="logManage">
                         <a href="javascript:;">
@@ -289,7 +289,7 @@
 
                     </li>
 
-                </@shiro.hasAnyRoles>
+                </@shiro.hasAnyRoles>-->
 
             <#--用户管理-->
                 <@shiro.hasAnyRoles name="backAdmin,technology">
@@ -522,7 +522,9 @@
 
 <script src="/js/form-validation.js"></script>
 
-<script src="/js/form-components.js"></script>
+<#--<script src="/js/form-components.js"></script>-->
+
+<script src="/js/locales/jquery.quicksearch.js"></script>
 
 <script>
 

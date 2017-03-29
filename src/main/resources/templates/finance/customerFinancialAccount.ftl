@@ -544,7 +544,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">周消费总额&yen;：${allWeekConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">周消费总额&yen;：${-allWeekConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -556,7 +556,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">月消费总额&yen;：${allMonthConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">月消费总额&yen;：${-allMonthConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -568,7 +568,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${allTotleConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额&yen;：${-allTotleConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 

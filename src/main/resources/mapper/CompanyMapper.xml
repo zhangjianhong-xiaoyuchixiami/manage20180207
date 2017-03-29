@@ -16,72 +16,75 @@
     </resultMap>
 
     <resultMap id="CustomerCompany_Customer_Map" type="org.qydata.dst.CustomerCompanyPartner" extends="CustomerCompany_Map">
-       <collection property="customerList" ofType="org.qydata.entity.Customer">
-           <result column="customerId" property="id"/>
-           <result column="authId" property="authId"/>
-           <result column="authPass" property="authPass"/>
-           <result column="balance" property="balance"/>
-           <result column="customerCreateTime" property="createTime"/>
-           <association property="customerType" javaType="org.qydata.entity.CustomerType">
-               <result column="typeId" property="id"/>
-               <result column="typeName" property="name"/>
-           </association>
-           <association property="customerStatus" javaType="org.qydata.entity.CustomerStatus">
-               <result column="status" property="id"/>
-               <result column="statusName" property="name"/>
-           </association>
-           <collection property="customerIpList" ofType="org.qydata.entity.CustomerIp">
-               <result column="beginIpRaw" property="beginIpRaw"/>
-               <result column="endIpRaw" property="endIpRaw"/>
-           </collection>
-       </collection>
+        <collection property="customerList" ofType="org.qydata.entity.Customer">
+            <result column="customerId" property="id"/>
+            <result column="authId" property="authId"/>
+            <result column="authPass" property="authPass"/>
+            <result column="balance" property="balance"/>
+            <result column="customerCreateTime" property="createTime"/>
+            <association property="customerType" javaType="org.qydata.entity.CustomerType">
+                <result column="typeId" property="id"/>
+                <result column="typeName" property="name"/>
+            </association>
+            <association property="customerStatus" javaType="org.qydata.entity.CustomerStatus">
+                <result column="status" property="id"/>
+                <result column="statusName" property="name"/>
+            </association>
+            <collection property="customerIpList" ofType="org.qydata.entity.CustomerIp">
+                <result column="beginIpRaw" property="beginIpRaw"/>
+                <result column="endIpRaw" property="endIpRaw"/>
+            </collection>
+        </collection>
     </resultMap>
 
+    <resultMap id="ApiType_Map" type="org.qydata.entity.ApiType">
+        <result column="apiTypeId" property="id"/>
+        <result column="apiTypeName" property="name"/>
+    </resultMap>
 
     <!--查找客户信息-->
     <select id="findAllCompany" parameterType="map" resultMap="CustomerCompany_Customer_Map">
         SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime customerCreateTime,
         a.status,a.statusName,
-        c.companyName,c.partnerId,c.partnerName,a.createTime companyCreateTime,c.companyStatus,d.companyBalance,d.floor,
+        c.companyId,c.companyName,c.partnerId,c.partnerName,a.createTime companyCreateTime,c.companyStatus,d.companyBalance,d.floor,
         e.beginIpRaw,e.endIpRaw,
         ((-d.floor)+ifnull(d.consumeTotleAmount,0)+ifnull(d.chargeTotleAmount,0)) surplusFloor
         FROM qyfinance.bkvwCustomer a
-        LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
         LEFT JOIN qyfinance.bkvw_company_customer c ON a.companyId=c.companyId
         LEFT JOIN
                 (
-                    SELECT aa.companyId,sum(aa.balance) companyBalance,sum(aa.floor) floor,
-                    sum(bb.chargeTotleAmount) chargeTotleAmount,sum(cc.consumeTotleAmount) consumeTotleAmount
-                    FROM qyfinance.bkvwCustomer aa
-                    LEFT JOIN
-                            (
-                            SELECT customerId,sum(amount) chargeTotleAmount
-                            FROM qyfinance.bkvwCustomerBalanceLog
-                            WHERE reasonId in (1,2,3)
-                            GROUP BY customerId
-                            ) bb ON aa.id=bb.customerId
-                    LEFT JOIN
-                            (
-                            SELECT customerId,sum(amount) consumeTotleAmount
-                            FROM qyfinance.bkvwCustomerBalanceLog
-                            WHERE reasonId in (-1,-2)
-                            GROUP BY customerId
-                            ) cc ON aa.id=cc.customerId
-                    WHERE typeId=1
-                    GROUP BY companyId
+                SELECT aa.companyId,sum(aa.balance) companyBalance,sum(aa.floor) floor,
+                sum(bb.chargeTotleAmount) chargeTotleAmount,sum(cc.consumeTotleAmount) consumeTotleAmount
+                FROM qyfinance.bkvwCustomer aa
+                LEFT JOIN
+                (
+                SELECT customerId,sum(amount) chargeTotleAmount
+                FROM qyfinance.bkvwCustomerBalanceLog
+                WHERE reasonId in (1,2,3)
+                GROUP BY customerId
+                ) bb ON aa.id=bb.customerId
+                LEFT JOIN
+                (
+                SELECT customerId,sum(amount) consumeTotleAmount
+                FROM qyfinance.bkvwCustomerBalanceLog
+                WHERE reasonId in (-1,-2)
+                GROUP BY customerId
+                ) cc ON aa.id=cc.customerId
+                WHERE typeId=1
+                GROUP BY companyId
                 ) d ON a.companyId=d.companyId
         LEFT JOIN qyfinance.bkvwCustomerIp e ON a.id=e.customerId
         WHERE a.companyId IS NOT NULL
         <if test="deptIdList!=null and deptIdList.size()!=0">
             AND a.id IN
-                        (
-                            SELECT customerId
-                            FROM qyfinance.bkvwCustomerDept
-                            WHERE deptId IN
-                            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                                #{deptId}
-                            </foreach>
-                        )
+            (
+            SELECT customerId
+            FROM qyfinance.bkvwCustomerDept
+            WHERE deptId IN
+            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                #{deptId}
+            </foreach>
+            )
         </if>
         <if test="partnerId!=null and partnerId!=''">
             AND a.partnerId=#{partnerId}
@@ -89,6 +92,7 @@
         <if test="content!=null and content!=''">
             AND a.companyName like '%${content}%'
         </if>
+        ORDER BY a.typeId ASC
     </select>
 
     <!--添加客户信息-->
@@ -141,4 +145,10 @@
         VALUES(#{customerId},#{amount},#{reasonId},sysdate())
     </insert>
 
+    <select id="queryApi" parameterType="map" resultMap="ApiType_Map">
+        SELECT DISTINCT(a.apiTypeId),a.apiTypeName,a.mobileOperatorId,a.mobileOperatorName
+        FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+        WHERE status=0
+        ORDER BY a.apiTypeId ASC
+    </select>
 </mapper>

@@ -8,7 +8,7 @@
 
     <#elseif section = "content" >
 
-    <div class="page-content">
+    <div class="page-content" xmlns="http://www.w3.org/1999/html">
 
         <div class="container-fluid">
 
@@ -95,78 +95,16 @@
                             <#--状态正常-->
                                 <div class="portlet box grey">
 
-                                <#--   <div class="portlet-title">
-                                       <div class="caption"><i class="icon-user"></i></div>
-                                   </div>-->
-
                                     <div class="portlet-body">
 
-                                    <#--<div class="clearfix margin-bottom-5">
-                                        <div class="btn-group">
-                                            <a class="btn black" id="add-partner" href="#form_modal1" data-toggle="modal">
-                                                新增<i class="icon-plus"></i>
-                                            </a>
-                                        </div>
-                                        <div id="form_modal1" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                <h3 id="myModalLabel1">请填写信息</h3>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="#" class="form-horizontal">
-                                                    <div class="control-group"></div>
-                                                    <div class="control-group"></div>
-                                                    <div id="error-alert"></div>
-                                                    <div class="control-group">
-                                                        <label class="control-label">请输入公司名称<span class="required">*</span></label>
-                                                        <div class="controls">
-                                                            <input type="text" id="companyCustomerName" name="companyCustomerName" class="m-wrap medium">
-                                                            <span id="companyNameMsg" class="help-line"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="control-group">
-                                                        <label class="control-label">请输入账号<span class="required">*</span></label>
-                                                        <div class="controls">
-                                                            <input type="text" id="authId" name="authId" class="m-wrap medium">
-                                                            <span id="authIdMsg" class="help-line"></span>
-                                                            <span class="help-block">说明：只能有数字、字母、下划线组成</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="control-group">
-                                                        <label class="control-label">请选择合作公司<span class="required">*</span></label>
-                                                        <div class="controls">
-                                                            <select id="partnerId" name="partnerId" class="medium m-wrap" tabindex="1">
-                                                                <option value="">请选择...</option>
-                                                                <#if deptList??>
-                                                                    <#list partnerList as partner>
-                                                                        <option value="${partner.id}">${partner.name}</option>
-                                                                    </#list>
-                                                                </#if>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="control-group">
-                                                        <label class="control-label">请选择部门<span class="required">*</span></label>
-                                                        <div class="controls">
-                                                            <select id="deptId" name="deptId" class="medium m-wrap" tabindex="1">
-                                                                <option value="">请选择...</option>
-                                                                <#if deptList??>
-                                                                    <#list deptList as dept>
-                                                                        <option value="${dept.id}">${dept.deptName}</option>
-                                                                    </#list>
-                                                                </#if>
-                                                            </select>
-                                                            <span id="deptIdMsg" class="help-inline"></span>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                                                <button class="btn black btn-primary" id="add-btn-black-btn-primary" type="button">提交</button>
+                                        <div class="clearfix margin-bottom-5">
+                                            <div class="btn-group">
+                                                <a class="btn black" id="add-partner" href="#form_modal1" data-toggle="modal">
+                                                    新增客户<i class="icon-plus"></i>
+                                                </a>
                                             </div>
                                         </div>
-                                    </div>-->
+
                                         <div class="table-responsive">
                                             <table class="table table-striped table-hover table-bordered table-condensed" id="companySample_1">
                                                 <thead>
@@ -190,8 +128,8 @@
                                                     <th class="table-td-none">balance</th>
                                                     <th class="table-td-none">statusName</th>
                                                     <th class="table-td-none">Ip段</th>
-                                                <#--<th>操作</th>-->
-                                                <#-- <th style="text-align: center; width: 10%;">操作</th>-->
+                                                    <th class="table-td-none">操作</th>
+                                                    <th style="text-align: center; width: 10%;">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -251,7 +189,12 @@
                                                                 <td class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
-                                                                            <span> ${(customer.customerStatus.name)!''}</span><br/>
+                                                                        <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
+                                                                        <span>
+                                                                        <#else >
+                                                                        <span class="warning">
+                                                                        </#if>
+                                                                            ${(customer.customerStatus.name)!''}</span><br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
@@ -259,31 +202,46 @@
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <#if customer.customerType.id == 1>
-                                                                                <a href="javaScript:;" id="customerIpBar_${customer.id}" onclick="showIp(${customer.id})">点击查看Ip段</a>
-                                                                                <div id="customerIpContent_${customer.id}" class="head-search-display" style="min-width: 150px; background-color: white">
-                                                                                    <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
-                                                                                        <#list customer.customerIpList as customerIp>
-                                                                                            <span>${customerIp.beginIpRaw!''}-${customerIp.endIpRaw!''}</span><br/>
-                                                                                        </#list>
-                                                                                    <#else >
-                                                                                        <span>无</span>
-                                                                                    </#if>
-                                                                                </div>
+                                                                                <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
+                                                                                    <a href="javaScript:;" id="customerIpBar_${customer.id}" onclick="showIp(${customer.id})">点击查看Ip段</a>
+                                                                                    <div id="customerIpContent_${customer.id}" class="head-search-display" style="min-width: 150px; background-color: white">
+                                                                                        <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
+                                                                                            <#list customer.customerIpList as customerIp>
+                                                                                                <span>${customerIp.beginIpRaw!''}-${customerIp.endIpRaw!''}</span><br/>
+                                                                                            </#list>
+                                                                                        <#else >
+                                                                                            <span>无</span>
+                                                                                        </#if>
+                                                                                    </div>
+                                                                                <#else >
+                                                                                <span class="warning">暂无Ip</span>
+                                                                                </#if>
                                                                             </#if>
                                                                             <br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                            <#--<td>
-                                                                <#if company.customerList??>
-                                                                    <#list company.customerList as customer>
-                                                                        <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
-                                                                        |
-                                                                        <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>-->
-                                                            <#--<td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>-->
+                                                                <td class="table-td-none">
+                                                                    <#if company.customerList??>
+                                                                        <#list company.customerList as customer>
+                                                                            <#if customer.customerType.id == 1>
+                                                                                <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
+                                                                                |
+                                                                                <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a>
+                                                                                |
+                                                                                <a href="#form_modal_add_ip" id="add_ip" onclick="consumeBalance(${customer.id})" data-toggle="modal">添加Ip</a><br/>
+                                                                            <#else >
+                                                                                <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
+                                                                                |
+                                                                                <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
+                                                                            </#if>
+                                                                        </#list>
+                                                                    </#if>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">分配产品权限</a>|
+                                                                    <a href="#form_modal_company_api_status" data-toggle="modal">管理产品状态</a>
+                                                                </td>
                                                             </tr>
                                                             </#if>
                                                         </#list>
@@ -293,66 +251,6 @@
 
                                             </table>
                                         </div>
-                                    <#-- <div id="form_modal_add_account" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_account" aria-hidden="true">
-                                         <div class="modal-header">
-                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                             <h3 id="myModalLabel_add_account">请填写信息</h3>
-                                         </div>
-                                         <div class="modal-body">
-                                             <form action="#" class="form-horizontal">
-                                                 <div class="control-group"></div>
-                                                 <div class="control-group"></div>
-                                                 <div id="error-alert-account"></div>
-                                                 <div id="authId-account-controls" class="controls" style="display: none;"></div>
-                                                 <div class="control-group">
-                                                     <label class="control-label">请输入账号<span class="required">*</span></label>
-                                                     <div class="controls">
-                                                         <input type="text" id="authId-account" name="authId-account" class="m-wrap medium">
-                                                         <span id="authId-accountMsg" class="help-line"></span>
-                                                         <span class="help-block">说明：只能有数字、字母、下划线组成</span>
-                                                     </div>
-                                                 </div>
-                                             </form>
-                                         </div>
-                                         <div class="modal-footer">
-                                             <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                                             <button class="btn black btn-primary" id="add-account-btn-black-btn-primary" type="button">提交</button>
-                                         </div>
-                                     </div>
-                                     <div id="form_modal_update_balance" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_update_balance" aria-hidden="true">
-                                         <div class="modal-header">
-                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                             <h3 id="myModalLabel_update_balance">请填写信息</h3>
-                                         </div>
-                                         <div class="modal-body">
-                                             <form action="#" class="form-horizontal">
-                                                 <div class="control-group"></div>
-                                                 <div class="control-group"></div>
-                                                 <div id="error_alert_update_balance"></div>
-                                                 <div id="update_balance_customerId" class="controls" style="display: none;"></div>
-                                                 <div id="" class="control-group">
-                                                     <label class="control-label">请输入金额<span class="required">*</span></label>
-                                                     <div class="controls">
-                                                         <input type="text" id="update_balance_amount" name="update_balance_amount" class="m-wrap medium" placeholder="（单位/元）">
-                                                         <span id="update_balance_amountMsg" class="help-line"></span>
-                                                         <span class="help-block">说明：只能输入数字类型并且金额大于0</span>
-                                                     </div>
-                                                 </div>
-                                                 <div id="" class="control-group">
-                                                     <label class="control-label">请选择理由<span class="required">*</span></label>
-                                                     <div class="controls">
-                                                         <select id="update_balance_reasonId" name="update_balance_reasonId" class="medium m-wrap" tabindex="1">
-                                                         </select>
-                                                         <span id="update_balance_reasonIdMsg" class="help-inline"></span>
-                                                     </div>
-                                                 </div>
-                                             </form>
-                                         </div>
-                                         <div class="modal-footer">
-                                             <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                                             <button class="btn black btn-primary" id="update-balance-btn-black-btn-primary" type="button">提交</button>
-                                         </div>
-                                     </div>-->
 
                                     </div>
 
@@ -365,78 +263,9 @@
                             <#--禁用-->
                                 <div class="portlet box grey">
 
-                                <#--   <div class="portlet-title">
-                                       <div class="caption"><i class="icon-user"></i></div>
-                                   </div>-->
-
                                     <div class="portlet-body">
 
-                                    <#--<div class="clearfix margin-bottom-5">
-                                        <div class="btn-group">
-                                            <a class="btn black" id="add-partner" href="#form_modal1" data-toggle="modal">
-                                                新增<i class="icon-plus"></i>
-                                            </a>
-                                        </div>
-                                        <div id="form_modal1" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                <h3 id="myModalLabel1">请填写信息</h3>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="#" class="form-horizontal">
-                                                    <div class="control-group"></div>
-                                                    <div class="control-group"></div>
-                                                    <div id="error-alert"></div>
-                                                    <div class="control-group">
-                                                        <label class="control-label">请输入公司名称<span class="required">*</span></label>
-                                                        <div class="controls">
-                                                            <input type="text" id="companyCustomerName" name="companyCustomerName" class="m-wrap medium">
-                                                            <span id="companyNameMsg" class="help-line"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="control-group">
-                                                        <label class="control-label">请输入账号<span class="required">*</span></label>
-                                                        <div class="controls">
-                                                            <input type="text" id="authId" name="authId" class="m-wrap medium">
-                                                            <span id="authIdMsg" class="help-line"></span>
-                                                            <span class="help-block">说明：只能有数字、字母、下划线组成</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="control-group">
-                                                        <label class="control-label">请选择合作公司<span class="required">*</span></label>
-                                                        <div class="controls">
-                                                            <select id="partnerId" name="partnerId" class="medium m-wrap" tabindex="1">
-                                                                <option value="">请选择...</option>
-                                                                <#if deptList??>
-                                                                    <#list partnerList as partner>
-                                                                        <option value="${partner.id}">${partner.name}</option>
-                                                                    </#list>
-                                                                </#if>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="control-group">
-                                                        <label class="control-label">请选择部门<span class="required">*</span></label>
-                                                        <div class="controls">
-                                                            <select id="deptId" name="deptId" class="medium m-wrap" tabindex="1">
-                                                                <option value="">请选择...</option>
-                                                                <#if deptList??>
-                                                                    <#list deptList as dept>
-                                                                        <option value="${dept.id}">${dept.deptName}</option>
-                                                                    </#list>
-                                                                </#if>
-                                                            </select>
-                                                            <span id="deptIdMsg" class="help-inline"></span>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                                                <button class="btn black btn-primary" id="add-btn-black-btn-primary" type="button">提交</button>
-                                            </div>
-                                        </div>
-                                    </div>-->
+
                                         <div class="table-responsive">
                                             <table class="table table-striped table-hover table-bordered table-condensed" id="companySample_2">
                                                 <thead>
@@ -460,8 +289,8 @@
                                                     <th class="table-td-none">balance</th>
                                                     <th class="table-td-none">statusName</th>
                                                     <th class="table-td-none">Ip段</th>
-                                                <#--<th>操作</th>-->
-                                                <#-- <th style="text-align: center; width: 10%;">操作</th>-->
+                                                    <th class="table-td-none">操作</th>
+                                                    <th style="text-align: center; width: 10%;">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -528,35 +357,32 @@
                                                                 <td class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
-                                                                            <ul class="nav pull-left" style="margin-bottom: 0px;">
-                                                                                <li class="dropdown user">
-                                                                                    <a href="javaScript:;" class="dropdown-toggle" data-toggle="dropdown">
-                                                                                        <span class="username">点击查看Ip段</span>
-                                                                                    </a>
-                                                                                    <ul class="dropdown-menu" style="min-width: 250px;">
-                                                                                        <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
-                                                                                            <#list customer.customerIpList as customerIp>
-                                                                                                <li>${customerIp.beginIpRaw!''}-${customerIp.endIpRaw!''}</li>
-                                                                                            </#list>
-                                                                                        <#else >
-                                                                                            <li>无</li>
-                                                                                        </#if>
-                                                                                    </ul>
-                                                                                </li>
-                                                                            </ul><br/>
+                                                                            <#if customer.customerType.id == 1>
+                                                                                <a href="javaScript:;" id="customerIpBar_${customer.id}" onclick="showIp(${customer.id})">点击查看Ip段</a>
+                                                                                <div id="customerIpContent_${customer.id}" class="head-search-display" style="min-width: 150px; background-color: white">
+                                                                                    <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
+                                                                                        <#list customer.customerIpList as customerIp>
+                                                                                            <span>${customerIp.beginIpRaw!''}-${customerIp.endIpRaw!''}</span><br/>
+                                                                                        </#list>
+                                                                                    <#else >
+                                                                                        <span>无</span>
+                                                                                    </#if>
+                                                                                </div>
+                                                                            </#if>
+                                                                            <br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                            <#--<td>
-                                                                <#if company.customerList??>
-                                                                    <#list company.customerList as customer>
-                                                                        <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
-                                                                        |
-                                                                        <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>-->
-                                                            <#--<td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>-->
+                                                                <td class="table-td-none">
+                                                                    <#if company.customerList??>
+                                                                        <#list company.customerList as customer>
+                                                                            <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
+                                                                            |
+                                                                            <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
+                                                                        </#list>
+                                                                    </#if>
+                                                                </td>
+                                                                <td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>
                                                             </tr>
                                                             </#if>
                                                         </#list>
@@ -566,66 +392,6 @@
 
                                             </table>
                                         </div>
-                                    <#-- <div id="form_modal_add_account" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_account" aria-hidden="true">
-                                         <div class="modal-header">
-                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                             <h3 id="myModalLabel_add_account">请填写信息</h3>
-                                         </div>
-                                         <div class="modal-body">
-                                             <form action="#" class="form-horizontal">
-                                                 <div class="control-group"></div>
-                                                 <div class="control-group"></div>
-                                                 <div id="error-alert-account"></div>
-                                                 <div id="authId-account-controls" class="controls" style="display: none;"></div>
-                                                 <div class="control-group">
-                                                     <label class="control-label">请输入账号<span class="required">*</span></label>
-                                                     <div class="controls">
-                                                         <input type="text" id="authId-account" name="authId-account" class="m-wrap medium">
-                                                         <span id="authId-accountMsg" class="help-line"></span>
-                                                         <span class="help-block">说明：只能有数字、字母、下划线组成</span>
-                                                     </div>
-                                                 </div>
-                                             </form>
-                                         </div>
-                                         <div class="modal-footer">
-                                             <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                                             <button class="btn black btn-primary" id="add-account-btn-black-btn-primary" type="button">提交</button>
-                                         </div>
-                                     </div>
-                                     <div id="form_modal_update_balance" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_update_balance" aria-hidden="true">
-                                         <div class="modal-header">
-                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                             <h3 id="myModalLabel_update_balance">请填写信息</h3>
-                                         </div>
-                                         <div class="modal-body">
-                                             <form action="#" class="form-horizontal">
-                                                 <div class="control-group"></div>
-                                                 <div class="control-group"></div>
-                                                 <div id="error_alert_update_balance"></div>
-                                                 <div id="update_balance_customerId" class="controls" style="display: none;"></div>
-                                                 <div id="" class="control-group">
-                                                     <label class="control-label">请输入金额<span class="required">*</span></label>
-                                                     <div class="controls">
-                                                         <input type="text" id="update_balance_amount" name="update_balance_amount" class="m-wrap medium" placeholder="（单位/元）">
-                                                         <span id="update_balance_amountMsg" class="help-line"></span>
-                                                         <span class="help-block">说明：只能输入数字类型并且金额大于0</span>
-                                                     </div>
-                                                 </div>
-                                                 <div id="" class="control-group">
-                                                     <label class="control-label">请选择理由<span class="required">*</span></label>
-                                                     <div class="controls">
-                                                         <select id="update_balance_reasonId" name="update_balance_reasonId" class="medium m-wrap" tabindex="1">
-                                                         </select>
-                                                         <span id="update_balance_reasonIdMsg" class="help-inline"></span>
-                                                     </div>
-                                                 </div>
-                                             </form>
-                                         </div>
-                                         <div class="modal-footer">
-                                             <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                                             <button class="btn black btn-primary" id="update-balance-btn-black-btn-primary" type="button">提交</button>
-                                         </div>
-                                     </div>-->
 
                                     </div>
 
@@ -635,6 +401,193 @@
 
                         </div>
 
+                    </div>
+
+                <#--新增公司-->
+                    <div id="form_modal1" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h3 id="myModalLabel1">请填写信息</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" class="form-horizontal">
+                                <div class="control-group"></div>
+                                <div class="control-group"></div>
+                                <div id="error-alert"></div>
+                                <div class="control-group">
+                                    <label class="control-label">请输入公司名称<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <input type="text" id="companyCustomerName" name="companyCustomerName" class="m-wrap medium">
+                                        <span id="companyNameMsg" class="help-line"></span>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">请输入账号<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <input type="text" id="authId" name="authId" class="m-wrap medium">
+                                        <span id="authIdMsg" class="help-line"></span>
+                                        <span class="help-block">说明：只能有数字、字母、下划线组成</span>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">请选择合作公司<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <select id="partnerId" name="partnerId" class="medium m-wrap" tabindex="1">
+                                            <option value="">请选择...</option>
+                                            <#if deptList??>
+                                                <#list partnerList as partner>
+                                                    <option value="${partner.id}">${partner.name}</option>
+                                                </#list>
+                                            </#if>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">请选择部门<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <select id="deptId" name="deptId" class="medium m-wrap" tabindex="1">
+                                            <option value="">请选择...</option>
+                                            <#if deptList??>
+                                                <#list deptList as dept>
+                                                    <option value="${dept.id}">${dept.deptName}</option>
+                                                </#list>
+                                            </#if>
+                                        </select>
+                                        <span id="deptIdMsg" class="help-inline"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                            <button class="btn black btn-primary" id="add-btn-black-btn-primary" type="button">提交</button>
+                        </div>
+                    </div>
+
+                <#--添加账号-->
+                    <div id="form_modal_add_account" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_account" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h3 id="myModalLabel_add_account">请填写信息</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" class="form-horizontal">
+                                <div class="control-group"></div>
+                                <div class="control-group"></div>
+                                <div id="error-alert-account"></div>
+                                <div id="authId-account-controls" class="controls" style="display: none;"></div>
+                                <div class="control-group">
+                                    <label class="control-label">请输入账号<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <input type="text" id="authId-account" name="authId-account" class="m-wrap medium">
+                                        <span id="authId-accountMsg" class="help-line"></span>
+                                        <span class="help-block">说明：只能有数字、字母、下划线组成</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                            <button class="btn black btn-primary" id="add-account-btn-black-btn-primary" type="button">提交</button>
+                        </div>
+                    </div>
+
+                <#--修改余额-->
+                    <div id="form_modal_update_balance" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_update_balance" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h3 id="myModalLabel_update_balance">请填写信息</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" class="form-horizontal">
+                                <div class="control-group"></div>
+                                <div class="control-group"></div>
+                                <div id="error_alert_update_balance"></div>
+                                <div id="update_balance_customerId" class="controls" style="display: none;"></div>
+                                <div id="" class="control-group">
+                                    <label class="control-label">请输入金额<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <input type="text" id="update_balance_amount" name="update_balance_amount" class="m-wrap medium" placeholder="（单位/元）">
+                                        <span id="update_balance_amountMsg" class="help-line"></span>
+                                        <span class="help-block">说明：只能输入数字类型并且金额大于0</span>
+                                    </div>
+                                </div>
+                                <div id="" class="control-group">
+                                    <label class="control-label">请选择理由<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <select id="update_balance_reasonId" name="update_balance_reasonId" class="medium m-wrap" tabindex="1">
+                                        </select>
+                                        <span id="update_balance_reasonIdMsg" class="help-inline"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                            <button class="btn black btn-primary" id="update-balance-btn-black-btn-primary" type="button">提交</button>
+                        </div>
+                    </div>
+
+                <#--管理产品状态-->
+                    <div id="form_modal_company_api_status" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_company_api_status" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h3 id="myModalLabel_company_api_status">管理产品状态</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="control-group text-center">
+                                <div class="controls">
+                                    <select multiple="multiple" id="my_multi_select">
+
+                                        <option value="1,1">张建宏-1</option>
+
+                                        <option value="2,2">张建宏-2</option>
+
+                                        <option value="3,3">张建宏-3</option>
+
+                                        <option value="4">张建宏-4</option>
+
+                                        <option value="5">张建宏-5</option>
+
+                                        <option value="6">张建宏-6</option>
+
+                                        <option value="7">张建宏-7</option>
+
+                                        <option value="8">张建宏-8</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                            <button class="btn black btn-primary" id="company-api-status-btn-black-btn-primary" type="button">提交</button>
+                        </div>
+                    </div>
+
+                <#--添加Ip-->
+                    <div id="form_modal_add_ip" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_ip" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h3 id="myModalLabel_add_ip">添加Ip</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="control-group text-right">
+                                <a href="#" id="control-group-add-ip-href"><span><i class="icon-plus"></i>点击添加一栏</span></a>
+                            </div>
+                            <div class="control-group text-center" id="control-group-add-ip">
+                                <div>
+                                    请输入正式账号Ip段&nbsp;&nbsp;
+                                    <input class="m-wrap small" name="input_ipv4_begin" type="text"/>
+                                    --
+                                    <input class="m-wrap small" name="input_ipv4_end" type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                            <button class="btn black btn-primary" id="add-ip-btn-black-btn-primary" type="button">提交</button>
+                        </div>
                     </div>
 
                 </div>
@@ -665,6 +618,51 @@
         jQuery(document).ready(function() {
             Company.init();
             CompanyForbid.init();
+
+            /*管理产品状态*/
+            $('#my_multi_select').multiSelect({
+                selectableHeader: "<div>正在使用的产品</div>",
+                selectionHeader: "<div>被禁用的产品</div>"
+                //selectableOptgroup: true
+                /*selectableFooter: "<input type='text' class='search-input' autocomplete='off' placeholder='输入产品名称'>",*/
+                /*selectionFooter: "<input type='text' class='search-input' autocomplete='off' placeholder='输入产品名称'>",*/
+
+            });
+
+            $('#company-api-status-btn-black-btn-primary').on('click',function () {
+                var value = $('#my_multi_select').val();
+                console.log(value);
+
+            });
+
+            /*添加Ip*/
+            $('#control-group-add-ip-href').on('click',function () {
+                $('#control-group-add-ip').append(
+                        "<div>" +
+                        "请输入正式账号Ip段&nbsp;&nbsp;" +
+                        "<input class='m-wrap small' name='input_ipv4_begin' type='text'/>" +
+                        "-- " +
+                        "<input class='m-wrap small' name='input_ipv4_end' type='text'/>"+
+                        "</div>"
+                );
+            });
+
+            $('#control-group-add-ip').live("focus",function () {
+                $('#control-group-add-ip input').ipAddress();
+            });
+
+            $('#add-ip-btn-black-btn-primary').on('click',function () {
+                var begin = [];
+                $("input[name='input_ipv4_begin']").each(function(){
+                    begin.push($.trim($(this).val()));
+                });
+                var end = [];
+                $("input[name='input_ipv4_end']").each(function(){
+                    end.push($.trim($(this).val()));
+                });
+                console.log(begin);
+                console.log(end);
+            });
 
         });
 

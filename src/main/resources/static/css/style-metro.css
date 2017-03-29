@@ -596,6 +596,10 @@ textarea[class*="span"].m-wrap
   width: 120px !important;
 }
 
+.m-wrap.small-big {
+  width: 150px
+}
+
 .m-wrap.medium {
   width: 206px !important;
 }

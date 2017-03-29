@@ -1,10 +1,7 @@
 package org.qydata.mapper;
 
 import org.qydata.dst.CustomerCompanyPartner;
-import org.qydata.entity.Company;
-import org.qydata.entity.CustomerBalanceLog;
-import org.qydata.entity.CustomerBalanceModifyReason;
-import org.qydata.entity.Partner;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -78,5 +75,17 @@ public interface CompanyMapper {
      */
     public boolean addCustomerBalanceLog(CustomerBalanceLog customerBalanceLog)throws Exception;
 
+    /**
+     * 查询所有的产品
+     * @param map
+     * @return
+     */
+    public List<Api> queryApi(Map<String,Object> map);
 
+    /**
+     * 根据公司Id查找公司已拥有权限的Api
+     * @param map
+     * @return
+     */
+    public List<CompanyApi> queryCompanyApiByCompanyId(Map<String,Object> map);
 }

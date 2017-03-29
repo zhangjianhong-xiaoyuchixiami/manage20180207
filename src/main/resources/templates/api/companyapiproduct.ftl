@@ -115,7 +115,7 @@
                                                         <#list companyApiList as company>
                                                         <tr>
                                                             <td data-title="产品类型">${company.apiTypeName}<#if company.subTypeName??>--${company.subTypeName!''}</#if></td>
-                                                            <#if company.companyStatus == -1>
+                                                            <#if company.companyStatus?? && company.companyStatus == -1>
                                                             <td data-title="公司名称" class="font-text-decoration">
                                                             <#else >
                                                             <td data-title="公司名称">

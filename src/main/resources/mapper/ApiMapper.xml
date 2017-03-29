@@ -75,7 +75,7 @@
     </resultMap>
 
     <!--查询产品-->
-    <select id="queryApi" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
+    <select id="queryApi" parameterType="map" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
         SELECT aa.apiId,aa.apiName,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.cost,
         aa.proxyApiId,aa.partnerId,aa.partnerName,aa.proxyApiTypeId,aa.mobileOperatorId,aa.mobileOperatorName,
         aa.status,bb.name proxyApiTypeName,ifnull(cc.minCost,dd.minCost) minCost,
@@ -100,7 +100,7 @@
                 aa.status=#{status}
             </if>
             <if test="vendorId != null and vendorId != ''">
-                aa.vendorId=#{vendorId}
+               AND aa.vendorId=#{vendorId}
             </if>
             <if test="apiTypeId != null and apiTypeId != ''">
                 AND aa.apiTypeId=#{apiTypeId}

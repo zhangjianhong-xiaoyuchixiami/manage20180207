@@ -18,6 +18,7 @@ var Company = function () {
                     '<th>余额</th>' +
                     '<th>状态</th>' +
                     '<th>Ip段</th>' +
+                    '<th>操作</th>' +
                     '</tr>';
 
                 sOut += '<tr>' +
@@ -27,6 +28,7 @@ var Company = function () {
                     '<td>'+aData[10]+'</td>' +
                     '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[12]+'</td>' +
+                    '<td>'+aData[13]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -75,9 +77,9 @@ var Company = function () {
                     { "bVisible": false},  //8 typeName
                     { "bVisible": false},  //9 authId
                     { "bVisible": false },  //10 authPass
-                    { "bVisible": false } //11 balance
-                    /* { "bVisible": false }  //12 操作*/
-                    /* { "bSortable": false}  // 13*/
+                    { "bVisible": false }, //11 balance
+                    { "bVisible": false },  //12 操作
+                    { "bSortable": false}  // 13
                 ],
                 "aaSorting": [[4, 'desc']],
                 "aLengthMenu": [
@@ -162,6 +164,7 @@ var Company = function () {
                             return;
                         }
                         if (result.successMessage != null){
+                            alert("操作成功");
                             window.location.href=window.location.href
                         }
                     }
@@ -204,6 +207,7 @@ var Company = function () {
                             return;
                         }
                         if (result.successMessage != null){
+                            alert("操作成功");
                             window.location.href=window.location.href
                         }
                     }
@@ -246,6 +250,7 @@ var Company = function () {
                             return;
                         }
                         if (result.successMessage != null){
+                            alert("操作成功");
                             window.location.href=window.location.href
                         }
                     }

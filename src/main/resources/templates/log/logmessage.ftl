@@ -50,6 +50,52 @@
 
                             <div class="pull-left margin-right-20 head-search-bottom">
 
+                                <label class="control-label">标题</label>
+
+                                <div class="controls">
+
+                                    <input id="beginDate" name="beginDate" class="m-wrap small-big" type="text">
+
+                                </div>
+
+                            </div>
+                            <div class="pull-left margin-right-20 head-search-bottom">
+
+                                <label class="control-label">请求地址</label>
+
+                                <div class="controls">
+
+                                    <input id="beginDate" name="beginDate" class="m-wrap small-big" type="text">
+
+                                </div>
+
+                            </div>
+                            <div class="pull-left margin-right-20 head-search-bottom">
+
+                                <label class="control-label">请求方式</label>
+
+                                <div class="controls">
+
+                                    <input id="beginDate" name="beginDate" class="m-wrap small-big" type="text">
+
+                                </div>
+
+                            </div>
+
+                            <div class="pull-left margin-right-20 head-search-bottom">
+
+                                <label class="control-label">操作人</label>
+
+                                <div class="controls">
+
+                                    <input id="beginDate" name="beginDate" class="m-wrap small-big" type="text">
+
+                                </div>
+
+                            </div>
+
+                            <div class="pull-left margin-right-20 head-search-bottom">
+
                                 <label class="control-label">创建时间</label>
 
                                 <div class="controls">
@@ -102,7 +148,7 @@
                                         <th>操作后数据</th>
                                         <th>异常</th>
                                         <th>操作开始时间</th>
-                                        <th>操作结束时间</th>
+                                        <th>请求超时</th>
                                         <th>操作人</th>
                                         <th>创建时间</th>
                                     </tr>
@@ -125,7 +171,7 @@
                                                 <td class="table-td-layout-fixed">${log.operationAfterData!'无'}</td>
                                                 <td class="table-td-layout-fixed">${log.error!'无'}</td>
                                                 <td class="table-td-layout-fixed">${(log.beginTime?datetime)!'无'}</td>
-                                                <td class="table-td-layout-fixed">${(log.endTime?datetime)!'无'}</td>
+                                                <td class="table-td-layout-fixed">${log.timeOut!'无'}</td>
                                                 <td class="table-td-layout-fixed">${(log.user.email)!'无'}</td>
                                                 <td class="table-td-layout-fixed">${(log.createTime?datetime)!'无'}</td>
                                             </tr>

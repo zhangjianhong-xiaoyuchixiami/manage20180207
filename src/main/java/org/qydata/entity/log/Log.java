@@ -18,10 +18,10 @@ public class Log implements Serializable {
     private String method;          //请求方式
     private String params;          //提交参数
     private String operationBeforData; //操作前数据
-    private String operationAfterData; //操作后数据
+    private String operationAfterData;
     private String error;        //错误
     private Date beginTime;           //开始时间
-    private Date endTime;         //结束时间
+    private String timeOut;    //请求超时
     private Integer userId;          //用户邮箱
     private Timestamp createTime;
     private User user;
@@ -91,14 +91,6 @@ public class Log implements Serializable {
         this.operationBeforData = operationBeforData;
     }
 
-    public String getOperationAfterData() {
-        return operationAfterData;
-    }
-
-    public void setOperationAfterData(String operationAfterData) {
-        this.operationAfterData = operationAfterData;
-    }
-
     public String getError() {
         return error;
     }
@@ -113,14 +105,6 @@ public class Log implements Serializable {
 
     public void setBeginTime(Date beginTime) {
         this.beginTime = beginTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     public Integer getUserId() {
@@ -153,5 +137,21 @@ public class Log implements Serializable {
 
     public void setLogType(LogType logType) {
         this.logType = logType;
+    }
+
+    public String getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(String timeOut) {
+        this.timeOut = timeOut;
+    }
+
+    public String getOperationAfterData() {
+        return operationAfterData;
+    }
+
+    public void setOperationAfterData(String operationAfterData) {
+        this.operationAfterData = operationAfterData;
     }
 }

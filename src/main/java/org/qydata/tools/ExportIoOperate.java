@@ -24,8 +24,12 @@ public class ExportIoOperate {
         InputStream is = new ByteArrayInputStream(content);
         // 设置response参数，可以打开下载页面
         response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "UTF-8"));
+        response.setContentType("application/octet-stream;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename="+ new String(fileName .getBytes(), "iso-8859-1") + ".xls" );
+
+
+
+
         ServletOutputStream out = null;
         try {
             out = response.getOutputStream();

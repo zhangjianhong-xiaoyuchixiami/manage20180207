@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
-import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiVendor;
 import org.qydata.service.ApiFinanceService;
@@ -344,7 +343,6 @@ public class ApiFinanceController {
      */
     @RequestMapping("/find-all-vendor-record/charge")
     @ResponseBody
-    @SystemControllerLog(description="供应商充值")
     public String chargeApiVendorBalance(Integer vendorIdCharge,String amount,String remark,String chargeDate,Model model)throws Exception{
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
@@ -361,8 +359,12 @@ public class ApiFinanceController {
                 return gson.toJson(map);
             }
         }
-        boolean flag = apiFinanceService.apiVendorChargeLog(vendorIdCharge, Long.parseLong(amount), remark, chargeDate);
-        System.out.println(flag);
+        boolean flag = false;
+        try {
+            flag = apiFinanceService.apiVendorChargeLog(vendorIdCharge, Long.parseLong(amount), remark, chargeDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (flag){
             map.put("successMessage","恭喜你，操作成功！");
         }else {
