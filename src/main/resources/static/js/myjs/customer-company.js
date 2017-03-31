@@ -22,13 +22,13 @@ var Company = function () {
                     '</tr>';
 
                 sOut += '<tr>' +
-                    '<td>'+aData[7]+'</td>' +
                     '<td>'+aData[8]+'</td>' +
                     '<td>'+aData[9]+'</td>' +
                     '<td>'+aData[10]+'</td>' +
                     '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[12]+'</td>' +
                     '<td>'+aData[13]+'</td>' +
+                    '<td>'+aData[14]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -65,6 +65,7 @@ var Company = function () {
 
             var oTable = $('#companySample_1').dataTable({
                 "aoColumns": [
+                    { "bSortable": false},  //0  展开符号
                     { "bSortable": false},  //0  展开符号
                     null,  //1  companyName
                     null,  //2

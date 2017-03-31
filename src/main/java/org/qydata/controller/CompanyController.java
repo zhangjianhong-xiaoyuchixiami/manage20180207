@@ -5,7 +5,6 @@ import net.sf.json.JSONArray;
 import org.qydata.entity.CustomerBalanceModifyReason;
 import org.qydata.entity.User;
 import org.qydata.service.CompanyService;
-import org.qydata.service.CustomerApiService;
 import org.qydata.service.DeptService;
 import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class CompanyController {
 
     @Autowired private DeptService deptService;
     @Autowired private CompanyService companyService;
-    @Autowired private CustomerApiService customerApiService;
+
 
     /**
      * 查找客户
@@ -45,7 +44,6 @@ public class CompanyController {
             map.put("content",content);
         }
         map.put("partnerId",partnerId);
-        model.addAttribute("deptList",deptService.findAllDept());
         model.addAttribute("partnerList",companyService.findAllPartner());
         model.addAttribute("companyList",companyService.findAllCompany(map));
         model.addAttribute("content",content);
@@ -75,7 +73,6 @@ public class CompanyController {
             if (content != null) {
                 map.put("content", content);
             }
-            model.addAttribute("deptList",deptService.findDeptByUserId(user.getId()));
             model.addAttribute("partnerList",companyService.findAllPartner());
             model.addAttribute("companyList",companyService.findAllCompany(map));
             model.addAttribute("content",content);
@@ -88,12 +85,11 @@ public class CompanyController {
      * 新增客户
      * @param companyName
      * @param authId
-     * @param deptId
      * @return
      */
     @RequestMapping(value = "/add-company-customer")
     @ResponseBody
-    public String addCompanyCustomer(String companyName,String authId,Integer partnerId,Integer deptId){
+    public String addCompanyCustomer(String companyName,String authId,Integer partnerId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if(RegexUtil.isNull(companyName)){
@@ -108,11 +104,8 @@ public class CompanyController {
             map.put("authIdMessage","账户格式输入不正确!");
             return gson.toJson(map);
         }
-        if(RegexUtil.isNull(deptId)){
-            map.put("deptMessage","请选择所属部门!");
-            return gson.toJson(map);
-        }
-        boolean flag = companyService.addCompanyCustomer(companyName,authId,partnerId,deptId);
+
+        boolean flag = companyService.addCompanyCustomer(companyName,authId,partnerId);
         if (flag){
             map.put("successMessage","恭喜你，操作成功！");
         }else {
@@ -221,5 +214,9 @@ public class CompanyController {
         }
         return gson.toJson(map);
     }
+
+
+
+
 
 }

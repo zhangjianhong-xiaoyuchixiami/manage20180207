@@ -15,6 +15,7 @@
     <meta content="" name="author" />
     <link rel="stylesheet" type="text/css" href="/css/local/main-response-table.css"/>
     <link rel="stylesheet" type="text/css" href="/css/local/head-search.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/local/bootstrap-multiselect.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>

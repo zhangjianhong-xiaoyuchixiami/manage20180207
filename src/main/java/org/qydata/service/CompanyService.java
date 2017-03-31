@@ -27,11 +27,10 @@ public interface CompanyService {
      * @param companyName
      * @param authId
      * @param partnerId
-     * @param deptId
      * @return
      */
     @Transactional
-    public boolean addCompanyCustomer(String companyName,String authId,Integer partnerId,Integer deptId);
+    public boolean addCompanyCustomer(String companyName,String authId,Integer partnerId);
 
     /**
      * 查找全部的合作公司

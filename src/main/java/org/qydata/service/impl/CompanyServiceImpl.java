@@ -38,7 +38,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean addCompanyCustomer(String companyName,String authId,Integer partnerId,Integer deptId) {
+    public boolean addCompanyCustomer(String companyName,String authId,Integer partnerId) {
         try {
             Company company = new Company();
             company.setName(companyName.trim());
@@ -55,17 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
             customerA.setAuthId(authId.trim());
             customerA.setCompanyId(company.getId());
             customerMapper.insertCustomer(customerA);
-
-            //向部门客户映射表中插入数据
-            CustomerDept customerDeptA = new CustomerDept();
-            customerDeptA.setCustomerId(customerA.getId());
-            customerDeptA.setDeptId(deptId);
-            customerDeptMapper.insertCustomerDept(customerDeptA);
-
-            CustomerDept customerDeptB = new CustomerDept();
-            customerDeptB.setCustomerId(customerB.getId());
-            customerDeptB.setDeptId(deptId);
-            return customerDeptMapper.insertCustomerDept(customerDeptB);
+            return true;
         }catch (Exception e){
             e.printStackTrace();
         }

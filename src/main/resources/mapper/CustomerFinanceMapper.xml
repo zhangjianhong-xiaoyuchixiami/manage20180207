@@ -38,6 +38,7 @@
                 <result column="countTotle" property="countTotle"/>
                 <result column="countSuccess" property="countSuccess"/>
                 <result column="stidSumAmount" property="stidSumAmount"/>
+                <result column="nostidSumAmount" property="nostidSumAmount" />
             </association>
         </collection>
     </resultMap>
@@ -105,7 +106,7 @@
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT aa.id,aa.balance,aa.companyId,aa.companyName,aa.partnerId,aa.partnerName,
         aa.apiTypeId,aa.apiTypeName,aa.subTypeId,aa.subTypeName,aa.price,aa.enabled,aa.floor,aa.companyStatus,aa.sumAmount,aa.countTotle,
-        aa.countSuccess,aa.stidSumAmount,bb.chargeWeekTotleAmount,cc.chargeMonthTotleAmount,
+        aa.countSuccess,aa.stidSumAmount,aa.nostidSumAmount,bb.chargeWeekTotleAmount,cc.chargeMonthTotleAmount,
         dd.consumeWeekTotleAmount,ee.consumeMonthTotleAmount,ff.chargeTotleAmount,gg.consumeTotleAmount,
         ((-aa.floor)+ifnull(gg.consumeTotleAmount,0)+ifnull(ff.chargeTotleAmount,0)) surplusFloor
         FROM
@@ -113,7 +114,7 @@
         SELECT yy.id,yy.balance,yy.companyId,yy.companyName,yy.partnerId,yy.partnerName,yy.floor,yy.apiTypeId,
         yy.apiTypeName,yy.subTypeId,yy.subTypeName,yy.price,yy.enabled,yy.companyStatus,ifnull(ww.sumAmount,xx.sumAmount) sumAmount,
         ifnull(ww.countTotle,xx.countTotle) countTotle,ifnull(ww.countSuccess,xx.countSuccess) countSuccess,
-        ww.sumAmount stidSumAmount
+        ww.sumAmount stidSumAmount,xx.sumAmount nostidSumAmount
         FROM
         (
             SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,a.companyStatus,

@@ -421,7 +421,9 @@
                                                                         <#if companyApi.companyApiCount??>
                                                                             <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
                                                                                 0</br>
-                                                                            <#else >
+                                                                            <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
+                                                                                0</br>
+                                                                            <#else>
                                                                             ${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}<br/>
                                                                             </#if>
                                                                         <#else >
@@ -436,7 +438,9 @@
                                                                         <#if companyApi.companyApiCount??>
                                                                             <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
                                                                                 0</br>
-                                                                            <#else >
+                                                                            <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
+                                                                                0</br>
+                                                                            <#else>
                                                                             ${(companyApi.companyApiCount.countTotle)!'0'}<br/>
                                                                             </#if>
                                                                         <#else >
@@ -451,8 +455,10 @@
                                                                         <#if companyApi.companyApiCount??>
                                                                             <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
                                                                                 0</br>
-                                                                            <#else >
-                                                                            ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
+                                                                            <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
+                                                                                0</br>
+                                                                            <#else>
+                                                                                ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
                                                                             </#if>
                                                                         <#else >
                                                                             0</br>

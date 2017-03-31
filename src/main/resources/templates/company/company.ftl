@@ -99,16 +99,30 @@
 
                                         <div class="clearfix margin-bottom-5">
                                             <div class="btn-group">
-                                                <a class="btn black" id="add-partner" href="#form_modal1" data-toggle="modal">
-                                                    新增客户<i class="icon-plus"></i>
+                                                <a class="btn black" style="margin-right: 10px;" id="add-partner" href="#form_modal1" data-toggle="modal">
+                                                    新增客户
+                                                </a>
+                                                <a class="btn red" style="margin-right: 10px;" href="#">
+                                                    批量禁用客户
+                                                </a>
+
+                                                <a class="btn blue" style="margin-right: 10px;" href="#form_modal_add_api" data-toggle="modal">
+                                                    批量分配产品权限
                                                 </a>
                                             </div>
+                                        <#-- <p>
+                                             <button type="button" class="btn"><font><font>默认</font></font></button>
+                                             <button type="button" class="btn red"><font><font>主</font></font></button>
+                                             <button type="button" class="btn blue"><font><font>信息</font></font></button>
+                                             <button type="button" class="btn green"><font><font>成功</font></font></button>
+                                         </p>-->
                                         </div>
 
                                         <div class="table-responsive">
                                             <table class="table table-striped table-hover table-bordered table-condensed" id="companySample_1">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox"/></th>
                                                     <th>公司名称</th>
                                                     <th>信用额度</th>
                                                     <th>剩余信用额度</th>
@@ -137,6 +151,7 @@
                                                         <#list companyList as company>
                                                             <#if company.companyStatus == 0>
                                                             <tr>
+                                                                <td><input type="checkbox"/></td>
                                                                 <td data-title="公司名称">${company.companyName!''}</td>
                                                                 <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
                                                                 <td data-title="剩余信用额度">${(company.surplusFloor/100.0)?c}</td>
@@ -189,12 +204,13 @@
                                                                 <td class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
-                                                                        <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
-                                                                        <span>
-                                                                        <#else >
-                                                                        <span class="warning">
-                                                                        </#if>
-                                                                            ${(customer.customerStatus.name)!''}</span><br/>
+                                                                            <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
+                                                                            <span>
+                                                                            <#else >
+                                                                            <span class="warning">
+                                                                            </#if>
+                                                                        ${(customer.customerStatus.name)!''}
+                                                                        </span><br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
@@ -205,16 +221,15 @@
                                                                                 <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
                                                                                     <a href="javaScript:;" id="customerIpBar_${customer.id}" onclick="showIp(${customer.id})">点击查看Ip段</a>
                                                                                     <div id="customerIpContent_${customer.id}" class="head-search-display" style="min-width: 150px; background-color: white">
-                                                                                        <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
-                                                                                            <#list customer.customerIpList as customerIp>
-                                                                                                <span>${customerIp.beginIpRaw!''}-${customerIp.endIpRaw!''}</span><br/>
-                                                                                            </#list>
-                                                                                        <#else >
-                                                                                            <span>无</span>
-                                                                                        </#if>
+
+                                                                                    <#list customer.customerIpList as customerIp>
+                                                                                         <span>${customerIp.beginIpRaw!''}-${customerIp.endIpRaw!''}</span>
+                                                                                         <span style="margin-left: 10px;"><a href="#" class="warning">删除</a></span>
+                                                                                         <br/>
+                                                                                     </#list>
                                                                                     </div>
                                                                                 <#else >
-                                                                                <span class="warning">暂无Ip</span>
+                                                                                    <span class="warning">暂无Ip</span>
                                                                                 </#if>
                                                                             </#if>
                                                                             <br/>
@@ -227,19 +242,31 @@
                                                                             <#if customer.customerType.id == 1>
                                                                                 <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
                                                                                 |
-                                                                                <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a>
+                                                                              <#--  <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a>
+                                                                                |-->
+                                                                                <a href="#form_modal_add_ip" id="add_ip" onclick="consumeBalance(${customer.id})" data-toggle="modal">添加Ip</a>
                                                                                 |
-                                                                                <a href="#form_modal_add_ip" id="add_ip" onclick="consumeBalance(${customer.id})" data-toggle="modal">添加Ip</a><br/>
+                                                                                <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
+                                                                                    <a href="#" class="warning">禁用</a><br/>
+                                                                                <#else >
+                                                                                    <a href="#">启用</a><br/>
+                                                                                </#if>
                                                                             <#else >
                                                                                 <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
                                                                                 |
-                                                                                <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
+                                                                               <#-- <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a>
+                                                                                |-->
+                                                                                <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
+                                                                                    <a href="#" class="warning">禁用</a><br/>
+                                                                                <#else >
+                                                                                    <a href="#">启用</a><br/>
+                                                                                </#if>
                                                                             </#if>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
                                                                 <td>
-                                                                    <a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">分配产品权限</a>|
+                                                                    <a href="#form_modal_add_api" onclick="addAccount(${company.companyId})" data-toggle="modal">分配产品权限</a>|
                                                                     <a href="#form_modal_company_api_status" data-toggle="modal">管理产品状态</a>
                                                                 </td>
                                                             </tr>
@@ -434,26 +461,12 @@
                                     <div class="controls">
                                         <select id="partnerId" name="partnerId" class="medium m-wrap" tabindex="1">
                                             <option value="">请选择...</option>
-                                            <#if deptList??>
+                                            <#if partnerList??>
                                                 <#list partnerList as partner>
                                                     <option value="${partner.id}">${partner.name}</option>
                                                 </#list>
                                             </#if>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">请选择部门<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <select id="deptId" name="deptId" class="medium m-wrap" tabindex="1">
-                                            <option value="">请选择...</option>
-                                            <#if deptList??>
-                                                <#list deptList as dept>
-                                                    <option value="${dept.id}">${dept.deptName}</option>
-                                                </#list>
-                                            </#if>
-                                        </select>
-                                        <span id="deptIdMsg" class="help-inline"></span>
                                     </div>
                                 </div>
                             </form>
@@ -590,6 +603,59 @@
                         </div>
                     </div>
 
+                <#--添加Api-->
+                    <div id="form_modal_add_api" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabell_add_api" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h3 id="myModalLabell_add_api">分配产品权限</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="control-group text-right">
+                                <a href="#" id="control-group-add-api-href"><span><i class="icon-plus"></i>点击添加一栏</span></a>
+                            </div>
+                            <div id="add-api">
+                                <div style="float: left">
+                                    <div class="control-group">
+                                        <label class="control-label">产品类型</label>
+                                        <div class="controls">
+                                        <#--<select data-placeholder="请选择" class="chosen" multiple="multiple" tabindex="6">
+                                            <option value=""></option>
+                                            <option>三要素--联通</option>
+                                            <option>三要素--移动</option>
+                                            <option>三要素--电信</option>
+                                            <option>二要素--联通</option>
+                                            <option>二要素--移动</option>
+                                            <option>二要素--电信</option>
+                                            <option>银行卡三要素</option>
+                                        </select>-->
+
+                                            <select class="multiselect" id="multiselect" multiple="multiple">
+                                                <option value="cheese">Cheese</option>
+                                                <option value="tomatoes">Tomatoes</option>
+                                                <option value="mozarella">Mozzarella</option>
+                                                <option value="mushrooms">Mushrooms</option>
+                                                <option value="pepperoni">Pepperoni</option>
+                                                <option value="onions">Onions</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">产品价格</label>
+                                        <div class="controls">
+                                            <input type="text" id="price" name="price" class="m-wrap medium">
+                                            <span id="priceMsg" class="help-inline"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                            <button class="btn black btn-primary" id="add-ip-btn-black-btn-primary" type="button">提交</button>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -613,6 +679,8 @@
     <script src="/js/myjs/customer-company-forbid.js"></script>
 
     <script src="/js/oldlocal/company.js"></script>
+
+    <script src="/js/locales/bootstrap-multiselect.js"></script>
 
     <script type="text/javascript">
         jQuery(document).ready(function() {
@@ -664,9 +732,33 @@
                 console.log(end);
             });
 
+            /* $('#control-group-add-api-href').on('click',function () {
+
+                 $('#add-api').append(
+                         "<div style='float: left'>" +
+                         "<div class='control-group'>" +
+                         "<label class='control-label'>产品类型</label>" +
+                         "<div class='controls'>" +
+                         "<select data-placeholder='请选择' class='chosen' multiple='multiple'>" +
+                         "</select>" +
+                         "</div>" +
+                         "</div>" +
+                         "<div class='control-group'>" +
+                         "<label class='control-label'>产品价格</label>" +
+                         "<div class='controls'>" +
+                         "<input type='text' class='m-wrap medium'>" +
+                         "</div>" +
+                         "</div>" +
+                         "</div>"
+                 );
+             });*/
+
+            $('#multiselect').multiselect();
+
         });
 
     </script>
+
 
     </#if>
 
