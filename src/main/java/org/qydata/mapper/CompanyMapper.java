@@ -76,16 +76,37 @@ public interface CompanyMapper {
     public boolean addCustomerBalanceLog(CustomerBalanceLog customerBalanceLog)throws Exception;
 
     /**
-     * 查询所有的产品
-     * @param map
-     * @return
-     */
-    public List<Api> queryApi(Map<String,Object> map);
-
-    /**
      * 根据公司Id查找公司已拥有权限的Api
      * @param map
      * @return
      */
     public List<CompanyApi> queryCompanyApiByCompanyId(Map<String,Object> map);
+
+    /**
+     * 禁用产品权限
+     * @param id
+     * @return
+     */
+    public boolean banCompanyApi(Integer id);
+
+    /**
+     * 解禁产品权限
+     * @param id
+     * @return
+     */
+    public boolean unBanCompanyApi(Integer id);
+
+    /**
+     * 根据账号Id查找Ip
+     * @param customerId
+     * @return
+     */
+    public List<CustomerIp> queryCustomerIpById(Integer customerId);
+
+    /**
+     * 根据Id删除Ip
+     * @param id
+     * @return
+     */
+    public boolean deleteIpById(Integer id);
 }

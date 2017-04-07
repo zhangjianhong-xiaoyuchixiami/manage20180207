@@ -258,6 +258,52 @@ var Company = function () {
                 });
             });
 
+            /*状态正常全选操作*/
+            jQuery('#companySample_1 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            jQuery('#companySample_1_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#companySample_1_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+
+            /*状态正常禁用公司操作*/
+            $("#batchBanCompany").on('click',function () {
+
+                var companyId =[];//定义一个数组
+                $('input[name="checkBoxCompanyId"]:checked').each(function(){
+                    companyId.push($.trim($(this).val()));
+                });
+
+                if (companyId == null || companyId == ""){
+                    alert("请先选择要禁用的公司")
+                }else {
+                    $.ajax({
+                        type:'post',
+                        url:"/company//ban",
+                        data:{"companyId": companyId},
+                        dataType:'json',
+                        success:function(data){
+                            if(data!=null && data.result=="ok"){
+                                alert("操作成功");
+                                window.location.href=window.location.href;
+                            }else{
+                                alert("操作失败");
+                                window.location.href=window.location.href;
+                            }
+                        }
+                    });
+                }
+            });
+
 
             /*左侧导航*/
             $('#customerManage').addClass('active');

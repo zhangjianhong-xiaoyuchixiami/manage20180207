@@ -37,9 +37,20 @@
         </collection>
     </resultMap>
 
-    <resultMap id="ApiType_Map" type="org.qydata.entity.ApiType">
-        <result column="apiTypeId" property="id"/>
-        <result column="apiTypeName" property="name"/>
+    <resultMap id="CompanyApi_ApiType_Map" type="org.qydata.entity.CompanyApi">
+        <result column="id" property="id"/>
+        <result column="companyId" property="companyId"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="sunTypeId" property="sunTypeId"/>
+        <result column="price" property="price"/>
+        <result column="enabled" property="enabled"/>
+        <result column="createTime" property="createTime"/>
+        <association property="apiType" javaType="org.qydata.entity.ApiType">
+            <result column="apiTypeName" property="name"/>
+        </association>
+        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+            <result column="subTypeName" property="name"/>
+        </association>
     </resultMap>
 
     <!--查找客户信息-->
@@ -145,10 +156,34 @@
         VALUES(#{customerId},#{amount},#{reasonId},sysdate())
     </insert>
 
-    <select id="queryApi" parameterType="map" resultMap="ApiType_Map">
-        SELECT DISTINCT(a.apiTypeId),a.apiTypeName,a.mobileOperatorId,a.mobileOperatorName
-        FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
-        WHERE status=0
-        ORDER BY a.apiTypeId ASC
+    <!--根据公司Id查找公司已拥有权限的Api-->
+    <select id="queryCompanyApiByCompanyId" parameterType="map" resultMap="CompanyApi_ApiType_Map">
+        SELECT a.id,a.companyId,a.apiTypeId,a.subTypeId,a.price,a.enabled,a.createTime,
+        a.apiTypeName,a.subTypeName
+        FROM qyfinance.bkvwCompanyApi a
+        WHERE a.companyId=#{companyId}
+        ORDER BY a.enabled DESC
     </select>
+
+    <!--禁用产品权限-->
+    <update id="banCompanyApi" parameterType="int">
+        UPDATE qydata.CompanyApi SET enabled=0 WHERE id=#{param}
+    </update>
+
+    <!--解禁产品权限-->
+    <update id="unBanCompanyApi" parameterType="int">
+        UPDATE qydata.CompanyApi SET enabled=1 WHERE id=#{param}
+    </update>
+
+    <!--根据账号Id查找Ip-->
+    <select id="queryCustomerIpById" parameterType="int" resultType="org.qydata.entity.CustomerIp">
+        SELECT id,customerId,beginIpRaw,endIpRaw
+        FROM qyfinance.bkvwCustomerIp
+        WHERE customerId=#{param}
+    </select>
+
+    <!--根据Id删除Ip-->
+    <delete id="deleteIpById" parameterType="int">
+        DELETE FROM qydata.CustomerIp WHERE id=#{param}
+    </delete>
 </mapper>

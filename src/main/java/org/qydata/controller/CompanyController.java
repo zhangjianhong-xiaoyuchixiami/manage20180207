@@ -2,10 +2,11 @@ package org.qydata.controller;
 
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.CustomerBalanceModifyReason;
+import org.qydata.entity.CustomerIp;
 import org.qydata.entity.User;
 import org.qydata.service.CompanyService;
-import org.qydata.service.DeptService;
 import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ import java.util.Map;
 @RequestMapping(value = "/company")
 public class CompanyController {
 
-    @Autowired private DeptService deptService;
+
     @Autowired private CompanyService companyService;
 
 
@@ -216,7 +217,144 @@ public class CompanyController {
     }
 
 
+    /**
+     * 给账号添加IP
+     * @param customerId
+     * @param request
+     * @return
+     */
+    @RequestMapping("/customer/add/ip")
+    @ResponseBody
+    public String addCustomerIp(Integer customerId,HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        String beginIp [] = request.getParameterValues("beginIp[]");
+        String endIp [] = request.getParameterValues("endIp[]");
+        if (companyService.addCustomerIp(customerId,beginIp,endIp)){
+            map.put("success","操作成功");
+            return gson.toJson(map);
+        }
+        map.put("fail","添加失败，请检查你的操作");
+        return gson.toJson(map);
+    }
 
+    /**
+     * 禁用账号
+     * @param customerId
+     * @return
+     */
+    @RequestMapping("/customer/ban")
+    @ResponseBody
+    public String customerBan(Integer customerId){
 
+        return "";
+    }
 
+    /**
+     * 解禁账号
+     * @param customerId
+     * @return
+     */
+    @RequestMapping("/customer/unban")
+    @ResponseBody
+    public String customerUnBan(Integer customerId){
+
+        return "";
+    }
+
+    /**
+     * 禁用公司
+     * @return
+     */
+    @RequestMapping("/ban")
+    @ResponseBody
+    public String companyBan(HttpServletRequest request){
+        String [] companyId = request.getParameterValues("companyId[]");
+        for (int i=0; i<companyId.length; i++){
+            System.out.println(companyId[i]);
+        }
+        return "";
+    }
+
+    /**
+     * 解禁公司
+     * @param companyId
+     * @return
+     */
+    @RequestMapping("/unban")
+    @ResponseBody
+    public String companyUnBan(Integer companyId){
+
+        return "";
+    }
+
+    /**
+     * 管理产品权限
+     * @param companyId
+     * @return
+     */
+    @RequestMapping("/find-company-api")
+    @ResponseBody
+    public String queryCompanyApiByCompanyId(Integer companyId,String aoData){
+        System.out.println(companyId);
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap<>();
+        map.put("companyId",companyId);
+        List<CompanyApi> companyApiList = companyService.queryCompanyApiByCompanyId(map);
+        return gson.toJson(companyApiList);
+    }
+
+    /**
+     * 禁用产品权限
+     * @param id
+     * @return
+     */
+    @RequestMapping("/ban-api")
+    @ResponseBody
+    public String banCompanyApiById(Integer id){
+        companyService.banCompanyApi(id);
+        return "";
+    }
+
+    /**
+     * 解禁产品权限
+     * @param id
+     * @return
+     */
+    @RequestMapping("/unban-api")
+    @ResponseBody
+    public String unBanCompanyApiById(Integer id){
+        companyService.unBanCompanyApi(id);
+        return "";
+    }
+
+    /**
+     * 根据账号Id查询Ip
+     * @param customerId
+     * @return
+     */
+    @RequestMapping("/customer/find-ip")
+    @ResponseBody
+    public String queryCustomerIpById(Integer customerId){
+        Gson gson = new Gson();
+        List<CustomerIp> customerIpList = companyService.queryCustomerIpById(customerId);
+        return gson.toJson(customerIpList);
+    }
+
+    /**
+     * 根据Id删除Ip
+     * @param id
+     * @return
+     */
+    @RequestMapping("/customer/delete-ip")
+    @ResponseBody
+    public String deleteIpById(Integer id){
+        companyService.deleteIpById(id);
+        return "";
+    }
+
+    @RequestMapping("/edit")
+    public String edit(){
+        return "/test/table_editable";
+    }
 }

@@ -1,7 +1,9 @@
 package org.qydata.service;
 
 import org.qydata.dst.CustomerCompanyPartner;
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.CustomerBalanceModifyReason;
+import org.qydata.entity.CustomerIp;
 import org.qydata.entity.Partner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,51 +66,47 @@ public interface CompanyService {
     @Transactional
     public boolean updateCustomerBalance(Integer customerId,Integer reason,Long amount);
 
+    /**
+     * 给正式账号添加Ip
+     * @param begIp
+     * @param endIp
+     * @return
+     */
+    public boolean addCustomerIp(Integer customerId,String [] begIp,String [] endIp);
 
+    /**
+     * 根据公司Id查找公司已拥有权限的Api
+     * @param map
+     * @return
+     */
+    public List<CompanyApi> queryCompanyApiByCompanyId(Map<String,Object> map);
 
-//    /**
-//     * 查询供应商Api所有数据
-//     * @return
-//     */
-//    public List<Api> findAllApi(String companyId)throws Exception;
-//
-//    /**
-//     * 插入
-//     * @param price
-//     * @param companyId
-//     * @param apiId
-//     * @param enabled
-//     * @return
-//     */
-//    @Transactional
-//    public boolean insertCustomerApi(String companyId, String price, String apiId, String enabled)throws Exception;
-//
-//    /**
-//     * 根据客户Id查找指定客户的所有CustomerApi
-//     * @param map
-//     * @return
-//     */
-//    public PageModel<CustomerApi> findAllCustomerApiByCompanyIdOne(Map<String,Object> map)throws Exception;
-//    /**
-//     * 根据Id查找
-//     * @param apiId
-//     * @return
-//     */
-//    public CustomerApi findById(String apiId,String companyId)throws Exception;
-//    /**
-//     * 根据Id修改
-//     * @return
-//     */
-//    @Transactional
-//    public boolean updateCustomerApiById(String beforApiId,String companyId,String price,String afterApiId,String enabled)throws Exception;
-//
-//    /**
-//     * 根据companyId查询对应的CustomerApi
-//     * @param map
-//     * @return
-//     * @throws Exception
-//     */
-//    public PageModel<CustomerApiInfo> findAllCustomerApiByCompanyId(Map<String,Object> map) throws Exception;
+    /**
+     * 禁用产品权限
+     * @param id
+     * @return
+     */
+    public boolean banCompanyApi(Integer id);
 
+    /**
+     * 解禁产品权限
+     * @param id
+     * @return
+     */
+    public boolean unBanCompanyApi(Integer id);
+
+    /**
+     * 根据账号Id查找Ip
+     * @param customerId
+     * @return
+     */
+    public List<CustomerIp> queryCustomerIpById(Integer customerId);
+
+    /**
+     * 根据Id删除Ip
+     * @param id
+     * @return
+     */
+    public boolean deleteIpById(Integer id);
 
 }
