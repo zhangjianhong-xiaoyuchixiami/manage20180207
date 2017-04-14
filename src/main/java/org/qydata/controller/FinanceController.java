@@ -9,7 +9,8 @@ import org.qydata.dst.CustomerApiVendor;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.User;
 import org.qydata.service.CustomerFinanceService;
-import org.qydata.service.UserService;
+import org.qydata.service.PowerUserService;
+import org.qydata.service.RoleService;
 import org.qydata.tools.CalendarTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,8 @@ import static java.lang.Integer.parseInt;
 public class FinanceController {
 
     @Autowired private CustomerFinanceService customerFinanceService;
-    @Autowired private UserService userService;
+    @Autowired private RoleService roleService;
+    @Autowired private PowerUserService powerUserService;
     /**
      * 查找公司财务账单
      * @param model
@@ -141,7 +143,7 @@ public class FinanceController {
      */
     @RequestMapping(value = ("/find-all-customer-by-dept-id"))
     public ModelAndView queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,String dead,Model model)throws Exception{
-        User user = userService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
+        User user = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
         List deptList = new ArrayList();
         Map<String, Object> map = new HashMap<>();
         if (user.getDept().size() > 0) {
@@ -330,6 +332,21 @@ public class FinanceController {
         model.addAttribute("apiVendorId",apiVendorId);
         model.addAttribute("companyName",companyName);
         return new ModelAndView("/finance/customerApiConsumeRecord");
+    }
+
+    /**
+     * 二级级联
+     * @return
+     */
+    @RequestMapping("/find-api-vendor-by-api-type-id")
+    @ResponseBody
+    public String findApiVendorByApiTypeId(Integer apiTypeId,Integer customerId){
+        Map<String, Object> map = new HashedMap();
+        map.put("customerId", customerId);
+        map.put("apiTypeId", apiTypeId);
+        List<ApiVendor> vendorList = customerFinanceService.queryApiVendorByCustomerId(map);
+        JSONArray jsonArray = JSONArray.fromObject(vendorList);
+        return jsonArray.toString();
     }
 
 

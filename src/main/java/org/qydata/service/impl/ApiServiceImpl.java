@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.Company;
@@ -19,6 +20,7 @@ public class ApiServiceImpl implements ApiService {
     @Autowired private ApiMapper apiMapper;
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryApi(Map<String,Object> map) {
         Map<String,Object> mapValue = new HashMap<>();
         Map<String,Object> mapValueDead = new HashMap<>();
@@ -52,6 +54,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @DataSourceService
     public List<ApiType> queryApiType() {
         try {
             return apiMapper.queryApiType();
@@ -62,6 +65,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @DataSourceService
     public List<ApiVendor> queryApiVendor() {
         try {
             return apiMapper.queryApiVendor();
@@ -72,6 +76,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @DataSourceService
     public List<ApiVendor> queryApiVendorByApiTypeId(Integer id) {
         try {
             return apiMapper.queryApiVendorByApiTypeId(id);
@@ -82,6 +87,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryApiByCompanyId(Map<String, Object> map) {
         Map<String,Object> mapValue = new HashMap<>();
         Map<String,Object> mapValueDead = new HashMap<>();
@@ -115,6 +121,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @DataSourceService
     public List<Company> queryCompany() {
         try {
             return apiMapper.queryCompany();

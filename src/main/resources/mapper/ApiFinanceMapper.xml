@@ -279,11 +279,37 @@
                 SELECT sum(cost) consumeTotleAmount,apiId
                 FROM qyfinance.bkvwApiRequestLog
                 WHERE ok=1
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                    AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                    AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                     ]]>
+                </if>
                 GROUP BY apiId
             ) dd ON aa.id=dd.apiId
             GROUP BY aa.vendorId,aa.vendorName
         ) ee
-        LEFT JOIN qyfinance.bkvwApiVendorBalance ff ON ee.vendorId=ff.vendorId
+        LEFT JOIN
+                (
+                    SELECT eee.vendorId,eee.vendorName,eee.consumeTotleAmount,ifnull((fff.balance-eee.consumeTotleAmount),-eee.consumeTotleAmount) balance
+                    FROM (
+                    SELECT aaa.vendorId,aaa.vendorName,sum(ddd.consumeTotleAmount) consumeTotleAmount
+                    FROM qyfinance.bkvwApi aaa
+                    LEFT JOIN
+                    (
+                    SELECT sum(cost) consumeTotleAmount,apiId
+                    FROM qyfinance.bkvwApiRequestLog
+                    WHERE ok=1
+                    GROUP BY apiId
+                    ) ddd ON aaa.id=ddd.apiId
+                    GROUP BY aaa.vendorId,aaa.vendorName
+                    ) eee
+                    LEFT JOIN qyfinance.bkvwApiVendorBalance fff ON eee.vendorId=fff.vendorId
+                ) ff ON ee.vendorId=ff.vendorId
         LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
         LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner hh ON ee.vendorId=hh.vendorId
         <where>
@@ -369,6 +395,16 @@
                 SELECT sum(cost) consumeTotleAmount,apiId
                 FROM qyfinance.bkvwApiRequestLog
                 WHERE ok=1
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                     ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                     ]]>
+                </if>
                 GROUP BY apiId
             ) dd ON aa.id=dd.apiId
             GROUP BY aa.vendorId,aa.vendorName

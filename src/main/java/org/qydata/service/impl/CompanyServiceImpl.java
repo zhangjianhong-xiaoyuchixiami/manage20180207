@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.*;
 import org.qydata.mapper.CompanyMapper;
@@ -27,6 +28,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired  private CustomerMapper customerMapper;
 
     @Override
+    @DataSourceService
     public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {
         try {
             return companyMapper.findAllCompany(map);
@@ -37,6 +39,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @DataSourceService
     public boolean addCompanyCustomer(String companyName,String authId,Integer partnerId) {
         try {
             Company company = new Company();
@@ -62,6 +65,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @DataSourceService
     public List<Partner> findAllPartner() {
         try {
             return companyMapper.findAllPartner();
@@ -72,6 +76,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @DataSourceService
     public boolean addCustomer(String authId, Integer companyId) {
         try {
             Integer deptId = companyMapper.findDeptIdByCompanyId(companyId);
@@ -105,6 +110,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @DataSourceService
     public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list) {
         try {
             return companyMapper.findBalanceReason(list);
@@ -115,6 +121,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @DataSourceService
     public boolean updateCustomerBalance(Integer customerId, Integer reason, Long amount) {
         try {
             CustomerBalanceLog customerBalanceLog = new CustomerBalanceLog();
@@ -138,6 +145,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @DataSourceService
     public boolean addCustomerIp(Integer customerId,String[] begIp, String[] endIp) {
         try {
             final String uri = "https://api.qydata.org:9000/customer/ip/add";
@@ -158,26 +166,31 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @DataSourceService
     public List<CompanyApi> queryCompanyApiByCompanyId(Map<String, Object> map) {
         return companyMapper.queryCompanyApiByCompanyId(map);
     }
 
     @Override
+    @DataSourceService
     public boolean banCompanyApi(Integer id) {
         return companyMapper.banCompanyApi(id);
     }
 
     @Override
+    @DataSourceService
     public boolean unBanCompanyApi(Integer id) {
         return companyMapper.unBanCompanyApi(id);
     }
 
     @Override
+    @DataSourceService
     public List<CustomerIp> queryCustomerIpById(Integer customerId) {
         return companyMapper.queryCustomerIpById(customerId);
     }
 
     @Override
+    @DataSourceService
     public boolean deleteIpById(Integer id) {
         return companyMapper.deleteIpById(id);
     }

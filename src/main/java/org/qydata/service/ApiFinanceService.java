@@ -39,7 +39,7 @@ public interface ApiFinanceService {
      * @return
      */
     @Transactional
-    public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate)throws Exception;
+    public boolean updateApiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate)throws Exception;
 
     /**
      * 查询Api类型

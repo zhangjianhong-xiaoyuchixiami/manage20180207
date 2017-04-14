@@ -41,10 +41,6 @@ var CustomerCharge = function () {
 
             });
 
-            $('.customer_charge').change(function () {
-                $(this).submit();
-            });
-
         }
 
     };

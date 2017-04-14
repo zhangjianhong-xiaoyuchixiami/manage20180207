@@ -1,10 +1,16 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.Role;
+import org.qydata.entity.User;
+import org.qydata.entity.UserDept;
 import org.qydata.entity.UserRole;
+import org.qydata.mapper.DeptMapper;
 import org.qydata.mapper.RoleMapper;
+import org.qydata.mapper.UserMapper;
 import org.qydata.service.RoleService;
 import org.qydata.tools.IpTool;
+import org.qydata.tools.Md5Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,20 +24,24 @@ import java.util.Map;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
-    private RoleMapper roleMapper;
-
+    @Autowired private UserMapper userMapper;
+    @Autowired private RoleMapper roleMapper;
+    @Autowired private DeptMapper deptMapper;
     @Override
+    @DataSourceService
     public List<Role> findAllRole() throws Exception {
         return roleMapper.findAllRole();
     }
 
     @Override
+    @DataSourceService
     public List<UserRole> findAllRoleByUsername(Integer userId) throws Exception {
         return roleMapper.findAllRoleByUsername(userId);
     }
 
+
     @Override
+    @DataSourceService
     public boolean addRoleUser(Integer userId,String [] roleId) throws Exception {
         if (roleId != null && roleId.length>0) {
             Integer[] temp = IpTool.intArray(roleId);
@@ -44,4 +54,68 @@ public class RoleServiceImpl implements RoleService {
             return roleMapper.deleteUserRoleByUserId(userId );
         }
     }
+
+    @Override
+    @DataSourceService
+    public boolean addUser(User user) throws Exception {
+        User userA = new User();
+        userA.setEmail(user.getEmail());
+        userA.setPassword(Md5Tools.md5(user.getEmail().trim()+"123456"));
+        userA.setStatus(user.getStatus());
+        userA.setTypeId(user.getTypeId());
+        try{
+            userMapper.addUser(userA);
+            if(user.getTypeId() == 1){
+                roleMapper.addRoleSuperUser(userA.getId());
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    @DataSourceService
+    public boolean addUserCommon(User user,String deptId) throws Exception {
+        User userA = new User();
+        userA.setPassword(Md5Tools.md5(user.getEmail().trim()+"123456"));
+        userA.setStatus(user.getStatus());
+        userMapper.addUserCommon(userA);
+        UserDept userDept = new UserDept();
+        userDept.setUserId(userA.getId());
+        userDept.setDeptId(Integer.parseInt(deptId));
+        return deptMapper.addUserDeptById(userDept);
+    }
+
+    @Override
+    @DataSourceService
+    public boolean updatePassword(Integer userId,String newPassword) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId",userId);
+        map.put("newPassword",newPassword);
+        return userMapper.updatePassword(map);
+    }
+
+    @Override
+    @DataSourceService
+    public boolean resetPassword(Integer userId) throws Exception {
+        String password = Md5Tools.md5(userMapper.findUserByUsername(userId).getEmail()+"123456");
+        return userMapper.resetPassword(userId,password);
+    }
+
+    @Override
+    @DataSourceService
+    public boolean updateStatusStart(Integer userId) throws Exception {
+        return userMapper.updateStatusStart(userId);
+    }
+
+    @Override
+    @DataSourceService
+    public boolean updateStatusForbid(Integer userId) throws Exception {
+        return userMapper.updateStatusforbid(userId);
+    }
+
+
+
 }

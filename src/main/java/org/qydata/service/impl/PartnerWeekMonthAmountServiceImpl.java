@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.PartnerWeekMonthAmount;
 import org.qydata.mapper.PartnerWeekMonthAmountMapper;
 import org.qydata.service.PartnerWeekMonthAmountService;
@@ -20,7 +21,8 @@ public class PartnerWeekMonthAmountServiceImpl implements PartnerWeekMonthAmount
 @Autowired private PartnerWeekMonthAmountMapper partnerWeekMonthAmountMapper;
 
     @Override
-    public boolean getAllPartnerWeekPaymentRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllPartnerWeekPaymentRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearCount(result));
         map.put("month",CalendarTools.getMonthWeekCount(result));
@@ -62,7 +64,8 @@ public class PartnerWeekMonthAmountServiceImpl implements PartnerWeekMonthAmount
     }
 
     @Override
-    public boolean getAllPartnerMonthPaymentRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllPartnerMonthPaymentRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearMonthCount(result));
         map.put("month",CalendarTools.getMonthCount(result));
@@ -101,7 +104,8 @@ public class PartnerWeekMonthAmountServiceImpl implements PartnerWeekMonthAmount
     }
 
     @Override
-    public boolean getAllPartnerWeekReceiptRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllPartnerWeekReceiptRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearCount(result));
         map.put("month",CalendarTools.getMonthWeekCount(result));
@@ -143,7 +147,8 @@ public class PartnerWeekMonthAmountServiceImpl implements PartnerWeekMonthAmount
     }
 
     @Override
-    public boolean getAllPartnerMonthReceiptRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllPartnerMonthReceiptRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearMonthCount(result));
         map.put("month",CalendarTools.getMonthCount(result));

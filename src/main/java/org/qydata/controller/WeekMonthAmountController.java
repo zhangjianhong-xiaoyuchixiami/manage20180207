@@ -30,7 +30,7 @@ public class WeekMonthAmountController {
             if (result == null) {
                 result = 1;
             }
-          weekMonthAmountService.getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(result);
+          weekMonthAmountService.addAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount:统计和插入客户每周的充值数据异常");
 
@@ -51,7 +51,7 @@ public class WeekMonthAmountController {
             if (result == null) {
                 result = 1;
             }
-           weekMonthAmountService.getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(result);
+           weekMonthAmountService.addAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount:统计和插入客户每月的充值数据异常");
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class WeekMonthAmountController {
             if (result == null) {
                 result = 1;
             }
-            weekMonthAmountService.getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(result);
+            weekMonthAmountService.addAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount:统计和插入客户每周的Api消费数据异常");
             e.printStackTrace();
@@ -91,7 +91,7 @@ public class WeekMonthAmountController {
             if (result == null) {
                 result = 1;
             }
-            weekMonthAmountService.getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(result);
+            weekMonthAmountService.addAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount:统计和插入客户每月的Api消费数据异常");
             e.printStackTrace();

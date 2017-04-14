@@ -65,14 +65,14 @@ public interface UserMapper {
      * @return
      * @throws Exception
      */
-    public List<User> findAllUser(Map<String,Object> map)throws Exception;
+    public List<User> queryAllUser(Map<String,Object> map)throws Exception;
 
     /**
      * 统计数据量
      * @return
      * @throws Exception
      */
-    public Integer getAllCount(Map<String,Object> map)throws Exception;
+    public Integer queryAllCount(Map<String,Object> map)throws Exception;
 
     /**
      * 根据用户名查找指定用户信息

@@ -12,7 +12,8 @@ import org.qydata.entity.CustomerBalanceLog;
 import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerFinanceService;
-import org.qydata.service.UserService;
+import org.qydata.service.PowerUserService;
+import org.qydata.service.RoleService;
 import org.qydata.tools.ExportDataHander;
 import org.qydata.tools.ExportIoOperate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,9 @@ public class CustomerFinanceExcelAop {
 
     @Autowired private HttpServletRequest request;
 
-    @Autowired private UserService userService;
+    @Autowired private RoleService roleService;
 
+    @Autowired private PowerUserService powerUserService;
     /**
      * 公司财务账单导出Excel
      * @param point
@@ -52,6 +54,7 @@ public class CustomerFinanceExcelAop {
         if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
             System.out.println("************* 执行导出操作 *************");
             Map<String,Object> map = new HashMap<>();
+
             if(args[1] != null && args[1] != ""){
                 map.put("content",args[1]);
             }
@@ -113,7 +116,7 @@ public class CustomerFinanceExcelAop {
         if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
             System.out.println("************* 执行导出操作 *************");
             Map<String,Object> map = new HashMap<>();
-            User user = userService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
+            User user = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
             List deptList = new ArrayList();
             for (int i = 0; i < user.getDept().size(); i++) {
                 deptList.add(user.getDept().get(i).getId());
@@ -327,10 +330,10 @@ public class CustomerFinanceExcelAop {
                 map.put("endDate", args[7]+" "+"23:59:59");
             }
             List<Integer> reasonIdList = new ArrayList<>();
-            String reasonId [] = (String[]) args[5];
+            Integer reasonId [] = (Integer[]) args[5];
             if (reasonId != null && reasonId.length > 0) {
                 for(int i = 0;i <  reasonId.length;i++){
-                    reasonIdList.add(parseInt(reasonId[i]));
+                    reasonIdList.add(reasonId[i]);
                 }
             }else{
                 reasonIdList.add(-1);

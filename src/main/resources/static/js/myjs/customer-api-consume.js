@@ -42,9 +42,31 @@ var CustomerApiConsume = function () {
 
             });
 
-            $('.customer_consume').change(function () {
-                $(this).submit();
+            $("#apiTypeId").change(function () {
+                var param = $("#apiTypeId").val();
+                var param1 = $("#customerId").val();
+                if (param !=null) {
+                    $.ajax({
+                        url: '/finance/find-api-vendor-by-api-type-id',
+                        data: {"apiTypeId": param, "customerId": param1},
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data != null){
+                                $("#apiVendorId ").empty();
+                                $("#apiVendorId").append("<option value=''>请选择...</option>");
+                                for (var i=0; i<data.length; i++){
+                                    var op=document.createElement("option");
+                                    op.value=data[i].id;
+                                    op.innerHTML=data[i].name;
+                                    $("#apiVendorId").append(op);
+                                }
+                            }
+                        }
+                    });
+                }
             });
+
 
         }
 

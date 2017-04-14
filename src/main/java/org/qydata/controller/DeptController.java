@@ -5,7 +5,8 @@ import org.apache.log4j.Logger;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
 import org.qydata.service.DeptService;
-import org.qydata.service.UserService;
+import org.qydata.service.PowerUserService;
+import org.qydata.service.RoleService;
 import org.qydata.tools.PageModel;
 import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,9 @@ import java.util.Map;
 public class DeptController {
 
     private final Logger log = Logger.getLogger(this.getClass());
-    @Autowired
-    private DeptService deptService;
-    @Autowired
-    private UserService userService;
+    @Autowired private DeptService deptService;
+    @Autowired private RoleService roleService;
+    @Autowired private PowerUserService powerUserService;
 
     @RequestMapping( value = "/addDeptView")
     public String addView(){
@@ -101,7 +101,7 @@ public class DeptController {
         User user = null;
         try {
             deptList = deptService.findAllDept();
-            user = userService.findUserByUsername(userId);
+            user = powerUserService.findUserByUsername(userId);
             List<Dept> list = user.getDept();
             for(int i=0;i< list.size();i++){
                 userDeptIdList.add(list.get(i).getId());

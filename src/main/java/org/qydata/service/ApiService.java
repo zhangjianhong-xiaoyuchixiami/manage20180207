@@ -16,18 +16,21 @@ public interface ApiService {
      * 查询产品
      * @return
      */
+
     public Map<String,Object> queryApi(Map<String,Object> map);
 
     /**
      * 查询产品类型
      * @return
      */
+
     public List<ApiType> queryApiType();
 
     /**
      * 根据产品类型查询产品供应商
      * @return
      */
+
     public List<ApiVendor> queryApiVendor();
 
     /**

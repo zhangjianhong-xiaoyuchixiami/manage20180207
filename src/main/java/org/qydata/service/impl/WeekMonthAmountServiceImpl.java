@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.mapper.WeekMonthAmountMapper;
 import org.qydata.service.WeekMonthAmountService;
@@ -21,7 +22,8 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
     @Autowired private WeekMonthAmountMapper weekMonthAmountMapper;
 
     @Override
-    public  boolean getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public  boolean addAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearCount(result));
         map.put("month",CalendarTools.getMonthWeekCount(result));
@@ -63,7 +65,8 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
     }
 
     @Override
-    public boolean getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearMonthCount(result));
         map.put("month",CalendarTools.getMonthCount(result));
@@ -102,7 +105,8 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
     }
 
     @Override
-    public boolean getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearCount(result));
         map.put("month",CalendarTools.getMonthWeekCount(result));
@@ -145,7 +149,8 @@ public class WeekMonthAmountServiceImpl implements WeekMonthAmountService {
     }
 
     @Override
-    public boolean getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearMonthCount(result));
         map.put("month",CalendarTools.getMonthCount(result));

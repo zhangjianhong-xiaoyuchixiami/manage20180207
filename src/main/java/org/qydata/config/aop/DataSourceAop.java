@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.qydata.config.DataSourceContextHolder;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -20,17 +21,20 @@ public class DataSourceAop {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
+    //Service层切点
+    @Pointcut("@annotation(org.qydata.config.annotation.DataSourceService)")
+    public  void serviceAspect() {}
     /**
-     * 在进入Mapper方法之前执行
-     *
+     * 在进入Service方法之前执行
      * @param point 切面对象
      */
-    @Before("execution(* org.qydata.mapper.*.*(..))")
-    @Order(-9999)
+    @Before("serviceAspect()")
+    @Order(-1)
     public void before(JoinPoint point) {
         // 获取到当前执行的方法名
         String methodName = point.getSignature().getName();
-        System.out.println("*********************************开始切入***********************************");
+        log.info("方法名methodName="+methodName);
+        log.info("*****************开始切入************");
         if (isSlave(methodName)) {
             // 标记为读库
             log.info("***********切换到slave************");
@@ -47,9 +51,9 @@ public class DataSourceAop {
      * @param methodName
      * @return
      */
-    private Boolean isSlave(String methodName) {
+    private boolean isSlave(String methodName) {
         // 方法名以query、find、get开头的方法名走从库
-        return StringUtils.startsWithAny(methodName, "query", "find", "get","add");
+        return StringUtils.startsWithAny(methodName, "query", "find");
     }
 
 

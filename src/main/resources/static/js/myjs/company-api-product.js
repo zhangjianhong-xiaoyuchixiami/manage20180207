@@ -84,9 +84,6 @@ var CompanyApiProduct = function () {
 
             $('#apiProductArrow').addClass('arrow open');
 
-            $('.api_company_product_record').change(function () {
-                $(this).submit();
-            });
 
             /* $("#apiTypeId").change(function () {
              var param = $("#apiTypeId").val();

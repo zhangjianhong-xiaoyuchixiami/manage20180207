@@ -67,8 +67,6 @@
 
                                 </div>
                             </div>
-
-
                             <div class="pull-left margin-right-20 head-search-bottom">
 
                                 <label class="control-label">起始日期</label>
@@ -84,7 +82,6 @@
                                 </div>
 
                             </div>
-
                             <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">结束日期</label>
@@ -100,7 +97,6 @@
                                 </div>
 
                             </div>
-
                             <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>

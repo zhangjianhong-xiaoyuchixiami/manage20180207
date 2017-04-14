@@ -168,6 +168,12 @@ public class ApiFinanceExcelAop {
             if(args[2] != null){
                 map.put("partnerId",args[2]);
             }
+            if (args[4] != null && args[4] != "" ) {
+                map.put("beginDate", args[4]+" "+"00:00:00");
+            }
+            if(args[5] != null && args[5] != ""){
+                map.put("endDate", args[5]+" "+"23:59:59");
+            }
             List<ApiFinance> apiFinanceList = null;
             Map<String,Object> mapResult = apiFinanceService.queryApiVendor(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
@@ -184,13 +190,13 @@ public class ApiFinanceExcelAop {
                     }
                 }
             }
-            List<ApiFinance> apiFinances = ExportDataHander.processApiFinance(apiFinanceList);
+            //List<ApiFinance> apiFinances = ExportDataHander.processApiFinance(apiFinanceList);
             List<Map<String,Object>> listExport = new ArrayList<>();
             Map<String, Object> mapExport = new HashMap<>();
             mapExport.put("sheetName", "sheet1");
             listExport.add(mapExport);
-            for ( int i = 0; i < apiFinances.size(); i++ ){
-                ApiFinance apiFinance = apiFinances.get(i);
+            for ( int i = 0; i < apiFinanceList.size(); i++ ){
+                ApiFinance apiFinance = apiFinanceList.get(i);
                 Map<String, Object> mapValue = new HashMap<>();
                 mapValue.put("vendorName", apiFinance.getVendorName());
                 mapValue.put("partnerName", apiFinance.getPartnerName());

@@ -4,7 +4,8 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.qydata.entity.Dept;
 import org.qydata.entity.User;
-import org.qydata.service.UserService;
+import org.qydata.service.PowerUserService;
+import org.qydata.service.RoleService;
 import org.qydata.tools.Md5Tools;
 import org.qydata.tools.PageModel;
 import org.qydata.tools.RegexUtil;
@@ -29,8 +30,8 @@ public class UserController {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
-    @Autowired
-    private UserService userService;
+    @Autowired private PowerUserService powerUserService;
+    @Autowired private RoleService roleService;
 
     @RequestMapping(value = "/addUserView")
     public String addUserView(){
@@ -56,7 +57,7 @@ public class UserController {
         user.setTypeId(typeId);
 
         try {
-            boolean flag = userService.addUser(user);
+            boolean flag = roleService.addUser(user);
             if(!flag){
                 model.addFlashAttribute("msg","很遗憾，添加失败！");
                 return "redirect:/user/addUserView";
@@ -83,7 +84,7 @@ public class UserController {
             return "redirect:/user/addUserViewCommon";
         }
         try {
-            boolean flag = userService.addUserCommon(user,deptId);
+            boolean flag = roleService.addUserCommon(user,deptId);
             if(!flag){
                 model.addFlashAttribute("msg","很遗憾，添加失败！");
                 return "redirect:/user/addUserViewCommon";
@@ -115,7 +116,7 @@ public class UserController {
         }
         PageModel<User> pageModelOne = null;
         try {
-            pageModelOne = userService.findAllUser(map);
+            pageModelOne = powerUserService.queryAllUser(map);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,7 +162,7 @@ public class UserController {
 
             PageModel<User> pageModelOne = null;
             try {
-                pageModelOne = userService.findAllUser(map);
+                pageModelOne = powerUserService.queryAllUser(map);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -192,7 +193,7 @@ public class UserController {
     @RequestMapping(value = "/statusStart")
     public String statusStart(Integer userId){
         try {
-            userService.updateStatusStart(userId);
+            roleService.updateStatusStart(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -203,7 +204,7 @@ public class UserController {
     @RequestMapping(value = "/statusForbid")
     public String statusForbid(Integer userId){
         try {
-            userService.updateStatusForbid(userId);
+            roleService.updateStatusForbid(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -214,7 +215,7 @@ public class UserController {
     @RequestMapping(value = "/resetPassword")
     public String resetPassword(Integer userId){
         try {
-            userService.resetPassword(userId);
+            roleService.resetPassword(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -225,7 +226,7 @@ public class UserController {
     @RequestMapping(value = "/statusStartCommon")
     public String statusStartCommon(Integer userId){
         try {
-            userService.updateStatusStart(userId);
+            roleService.updateStatusStart(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,7 +237,7 @@ public class UserController {
     @RequestMapping(value = "/statusForbidCommon")
     public String statusForbidCommon(Integer userId){
         try {
-            userService.updateStatusForbid(userId);
+            roleService.updateStatusForbid(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -247,7 +248,7 @@ public class UserController {
     @RequestMapping(value = "/resetPasswordCommon")
     public String resetPasswordCommon(Integer userId){
         try {
-            userService.resetPassword(userId);
+            roleService.resetPassword(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -291,10 +292,10 @@ public class UserController {
             model.addFlashAttribute("UserMessageRpPassword", "两次密码不一致");
             return "redirect:/user/updatePasswordView";
         }
-        Integer userId = userService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal()).getId();
+        Integer userId = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal()).getId();
         String md5NewPassword = Md5Tools.md5(SecurityUtils.getSubject().getPrincipal()+newPassword.trim());
         try {
-            boolean flag = userService.updatePassword(userId,md5NewPassword);
+            boolean flag = roleService.updatePassword(userId,md5NewPassword);
             if(!flag){
                 model.addFlashAttribute("msg","修改失败！");
                 return "redirect:/user/updatePasswordView";

@@ -13,7 +13,7 @@ public interface WeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(Integer result)throws Exception;
+    public boolean addAllCustomerWeekRechargeRecordAndAddWeekMonthAmount(Integer result)throws Exception;
 
     /**
      * 统计和插入客户每月的充值数据
@@ -21,7 +21,7 @@ public interface WeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(Integer result)throws Exception;
+    public boolean addAllCustomerMonthRechargeRecordAndAddWeekMonthAmount(Integer result)throws Exception;
 
 
     /**
@@ -30,7 +30,7 @@ public interface WeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(Integer result)throws Exception;
+    public boolean addAllCustomerApiWeekConsumeRecordAndAddWeekMonthAmount(Integer result)throws Exception;
 
     /**
      * 统计和插入客户每月的消费数据
@@ -38,7 +38,7 @@ public interface WeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(Integer result)throws Exception;
+    public boolean addAllCustomerApiMonthConsumeRecordAndAddWeekMonthAmount(Integer result)throws Exception;
 
 
 }

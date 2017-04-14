@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
@@ -24,9 +25,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     @Autowired
     private CustomerFinanceMapper customerFinanceMapper;
 
-
-
     @Override
+    @DataSourceService
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
         Map<String,Object> mapTran = new HashMap<>();
         List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomerOverAllFinance(map);
@@ -118,6 +118,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String, Object> map){
         Map<String,Object> mapResult = new HashMap<>();
         try {
@@ -130,6 +131,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String, Object> map){
         Map<String,Object> mapResult = new HashMap<>();
         try {
@@ -161,6 +163,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryCompanyCustomerApiDetailConsumeRecordByCustomerId(Map<String, Object> map){
         Map<String,Object> mapTran = new HashMap<>();
 
@@ -174,6 +177,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String, Object> map){
         Map<String,Object> mapTran = new HashMap<>();
         try {
@@ -186,6 +190,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public List<Integer> queryCompanyCustomerYearsByCustomerId(Map<String, Object> map){
         try {
             return customerFinanceMapper.queryCompanyCustomerYearsByCustomerId(map);
@@ -196,6 +201,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public List<Integer> queryCompanyCustomerMonthsByCustomerId(Map<String, Object> map){
         try {
             return customerFinanceMapper.queryCompanyCustomerMonthsByCustomerId(map);
@@ -206,6 +212,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String, Object> map){
         try {
             return customerFinanceMapper.queryCompanyCustomerWeeksByCustomerId(map);
@@ -216,6 +223,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public Map<String, List> monthChargeConsumeToward(Map<String, Object> map) {
         Set<Map.Entry<String,Object>> set = map.entrySet();
         Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -259,6 +267,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public List<CustomerApiVendor> queryCustomerConsumeByVendor(Map<String, Object> map) {
         try {
             return customerFinanceMapper.queryCustomerConsumeByVendor(map);
@@ -269,6 +278,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public List<ApiType> queryApiTypeByCustomerId(Map<String, Object> map) {
         try {
             return customerFinanceMapper.queryApiTypeByCustomerId(map);
@@ -279,6 +289,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @DataSourceService
     public List<ApiVendor> queryApiVendorByCustomerId(Map<String, Object> map) {
         try {
             return customerFinanceMapper.queryApiVendorByCustomerId(map);

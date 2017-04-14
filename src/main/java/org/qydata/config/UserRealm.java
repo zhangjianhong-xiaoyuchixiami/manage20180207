@@ -6,6 +6,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.qydata.entity.User;
+import org.qydata.service.PowerUserService;
 import org.qydata.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,8 @@ import java.util.Set;
 @Component
 public class UserRealm extends AuthorizingRealm{
 
-    @Autowired
-    UserService userService;
+    @Autowired private UserService userService;
+    @Autowired private PowerUserService powerUserService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -29,7 +30,7 @@ public class UserRealm extends AuthorizingRealm{
         String email = (String) principals.getPrimaryPrincipal() ;	// 取得用户登录
         SimpleAuthorizationInfo auth = new SimpleAuthorizationInfo() ;	// 定义授权信息的返回数据
         try {
-            Map<String,Object> map = this.userService.listAuthByUser(userService.findUserByEmail(email).getId()) ;
+            Map<String,Object> map = this.userService.listAuthByUser(powerUserService.findUserByEmail(email).getId()) ;
             Set<String> allRoles = (Set<String>) map.get("allRoles") ;
             Set<String> allActions = (Set<String>) map.get("allActions") ;
             auth.setRoles(allRoles);// 所有的角色必须以Set集合的形式出现

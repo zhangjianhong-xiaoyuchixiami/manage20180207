@@ -41,9 +41,6 @@ var CustomerApiConsumeDetail = function () {
                 "bFilter" : false //设置全文搜索框，默认true
             });
 
-            $('.customer_consume_detail').change(function () {
-                $(this).submit();
-            });
 
         }
 

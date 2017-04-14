@@ -119,9 +119,6 @@ var MonthRecord = function () {
                 });
             });
 
-            $('.month_record').change(function () {
-                $(this).submit();
-            });
 
         }
 

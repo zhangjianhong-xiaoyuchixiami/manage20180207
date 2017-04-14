@@ -73,7 +73,7 @@
        where id=#{param1}
    </update>
     <!--查找全部用户-->
-    <select id="findAllUser" parameterType="Map" resultMap="userDeptMap">
+    <select id="queryAllUser" parameterType="Map" resultMap="userDeptMap">
         select id,email,deptId,deptName,status,createTime
         from qyfinance.bkvw_user_UserDept
         <where>
@@ -92,7 +92,7 @@
         limit #{beginIndex},#{lineSize}
     </select>
     <!--统计数据量-->
-    <select id="getAllCount" parameterType="Map" resultType="Integer">
+    <select id="queryAllCount" parameterType="Map" resultType="Integer">
         select count(id)
         from qyfinance.bkvw_user_UserDept
         <where>

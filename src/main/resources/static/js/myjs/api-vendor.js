@@ -151,9 +151,7 @@ var ApiVendorRecord = function () {
 
             $('#customerBalanceArrow').addClass('arrow open');
 
-            $('.api_vendor').change(function () {
-                $(this).submit();
-            });
+
 
         }
 

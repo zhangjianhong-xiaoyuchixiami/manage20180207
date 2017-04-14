@@ -84,9 +84,6 @@ var ApiProduct = function () {
 
             $('#apiProductArrow').addClass('arrow open');
 
-            $('.api_product_record').change(function () {
-                $(this).submit();
-            });
 
             /* $("#apiTypeId").change(function () {
              var param = $("#apiTypeId").val();

@@ -79,63 +79,61 @@ var CustomerFinanceAccount = function () {
                     null,  //2
                     null,  //3
                     null,  //4
-                    null,
                     null,  //5
-                    null,  //6
-                    { "bVisible": false},  //7
+                    null,  //6  充值
+                    null,  //7
                     { "bVisible": false},  //8
-                    null,  //9
+                    { "bVisible": false},  //9
                     null,  //10
-                    { "bVisible": false },  //11
+                    null,  //11
                     { "bVisible": false },  //12
                     { "bVisible": false },  //13
                     { "bVisible": false },  //14
-                    { "bVisible": false }   //15
+                    { "bVisible": false },  //15
+                    { "bVisible": false }   //16
                 ],
                 "aoColumnDefs": [
                     {
                         //充值总额
-                        "aTargets": [ 4 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //消费总额
-                        "aTargets": [ 5 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //上周充值
                         "aTargets": [ 6 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上周消费
+                        //消费总额
                         "aTargets": [ 7 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上月充值
+                        //上周充值
                         "aTargets": [ 8 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上月消费
+                        //上周消费
                         "aTargets": [ 9 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        //上月充值
+                        "aTargets": [ 10 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        //上月消费
+                        "aTargets": [ 11 ],
                         "sType": "html-percent"
                     }
 
                 ],
-                "aaSorting": [[4, 'desc']],
+                "aaSorting": [[5, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
                 "bFilter" : false, //设置全文搜索框，默认true
-
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
-
                 "oLanguage" : {  //设置语言
                     "sLengthMenu" : "每页显示 _MENU_ 条记录",
                     "sZeroRecords" : "对不起，没有匹配的数据",
@@ -164,13 +162,6 @@ var CustomerFinanceAccount = function () {
             });
 
 
-            $('.find_all_customer').change(function () {
-                $(this).submit();
-            });
-
-            $('.find_part_customer').change(function () {
-                $(this).submit();
-            });
 
         }
 

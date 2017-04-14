@@ -99,10 +99,6 @@ var WeekRecord = function () {
                 }
             });
 
-            $('.week_record').change(function () {
-                $(this).submit();
-            });
-
         }
 
     };

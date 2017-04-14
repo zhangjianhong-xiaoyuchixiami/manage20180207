@@ -120,8 +120,15 @@
                                                             <#else >
                                                             <td data-title="公司名称">
                                                             </#if>
-                                                            ${(company.companyName)!''}<#if company.partnerName??>@${company.partnerName}</#if></td>
-                                                            <td data-title="合作公司"><a href="/api/api-message-by-company?partnerId=${(company.partnerId)!''}">${(company.partnerName)!'无'}</a></td>
+                                                                ${(company.companyName)!''}<#if company.partnerName??>@${company.partnerName}</#if>
+                                                            </td>
+                                                            <td data-title="合作公司">
+                                                                <#if (company.partnerId)??>
+                                                                    <a href="/api/api-message-by-company?partnerId=${(company.partnerId)!''}">${(company.partnerName)!'无'}</a>
+                                                                <#else >
+                                                                    无
+                                                                </#if>
+                                                            </td>
                                                             <td data-title="价格（单位：元）">${(company.price/100.0)?c}</td>
                                                         </tr>
                                                         </#list>
@@ -158,7 +165,13 @@
                                                         <tr>
                                                             <td data-title="产品类型" class="font-text-decoration">${company.apiTypeName}<#if company.subTypeName??>--${company.subTypeName!''}</#if></td>
                                                             <td data-title="公司名称">${(company.companyName)!''}<#if company.partnerName??>@${company.partnerName}</#if></td>
-                                                            <td data-title="合作公司"><a href="/api/api-message-by-company?partnerId=${(company.partnerId)!''}">${(company.partnerName)!'无'}</a></td>
+                                                            <td data-title="合作公司">
+                                                                <#if (company.partnerId)??>
+                                                                    <a href="/api/api-message-by-company?partnerId=${(company.partnerId)!''}">${(company.partnerName)!'无'}</a>
+                                                                <#else >
+                                                                    无
+                                                                </#if>
+                                                            </td>
                                                             <td data-title="价格（单位：元）">${(company.price/100.0)?c}</td>
                                                         </tr>
                                                         </#list>

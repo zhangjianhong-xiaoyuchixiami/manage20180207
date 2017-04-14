@@ -60,6 +60,11 @@ public interface CustomerService {
      */
     public Map<String,Object> findAllCustomerRequestLog(Map<String,Object> map);
 
+    /**
+     * 根据Id查询日志
+     * @param id
+     * @return
+     */
     public String findCustomerRequestLogById(Integer id);
 
 }

@@ -30,7 +30,7 @@ public class PartnerWeekMonthAmountController {
             if (result == null) {
                 result = 1;
             }
-            partnerWeekMonthAmountService.getAllPartnerWeekPaymentRecordAndAddWeekMonthAmount(result);
+            partnerWeekMonthAmountService.addAllPartnerWeekPaymentRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllPartnerWeekPaymentRecordAndAddWeekMonthAmount:统计和插入合作公司每周的付款数据");
 
@@ -51,7 +51,7 @@ public class PartnerWeekMonthAmountController {
             if (result == null) {
                 result = 1;
             }
-            partnerWeekMonthAmountService.getAllPartnerMonthPaymentRecordAndAddWeekMonthAmount(result);
+            partnerWeekMonthAmountService.addAllPartnerMonthPaymentRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllPartnerMonthPaymentRecordAndAddWeekMonthAmount:统计和插入合作公司每月的付款数据");
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class PartnerWeekMonthAmountController {
             if (result == null) {
                 result = 1;
             }
-            partnerWeekMonthAmountService.getAllPartnerWeekReceiptRecordAndAddWeekMonthAmount(result);
+            partnerWeekMonthAmountService.addAllPartnerWeekReceiptRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllPartnerWeekReceiptRecordAndAddWeekMonthAmount:统计和插入合作公司每周的收款数据");
             e.printStackTrace();
@@ -91,7 +91,7 @@ public class PartnerWeekMonthAmountController {
             if (result == null) {
                 result = 1;
             }
-            partnerWeekMonthAmountService.getAllPartnerMonthReceiptRecordAndAddWeekMonthAmount(result);
+            partnerWeekMonthAmountService.addAllPartnerMonthReceiptRecordAndAddWeekMonthAmount(result);
         } catch (Exception e) {
             log.info("getAllPartnerMonthReceiptRecordAndAddWeekMonthAmount:统计和插入合作公司每月的收款数据");
             e.printStackTrace();

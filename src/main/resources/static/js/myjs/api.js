@@ -179,10 +179,6 @@ var Api = function () {
                 }
             });
 
-            $('.api_record').change(function () {
-                $(this).submit();
-            });
-
         }
 
     };

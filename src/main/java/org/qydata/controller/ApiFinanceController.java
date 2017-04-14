@@ -8,7 +8,6 @@ import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiVendor;
 import org.qydata.service.ApiFinanceService;
 import org.qydata.tools.CalendarTools;
-import org.qydata.tools.ExportDataHander;
 import org.qydata.tools.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -148,13 +147,21 @@ public class ApiFinanceController {
      * @throws Exception
      */
     @RequestMapping("/find-all-api-vendor-consume")
-    public ModelAndView findAllApiVendorConsume(String export,Integer vendorId,Integer partnerId,String dead,Model model){
+    public ModelAndView findAllApiVendorConsume(String export,Integer vendorId,Integer partnerId,String dead,String beginDate,String endDate,Model model){
         Map<String,Object> map = new HashMap<>();
         if(vendorId != null){
             map.put("vendorId",vendorId);
         }
         if(partnerId != null){
             map.put("partnerId",partnerId);
+        }
+        if (beginDate != null && beginDate != "" ) {
+            map.put("beginDate", beginDate+" "+"00:00:00");
+            model.addAttribute("beginDate",beginDate);
+        }
+        if(endDate != null && endDate != ""){
+            map.put("endDate", endDate+" "+"23:59:59");
+            model.addAttribute("endDate",endDate);
         }
         List<ApiFinance> apiFinanceList = null;
         List<ApiFinance> apiFinanceListDead = null;
@@ -200,21 +207,25 @@ public class ApiFinanceController {
                 model.addAttribute("allConsumeTotleAmount",me.getValue());
             }
         }
-        List<ApiFinance> apiFinances = ExportDataHander.processApiFinance(apiFinanceList);
-        List<ApiFinance> apiFinancesDead = ExportDataHander.processApiFinance(apiFinanceListDead);
+       // List<ApiFinance> apiFinances = ExportDataHander.processApiFinance(apiFinanceList);
+        //List<ApiFinance> apiFinancesDead = ExportDataHander.processApiFinance(apiFinanceListDead);
         long totleBalance = 0L;
-        for (int j=0; j<apiFinances.size(); j++){
-            ApiFinance apiFinance = apiFinances.get(j);
-            totleBalance = totleBalance + apiFinance.getBalance();
+        for (int j=0; j<apiFinanceList.size(); j++){
+            ApiFinance apiFinance = apiFinanceList.get(j);
+            if (apiFinance.getBalance() != null) {
+                totleBalance = totleBalance + apiFinance.getBalance();
+            }
         }
 
         long totleBalanceDead = 0L;
-        for (int j=0; j<apiFinancesDead.size(); j++){
-            ApiFinance apiFinance = apiFinancesDead.get(j);
-            totleBalanceDead = totleBalanceDead + apiFinance.getBalance();
+        for (int j=0; j<apiFinanceListDead.size(); j++){
+            ApiFinance apiFinance = apiFinanceListDead.get(j);
+            if (apiFinance.getBalance() != null) {
+                totleBalanceDead = totleBalanceDead + apiFinance.getBalance();
+            }
         }
-        model.addAttribute("apiFinanceList",apiFinances);
-        model.addAttribute("apiFinanceListDead",apiFinancesDead);
+        model.addAttribute("apiFinanceList",apiFinanceList);
+        model.addAttribute("apiFinanceListDead",apiFinanceListDead);
         model.addAttribute("apiVendorList",apiFinanceService.queryApiVendorName(map));
         model.addAttribute("vendorId",vendorId);
         model.addAttribute("partnerId",partnerId);
@@ -361,7 +372,7 @@ public class ApiFinanceController {
         }
         boolean flag = false;
         try {
-            flag = apiFinanceService.apiVendorChargeLog(vendorIdCharge, Long.parseLong(amount), remark, chargeDate);
+            flag = apiFinanceService.updateApiVendorChargeLog(vendorIdCharge, Long.parseLong(amount), remark, chargeDate);
         } catch (Exception e) {
             e.printStackTrace();
         }

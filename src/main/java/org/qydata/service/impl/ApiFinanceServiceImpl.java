@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.ApiVendorBalance;
@@ -21,6 +22,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @Autowired private ApiFinanceMapper apiFinanceMapper;
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryApiOverAllFinance(Map<String, Object> map){
         Map<String,Object> mapValue = new HashMap<>();
         Map<String,Object> mapValueDead = new HashMap<>();
@@ -60,6 +62,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryApiDetailById(Map<String, Object> map) {
         Map<String,Object> mapTran = new HashMap<>();
         try {
@@ -72,6 +75,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
+    @DataSourceService
     public Map<String,Object> queryApiVendor(Map<String, Object> map) {
         Map<String,Object> mapValue = new HashMap<>();
         Map<String,Object> mapValueDead = new HashMap<>();
@@ -88,6 +92,14 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                 if (me.getKey().equals("partnerId")){
                     mapValue.put("partnerId",me.getValue());
                     mapValueDead.put("partnerId",me.getValue());
+                }
+                if (me.getKey().equals("beginDate")){
+                    mapValue.put("beginDate",me.getValue());
+                    mapValueDead.put("beginDate",me.getValue());
+                }
+                if (me.getKey().equals("endDate")){
+                    mapValue.put("endDate",me.getValue());
+                    mapValueDead.put("endDate",me.getValue());
                 }
             }
             mapTran.put("getAllCountWeekApiVendor",apiFinanceMapper.getCountWeekApiVendor(mapValue));
@@ -110,7 +122,8 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
-    public boolean apiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate)throws Exception{
+    @DataSourceService
+    public boolean updateApiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate)throws Exception{
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         ApiVendorBalanceLog apiVendorBalanceLog = new ApiVendorBalanceLog();
@@ -137,6 +150,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
+    @DataSourceService
     public List<ApiType> queryApiType() {
         try {
             return apiFinanceMapper.queryApiType();
@@ -147,6 +161,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
+    @DataSourceService
     public List<ApiVendor> queryApiVendorName(Map<String, Object> map) {
         try {
             return apiFinanceMapper.queryApiVendorName(map);

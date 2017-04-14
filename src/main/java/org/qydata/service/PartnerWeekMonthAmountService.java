@@ -13,7 +13,7 @@ public interface PartnerWeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllPartnerWeekPaymentRecordAndAddWeekMonthAmount(Integer result)throws Exception;
+    public boolean addAllPartnerWeekPaymentRecordAndAddWeekMonthAmount(Integer result)throws Exception;
 
     /**
      * 统计和插入合作公司每月的付款数据
@@ -21,7 +21,7 @@ public interface PartnerWeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllPartnerMonthPaymentRecordAndAddWeekMonthAmount(Integer result)throws Exception;
+    public boolean addAllPartnerMonthPaymentRecordAndAddWeekMonthAmount(Integer result)throws Exception;
 
 
     /**
@@ -30,7 +30,7 @@ public interface PartnerWeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllPartnerWeekReceiptRecordAndAddWeekMonthAmount(Integer result)throws Exception;
+    public boolean addAllPartnerWeekReceiptRecordAndAddWeekMonthAmount(Integer result)throws Exception;
 
     /**
      * 统计和插入合作公司每月的收款数据
@@ -38,7 +38,7 @@ public interface PartnerWeekMonthAmountService {
      * @throws Exception
      */
     @Transactional
-    public boolean getAllPartnerMonthReceiptRecordAndAddWeekMonthAmount(Integer result)throws Exception;
+    public boolean addAllPartnerMonthReceiptRecordAndAddWeekMonthAmount(Integer result)throws Exception;
 
 
 }

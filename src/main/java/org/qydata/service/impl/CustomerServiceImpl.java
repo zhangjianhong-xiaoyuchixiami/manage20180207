@@ -1,9 +1,9 @@
 package org.qydata.service.impl;
 
 
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.Customer;
 import org.qydata.entity.CustomerDept;
-import org.qydata.mapper.CompanyMapper;
 import org.qydata.mapper.CustomerDeptMapper;
 import org.qydata.mapper.CustomerMapper;
 import org.qydata.service.CustomerService;
@@ -25,17 +25,15 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerMapper customerMapper;
     @Autowired
     private CustomerDeptMapper customerDeptMapper;
-    @Autowired
-    private CompanyMapper companyMapper;
-
-
 
     @Override
+    @DataSourceService
     public Customer findCustomerByAuthId(String authId) {
         return customerMapper.findCustomerByAuthId(authId);
     }
 
     @Override
+    @DataSourceService
     public boolean insertCustomer(String companyId, String authId, String deptId)throws Exception {
 
         //向客户表中插入数据
@@ -62,6 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @DataSourceService
     public PageModel<Customer> findAllCustomer(Map<String,Object> map) throws Exception{
         PageModel<Customer> pageModel = new PageModel<Customer>();
         pageModel.setCount(customerMapper.getAllCount(map));
@@ -70,6 +69,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @DataSourceService
     public boolean insertCustomerAccount(String companyId, String authId) throws Exception {
 
         Integer deptId = customerMapper.findDeptIdByCompanyId(Integer.parseInt(companyId));
@@ -97,6 +97,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @DataSourceService
     public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList){
         try {
             return customerMapper.findAllCustomerIdByDeptId(deptIdList);
@@ -107,11 +108,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @DataSourceService
     public List<Integer> findAllCustomerId() {
         return customerMapper.findAllCustomerId();
     }
 
     @Override
+    @DataSourceService
     public Map<String,Object> findAllCustomerRequestLog(Map<String, Object> map) {
         Map<String,Object> mapResult = new HashMap<>();
         try {
@@ -125,6 +128,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @DataSourceService
     public String findCustomerRequestLogById(Integer id){
         try {
             return customerMapper.findCustomerRequestLogById(id);

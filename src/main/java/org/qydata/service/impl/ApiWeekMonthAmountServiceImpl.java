@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.ApiWeekMonthAmount;
 import org.qydata.mapper.ApiWeekMonthAmountMapper;
 import org.qydata.service.ApiWeekMonthAmountService;
@@ -21,7 +22,8 @@ public class ApiWeekMonthAmountServiceImpl implements ApiWeekMonthAmountService 
     private ApiWeekMonthAmountMapper apiWeekMonthAmountMapper;
 
     @Override
-    public boolean getAllApiWeekConsumeRecordAndAddApiWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllApiWeekConsumeRecordAndAddApiWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearCount(result));
         map.put("month",CalendarTools.getMonthWeekCount(result));
@@ -63,7 +65,8 @@ public class ApiWeekMonthAmountServiceImpl implements ApiWeekMonthAmountService 
     }
 
     @Override
-    public boolean getAllApiMonthConsumeRecordAndAddApiWeekMonthAmount(Integer result) throws Exception {
+    @DataSourceService
+    public boolean addAllApiMonthConsumeRecordAndAddApiWeekMonthAmount(Integer result) throws Exception {
         Map<String,Object> map = new HashMap();
         map.put("year",CalendarTools.getYearMonthCount(result));
         map.put("month",CalendarTools.getMonthCount(result));

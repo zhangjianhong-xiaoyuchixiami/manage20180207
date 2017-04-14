@@ -129,14 +129,20 @@
                                                             </#if>
 
                                                             <td data-title="产品类型">${api.apiType.name}
-                                                            <#if (api.mobileOperatorList?size>0)>--
-                                                                <#list api.mobileOperatorList as mobileOperator>
-                                                                ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
-                                                                </#list>
-                                                            </#if>
-                                                            <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
-                                                        </td>
-                                                            <td data-title="合作公司"><a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a></td>
+                                                                <#if (api.mobileOperatorList?size>0)>--
+                                                                    <#list api.mobileOperatorList as mobileOperator>
+                                                                    ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
+                                                                    </#list>
+                                                                </#if>
+                                                                <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                            </td>
+                                                            <td data-title="合作公司">
+                                                                <#if (api.apiVendor.partner.id)??>
+                                                                    <a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
+                                                                <#else >
+                                                                    无
+                                                                </#if>
+                                                            </td>
                                                             <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
                                                             <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
                                                         </tr>
@@ -186,14 +192,20 @@
                                                             <tr>
                                                             </#if>
                                                             <td data-title="产品类型" class="font-text-decoration">${api.apiType.name}
-                                                            <#if (api.mobileOperatorList?size>0)>--
-                                                                <#list api.mobileOperatorList as mobileOperator>
-                                                                ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
-                                                                </#list>
-                                                            </#if>
-                                                            <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
-                                                        </td>
-                                                            <td data-title="合作公司"><a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a></td>
+                                                                <#if (api.mobileOperatorList?size>0)>--
+                                                                    <#list api.mobileOperatorList as mobileOperator>
+                                                                    ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
+                                                                    </#list>
+                                                                </#if>
+                                                                <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                            </td>
+                                                            <td data-title="合作公司">
+                                                                <#if (api.apiVendor.partner.id)??>
+                                                                    <a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
+                                                                <#else >
+                                                                    无
+                                                                </#if>
+                                                            </td>
                                                             <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
                                                             <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
                                                         </tr>

@@ -7,7 +7,8 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 import org.qydata.entity.User;
-import org.qydata.service.UserService;
+import org.qydata.service.PowerUserService;
+import org.qydata.service.RoleService;
 import org.qydata.tools.Md5Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,8 +26,8 @@ public class ViewController {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
-    @Autowired
-    private UserService userService;
+    @Autowired private PowerUserService powerUserService;
+    @Autowired private RoleService roleService;
 
     //登录
     @RequestMapping("/login")
@@ -51,7 +52,7 @@ public class ViewController {
 
             System.out.println("***********************************"+url);
             subject.login(token);
-            User user = userService.findUserByEmail(username);
+            User user = powerUserService.findUserByEmail(username);
             request.getSession().setAttribute("userInfo", user);
             model.addFlashAttribute("user", user);
             if (url != null){

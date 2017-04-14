@@ -18,7 +18,6 @@ var CompanyForbid = function () {
                     '<th>余额</th>' +
                     '<th>状态</th>' +
                     '<th>Ip段</th>' +
-                    '<th>操作</th>' +
                     '</tr>';
 
                 sOut += '<tr>' +
@@ -28,7 +27,6 @@ var CompanyForbid = function () {
                     '<td>'+aData[10]+'</td>' +
                     '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[12]+'</td>' +
-                    '<td>'+aData[13]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -67,21 +65,19 @@ var CompanyForbid = function () {
                 "aoColumns": [
                     { "bSortable": false},  //0  展开符号
                     null,  //1  companyName
-                    null,
-                    null,  //2
-                    null,  //3  partnerName
-                    null,  //4  companyBalance
-                    null,  //5  companyCreateTime
-                    { "bVisible": false},  //6 customerId
-                    { "bVisible": false},  //7 typeId
-                    { "bVisible": false},  //8 typeName
-                    { "bVisible": false},  //9 authId
-                    { "bVisible": false },  //10 authPass
-                    { "bVisible": false }, //11 balance
-                    { "bVisible": false },  //12 操作
-                    { "bSortable": false}  // 13
+                    null, //2
+                    null,  //3
+                    null,  //4  partnerName
+                    null,  //5  companyBalance
+                    null,  //6  companyCreateTime
+                    { "bVisible": false},  //7 customerId
+                    { "bVisible": false},  //8 typeId
+                    { "bVisible": false},  //9 typeName
+                    { "bVisible": false},  //10 authId
+                    { "bVisible": false },  //11 authPass
+                    { "bVisible": false } //12 balance
                 ],
-                "aaSorting": [[4, 'desc']],
+                "aaSorting": [[5, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

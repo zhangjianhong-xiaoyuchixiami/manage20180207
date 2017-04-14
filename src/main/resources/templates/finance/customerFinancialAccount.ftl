@@ -33,6 +33,17 @@
                         </div>
                     </div>
 
+                    <div class="pull-left head-search-bottom head-search-display">
+
+                        <label class="control-label"></label>
+
+                        <div class="controls">
+
+                            <input type="text" id="content-company-name" name="content-company-name" <#if content??>value="${content}"</#if> class="m-wrap medium">
+
+                        </div>
+                    </div>
+
                     <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
 
                         <form action="/finance/find-all-customer-by-dept-id" class="form-bottom find_part_customer" method="get">
@@ -233,19 +244,21 @@
 
                                                     <label><input type="checkbox" checked data-column="3">信用额度</label>
 
-                                                    <label><input type="checkbox" checked data-column="4">余额</label>
+                                                    <label><input type="checkbox" checked data-column="4">可用信用额度</label>
 
-                                                    <label><input type="checkbox" checked data-column="5">充值总额</label>
+                                                    <label><input type="checkbox" checked data-column="5">余额</label>
 
-                                                    <label><input type="checkbox" checked data-column="6">消费总额</label>
+                                                    <label><input type="checkbox" checked data-column="6">充值总额</label>
 
-                                                    <label><input type="checkbox" data-column="7">上周充值</label>
+                                                    <label><input type="checkbox" checked data-column="7">消费总额</label>
 
-                                                    <label><input type="checkbox" data-column="8">上周消费</label>
+                                                    <label><input type="checkbox" data-column="8">上周充值</label>
 
-                                                    <label><input type="checkbox" checked data-column="9">上月充值</label>
+                                                    <label><input type="checkbox" data-column="9">上周消费</label>
 
-                                                    <label><input type="checkbox" checked data-column="10">上月消费</label>
+                                                    <label><input type="checkbox" checked data-column="10">上月充值</label>
+
+                                                    <label><input type="checkbox" checked data-column="11">上月消费</label>
                                                 </div>
 
                                             </div>
@@ -382,7 +395,13 @@
                                                         <tr>
                                                             <td data-title="公司名称">${customer.companyName}</td>
                                                             <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!'无'}</a></td>
+                                                                <td data-title="合作公司">
+                                                                    <#if customer.partnerId??>
+                                                                        <a href="/finance/find-all-customer?partnerId=${customer.partnerId?c}">${customer.partnerName!'无'}</a>
+                                                                    <#else >
+                                                                        无
+                                                                    </#if>
+                                                                </td>
                                                             </@shiro.hasPermission>
                                                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                                 <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
@@ -421,8 +440,8 @@
                                                                         <#if companyApi.companyApiCount??>
                                                                             <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
                                                                                 0</br>
-                                                                           <#-- <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
-                                                                                0</br>-->
+                                                                            <#-- <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
+                                                                                 0</br>-->
                                                                             <#else>
                                                                             ${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}<br/>
                                                                             </#if>
@@ -438,8 +457,8 @@
                                                                         <#if companyApi.companyApiCount??>
                                                                             <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
                                                                                 0</br>
-                                                                          <#--  <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
-                                                                                0</br>-->
+                                                                            <#--  <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
+                                                                                  0</br>-->
                                                                             <#else>
                                                                             ${(companyApi.companyApiCount.countTotle)!'0'}<br/>
                                                                             </#if>
@@ -458,7 +477,7 @@
                                                                             <#--<#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
                                                                                 0</br>-->
                                                                             <#else>
-                                                                                ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
+                                                                            ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
                                                                             </#if>
                                                                         <#else >
                                                                             0</br>
@@ -517,19 +536,21 @@
 
                                                     <label><input type="checkbox" checked data-column="3">信用额度</label>
 
-                                                    <label><input type="checkbox" checked data-column="4">余额</label>
+                                                    <label><input type="checkbox" checked data-column="4">可用信用额度</label>
 
-                                                    <label><input type="checkbox" checked data-column="5">充值总额</label>
+                                                    <label><input type="checkbox" checked data-column="5">余额</label>
 
-                                                    <label><input type="checkbox" checked data-column="6">消费总额</label>
+                                                    <label><input type="checkbox" checked data-column="6">充值总额</label>
 
-                                                    <label><input type="checkbox" data-column="7">上周充值</label>
+                                                    <label><input type="checkbox" checked data-column="7">消费总额</label>
 
-                                                    <label><input type="checkbox" data-column="8">上周消费</label>
+                                                    <label><input type="checkbox" data-column="8">上周充值</label>
 
-                                                    <label><input type="checkbox" checked data-column="9">上月充值</label>
+                                                    <label><input type="checkbox" data-column="9">上周消费</label>
 
-                                                    <label><input type="checkbox" checked data-column="10">上月消费</label>
+                                                    <label><input type="checkbox" checked data-column="10">上月充值</label>
+
+                                                    <label><input type="checkbox" checked data-column="11">上月消费</label>
                                                 </div>
 
                                             </div>
@@ -665,7 +686,13 @@
                                                         <tr>
                                                             <td data-title="公司名称" class="font-text-decoration">${customer.companyName}</td>
                                                             <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                <td data-title="合作公司"><a href="/finance/find-all-customer<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!'无'}</a></td>
+                                                                <td data-title="合作公司">
+                                                                    <#if customer.partnerId??>
+                                                                        <a href="/finance/find-all-customer?partnerId=${customer.partnerId?c}">${customer.partnerName!'无'}</a>
+                                                                    <#else >
+                                                                        无
+                                                                    </#if>
+                                                                </td>
                                                             </@shiro.hasPermission>
                                                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                                 <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
@@ -702,9 +729,11 @@
                                                                 <#if customer.companyApiList??>
                                                                     <#list customer.companyApiList as companyApi>
                                                                         <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
+                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
                                                                                 0</br>
-                                                                            <#else >
+                                                                            <#-- <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
+                                                                                 0</br>-->
+                                                                            <#else>
                                                                             ${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}<br/>
                                                                             </#if>
                                                                         <#else >
@@ -717,9 +746,11 @@
                                                                 <#if customer.companyApiList??>
                                                                     <#list customer.companyApiList as companyApi>
                                                                         <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
+                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
                                                                                 0</br>
-                                                                            <#else >
+                                                                            <#--  <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
+                                                                                  0</br>-->
+                                                                            <#else>
                                                                             ${(companyApi.companyApiCount.countTotle)!'0'}<br/>
                                                                             </#if>
                                                                         <#else >
@@ -732,9 +763,11 @@
                                                                 <#if customer.companyApiList??>
                                                                     <#list customer.companyApiList as companyApi>
                                                                         <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && !(companyApi.companyApiCount.stidSumAmount??)>
+                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
                                                                                 0</br>
-                                                                            <#else >
+                                                                            <#--<#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
+                                                                                0</br>-->
+                                                                            <#else>
                                                                             ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
                                                                             </#if>
                                                                         <#else >

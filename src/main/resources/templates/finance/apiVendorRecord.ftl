@@ -56,6 +56,38 @@
 
                             </div>
 
+                            <div class="pull-left margin-right-20 head-search-bottom">
+
+                                <label class="control-label">起始日期</label>
+
+                                <div class="controls">
+
+                                    <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                        <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="pull-left head-search-bottom">
+
+                                <label class="control-label">结束日期</label>
+
+                                <div class="controls">
+
+                                    <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                        <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                             <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
@@ -158,7 +190,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：<#if allConsumeTotleAmount??><span>${(allConsumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：<#if allConsumeTotleAmount??><span>${(allConsumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -192,7 +224,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -203,38 +235,38 @@
                                             </div>
 
                                         <#--表字段总额-->
-                                           <#-- <div class="pull-right table-top-bottom">
+                                        <#-- <div class="pull-right table-top-bottom">
 
-                                                <label class="control-label">
+                                             <label class="control-label">
 
-                                                    <a id="columnVendorHistogram" href="#form_modal7" data-toggle="modal">
+                                                 <a id="columnVendorHistogram" href="#form_modal7" data-toggle="modal">
 
-                                                        <i class="icon-bar-chart"></i>总消费
+                                                     <i class="icon-bar-chart"></i>总消费
 
-                                                    </a>
+                                                 </a>
 
-                                                </label>
+                                             </label>
 
-                                                <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+                                             <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
 
-                                                    <div class="modal-header">
+                                                 <div class="modal-header">
 
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 
-                                                        <h3 id="myModalLabel7">&nbsp;</h3>
+                                                     <h3 id="myModalLabel7">&nbsp;</h3>
 
-                                                    </div>
+                                                 </div>
 
-                                                    <div class="modal-body">
-                                                        <div id="columnVendorHistogramContainer">
+                                                 <div class="modal-body">
+                                                     <div id="columnVendorHistogramContainer">
 
-                                                        </div>
+                                                     </div>
 
-                                                    </div>
+                                                 </div>
 
-                                                </div>
+                                             </div>
 
-                                            </div>-->
+                                         </div>-->
 
                                         </div>
 
@@ -244,7 +276,7 @@
                                                 <tr>
                                                     <th>供应商</th>
                                                     <th>合作公司</th>
-                                                    <th>消费总额（单位：元）</th>
+                                                    <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
                                                     <th>所剩余额（单位：元）</th>
                                                     <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
                                                     <th>${year!''}年${month!''}月消费（单位：元）</th>
@@ -257,7 +289,13 @@
                                                         <#list apiFinanceList as apiFinance>
                                                         <tr>
                                                             <td data-title="供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName}</a></td>
-                                                            <td data-title="合作公司"><a href="/api/find-all-api-vendor-consume<#if apiFinance.partnerId??>?partnerId=${apiFinance.partnerId?c}</#if>">${apiFinance.partnerName!'无'}</a></td>
+                                                            <td data-title="合作公司">
+                                                                <#if apiFinance.partnerId??>
+                                                                    <a href="/api/find-all-api-vendor-consume?partnerId=${apiFinance.partnerId?c}">${apiFinance.partnerName!'无'}</a>
+                                                                <#else >
+                                                                    无
+                                                                </#if>
+                                                            </td>
                                                             <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                                             <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
                                                             <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
@@ -365,7 +403,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：<#if allConsumeTotleAmount??><span>${(allConsumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：<#if allConsumeTotleAmount??><span>${(allConsumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -399,7 +437,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：<#if consumeTotleAmountDead??><span>${(consumeTotleAmountDead/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：<#if consumeTotleAmountDead??><span>${(consumeTotleAmountDead/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -417,7 +455,7 @@
                                                 <tr>
                                                     <th>供应商</th>
                                                     <th>合作公司</th>
-                                                    <th>消费总额（单位：元）</th>
+                                                    <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
                                                     <th>所剩余额（单位：元）</th>
                                                     <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
                                                     <th>${year!''}年${month!''}月消费（单位：元）</th>
@@ -430,7 +468,13 @@
                                                         <#list apiFinanceListDead as apiFinance>
                                                         <tr>
                                                             <td data-title="供应商" class="font-text-decoration"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName}</a></td>
-                                                            <td data-title="合作公司"><a href="/api/find-all-api-vendor-consume<#if apiFinance.partnerId??>?partnerId=${apiFinance.partnerId?c}</#if>">${apiFinance.partnerName!'无'}</a></td>
+                                                            <td data-title="合作公司">
+                                                                <#if apiFinance.partnerId??>
+                                                                    <a href="/api/find-all-api-vendor-consume?partnerId=${apiFinance.partnerId?c}">${apiFinance.partnerName!'无'}</a>
+                                                                <#else >
+                                                                    无
+                                                                </#if>
+                                                            </td>
                                                             <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
                                                             <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
                                                             <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
