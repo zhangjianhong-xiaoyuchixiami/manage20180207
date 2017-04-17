@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class CalendarTools {
 
+
+
     /**
      * 计算某年某周的开始日期
      * @param yearNum 格式 yyyy  ，必须大于1900年度 小于9999年
@@ -189,7 +191,7 @@ public class CalendarTools {
     }
 
     /**
-     * 根据系统时间获取上一月的月份
+     * 根据系统时间获取某一月的月份
      * @return
      */
     public static Integer getYearMonthCount(int count){
@@ -200,7 +202,18 @@ public class CalendarTools {
     }
 
     /**
-     * 根据系统时间获取上一月的年份
+     * 根据系统时间获取某一月的第几天
+     * @return
+     */
+    public static Integer getYearMonthDayCount(int count){
+        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
+        c.add(Calendar.MONTH,-(count));
+        Integer day = c.get(Calendar.DAY_OF_MONTH);
+        return day;
+    }
+
+    /**
+     * 根据系统时间获取某一月的年份
      * @return
      */
     public static Integer getMonthCount(int count){

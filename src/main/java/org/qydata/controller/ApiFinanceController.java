@@ -35,10 +35,18 @@ public class ApiFinanceController {
      * @return
      */
     @RequestMapping("/find-all-api-record")
-    public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId,String dead, Model model){
+    public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId,String dead, String beginDate,String endDate,Model model){
         Map<String,Object> map = new HashedMap();
         if (vendorId !=null){
             map.put("vendorId",vendorId);
+        }
+        if (beginDate != null && beginDate != "" ) {
+            map.put("beginDate", beginDate+" "+"00:00:00");
+            model.addAttribute("beginDate",beginDate);
+        }
+        if(endDate != null && endDate != ""){
+            map.put("endDate", endDate+" "+"23:59:59");
+            model.addAttribute("endDate",endDate);
         }
         List<ApiVendor> apiVendorList  = null;
         if (apiTypeId !=null){
@@ -147,7 +155,7 @@ public class ApiFinanceController {
      * @throws Exception
      */
     @RequestMapping("/find-all-api-vendor-consume")
-    public ModelAndView findAllApiVendorConsume(String export,Integer vendorId,Integer partnerId,String dead,String beginDate,String endDate,Model model){
+    public ModelAndView findAllApiVendorConsume(String export,Integer vendorId,Integer partnerId,String beginDate,String endDate,String [] status,Model model){
         Map<String,Object> map = new HashMap<>();
         if(vendorId != null){
             map.put("vendorId",vendorId);
@@ -163,8 +171,17 @@ public class ApiFinanceController {
             map.put("endDate", endDate+" "+"23:59:59");
             model.addAttribute("endDate",endDate);
         }
+        List<String> statusList = new ArrayList();
+        if (status != null && status.length >0) {
+            for(int i=0;i<status.length;i++){
+                statusList.add(status[i]);
+            }
+        }else {
+            statusList.add("0");
+            statusList.add("-1");
+        }
+        map.put("statusList", statusList);
         List<ApiFinance> apiFinanceList = null;
-        List<ApiFinance> apiFinanceListDead = null;
         Map<String,Object> mapResult = apiFinanceService.queryApiVendor(map);
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
         Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -182,56 +199,33 @@ public class ApiFinanceController {
             if (me.getKey().equals("getCountTotleApiVendor")){
                 model.addAttribute("consumeTotleAmount",me.getValue());
             }
-
-
-            if (me.getKey().equals("queryApiVendorDead")){
-                apiFinanceListDead = (List<ApiFinance>) me.getValue();
-            }
-            if (me.getKey().equals("getCountWeekApiVendorDead")){
-                model.addAttribute("weekTotleAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("getCountMonthApiVendorDead")){
-                model.addAttribute("monthTotleAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("getCountTotleApiVendorDead")){
-                model.addAttribute("consumeTotleAmountDead",me.getValue());
-            }
-
-            if (me.getKey().equals("getAllCountWeekApiVendor")){
-                model.addAttribute("allWeekTotleAmount",me.getValue());
-            }
-            if (me.getKey().equals("getAllCountMonthApiVendor")){
-                model.addAttribute("allMonthTotleAmount",me.getValue());
-            }
-            if (me.getKey().equals("getAllCountTotleApiVendor")){
-                model.addAttribute("allConsumeTotleAmount",me.getValue());
-            }
         }
-       // List<ApiFinance> apiFinances = ExportDataHander.processApiFinance(apiFinanceList);
-        //List<ApiFinance> apiFinancesDead = ExportDataHander.processApiFinance(apiFinanceListDead);
         long totleBalance = 0L;
+        long currMonthTotleCost = 0L;
+        long currDayTotleCost = 0L;
         for (int j=0; j<apiFinanceList.size(); j++){
             ApiFinance apiFinance = apiFinanceList.get(j);
             if (apiFinance.getBalance() != null) {
                 totleBalance = totleBalance + apiFinance.getBalance();
             }
-        }
-
-        long totleBalanceDead = 0L;
-        for (int j=0; j<apiFinanceListDead.size(); j++){
-            ApiFinance apiFinance = apiFinanceListDead.get(j);
-            if (apiFinance.getBalance() != null) {
-                totleBalanceDead = totleBalanceDead + apiFinance.getBalance();
+            if (apiFinance.getCurrMonthCost() != null) {
+                currMonthTotleCost = currMonthTotleCost + apiFinance.getCurrMonthCost();
+            }
+            if (apiFinance.getCurrDayCost() != null) {
+                currDayTotleCost = currDayTotleCost + apiFinance.getCurrDayCost();
             }
         }
         model.addAttribute("apiFinanceList",apiFinanceList);
-        model.addAttribute("apiFinanceListDead",apiFinanceListDead);
         model.addAttribute("apiVendorList",apiFinanceService.queryApiVendorName(map));
+        model.addAttribute("statusArray",statusList);
         model.addAttribute("vendorId",vendorId);
         model.addAttribute("partnerId",partnerId);
         model.addAttribute("totleBalance",totleBalance);
-        model.addAttribute("totleBalanceDead",totleBalanceDead);
-        model.addAttribute("allTotleBalance",totleBalance+totleBalanceDead);
+        model.addAttribute("currMonthTotleCost",currMonthTotleCost);
+        model.addAttribute("currDayTotleCost",currDayTotleCost);
+        model.addAttribute("currYear",CalendarTools.getYearMonthCount(0));
+        model.addAttribute("currMonth",CalendarTools.getMonthCount(0));
+        model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
         model.addAttribute("year",CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));

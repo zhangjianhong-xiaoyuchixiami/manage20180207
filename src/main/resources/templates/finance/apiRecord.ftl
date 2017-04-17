@@ -63,6 +63,38 @@
 
                             </div>
 
+                            <div class="pull-left margin-right-20 head-search-bottom">
+
+                                <label class="control-label">起始日期</label>
+
+                                <div class="controls">
+
+                                    <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                        <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="pull-left head-search-bottom">
+
+                                <label class="control-label">结束日期</label>
+
+                                <div class="controls">
+
+                                    <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                        <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                             <div class="pull-left head-search-bottom">
 
                                 <label class="control-label">&nbsp;&nbsp;</label>
@@ -161,7 +193,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(allConsumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：${(allConsumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -189,7 +221,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(consumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：${(consumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -236,7 +268,7 @@
                                                     <th>产品类型</th>
                                                     <th>产品供应商</th>
                                                     <th>产品名称</th>
-                                                    <th>消费总额（单位：元）</th>
+                                                    <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
                                                     <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
                                                     <th>${year!''}年${month!''}月消费（单位：元）</th>
                                                     <th style="text-align: center; width: 13%;">操作</th>
@@ -343,7 +375,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(allConsumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：${(allConsumeTotleAmount!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
                                         </div>
@@ -370,7 +402,7 @@
 
                                             <div class="pull-left table-top-bottom">
 
-                                                <label class="control-label">消费总额&yen;：${(consumeTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：${(consumeTotleAmountDead!0)/100.0}元&nbsp;&nbsp;&nbsp;</label>
 
                                             </div>
 
@@ -383,7 +415,7 @@
                                                     <th>产品类型</th>
                                                     <th>产品供应商</th>
                                                     <th>产品名称</th>
-                                                    <th>消费总额（单位：元）</th>
+                                                    <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
                                                     <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
                                                     <th>${year!''}年${month!''}月消费（单位：元）</th>
                                                     <th style="text-align: center; width: 13%;">操作</th>

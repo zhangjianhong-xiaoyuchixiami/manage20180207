@@ -46,6 +46,12 @@ public class ApiFinanceExcelAop {
             if (args[2] !=null){
                 map.put("apiTypeId",args[2]);
             }
+            if (args[4] != null && args[4] != "" ) {
+                map.put("beginDate", args[4]+" "+"00:00:00");
+            }
+            if(args[5] != null && args[5] != ""){
+                map.put("endDate", args[5]+" "+"23:59:59");
+            }
             List<ApiFinance> apiFinanceList = null;
             Map<String,Object> mapResult = apiFinanceService.queryApiOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
@@ -168,29 +174,33 @@ public class ApiFinanceExcelAop {
             if(args[2] != null){
                 map.put("partnerId",args[2]);
             }
-            if (args[4] != null && args[4] != "" ) {
-                map.put("beginDate", args[4]+" "+"00:00:00");
+            if (args[3] != null && args[3] != "" ) {
+                map.put("beginDate", args[3]+" "+"00:00:00");
             }
-            if(args[5] != null && args[5] != ""){
-                map.put("endDate", args[5]+" "+"23:59:59");
+            if(args[4] != null && args[4] != ""){
+                map.put("endDate", args[4]+" "+"23:59:59");
             }
+            List statusList = new ArrayList();
+            String status [] = (String[]) args[5];
+            if (status != null && status.length >0) {
+                for(int i=0;i<status.length;i++){
+                    statusList.add(status[i]);
+                }
+            }else {
+                statusList.add(0);
+                statusList.add(-1);
+            }
+            map.put("statusList", statusList);
             List<ApiFinance> apiFinanceList = null;
             Map<String,Object> mapResult = apiFinanceService.queryApiVendor(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
             Iterator<Map.Entry<String,Object>> it = set.iterator();
             while(it.hasNext()){
                 Map.Entry<String,Object> me = it.next();
-                if (args[3] != null && args[3].getClass() == String.class && args[3].equals("true")){
-                    if (me.getKey().equals("queryApiVendorDead")){
-                        apiFinanceList = (List<ApiFinance>) me.getValue();
-                    }
-                }else {
-                    if (me.getKey().equals("queryApiVendor")){
-                        apiFinanceList = (List<ApiFinance>) me.getValue();
-                    }
+                if (me.getKey().equals("queryApiVendor")){
+                    apiFinanceList = (List<ApiFinance>) me.getValue();
                 }
             }
-            //List<ApiFinance> apiFinances = ExportDataHander.processApiFinance(apiFinanceList);
             List<Map<String,Object>> listExport = new ArrayList<>();
             Map<String, Object> mapExport = new HashMap<>();
             mapExport.put("sheetName", "sheet1");
@@ -204,11 +214,13 @@ public class ApiFinanceExcelAop {
                 mapValue.put("balance", ExportDataHander.pointsIntoRMB(apiFinance.getBalance()));
                 mapValue.put("weekTotleCost", ExportDataHander.pointsIntoRMB(apiFinance.getWeekTotleCost()));
                 mapValue.put("monthTotleAmount",ExportDataHander.pointsIntoRMB(apiFinance.getMonthTotleCost()));
+                mapValue.put("currMonthTotleAmount",ExportDataHander.pointsIntoRMB(apiFinance.getCurrMonthCost()));
+                mapValue.put("currDayTotleAmount",ExportDataHander.pointsIntoRMB(apiFinance.getCurrDayCost()));
                 listExport.add(mapValue);
             }
             String fileName = "供应商财务账单";
-            String columnNames[]= {"供应商","合作公司","消费金额（单位：元）","所剩余额（单位：元）","上周消费（单位：元）","上月消费（单位：元）"};//列名
-            String keys[] = {"vendorName","partnerName","consumeTotleAmount","balance","weekTotleCost","monthTotleAmount"};//map中的key
+            String columnNames[]= {"供应商","合作公司","消费金额（单位：元）","所剩余额（单位：元）","上周消费（单位：元）","上月消费（单位：元）","本月消费（单位：元）","当天消费（单位：元）"};//列名
+            String keys[] = {"vendorName","partnerName","consumeTotleAmount","balance","weekTotleCost","monthTotleAmount","currMonthTotleAmount","currDayTotleAmount"};//map中的key
             ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
             return null;
         }

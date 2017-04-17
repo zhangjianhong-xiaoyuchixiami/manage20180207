@@ -8,11 +8,35 @@ var ApiVendorRecord = function () {
                 return;
             }
 
-            /* Formating function for row details */
+            var beginDate=null;
+            var endDate=null;
+            if ($('#beginDate').val() != null && $('#beginDate').val() != ''){
+                beginDate = $('#beginDate').val();
+            }else {
+                beginDate = '开通后'
+            }
+            if ($('#endDate').val() != null && $('#endDate').val() != ''){
+                endDate = $('#endDate').val();
+            }else {
+                endDate = '至今'
+            }
+
             function fnFormatDetailsVendor ( oTable, nTr ) {
-                var aData = oTable2.fnGetData( nTr );
+                var aData = oTable.fnGetData( nTr );
                 var sOut = '<table style="width: 100%">';
-                sOut += '<tr><th style="width: 8%;">供应类型:</th><td>'+aData[7]+'</td></tr>';
+                sOut += '<tr><th colspan="4">时间范围：'+beginDate+'--'+endDate+'</th></tr>';
+                sOut += '<tr>' +
+                    '<th>供应类型</th>' +
+                    '<th>当前价格</th>' +
+                    '<th>总消费额（单位：元）</th>' +
+                    '<th>使用量</th>' +
+                    '</tr>';
+                sOut += '<tr>' +
+                    '<td>'+aData[10]+'</td>' +
+                    '<td>'+aData[11]+'</td>' +
+                    '<td>'+aData[12]+'</td>' +
+                    '<td>'+aData[13]+'</td>' +
+                    '</tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -56,11 +80,16 @@ var ApiVendorRecord = function () {
                     null,
                     null,
                     { "bVisible": false },
-                    null,
                     { "bVisible": false },
-                    { "bSortable": false }
+                    null,
+                    null,
+                    { "bSortable": false },
+                    { "bVisible": false },
+                    { "bVisible": false },
+                    { "bVisible": false },
+                    { "bVisible": false }
                 ],
-                "aaSorting": [[3, 'desc']],
+                "aaSorting": [[8, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -92,6 +121,24 @@ var ApiVendorRecord = function () {
                 var bVis = oTable2.fnSettings().aoColumns[iCol].bVisible;
                 oTable2.fnSetColumnVis(iCol, (bVis ? false : true));
             });
+
+            /*状态正常全选操作*/
+            jQuery('#sample_11 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            jQuery('#sample_11_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#sample_11_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+
 
             $("#columnVendorHistogram").on("click",function () {
                 $.ajax({

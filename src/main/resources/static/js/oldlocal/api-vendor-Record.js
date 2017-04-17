@@ -18,13 +18,22 @@
         console.log($.getUrlParam('endDate'));
     });
 
+    var statusId =[];//定义一个数组
+    $('input[name="status"]:checked').each(function(){
+        statusId.push($.trim($(this).val()));
+    });
+
+    console.log(statusId);
+
     var href = $("#exportExcel").attr('href');
 
     if(href) {
         href += (href.match(/\?/) ? '&' : '?') + 'vendorId=' + $.getUrlParam('vendorId') +
             (href.match(/\?/) ? '&' : '?') + 'partnerId=' + $.getUrlParam('partnerId') +
             (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate') +
-            (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate');
+            (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate') +
+            (href.match(/\?/) ? '&' : '?') + 'status=' + statusId;
+
         $("#exportExcel").attr('href', href);
     }
 

@@ -40,6 +40,14 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                     mapValue.put("apiTypeId",me.getValue());
                     mapValueDead.put("apiTypeId",me.getValue());
                 }
+                if (me.getKey().equals("beginDate")){
+                    mapValue.put("beginDate",me.getValue());
+                    mapValueDead.put("beginDate",me.getValue());
+                }
+                if (me.getKey().equals("endDate")){
+                    mapValue.put("endDate",me.getValue());
+                    mapValueDead.put("endDate",me.getValue());
+                }
             }
             mapTran.put("getAllCountApiWeekFinance",apiFinanceMapper.getCountApiWeekFinance(mapValue));
             mapTran.put("getAllCountApiMonthFinance",apiFinanceMapper.getCountApiMonthFinance(mapValue));
@@ -78,7 +86,6 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @DataSourceService
     public Map<String,Object> queryApiVendor(Map<String, Object> map) {
         Map<String,Object> mapValue = new HashMap<>();
-        Map<String,Object> mapValueDead = new HashMap<>();
         Map<String,Object> mapTran = new HashMap<>();
         try {
             Set<Map.Entry<String,Object>> set = map.entrySet();
@@ -87,34 +94,24 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                 Map.Entry<String,Object> me = it.next();
                 if (me.getKey().equals("vendorId")){
                     mapValue.put("vendorId",me.getValue());
-                    mapValueDead.put("vendorId",me.getValue());
                 }
                 if (me.getKey().equals("partnerId")){
                     mapValue.put("partnerId",me.getValue());
-                    mapValueDead.put("partnerId",me.getValue());
                 }
                 if (me.getKey().equals("beginDate")){
                     mapValue.put("beginDate",me.getValue());
-                    mapValueDead.put("beginDate",me.getValue());
                 }
                 if (me.getKey().equals("endDate")){
                     mapValue.put("endDate",me.getValue());
-                    mapValueDead.put("endDate",me.getValue());
+                }
+                if (me.getKey().equals("statusList")){
+                    mapValue.put("statusList",me.getValue());
                 }
             }
-            mapTran.put("getAllCountWeekApiVendor",apiFinanceMapper.getCountWeekApiVendor(mapValue));
-            mapTran.put("getAllCountMonthApiVendor",apiFinanceMapper.getCountMonthApiVendor(mapValue));
-            mapTran.put("getAllCountTotleApiVendor",apiFinanceMapper.getCountTotleApiVendor(mapValue));
-            mapValue.put("status",0);
             mapTran.put("queryApiVendor",apiFinanceMapper.queryApiVendor(mapValue));
             mapTran.put("getCountWeekApiVendor",apiFinanceMapper.getCountWeekApiVendor(mapValue));
             mapTran.put("getCountMonthApiVendor",apiFinanceMapper.getCountMonthApiVendor(mapValue));
             mapTran.put("getCountTotleApiVendor",apiFinanceMapper.getCountTotleApiVendor(mapValue));
-            mapValueDead.put("status",-1);
-            mapTran.put("queryApiVendorDead",apiFinanceMapper.queryApiVendor(mapValueDead));
-            mapTran.put("getCountWeekApiVendorDead",apiFinanceMapper.getCountWeekApiVendor(mapValueDead));
-            mapTran.put("getCountMonthApiVendorDead",apiFinanceMapper.getCountMonthApiVendor(mapValueDead));
-            mapTran.put("getCountTotleApiVendorDead",apiFinanceMapper.getCountTotleApiVendor(mapValueDead));
         } catch (Exception e) {
             e.printStackTrace();
         }

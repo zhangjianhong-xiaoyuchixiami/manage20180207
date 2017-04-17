@@ -12,9 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -65,7 +63,7 @@ public class MyBatisConfig {
     public DynamicDataSource dataSource(@Qualifier("masterDataSource") DataSource masterDataSource, @Qualifier("slaveDataSource") DataSource slaveDataSource) {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put("master", masterDataSource);
-        targetDataSources.put("slave", slaveDataSource);
+        targetDataSources.put("slave", masterDataSource);
         DynamicDataSource dataSource = new DynamicDataSource();
         dataSource.setTargetDataSources(targetDataSources);// 该方法是AbstractRoutingDataSource的方法
         dataSource.setDefaultTargetDataSource(masterDataSource);// 默认的datasource设置为masterDataSource
@@ -94,24 +92,6 @@ public class MyBatisConfig {
     @Bean
     public DataSourceTransactionManager transactionManager(DynamicDataSource dataSource) throws Exception {
         return new DataSourceTransactionManager(dataSource);
-    }
-
-    @Bean(name = "transactionInterceptor")
-    public TransactionInterceptor transactionInterceptor(PlatformTransactionManager platformTransactionManager) {
-        TransactionInterceptor transactionInterceptor = new TransactionInterceptor();
-        // 事物管理器
-        transactionInterceptor.setTransactionManager(platformTransactionManager);
-        Properties transactionAttributes = new Properties();
-        // 新增
-        transactionAttributes.setProperty("insert*", "PROPAGATION_REQUIRED,-Throwable");
-        // 修改
-        transactionAttributes.setProperty("update*", "PROPAGATION_REQUIRED,-Throwable");
-        // 删除
-        transactionAttributes.setProperty("delete*", "PROPAGATION_REQUIRED,-Throwable");
-        //查询
-        transactionAttributes.setProperty("select*", "PROPAGATION_REQUIRED,-Throwable,readOnly");
-        transactionInterceptor.setTransactionAttributes(transactionAttributes);
-        return transactionInterceptor;
     }
 
 }

@@ -22,10 +22,13 @@ public class ApiFinance implements Serializable {
     private Long weekTotleCost;
     private Long monthTotleCost;
     private Long consumeTotleAmount;
+    private Long currMonthCost;
+    private Long currDayCost;
     private Integer partnerId;
     private String partnerName;
     private List<MobileOperator> mobileOperatorList;
     private List<ApiType> apiTypeList;
+    private List<ApiTypeConsume> apiTypeConsumeList;
 
     public Integer getApiId() {
         return apiId;
@@ -145,5 +148,29 @@ public class ApiFinance implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getCurrMonthCost() {
+        return currMonthCost;
+    }
+
+    public void setCurrMonthCost(Long currMonthCost) {
+        this.currMonthCost = currMonthCost;
+    }
+
+    public Long getCurrDayCost() {
+        return currDayCost;
+    }
+
+    public void setCurrDayCost(Long currDayCost) {
+        this.currDayCost = currDayCost;
+    }
+
+    public List<ApiTypeConsume> getApiTypeConsumeList() {
+        return apiTypeConsumeList;
+    }
+
+    public void setApiTypeConsumeList(List<ApiTypeConsume> apiTypeConsumeList) {
+        this.apiTypeConsumeList = apiTypeConsumeList;
     }
 }

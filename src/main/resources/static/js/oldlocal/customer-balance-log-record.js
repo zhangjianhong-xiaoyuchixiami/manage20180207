@@ -26,6 +26,5 @@ if(href) {
         (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate')+
         (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate')+
         (href.match(/\?/) ? '&' : '?') + 'reasonId=' + reasonId;
-    $("#exportExcel"
-    ).attr('href', href);
+    $("#exportExcel").attr('href', href);
 }

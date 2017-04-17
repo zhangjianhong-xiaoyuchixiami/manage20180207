@@ -10,7 +10,8 @@
 $(function(){
     console.log($.getUrlParam('apiTypeId'));
     console.log($.getUrlParam('vendorId'));
-    console.log($.getUrlParam('apiId'));
+    console.log($.getUrlParam('beginDate'));
+    console.log($.getUrlParam('endDate'));
 });
 
 var href = $("#exportExcel").attr('href');
@@ -18,6 +19,7 @@ var href = $("#exportExcel").attr('href');
 if(href) {
     href += (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId') +
         (href.match(/\?/) ? '&' : '?') + 'vendorId=' + $.getUrlParam('vendorId') +
-        (href.match(/\?/) ? '&' : '?') + 'apiId=' + $.getUrlParam('apiId');
+        (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate') +
+        (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate');
     $("#exportExcel").attr('href', href);
 }
