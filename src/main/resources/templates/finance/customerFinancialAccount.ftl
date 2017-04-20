@@ -50,6 +50,44 @@
 
                             <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
+                                <div class="pull-left head-search-bottom">
+
+                                    <label class="control-label">公司状态</label>
+
+                                    <div class="controls">
+
+                                        <label class="checkbox">
+
+                                            <input type="checkbox" <#if statusArray??><#list statusArray as status><#if status=="0">checked="checked"</#if></#list></#if> id="status" name="status" value="0">状态正常
+
+                                        </label>
+
+                                        <label class="checkbox">
+
+                                            <input type="checkbox" <#if statusArray??><#list statusArray as status><#if status=="-1">checked="checked"</#if></#list></#if> id="status" name="status" value="-1">被禁用
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="pull-left head-search-bottom">
+
+                                    <label class="control-label">请输入公司名称</label>
+
+                                    <div class="controls">
+
+                                        <div class="input-append">
+
+                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                                 <div class="pull-left margin-right-20 head-search-bottom">
 
                                     <label class="control-label">起始日期</label>
@@ -75,22 +113,6 @@
                                         <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
 
                                             <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="pull-left head-search-bottom">
-
-                                    <label class="control-label">请输入公司名称</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append">
-
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
 
                                         </div>
 
@@ -126,6 +148,44 @@
 
                             <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
+                                <div class="pull-left head-search-bottom">
+
+                                    <label class="control-label">公司状态</label>
+
+                                    <div class="controls">
+
+                                        <label class="checkbox">
+
+                                            <input type="checkbox" <#if statusArray??><#list statusArray as status><#if status=="0">checked="checked"</#if></#list></#if> id="status" name="status" value="0">状态正常
+
+                                        </label>
+
+                                        <label class="checkbox">
+
+                                            <input type="checkbox" <#if statusArray??><#list statusArray as status><#if status=="-1">checked="checked"</#if></#list></#if> id="status" name="status" value="-1">被禁用
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="pull-left head-search-bottom">
+
+                                    <label class="control-label">请输入公司名称</label>
+
+                                    <div class="controls">
+
+                                        <div class="input-append">
+
+                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                                 <div class="pull-left margin-right-20 head-search-bottom">
 
                                     <label class="control-label">起始日期</label>
@@ -160,22 +220,6 @@
 
                                 <div class="pull-left head-search-bottom">
 
-                                    <label class="control-label">请输入公司名称</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append">
-
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="pull-left head-search-bottom">
-
                                     <label class="control-label">&nbsp;&nbsp;</label>
 
                                     <div class="controls" >
@@ -196,303 +240,59 @@
 
                     </@shiro.hasPermission>
 
-                    <div class="tabbable tabbable-custom boxless">
+                    <div class="portlet box grey">
 
-                        <ul class="nav nav-tabs">
+                        <div class="portlet-title">
 
-                            <li class="active"><a href="#tab_1" data-toggle="tab">状态正常</a></li>
+                            <div class="caption"></div>
 
-                            <li><a class="" href="#tab_2" data-toggle="tab">被禁用</a></li>
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer?export=true"></@d.tools>
+                            </@shiro.hasPermission>
 
-                        </ul>
+                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                <@d.tools idName="exportExcelByDeptId" hrefName="/finance/find-all-customer-by-dept-id?export=true"></@d.tools>
+                            </@shiro.hasPermission>
 
-                        <div class="tab-content">
+                            <div class="actions">
 
-                            <div class="tab-pane active" id="tab_1">
+                                <div class="btn-group">
 
-                            <#--状态正常-->
-                                <div class="portlet box grey">
+                                    <a class="btn" href="#" data-toggle="dropdown">
 
-                                    <div class="portlet-title">
+                                        表格显示列
 
-                                        <div class="caption"></div>
+                                        <i class="icon-angle-down"></i>
 
-                                        <@shiro.hasPermission name="customer:findAllCustomer">
-                                            <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer?export=true"></@d.tools>
-                                        </@shiro.hasPermission>
+                                    </a>
 
-                                        <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                            <@d.tools idName="exportExcelByDeptId" hrefName="/finance/find-all-customer-by-dept-id?export=true"></@d.tools>
-                                        </@shiro.hasPermission>
+                                    <div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
 
-                                        <div class="actions">
+                                        <label><input type="checkbox" checked data-column="1">公司名称</label>
 
-                                            <div class="btn-group">
+                                        <label><input type="checkbox" checked data-column="2">合作公司</label>
 
-                                                <a class="btn" href="#" data-toggle="dropdown">
+                                        <label><input type="checkbox" checked data-column="3">信用额度</label>
 
-                                                    表格显示列
+                                        <label><input type="checkbox" checked data-column="4">可用信用额度</label>
 
-                                                    <i class="icon-angle-down"></i>
+                                        <label><input type="checkbox" checked data-column="5">余额</label>
 
-                                                </a>
+                                        <label><input type="checkbox" checked data-column="6">充值总额</label>
 
-                                                <div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
-                                                    <label><input type="checkbox" checked data-column="1">公司名称</label>
+                                        <label><input type="checkbox" checked data-column="7">消费总额</label>
 
-                                                    <label><input type="checkbox" checked data-column="2">合作公司</label>
+                                        <label><input type="checkbox" data-column="8">上周充值</label>
 
-                                                    <label><input type="checkbox" checked data-column="3">信用额度</label>
+                                        <label><input type="checkbox" data-column="9">上周消费</label>
 
-                                                    <label><input type="checkbox" checked data-column="4">可用信用额度</label>
+                                        <label><input type="checkbox" data-column="10">上月充值</label>
 
-                                                    <label><input type="checkbox" checked data-column="5">余额</label>
+                                        <label><input type="checkbox" data-column="11">上月消费</label>
 
-                                                    <label><input type="checkbox" checked data-column="6">充值总额</label>
+                                        <label><input type="checkbox" checked data-column="12">本月消费</label>
 
-                                                    <label><input type="checkbox" checked data-column="7">消费总额</label>
-
-                                                    <label><input type="checkbox" data-column="8">上周充值</label>
-
-                                                    <label><input type="checkbox" data-column="9">上周消费</label>
-
-                                                    <label><input type="checkbox" checked data-column="10">上月充值</label>
-
-                                                    <label><input type="checkbox" checked data-column="11">上月消费</label>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="portlet-body">
-
-                                        <div class="clearfix margin-bottom-5">
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label" style="width: 115px;">总统计：</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">周消费总额&yen;：${-allWeekConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">周充值总额&yen;：${allWeekChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">月消费总额&yen;：${-allMonthConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">月充值总额&yen;：${allMonthChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">消费总额&yen;：${-allTotleConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">充值总额&yen;：${allTotleChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="clearfix margin-bottom-5">
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label" style="width: 115px;">状态正常统计：</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">周消费总额&yen;：${-weekConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">周充值总额&yen;：${weekChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">月消费总额&yen;：${-monthConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">月充值总额&yen;：${monthChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">消费总额&yen;：${-totleConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">充值总额&yen;：${totleChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="table-responsive">
-                                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
-
-                                                <thead>
-                                                <tr>
-                                                    <th>公司名称</th>
-                                                    <@shiro.hasPermission name="customer:findAllCustomer">
-                                                        <th>合作公司</th>
-                                                    </@shiro.hasPermission>
-                                                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                        <th style="display: none">合作公司</th>
-                                                    </@shiro.hasPermission>
-                                                    <th>信用额度（单位：元）</th>
-                                                    <th>剩余信用额度（单位：元）</th>
-                                                    <th>余额（单位：元）</th>
-                                                    <th>充值总额（单位：元）</th>
-                                                    <th>消费总额（单位：元）</th>
-                                                    <th>${year!''}年${month!''}月第${week!''}周充值（单位：元）</th>
-                                                    <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
-                                                    <th>${year!''}年${month!''}月充值（单位：元）</th>
-                                                    <th>${year!''}年${month!''}月消费（单位：元）</th>
-                                                    <th class="table-td-none">产品类型</th>
-                                                    <th class="table-td-none">产品价格</th>
-                                                    <th class="table-td-none">总消费额</th>
-                                                    <th class="table-td-none">请求次数</th>
-                                                    <th class="table-td-none">成功次数</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <#if customerFinanceList??>
-                                                        <#list customerFinanceList as customer>
-                                                        <tr>
-                                                            <td data-title="公司名称">${customer.companyName}</td>
-                                                            <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                <td data-title="合作公司">
-                                                                    <#if customer.partnerId??>
-                                                                        <a href="/finance/find-all-customer?partnerId=${customer.partnerId?c}">${customer.partnerName!'无'}</a>
-                                                                    <#else >
-                                                                        无
-                                                                    </#if>
-                                                                </td>
-                                                            </@shiro.hasPermission>
-                                                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                                <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
-                                                            </@shiro.hasPermission>
-                                                            <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
-                                                            <td data-title="剩余信用额度">${(customer.surplusFloor/100.0)?c}</td>
-                                                            <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
-                                                            <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="产品类型" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                        <#if companyApi.enabled==0>
-                                                                        <span class="font-text-decoration">
-                                                                        <#else >
-                                                                        <span>
-                                                                        </#if>
-                                                                        <#if companyApi.apiType??>${companyApi.apiType.name!''}<#if companyApi.mobileOperator??>--${companyApi.mobileOperator.name!''}</#if></#if></span><br/>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                            <td data-title="产品价格" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                    ${(companyApi.price/100.0)!''}<br/>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                            <td data-title="总消费额" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                        <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
-                                                                                0</br>
-                                                                            <#-- <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
-                                                                                 0</br>-->
-                                                                            <#else>
-                                                                            ${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}<br/>
-                                                                            </#if>
-                                                                        <#else >
-                                                                            0</br>
-                                                                        </#if>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                            <td data-title="请求次数" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                        <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
-                                                                                0</br>
-                                                                            <#--  <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
-                                                                                  0</br>-->
-                                                                            <#else>
-                                                                            ${(companyApi.companyApiCount.countTotle)!'0'}<br/>
-                                                                            </#if>
-                                                                        <#else >
-                                                                            0</br>
-                                                                        </#if>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                            <td data-title="成功次数" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                        <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
-                                                                                0</br>
-                                                                            <#--<#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
-                                                                                0</br>-->
-                                                                            <#else>
-                                                                            ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
-                                                                            </#if>
-                                                                        <#else >
-                                                                            0</br>
-                                                                        </#if>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                        </tr>
-                                                        </#list>
-                                                    </#if>
-
-                                                </tbody>
-
-                                            </table>
-                                        </div>
+                                        <label><input type="checkbox" checked data-column="13">当天消费</label>
 
                                     </div>
 
@@ -500,295 +300,216 @@
 
                             </div>
 
-                            <div class="tab-pane " id="tab_2">
+                        </div>
 
-                            <#--被禁用-->
-                                <div class="portlet box grey">
+                        <div class="portlet-body">
 
-                                    <div class="portlet-title">
+                            <div class="clearfix margin-bottom-5">
 
-                                        <div class="caption"></div>
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                        <@shiro.hasPermission name="customer:findAllCustomer">
-                                            <@d.tools idName="exportExcel" hrefName="/finance/find-all-customer?export=true&dead=true"></@d.tools>
-                                        </@shiro.hasPermission>
-
-                                        <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                            <@d.tools idName="exportExcelByDeptId" hrefName="/finance/find-all-customer-by-dept-id?export=true&dead=true"></@d.tools>
-                                        </@shiro.hasPermission>
-
-                                        <div class="actions">
-
-                                            <div class="btn-group">
-
-                                                <a class="btn" href="#" data-toggle="dropdown">
-
-                                                    表格显示列
-
-                                                    <i class="icon-angle-down"></i>
-
-                                                </a>
-
-                                                <div id="sample_3_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
-                                                    <label><input type="checkbox" checked data-column="1">公司名称</label>
-
-                                                    <label><input type="checkbox" checked data-column="2">合作公司</label>
-
-                                                    <label><input type="checkbox" checked data-column="3">信用额度</label>
-
-                                                    <label><input type="checkbox" checked data-column="4">可用信用额度</label>
-
-                                                    <label><input type="checkbox" checked data-column="5">余额</label>
-
-                                                    <label><input type="checkbox" checked data-column="6">充值总额</label>
-
-                                                    <label><input type="checkbox" checked data-column="7">消费总额</label>
-
-                                                    <label><input type="checkbox" data-column="8">上周充值</label>
-
-                                                    <label><input type="checkbox" data-column="9">上周消费</label>
-
-                                                    <label><input type="checkbox" checked data-column="10">上月充值</label>
-
-                                                    <label><input type="checkbox" checked data-column="11">上月消费</label>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="portlet-body">
-
-                                        <div class="clearfix margin-bottom-5">
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label" style="width: 115px;">总统计：</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">周消费总额&yen;：${-allWeekConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">周充值总额&yen;：${allWeekChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">月消费总额&yen;：${-allMonthConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">月充值总额&yen;：${allMonthChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">消费总额&yen;：${-allTotleConsumeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">充值总额&yen;：${allTotleChargeAmount/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="clearfix margin-bottom-5">
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label" style="width: 115px;">被禁用统计：</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">周消费总额&yen;：${weekConsumeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">周充值总额&yen;：${weekChargeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">月消费总额&yen;：${-monthConsumeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">月充值总额&yen;：${monthChargeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">消费总额&yen;：${-totleConsumeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                            <div class="pull-left table-top-bottom">
-
-                                                <label class="control-label">充值总额&yen;：${totleChargeAmountDead/100.0}元&nbsp;&nbsp;&nbsp;</label>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="table-responsive">
-                                            <table class="table table-striped table-bordered table-hover table-condensed" id="sample_3">
-
-                                                <thead>
-                                                <tr>
-                                                    <th>公司名称</th>
-                                                    <@shiro.hasPermission name="customer:findAllCustomer">
-                                                        <th>合作公司</th>
-                                                    </@shiro.hasPermission>
-                                                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                        <th style="display: none">合作公司</th>
-                                                    </@shiro.hasPermission>
-                                                    <th>信用额度（单位：元）</th>
-                                                    <th>剩余信用额度（单位：元）</th>
-                                                    <th>余额（单位：元）</th>
-                                                    <th>充值总额（单位：元）</th>
-                                                    <th>消费总额（单位：元）</th>
-                                                    <th>${year!''}年${month!''}月第${week!''}周充值（单位：元）</th>
-                                                    <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
-                                                    <th>${year!''}年${month!''}月充值（单位：元）</th>
-                                                    <th>${year!''}年${month!''}月消费（单位：元）</th>
-                                                    <th class="table-td-none">产品类型</th>
-                                                    <th class="table-td-none">产品价格</th>
-                                                    <th class="table-td-none">总消费额</th>
-                                                    <th class="table-td-none">请求次数</th>
-                                                    <th class="table-td-none">成功次数</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <#if customerFinanceListDead??>
-                                                        <#list customerFinanceListDead as customer>
-                                                        <tr>
-                                                            <td data-title="公司名称" class="font-text-decoration">${customer.companyName}</td>
-                                                            <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                <td data-title="合作公司">
-                                                                    <#if customer.partnerId??>
-                                                                        <a href="/finance/find-all-customer?partnerId=${customer.partnerId?c}">${customer.partnerName!'无'}</a>
-                                                                    <#else >
-                                                                        无
-                                                                    </#if>
-                                                                </td>
-                                                            </@shiro.hasPermission>
-                                                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                                <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
-                                                            </@shiro.hasPermission>
-                                                            <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
-                                                            <td data-title="剩余信用额度">${(customer.surplusFloor/100.0)?c}</td>
-                                                            <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
-                                                            <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                            <td data-title="产品类型" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                        <#if companyApi.enabled==0>
-                                                                        <span class="font-text-decoration">
-                                                                        <#else >
-                                                                        <span>
-                                                                        </#if>
-                                                                        <#if companyApi.apiType??>${companyApi.apiType.name!''}<#if companyApi.mobileOperator??>--${companyApi.mobileOperator.name!''}</#if></#if></span><br/>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                            <td data-title="产品价格" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                    ${(companyApi.price/100.0)!''}<br/>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                            <td data-title="总消费额" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                        <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
-                                                                                0</br>
-                                                                            <#-- <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
-                                                                                 0</br>-->
-                                                                            <#else>
-                                                                            ${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}<br/>
-                                                                            </#if>
-                                                                        <#else >
-                                                                            0</br>
-                                                                        </#if>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                            <td data-title="请求次数" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                        <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
-                                                                                0</br>
-                                                                            <#--  <#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
-                                                                                  0</br>-->
-                                                                            <#else>
-                                                                            ${(companyApi.companyApiCount.countTotle)!'0'}<br/>
-                                                                            </#if>
-                                                                        <#else >
-                                                                            0</br>
-                                                                        </#if>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                            <td data-title="成功次数" class="table-td-none">
-                                                                <#if customer.companyApiList??>
-                                                                    <#list customer.companyApiList as companyApi>
-                                                                        <#if companyApi.companyApiCount??>
-                                                                            <#if companyApi.subTypeId?? && companyApi.subTypeId !=0 && !(companyApi.companyApiCount.stidSumAmount??)>
-                                                                                0</br>
-                                                                            <#--<#elseif !(companyApi.subTypeId??) && !(companyApi.companyApiCount.nostidSumAmount??)>
-                                                                                0</br>-->
-                                                                            <#else>
-                                                                            ${(companyApi.companyApiCount.countSuccess)!'0'}<br/>
-                                                                            </#if>
-                                                                        <#else >
-                                                                            0</br>
-                                                                        </#if>
-                                                                    </#list>
-                                                                </#if>
-                                                            </td>
-                                                        </tr>
-                                                        </#list>
-                                                    </#if>
-
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
+                                    <label class="control-label">上周消费总额&yen;：${-weekConsumeAmount/100.0}元</label>
 
                                 </div>
 
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">上周充值总额&yen;：${weekChargeAmount/100.0}元</label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">上月消费总额&yen;：${-monthConsumeAmount/100.0}元</label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">上月充值总额&yen;：${monthChargeAmount/100.0}元</label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">本月消费总额&yen;：${-currMonthTotleConsumeAmount/100.0}元</label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">当天消费总额&yen;：${-currDayTotleConsumeAmount/100.0}元</label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：${-totleConsumeAmount/100.0}元</label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">充值总额&yen;：${totleChargeAmount/100.0}元</label>
+
+                                </div>
+
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
+                                    <thead>
+                                    <tr>
+                                        <th>公司名称</th>
+                                        <@shiro.hasPermission name="customer:findAllCustomer">
+                                            <th>合作公司</th>
+                                        </@shiro.hasPermission>
+                                        <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                            <th style="display: none">合作公司</th>
+                                        </@shiro.hasPermission>
+                                        <th>信用额度（单位：元）</th>
+                                        <th>剩余信用额度（单位：元）</th>
+                                        <th>余额（单位：元）</th>
+                                        <th>充值总额（单位：元）</th>
+                                        <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
+                                        <th>${year!''}年${month!''}月第${week!''}周充值（单位：元）</th>
+                                        <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                        <th>${year!''}年${month!''}月充值（单位：元）</th>
+                                        <th>${year!''}年${month!''}月消费（单位：元）</th>
+                                        <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
+                                        <th>${currYear!''}年${currMonth!''}月第${currDay!''}日消费（单位：元）</th>
+                                        <th class="table-td-none">产品类型</th>
+                                        <th class="table-td-none">产品价格</th>
+                                        <th class="table-td-none">总消费额</th>
+                                        <th class="table-td-none">请求次数</th>
+                                        <th class="table-td-none">成功次数</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#if customerFinanceList??>
+                                            <#list customerFinanceList as customer>
+                                            <tr>
+                                                <#if customer.companyStatus == 0>
+                                                <td data-title="公司名称">
+                                                <#else >
+                                                <td data-title="公司名称" class="font-text-decoration">
+                                                </#if>
+                                            ${customer.companyName}
+                                            </td>
+                                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                                    <td data-title="合作公司">
+                                                        <#if customer.partnerId??>
+                                                            <a href="/finance/find-all-customer?partnerId=${customer.partnerId?c}">${customer.partnerName!'无'}</a>
+                                                        <#else >
+                                                            无
+                                                        </#if>
+                                                    </td>
+                                                </@shiro.hasPermission>
+                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                    <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
+                                                </@shiro.hasPermission>
+                                                <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
+                                                <td data-title="剩余信用额度">${(customer.surplusFloor/100.0)?c}</td>
+                                                <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="本月消费"><#if customer.currMonthAmount??>${(-customer.currMonthAmount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="当月消费"><#if customer.currDayAmount??>${(-customer.currDayAmount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="产品类型" class="table-td-none">
+                                                    <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            <#if companyApi.apiTypeId??>
+                                                                <#if companyApi.enabled??>
+                                                                    <#if companyApi.enabled==0>
+                                                                    <span class="font-text-decoration">
+                                                                    <#else>
+                                                                    <span>
+                                                                    </#if>
+                                                                <#else >
+                                                                <span class="warning">
+                                                                </#if>
+                                                                <#if companyApi.apiType??>
+                                                                ${companyApi.apiType.name!'未知'}
+                                                                    <#if companyApi.mobileOperator??>--${companyApi.mobileOperator.name!''}</#if>
+                                                                </#if>
+                                                            </span><br/>
+                                                            <#else >
+                                                                <br/>
+                                                            </#if>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td data-title="产品价格" class="table-td-none">
+                                                    <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            <#if companyApi.apiTypeId??>
+                                                                <#if companyApi.price??>
+                                                                    <span>${(companyApi.price/100.0)!''}</span><br/>
+                                                                <#else >
+                                                                    <span class="warning">未知</span><br/>
+                                                                </#if >
+                                                            <#else >
+                                                                <br/>
+                                                            </#if>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td data-title="总消费额" class="table-td-none">
+                                                    <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            <#if companyApi.apiTypeId??>
+                                                                <#if companyApi.companyApiCount?? && companyApi.companyApiCount.sumAmount??>
+                                                                    <span>${(-companyApi.companyApiCount.sumAmount/100.0)!'0'}</span><br/>
+                                                                <#else >
+                                                                    <span>0</span></br>
+                                                                </#if>
+                                                            <#else >
+                                                                <br/>
+                                                            </#if>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td data-title="请求次数" class="table-td-none">
+                                                    <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            <#if companyApi.apiTypeId??>
+                                                                <#if companyApi.companyApiCount??>
+                                                                    <span>${(companyApi.companyApiCount.countTotle)!'0'}</span><br/>
+                                                                <#else >
+                                                                    <span>0</span></br>
+                                                                </#if>
+                                                            <#else >
+                                                                <br/>
+                                                            </#if>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td data-title="成功次数" class="table-td-none">
+                                                    <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
+                                                        <#list customer.companyApiList as companyApi>
+                                                            <#if companyApi.apiTypeId??>
+                                                                <#if companyApi.companyApiCount??>
+                                                                    <span>${(companyApi.companyApiCount.countSuccess)!'0'}</span><br/>
+                                                                <#else >
+                                                                    <span>0</span></br>
+                                                                </#if>
+                                                            <#else >
+                                                                <br/>
+                                                            </#if>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                            </tr>
+                                            </#list>
+                                        </#if>
+
+                                    </tbody>
+
+                                </table>
                             </div>
 
                         </div>
@@ -827,7 +548,6 @@
         <script>
             jQuery(document).ready(function() {
                 CustomerFinanceAccount.init();
-                CustomerFinanceAccountForbid.init();
                 CustomerLeftBar.init();
             });
 

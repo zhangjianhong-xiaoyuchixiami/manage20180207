@@ -36,59 +36,36 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         long monthConsumeAmount = 0L;
         long totleChargeAmount = 0L;
         long totleConsumeAmount = 0L;
-        List<CustomerFinance> customerFinanceList = new ArrayList<>();
+        long currMonthTotleConsumeAmount = 0L;
+        long currDayTotleConsumeAmount = 0L;
 
-        long weekChargeAmountDead = 0L;
-        long weekConsumeAmountDead = 0L;
-        long monthChargeAmountDead = 0L;
-        long monthConsumeAmountDead = 0L;
-        long totleChargeAmountDead = 0L;
-        long totleConsumeAmountDead = 0L;
-        List<CustomerFinance> customerFinanceListDead = new ArrayList<>();
         if (list != null){
             Iterator<CustomerFinance> it = list.iterator();
             while (it.hasNext()){
                 CustomerFinance customerFinance = it.next();
-                if (customerFinance.getCompanyStatus() == 0){
-                    if (customerFinance.getChargeWeekTotleAmount() != null){
-                        weekChargeAmount += customerFinance.getChargeWeekTotleAmount();
-                    }
-                    if (customerFinance.getConsumeWeekTotleAmount() != null){
-                        weekConsumeAmount += customerFinance.getConsumeWeekTotleAmount();
-                    }
-                    if (customerFinance.getChargeMonthTotleAmount() != null){
-                        monthChargeAmount += customerFinance.getChargeMonthTotleAmount();
-                    }
-                    if (customerFinance.getConsumeMonthTotleAmount() != null){
-                        monthConsumeAmount += customerFinance.getConsumeMonthTotleAmount();
-                    }
-                    if (customerFinance.getChargeTotleAmount() != null){
-                        totleChargeAmount += customerFinance.getChargeTotleAmount();
-                    }
-                    if (customerFinance.getConsumeTotleAmount() != null){
-                        totleConsumeAmount = totleConsumeAmount + customerFinance.getConsumeTotleAmount();
-                    }
-                    customerFinanceList.add(customerFinance);
-                }else {
-                    if (customerFinance.getChargeWeekTotleAmount() != null){
-                        weekChargeAmountDead += customerFinance.getChargeWeekTotleAmount();
-                    }
-                    if (customerFinance.getConsumeWeekTotleAmount() != null){
-                        weekConsumeAmountDead += customerFinance.getConsumeWeekTotleAmount();
-                    }
-                    if (customerFinance.getChargeMonthTotleAmount() != null){
-                        monthChargeAmountDead += customerFinance.getChargeMonthTotleAmount();
-                    }
-                    if (customerFinance.getConsumeMonthTotleAmount() != null){
-                        monthConsumeAmountDead += customerFinance.getConsumeMonthTotleAmount();
-                    }
-                    if (customerFinance.getChargeTotleAmount() != null){
-                        totleChargeAmountDead += customerFinance.getChargeTotleAmount();
-                    }
-                    if (customerFinance.getConsumeTotleAmount() != null){
-                        totleConsumeAmountDead += customerFinance.getConsumeTotleAmount();
-                    }
-                    customerFinanceListDead.add(customerFinance);
+                if (customerFinance.getChargeWeekTotleAmount() != null){
+                    weekChargeAmount += customerFinance.getChargeWeekTotleAmount();
+                }
+                if (customerFinance.getConsumeWeekTotleAmount() != null){
+                    weekConsumeAmount += customerFinance.getConsumeWeekTotleAmount();
+                }
+                if (customerFinance.getChargeMonthTotleAmount() != null){
+                    monthChargeAmount += customerFinance.getChargeMonthTotleAmount();
+                }
+                if (customerFinance.getConsumeMonthTotleAmount() != null){
+                    monthConsumeAmount += customerFinance.getConsumeMonthTotleAmount();
+                }
+                if (customerFinance.getChargeTotleAmount() != null){
+                    totleChargeAmount += customerFinance.getChargeTotleAmount();
+                }
+                if (customerFinance.getConsumeTotleAmount() != null){
+                    totleConsumeAmount += customerFinance.getConsumeTotleAmount();
+                }
+                if (customerFinance.getCurrMonthAmount() != null){
+                    currMonthTotleConsumeAmount += customerFinance.getCurrMonthAmount();
+                }
+                if (customerFinance.getCurrDayAmount() != null){
+                    currDayTotleConsumeAmount += customerFinance.getCurrDayAmount();
                 }
             }
         }
@@ -98,22 +75,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapTran.put("monthConsumeAmount",monthConsumeAmount);
         mapTran.put("totleChargeAmount",totleChargeAmount);
         mapTran.put("totleConsumeAmount",totleConsumeAmount);
-        mapTran.put("customerFinanceList",customerFinanceList);
-
-        mapTran.put("weekChargeAmountDead",weekChargeAmountDead);
-        mapTran.put("weekConsumeAmountDead",weekConsumeAmountDead);
-        mapTran.put("monthChargeAmountDead",monthChargeAmountDead);
-        mapTran.put("monthConsumeAmountDead",monthConsumeAmountDead);
-        mapTran.put("totleChargeAmountDead",totleChargeAmountDead);
-        mapTran.put("totleConsumeAmountDead",totleConsumeAmountDead);
-        mapTran.put("customerFinanceListDead",customerFinanceListDead);
-
-        mapTran.put("allWeekChargeAmount",(weekChargeAmount + weekChargeAmountDead));
-        mapTran.put("allWeekConsumeAmount",(weekConsumeAmount + weekConsumeAmountDead));
-        mapTran.put("allMonthChargeAmount",(monthChargeAmount + monthChargeAmountDead));
-        mapTran.put("allMonthConsumeAmount",(monthConsumeAmount + monthConsumeAmountDead));
-        mapTran.put("allTotleChargeAmount",(totleChargeAmount + totleChargeAmountDead));
-        mapTran.put("allTotleConsumeAmount",(totleConsumeAmount + totleConsumeAmountDead));
+        mapTran.put("currMonthTotleConsumeAmount",currMonthTotleConsumeAmount);
+        mapTran.put("currDayTotleConsumeAmount",currDayTotleConsumeAmount);
+        mapTran.put("customerFinanceList",list);
         return mapTran;
     }
 

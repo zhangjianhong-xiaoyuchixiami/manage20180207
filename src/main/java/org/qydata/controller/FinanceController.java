@@ -41,7 +41,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = "/find-all-customer")
-    public ModelAndView queryAllCustomer(String export, String content, Integer partnerId, String beginDate, String endDate,String dead, Model model)throws Exception{
+    public ModelAndView queryAllCustomer(String export, String content, Integer partnerId, String beginDate, String endDate,String [] status, Model model)throws Exception{
         Map<String,Object> map = new HashMap<>();
         if(content != null){
             map.put("content",content);
@@ -51,10 +51,22 @@ public class FinanceController {
         }
         if(beginDate != null && beginDate != ""){
             map.put("beginDate", beginDate+" "+"00:00:00");
+            model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
             map.put("endDate", endDate+" "+"23:59:59");
+            model.addAttribute("endDate",endDate);
         }
+        List<String> statusList = new ArrayList();
+        if (status != null && status.length >0) {
+            for(int i=0;i<status.length;i++){
+                statusList.add(status[i]);
+            }
+        }else {
+            statusList.add("0");
+            statusList.add("-1");
+        }
+        map.put("statusList", statusList);
         Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
         Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -78,57 +90,22 @@ public class FinanceController {
             if (me.getKey().equals("totleConsumeAmount")){
                 model.addAttribute("totleConsumeAmount",me.getValue());
             }
+            if (me.getKey().equals("currMonthTotleConsumeAmount")){
+                model.addAttribute("currMonthTotleConsumeAmount",me.getValue());
+            }
+            if (me.getKey().equals("currDayTotleConsumeAmount")){
+                model.addAttribute("currDayTotleConsumeAmount",me.getValue());
+            }
             if (me.getKey().equals("customerFinanceList")){
                 model.addAttribute("customerFinanceList",me.getValue());
-            }
-
-
-            if (me.getKey().equals("weekChargeAmountDead")){
-                model.addAttribute("weekChargeAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("weekConsumeAmountDead")){
-                model.addAttribute("weekConsumeAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("monthChargeAmountDead")){
-                model.addAttribute("monthChargeAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("monthConsumeAmountDead")){
-                model.addAttribute("monthConsumeAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("totleChargeAmountDead")){
-                model.addAttribute("totleChargeAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("totleConsumeAmountDead")){
-                model.addAttribute("totleConsumeAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("customerFinanceListDead")){
-                model.addAttribute("customerFinanceListDead",me.getValue());
-            }
-
-
-            if (me.getKey().equals("allWeekChargeAmount")){
-                model.addAttribute("allWeekChargeAmount",me.getValue());
-            }
-            if (me.getKey().equals("allWeekConsumeAmount")){
-                model.addAttribute("allWeekConsumeAmount",me.getValue());
-            }
-            if (me.getKey().equals("allMonthChargeAmount")){
-                model.addAttribute("allMonthChargeAmount",me.getValue());
-            }
-            if (me.getKey().equals("allMonthConsumeAmount")){
-                model.addAttribute("allMonthConsumeAmount",me.getValue());
-            }
-            if (me.getKey().equals("allTotleChargeAmount")){
-                model.addAttribute("allTotleChargeAmount",me.getValue());
-            }
-            if (me.getKey().equals("allTotleConsumeAmount")){
-                model.addAttribute("allTotleConsumeAmount",me.getValue());
             }
         }
         model.addAttribute("content",content);
         model.addAttribute("partnerId",partnerId);
-        model.addAttribute("beginDate",beginDate);
-        model.addAttribute("endDate",endDate);
+        model.addAttribute("statusArray",statusList);
+        model.addAttribute("currYear",CalendarTools.getYearMonthCount(0));
+        model.addAttribute("currMonth",CalendarTools.getMonthCount(0));
+        model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
         model.addAttribute("year",CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));
@@ -142,7 +119,7 @@ public class FinanceController {
      * @return
      */
     @RequestMapping(value = ("/find-all-customer-by-dept-id"))
-    public ModelAndView queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,String dead,Model model)throws Exception{
+    public ModelAndView queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,String [] status, Model model)throws Exception{
         User user = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
         List deptList = new ArrayList();
         Map<String, Object> map = new HashMap<>();
@@ -159,10 +136,22 @@ public class FinanceController {
             }
             if(beginDate != null && beginDate != ""){
                 map.put("beginDate", beginDate+" "+"00:00:00");
+                model.addAttribute("beginDate",beginDate);
             }
             if(endDate != null && endDate != ""){
                 map.put("endDate", endDate+" "+"23:59:59");
+                model.addAttribute("endDate",endDate);
             }
+            List<String> statusList = new ArrayList();
+            if (status != null && status.length >0) {
+                for(int i=0;i<status.length;i++){
+                    statusList.add(status[i]);
+                }
+            }else {
+                statusList.add("0");
+                statusList.add("-1");
+            }
+            map.put("statusList", statusList);
             Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
             Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -186,57 +175,22 @@ public class FinanceController {
                 if (me.getKey().equals("totleConsumeAmount")){
                     model.addAttribute("totleConsumeAmount",me.getValue());
                 }
+                if (me.getKey().equals("currMonthTotleConsumeAmount")){
+                    model.addAttribute("currMonthTotleConsumeAmount",me.getValue());
+                }
+                if (me.getKey().equals("currDayTotleConsumeAmount")){
+                    model.addAttribute("currDayTotleConsumeAmount",me.getValue());
+                }
                 if (me.getKey().equals("customerFinanceList")){
                     model.addAttribute("customerFinanceList",me.getValue());
-                }
-
-
-                if (me.getKey().equals("weekChargeAmountDead")){
-                    model.addAttribute("weekChargeAmountDead",me.getValue());
-                }
-                if (me.getKey().equals("weekConsumeAmountDead")){
-                    model.addAttribute("weekConsumeAmountDead",me.getValue());
-                }
-                if (me.getKey().equals("monthChargeAmountDead")){
-                    model.addAttribute("monthChargeAmountDead",me.getValue());
-                }
-                if (me.getKey().equals("monthConsumeAmountDead")){
-                    model.addAttribute("monthConsumeAmountDead",me.getValue());
-                }
-                if (me.getKey().equals("totleChargeAmountDead")){
-                    model.addAttribute("totleChargeAmountDead",me.getValue());
-                }
-                if (me.getKey().equals("totleConsumeAmountDead")){
-                    model.addAttribute("totleConsumeAmountDead",me.getValue());
-                }
-                if (me.getKey().equals("customerFinanceListDead")){
-                    model.addAttribute("customerFinanceListDead",me.getValue());
-                }
-
-
-                if (me.getKey().equals("allWeekChargeAmount")){
-                    model.addAttribute("allWeekChargeAmount",me.getValue());
-                }
-                if (me.getKey().equals("allWeekConsumeAmount")){
-                    model.addAttribute("allWeekConsumeAmount",me.getValue());
-                }
-                if (me.getKey().equals("allMonthChargeAmount")){
-                    model.addAttribute("allMonthChargeAmount",me.getValue());
-                }
-                if (me.getKey().equals("allMonthConsumeAmount")){
-                    model.addAttribute("allMonthConsumeAmount",me.getValue());
-                }
-                if (me.getKey().equals("allTotleChargeAmount")){
-                    model.addAttribute("allTotleChargeAmount",me.getValue());
-                }
-                if (me.getKey().equals("allTotleConsumeAmount")){
-                    model.addAttribute("allTotleConsumeAmount",me.getValue());
                 }
             }
             model.addAttribute("content", content);
             model.addAttribute("partnerId", partnerId);
-            model.addAttribute("beginDate",beginDate);
-            model.addAttribute("endDate",endDate);
+            model.addAttribute("statusArray",statusList);
+            model.addAttribute("currYear",CalendarTools.getYearMonthCount(0));
+            model.addAttribute("currMonth",CalendarTools.getMonthCount(0));
+            model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
             model.addAttribute("year",CalendarTools.getYearMonthCount(1));
             model.addAttribute("month",CalendarTools.getMonthCount(1));
             model.addAttribute("week",CalendarTools.getYearWeekCount(1));
@@ -408,6 +362,7 @@ public class FinanceController {
         }else{
             reasonIdList.add(-1);
             reasonIdList.add(-2);
+            reasonIdList.add(-3);
         }
         map.put("reasonIdList", reasonIdList);
         Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map);

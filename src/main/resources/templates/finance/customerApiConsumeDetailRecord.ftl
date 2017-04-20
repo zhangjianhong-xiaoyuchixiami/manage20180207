@@ -86,6 +86,12 @@
 
                                     </label>
 
+                                    <label class="checkbox">
+
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId==-3>checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-3">测试销减
+
+                                    </label>
+
                                 </div>
 
                             </div>

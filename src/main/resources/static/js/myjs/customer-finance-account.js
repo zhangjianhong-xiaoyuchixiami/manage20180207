@@ -33,11 +33,11 @@ var CustomerFinanceAccount = function () {
                             '<th>成功次数</th>' +
                         '</tr>';
                 sOut += '<tr>' +
-                            '<td>'+aData[12]+'</td>' +
-                            '<td>'+aData[13]+'</td>' +
                             '<td>'+aData[14]+'</td>' +
                             '<td>'+aData[15]+'</td>' +
                             '<td>'+aData[16]+'</td>' +
+                            '<td>'+aData[17]+'</td>' +
+                            '<td>'+aData[18]+'</td>' +
                         '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -84,13 +84,15 @@ var CustomerFinanceAccount = function () {
                     null,  //7
                     { "bVisible": false},  //8
                     { "bVisible": false},  //9
-                    null,  //10
-                    null,  //11
-                    { "bVisible": false },  //12
-                    { "bVisible": false },  //13
+                    { "bVisible": false},  //10
+                    { "bVisible": false},  //11
+                    null,  //12
+                    null,  //13
                     { "bVisible": false },  //14
                     { "bVisible": false },  //15
-                    { "bVisible": false }   //16
+                    { "bVisible": false },  //16
+                    { "bVisible": false },  //17
+                    { "bVisible": false }   //18
                 ],
                 "aoColumnDefs": [
                     {
@@ -125,7 +127,7 @@ var CustomerFinanceAccount = function () {
                     }
 
                 ],
-                "aaSorting": [[5, 'desc']],
+                "aaSorting": [[13, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

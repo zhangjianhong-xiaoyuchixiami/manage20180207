@@ -35,17 +35,17 @@ public class ApiFinanceController {
      * @return
      */
     @RequestMapping("/find-all-api-record")
-    public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId,String dead, String beginDate,String endDate,Model model){
+    public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId, String beginDate,String endDate,String [] status,Model model){
         Map<String,Object> map = new HashedMap();
         if (vendorId !=null){
             map.put("vendorId",vendorId);
         }
         if (beginDate != null && beginDate != "" ) {
-            map.put("beginDate", beginDate+" "+"00:00:00");
+            map.put("beginDate", beginDate);
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate+" "+"23:59:59");
+            map.put("endDate", endDate);
             model.addAttribute("endDate",endDate);
         }
         List<ApiVendor> apiVendorList  = null;
@@ -53,53 +53,63 @@ public class ApiFinanceController {
             map.put("apiTypeId",apiTypeId);
             apiVendorList  = apiFinanceService.queryApiVendorName(map);
         }
+        List<String> statusList = new ArrayList();
+        if (status != null && status.length >0) {
+            for(int i=0;i<status.length;i++){
+                statusList.add(status[i]);
+            }
+        }else {
+            statusList.add("0");
+            statusList.add("-1");
+        }
+        map.put("statusList", statusList);
         Map<String,Object> mapResult = apiFinanceService.queryApiOverAllFinance(map);
+        List<ApiFinance> apiFinanceList = null;
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
         Iterator<Map.Entry<String,Object>> it = set.iterator();
         while(it.hasNext()){
             Map.Entry<String,Object> me = it.next();
             if (me.getKey().equals("queryApiOverAllFinance")){
-                model.addAttribute("apiFinanceList",me.getValue());
+                apiFinanceList = (List<ApiFinance>) me.getValue();
             }
-            if (me.getKey().equals("getCountApiWeekFinance")){
-                model.addAttribute("weekTotleAmount",me.getValue());
-            }
-            if (me.getKey().equals("getCountApiMonthFinance")){
-                model.addAttribute("monthTotleAmount",me.getValue());
-            }
-            if (me.getKey().equals("getCountApiTotleFinance")){
-                model.addAttribute("consumeTotleAmount",me.getValue());
-            }
-
-
-            if (me.getKey().equals("queryApiOverAllFinanceDead")){
-                model.addAttribute("apiFinanceListDead",me.getValue());
-            }
-            if (me.getKey().equals("getCountApiWeekFinanceDead")){
-                model.addAttribute("weekTotleAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("getCountApiMonthFinanceDead")){
-                model.addAttribute("monthTotleAmountDead",me.getValue());
-            }
-            if (me.getKey().equals("getCountApiTotleFinanceDead")){
-                model.addAttribute("consumeTotleAmountDead",me.getValue());
-            }
-
-            if (me.getKey().equals("getAllCountApiWeekFinance")){
-                model.addAttribute("allWeekTotleAmount",me.getValue());
-            }
-            if (me.getKey().equals("getAllCountApiMonthFinance")){
-                model.addAttribute("allMonthTotleAmount",me.getValue());
-            }
-            if (me.getKey().equals("getAllCountApiTotleFinance")){
-                model.addAttribute("allConsumeTotleAmount",me.getValue());
-            }
-
         }
+        long weekTotleAmount = 0L;
+        long monthTotleAmount = 0L;
+        long consumeTotleAmount = 0L;
+        long currMonthTotleCost = 0L;
+        long currDayTotleCost = 0L;
+        for (int j=0; j<apiFinanceList.size(); j++){
+            ApiFinance apiFinance = apiFinanceList.get(j);
+            if (apiFinance.getCurrMonthCost() != null) {
+                currMonthTotleCost = currMonthTotleCost + apiFinance.getCurrMonthCost();
+            }
+            if (apiFinance.getCurrDayCost() != null) {
+                currDayTotleCost = currDayTotleCost + apiFinance.getCurrDayCost();
+            }
+            if (apiFinance.getWeekTotleCost() != null) {
+                weekTotleAmount = weekTotleAmount + apiFinance.getWeekTotleCost();
+            }
+            if (apiFinance.getMonthTotleCost() != null) {
+                monthTotleAmount = monthTotleAmount + apiFinance.getMonthTotleCost();
+            }
+            if (apiFinance.getConsumeTotleAmount() != null) {
+                consumeTotleAmount = consumeTotleAmount + apiFinance.getConsumeTotleAmount();
+            }
+        }
+        model.addAttribute("weekTotleAmount",weekTotleAmount);
+        model.addAttribute("monthTotleAmount",monthTotleAmount);
+        model.addAttribute("consumeTotleAmount",consumeTotleAmount);
+        model.addAttribute("apiFinanceList",apiFinanceList);
         model.addAttribute("apiTypeList",apiFinanceService.queryApiType());
         model.addAttribute("apiVendorList",apiVendorList);
         model.addAttribute("vendorId",vendorId);
         model.addAttribute("apiTypeId",apiTypeId);
+        model.addAttribute("statusArray",statusList);
+        model.addAttribute("currMonthTotleCost",currMonthTotleCost);
+        model.addAttribute("currDayTotleCost",currDayTotleCost);
+        model.addAttribute("currYear",CalendarTools.getYearMonthCount(0));
+        model.addAttribute("currMonth",CalendarTools.getMonthCount(0));
+        model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
         model.addAttribute("year", CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));
@@ -164,11 +174,11 @@ public class ApiFinanceController {
             map.put("partnerId",partnerId);
         }
         if (beginDate != null && beginDate != "" ) {
-            map.put("beginDate", beginDate+" "+"00:00:00");
+            map.put("beginDate", beginDate);
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate+" "+"23:59:59");
+            map.put("endDate", endDate);
             model.addAttribute("endDate",endDate);
         }
         List<String> statusList = new ArrayList();
@@ -190,19 +200,13 @@ public class ApiFinanceController {
             if (me.getKey().equals("queryApiVendor")){
                 apiFinanceList = (List<ApiFinance>) me.getValue();
             }
-            if (me.getKey().equals("getCountWeekApiVendor")){
-                model.addAttribute("weekTotleAmount",me.getValue());
-            }
-            if (me.getKey().equals("getCountMonthApiVendor")){
-                model.addAttribute("monthTotleAmount",me.getValue());
-            }
-            if (me.getKey().equals("getCountTotleApiVendor")){
-                model.addAttribute("consumeTotleAmount",me.getValue());
-            }
         }
         long totleBalance = 0L;
         long currMonthTotleCost = 0L;
         long currDayTotleCost = 0L;
+        long weekTotleAmount = 0L;
+        long monthTotleAmount = 0L;
+        long consumeTotleAmount = 0L;
         for (int j=0; j<apiFinanceList.size(); j++){
             ApiFinance apiFinance = apiFinanceList.get(j);
             if (apiFinance.getBalance() != null) {
@@ -214,7 +218,19 @@ public class ApiFinanceController {
             if (apiFinance.getCurrDayCost() != null) {
                 currDayTotleCost = currDayTotleCost + apiFinance.getCurrDayCost();
             }
+            if (apiFinance.getWeekTotleCost() != null) {
+                weekTotleAmount = weekTotleAmount + apiFinance.getWeekTotleCost();
+            }
+            if (apiFinance.getMonthTotleCost() != null) {
+                monthTotleAmount = monthTotleAmount + apiFinance.getMonthTotleCost();
+            }
+            if (apiFinance.getConsumeTotleAmount() != null) {
+                consumeTotleAmount = consumeTotleAmount + apiFinance.getConsumeTotleAmount();
+            }
         }
+        model.addAttribute("weekTotleAmount",weekTotleAmount);
+        model.addAttribute("monthTotleAmount",monthTotleAmount);
+        model.addAttribute("consumeTotleAmount",consumeTotleAmount);
         model.addAttribute("apiFinanceList",apiFinanceList);
         model.addAttribute("apiVendorList",apiFinanceService.queryApiVendorName(map));
         model.addAttribute("statusArray",statusList);

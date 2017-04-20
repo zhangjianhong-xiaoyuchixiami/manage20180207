@@ -16,3 +16,6 @@
     text-overflow: ellipsis;
 }
 .warning{color: #b94a48;}
+
+.label-margin-bottom{margin-bottom: 0px}
+.label-margin-right{margin-right: 10px}

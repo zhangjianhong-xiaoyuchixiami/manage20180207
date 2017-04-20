@@ -46,26 +46,31 @@ public class ApiFinanceExcelAop {
             if (args[2] !=null){
                 map.put("apiTypeId",args[2]);
             }
-            if (args[4] != null && args[4] != "" ) {
-                map.put("beginDate", args[4]+" "+"00:00:00");
+            if (args[3] != null && args[3] != "" ) {
+                map.put("beginDate", args[3]);
             }
-            if(args[5] != null && args[5] != ""){
-                map.put("endDate", args[5]+" "+"23:59:59");
+            if(args[4] != null && args[4] != ""){
+                map.put("endDate", args[4]);
             }
+            List statusList = new ArrayList();
+            String status [] = (String[]) args[5];
+            if (status != null && status.length >0) {
+                for(int i=0;i<status.length;i++){
+                    statusList.add(status[i]);
+                }
+            }else {
+                statusList.add(0);
+                statusList.add(-1);
+            }
+            map.put("statusList", statusList);
             List<ApiFinance> apiFinanceList = null;
             Map<String,Object> mapResult = apiFinanceService.queryApiOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
             Iterator<Map.Entry<String,Object>> it = set.iterator();
             while(it.hasNext()){
                 Map.Entry<String,Object> me = it.next();
-                if (args[3] != null && args[3].getClass() == String.class && args[3].equals("true")){
-                    if (me.getKey().equals("queryApiOverAllFinanceDead")){
-                        apiFinanceList = (List<ApiFinance>) me.getValue();
-                    }
-                }else {
-                    if (me.getKey().equals("queryApiOverAllFinance")){
-                        apiFinanceList = (List<ApiFinance>) me.getValue();
-                    }
+                if (me.getKey().equals("queryApiOverAllFinance")){
+                    apiFinanceList = (List<ApiFinance>) me.getValue();
                 }
             }
             List<Map<String,Object>> listExport = new ArrayList<>();
@@ -77,14 +82,17 @@ public class ApiFinanceExcelAop {
                 Map<String, Object> mapValue = new HashMap<>();
                 mapValue.put("apiTypeName", apiFinance.getApiTypeName());
                 mapValue.put("vendorName", apiFinance.getVendorName());
-                mapValue.put("wekTotleCost", ExportDataHander.pointsIntoRMB(apiFinance.getWeekTotleCost()));
+                mapValue.put("weekTotleCost", ExportDataHander.pointsIntoRMB(apiFinance.getWeekTotleCost()));
                 mapValue.put("monthTotleCost", ExportDataHander.pointsIntoRMB(apiFinance.getMonthTotleCost()));
                 mapValue.put("consumeTotleAmount", ExportDataHander.pointsIntoRMB(apiFinance.getConsumeTotleAmount()));
+                mapValue.put("usageAmount", apiFinance.getUsageAmount());
+                mapValue.put("currMonthTotleAmount", ExportDataHander.pointsIntoRMB(apiFinance.getCurrMonthCost()));
+                mapValue.put("currDayTotleAmount", ExportDataHander.pointsIntoRMB(apiFinance.getCurrDayCost()));
                 listExport.add(mapValue);
             }
             String fileName = "产品消费账单";
-            String columnNames[]= {"产品类型","产品供应商","上周消费（单位：元）","上月消费（单位：元）","消费总额（单位：元）"};//列名
-            String keys[] = {"apiTypeName","vendorName","wekTotleCost","monthTotleCost","consumeTotleAmount"};//map中的key
+            String columnNames[]= {"产品类型","产品供应商","上周消费（单位：元）","上月消费（单位：元）","消费总额（单位：元）","使用量","本月消费（单位：元）","当天消费（单位：元）"};//列名
+            String keys[] = {"apiTypeName","vendorName","weekTotleCost","monthTotleCost","consumeTotleAmount","usageAmount","currMonthTotleAmount","currDayTotleAmount"};//map中的key
             ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
             return null;
         }
@@ -147,7 +155,7 @@ public class ApiFinanceExcelAop {
                 mapValue.put("createTime", apiRequestLog.getCreateTime());
                 listExport.add(mapValue);
             }
-            String fileName = "产品消费明细账单";
+            String fileName = args[5]+"@"+args[6]+"产品消费明细账单";
             String columnNames[]= {"公司名称","消费金额（单位：元）","响应时间（单位：秒）","创建时间"};//列名
             String keys[] = {"companyName","cost","resTime","createTime"};//map中的key
             ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
@@ -175,10 +183,10 @@ public class ApiFinanceExcelAop {
                 map.put("partnerId",args[2]);
             }
             if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", args[3]+" "+"00:00:00");
+                map.put("beginDate", args[3]);
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", args[4]+" "+"23:59:59");
+                map.put("endDate", args[4]);
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];

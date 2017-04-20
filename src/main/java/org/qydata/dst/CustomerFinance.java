@@ -27,6 +27,8 @@ public class CustomerFinance implements Serializable {
     private Long consumeMonthTotleAmount;
     private Long chargeTotleAmount;
     private Long consumeTotleAmount;
+    private Long currMonthAmount;
+    private Long currDayAmount;
     private List<CompanyApi> companyApiList;
 
     public Integer getPartnerId() {
@@ -155,6 +157,22 @@ public class CustomerFinance implements Serializable {
 
     public void setSurplusFloor(Long surplusFloor) {
         this.surplusFloor = surplusFloor;
+    }
+
+    public Long getCurrMonthAmount() {
+        return currMonthAmount;
+    }
+
+    public void setCurrMonthAmount(Long currMonthAmount) {
+        this.currMonthAmount = currMonthAmount;
+    }
+
+    public Long getCurrDayAmount() {
+        return currDayAmount;
+    }
+
+    public void setCurrDayAmount(Long currDayAmount) {
+        this.currDayAmount = currDayAmount;
     }
 
     @Override

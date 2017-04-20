@@ -24,6 +24,7 @@ public class ApiFinance implements Serializable {
     private Long consumeTotleAmount;
     private Long currMonthCost;
     private Long currDayCost;
+    private Long usageAmount;
     private Integer partnerId;
     private String partnerName;
     private List<MobileOperator> mobileOperatorList;
@@ -172,5 +173,13 @@ public class ApiFinance implements Serializable {
 
     public void setApiTypeConsumeList(List<ApiTypeConsume> apiTypeConsumeList) {
         this.apiTypeConsumeList = apiTypeConsumeList;
+    }
+
+    public Long getUsageAmount() {
+        return usageAmount;
+    }
+
+    public void setUsageAmount(Long usageAmount) {
+        this.usageAmount = usageAmount;
     }
 }

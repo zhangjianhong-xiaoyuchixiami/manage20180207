@@ -180,39 +180,39 @@
 
                             <div class="clearfix margin-bottom-5">
 
-                                <div class="pull-left table-top-bottom">
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">上周消费总额&yen;：<#if weekTotleAmount??><span>${(weekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="pull-left table-top-bottom">
-
-                                    <label class="control-label">上月消费总额&yen;：<#if monthTotleAmount??><span>${(monthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">上周消费总额&yen;：<#if weekTotleAmount??><span>${(weekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
-                                <div class="pull-left table-top-bottom">
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">本月消费总额&yen;：<#if currMonthTotleCost??><span>${(currMonthTotleCost/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="pull-left table-top-bottom">
-
-                                    <label class="control-label">当天消费总额&yen;：<#if currDayTotleCost??><span>${(currDayTotleCost/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">上月消费总额&yen;：<#if monthTotleAmount??><span>${(monthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
-                                <div class="pull-left table-top-bottom">
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">本月消费总额&yen;：<#if currMonthTotleCost??><span>${(currMonthTotleCost/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
-                                <div class="pull-left table-top-bottom">
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">所剩余额&yen;：<#if totleBalance??><span>${(totleBalance/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">当天消费总额&yen;：<#if currDayTotleCost??><span>${(currDayTotleCost/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">所剩余额&yen;：<#if totleBalance??><span>${(totleBalance/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 

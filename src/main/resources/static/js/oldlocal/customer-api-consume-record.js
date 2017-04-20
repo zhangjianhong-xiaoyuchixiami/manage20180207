@@ -1,8 +1,5 @@
 
 
-
-
-
         function vendorConsume(apiTypeId){
             var param = apiTypeId;
             var param1 = $("#customerId").val();
@@ -63,7 +60,7 @@
             {
                 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
                 var r = window.location.search.substr(1).match(reg);
-                if (r!=null) return unescape(r[2]); return '';
+                return r?decodeURIComponent(r[2]):'';  //含有中文请注意此处的编码和解码
             }
         })(jQuery);
 

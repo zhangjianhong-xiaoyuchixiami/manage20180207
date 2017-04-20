@@ -6,7 +6,7 @@
             {
                 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
                 var r = window.location.search.substr(1).match(reg);
-                if (r!=null) return unescape(r[2]); return '';
+                return r?decodeURIComponent(r[2]):'';  //含有中文请注意此处的编码和解码
             }
         })(jQuery);
 
@@ -21,6 +21,8 @@
             console.log($.getUrlParam('customerId'));
             console.log($.getUrlParam('apiTypeId'));
             console.log($.getUrlParam('apiTypeName'));
+            console.log($.getUrlParam('beginDate'));
+            console.log($.getUrlParam('endDate'));
         });
 
         var href = $("#exportExcel").attr('href');
@@ -29,6 +31,8 @@
                 (href.match(/\?/) ? '&' : '?') + 'customerId=' + $.getUrlParam('customerId') +
                 (href.match(/\?/) ? '&' : '?') + 'apiTypeId=' + $.getUrlParam('apiTypeId') +
                 (href.match(/\?/) ? '&' : '?') + 'apiTypeName=' + $.getUrlParam('apiTypeName') +
+                (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate') +
+                (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate') +
                 (href.match(/\?/) ? '&' : '?') + 'reasonId=' + reasonId;
             $("#exportExcel").attr('href', href);
         }

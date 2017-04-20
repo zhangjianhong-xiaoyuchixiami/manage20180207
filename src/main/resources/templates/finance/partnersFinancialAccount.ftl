@@ -154,47 +154,47 @@
 
                             </div>
 
-                            <div class="clearfix margin-bottom-20">
+                            <div class="clearfix margin-bottom-5">
 
-                                <div class="pull-left table-top-bottom">
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">周收入总额&yen;：<#if weekIncomeAmount??><span>${(weekIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="pull-left table-top-bottom">
-
-                                    <label class="control-label">周支出总额&yen;：<#if weekExpenditure??><span>${(weekExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">周收入总额&yen;：<#if weekIncomeAmount??><span>${(weekIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
-                                <div class="pull-left table-top-bottom">
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">月收入总额&yen;：<#if monthIncomeAmount??><span>${(monthIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
-
-                                </div>
-
-                                <div class="pull-left table-top-bottom">
-
-                                    <label class="control-label">月支出总额&yen;：<#if monthExpenditure??><span>${(monthExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">周支出总额&yen;：<#if weekExpenditure??><span>${(weekExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                <div class="pull-left table-top-bottom">
-
-                                    <label class="control-label">收入总额&yen;：<#if totleIncomeAmount??><span>${(totleIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">月收入总额&yen;：<#if monthIncomeAmount??><span>${(monthIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
-                                <div class="pull-left table-top-bottom">
+                                <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">支出总额&yen;：<#if totleExpenditure??><span>${(totleExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if>&nbsp;&nbsp;&nbsp;</label>
+                                    <label class="control-label">月支出总额&yen;：<#if monthExpenditure??><span>${(monthExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+
+                                </div>
+
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">收入总额&yen;：<#if totleIncomeAmount??><span>${(totleIncomeAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+
+                                </div>
+
+                                <div class="pull-left label-margin-bottom label-margin-right">
+
+                                    <label class="control-label">支出总额&yen;：<#if totleExpenditure??><span>${(totleExpenditure/100.0)?c}元</span><#else ><span>0元</span></#if></label>
 
                                 </div>
 
                             <#--支出总额走势-->
-                                <div class="pull-right table-top-bottom">
+                                <div class="pull-right label-margin-bottom label-margin-right">
 
                                     <label class="control-label">
 
@@ -228,7 +228,7 @@
                                 </div>
 
                             <#--收入总额走势-->
-                                <div class="pull-right table-top-bottom">
+                                <div class="pull-right label-margin-bottom label-margin-right">
 
                                     <label class="control-label">
 
@@ -236,7 +236,7 @@
 
                                             <i class="icon-bar-chart"></i>收入总额
 
-                                        </a>&nbsp;&nbsp;&nbsp;
+                                        </a>
 
                                     </label>
 
