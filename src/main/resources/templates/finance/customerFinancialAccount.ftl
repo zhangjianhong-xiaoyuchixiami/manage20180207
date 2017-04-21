@@ -274,25 +274,27 @@
 
                                         <label><input type="checkbox" checked data-column="3">信用额度</label>
 
-                                        <label><input type="checkbox" checked data-column="4">可用信用额度</label>
+                                        <label><input type="checkbox" checked data-column="4">剩余信用额度</label>
 
-                                        <label><input type="checkbox" checked data-column="5">余额</label>
+                                        <label><input type="checkbox" checked data-column="5">可用信用额度</label>
 
-                                        <label><input type="checkbox" checked data-column="6">充值总额</label>
+                                        <label><input type="checkbox" checked data-column="6">余额</label>
 
-                                        <label><input type="checkbox" checked data-column="7">消费总额</label>
+                                        <label><input type="checkbox" checked data-column="7">充值总额</label>
 
-                                        <label><input type="checkbox" data-column="8">上周充值</label>
+                                        <label><input type="checkbox" checked data-column="8">消费总额</label>
 
-                                        <label><input type="checkbox" data-column="9">上周消费</label>
+                                        <label><input type="checkbox" data-column="9">上周充值</label>
 
-                                        <label><input type="checkbox" data-column="10">上月充值</label>
+                                        <label><input type="checkbox" data-column="10">上周消费</label>
 
-                                        <label><input type="checkbox" data-column="11">上月消费</label>
+                                        <label><input type="checkbox" data-column="11">上月充值</label>
 
-                                        <label><input type="checkbox" checked data-column="12">本月消费</label>
+                                        <label><input type="checkbox" data-column="12">上月消费</label>
 
-                                        <label><input type="checkbox" checked data-column="13">当天消费</label>
+                                        <label><input type="checkbox" checked data-column="13">本月消费</label>
+
+                                        <label><input type="checkbox" checked data-column="14">当天消费</label>
 
                                     </div>
 
@@ -369,6 +371,7 @@
                                         </@shiro.hasPermission>
                                         <th>信用额度（单位：元）</th>
                                         <th>剩余信用额度（单位：元）</th>
+                                        <th>可用信用额度（单位：元）</th>
                                         <th>余额（单位：元）</th>
                                         <th>充值总额（单位：元）</th>
                                         <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
@@ -409,7 +412,8 @@
                                                     <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                                 </@shiro.hasPermission>
                                                 <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
-                                                <td data-title="剩余信用额度">${(customer.surplusFloor/100.0)?c}</td>
+                                                <td data-title="剩余信用额度">${(-customer.usableFloor/100.0)?c}</td>
+                                                <td data-title="可用信用额度">${(customer.surplusFloor/100.0)?c}</td>
                                                 <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>

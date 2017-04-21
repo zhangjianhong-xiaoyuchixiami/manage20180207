@@ -20,6 +20,7 @@ public class CustomerFinance implements Serializable {
     private String partnerName;
     private Long floor;
     private Long surplusFloor;
+    private Long usableFloor;
     private Integer companyStatus;
     private Long chargeWeekTotleAmount;
     private Long chargeMonthTotleAmount;
@@ -173,6 +174,14 @@ public class CustomerFinance implements Serializable {
 
     public void setCurrDayAmount(Long currDayAmount) {
         this.currDayAmount = currDayAmount;
+    }
+
+    public Long getUsableFloor() {
+        return usableFloor;
+    }
+
+    public void setUsableFloor(Long usableFloor) {
+        this.usableFloor = usableFloor;
     }
 
     @Override

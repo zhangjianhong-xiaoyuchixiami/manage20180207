@@ -38,7 +38,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         long totleConsumeAmount = 0L;
         long currMonthTotleConsumeAmount = 0L;
         long currDayTotleConsumeAmount = 0L;
-
+        List<CustomerFinance> customerFinanceList = new ArrayList<>();
         if (list != null){
             Iterator<CustomerFinance> it = list.iterator();
             while (it.hasNext()){
@@ -67,6 +67,12 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 if (customerFinance.getCurrDayAmount() != null){
                     currDayTotleConsumeAmount += customerFinance.getCurrDayAmount();
                 }
+                if (customerFinance.getBalance() >=0){
+                    customerFinance.setUsableFloor(customerFinance.getFloor());
+                }else {
+                    customerFinance.setUsableFloor(customerFinance.getFloor()-customerFinance.getBalance());
+                }
+                customerFinanceList.add(customerFinance);
             }
         }
         mapTran.put("weekChargeAmount",weekChargeAmount);
@@ -77,7 +83,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapTran.put("totleConsumeAmount",totleConsumeAmount);
         mapTran.put("currMonthTotleConsumeAmount",currMonthTotleConsumeAmount);
         mapTran.put("currDayTotleConsumeAmount",currDayTotleConsumeAmount);
-        mapTran.put("customerFinanceList",list);
+        mapTran.put("customerFinanceList",customerFinanceList);
         return mapTran;
     }
 

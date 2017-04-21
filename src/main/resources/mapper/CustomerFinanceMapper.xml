@@ -114,7 +114,7 @@
         ee.consumeMonthTotleAmount,
         ff.chargeTotleAmount,
         gg.consumeTotleAmount,
-        ((-aa.floor)+ifnull(gg.consumeTotleAmount,0)+ifnull(ff.chargeTotleAmount,0)) surplusFloor,
+        ((-aa.floor)+aa.balance) surplusFloor,
         currMonth.currMonthAmount,
         currDay.currDayAmount
         FROM

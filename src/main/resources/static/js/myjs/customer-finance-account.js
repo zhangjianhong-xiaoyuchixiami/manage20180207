@@ -33,11 +33,11 @@ var CustomerFinanceAccount = function () {
                             '<th>成功次数</th>' +
                         '</tr>';
                 sOut += '<tr>' +
-                            '<td>'+aData[14]+'</td>' +
                             '<td>'+aData[15]+'</td>' +
                             '<td>'+aData[16]+'</td>' +
                             '<td>'+aData[17]+'</td>' +
                             '<td>'+aData[18]+'</td>' +
+                            '<td>'+aData[19]+'</td>' +
                         '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -78,56 +78,57 @@ var CustomerFinanceAccount = function () {
                     null,  //1
                     null,  //2
                     null,  //3
-                    null,  //4
-                    null,  //5
-                    null,  //6  充值
-                    null,  //7
-                    { "bVisible": false},  //8
+                    null,  //4 剩余额度
+                    null,  //5 可用额度
+                    null,  //6 余额
+                    null,  //7 充值
+                    null,  //8
                     { "bVisible": false},  //9
                     { "bVisible": false},  //10
                     { "bVisible": false},  //11
-                    null,  //12
+                    { "bVisible": false},  //12
                     null,  //13
-                    { "bVisible": false },  //14
+                    null,  //14
                     { "bVisible": false },  //15
                     { "bVisible": false },  //16
                     { "bVisible": false },  //17
-                    { "bVisible": false }   //18
+                    { "bVisible": false },  //18
+                    { "bVisible": false }   //19
                 ],
                 "aoColumnDefs": [
                     {
                         //充值总额
-                        "aTargets": [ 6 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //消费总额
                         "aTargets": [ 7 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上周充值
+                        //消费总额
                         "aTargets": [ 8 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上周消费
+                        //上周充值
                         "aTargets": [ 9 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上月充值
+                        //上周消费
                         "aTargets": [ 10 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上月消费
+                        //上月充值
                         "aTargets": [ 11 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        //上月消费
+                        "aTargets": [ 12 ],
                         "sType": "html-percent"
                     }
 
                 ],
-                "aaSorting": [[13, 'desc']],
+                "aaSorting": [[14, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
