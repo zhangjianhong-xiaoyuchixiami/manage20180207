@@ -1,5 +1,8 @@
 
 <#include "../publicPart/layout.ftl">
+
+<#import "../publicPart/publicJs.ftl" as puj>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -31,5 +34,8 @@
 
     <#elseif section = "privateJs">
 
+        <@puj.publicJs></@puj.publicJs>
+
     </#if>
+
 </@layout>

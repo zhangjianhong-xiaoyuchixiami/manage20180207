@@ -80,31 +80,31 @@
 
 <!-- BEGIN CORE PLUGINS -->
 
-<script src="/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery-1.8.3.min.js" type="text/javascript"></script>
 
 <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 
-<script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 
-<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/former/bootstrap.min.js" type="text/javascript"></script>
 
 <!--[if lt IE 9]>
 
-<script src="/js/excanvas.js"></script>
+<script src="/js/former/excanvas.js"></script>
 
-<script src="/js/respond.js"></script>
+<script src="/js/former/respond.js"></script>
 
 <![endif]-->
 
-<script src="/js/breakpoints.js" type="text/javascript"></script>
+<script src="/js/former/breakpoints.js" type="text/javascript"></script>
 
 <!-- IMPORTANT! jquery.slimscroll.min.js depends on jquery-ui-1.10.1.custom.min.js -->
 
-<script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
+<script src="/js/former/jquery.uniform.min.js" type="text/javascript" ></script>
 
 <!-- END CORE PLUGINS -->
 
-<script src="/js/app.js"></script>
+<script src="/js/former/app.js"></script>
 
 <script>
 
@@ -118,7 +118,20 @@
 
 <!-- END JAVASCRIPTS -->
 
-<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37564768-1']);
+    _gaq.push(['_setDomainName', 'keenthemes.com']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
+    (function() {    var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
+</script>
+
+</body>
 
 <!-- END BODY -->
 

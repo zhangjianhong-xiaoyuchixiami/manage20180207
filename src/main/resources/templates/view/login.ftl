@@ -178,37 +178,37 @@
 <!-- BEGIN CORE PLUGINS -->
 
 
-<script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery-1.10.1.min.js" type="text/javascript"></script>
 
-<script src="/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
 <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 
-<script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 
-<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/former/bootstrap.min.js" type="text/javascript"></script>
 
 <!--[if lt IE 9]>
 
-<script src="/js/excanvas.min.js"></script>
+<script src="/js/former/excanvas.min.js"></script>
 
-<script src="/js/respond.min.js"></script>
+<script src="/js/former/respond.min.js"></script>
 
 <![endif]-->
 
-<script src="/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery.slimscroll.min.js" type="text/javascript"></script>
 
-<script src="/js/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery.blockui.min.js" type="text/javascript"></script>
 
-<script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery.cookie.min.js" type="text/javascript"></script>
 
-<script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
+<script src="/js/former/jquery.uniform.min.js" type="text/javascript" ></script>
 
-<script src="/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery.validate.min.js" type="text/javascript"></script>
 
-<script src="/js/app.js" type="text/javascript"></script>
+<script src="/js/former/app.js" type="text/javascript"></script>
 
-<script src="/js/login.js" type="text/javascript"></script>
+<script src="/js/former/login.js" type="text/javascript"></script>
 
 <script>
     $(document).keypress(function(e) {
@@ -231,7 +231,20 @@
 
 <!-- END JAVASCRIPTS -->
 
-<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37564768-1']);
+    _gaq.push(['_setDomainName', 'keenthemes.com']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
+    (function() {    var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
+</script>
+
+</body>
 
 <!-- END BODY -->
 

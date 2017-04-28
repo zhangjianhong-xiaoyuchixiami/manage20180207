@@ -8,11 +8,13 @@ var FormWizard = function () {
                 return;
             }
 
+            /*国家*/
             function format(state) {
                 if (!state.id) return state.text; // optgroup
                 return "<img class='flag' src='assets/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
             }
 
+            /*国家*/
             $("#country_list").select2({
                 placeholder: "Select",
                 allowClear: true,
@@ -23,10 +25,11 @@ var FormWizard = function () {
                 }
             });
 
+            /*错误提示*/
             var form = $('#submit_form');
             var error = $('.alert-error', form);
             var success = $('.alert-success', form);
-
+            /*表单验证*/
             form.validate({
                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
                 errorElement: 'span', //default input error message container
@@ -142,7 +145,7 @@ var FormWizard = function () {
                     } else { // display success icon for other inputs
                         label
                             .addClass('valid ok') // mark the current input as valid and display OK icon
-                        .closest('.control-group').removeClass('error').addClass('success'); // set success class to the control group
+                            .closest('.control-group').removeClass('error').addClass('success'); // set success class to the control group
                     }
                 },
 

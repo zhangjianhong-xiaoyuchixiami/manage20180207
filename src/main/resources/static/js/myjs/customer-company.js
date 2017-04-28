@@ -18,15 +18,17 @@ var Company = function () {
                     '<th>余额</th>' +
                     '<th>状态</th>' +
                     '<th>Ip段</th>' +
+                    '<th>操作</th>' +
                     '</tr>';
 
                 sOut += '<tr>' +
-                    '<td>'+aData[7]+'</td>' +
                     '<td>'+aData[8]+'</td>' +
                     '<td>'+aData[9]+'</td>' +
                     '<td>'+aData[10]+'</td>' +
                     '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[12]+'</td>' +
+                    '<td>'+aData[13]+'</td>' +
+                    '<td>'+aData[14]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -64,20 +66,23 @@ var Company = function () {
             var oTable = $('#companySample_1').dataTable({
                 "aoColumns": [
                     { "bSortable": false},  //0  展开符号
+                    { "bSortable": false},  //0  展开符号
                     null,  //1  companyName
-                    null, //2
-                    null,  //3
-                    null,  //4  partnerName
-                    null,  //5  companyBalance
-                    null,  //6  companyCreateTime
-                    { "bVisible": false},  //7 customerId
-                    { "bVisible": false},  //8 typeId
-                    { "bVisible": false},  //9 typeName
-                    { "bVisible": false},  //10 authId
-                    { "bVisible": false },  //11 authPass
-                    { "bVisible": false } //12 balance
+                    null,  //2
+                    null,
+                    null, //3  partnerName
+                    null,  //4  companyBalance
+                    null,  //5  companyCreateTime
+                    { "bVisible": false},  //6 customerId
+                    { "bVisible": false},  //7 typeId
+                    { "bVisible": false},  //8 typeName
+                    { "bVisible": false},  //9 authId
+                    { "bVisible": false },  //10 authPass
+                    { "bVisible": false }, //11 balance
+                    { "bVisible": false },  //12 操作
+                    { "bSortable": false}  // 13
                 ],
-                "aaSorting": [[5, 'desc']],
+                "aaSorting": [[4, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -104,6 +109,24 @@ var Company = function () {
                     }
                 }
             });
+
+            /*状态正常全选操作*/
+            jQuery('#companySample_1 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            jQuery('#companySample_1_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#companySample_1_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+
 
             /*左侧导航*/
             $('#customerManage').addClass('active');
