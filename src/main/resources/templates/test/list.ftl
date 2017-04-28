@@ -14,29 +14,33 @@
 
                 <div class="span12">
 
-                    <a id="test-test" href="javascript:;">
-                        Test
-                    </a>
+                    <form action="/test/list-view" class="form-bottom" method="get">
 
-                    <div class="portlet box light-grey">
+                        <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                        <div class="portlet-title">
+                            <div class="pull-left head-search-bottom head-search-top">
 
-                            <div class="caption"><i class="icon-globe"></i>Managed Table</div>
+                                <label class="control-label">&nbsp;&nbsp;</label>
 
-                            <div class="tools">
+                                <div class="controls">
 
-                                <a href="javascript:;" class="collapse"></a>
+                                    <div class="input-append">
 
-                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                        <input class="m-wrap" <#if userId??>value="${userId}" </#if> type="text" id="userId" name="userId" placeholder="请输入用户Id">
 
-                                <a href="javascript:;" class="reload"></a>
+                                        <button class="btn black" type="submit">搜索</button>
 
-                                <a href="javascript:;" class="remove"></a>
+                                    </div>
+
+                                </div>
 
                             </div>
 
                         </div>
+
+                    </form>
+
+                    <div class="portlet box light-grey">
 
                         <div class="portlet-body">
 
@@ -48,13 +52,11 @@
 
                                     <th>id</th>
 
-                                    <th>姓名</th>
+                                    <th>邮箱</th>
 
-                                    <th>用户名</th>
+                                    <th>状态</th>
 
-                                    <th>电话</th>
-
-                                    <th>操作</th>
+                                    <th>类型</th>
 
                                 </tr>
 
@@ -83,13 +85,14 @@
     <#elseif section = "publicJs">
 
     <#elseif section = "privateJs">
+
     <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
 
     <script type="text/javascript">
 
-        $("#test-test").on("click",function (){
+        jQuery(document).ready(function () {
 
             //初始化表格
             var table = $("#sample_5").dataTable({
@@ -98,8 +101,8 @@
                     [5, 15, 20, -1],
                     [5, 15, 20, "全部"] // change per page values here
                 ],
+                "sDom": "<'span12 text-center'r>t<'row-fluid'<'span6'il><'span6'p>>",
                 "iDisplayLength": 15, //每页显示多少行
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 "oLanguage" : {  //设置语言
                     "sLengthMenu" : "每页显示 _MENU_ 条记录",
@@ -119,44 +122,29 @@
                 "bProcessing": true ,// 是否显示取数据时的那个等待提示
                 "bServerSide": true,//这个用来指明是通过服务端来取数据
                 "sAjaxDataProp" : "aaData",
-                "sAjaxSource": "/test/list",//这个是请求的地址
+                "sAjaxSource": "/test/list-ajax",//这个是请求的地址
                 "fnServerData": retrieveData ,// 获取数据的处理函数
                 "aoColumns": [
                     { "mDataProp" : "id"},
-                    { "mDataProp" : "name"},
-                    { "mDataProp" : "username"},
-                    { "mDataProp" : "tel","bSortable": false},
-                    { "bSortable": false}
+                    { "mDataProp" : "email"},
+                    { "mDataProp" : "status"},
+                    { "mDataProp" : "typeId","bSortable": false}
                 ],
-                "aaSorting": [[1, 'desc']],
-                "aoColumnDefs":[
-                    {"aTargets":[4],
-                        "mData": function (source) {
-                            var resObj = {
-                                'id' : source.id,
-                                'name' : source.name,
-                                'username' : source.username
-                            };
-                            return resObj;
-                        },
-                        "mRender":function(resObj,type,full){
-                            console.log(resObj.id);
-                            return '<a href="javaScript:;">删除</a>'
-                        }
-                    }
-                ]
+                "aaSorting": [[1, 'desc']]
             });
 
-            function retrieveData( sSource,aoData, fnCallback) {
+            function retrieveData( sSource,aaData, fnCallback) {
+
+                var userId = $('#userId').val();
+
                 $.ajax({
                     url : sSource,//这个就是请求地址对应sAjaxSource
-                    data : {"aoData":JSON.stringify(aoData)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                    data : {"aaData":JSON.stringify(aaData),"userId":userId},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
                     type : 'post',
                     dataType : 'json',
                     async : false,
                     success : function(result) {
                         fnCallback(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
-
                     }
                 });
             }
