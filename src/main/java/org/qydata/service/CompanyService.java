@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.dst.ApiTypeSubType;
 import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.CompanyApi;
 import org.qydata.entity.CustomerBalanceModifyReason;
@@ -29,10 +30,14 @@ public interface CompanyService {
      * @param companyName
      * @param authId
      * @param partnerId
+     * @param apiTypeId_subId
+     * @param price
+     * @param begIp
+     * @param endIp
      * @return
      */
     @Transactional
-    public boolean addCompanyCustomer(String companyName,String authId,Integer partnerId);
+    public boolean addCompanyCustomer(String companyName,String authId,String partnerId,String apiTypeId_subId [],String price [],String begIp [],String endIp []);
 
     /**
      * 查找全部的合作公司
@@ -57,14 +62,41 @@ public interface CompanyService {
     public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list);
 
     /**
-     * 修改账号余额，同时添加日志
+     * 修改账号余额
      * @param customerId
      * @param reason
      * @param amount
      * @return
      */
-    @Transactional
-    public boolean updateCustomerBalance(Integer customerId,Integer reason,Long amount);
+    public int updateCustomerBalance(Integer customerId,Integer reason,Long amount);
+
+    /**
+     * 禁用账号
+     * @param authId
+     * @return
+     */
+    public int updateCustomerBan(String authId);
+
+    /**
+     * 解禁账号
+     * @param authId
+     * @return
+     */
+    public int updateCustomerUnBan(String authId);
+
+    /**
+     * 禁用公司
+     * @param companyId
+     * @return
+     */
+    public Map<String,Object> updateCompanyBan(String [] companyId);
+
+    /**
+     * 解禁公司
+     * @param companyId
+     * @return
+     */
+    public Map<String,Object> updateCompanyUnBan(String [] companyId);
 
     /**
      * 给正式账号添加Ip
@@ -72,7 +104,7 @@ public interface CompanyService {
      * @param endIp
      * @return
      */
-    public boolean addCustomerIp(Integer customerId,String [] begIp,String [] endIp);
+    public int addCustomerIp(Integer customerId,String begIp,String endIp);
 
     /**
      * 根据公司Id查找公司已拥有权限的Api
@@ -86,7 +118,7 @@ public interface CompanyService {
      * @param id
      * @return
      */
-    public boolean banCompanyApi(Integer id);
+    public int banCompanyApi(Integer companyId,Integer id);
 
     /**
      * 解禁产品权限
@@ -94,6 +126,22 @@ public interface CompanyService {
      * @return
      */
     public boolean unBanCompanyApi(Integer id);
+
+    /**
+     * 查询可会未拥有的产品权限列表,用于给可会分配新的权限
+     * @param companyId
+     * @return
+     */
+    public List<ApiTypeSubType> queryNotHaveApi(Integer companyId);
+
+    /**
+     * 新增保存产品权限
+     * @param companyId
+     * @param apiTypeId
+     * @param price
+     * @return
+     */
+    public int addCompanyApi(Integer companyId,String apiTypeId,String price);
 
     /**
      * 根据账号Id查找Ip
@@ -107,6 +155,13 @@ public interface CompanyService {
      * @param id
      * @return
      */
-    public boolean deleteIpById(Integer id);
+    public int deleteIpById(Integer customerId,Integer id) throws Exception;
+
+
+    /**
+     * 查询全部产品权限
+     * @return
+     */
+    public List<ApiTypeSubType> queryAllApi();
 
 }

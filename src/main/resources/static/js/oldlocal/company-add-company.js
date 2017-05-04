@@ -1,4 +1,4 @@
-var FormWizard = function () {
+var AddCompanyAllotApiAddIp = function () {
 
 
     return {
@@ -46,12 +46,6 @@ var FormWizard = function () {
                     },
                     partnerId: {
 
-                    },
-                    add_api_type_sub: {
-
-                    },
-                    add_api_type_sub_price: {
-                        number: true
                     },
                     add_api_type_sub_1: {
 
@@ -247,7 +241,6 @@ var FormWizard = function () {
                         required: "请输入账号！",
                         remote:"该账号已被使用，请重新输入账号！"
                     },
-                    add_api_type_sub_price: "请输入数字！",
                     add_api_type_sub_price_1: "请输入数字！",
                     add_api_type_sub_price_2: "请输入数字！",
                     add_api_type_sub_price_3: "请输入数字！",

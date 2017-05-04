@@ -73,34 +73,37 @@ $("#update_balance_reasonId").focus(function () {
 
 /*以下操作是给账号充值或扣费-点击提交按钮提交数据*/
 $("#update-balance-btn-black-btn-primary").on("click",function () {
-    var customerId=$("#customerId").val();
-    var amount=$("#update_balance_amount").val();
-    var reason=$("#update_balance_reasonId").val();
-    $.ajax({
-        type: "post",
-        url: "/company/update-customer-balance",
-        data: {"customerId":customerId,"amount":amount,"reason":reason},
-        dataType: "json",
-        success: function (result) {
-            if(result.amountMessage != null){
-                $("#update_balance_amountMsg").empty();
-                $("#update_balance_amountMsg").html('<font color="red">'+result.amountMessage+'</font>');
-                return;
+
+    if (confirm("确定要给该账号充值吗？")){
+        var customerId=$("#customerId").val();
+        var amount=$("#update_balance_amount").val();
+        var reason=$("#update_balance_reasonId").val();
+        $.ajax({
+            type: "post",
+            url: "/company/update-customer-balance",
+            data: {"customerId":customerId,"amount":amount,"reason":reason},
+            dataType: "json",
+            success: function (result) {
+                if(result.amountMessage != null){
+                    $("#update_balance_amountMsg").empty();
+                    $("#update_balance_amountMsg").html('<font color="red">'+result.amountMessage+'</font>');
+                    return;
+                }
+                if(result.reasonMessage != null){
+                    $("#update_balance_reasonIdMsg").empty();
+                    $("#update_balance_reasonIdMsg").html('<font color="red">'+result.reasonMessage+'</font>');
+                    return;
+                }
+                if(result.errorMessage != null) {
+                    $("#error_alert_update_balance").empty();
+                    $("#error_alert_update_balance").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                    return;
+                }
+                if (result.successMessage != null){
+                    alert("操作成功");
+                    window.location.href=window.location.href
+                }
             }
-            if(result.reasonMessage != null){
-                $("#update_balance_reasonIdMsg").empty();
-                $("#update_balance_reasonIdMsg").html('<font color="red">'+result.reasonMessage+'</font>');
-                return;
-            }
-            if(result.errorMessage != null) {
-                $("#error_alert_update_balance").empty();
-                $("#error_alert_update_balance").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
-                return;
-            }
-            if (result.successMessage != null){
-                alert("操作成功");
-                window.location.href=window.location.href
-            }
-        }
-    });
+        });
+    }
 });

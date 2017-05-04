@@ -3,6 +3,8 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<#import "../publicPart/publicJs.ftl" as puj>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -72,6 +74,7 @@
 
     </div>
 
+        <@puj.publicJs></@puj.publicJs>
 
     <#elseif section = "footer">
 

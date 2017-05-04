@@ -3,6 +3,8 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<#import "../publicPart/publicJs.ftl" as puj>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -103,6 +105,8 @@
     <#elseif section = "publicJs">
 
     <#elseif section = "privateJs">
+
+        <@puj.publicJs></@puj.publicJs>
 
     <script type="text/javascript" src="/js/myjs/allotdept.js"></script>
 

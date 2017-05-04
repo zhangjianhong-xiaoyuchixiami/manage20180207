@@ -12,6 +12,39 @@ import java.util.regex.Pattern;
  */
 public class RegexUtil {
 
+    public static void main(String[] args) {
+        int aa [] = {1,2,3};
+        int bb [] = {1,2,3,4};
+        if (aa.length <= bb.length){
+            System.out.println("nihao");
+        }else{
+            System.out.println("tahao");
+        }
+    }
+
+    /**
+     * 判断是否含有“.”
+     * @param str
+     * @return
+     */
+    public final static boolean isPoint(String str){
+        if (str.contains("-")){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 判断是否含有“,”
+     * @param str
+     * @return
+     */
+    public final static boolean isDot(String str){
+        if (str.contains(",")){
+           return false;
+        }
+        return true;
+    }
 
     public final static boolean isNull(Object[] objs){
         if(objs==null||objs.length==0) return true;
@@ -77,6 +110,8 @@ public class RegexUtil {
     public final static boolean isUrl(String str) {
         return match(str, "^http://([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$");
     }
+
+
     /**
      * 匹配Ip地址
      *
@@ -85,8 +120,10 @@ public class RegexUtil {
      * @author jiqinlin
      */
     public final static boolean isIp(String str) {
-        return match(str, "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$");
+
+        return match(str, "^(?:(?:2[0-4][0-9]\\.)|(?:25[0-5]\\.)|(?:1[0-9][0-9]\\.)|(?:[1-9][0-9]\\.)|(?:[0-9]\\.)){3}(?:(?:2[0-5][0-5])|(?:25[0-5])|(?:1[0-9][0-9])|(?:[1-9][0-9])|(?:[0-9]))$");
     }
+
 
 
     /**
@@ -387,14 +424,14 @@ public class RegexUtil {
     public static String htmlFilter(String inputString) {
         String htmlStr = inputString; // 含html标签的字符串
         String textStr = "";
-        java.util.regex.Pattern p_script;
-        java.util.regex.Matcher m_script;
-        java.util.regex.Pattern p_style;
-        java.util.regex.Matcher m_style;
-        java.util.regex.Pattern p_html;
-        java.util.regex.Matcher m_html;
-        java.util.regex.Pattern p_ba;
-        java.util.regex.Matcher m_ba;
+        Pattern p_script;
+        Matcher m_script;
+        Pattern p_style;
+        Matcher m_style;
+        Pattern p_html;
+        Matcher m_html;
+        Pattern p_ba;
+        Matcher m_ba;
 
         try {
             String regEx_script = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>"; // 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>

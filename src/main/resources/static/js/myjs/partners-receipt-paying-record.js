@@ -1,4 +1,4 @@
-var TableManaged = function () {
+var PartnersReceiptPayingRecord = function () {
 
     return {
 

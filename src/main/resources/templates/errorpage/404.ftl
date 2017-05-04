@@ -84,35 +84,21 @@
 
 </div>
 
-<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<script src="/js/former/jquery-1.8.3.min.js" type="text/javascript"></script>
 
-<!-- BEGIN CORE PLUGINS -->
+<script src="/js/former/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 
-<script src="/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script src="/js/former/bootstrap.min.js" type="text/javascript"></script>
 
-<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+<script src="/js/former/excanvas.js"></script>
 
-<script src="/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="/js/former/respond.js"></script>
 
-<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/former/breakpoints.js" type="text/javascript"></script>
 
-<!--[if lt IE 9]>
+<script src="/js/former/jquery.uniform.min.js" type="text/javascript" ></script>
 
-<script src="/js/excanvas.js"></script>
-
-<script src="/js/respond.js"></script>
-
-<![endif]-->
-
-<script src="/js/breakpoints.js" type="text/javascript"></script>
-
-<!-- IMPORTANT! jquery.slimscroll.min.js depends on jquery-ui-1.10.1.custom.min.js -->
-
-<script src="/js/jquery.uniform.min.js" type="text/javascript" ></script>
-
-<!-- END CORE PLUGINS -->
-
-<script src="/js/app.js"></script>
+<script src="/js/former/app.js"></script>
 
 <script>
 

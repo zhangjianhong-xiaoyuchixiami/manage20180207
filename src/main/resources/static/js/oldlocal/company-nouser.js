@@ -56,3 +56,69 @@ $("#add-account-btn-black-btn-primary").on("click",function () {
         }
     });
 });
+
+/*以下操作是新增公司-获得焦点清空文本框*/
+$("#companyCustomerName").focus(function () {
+    $("#companyNameMsg").html("");
+});
+
+/*以下操作是新增公司-获得焦点清空文本框*/
+$("#authId").focus(function () {
+    $("#authIdMsg").html("");
+});
+
+/*以下操作是新增公司-获得焦点清空文本框*/
+$("#deptId").focus(function () {
+    $("#deptIdMsg").html("");
+});
+
+/*以下操作是新增公司-失去焦点验证authId*/
+$("#authId").blur(function(){
+    $("#authIdMsg").load("/customer/findCustomerByAuthId/"+$("#authId").val(),
+        function(responseTxt){
+            if(responseTxt=="yes")
+                $("#authIdMsg").html("<font color='red'>该账号已被使用，请重新输入！</font>");
+            if(responseTxt=="no")
+                $("#authIdMsg").html("");
+        });
+});
+
+/*以下操作是新增公司-点击提交按钮提交数据*/
+$("#add-btn-black-btn-primary").on("click",function () {
+    var companyCustomerName=$("#companyCustomerName").val();
+    var authId=$("#authId").val();
+    var partnerId=$("#partnerId").val();
+    var deptId=$("#deptId").val();
+    $.ajax({
+        type: "post",
+        url: "/company/add-company-customer",
+        data: {"companyName":companyCustomerName,"authId":authId,"partnerId":partnerId,"deptId":deptId},
+        dataType: "json",
+        success: function (result) {
+            if(result.companyNameMessage != null){
+                $("#companyNameMsg").empty();
+                $("#companyNameMsg").html('<font color="red">'+result.companyNameMessage+'</font>');
+                return;
+            }
+            if(result.authIdMessage != null){
+                $("#authIdMsg").empty();
+                $("#authIdMsg").html('<font color="red">'+result.authIdMessage+'</font>');
+                return;
+            }
+            if(result.deptMessage != null){
+                $("#deptIdMsg").empty();
+                $("#deptIdMsg").html('<font color="red">'+result.deptMessage+'</font>');
+                return;
+            }
+            if(result.errorMessage != null) {
+                $("#error-alert").empty();
+                $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
+                return;
+            }
+            if (result.successMessage != null){
+                alert("操作成功");
+                window.location.href=window.location.href
+            }
+        }
+    });
+});

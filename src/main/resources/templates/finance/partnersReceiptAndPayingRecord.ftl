@@ -5,6 +5,8 @@
 
 <#import "../publicPart/tools.ftl" as d>
 
+<#import "../publicPart/publicJs.ftl" as puj>
+
 <@layout ; section>
     <#if section = "head">
 
@@ -103,24 +105,26 @@
 
     </div>
 
-
     <#elseif section = "footer">
 
     <#elseif section = "publicJs">
 
     <#elseif section = "privateJs">
-    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
 
-    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+        <@puj.publicJs></@puj.publicJs>
 
-    <script src="/js/table-managed.js"></script>
+    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
+
+    <script src="/js/myjs/partners-receipt-paying-record.js"></script>
 
     <script src="/js/oldlocal/partner-receipt-paying-record.js"></script>
 
     <script>
 
         jQuery(document).ready(function() {
-            TableManaged.init();
+            PartnersReceiptPayingRecord.init();
         });
 
     </script>

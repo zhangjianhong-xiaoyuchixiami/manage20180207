@@ -5,6 +5,8 @@
 
 <#import "../publicPart/tools.ftl" as d>
 
+<#import "../publicPart/publicJs.ftl" as puj>
+
 <@layout ; section>
 
     <#if section = "head">
@@ -446,13 +448,15 @@
 
     <#elseif section = "privateJs">
 
+        <@puj.publicJs></@puj.publicJs>
+
     <script src="https://code.highcharts.com/highcharts.js"></script>
 
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
 
-    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
 
     <script src="/js/myjs/api-vendor.js"></script>
 

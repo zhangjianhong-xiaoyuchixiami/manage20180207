@@ -52,7 +52,7 @@
 <a href="/user?export=true">导出Excel</a>
 </body>
 
-<script src="/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+<script src="/js/former/jquery-1.10.1.min.js" type="text/javascript"></script>
 
 <script>
 

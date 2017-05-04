@@ -3,6 +3,8 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<#import "../publicPart/publicJs.ftl" as puj>
+
 <@layout ; section>
 
     <#if section = "head">
@@ -203,9 +205,11 @@
 
     <#elseif section = "privateJs">
 
-    <script type="text/javascript" src="/js/jquery.dataTables.js"></script>
+        <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
 
     <script src="/js/myjs/company-api-product.js"></script>
 

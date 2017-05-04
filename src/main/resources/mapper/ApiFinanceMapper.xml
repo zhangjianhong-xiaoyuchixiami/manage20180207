@@ -123,7 +123,7 @@
         LEFT JOIN
         (
             SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,
-            DATE_FORMAT(createTime,'%d') days,sum(cost) currDayCost,count(apiRequestLogId) currDayUsageAmount,apiId
+            DATE_FORMAT(createTime,'%d') days,sum(cost) currDayCost,count(id) currDayUsageAmount,apiId
             FROM qyfinance.bkvwApiRequestLog
             WHERE ok=1 AND isMock=0 AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
             GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId
@@ -419,7 +419,7 @@
             ) bb ON aa.apiId=bb.apiId
             LEFT JOIN
             (
-                SELECT sum(cost) typeCurrDayCost,count(apiRequestLogId) typeCurrDayUsageAmount,apiId
+                SELECT sum(cost) typeCurrDayCost,count(id) typeCurrDayUsageAmount,apiId
                 FROM qyfinance.bkvwApiRequestLog
                 WHERE ok=1 AND isMock=0 AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
                 GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId

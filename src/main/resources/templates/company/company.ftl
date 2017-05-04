@@ -105,12 +105,7 @@
                                                 <a class="btn red" id="batchBanCompany" style="margin-right: 10px;" href="javaScript:;">
                                                     批量禁用客户
                                                 </a>
-
-                                            <#-- <a class="btn blue" style="margin-right: 10px;" href="#form_modal_add_api" data-toggle="modal">
-                                                 批量分配产品权限
-                                             </a>-->
                                             </div>
-
                                         </div>
 
                                         <div class="table-responsive">
@@ -124,21 +119,19 @@
                                                     <@shiro.hasPermission name="customer:findAllCustomer">
                                                         <th>合作公司</th>
                                                     </@shiro.hasPermission>
-
                                                     <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                         <th style="display: none">合作公司</th>
                                                     </@shiro.hasPermission>
-
                                                     <th>余额</th>
                                                     <th>创建时间</th>
-                                                    <th class="table-td-none">typeName</th>
-                                                    <th class="table-td-none">authId</th>
-                                                    <th class="table-td-none">authPass</th>
-                                                    <th class="table-td-none">balance</th>
-                                                    <th class="table-td-none">statusName</th>
-                                                    <th class="table-td-none">Ip段</th>
-                                                    <th class="table-td-none">操作</th>
-                                                    <th style="text-align: center; width: 10%;">操作</th>
+                                                    <th class="table-td-none">账号authId</th>
+                                                    <th class="table-td-none">账号类型</th>
+                                                    <th class="table-td-none">账号密码</th>
+                                                    <th class="table-td-none">账号余额</th>
+                                                    <th class="table-td-none">账号状态</th>
+                                                    <th class="table-td-none">账号Ip段</th>
+                                                    <th class="table-td-none">账号操作</th>
+                                                    <th style="text-align: center;">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -164,7 +157,7 @@
                                                                 </@shiro.hasPermission>
                                                                 <td data-title="余额"><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
                                                                 <td data-title="创建时间">${company.companyCreateTime?date}</td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号authId" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <#if customer.customerStatus.id != 0>
@@ -176,14 +169,14 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号类型" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <span>${(customer.customerType.name)!''}</span><br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号密码" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <span id="table_password_${customer.id}">
@@ -194,14 +187,14 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号余额" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <span><#if customer.balance??>${(customer.balance/100.0)?c}</#if></span><br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号状态" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
@@ -214,21 +207,17 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号Ip段" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <#if customer.customerType.id == 1>
-                                                                            <#-- <#if customer.customerIpList?? && (customer.customerIpList?size>0)>-->
                                                                                 <a href="#form_modal_customer_ip_list"  onclick="showIp(${customer.id})" data-toggle="modal">Ip管理</a>
-                                                                            <#--<#else >
-                                                                                <span class="warning">暂无Ip</span>
-                                                                            </#if>-->
                                                                             </#if>
                                                                             <br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号操作" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
@@ -241,14 +230,13 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td style="text-align: center;">
+                                                                <td data-title="操作" style="text-align: center;">
                                                                     <a href="#form_modal_company_api_status" onclick="findCompanyApi(${company.companyId})" data-toggle="modal">产品权限管理</a>
                                                                 </td>
                                                             </tr>
                                                             </#if>
                                                         </#list>
                                                     </#if>
-
                                                 </tbody>
 
                                             </table>
@@ -267,32 +255,38 @@
 
                                     <div class="portlet-body">
 
+                                        <div class="clearfix margin-bottom-5">
+                                            <div class="btn-group">
+                                                <a class="btn blue" id="batchUnBanCompany" style="margin-right: 10px;" href="javaScript:;">
+                                                    批量启用客户
+                                                </a>
+                                            </div>
+                                        </div>
 
                                         <div class="table-responsive">
                                             <table class="table table-striped table-hover table-bordered table-condensed" id="companySample_2">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox" id="allUnBanChecked" class="group-checkable" data-set="#companySample_2 .checkboxes"/></th>
                                                     <th>公司名称</th>
                                                     <th>信用额度</th>
                                                     <th>剩余信用额度</th>
                                                     <@shiro.hasPermission name="customer:findAllCustomer">
                                                         <th>合作公司</th>
                                                     </@shiro.hasPermission>
-
                                                     <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                         <th style="display: none">合作公司</th>
                                                     </@shiro.hasPermission>
-
                                                     <th>余额</th>
                                                     <th>创建时间</th>
-                                                    <th class="table-td-none">typeName</th>
-                                                    <th class="table-td-none">authId</th>
-                                                    <th class="table-td-none">authPass</th>
-                                                    <th class="table-td-none">balance</th>
-                                                    <th class="table-td-none">statusName</th>
-                                                    <th class="table-td-none">Ip段</th>
-                                                    <th class="table-td-none">操作</th>
-                                                    <th style="text-align: center; width: 10%;">操作</th>
+                                                    <th class="table-td-none">账号authId</th>
+                                                    <th class="table-td-none">账号类型</th>
+                                                    <th class="table-td-none">账号密码</th>
+                                                    <th class="table-td-none">账号余额</th>
+                                                    <th class="table-td-none">账号状态</th>
+                                                    <th class="table-td-none">账号Ip段</th>
+                                                    <th class="table-td-none">账号操作</th>
+                                                    <th style="text-align: center;">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -300,18 +294,25 @@
                                                         <#list companyList as company>
                                                             <#if company.companyStatus != 0>
                                                             <tr>
+                                                                <td><input class="checkboxes" type="checkbox" id="checkUnBanBoxCompanyId" name="checkUnBanBoxCompanyId" value="${company.companyId}"/></td>
                                                                 <td data-title="公司名称" class="font-text-decoration">${company.companyName!''}</td>
                                                                 <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
                                                                 <td data-title="剩余信用额度">${(company.surplusFloor/100.0)?c}</td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                    <td data-title="合作公司"><a href="/company/find-all-company-customer<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
+                                                                    <td data-title="合作公司">
+                                                                        <#if company.partnerId??>
+                                                                            <a href="/company/find-all-company-customer?partnerId=${company.partnerId}">${company.partnerName!'无'}</a>
+                                                                        <#else >
+                                                                            无
+                                                                        </#if>
+                                                                    </td>
                                                                 </@shiro.hasPermission>
                                                                 <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                                     <td data-title="合作公司" style="display: none"><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
                                                                 </@shiro.hasPermission>
                                                                 <td data-title="余额"><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
                                                                 <td data-title="创建时间">${company.companyCreateTime?date}</td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号authId" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <#if customer.customerStatus.id != 0>
@@ -323,14 +324,14 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号类型" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <span>${(customer.customerType.name)!''}</span><br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号密码" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <span id="table_password_${customer.id}">
@@ -341,57 +342,60 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号余额" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <span><#if customer.balance??>${(customer.balance/100.0)?c}</#if></span><br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号状态" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
-                                                                            <span> ${(customer.customerStatus.name)!''}</span><br/>
+                                                                            <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
+                                                                            <span>
+                                                                            <#else >
+                                                                            <span class="warning">
+                                                                            </#if>
+                                                                        ${(customer.customerStatus.name)!''}
+                                                                        </span><br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号Ip段" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <#if customer.customerType.id == 1>
-                                                                                <a href="javaScript:;" id="customerIpBar_${customer.id}" onclick="showIp(${customer.id})">点击查看Ip段</a>
-                                                                                <div id="customerIpContent_${customer.id}" class="head-search-display" style="min-width: 150px; background-color: white">
-                                                                                    <#if customer.customerIpList?? && (customer.customerIpList?size>0)>
-                                                                                        <#list customer.customerIpList as customerIp>
-                                                                                            <span>${customerIp.beginIpRaw!''}-${customerIp.endIpRaw!''}</span><br/>
-                                                                                        </#list>
-                                                                                    <#else >
-                                                                                        <span>无</span>
-                                                                                    </#if>
-                                                                                </div>
+                                                                                <a href="#form_modal_customer_ip_list"  onclick="showIp(${customer.id})" data-toggle="modal">Ip管理</a>
                                                                             </#if>
                                                                             <br/>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td class="table-td-none">
+                                                                <td data-title="账号操作" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
                                                                             <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
                                                                             |
-                                                                            <a href="#form_modal_update_balance" id="consume_Balance" onclick="consumeBalance(${customer.id})" data-toggle="modal">扣费</a><br/>
+                                                                            <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
+                                                                                <a href="javaScript:;" onclick="banCustomer('${customer.authId}')" class="warning">禁用</a><br/>
+                                                                            <#else >
+                                                                                <a href="javaScript:;" onclick="unBanCustomer('${customer.authId}')">启用</a><br/>
+                                                                            </#if>
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td><a href="#form_modal_add_account" onclick="addAccount(${company.companyId})" data-toggle="modal">添加账号</a></td>
+                                                                <td data-title="操作" style="text-align: center;">
+                                                                    <a href="#form_modal_company_api_status" onclick="findCompanyApi(${company.companyId})" data-toggle="modal">产品权限管理</a>
+                                                                </td>
                                                             </tr>
                                                             </#if>
                                                         </#list>
                                                     </#if>
-
                                                 </tbody>
 
                                             </table>
+
                                         </div>
 
                                     </div>
@@ -402,81 +406,6 @@
 
                         </div>
 
-                    </div>
-
-                <#--新增公司-->
-                <#--  <div id="form_modal1" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-                      <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                          <h3 id="myModalLabel1">请填写信息</h3>
-                      </div>
-                      <div class="modal-body">
-                          <form action="#" class="form-horizontal">
-                              <div class="control-group"></div>
-                              <div class="control-group"></div>
-                              <div id="error-alert"></div>
-                              <div class="control-group">
-                                  <label class="control-label">请输入公司名称<span class="required">*</span></label>
-                                  <div class="controls">
-                                      <input type="text" id="companyCustomerName" name="companyCustomerName" class="m-wrap medium">
-                                      <span id="companyNameMsg" class="help-line"></span>
-                                  </div>
-                              </div>
-                              <div class="control-group">
-                                  <label class="control-label">请输入账号<span class="required">*</span></label>
-                                  <div class="controls">
-                                      <input type="text" id="authId" name="authId" class="m-wrap medium">
-                                      <span id="authIdMsg" class="help-line"></span>
-                                      <span class="help-block">说明：只能有数字、字母、下划线组成</span>
-                                  </div>
-                              </div>
-                              <div class="control-group">
-                                  <label class="control-label">请选择合作公司<span class="required">*</span></label>
-                                  <div class="controls">
-                                      <select id="partnerId" name="partnerId" class="medium m-wrap" tabindex="1">
-                                          <option value="">请选择...</option>
-                                          <#if partnerList??>
-                                              <#list partnerList as partner>
-                                                  <option value="${partner.id}">${partner.name}</option>
-                                              </#list>
-                                          </#if>
-                                      </select>
-                                  </div>
-                              </div>
-                          </form>
-                      </div>
-                      <div class="modal-footer">
-                          <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                          <button class="btn black btn-primary" id="add-btn-black-btn-primary" type="button">提交</button>
-                      </div>
-                  </div>
--->
-                <#--添加账号-->
-                    <div id="form_modal_add_account" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_account" aria-hidden="true">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h3 id="myModalLabel_add_account">请填写信息</h3>
-                        </div>
-                        <div class="modal-body">
-                            <form action="#" class="form-horizontal">
-                                <div class="control-group"></div>
-                                <div class="control-group"></div>
-                                <div id="error-alert-account"></div>
-                                <div id="authId-account-controls" class="controls" style="display: none;"></div>
-                                <div class="control-group">
-                                    <label class="control-label">请输入账号<span class="required">*</span></label>
-                                    <div class="controls">
-                                        <input type="text" id="authId-account" name="authId-account" class="m-wrap medium">
-                                        <span id="authId-accountMsg" class="help-line"></span>
-                                        <span class="help-block">说明：只能有数字、字母、下划线组成</span>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                            <button class="btn black btn-primary" id="add-account-btn-black-btn-primary" type="button">提交</button>
-                        </div>
                     </div>
 
                 <#--修改余额-->
@@ -554,47 +483,7 @@
                         </div>
                     </div>
 
-                <#--添加Ip-->
-                    <div id="form_modal_add_ip" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_ip" aria-hidden="true">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h3 id="myModalLabel_add_ip">添加Ip</h3>
-                        </div>
-                        <div class="modal-body">
-                            <div class="control-group text-right">
-                                <a href="#" id="control-group-add-ip-href"><span><i class="icon-plus"></i>点击添加一栏</span></a>
-                            </div>
-                            <div class="control-group"></div>
-                            <div class="control-group"></div>
-                            <div id="error_alert_add_ip"></div>
-                            <div id="add_ip_customerId" class="controls" style="display: none;"></div>
-                            <div class="control-group text-center" id="control-group-add-ip">
-
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                            <button class="btn black btn-primary" id="add-ip-btn-black-btn-primary" type="button">提交</button>
-                        </div>
-                    </div>
-
-                <#--批量添加产品-->
-                    <div id="form_modal_add_api" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabell_add_api" aria-hidden="true">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h3 id="myModalLabell_add_api">分配产品权限</h3>
-                        </div>
-                        <div class="modal-body">
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                            <button class="btn black btn-primary" id="add-ip-btn-black-btn-primary" type="button">提交</button>
-                        </div>
-                    </div>
-
-                <#--Ip列表-->
+                <#--Ip管理-->
                     <div id="form_modal_customer_ip_list" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_customer_ip_list" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -629,7 +518,7 @@
                         </div>
                     </div>
 
-                <#--表单向导-->
+                <#--新增客户-添加账号-批量分配权限-批量添加Ip-->
                     <div id="form_modal_from_wizard" class="modal hide fade myModalWizard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_from_wizard" aria-hidden="true">
 
                         <div class="modal-header">
@@ -788,43 +677,54 @@
 
                                                             <h3 class="block">添加产品权限</h3>
 
-                                                            <div class="control-group">
-
-                                                                <label class="control-label">Fullname<span class="required">*</span></label>
-
-                                                                <div class="controls">
-
-                                                                    <input type="text" class="span6 m-wrap" name="fullname"/>
-
-                                                                    <span class="help-inline">Provide your fullname</span>
-
-                                                                </div>
-
+                                                            <div class="control-group text-right">
+                                                                <a href="#" id="control-group-add-api-href"><span><i class="icon-plus"></i>点击添加一栏</span></a>
                                                             </div>
 
-                                                            <div class="control-group">
+                                                            <div id="control-group-add-api">
 
-                                                                <label class="control-label">Fullname<span class="required">*</span></label>
+                                                                <div class="form-section" style="border-bottom: 1px solid #999;">
 
-                                                                <div class="controls">
+                                                                    <div class="control-group">
 
-                                                                    <input type="text" class="span6 m-wrap" name="fullname"/>
+                                                                        <label class="control-label">产品类型</label>
 
-                                                                    <span class="help-inline">Provide your fullname</span>
+                                                                        <div class="controls">
 
-                                                                </div>
+                                                                            <select id="add_api_type_sub" name="add_api_type_sub_1" class="span6 m-wrap">
+                                                                                <option value="">请选择...</option>
+                                                                                <#if apiTypeList??>
+                                                                                    <#list apiTypeList as apiType>
+                                                                                        <#if apiType.mobileOperatorName??>
+                                                                                            <option value="${apiType.apiTypeId}-${apiType.mobileOperatorId}">${apiType.apiTypeName}--${apiType.mobileOperatorName}</option>
+                                                                                        <#else >
+                                                                                            <option value="${apiType.apiTypeId}">${apiType.apiTypeName}</option>
+                                                                                        </#if>
+                                                                                    </#list>
+                                                                                </#if>
+                                                                            </select>
 
-                                                            </div>
+                                                                            <span class="help-inline"></span>
 
-                                                            <div class="control-group">
+                                                                        </div>
 
-                                                                <label class="control-label">Fullname<span class="required">*</span></label>
+                                                                    </div>
 
-                                                                <div class="controls">
+                                                                    <div class="control-group">
 
-                                                                    <input type="text" class="span6 m-wrap" name="fullname"/>
+                                                                        <label class="control-label">产品价格</label>
 
-                                                                    <span class="help-inline">Provide your fullname</span>
+                                                                        <div class="controls">
+
+                                                                            <input type="text" id="add_api_type_sub_price" name="add_api_type_sub_price_1" class="span6 m-wrap" placeholder="单位：元"/>
+
+                                                                            <span class="help-inline"></span>
+
+                                                                            <span class="help-block">说明：只能输入数字并且大于等于0</span>
+
+                                                                        </div>
+
+                                                                    </div>
 
                                                                 </div>
 
@@ -836,15 +736,45 @@
 
                                                             <h3 class="block">添加正式账号Ip</h3>
 
-                                                            <div class="control-group">
+                                                            <div class="control-group text-right">
+                                                                <a href="#" id="control-group-add-ip-href"><span><i class="icon-plus"></i>点击添加一栏</span></a>
+                                                            </div>
 
-                                                                <label class="control-label">Card Holder Name<span class="required">*</span></label>
+                                                            <div id="control-group-add-ip">
 
-                                                                <div class="controls">
+                                                                <div class="form-section" style="border-bottom: 1px solid #999;">
 
-                                                                    <input type="text" class="span6 m-wrap" name="card_name" />
+                                                                    <div class="control-group">
 
-                                                                    <span class="help-inline"></span>
+                                                                        <label class="control-label">起始Ip</label>
+
+                                                                        <div class="controls">
+
+                                                                            <input type="text" class="span6 m-wrap" id="input_ipv4_begin" name="input_ipv4_begin"/>
+
+                                                                            <span class="help-inline"></span>
+
+                                                                            <span class="help-block">例如：192.168.111.123</span>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <div class="control-group">
+
+                                                                        <label class="control-label">终止Ip</label>
+
+                                                                        <div class="controls">
+
+                                                                            <input type="text" class="span6 m-wrap" id="input_ipv4_end" name="input_ipv4_end"/>
+
+                                                                            <span class="help-inline"></span>
+
+                                                                            <span class="help-block">例如：192.168.111.123</span>
+
+                                                                        </div>
+
+                                                                    </div>
 
                                                                 </div>
 
@@ -896,25 +826,29 @@
 
                                                             <h4 class="form-section">产品权限信息</h4>
 
-                                                            <div class="control-group">
+                                                            <div id="control-group-add-api-affirm">
 
-                                                                <label class="control-label">Fullname:</label>
+                                                                <div class="control-group">
 
-                                                                <div class="controls">
+                                                                    <label class="control-label">产品类型:</label>
 
-                                                                    <span class="text display-value" data-display="fullname"></span>
+                                                                    <div class="controls">
+
+                                                                        <span class="text display-value" data-display="add_api_type_sub_1"></span>
+
+                                                                    </div>
 
                                                                 </div>
 
-                                                            </div>
+                                                                <div class="control-group">
 
-                                                            <div class="control-group">
+                                                                    <label class="control-label">价格:</label>
 
-                                                                <label class="control-label">Gender:</label>
+                                                                    <div class="controls">
 
-                                                                <div class="controls">
+                                                                        <span class="text display-value" data-display="add_api_type_sub_price_1"></span>
 
-                                                                    <span class="text display-value" data-display="gender"></span>
+                                                                    </div>
 
                                                                 </div>
 
@@ -922,13 +856,29 @@
 
                                                             <h4 class="form-section">Ip信息</h4>
 
-                                                            <div class="control-group">
+                                                            <div id="control-group-add-ip-affirm">
 
-                                                                <label class="control-label">Card Holder Name:</label>
+                                                                <div class="control-group">
 
-                                                                <div class="controls">
+                                                                    <label class="control-label">起始Ip:</label>
 
-                                                                    <span class="text display-value" data-display="card_name"></span>
+                                                                    <div class="controls">
+
+                                                                        <span class="text display-value" data-display="input_ipv4_begin"></span>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="control-group">
+
+                                                                    <label class="control-label">终止Ip:</label>
+
+                                                                    <div class="controls">
+
+                                                                        <span class="text display-value" data-display="input_ipv4_end"></span>
+
+                                                                    </div>
 
                                                                 </div>
 
@@ -1032,8 +982,6 @@
 
             App.init();
 
-            FormWizard.init();
-
         });
 
     </script>
@@ -1050,7 +998,6 @@
             ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
     </script>
-
 
     <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
 
@@ -1070,156 +1017,148 @@
 
     <script src="/js/oldlocal/company.js"></script>
 
+    <script src="/js/oldlocal/company-add-company.js"></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
+            AddCompanyAllotApiAddIp.init();
             Company.init();
             CompanyForbid.init();
         });
 
-        /*以下操作是新增公司-获得焦点清空文本框*/
-        $("#companyCustomerName").focus(function () {
-            $("#companyNameMsg").html("");
-        });
+        /*Api-点击添加一栏*/
+        $('#control-group-add-api-href').on('click',function () {
 
-        /*以下操作是新增公司-获得焦点清空文本框*/
-        $("#authId").focus(function () {
-            $("#authIdMsg").html("");
-        });
+                var add_api_type_sub = [];
+                $("select[id='add_api_type_sub']").each(function(){
+                    add_api_type_sub.push($(this).val());
+                });
 
-        /*以下操作是新增公司-获得焦点清空文本框*/
-        $("#deptId").focus(function () {
-            $("#deptIdMsg").html("");
-        });
+                console.log(add_api_type_sub);
 
-        /*以下操作是新增公司-失去焦点验证authId*/
-        /*$("#authId").blur(function(){
-            $("#authIdMsg").load("/customer/findCustomerByAuthId/"+$("#authId").val(),
-                    function(responseTxt){
-                        if(responseTxt=="yes")
-                            $("#authIdMsg").html("<font color='red'>该账号已被使用，请重新输入！</font>");
-                        if(responseTxt=="no")
-                            $("#authIdMsg").html("");
-                    });
-        });*/
+                var count = add_api_type_sub.length + 1 ;
 
-        /*以下操作是新增公司-点击提交按钮提交数据*/
-        $("#add-btn-black-btn-primary").on("click",function () {
-            var companyCustomerName=$("#companyCustomerName").val();
-            var authId=$("#authId").val();
-            var partnerId=$("#partnerId").val();
-            var deptId=$("#deptId").val();
-            $.ajax({
-                type: "post",
-                url: "/company/add-company-customer",
-                data: {"companyName":companyCustomerName,"authId":authId,"partnerId":partnerId,"deptId":deptId},
-                dataType: "json",
-                success: function (result) {
-                    if(result.companyNameMessage != null){
-                        $("#companyNameMsg").empty();
-                        $("#companyNameMsg").html('<font color="red">'+result.companyNameMessage+'</font>');
-                        return;
-                    }
-                    if(result.authIdMessage != null){
-                        $("#authIdMsg").empty();
-                        $("#authIdMsg").html('<font color="red">'+result.authIdMessage+'</font>');
-                        return;
-                    }
-                    if(result.deptMessage != null){
-                        $("#deptIdMsg").empty();
-                        $("#deptIdMsg").html('<font color="red">'+result.deptMessage+'</font>');
-                        return;
-                    }
-                    if(result.errorMessage != null) {
-                        $("#error-alert").empty();
-                        $("#error-alert").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
-                        return;
-                    }
-                    if (result.successMessage != null){
-                        alert("操作成功");
-                        window.location.href=window.location.href
-                    }
+                console.log(count);
+
+                var res = $('select[name="add_api_type_sub_'+ (count-1) +'"]').val();
+
+                console.log(res);
+
+                if (res == null || res == "" || res == "请选择..."){
+                    alert("亲，请先完成当前选择后再点击添加按钮哦！");
+                    return;
                 }
-            });
+
+                $.ajax({
+                    type: "post",
+                    url: "/company/find-all-api-type",
+                    data: {"add_api_type_sub" : add_api_type_sub},
+                    dataType: "json",
+                    success: function (data) {
+
+                        if(data != null && data.length > 0 ){
+                            $('#control-group-add-api').append(
+                                    '<div class="form-section" style="border-bottom: 1px solid #999;">' +
+                                    '<div class="control-group">' +
+                                    '<label class="control-label">产品类型</label>' +
+                                    '<div class="controls">' +
+                                    '<select id="add_api_type_sub" name="add_api_type_sub_'+ count +'" class="span6 m-wrap">' +
+                                    '<option value="">请选择...</option>' +
+                                    '</select>' +
+                                    '<span class="help-inline"></span>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="control-group">' +
+                                    '<label class="control-label">产品价格</label>' +
+                                    '<div class="controls">' +
+                                    '<input type="text" id="add_api_type_sub_price" name="add_api_type_sub_price_'+ count +'" class="span6 m-wrap" placeholder="单位：元"/>' +
+                                    '<span class="help-inline"></span>' +
+                                    '<span class="help-block">说明：只能输入数字并且大于等于0</span>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div>'
+                            );
+                            var myContent = null;
+                            for (var i = 0; i < data.length; i++){
+                                if (data[i].mobileOperatorName == null){
+                                    myContent="<option value='"+ data[i].apiTypeId +"'>"+ data[i].apiTypeName +"</option>";
+                                }else{
+                                    myContent="<option value='"+data[i].apiTypeId+'-'+data[i].mobileOperatorId+"'>"+ data[i].apiTypeName+'--'+data[i].mobileOperatorName +"</option>";
+                                }
+                                $('select[name="add_api_type_sub_'+ count +'"]').append(myContent);
+                            }
+
+                            $('#control-group-add-api-affirm').append(
+                                    '<div class="control-group">' +
+                                    '<label class="control-label">产品类型:</label>' +
+                                    '<div class="controls">' +
+                                    '<span class="text display-value" data-display="add_api_type_sub_'+ count +'"></span>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="control-group">' +
+                                    '<label class="control-label">价格:</label>' +
+                                    '<div class="controls">' +
+                                    '<span class="text display-value" data-display="add_api_type_sub_price_'+ count +'"></span>' +
+                                    '</div>' +
+                                    '</div>'
+                            );
+
+                        }else {
+                            alert("亲，你已选择了所有的产品类型哦！");
+                        }
+                    }
+                });
+
         });
 
-
-
-
-
-        /*给正式账号添加Ip-绑定账号Id*/
-        function addIp(customerId) {
-            $("#add_ip_customerId").empty();
-            $("#error_alert_add_ip").empty();
-            var op=document.createElement("input");
-            op.value=customerId;
-            op.type="text";
-            op.id="customerId";
-            op.name="customerId";
-            $("#add_ip_customerId").append(op);
-            $('#control-group-add-ip').empty();
-            $('#control-group-add-ip').append(
-                    "<div>" +
-                    "请输入正式账号Ip段&nbsp;&nbsp;" +
-                    "<input class='m-wrap small' id='input_ipv4_begin' name='input_ipv4_begin' type='text'/>" +
-                    "-- " +
-                    "<input class='m-wrap small' id='input_ipv4_end' name='input_ipv4_end' type='text'/>"+
-                    "</div>"
-            );
-        }
-
-        /*正式账号添加Ip-点击添加一栏*/
+        /*Ip-点击添加一栏*/
         $('#control-group-add-ip-href').on('click',function () {
+
+            var input_ipv4_begin = [];
+            $("input[id='input_ipv4_begin']").each(function(){
+                input_ipv4_begin.push($(this).val());
+            });
+
+            var count = input_ipv4_begin.length ;
+
             $('#control-group-add-ip').append(
-                    "<div>" +
-                    "请输入正式账号Ip段&nbsp;&nbsp;" +
-                    "<input class='m-wrap small' id='input_ipv4_begin' name='input_ipv4_begin' type='text'/>" +
-                    "-- " +
-                    "<input class='m-wrap small' id='input_ipv4_end' name='input_ipv4_end' type='text'/>"+
-                    "</div>"
+                    '<div class="form-section" style="border-bottom: 1px solid #999;">' +
+                    '<div class="control-group">' +
+                    '<label class="control-label">起始Ip</label>'+
+                    '<div class="controls">' +
+                    '<input type="text" class="span6 m-wrap" id="input_ipv4_begin" name="input_ipv4_begin_'+ count +'"/>' +
+                    '<span class="help-inline"></span>' +
+                    '<span class="help-block">例如：192.168.111.123</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="control-group">' +
+                    '<label class="control-label">终止Ip</label>' +
+                    '<div class="controls">' +
+                    '<input type="text" class="span6 m-wrap" id="input_ipv4_end" name="input_ipv4_end_'+ count +'"/>' +
+                    '<span class="help-inline"></span>' +
+                    '<span class="help-block">例如：192.168.111.123</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+            );
+
+            $('#control-group-add-ip-affirm').append(
+                    '<div class="control-group">' +
+                    '<label class="control-label">起始Ip:</label>' +
+                    '<div class="controls">' +
+                    '<span class="text display-value" data-display="input_ipv4_begin_'+ count +'"></span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="control-group">' +
+                    '<label class="control-label">终止Ip:</label>' +
+                    '<div class="controls">' +
+                    '<span class="text display-value" data-display="input_ipv4_end_'+ count +'"></span>' +
+                    '</div>' +
+                    '</div>'
             );
         });
 
-        /*提交Ip*/
-        $('#add-ip-btn-black-btn-primary').on('click',function () {
-            var customerId=$("#customerId").val();
-            var beginIp = [];
-            $("input[name='input_ipv4_begin']").each(function(){
-                beginIp.push($.trim($(this).val()));
-            });
-            var endIp = [];
-            $("input[name='input_ipv4_end']").each(function(){
-                endIp.push($.trim($(this).val()));
-            });
-            console.log(customerId);
-            console.log(beginIp);
-            console.log(endIp);
-
-            $.ajax({
-                type: "post",
-                url: "/company/customer/add/ip",
-                data: {"customerId" : customerId, "beginIp" : beginIp, "endIp" : endIp},
-                dataType: "json",
-                success: function (data) {
-                    if (data != null){
-                        if (data.success != null){
-                            window.location.href=window.location.href;
-                            alert("添加成功！");
-                            return;
-                        }
-                        if (data.fail != null){
-                            $("#error_alert_add_ip").empty();
-                            $("#error_alert_add_ip").append(
-                                    '<div class="alert alert-error show">' +
-                                    '<button class="close" data-dismiss="alert"></button>' +
-                                    '<span>'+data.fail+'</span>' +
-                                    '</div>');
-                            return;
-                        }
-                    }
-                }
-            });
-        });
 
     </script>
 

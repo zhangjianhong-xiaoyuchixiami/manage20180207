@@ -29,7 +29,38 @@ $("#batchBanCompany").on('click',function () {
     }else {
         $.ajax({
             type:'post',
-            url:"/company//ban",
+            url:"/company/ban",
+            data:{"companyId": companyId},
+            dataType:'json',
+            success:function(data){
+                if (data != null){
+                    if (data.fail != null){
+                        alert(data.fail);
+                        window.location.href=window.location.href;
+                        return;
+                    }
+                    alert("禁用成功");
+                    window.location.href=window.location.href;
+                }
+            }
+        });
+    }
+});
+
+/*状态禁用批量启用公司操作*/
+$("#batchUnBanCompany").on('click',function () {
+
+    var companyId =[];//定义一个数组
+    $('input[name="checkUnBanBoxCompanyId"]:checked').each(function(){
+        companyId.push($.trim($(this).val()));
+    });
+
+    if (companyId == null || companyId == ""){
+        alert("请先选择要启用的公司")
+    }else {
+        $.ajax({
+            type:'post',
+            url:"/company/unban",
             data:{"companyId": companyId},
             dataType:'json',
             success:function(data){

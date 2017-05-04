@@ -41,7 +41,7 @@
         <result column="id" property="id"/>
         <result column="companyId" property="companyId"/>
         <result column="apiTypeId" property="apiTypeId"/>
-        <result column="sunTypeId" property="sunTypeId"/>
+        <result column="subTypeId" property="subTypeId"/>
         <result column="price" property="price"/>
         <result column="enabled" property="enabled"/>
         <result column="createTime" property="createTime"/>
@@ -63,27 +63,27 @@
         FROM qyfinance.bkvwCustomer a
         LEFT JOIN qyfinance.bkvw_company_customer c ON a.companyId=c.companyId
         LEFT JOIN
-                (
-                SELECT aa.companyId,sum(aa.balance) companyBalance,sum(aa.floor) floor,
-                sum(bb.chargeTotleAmount) chargeTotleAmount,sum(cc.consumeTotleAmount) consumeTotleAmount
-                FROM qyfinance.bkvwCustomer aa
-                LEFT JOIN
-                (
-                SELECT customerId,sum(amount) chargeTotleAmount
-                FROM qyfinance.bkvwCustomerBalanceLog
-                WHERE reasonId in (1,2,3)
-                GROUP BY customerId
-                ) bb ON aa.id=bb.customerId
-                LEFT JOIN
-                (
-                SELECT customerId,sum(amount) consumeTotleAmount
-                FROM qyfinance.bkvwCustomerBalanceLog
-                WHERE reasonId in (-1,-2)
-                GROUP BY customerId
-                ) cc ON aa.id=cc.customerId
-                WHERE typeId=1
-                GROUP BY companyId
-                ) d ON a.companyId=d.companyId
+        (
+        SELECT aa.companyId,sum(aa.balance) companyBalance,sum(aa.floor) floor,
+        sum(bb.chargeTotleAmount) chargeTotleAmount,sum(cc.consumeTotleAmount) consumeTotleAmount
+        FROM qyfinance.bkvwCustomer aa
+        LEFT JOIN
+        (
+        SELECT customerId,sum(amount) chargeTotleAmount
+        FROM qyfinance.bkvwCustomerBalanceLog
+        WHERE reasonId in (1,2,3)
+        GROUP BY customerId
+        ) bb ON aa.id=bb.customerId
+        LEFT JOIN
+        (
+        SELECT customerId,sum(amount) consumeTotleAmount
+        FROM qyfinance.bkvwCustomerBalanceLog
+        WHERE reasonId in (-1,-2)
+        GROUP BY customerId
+        ) cc ON aa.id=cc.customerId
+        WHERE typeId=1
+        GROUP BY companyId
+        ) d ON a.companyId=d.companyId
         LEFT JOIN qyfinance.bkvwCustomerIp e ON a.id=e.customerId
         WHERE a.companyId IS NOT NULL
         <if test="deptIdList!=null and deptIdList.size()!=0">
@@ -156,13 +156,20 @@
         VALUES(#{customerId},#{amount},#{reasonId},sysdate())
     </insert>
 
+    <!--根据公司Id查找公司名称-用于禁用/解禁公司的操作提醒-->
+    <select id="queryCompanyNameByCompanyId" parameterType="int" resultType="String">
+        SELECT DISTINCT(companyName)
+        FROM qyfinance.bkvwCustomer
+        WHERE companyId=#{param}
+    </select>
+
     <!--根据公司Id查找公司已拥有权限的Api-->
     <select id="queryCompanyApiByCompanyId" parameterType="map" resultMap="CompanyApi_ApiType_Map">
         SELECT a.id,a.companyId,a.apiTypeId,a.subTypeId,a.price,a.enabled,a.createTime,
         a.apiTypeName,a.subTypeName
         FROM qyfinance.bkvwCompanyApi a
         WHERE a.companyId=#{companyId}
-        ORDER BY a.enabled DESC
+        AND a.enabled=1
     </select>
 
     <!--禁用产品权限-->
@@ -174,6 +181,13 @@
     <update id="unBanCompanyApi" parameterType="int">
         UPDATE qydata.CompanyApi SET enabled=1 WHERE id=#{param}
     </update>
+
+    <!--查询全部产品权限-->
+    <select id="queryAllApi" resultType="org.qydata.dst.ApiTypeSubType">
+        SELECT DISTINCT(a.apiTypeId) apiTypeId,a.apiTypeName,a.mobileOperatorId,a.mobileOperatorName
+        FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+        WHERE a.status=0
+    </select>
 
     <!--根据账号Id查找Ip-->
     <select id="queryCustomerIpById" parameterType="int" resultType="org.qydata.entity.CustomerIp">

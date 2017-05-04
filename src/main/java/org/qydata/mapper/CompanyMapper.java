@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.dst.ApiTypeSubType;
 import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.*;
 
@@ -76,6 +77,14 @@ public interface CompanyMapper {
     public boolean addCustomerBalanceLog(CustomerBalanceLog customerBalanceLog)throws Exception;
 
     /**
+     * 根据公司Id查找公司名称-用于禁用/解禁公司的操作提醒
+     * @param companyId
+     * @return
+     * @throws Exception
+     */
+    public String queryCompanyNameByCompanyId(Integer companyId)throws Exception;
+
+    /**
      * 根据公司Id查找公司已拥有权限的Api
      * @param map
      * @return
@@ -95,6 +104,12 @@ public interface CompanyMapper {
      * @return
      */
     public boolean unBanCompanyApi(Integer id);
+
+    /**
+     * 查询全部产品权限
+     * @return
+     */
+    public List<ApiTypeSubType> queryAllApi();
 
     /**
      * 根据账号Id查找Ip
