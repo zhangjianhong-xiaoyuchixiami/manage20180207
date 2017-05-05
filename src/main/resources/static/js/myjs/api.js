@@ -15,13 +15,14 @@ var Api = function () {
                     { "bVisible": false },
                     null,
                     null,
+                    null,
                     { "bVisible": false },
                     { "bVisible": false },
                     null,
                     null,
                     { "bSortable": false }
                 ],
-                "aaSorting": [[8, 'desc']],
+                "aaSorting": [[9, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

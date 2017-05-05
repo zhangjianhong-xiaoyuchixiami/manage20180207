@@ -14,6 +14,7 @@ public class ApiTypeConsume implements Serializable {
     private Integer apiStatus;
     private Long apiTypeConsumeTotleAmount;
     private Integer apiTypeUsageAmount;
+    private Integer feeUsageAmount;
     private Integer cost;
     private List<MobileOperator> mobileOperatorList;
 
@@ -71,5 +72,13 @@ public class ApiTypeConsume implements Serializable {
 
     public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
         this.mobileOperatorList = mobileOperatorList;
+    }
+
+    public Integer getFeeUsageAmount() {
+        return feeUsageAmount;
+    }
+
+    public void setFeeUsageAmount(Integer feeUsageAmount) {
+        this.feeUsageAmount = feeUsageAmount;
     }
 }

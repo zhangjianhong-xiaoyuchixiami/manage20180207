@@ -47,10 +47,10 @@ public class ApiFinanceExcelAop {
                 map.put("apiTypeId",args[2]);
             }
             if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", args[3]);
+                map.put("beginDate", args[3]+" "+"00:00:00");
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", args[4]);
+                map.put("endDate", args[4]+" "+"23:59:59");
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];
@@ -183,10 +183,10 @@ public class ApiFinanceExcelAop {
                 map.put("partnerId",args[2]);
             }
             if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", args[3]);
+                map.put("beginDate", args[3]+" "+"00:00:00");
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", args[4]);
+                map.put("endDate", args[4]+" "+"23:59:59");
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];

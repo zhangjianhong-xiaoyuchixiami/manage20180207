@@ -10,6 +10,15 @@
         <result column="typeId" property="typeId"/>
     </resultMap>
 
+    <resultMap type="HashMap" id="testMap">
+        <id column="UA_INFO" property="id"/>
+        <association property="value" resultMap="org.qydata.entity.User">
+            <result column="email" property="email"/>
+            <result column="status" property="status"/>
+            <result column="typeId" property="typeId"/>
+        </association>
+    </resultMap>
+
 
 
     <!--查找全部用户-->
@@ -33,6 +42,11 @@
                 id=#{userId}
             </if>
         </where>
+    </select>
+
+    <select id="testMap" resultType="Map">
+        SELECT id,email,status,typeId
+        FROM qyauth.User
     </select>
 
 

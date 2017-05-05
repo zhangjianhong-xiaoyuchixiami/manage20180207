@@ -276,9 +276,9 @@
 
                                         <label><input type="checkbox" checked data-column="3">信用额度</label>
 
-                                        <label><input type="checkbox" checked data-column="4">剩余信用额度</label>
+                                        <label><input type="checkbox" data-column="4">剩余信用额度</label>
 
-                                        <label><input type="checkbox" checked data-column="5">可用信用额度</label>
+                                        <label><input type="checkbox" checked data-column="5">可用额度</label>
 
                                         <label><input type="checkbox" checked data-column="6">余额</label>
 
@@ -373,7 +373,7 @@
                                         </@shiro.hasPermission>
                                         <th>信用额度（单位：元）</th>
                                         <th>剩余信用额度（单位：元）</th>
-                                        <th>可用信用额度（单位：元）</th>
+                                        <th>可用额度（单位：元）</th>
                                         <th>余额（单位：元）</th>
                                         <th>充值总额（单位：元）</th>
                                         <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
@@ -415,7 +415,7 @@
                                                 </@shiro.hasPermission>
                                                 <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
                                                 <td data-title="剩余信用额度">${(-customer.usableFloor/100.0)?c}</td>
-                                                <td data-title="可用信用额度">${(customer.surplusFloor/100.0)?c}</td>
+                                                <td data-title="可用额度">${(customer.surplusFloor/100.0)?c}</td>
                                                 <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
