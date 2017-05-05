@@ -180,4 +180,10 @@ public class TestController {
         return getObj.toString();
     }
 
+    @RequestMapping("/test-map")
+    @ResponseBody
+    public String testMap(){
+       return testService.testMap().toString();
+    }
+
 }

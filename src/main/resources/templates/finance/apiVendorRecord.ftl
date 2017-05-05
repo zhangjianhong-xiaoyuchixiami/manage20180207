@@ -268,7 +268,8 @@
                                         <th class="table-td-none">类型</th>
                                         <th class="table-td-none">当前价格</th>
                                         <th class="table-td-none">消费总额</th>
-                                        <th class="table-td-none">使用量</th>
+                                        <th class="table-td-none">调用次数</th>
+                                        <th class="table-td-none">扣费次数</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -344,11 +345,20 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="使用量" class="table-td-none">
+                                                <td data-title="调用次数" class="table-td-none">
                                                     <#if apiFinance.apiTypeConsumeList??>
                                                         <#list apiFinance.apiTypeConsumeList as apiType>
                                                             <span>
                                                             ${(apiType.apiTypeUsageAmount)!'0'}
+                                                                        </span><br/>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td data-title="扣费次数" class="table-td-none">
+                                                    <#if apiFinance.apiTypeConsumeList??>
+                                                        <#list apiFinance.apiTypeConsumeList as apiType>
+                                                            <span>
+                                                            ${(apiType.feeUsageAmount)!'0'}
                                                                         </span><br/>
                                                         </#list>
                                                     </#if>

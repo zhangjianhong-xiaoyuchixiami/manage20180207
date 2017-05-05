@@ -164,15 +164,17 @@
 
                                         <label><input type="checkbox" checked data-column="3">消费总额</label>
 
-                                        <label><input type="checkbox" checked data-column="4">使用量</label>
+                                        <label><input type="checkbox" checked data-column="4">调用次数</label>
 
-                                        <label><input type="checkbox" data-column="5">上周消费</label>
+                                        <label><input type="checkbox" checked data-column="5">扣费次数</label>
 
-                                        <label><input type="checkbox" data-column="6">上月消费</label>
+                                        <label><input type="checkbox" data-column="6">上周消费</label>
 
-                                        <label><input type="checkbox" checked data-column="7">本月消费</label>
+                                        <label><input type="checkbox" data-column="7">上月消费</label>
 
-                                        <label><input type="checkbox" checked data-column="8">当天消费</label>
+                                        <label><input type="checkbox" checked data-column="8">本月消费</label>
+
+                                        <label><input type="checkbox" checked data-column="9">当天消费</label>
 
                                     </div>
 
@@ -260,7 +262,8 @@
                                         <th>产品供应商</th>
                                         <th>产品名称</th>
                                         <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
-                                        <th>使用量</th>
+                                        <th>调用次数</th>
+                                        <th>扣费次数</th>
                                         <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
@@ -289,7 +292,8 @@
                                                 <td data-title="产品供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName!'无'}</a></td>
                                                 <td data-title="产品名称">${apiFinance.apiName}</td>
                                                 <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="使用量"><#if apiFinance.usageAmount??>${(apiFinance.usageAmount)?c}<#else >0</#if></td>
+                                                <td data-title="调用次数"><#if apiFinance.usageAmount??>${(apiFinance.usageAmount)?c}<#else >0</#if></td>
+                                                <td data-title="扣费次数"><#if apiFinance.feeUsageAmount??>${(apiFinance.feeUsageAmount)?c}<#else >0</#if></td>
                                                 <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="本月消费"><#if apiFinance.currMonthCost??>${(apiFinance.currMonthCost/100.0)?c}<#else >0</#if></td>

@@ -18,6 +18,7 @@
         <result column="usageAmount" property="usageAmount"/>
         <result column="currMonthCost" property="currMonthCost"/>
         <result column="currDayCost" property="currDayCost"/>
+        <result column="feeUsageAmount" property="feeUsageAmount"/>
         <collection property="mobileOperatorList" ofType="org.qydata.entity.MobileOperator">
             <result column="mobileOperatorId" property="id"/>
             <result column="mobileOperatorName" property="name"/>
@@ -42,6 +43,7 @@
             <result column="apiStatus" property="apiStatus"/>
             <result column="apiTypeConsumeTotleAmount" property="apiTypeConsumeTotleAmount"/>
             <result column="apiTypeUsageAmount" property="apiTypeUsageAmount"/>
+            <result column="feeUsageAmount" property="feeUsageAmount"/>
             <result column="cost" property="cost"/>
             <collection property="mobileOperatorList" ofType="org.qydata.entity.MobileOperator">
                 <result column="mobileOperatorName" property="name"/>
@@ -69,8 +71,9 @@
         aa.mobileOperatorName,aa.status,
         bb.weekTotleCost,
         cc.monthTotleCost,
-        (ifnull(dd.consumeTotleAmount,0) + ifnull(currDay.currDayCost,0)) consumeTotleAmount,
-        (ifnull(dd.usageAmount,0) + ifnull(currDay.currDayUsageAmount,0)) usageAmount,
+        ifnull(dd.consumeTotleAmount,0) consumeTotleAmount,
+        ifnull(dd.usageAmount,0) usageAmount,
+        ee.feeUsageAmount,
         currMonth.currMonthCost,
         currDay.currDayCost
         FROM
@@ -97,22 +100,41 @@
         ) cc ON aa.id=cc.apiId
         LEFT JOIN
         (
-            SELECT apiId,sum(totleCost) consumeTotleAmount,sum(usageAmount) usageAmount
-            FROM qyfinance.bkvwApiCostDayCount
-            <where>
-                <if test="beginDate != null and beginDate != ''">
-                    <![CDATA[
-                        AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
-                     ]]>
-                </if>
-                <if test="endDate != null and endDate != ''">
-                    <![CDATA[
-                        AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
-                    ]]>
-                </if>
-            </where>
+            SELECT apiId,sum(cost) consumeTotleAmount,count(id) usageAmount
+            FROM qyfinance.bkvwApiRequestLog
+            WHERE ok=1
+            AND isMock=0
+            <if test="beginDate != null and beginDate != ''">
+                <![CDATA[
+                    AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                    AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                ]]>
+            </if>
             GROUP BY apiId
         ) dd ON aa.id=dd.apiId
+        LEFT JOIN
+        (
+            SELECT apiId,count(id) feeUsageAmount
+            FROM qyfinance.bkvwApiRequestLog
+            WHERE ok=1
+            AND cost>0
+            AND isMock=0
+            <if test="beginDate != null and beginDate != ''">
+                <![CDATA[
+                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                ]]>
+            </if>
+            GROUP BY apiId
+        ) ee ON aa.id=ee.apiId
         LEFT JOIN
         (
             SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(cost) currMonthCost,apiId
@@ -316,6 +338,7 @@
         hh.status apiStatus,
         hh.apiTypeConsumeTotleAmount,
         hh.apiTypeUsageAmount,
+        hh.feeUsageAmount,
         hh.cost
         FROM (
             SELECT aa.vendorId,aa.vendorName,
@@ -355,20 +378,20 @@
             ) cc ON aa.id=cc.apiId
             LEFT JOIN
             (
-                SELECT apiId,sum(totleCost) consumeTotleAmount
-                FROM qyfinance.bkvwApiCostDayCount
-                <where>
-                    <if test="beginDate != null and beginDate != ''">
-                        <![CDATA[
-                            AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
-                         ]]>
-                    </if>
-                    <if test="endDate != null and endDate != ''">
-                        <![CDATA[
-                            AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
-                        ]]>
-                    </if>
-                </where>
+                SELECT apiId,sum(cost) consumeTotleAmount
+                FROM qyfinance.bkvwApiRequestLog
+                WHERE ok=1
+                AND isMock=0
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+                </if>
                 GROUP BY apiId
             ) dd ON aa.id=dd.apiId
             GROUP BY aa.vendorId,aa.vendorName
@@ -396,33 +419,46 @@
         LEFT JOIN
         (
             SELECT aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.cost,aa.mobileOperatorName,aa.status,
-            (ifnull(bb.consumeTotleAmount,0)+ifnull(cc.typeCurrDayCost,0)) apiTypeConsumeTotleAmount,
-            (ifnull(bb.usageAmount,0)+ifnull(cc.typeCurrDayUsageAmount,0)) apiTypeUsageAmount
+            ifnull(bb.consumeTotleAmount,0) apiTypeConsumeTotleAmount,
+            ifnull(bb.usageAmount,0) apiTypeUsageAmount,
+            cc.feeUsageAmount
             FROM qyfinance.bkvw_api_ApiTypeVendorPartner aa
             LEFT JOIN
             (
-                SELECT apiId,sum(totleCost) consumeTotleAmount,sum(usageAmount) usageAmount
-                FROM qyfinance.bkvwApiCostDayCount
-                <where>
-                    <if test="beginDate != null and beginDate != ''">
-                        <![CDATA[
-                            AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
-                         ]]>
-                    </if>
-                    <if test="endDate != null and endDate != ''">
-                        <![CDATA[
-                            AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
-                        ]]>
-                    </if>
-                </where>
+                SELECT apiId,sum(cost) consumeTotleAmount,count(id) usageAmount
+                FROM qyfinance.bkvwApiRequestLog
+                WHERE ok=1
+                AND isMock=0
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+                </if>
                 GROUP BY apiId
             ) bb ON aa.apiId=bb.apiId
             LEFT JOIN
             (
-                SELECT sum(cost) typeCurrDayCost,count(apiRequestLogId) typeCurrDayUsageAmount,apiId
+                SELECT apiId,count(id) feeUsageAmount
                 FROM qyfinance.bkvwApiRequestLog
-                WHERE ok=1 AND isMock=0 AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
-                GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId
+                WHERE ok=1
+                AND cost>0
+                AND isMock=0
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                    ]]>
+                </if>
+                GROUP BY apiId
             ) cc ON aa.apiId=cc.apiId
         ) hh ON ee.vendorId=hh.vendorId
         <where>

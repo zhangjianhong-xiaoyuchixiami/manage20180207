@@ -119,69 +119,62 @@
         currDay.currDayAmount
         FROM
         (
-        SELECT yy.id,yy.balance,yy.companyId,yy.companyName,yy.partnerId,yy.partnerName,yy.floor,yy.companyStatus,
-        xx.apiTypeId,xx.stid subTypeId,xx.sumAmount,xx.countTotle,xx.countSuccess,xx.price,xx.enabled,xx.apiTypeName,xx.subTypeName
-        FROM
-        (
-            SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,a.companyStatus,
-            b.name partnerName
-            FROM qyfinance.bkvwCustomer a
-            LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
-            LEFT JOIN qyfinance.bkvwCustomerDept d ON a.id=d.customerId
-            WHERE a.typeId in(1)
-            <if test="deptIdList!=null and deptIdList.size()!=0">
-                and d.deptId in
-                <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                    #{deptId}
-                </foreach>
-            </if>
-            <if test="statusList!=null and statusList.size()!=0">
-                and a.companyStatus in
-                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
-                  #{status}
-                </foreach>
-            </if>
-            <if test="partnerId!=null and partnerId!=''">
-                and a.partnerId=#{partnerId}
-            </if>
-            <if test="content!=null and content!=''">
-                and a.companyName like '%${content}%'
-            </if>
-            ) yy
-            LEFT JOIN
+            SELECT yy.id,yy.balance,yy.companyId,yy.companyName,yy.partnerId,yy.partnerName,yy.floor,yy.companyStatus,
+            yy.apiTypeId,yy.stid subTypeId,yy.sumAmount,yy.countTotle,yy.countSuccess,
+            dd.price,dd.enabled,
+            ee.name apiTypeName,
+            ff.name subTypeName
+            FROM
             (
-                SELECT cc.companyId,cc.apiTypeId,cc.stid,cc.sumAmount,cc.countTotle,cc.countSuccess,
-                dd.price,dd.enabled,ee.name apiTypeName,ff.name subTypeName
-                FROM
+                SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,a.companyStatus,
+                b.name partnerName,
+                c.apiTypeId,ifnull(c.stid,0) stid,c.sumAmount,c.countTotle,c.countSuccess
+                FROM qyfinance.bkvwCustomer a
+                LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+                LEFT JOIN qyfinance.bkvwCustomerDept d ON a.id=d.customerId
+                LEFT JOIN
                 (
-                    SELECT aa.customerId,aa.apiTypeId,ifnull(aa.stid,0) stid,aa.sumAmount,aa.countTotle,aa.countSuccess,
-                    bb.companyId
-                    FROM
-                    (
-                        SELECT customerId,apiTypeId,stid,sum(sumAmount) sumAmount,
-                        sum(countTotle) countTotle,sum(countSuccess) countSuccess
-                        FROM qyfinance.CompanyApiTypeConsumeDayCount
-                        <where>
-                            <if test="beginDate != null and beginDate != ''">
-                                <![CDATA[
-                                    AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
-                                 ]]>
-                            </if>
-                            <if test="endDate != null and endDate != ''">
-                                <![CDATA[
-                                    AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
-                                ]]>
-                            </if>
-                        </where>
-                        GROUP BY customerId,apiTypeId,stid
-                    ) aa
-                    LEFT JOIN qyfinance.bkvwCustomer bb ON aa.customerId=bb.id
-                    WHERE bb.typeId=1
-                ) cc
-                LEFT JOIN qyfinance.bkvwCompanyApi dd ON cc.companyId=dd.companyId AND cc.apiTypeId=dd.apiTypeId AND cc.stid=dd.subTypeId
-                LEFT JOIN qyfinance.bkvwApiType ee ON cc.apiTypeId=ee.id
-                LEFT JOIN qyfinance.bkvwMobileOperator ff ON cc.stid=ff.id
-            ) xx ON yy.companyId=xx.companyId
+                    SELECT a.customerId,a.apiTypeId,a.stid,sum(b.amount) sumAmount,
+                    count(a.id) countTotle,count(b.id) countSuccess
+                    FROM qyfinance.bkvw_customer_CustomerRequestLog a
+                    LEFT JOIN qyfinance.bkvwCustomerBalanceLog b ON a.id=b.reqId
+                    <where>
+                        <if test="beginDate != null and beginDate != ''">
+                            <![CDATA[
+                                AND a.createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                            ]]>
+                        </if>
+                        <if test="endDate != null and endDate != ''">
+                            <![CDATA[
+                                AND a.createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+                            ]]>
+                        </if>
+                    </where>
+                    GROUP BY a.customerId,a.apiTypeId,a.stid
+                ) c ON a.id=c.customerId
+                WHERE a.typeId in(1)
+                <if test="deptIdList!=null and deptIdList.size()!=0">
+                    and d.deptId in
+                    <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                        #{deptId}
+                    </foreach>
+                </if>
+                <if test="statusList!=null and statusList.size()!=0">
+                    and a.companyStatus in
+                    <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
+                        #{status}
+                    </foreach>
+                </if>
+                <if test="partnerId!=null and partnerId!=''">
+                    and a.partnerId=#{partnerId}
+                </if>
+                <if test="content!=null and content!=''">
+                    and a.companyName like '%${content}%'
+                </if>
+            ) yy
+            LEFT JOIN qyfinance.bkvwCompanyApi dd ON yy.companyId=dd.companyId AND yy.apiTypeId=dd.apiTypeId AND yy.stid=dd.subTypeId
+            LEFT JOIN qyfinance.bkvwApiType ee ON yy.apiTypeId=ee.id
+            LEFT JOIN qyfinance.bkvwMobileOperator ff ON yy.stid=ff.id
         ) aa
         LEFT JOIN
         (

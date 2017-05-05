@@ -41,11 +41,11 @@ public class ApiFinanceController {
             map.put("vendorId",vendorId);
         }
         if (beginDate != null && beginDate != "" ) {
-            map.put("beginDate", beginDate);
+            map.put("beginDate", beginDate+" "+"00:00:00");
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate);
+            map.put("endDate", endDate+" "+"23:59:59");
             model.addAttribute("endDate",endDate);
         }
         List<ApiVendor> apiVendorList  = null;
@@ -174,11 +174,11 @@ public class ApiFinanceController {
             map.put("partnerId",partnerId);
         }
         if (beginDate != null && beginDate != "" ) {
-            map.put("beginDate", beginDate);
+            map.put("beginDate", beginDate+" "+"00:00:00");
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate);
+            map.put("endDate", endDate+" "+"23:59:59");
             model.addAttribute("endDate",endDate);
         }
         List<String> statusList = new ArrayList();

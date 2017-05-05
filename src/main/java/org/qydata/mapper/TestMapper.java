@@ -24,4 +24,7 @@ public interface TestMapper {
      */
     public Integer getAllUserCount(Map<String,Object> map);
 
+
+    public List<Map<Object, Object>> testMap();
+
 }
