@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 import org.qydata.config.annotation.DataSourceService;
+import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.ApiVendorBalance;
@@ -93,7 +94,26 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                     mapValue.put("statusList",me.getValue());
                 }
             }
-            mapTran.put("queryApiVendor",apiFinanceMapper.queryApiVendor(mapValue));
+            List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiVendor(mapValue);
+            List<ApiVendorBalance> apiVendorBalanceList = apiFinanceMapper.queryAllApiVendorBalance();
+            List<ApiFinance> apiFinanceTypeList = apiFinanceMapper.queryApiVendorType(mapValue);
+            List<ApiFinance> apiFinanceConsumeList = apiFinanceMapper.getCountTotleApiVendor(map);
+            for (int i=0; i<apiFinanceList.size(); i++){
+                ApiFinance apiFinance = apiFinanceList.get(i);
+                for(int j=0; j<apiVendorBalanceList.size(); j++){
+                    ApiVendorBalance apiVendorBalance = apiVendorBalanceList.get(j);
+                    if (apiFinance.getVendorId() == apiVendorBalance.getVendorId()){
+                        apiFinance.setBalance(apiVendorBalance.getBalance());
+                    }
+                }
+                for(int r=0; r<apiFinanceTypeList.size(); r++){
+                    ApiFinance apiFinanceType = apiFinanceTypeList.get(r);
+                    if (apiFinance.getVendorId() == apiFinanceType.getVendorId()){
+                        apiFinance.setApiTypeConsumeList(apiFinanceType.getApiTypeConsumeList());
+                    }
+                }
+            }
+            mapTran.put("queryApiVendor",apiFinanceList);
         } catch (Exception e) {
             e.printStackTrace();
         }

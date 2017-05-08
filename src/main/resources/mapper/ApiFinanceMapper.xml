@@ -51,6 +51,11 @@
         </collection>
     </resultMap>
 
+    <resultMap id="ApiVendorBalance_Map" type="org.qydata.entity.ApiVendorBalance">
+        <result column="vendorId" property="vendorId"/>
+        <result column="balance" property="balance"/>
+    </resultMap>
+
     <resultMap id="ApiRequestLog_Map" type="org.qydata.entity.ApiRequestLog">
         <result column="customerId" property="customerId"/>
         <result column="apiId" property="apiId"/>
@@ -325,26 +330,24 @@
 
     <!--以APIVendor统计消费信息-->
     <select id="queryApiVendor" parameterType="map" resultMap="ApiFinance_ApiType_Map">
-        SELECT ee.vendorId,ee.vendorName,
+        SELECT
+        ee.vendorId,
+        ee.vendorName,
         ee.weekTotleCost,
         ee.monthTotleCost,
-        (ifnull(ee.consumeTotleAmount,0)+ifnull(ee.currDayCost,0)) consumeTotleAmount,
         ee.currMonthCost,
         ee.currDayCost,
-        ff.balance,gg.partnerId,gg.partnerName,gg.status apiVendorStatus,
-        hh.apiTypeId,
-        hh.apiTypeName,
-        hh.mobileOperatorName,
-        hh.status apiStatus,
-        hh.apiTypeConsumeTotleAmount,
-        hh.apiTypeUsageAmount,
-        hh.feeUsageAmount,
-        hh.cost
-        FROM (
-            SELECT aa.vendorId,aa.vendorName,
+        gg.partnerId,
+        gg.partnerName,
+        gg.status apiVendorStatus,
+        ff.balance
+        FROM
+        (
+            SELECT
+            aa.vendorId,
+            aa.vendorName,
             sum(bb.weekTotleCost) weekTotleCost,
             sum(cc.monthTotleCost) monthTotleCost,
-            sum(dd.consumeTotleAmount) consumeTotleAmount,
             sum(currMonth.currMonthCost) currMonthCost,
             sum(currDay.currDayCost) currDayCost
             FROM qyfinance.bkvwApi aa
@@ -357,20 +360,6 @@
             ) bb ON aa.id=bb.apiId
             LEFT JOIN
             (
-                SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(cost) currMonthCost,apiId
-                FROM qyfinance.bkvwApiRequestLog
-                WHERE ok=1 AND isMock=0 AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 0 month),'%Y-%m')
-                GROUP BY DATE_FORMAT(createTime,'%Y-%m'),apiId
-            ) currMonth ON aa.id=currMonth.apiId
-            LEFT JOIN
-            (
-                SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,DATE_FORMAT(createTime,'%d') days,sum(cost) currDayCost,apiId
-                FROM qyfinance.bkvwApiRequestLog
-                WHERE ok=1 AND isMock=0 AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
-                GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId
-            ) currDay ON aa.id=currDay.apiId
-            LEFT JOIN
-            (
                 SELECT apiId,totleCost monthTotleCost
                 FROM qyfinance.bkvwApiWeekMonthAmount
                 WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
@@ -378,89 +367,28 @@
             ) cc ON aa.id=cc.apiId
             LEFT JOIN
             (
-                SELECT apiId,sum(cost) consumeTotleAmount
-                FROM qyfinance.bkvwApiRequestLog
-                WHERE ok=1
-                AND isMock=0
-                <if test="beginDate != null and beginDate != ''">
-                    <![CDATA[
-                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
-                    ]]>
-                </if>
-                <if test="endDate != null and endDate != ''">
-                    <![CDATA[
-                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
-                    ]]>
-                </if>
-                GROUP BY apiId
-            ) dd ON aa.id=dd.apiId
-            GROUP BY aa.vendorId,aa.vendorName
+                SELECT DATE_FORMAT(b.createTime,'%Y') years,DATE_FORMAT(b.createTime,'%m') months,sum(b.cost) currMonthCost,a.apiId
+                FROM qyfinance.bkvw_finance_ApiRequestLog a
+                INNER JOIN qyfinance.bkvw_finance_ApiResponseLog b ON a.id=b.requestLogId
+                WHERE b.ok=1
+                AND b.isMock=0
+                AND DATE_FORMAT(b.createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 0 month),'%Y-%m')
+                GROUP BY DATE_FORMAT(b.createTime,'%Y-%m'),a.apiId
+            ) currMonth ON aa.id=currMonth.apiId
+            LEFT JOIN
+            (
+                SELECT DATE_FORMAT(b.createTime,'%Y') years,DATE_FORMAT(b.createTime,'%m') months,DATE_FORMAT(b.createTime,'%d') days,sum(b.cost) currDayCost,a.apiId
+                FROM qyfinance.bkvw_finance_ApiRequestLog a
+                INNER JOIN qyfinance.bkvw_finance_ApiResponseLog b ON a.id=b.requestLogId
+                WHERE b.ok=1
+                AND b.isMock=0
+                AND DATE_FORMAT(b.createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
+                GROUP BY DATE_FORMAT(b.createTime,'%Y-%m-%d'),a.apiId
+            ) currDay ON aa.id=currDay.apiId
+            GROUP BY aa.vendorId
         ) ee
-        LEFT JOIN
-        (
-            SELECT eee.vendorId,eee.vendorName,eee.consumeTotleAmount,ifnull((fff.balance-eee.consumeTotleAmount),-eee.consumeTotleAmount) balance
-            FROM
-                (
-                    SELECT aaa.vendorId,aaa.vendorName,sum(ddd.consumeTotleAmount) consumeTotleAmount
-                    FROM qyfinance.bkvwApi aaa
-                    LEFT JOIN
-                    (
-                        SELECT sum(cost) consumeTotleAmount,apiId
-                        FROM qyfinance.bkvwApiRequestLog
-                        WHERE ok=1
-                        AND isMock=0
-                        GROUP BY apiId
-                    ) ddd ON aaa.id=ddd.apiId
-                    GROUP BY aaa.vendorId,aaa.vendorName
-                ) eee
-            LEFT JOIN qyfinance.bkvwApiVendorBalance fff ON eee.vendorId=fff.vendorId
-        ) ff ON ee.vendorId=ff.vendorId
         LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
-        LEFT JOIN
-        (
-            SELECT aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.cost,aa.mobileOperatorName,aa.status,
-            ifnull(bb.consumeTotleAmount,0) apiTypeConsumeTotleAmount,
-            ifnull(bb.usageAmount,0) apiTypeUsageAmount,
-            cc.feeUsageAmount
-            FROM qyfinance.bkvw_api_ApiTypeVendorPartner aa
-            LEFT JOIN
-            (
-                SELECT apiId,sum(cost) consumeTotleAmount,count(id) usageAmount
-                FROM qyfinance.bkvwApiRequestLog
-                WHERE ok=1
-                AND isMock=0
-                <if test="beginDate != null and beginDate != ''">
-                    <![CDATA[
-                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
-                    ]]>
-                </if>
-                <if test="endDate != null and endDate != ''">
-                    <![CDATA[
-                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
-                    ]]>
-                </if>
-                GROUP BY apiId
-            ) bb ON aa.apiId=bb.apiId
-            LEFT JOIN
-            (
-                SELECT apiId,count(id) feeUsageAmount
-                FROM qyfinance.bkvwApiRequestLog
-                WHERE ok=1
-                AND cost>0
-                AND isMock=0
-                <if test="beginDate != null and beginDate != ''">
-                    <![CDATA[
-                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
-                    ]]>
-                </if>
-                <if test="endDate != null and endDate != ''">
-                    <![CDATA[
-                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
-                    ]]>
-                </if>
-                GROUP BY apiId
-            ) cc ON aa.apiId=cc.apiId
-        ) hh ON ee.vendorId=hh.vendorId
+        LEFT JOIN qyfinance.bkvwApiVendorBalance ff ON ee.vendorId=ff.vendorId
         <where>
             <if test="statusList!=null and statusList.size()!=0">
                gg.status in
@@ -475,7 +403,59 @@
                 AND gg.partnerId=#{partnerId}
             </if>
         </where>
-        ORDER BY hh.apiTypeName ASC,hh.status DESC
+    </select>
+
+
+    <select id="queryApiVendorType" parameterType="map" resultMap="ApiFinance_ApiType_Map">
+        SELECT
+        aa.vendorId,
+        aa.apiTypeId,
+        aa.apiTypeName,
+        aa.cost,
+        aa.mobileOperatorName,
+        aa.status apiStatus,
+        ifnull(bb.consumeTotleAmount,0) apiTypeConsumeTotleAmount,
+        ifnull(bb.usageAmount,0) apiTypeUsageAmount,
+        cc.typeCurrDayUsageAmount
+        FROM qyfinance.bkvw_api_ApiTypeVendorPartner aa
+        LEFT JOIN
+        (
+            SELECT apiId,sum(totleCost) consumeTotleAmount,sum(usageAmount) usageAmount
+            FROM qyfinance.bkvwApiCostDayCount
+            <where>
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
+                     ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
+                    ]]>
+                </if>
+            </where>
+            GROUP BY apiId
+        ) bb ON aa.apiId=bb.apiId
+        LEFT JOIN
+        (
+            SELECT sum(cost) typeCurrDayCost,count(apiRequestLogId) typeCurrDayUsageAmount,apiId
+            FROM qyfinance.bkvwApiRequestLog
+            WHERE ok=1
+            AND isMock=0
+            AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
+            GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId
+        ) cc ON aa.apiId=cc.apiId
+        LEFT JOIN
+        (
+            SELECT count(apiRequestLogId) typeFeeCurrDayUsageAmount,apiId
+            FROM qyfinance.bkvwApiRequestLog
+            WHERE ok=1
+            AND cost>0
+            AND isMock=0
+            AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
+            GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId
+        ) dd ON aa.apiId=dd.apiId
+        ORDER BY aa.apiTypeName ASC,aa.status DESC
     </select>
 
     <!--以APIVendor统计消费信息-周消费总额-->
@@ -543,46 +523,28 @@
     </select>
 
     <!--以APIVendor统计消费信息-消费总额-->
-    <select id="getCountTotleApiVendor" parameterType="map" resultType="Integer">
-        SELECT sum(ee.consumeTotleAmount)
-        FROM (
-            SELECT aa.vendorId,aa.vendorName,sum(dd.consumeTotleAmount) consumeTotleAmount
-            FROM qyfinance.bkvwApi aa
-            LEFT JOIN
-            (
-                SELECT sum(cost) consumeTotleAmount,apiId
-                FROM qyfinance.bkvwApiRequestLog
-                WHERE ok=1
-                AND isMock=0
+    <select id="getCountTotleApiVendor" parameterType="map" resultType="ApiFinance_ApiType_Map">
+        SELECT aa.vendorId,sum(dd.consumeTotleAmount) consumeTotleAmount
+        FROM qyfinance.bkvwApi aa
+        LEFT JOIN
+        (
+            SELECT apiId,sum(totleCost) consumeTotleAmount
+            FROM qyfinance.bkvwApiCostDayCount
+            <where>
                 <if test="beginDate != null and beginDate != ''">
                     <![CDATA[
-                        AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+                        AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
                      ]]>
                 </if>
                 <if test="endDate != null and endDate != ''">
                     <![CDATA[
-                        AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
-                     ]]>
+                        AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
+                    ]]>
                 </if>
-                GROUP BY apiId
-            ) dd ON aa.id=dd.apiId
-            GROUP BY aa.vendorId,aa.vendorName
-        ) ee
-        LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
-        <where>
-            <if test="statusList!=null and statusList.size()!=0">
-                gg.status in
-                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
-                    #{status}
-                </foreach>
-            </if>
-            <if test="vendorId != null and vendorId != ''">
-                AND ee.vendorId=#{vendorId}
-            </if>
-            <if test="partnerId != null and partnerId != ''">
-                AND gg.partnerId=#{partnerId}
-            </if>
-        </where>
+            </where>
+            GROUP BY apiId
+        ) dd ON aa.id=dd.apiId
+        GROUP BY aa.vendorId
     </select>
 
 </mapper>
