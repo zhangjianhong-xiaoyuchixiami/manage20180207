@@ -12,11 +12,16 @@ public class ApiTypeConsume implements Serializable {
     private Integer apiTypeId;
     private String apiTypeName;
     private Integer apiStatus;
-    private Long apiTypeConsumeTotleAmount;
-    private Integer apiTypeUsageAmount;
-    private Integer feeUsageAmount;
     private Integer cost;
+    private Integer apiTypeConsumeTotleAmount;
+    private Integer apiTypeUsageAmount;
+    private Integer apiTypefeeAmount;
+    private Integer typeCurrDayCost;
+    private Integer typeCurrDayUsageAmount;
+    private Integer typeFeeCurrDayAmount;
     private List<MobileOperator> mobileOperatorList;
+
+
 
     public Integer getApiTypeId() {
         return apiTypeId;
@@ -42,11 +47,11 @@ public class ApiTypeConsume implements Serializable {
         this.apiStatus = apiStatus;
     }
 
-    public Long getApiTypeConsumeTotleAmount() {
+    public Integer getApiTypeConsumeTotleAmount() {
         return apiTypeConsumeTotleAmount;
     }
 
-    public void setApiTypeConsumeTotleAmount(Long apiTypeConsumeTotleAmount) {
+    public void setApiTypeConsumeTotleAmount(Integer apiTypeConsumeTotleAmount) {
         this.apiTypeConsumeTotleAmount = apiTypeConsumeTotleAmount;
     }
 
@@ -74,11 +79,35 @@ public class ApiTypeConsume implements Serializable {
         this.mobileOperatorList = mobileOperatorList;
     }
 
-    public Integer getFeeUsageAmount() {
-        return feeUsageAmount;
+    public Integer getApiTypefeeAmount() {
+        return apiTypefeeAmount;
     }
 
-    public void setFeeUsageAmount(Integer feeUsageAmount) {
-        this.feeUsageAmount = feeUsageAmount;
+    public void setApiTypefeeAmount(Integer apiTypefeeAmount) {
+        this.apiTypefeeAmount = apiTypefeeAmount;
+    }
+
+    public Integer getTypeCurrDayCost() {
+        return typeCurrDayCost;
+    }
+
+    public void setTypeCurrDayCost(Integer typeCurrDayCost) {
+        this.typeCurrDayCost = typeCurrDayCost;
+    }
+
+    public Integer getTypeCurrDayUsageAmount() {
+        return typeCurrDayUsageAmount;
+    }
+
+    public void setTypeCurrDayUsageAmount(Integer typeCurrDayUsageAmount) {
+        this.typeCurrDayUsageAmount = typeCurrDayUsageAmount;
+    }
+
+    public Integer getTypeFeeCurrDayAmount() {
+        return typeFeeCurrDayAmount;
+    }
+
+    public void setTypeFeeCurrDayAmount(Integer typeFeeCurrDayAmount) {
+        this.typeFeeCurrDayAmount = typeFeeCurrDayAmount;
     }
 }

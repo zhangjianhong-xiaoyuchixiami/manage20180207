@@ -68,25 +68,12 @@ public interface ApiFinanceMapper {
  public List<ApiFinance> queryApiVendor(Map<String,Object> map)throws Exception;
 
  /**
-  *查询APIVendor余额
-  * @return
-  */
- public List<ApiVendorBalance> queryAllApiVendorBalance();
-
- /**
   * 查询APIVendor各类型消费情况
   * @param map
   * @return
   */
  public List<ApiFinance> queryApiVendorType(Map<String,Object> map);
 
- /**
-  * 以APIVendor统计消费信息--消费总额
-  * @param map
-  * @return
-  * @throws Exception
-  */
- public List<ApiFinance> getCountTotleApiVendor(Map<String,Object> map) throws Exception;
 
  /**
   * 以APIVendor统计消费信息--周消费总额

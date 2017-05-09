@@ -207,25 +207,27 @@ public class ApiFinanceController {
         long weekTotleAmount = 0L;
         long monthTotleAmount = 0L;
         long consumeTotleAmount = 0L;
-        for (int j=0; j<apiFinanceList.size(); j++){
-            ApiFinance apiFinance = apiFinanceList.get(j);
-            if (apiFinance.getBalance() != null) {
-                totleBalance = totleBalance + apiFinance.getBalance();
-            }
-            if (apiFinance.getCurrMonthCost() != null) {
-                currMonthTotleCost = currMonthTotleCost + apiFinance.getCurrMonthCost();
-            }
-            if (apiFinance.getCurrDayCost() != null) {
-                currDayTotleCost = currDayTotleCost + apiFinance.getCurrDayCost();
-            }
-            if (apiFinance.getWeekTotleCost() != null) {
-                weekTotleAmount = weekTotleAmount + apiFinance.getWeekTotleCost();
-            }
-            if (apiFinance.getMonthTotleCost() != null) {
-                monthTotleAmount = monthTotleAmount + apiFinance.getMonthTotleCost();
-            }
-            if (apiFinance.getConsumeTotleAmount() != null) {
-                consumeTotleAmount = consumeTotleAmount + apiFinance.getConsumeTotleAmount();
+        if (apiFinanceList != null && apiFinanceList.size() >0) {
+            for (int j = 0; j < apiFinanceList.size(); j++) {
+                ApiFinance apiFinance = apiFinanceList.get(j);
+                if (apiFinance.getBalance() != null) {
+                    totleBalance = totleBalance + apiFinance.getBalance();
+                }
+                if (apiFinance.getCurrMonthCost() != null) {
+                    currMonthTotleCost = currMonthTotleCost + apiFinance.getCurrMonthCost();
+                }
+                if (apiFinance.getCurrDayCost() != null) {
+                    currDayTotleCost = currDayTotleCost + apiFinance.getCurrDayCost();
+                }
+                if (apiFinance.getWeekTotleCost() != null) {
+                    weekTotleAmount = weekTotleAmount + apiFinance.getWeekTotleCost();
+                }
+                if (apiFinance.getMonthTotleCost() != null) {
+                    monthTotleAmount = monthTotleAmount + apiFinance.getMonthTotleCost();
+                }
+                if (apiFinance.getConsumeTotleAmount() != null) {
+                    consumeTotleAmount = consumeTotleAmount + apiFinance.getConsumeTotleAmount();
+                }
             }
         }
         model.addAttribute("weekTotleAmount",weekTotleAmount);

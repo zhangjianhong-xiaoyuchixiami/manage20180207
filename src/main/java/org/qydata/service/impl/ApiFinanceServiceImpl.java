@@ -2,6 +2,7 @@ package org.qydata.service.impl;
 
 import org.qydata.config.annotation.DataSourceService;
 import org.qydata.dst.ApiFinance;
+import org.qydata.dst.ApiTypeConsume;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.ApiVendorBalance;
@@ -95,25 +96,40 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                 }
             }
             List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiVendor(mapValue);
-            List<ApiVendorBalance> apiVendorBalanceList = apiFinanceMapper.queryAllApiVendorBalance();
             List<ApiFinance> apiFinanceTypeList = apiFinanceMapper.queryApiVendorType(mapValue);
-            List<ApiFinance> apiFinanceConsumeList = apiFinanceMapper.getCountTotleApiVendor(map);
-            for (int i=0; i<apiFinanceList.size(); i++){
-                ApiFinance apiFinance = apiFinanceList.get(i);
-                for(int j=0; j<apiVendorBalanceList.size(); j++){
-                    ApiVendorBalance apiVendorBalance = apiVendorBalanceList.get(j);
-                    if (apiFinance.getVendorId() == apiVendorBalance.getVendorId()){
-                        apiFinance.setBalance(apiVendorBalance.getBalance());
-                    }
-                }
-                for(int r=0; r<apiFinanceTypeList.size(); r++){
-                    ApiFinance apiFinanceType = apiFinanceTypeList.get(r);
-                    if (apiFinance.getVendorId() == apiFinanceType.getVendorId()){
-                        apiFinance.setApiTypeConsumeList(apiFinanceType.getApiTypeConsumeList());
+            if (apiFinanceTypeList != null && apiFinanceTypeList.size() > 0){
+                for (int i=0; i<apiFinanceTypeList.size(); i++){
+                    ApiFinance apiFinance = apiFinanceTypeList.get(i);
+                    List<ApiTypeConsume> apiTypeConsumeList = apiFinance.getApiTypeConsumeList();
+                    if (map.get("endDate") == null || new SimpleDateFormat("yyyy/MM/dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
+                        if (apiTypeConsumeList != null && apiTypeConsumeList.size() >0) {
+                            for (int j = 0; j < apiTypeConsumeList.size(); j++) {
+                                ApiTypeConsume apiTypeConsume = apiTypeConsumeList.get(j);
+                                apiTypeConsume.setApiTypeConsumeTotleAmount(apiTypeConsume.getApiTypeConsumeTotleAmount() + apiTypeConsume.getTypeCurrDayCost());
+                                apiTypeConsume.setApiTypeUsageAmount(apiTypeConsume.getApiTypeUsageAmount() + apiTypeConsume.getTypeCurrDayUsageAmount());
+                                apiTypeConsume.setApiTypefeeAmount(apiTypeConsume.getApiTypefeeAmount() + apiTypeConsume.getTypeFeeCurrDayAmount());
+                            }
+                        }
                     }
                 }
             }
-            mapTran.put("queryApiVendor",apiFinanceList);
+            if (apiFinanceList != null && apiFinanceList.size() >0) {
+                for (int i = 0; i < apiFinanceList.size(); i++) {
+                    ApiFinance apiFinance = apiFinanceList.get(i);
+                    if (map.get("endDate") == null || new SimpleDateFormat("yyyy/MM/dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
+                        apiFinance.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount() + apiFinance.getCurrDayCost());
+                    }
+                    if (apiFinanceTypeList != null && apiFinanceTypeList.size() >0) {
+                        for (int r = 0; r < apiFinanceTypeList.size(); r++) {
+                            ApiFinance apiFinanceType = apiFinanceTypeList.get(r);
+                            if (apiFinance.getVendorId() == apiFinanceType.getVendorId()) {
+                                apiFinance.setApiTypeConsumeList(apiFinanceType.getApiTypeConsumeList());
+                            }
+                        }
+                    }
+                }
+                mapTran.put("queryApiVendor", apiFinanceList);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

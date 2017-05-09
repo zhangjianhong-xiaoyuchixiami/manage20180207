@@ -358,7 +358,7 @@
                                                     <#if apiFinance.apiTypeConsumeList??>
                                                         <#list apiFinance.apiTypeConsumeList as apiType>
                                                             <span>
-                                                            ${(apiType.feeUsageAmount)!'0'}
+                                                            ${(apiType.apiTypefeeAmount)!'0'}
                                                                         </span><br/>
                                                         </#list>
                                                     </#if>

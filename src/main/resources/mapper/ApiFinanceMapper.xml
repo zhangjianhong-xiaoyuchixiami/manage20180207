@@ -41,10 +41,13 @@
             <result column="apiTypeId" property="apiTypeId"/>
             <result column="apiTypeName" property="apiTypeName"/>
             <result column="apiStatus" property="apiStatus"/>
+            <result column="cost" property="cost"/>
             <result column="apiTypeConsumeTotleAmount" property="apiTypeConsumeTotleAmount"/>
             <result column="apiTypeUsageAmount" property="apiTypeUsageAmount"/>
-            <result column="feeUsageAmount" property="feeUsageAmount"/>
-            <result column="cost" property="cost"/>
+            <result column="apiTypefeeAmount" property="apiTypefeeAmount"/>
+            <result column="typeCurrDayCost" property="typeCurrDayCost"/>
+            <result column="typeCurrDayUsageAmount" property="typeCurrDayUsageAmount"/>
+            <result column="typeFeeCurrDayAmount" property="typeFeeCurrDayAmount"/>
             <collection property="mobileOperatorList" ofType="org.qydata.entity.MobileOperator">
                 <result column="mobileOperatorName" property="name"/>
             </collection>
@@ -142,18 +145,21 @@
         ) ee ON aa.id=ee.apiId
         LEFT JOIN
         (
-            SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(cost) currMonthCost,apiId
+            SELECT sum(cost) currMonthCost,apiId
             FROM qyfinance.bkvwApiRequestLog
-            WHERE ok=1 AND isMock=0 AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 0 month),'%Y-%m')
-            GROUP BY DATE_FORMAT(createTime,'%Y-%m'),apiId
+            WHERE ok=1
+            AND isMock=0
+            AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 0 month),'%Y-%m')
+            GROUP BY apiId
         ) currMonth ON aa.id=currMonth.apiId
         LEFT JOIN
         (
-            SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,
-            DATE_FORMAT(createTime,'%d') days,sum(cost) currDayCost,count(apiRequestLogId) currDayUsageAmount,apiId
+            SELECT sum(cost) currDayCost,count(apiRequestLogId) currDayUsageAmount,apiId
             FROM qyfinance.bkvwApiRequestLog
-            WHERE ok=1 AND isMock=0 AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
-            GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId
+            WHERE ok=1
+            AND isMock=0
+            AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
+            GROUP BY apiId
         ) currDay ON aa.id=currDay.apiId
         <where>
             <if test="statusList!=null and statusList.size()!=0">
@@ -333,14 +339,15 @@
         SELECT
         ee.vendorId,
         ee.vendorName,
-        ee.weekTotleCost,
-        ee.monthTotleCost,
-        ee.currMonthCost,
-        ee.currDayCost,
+        ifnull(ee.weekTotleCost,0) weekTotleCost,
+        ifnull(ee.monthTotleCost,0) monthTotleCost,
+        ifnull(ee.consumeTotleAmount,0) consumeTotleAmount,
+        ifnull(ee.currMonthCost,0) currMonthCost,
+        ifnull(ee.currDayCost,0) currDayCost,
         gg.partnerId,
         gg.partnerName,
         gg.status apiVendorStatus,
-        ff.balance
+        (ifnull(ff.balance,0)-(ifnull(ee.consumeTotleAmountBalance,0)+ifnull(ee.currDayCost,0))) balance
         FROM
         (
             SELECT
@@ -348,6 +355,8 @@
             aa.vendorName,
             sum(bb.weekTotleCost) weekTotleCost,
             sum(cc.monthTotleCost) monthTotleCost,
+            sum(dd.consumeTotleAmount) consumeTotleAmount,
+            sum(ee.consumeTotleAmount) consumeTotleAmountBalance,
             sum(currMonth.currMonthCost) currMonthCost,
             sum(currDay.currDayCost) currDayCost
             FROM qyfinance.bkvwApi aa
@@ -367,23 +376,45 @@
             ) cc ON aa.id=cc.apiId
             LEFT JOIN
             (
-                SELECT DATE_FORMAT(b.createTime,'%Y') years,DATE_FORMAT(b.createTime,'%m') months,sum(b.cost) currMonthCost,a.apiId
-                FROM qyfinance.bkvw_finance_ApiRequestLog a
-                INNER JOIN qyfinance.bkvw_finance_ApiResponseLog b ON a.id=b.requestLogId
-                WHERE b.ok=1
-                AND b.isMock=0
-                AND DATE_FORMAT(b.createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 0 month),'%Y-%m')
-                GROUP BY DATE_FORMAT(b.createTime,'%Y-%m'),a.apiId
+                SELECT apiId,sum(totleCost) consumeTotleAmount
+                FROM qyfinance.bkvwApiCostDayCount
+                <where>
+                    <if test="beginDate != null and beginDate != ''">
+                        <![CDATA[
+                            AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
+                        ]]>
+                    </if>
+                    <if test="endDate != null and endDate != ''">
+                        <![CDATA[
+                            AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
+                        ]]>
+                    </if>
+                </where>
+                GROUP BY apiId
+            ) dd ON aa.id=dd.apiId
+            LEFT JOIN
+            (
+                SELECT apiId,sum(totleCost) consumeTotleAmount
+                FROM qyfinance.bkvwApiCostDayCount
+                GROUP BY apiId
+            ) ee ON aa.id=ee.apiId
+            LEFT JOIN
+            (
+                SELECT sum(cost) currMonthCost,apiId
+                FROM qyfinance.bkvwApiRequestLog
+                WHERE ok=1
+                AND isMock=0
+                AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 0 month),'%Y-%m')
+                GROUP BY apiId
             ) currMonth ON aa.id=currMonth.apiId
             LEFT JOIN
             (
-                SELECT DATE_FORMAT(b.createTime,'%Y') years,DATE_FORMAT(b.createTime,'%m') months,DATE_FORMAT(b.createTime,'%d') days,sum(b.cost) currDayCost,a.apiId
-                FROM qyfinance.bkvw_finance_ApiRequestLog a
-                INNER JOIN qyfinance.bkvw_finance_ApiResponseLog b ON a.id=b.requestLogId
-                WHERE b.ok=1
-                AND b.isMock=0
-                AND DATE_FORMAT(b.createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
-                GROUP BY DATE_FORMAT(b.createTime,'%Y-%m-%d'),a.apiId
+                SELECT sum(cost) currDayCost,apiId
+                FROM qyfinance.bkvwApiRequestLog
+                WHERE TO_DAYS(createTime) = TO_DAYS(NOW())
+                AND ok=1
+                AND isMock=0
+                GROUP BY apiId
             ) currDay ON aa.id=currDay.apiId
             GROUP BY aa.vendorId
         ) ee
@@ -405,7 +436,7 @@
         </where>
     </select>
 
-
+    <!--查询APIVendor各类型消费情况-->
     <select id="queryApiVendorType" parameterType="map" resultMap="ApiFinance_ApiType_Map">
         SELECT
         aa.vendorId,
@@ -416,11 +447,14 @@
         aa.status apiStatus,
         ifnull(bb.consumeTotleAmount,0) apiTypeConsumeTotleAmount,
         ifnull(bb.usageAmount,0) apiTypeUsageAmount,
-        cc.typeCurrDayUsageAmount
+        ifnull(bb.feeAmount,0) apiTypefeeAmount,
+        ifnull(cc.typeCurrDayCost,0) typeCurrDayCost,
+        ifnull(cc.typeCurrDayUsageAmount,0) typeCurrDayUsageAmount,
+        ifnull(dd.typeFeeCurrDayAmount,0) typeFeeCurrDayAmount
         FROM qyfinance.bkvw_api_ApiTypeVendorPartner aa
         LEFT JOIN
         (
-            SELECT apiId,sum(totleCost) consumeTotleAmount,sum(usageAmount) usageAmount
+            SELECT apiId,sum(totleCost) consumeTotleAmount,sum(usageAmount) usageAmount,sum(feeAmount) feeAmount
             FROM qyfinance.bkvwApiCostDayCount
             <where>
                 <if test="beginDate != null and beginDate != ''">
@@ -440,23 +474,24 @@
         (
             SELECT sum(cost) typeCurrDayCost,count(apiRequestLogId) typeCurrDayUsageAmount,apiId
             FROM qyfinance.bkvwApiRequestLog
-            WHERE ok=1
+            WHERE TO_DAYS(createTime) = TO_DAYS(NOW())
+            AND ok=1
             AND isMock=0
-            AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
-            GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId
+            GROUP BY apiId
         ) cc ON aa.apiId=cc.apiId
         LEFT JOIN
         (
-            SELECT count(apiRequestLogId) typeFeeCurrDayUsageAmount,apiId
+            SELECT count(apiRequestLogId) typeFeeCurrDayAmount,apiId
             FROM qyfinance.bkvwApiRequestLog
-            WHERE ok=1
+            WHERE TO_DAYS(createTime) = TO_DAYS(NOW())
+            AND ok=1
             AND cost>0
             AND isMock=0
-            AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
-            GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),apiId
+            GROUP BY apiId
         ) dd ON aa.apiId=dd.apiId
         ORDER BY aa.apiTypeName ASC,aa.status DESC
     </select>
+
 
     <!--以APIVendor统计消费信息-周消费总额-->
     <select id="getCountWeekApiVendor" parameterType="map" resultType="Integer">
@@ -520,31 +555,6 @@
                 AND gg.partnerId=#{partnerId}
             </if>
         </where>
-    </select>
-
-    <!--以APIVendor统计消费信息-消费总额-->
-    <select id="getCountTotleApiVendor" parameterType="map" resultType="ApiFinance_ApiType_Map">
-        SELECT aa.vendorId,sum(dd.consumeTotleAmount) consumeTotleAmount
-        FROM qyfinance.bkvwApi aa
-        LEFT JOIN
-        (
-            SELECT apiId,sum(totleCost) consumeTotleAmount
-            FROM qyfinance.bkvwApiCostDayCount
-            <where>
-                <if test="beginDate != null and beginDate != ''">
-                    <![CDATA[
-                        AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
-                     ]]>
-                </if>
-                <if test="endDate != null and endDate != ''">
-                    <![CDATA[
-                        AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
-                    ]]>
-                </if>
-            </where>
-            GROUP BY apiId
-        ) dd ON aa.id=dd.apiId
-        GROUP BY aa.vendorId
     </select>
 
 </mapper>
