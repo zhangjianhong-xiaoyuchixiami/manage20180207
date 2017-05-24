@@ -3,6 +3,7 @@ package org.qydata.service.impl;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.config.annotation.DataSourceService;
 import org.qydata.dst.CustomerApiType;
+import org.qydata.dst.CustomerApiTypeConsume;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
@@ -85,6 +86,16 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapTran.put("currDayTotleConsumeAmount",currDayTotleConsumeAmount);
         mapTran.put("customerFinanceList",customerFinanceList);
         return mapTran;
+    }
+
+    @Override
+    public List<CustomerApiTypeConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
+        return customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
+    }
+
+    @Override
+    public String queryCustomerCompanyNameById(Integer id) {
+        return customerFinanceMapper.queryCustomerCompanyNameById(id);
     }
 
     @Override

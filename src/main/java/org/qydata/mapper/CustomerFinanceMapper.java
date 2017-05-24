@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.dst.CustomerApiTypeConsume;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.ApiType;
@@ -22,6 +23,20 @@ public interface CustomerFinanceMapper {
      * @throws Exception
      */
     public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String,Object> map)throws Exception;
+
+    /**
+     * 查询客户当天各产品类型的消费情况
+     * @param map
+     * @return
+     */
+    public List<CustomerApiTypeConsume> queryCustomerCurrDayApiTypeConsume(Map<String,Object> map);
+
+    /**
+     * 根据customerId查询公司名称
+     * @param id
+     * @return
+     */
+    public String queryCustomerCompanyNameById(Integer id);
 
     /**
      * 查询客户的充值记录

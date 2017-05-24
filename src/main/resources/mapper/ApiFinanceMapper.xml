@@ -492,7 +492,6 @@
         ORDER BY aa.apiTypeName ASC,aa.status DESC
     </select>
 
-
     <!--以APIVendor统计消费信息-周消费总额-->
     <select id="getCountWeekApiVendor" parameterType="map" resultType="Integer">
         SELECT sum(ee.weekTotleCost)

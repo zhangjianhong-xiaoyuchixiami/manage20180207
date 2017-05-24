@@ -102,6 +102,21 @@
         </association>
     </resultMap>
 
+    <resultMap id="CustomerCurrDayApiTypeConsume_Map" type="org.qydata.dst.CustomerApiTypeConsume" >
+        <result column="customerId" property="customerId"/>
+        <result column="companyId" property="companyId"/>
+        <result column="companyName" property="companyName"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="stid" property="stid"/>
+        <result column="sumAmount" property="sumAmount"/>
+        <result column="countTotle" property="countTotle"/>
+        <result column="countSuccess" property="countSuccess"/>
+        <result column="price" property="price"/>
+        <result column="apiTypeName" property="apiTypeName"/>
+        <result column="subTypeName" property="subTypeName"/>
+    </resultMap>
+
+
 
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
@@ -245,6 +260,33 @@
             GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),customerId
         ) currDay ON aa.id=currDay.customerId
         ORDER BY aa.apiTypeName ASC,aa.enabled DESC
+    </select>
+
+    <!--查询客户当天各产品类型的消费情况-->
+    <select id="queryCustomerCurrDayApiTypeConsume" parameterType="map" resultMap="CustomerCurrDayApiTypeConsume_Map">
+        SELECT aa.customerId,aa.companyId,aa.companyName,aa.apiTypeId,aa.stid,ifnull(aa.sumAmount,0) sumAmount,aa.countTotle,aa.countSuccess,
+        bb.price,cc.name apiTypeName,dd.name subTypeName
+        FROM
+        (
+            SELECT a.customerId,a.apiTypeId,ifnull(a.stid,0) stid,sum(b.amount) sumAmount,count(a.id) countTotle,count(b.id) countSuccess,c.companyId,c.companyName
+            FROM qyfinance.bkvw_customer_CustomerRequestLog a
+            LEFT JOIN qyfinance.bkvwCustomerBalanceLog b ON a.id=b.reqId
+            LEFT JOIN qyfinance.bkvwCustomer c ON a.customerId=c.id
+            WHERE TO_DAYS(a.createTime) = TO_DAYS(NOW())
+            AND a.customerId=#{customerId}
+            GROUP BY a.apiTypeId,a.stid
+        ) aa
+        LEFT JOIN qyfinance.bkvw_api_CompanyApi bb ON aa.companyId=bb.companyId AND aa.apiTypeId=bb.apiTypeId AND aa.stid=bb.subTypeId
+        LEFT JOIN qyfinance.bkvwApiType cc ON aa.apiTypeId=cc.id
+        LEFT JOIN qyfinance.bkvwMobileOperator dd ON aa.stid=dd.id
+        ORDER BY aa.countSuccess
+    </select>
+
+    <!--根据customerId查询公司名称-->
+    <select id="queryCustomerCompanyNameById" parameterType="int" resultType="String">
+        SELECT companyName
+        FROM qyfinance.bkvwCustomer
+        WHERE id=#{param}
     </select>
 
     <!--查询客户的充值记录-->

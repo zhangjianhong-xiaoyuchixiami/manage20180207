@@ -5,6 +5,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.SecurityUtils;
+import org.qydata.dst.CustomerApiTypeConsume;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.User;
@@ -118,7 +119,7 @@ public class FinanceController {
      * @param content
      * @return
      */
-    @RequestMapping(value = ("/find-all-customer-by-dept-id"))
+    @RequestMapping(value = "/find-all-customer-by-dept-id")
     public ModelAndView queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,String [] status, Model model)throws Exception{
         User user = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
         List deptList = new ArrayList();
@@ -199,6 +200,18 @@ public class FinanceController {
         return new ModelAndView("/finance/customerFinancialAccount");
     }
 
+    @RequestMapping(value = "/find-all-customer/curr-day-api-type-consume")
+    @ResponseBody
+    public String queryCustomerCurrDayApiTypeConsume(Integer customerId){
+        Map<String,Object> map = new HashMap<>();
+        map.put("customerId",customerId);
+        List<CustomerApiTypeConsume> customerApiTypeConsumeList = customerFinanceService.queryCustomerCurrDayApiTypeConsume(map);
+        String companyName = customerFinanceService.queryCustomerCompanyNameById(customerId);
+        Map<String,Object> mapJson = new HashMap<>();
+        mapJson.put("customerApiTypeConsumeList",customerApiTypeConsumeList);
+        mapJson.put("companyName",companyName);
+        return new Gson().toJson(mapJson);
+    }
 
     /**
      * 指定账号充值记录

@@ -104,7 +104,7 @@
 
                                                     <th>公司名称</th>
                                                     <th>信用额度</th>
-                                                    <th>剩余信用额度</th>
+                                                    <th>可用额度</th>
                                                     <@shiro.hasPermission name="customer:findAllCustomer">
                                                         <th>合作公司</th>
                                                     </@shiro.hasPermission>
@@ -131,7 +131,7 @@
 
                                                                 <td data-title="公司名称">${company.companyName!''}</td>
                                                                 <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
-                                                                <td data-title="剩余信用额度">${(company.surplusFloor/100.0)?c}</td>
+                                                                <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="合作公司">
                                                                         <#if company.partnerId??>
@@ -246,7 +246,7 @@
                                                 <tr>
                                                     <th>公司名称</th>
                                                     <th>信用额度</th>
-                                                    <th>剩余信用额度</th>
+                                                    <th>可用额度</th>
                                                     <@shiro.hasPermission name="customer:findAllCustomer">
                                                         <th>合作公司</th>
                                                     </@shiro.hasPermission>
@@ -272,7 +272,7 @@
                                                             <tr>
                                                                 <td data-title="公司名称" class="font-text-decoration">${company.companyName!''}</td>
                                                                 <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
-                                                                <td data-title="剩余信用额度">${(company.surplusFloor/100.0)?c}</td>
+                                                                <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="合作公司">
                                                                         <#if company.partnerId??>
