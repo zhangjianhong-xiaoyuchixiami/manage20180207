@@ -200,15 +200,34 @@ public class FinanceController {
         return new ModelAndView("/finance/customerFinancialAccount");
     }
 
+    /**
+     * 加载客户当天各产品类型的消费数据
+     * @param customerId
+     * @return
+     * @throws InterruptedException
+     */
     @RequestMapping(value = "/find-all-customer/curr-day-api-type-consume")
     @ResponseBody
-    public String queryCustomerCurrDayApiTypeConsume(Integer customerId){
+    public String queryCustomerCurrDayApiTypeConsume(Integer customerId) throws InterruptedException {
         Map<String,Object> map = new HashMap<>();
         map.put("customerId",customerId);
         List<CustomerApiTypeConsume> customerApiTypeConsumeList = customerFinanceService.queryCustomerCurrDayApiTypeConsume(map);
-        String companyName = customerFinanceService.queryCustomerCompanyNameById(customerId);
         Map<String,Object> mapJson = new HashMap<>();
         mapJson.put("customerApiTypeConsumeList",customerApiTypeConsumeList);
+        return new Gson().toJson(mapJson);
+    }
+
+    /**
+     * 客户当天各产品类型的消费数据弹框的标题显示
+     * @param customerId
+     * @return
+     * @throws InterruptedException
+     */
+    @RequestMapping(value = "/find-all-customer/company-name")
+    @ResponseBody
+    public String queryCustomerCompanyName(Integer customerId) throws InterruptedException {
+        String companyName = customerFinanceService.queryCustomerCompanyNameById(customerId);
+        Map<String,Object> mapJson = new HashMap<>();
         mapJson.put("companyName",companyName);
         return new Gson().toJson(mapJson);
     }

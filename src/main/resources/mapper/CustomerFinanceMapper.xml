@@ -116,8 +116,6 @@
         <result column="subTypeName" property="subTypeName"/>
     </resultMap>
 
-
-
     <!--查询客户的财务总览-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_CompanyApi_Map">
         SELECT aa.id,aa.balance,aa.companyId,aa.companyName,aa.partnerId,aa.partnerName,
@@ -245,19 +243,19 @@
         ) gg ON aa.id=gg.customerId
         LEFT JOIN
         (
-            SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,sum(amount) currMonthAmount,customerId
+            SELECT sum(amount) currMonthAmount,customerId
             FROM qyfinance.bkvwCustomerBalanceLog
             WHERE reasonId in (-1,-2,-3)
             AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 0 month),'%Y-%m')
-            GROUP BY DATE_FORMAT(createTime,'%Y-%m'),customerId
+            GROUP BY customerId
         ) currMonth ON aa.id=currMonth.customerId
         LEFT JOIN
         (
-            SELECT DATE_FORMAT(createTime,'%Y') years,DATE_FORMAT(createTime,'%m') months,DATE_FORMAT(createTime,'%d') days,sum(amount) currDayAmount,customerId
+            SELECT sum(amount) currDayAmount,customerId
             FROM qyfinance.bkvwCustomerBalanceLog
             WHERE reasonId in (-1,-2,-3)
-            AND DATE_FORMAT(createTime,'%Y-%m-%d')=DATE_FORMAT(date_sub(sysdate(),interval 0 day),'%Y-%m-%d')
-            GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),customerId
+            AND WHERE TO_DAYS(createTime) = TO_DAYS(NOW())
+            GROUP BY customerId
         ) currDay ON aa.id=currDay.customerId
         ORDER BY aa.apiTypeName ASC,aa.enabled DESC
     </select>

@@ -311,6 +311,8 @@ public class ShiroConfig {
 		chains.put("/finance/find-all-customer/find-week-record-by-customer-id", "authc,perms");
 		chains.put("/finance/find-all-customer/find-month-record-by-customer-id", "authc,perms");
 		chains.put("/finance/find-all-customer/curr-day-api-type-consume", "authc");
+		chains.put("/finance/find-all-customer/company-name", "authc");
+
 		//级联
 		chains.put("/finance/find-api-vendor-by-api-type-id", "authc");
 		chains.put("/finance/find-company-customer-week-uplink-months-by-customer-id", "authc");

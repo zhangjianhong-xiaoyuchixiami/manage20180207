@@ -4,12 +4,34 @@ function currDayApiTypeConsume(customerId) {
 
     $("#simple_customer_curr_day_api_type_consume tbody").empty();
 
+    /*加载公司名称*/
+    $.ajax({
+        type: "post",
+        url: "/finance/find-all-customer/company-name",
+        data:{"customerId":customerId},
+        dataType: "json",
+        success:function (result) {
+            if (result != null && result.companyName != null){
+                $('#customer_company_name').html(result.companyName)
+            }
+        }
+    });
+
+    /*加载消费数据*/
     $.ajax({
         type: "post",
         url: "/finance/find-all-customer/curr-day-api-type-consume",
         data:{"customerId":customerId},
         dataType: "json",
+        beforeSend:function () {
+                var myContent = "<tr>" +
+                    "<td rowspan='5'>" + '正在加载，请稍后...' + "</td>" +
+                    "</tr>";
+                $("#simple_customer_curr_day_api_type_consume tbody").append(myContent);
+        },
         success:function (result) {
+
+            $("#simple_customer_curr_day_api_type_consume tbody").empty();
 
             if (result != null && result.customerApiTypeConsumeList != null){
                 var data = result.customerApiTypeConsumeList;
@@ -63,49 +85,7 @@ function currDayApiTypeConsume(customerId) {
                 }
             }
 
-            if (result != null && result.companyName != null){
-                $('#customer_company_name').html(result.companyName)
-            }
-
-            /*$('#simple_customer_curr_day_api_type_consume').dataTable().fnClearTable();
-
-            $('#simple_customer_curr_day_api_type_consume').dataTable().fnDestroy();
-
-            var oTable = $('#simple_customer_curr_day_api_type_consume').dataTable({
-                "aoColumns": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                "aaSorting": [[4, 'desc']],
-                "bFilter" : false,
-                "bPaginate" : false,
-                "bLengthChange" : false,
-                "sDom": "rt<'row-fluid'<'span6'il><'span6'p>>",
-                "sPaginationType": "bootstrap",
-                "oLanguage" : {  //设置语言
-                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
-                    "sZeroRecords" : "对不起，没有匹配的数据",
-                    "sInfo" : "第 _START_ - _END_ 条 / 共 _TOTAL_ 条数据",
-                    "sInfoEmpty" : "没有匹配的数据",
-                    "sInfoFiltered" : "(数据表中共 _MAX_ 条记录)",
-                    "sProcessing" : "正在加载中...",
-                    "sSearch" : "全文搜索：",
-                    "oPaginate" : {
-                        "sFirst" : "第一页",
-                        "sPrevious" : " 上一页 ",
-                        "sNext" : " 下一页 ",
-                        "sLast" : " 最后一页 "
-                    }
-                }
-            });
-
-            var width =  $('#form_modal_customer_curr_day_api_type_consume').width();
-
-            $('#simple_customer_curr_day_api_type_consume').width(width-35);
-*/
         }
-    })
+    });
+
 }
