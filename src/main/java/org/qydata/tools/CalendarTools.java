@@ -224,6 +224,17 @@ public class CalendarTools {
     }
 
     /**
+     * 根据系统时间获取某一月的月份
+     * @return
+     */
+    public static Integer getWeekMonthCount(int count){
+        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
+        c.add(Calendar.MONTH,-(count));
+        Integer month = c.get(Calendar.MONTH)+2;
+        return month;
+    }
+
+    /**
      * @param date1 需要比较的时间 不能为空(null),需要正确的日期格式
      * @param date2 被比较的时间  为空(null)则为当前时间
      * @param stype 返回值类型   0为多少天，1为多少个月，2为多少年

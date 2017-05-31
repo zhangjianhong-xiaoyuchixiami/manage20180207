@@ -270,8 +270,8 @@
                                         <th style="text-align: center;">公司名称</th>
                                         <th>收入总额（单位：元）</th>
                                         <th>支出总额（单位：元）</th>
-                                        <th>${year!''}年${month!''}月第${week!''}周收入（单位：元）</th>
-                                        <th>${year!''}年${month!''}月第${week!''}周支出（单位：元）</th>
+                                        <th>${year!''}年第${week!''}周收入（单位：元）</th>
+                                        <th>${year!''}年第${week!''}周支出（单位：元）</th>
                                         <th>${year!''}年${month!''}月收入（单位：元）</th>
                                         <th>${year!''}年${month!''}月支出（单位：元）</th>
                                         <th style="text-align: center; width: 15%">操作</th>

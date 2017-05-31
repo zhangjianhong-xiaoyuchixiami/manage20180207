@@ -10,6 +10,9 @@ public class CompanyApiCount implements Serializable {
     private Integer sumAmount;
     private Integer countTotle;
     private Integer countSuccess;
+    private Integer currDaySumAmount;
+    private Integer currDayCountTotle;
+    private Integer currDayCountSuccess;
 
     public Integer getSumAmount() {
         return sumAmount;
@@ -35,4 +38,27 @@ public class CompanyApiCount implements Serializable {
         this.countSuccess = countSuccess;
     }
 
+    public Integer getCurrDaySumAmount() {
+        return currDaySumAmount;
+    }
+
+    public void setCurrDaySumAmount(Integer currDaySumAmount) {
+        this.currDaySumAmount = currDaySumAmount;
+    }
+
+    public Integer getCurrDayCountTotle() {
+        return currDayCountTotle;
+    }
+
+    public void setCurrDayCountTotle(Integer currDayCountTotle) {
+        this.currDayCountTotle = currDayCountTotle;
+    }
+
+    public Integer getCurrDayCountSuccess() {
+        return currDayCountSuccess;
+    }
+
+    public void setCurrDayCountSuccess(Integer currDayCountSuccess) {
+        this.currDayCountSuccess = currDayCountSuccess;
+    }
 }

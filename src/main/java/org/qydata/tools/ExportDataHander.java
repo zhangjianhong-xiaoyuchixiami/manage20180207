@@ -16,6 +16,18 @@ public class ExportDataHander {
      * @param data
      * @return
      */
+    public static Double pointsIntoRMB(Integer data){
+        if (data == null){
+            return 0.0;
+        }
+        return (data/100.0);
+    }
+
+    /**
+     * 处理导出Excel操作的分和元装换
+     * @param data
+     * @return
+     */
     public static Double pointsIntoRMB(Long data){
         if (data == null){
             return 0.0;

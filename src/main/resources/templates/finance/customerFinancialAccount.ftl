@@ -375,8 +375,8 @@
                                         <th>余额（单位：元）</th>
                                         <th>充值总额（单位：元）</th>
                                         <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
-                                        <th>${year!''}年${month!''}月第${week!''}周充值（单位：元）</th>
-                                        <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                        <th>${year!''}年第${week!''}周充值（单位：元）</th>
+                                        <th>${year!''}年第${week!''}周消费（单位：元）</th>
                                         <th>${year!''}年${month!''}月充值（单位：元）</th>
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>

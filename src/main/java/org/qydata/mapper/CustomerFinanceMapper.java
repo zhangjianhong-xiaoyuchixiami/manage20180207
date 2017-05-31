@@ -3,6 +3,7 @@ package org.qydata.mapper;
 import org.qydata.dst.CustomerApiTypeConsume;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
+import org.qydata.dst.CustomerWeekMonthConsume;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.CustomerBalanceLog;
@@ -37,6 +38,20 @@ public interface CustomerFinanceMapper {
      * @return
      */
     public String queryCustomerCompanyNameById(Integer id);
+
+    /**
+     * 查询客户各产品的消费情况
+     * @param map
+     * @return
+     */
+    public List<CustomerFinance> queryCustomerApiTypeConsume(Map<String,Object> map);
+
+    /**
+     * 查询客户周月消费总额
+     * @param map
+     * @return
+     */
+    public List<CustomerWeekMonthConsume> queryCustomerWeekMonthConsume(Map<String,Object> map);
 
     /**
      * 查询客户的充值记录

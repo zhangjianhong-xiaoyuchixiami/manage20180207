@@ -116,6 +116,7 @@ public class FinanceController {
         model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
         model.addAttribute("year",CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
+        model.addAttribute("week_month",CalendarTools.getWeekMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));
         return new ModelAndView("/finance/customerFinancialAccount");
     }
@@ -207,6 +208,7 @@ public class FinanceController {
             model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
             model.addAttribute("year",CalendarTools.getYearMonthCount(1));
             model.addAttribute("month",CalendarTools.getMonthCount(1));
+            model.addAttribute("week_month",CalendarTools.getWeekMonthCount(1));
             model.addAttribute("week",CalendarTools.getYearWeekCount(1));
             return new ModelAndView("/finance/customerFinancialAccount");
         }
