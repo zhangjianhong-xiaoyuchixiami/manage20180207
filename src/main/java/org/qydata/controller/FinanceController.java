@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
@@ -43,6 +44,8 @@ public class FinanceController {
      */
     @RequestMapping(value = "/find-all-customer")
     public ModelAndView queryAllCustomer(String export, String content, Integer partnerId, String beginDate, String endDate,String [] status, Model model)throws Exception{
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String,Object> map = new HashMap<>();
         if(content != null){
             map.put("content",content);
@@ -51,11 +54,13 @@ public class FinanceController {
             map.put("partnerId",partnerId);
         }
         if(beginDate != null && beginDate != ""){
-            map.put("beginDate", beginDate+" "+"00:00:00");
+            System.out.println(sdfInput.parse(beginDate));
+            map.put("beginDate", sdf.format(sdfInput.parse(beginDate))+" "+"00:00:00");
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate+" "+"23:59:59");
+            System.out.println(sdfInput.parse(endDate));
+            map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
             model.addAttribute("endDate",endDate);
         }
         List<String> statusList = new ArrayList();
@@ -68,6 +73,8 @@ public class FinanceController {
             statusList.add("-1");
         }
         map.put("statusList", statusList);
+        map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+        map.put("currMonthTime",CalendarTools.getCurrentDateFirstDay() + " " + "00:00:00");
         Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
         Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -121,6 +128,8 @@ public class FinanceController {
      */
     @RequestMapping(value = "/find-all-customer-by-dept-id")
     public ModelAndView queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,String [] status, Model model)throws Exception{
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         User user = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
         List deptList = new ArrayList();
         Map<String, Object> map = new HashMap<>();
@@ -136,11 +145,13 @@ public class FinanceController {
                 map.put("partnerId", partnerId);
             }
             if(beginDate != null && beginDate != ""){
-                map.put("beginDate", beginDate+" "+"00:00:00");
+                System.out.println(sdfInput.parse(beginDate));
+                map.put("beginDate", sdf.format(sdfInput.parse(beginDate))+" "+"00:00:00");
                 model.addAttribute("beginDate",beginDate);
             }
             if(endDate != null && endDate != ""){
-                map.put("endDate", endDate+" "+"23:59:59");
+                System.out.println(sdfInput.parse(endDate));
+                map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
                 model.addAttribute("endDate",endDate);
             }
             List<String> statusList = new ArrayList();
@@ -153,6 +164,8 @@ public class FinanceController {
                 statusList.add("-1");
             }
             map.put("statusList", statusList);
+            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+            map.put("currMonthTime",CalendarTools.getCurrentDateFirstDay() + " " + "00:00:00");
             Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
             Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -209,8 +222,10 @@ public class FinanceController {
     @RequestMapping(value = "/find-all-customer/curr-day-api-type-consume")
     @ResponseBody
     public String queryCustomerCurrDayApiTypeConsume(Integer customerId) throws InterruptedException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
         Map<String,Object> map = new HashMap<>();
         map.put("customerId",customerId);
+        map.put("consuTime",sdf.format(new Date()));
         List<CustomerApiTypeConsume> customerApiTypeConsumeList = customerFinanceService.queryCustomerCurrDayApiTypeConsume(map);
         Map<String,Object> mapJson = new HashMap<>();
         mapJson.put("customerApiTypeConsumeList",customerApiTypeConsumeList);

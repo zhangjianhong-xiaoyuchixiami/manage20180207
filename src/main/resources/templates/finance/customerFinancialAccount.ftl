@@ -582,8 +582,6 @@
                 CustomerLeftBar.init();
             });
 
-
-
         </script>
 
     </#if>

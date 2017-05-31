@@ -273,4 +273,17 @@ public class CalendarTools {
         return simple.format(date);
 
     }
+
+    /**
+     * 取得当前时间的第一天
+     * @return
+     */
+    public static String getCurrentDateFirstDay(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH,1);
+        String firstDay = sdf.format(calendar.getTime());
+        return firstDay;
+    }
+
 }
