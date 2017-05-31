@@ -286,6 +286,52 @@
         ORDER BY aa.countSuccess
     </select>
 
+    <select id="queryCustomerApiTypeConsume" parameterType="map">
+        SELECT
+        aa.customerId,aa.apiTypeId,aa.stid,aa.sumAmount,aa.countTotle,aa.countSuccess,
+        bb.sumAmount currDaySumAmount,
+        bb.countTotle currDayCountTotle,
+        bb.countSuccess currDayCountSuccess
+        FROM
+        (
+            SELECT
+            customerId,
+            apiTypeId,
+            ifnull(stid,0) stid,
+            sum(sumAmount) sumAmount,
+            sum(countTotle) countTotle,
+            sum(countSuccess) countSuccess
+            FROM qyfinance.bkvwCompanyApiTypeConsumeDayCount
+            <where>
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND consuTime >= #{beginDate}
+                    ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND consuTime <= #{endDate}
+                    ]]>
+                </if>
+            </where>
+            GROUP BY customerId,apiTypeId,stid
+        ) aa
+        LEFT JOIN
+        (
+            SELECT
+            a.customerId,
+            a.apiTypeId,
+            ifnull(a.stid,0) stid,
+            sum(b.amount) sumAmount,
+            count(a.id) countTotle,
+            count(b.id) countSuccess
+            FROM qyfinance.finance_CustomerRequestLog a
+            LEFT JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+            WHERE a.createTime >= #{consuTime}
+            GROUP BY a.customerId,a.apiTypeId,a.stid
+        ) bb ON aa.customerId = bb.customerId AND aa.apiTypeId = bb.apiTypeId AND aa.stid = bb.stid
+    </select>
+
     <!--根据customerId查询公司名称-->
     <select id="queryCustomerCompanyNameById" parameterType="int" resultType="String">
         SELECT companyName
