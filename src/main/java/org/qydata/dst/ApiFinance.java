@@ -18,14 +18,17 @@ public class ApiFinance implements Serializable {
     private String vendorName;
     private String apiName;
     private Integer status;
-    private Long balance;
-    private Long weekTotleCost;
-    private Long monthTotleCost;
-    private Long consumeTotleAmount;
-    private Long currMonthCost;
-    private Long currDayCost;
-    private Long usageAmount;
-    private Long feeUsageAmount;
+    private Integer balance;
+    private Integer weekTotleCost;
+    private Integer monthTotleCost;
+    private Integer consumeTotleAmount;
+    private Integer usageAmount;
+    private Integer feeUsageAmount;
+    private Integer currMonthCost;
+    private Integer currDayCost;
+    private Integer currMonthUsageAmount;
+    private Integer currDayUsageAmount;
+    private Integer currDayFeeAmount;
     private Integer partnerId;
     private String partnerName;
     private List<MobileOperator> mobileOperatorList;
@@ -80,44 +83,100 @@ public class ApiFinance implements Serializable {
         this.apiName = apiName;
     }
 
-    public Long getBalance() {
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 
-    public Long getWeekTotleCost() {
+    public Integer getWeekTotleCost() {
         return weekTotleCost;
     }
 
-    public void setWeekTotleCost(Long weekTotleCost) {
+    public void setWeekTotleCost(Integer weekTotleCost) {
         this.weekTotleCost = weekTotleCost;
     }
 
-    public Long getMonthTotleCost() {
+    public Integer getMonthTotleCost() {
         return monthTotleCost;
     }
 
-    public void setMonthTotleCost(Long monthTotleCost) {
+    public void setMonthTotleCost(Integer monthTotleCost) {
         this.monthTotleCost = monthTotleCost;
     }
 
-    public Long getConsumeTotleAmount() {
+    public Integer getConsumeTotleAmount() {
         return consumeTotleAmount;
     }
 
-    public void setConsumeTotleAmount(Long consumeTotleAmount) {
+    public void setConsumeTotleAmount(Integer consumeTotleAmount) {
         this.consumeTotleAmount = consumeTotleAmount;
     }
 
-    public List<MobileOperator> getMobileOperatorList() {
-        return mobileOperatorList;
+    public Integer getUsageAmount() {
+        return usageAmount;
     }
 
-    public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
-        this.mobileOperatorList = mobileOperatorList;
+    public void setUsageAmount(Integer usageAmount) {
+        this.usageAmount = usageAmount;
+    }
+
+    public Integer getFeeUsageAmount() {
+        return feeUsageAmount;
+    }
+
+    public void setFeeUsageAmount(Integer feeUsageAmount) {
+        this.feeUsageAmount = feeUsageAmount;
+    }
+
+    public Integer getCurrMonthCost() {
+        return currMonthCost;
+    }
+
+    public void setCurrMonthCost(Integer currMonthCost) {
+        this.currMonthCost = currMonthCost;
+    }
+
+    public Integer getCurrDayCost() {
+        return currDayCost;
+    }
+
+    public void setCurrDayCost(Integer currDayCost) {
+        this.currDayCost = currDayCost;
+    }
+
+    public Integer getCurrMonthUsageAmount() {
+        return currMonthUsageAmount;
+    }
+
+    public void setCurrMonthUsageAmount(Integer currMonthUsageAmount) {
+        this.currMonthUsageAmount = currMonthUsageAmount;
+    }
+
+    public Integer getCurrDayUsageAmount() {
+        return currDayUsageAmount;
+    }
+
+    public void setCurrDayUsageAmount(Integer currDayUsageAmount) {
+        this.currDayUsageAmount = currDayUsageAmount;
+    }
+
+    public Integer getCurrDayFeeAmount() {
+        return currDayFeeAmount;
+    }
+
+    public void setCurrDayFeeAmount(Integer currDayFeeAmount) {
+        this.currDayFeeAmount = currDayFeeAmount;
     }
 
     public Integer getPartnerId() {
@@ -136,6 +195,14 @@ public class ApiFinance implements Serializable {
         this.partnerName = partnerName;
     }
 
+    public List<MobileOperator> getMobileOperatorList() {
+        return mobileOperatorList;
+    }
+
+    public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
+        this.mobileOperatorList = mobileOperatorList;
+    }
+
     public List<ApiType> getApiTypeList() {
         return apiTypeList;
     }
@@ -144,51 +211,11 @@ public class ApiFinance implements Serializable {
         this.apiTypeList = apiTypeList;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Long getCurrMonthCost() {
-        return currMonthCost;
-    }
-
-    public void setCurrMonthCost(Long currMonthCost) {
-        this.currMonthCost = currMonthCost;
-    }
-
-    public Long getCurrDayCost() {
-        return currDayCost;
-    }
-
-    public void setCurrDayCost(Long currDayCost) {
-        this.currDayCost = currDayCost;
-    }
-
     public List<ApiTypeConsume> getApiTypeConsumeList() {
         return apiTypeConsumeList;
     }
 
     public void setApiTypeConsumeList(List<ApiTypeConsume> apiTypeConsumeList) {
         this.apiTypeConsumeList = apiTypeConsumeList;
-    }
-
-    public Long getUsageAmount() {
-        return usageAmount;
-    }
-
-    public void setUsageAmount(Long usageAmount) {
-        this.usageAmount = usageAmount;
-    }
-
-    public Long getFeeUsageAmount() {
-        return feeUsageAmount;
-    }
-
-    public void setFeeUsageAmount(Long feeUsageAmount) {
-        this.feeUsageAmount = feeUsageAmount;
     }
 }

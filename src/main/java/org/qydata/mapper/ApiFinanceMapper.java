@@ -15,9 +15,8 @@ public interface ApiFinanceMapper {
   *Api财务总览
   * @param map
   * @return
-  * @throws Exception
   */
- public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map)throws Exception;
+ public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map);
 
  /**
   * Api财务总览-周消费总额

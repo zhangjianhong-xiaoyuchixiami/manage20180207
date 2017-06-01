@@ -26,33 +26,77 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @Override
     @DataSourceService
     public Map<String,Object> queryApiOverAllFinance(Map<String, Object> map){
-        Map<String,Object> mapValue = new HashMap<>();
+        Map<String,Object> mapParam = new HashMap<>();
         Map<String,Object> mapTran = new HashMap<>();
-        try {
-            Set<Map.Entry<String,Object>> set = map.entrySet();
-            Iterator<Map.Entry<String,Object>> it = set.iterator();
-            while (it.hasNext()){
-                Map.Entry<String,Object> me = it.next();
-                if (me.getKey().equals("vendorId")){
-                    mapValue.put("vendorId",me.getValue());
-                }
-                if (me.getKey().equals("apiTypeId")){
-                    mapValue.put("apiTypeId",me.getValue());
-                }
-                if (me.getKey().equals("beginDate")){
-                    mapValue.put("beginDate",me.getValue());
-                }
-                if (me.getKey().equals("endDate")){
-                    mapValue.put("endDate",me.getValue());
-                }
-                if (me.getKey().equals("statusList")){
-                    mapValue.put("statusList",me.getValue());
-                }
+
+        Set<Map.Entry<String,Object>> set = map.entrySet();
+        Iterator<Map.Entry<String,Object>> it = set.iterator();
+        while (it.hasNext()){
+            Map.Entry<String,Object> me = it.next();
+            if (me.getKey().equals("vendorId")){
+                mapParam.put("vendorId",me.getValue());
             }
-            mapTran.put("queryApiOverAllFinance",apiFinanceMapper.queryApiOverAllFinance(mapValue));
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (me.getKey().equals("apiTypeId")){
+                mapParam.put("apiTypeId",me.getValue());
+            }
+            if (me.getKey().equals("beginDate")){
+                mapParam.put("beginDate",me.getValue());
+            }
+            if (me.getKey().equals("endDate")){
+                mapParam.put("endDate",me.getValue());
+            }
+            if (me.getKey().equals("statusList")){
+                mapParam.put("statusList",me.getValue());
+            }
         }
+        List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiOverAllFinance(mapParam);
+        if (apiFinanceList != null){
+            if (map.get("endDate") == null || new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
+
+                for (int i = 0; i < apiFinanceList.size() ; i++) {
+                    ApiFinance apiFinance = apiFinanceList.get(i);
+
+                    if (apiFinance.getConsumeTotleAmount() != null){
+                        if (apiFinance.getCurrDayCost() != null){
+                            apiFinance.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount() + apiFinance.getCurrDayCost());
+                        }else {
+                            apiFinance.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount());
+                        }
+                    }else {
+                        if (apiFinance.getCurrDayCost() != null){
+                            apiFinance.setConsumeTotleAmount(apiFinance.getCurrDayCost());
+                        }
+                    }
+
+                    if (apiFinance.getUsageAmount() != null){
+                        if (apiFinance.getCurrDayUsageAmount() != null){
+                            apiFinance.setUsageAmount(apiFinance.getUsageAmount() + apiFinance.getCurrDayUsageAmount());
+                        }else {
+                            apiFinance.setUsageAmount(apiFinance.getUsageAmount());
+                        }
+                    }else {
+                        if (apiFinance.getCurrDayUsageAmount() != null){
+                            apiFinance.setUsageAmount(apiFinance.getCurrDayUsageAmount());
+                        }
+                    }
+
+                    if (apiFinance.getFeeUsageAmount() != null){
+                        if (apiFinance.getCurrDayFeeAmount() != null){
+                            apiFinance.setFeeUsageAmount(apiFinance.getFeeUsageAmount() + apiFinance.getCurrDayFeeAmount());
+                        }else {
+                            apiFinance.setFeeUsageAmount(apiFinance.getFeeUsageAmount());
+                        }
+                    }else {
+                        if (apiFinance.getCurrDayCost() != null){
+                            apiFinance.setFeeUsageAmount(apiFinance.getCurrDayFeeAmount());
+                        }
+                    }
+
+                }
+
+            }
+        }
+        mapTran.put("queryApiOverAllFinance",apiFinanceList);
         return mapTran;
     }
 
