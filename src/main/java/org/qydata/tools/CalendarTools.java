@@ -121,7 +121,6 @@ public class CalendarTools {
         int date = c.get(Calendar.DATE);
         String today = year + "/" + month + "/" + date;
         //String today = "2017/01/01";
-        System.out.println(today);
         Date data = null;
         try {
             data = dateFormat.parse(today);
@@ -129,8 +128,6 @@ public class CalendarTools {
             c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//每周从周一开始
             c.setMinimalDaysInFirstWeek(7);  //设置每周最少为7天
             c.setTime(data);
-            System.out.println(c.get(Calendar.WEEK_OF_YEAR));
-            System.out.println(c.get(Calendar.YEAR));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -286,10 +283,10 @@ public class CalendarTools {
     }
 
     /**
-     * 取得当前时间的第一天
+     * 取得当前月的第一天
      * @return
      */
-    public static String getCurrentDateFirstDay(){
+    public static String getCurrentMonthFirstDay(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH,1);

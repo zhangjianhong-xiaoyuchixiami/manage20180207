@@ -54,12 +54,10 @@ public class FinanceController {
             map.put("partnerId",partnerId);
         }
         if(beginDate != null && beginDate != ""){
-            System.out.println(sdfInput.parse(beginDate));
             map.put("beginDate", sdf.format(sdfInput.parse(beginDate))+" "+"00:00:00");
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            System.out.println(sdfInput.parse(endDate));
             map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
             model.addAttribute("endDate",endDate);
         }
@@ -74,7 +72,7 @@ public class FinanceController {
         }
         map.put("statusList", statusList);
         map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
-        map.put("currMonthTime",CalendarTools.getCurrentDateFirstDay() + " " + "00:00:00");
+        map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
         Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -166,7 +164,7 @@ public class FinanceController {
             }
             map.put("statusList", statusList);
             map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
-            map.put("currMonthTime",CalendarTools.getCurrentDateFirstDay() + " " + "00:00:00");
+            map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
             Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
             Iterator<Map.Entry<String,Object>> it = set.iterator();

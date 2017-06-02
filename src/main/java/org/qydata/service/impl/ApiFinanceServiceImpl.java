@@ -9,6 +9,7 @@ import org.qydata.entity.ApiVendorBalance;
 import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.mapper.ApiFinanceMapper;
 import org.qydata.service.ApiFinanceService;
+import org.qydata.tools.CalendarTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,16 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
             if (me.getKey().equals("statusList")){
                 mapParam.put("statusList",me.getValue());
             }
+            if (me.getKey().equals("currDayTime")){
+                mapParam.put("currDayTime",me.getValue());
+            }
+            if (me.getKey().equals("currMonthTime")){
+                mapParam.put("currMonthTime",me.getValue());
+            }
         }
+        mapParam.put("years", CalendarTools.getYearMonthCount(1));
+        mapParam.put("months",CalendarTools.getMonthCount(1));
+        mapParam.put("weeks",CalendarTools.getYearWeekCount(1));
         List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiOverAllFinance(mapParam);
         if (apiFinanceList != null){
             if (map.get("endDate") == null || new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
@@ -116,7 +126,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @Override
     @DataSourceService
     public Map<String,Object> queryApiVendor(Map<String, Object> map) {
-        Map<String,Object> mapValue = new HashMap<>();
+        Map<String,Object> mapParam = new HashMap<>();
         Map<String,Object> mapTran = new HashMap<>();
         try {
             Set<Map.Entry<String,Object>> set = map.entrySet();
@@ -124,23 +134,32 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
             while (it.hasNext()){
                 Map.Entry<String,Object> me = it.next();
                 if (me.getKey().equals("vendorId")){
-                    mapValue.put("vendorId",me.getValue());
+                    mapParam.put("vendorId",me.getValue());
                 }
                 if (me.getKey().equals("partnerId")){
-                    mapValue.put("partnerId",me.getValue());
+                    mapParam.put("partnerId",me.getValue());
                 }
                 if (me.getKey().equals("beginDate")){
-                    mapValue.put("beginDate",me.getValue());
+                    mapParam.put("beginDate",me.getValue());
                 }
                 if (me.getKey().equals("endDate")){
-                    mapValue.put("endDate",me.getValue());
+                    mapParam.put("endDate",me.getValue());
                 }
                 if (me.getKey().equals("statusList")){
-                    mapValue.put("statusList",me.getValue());
+                    mapParam.put("statusList",me.getValue());
+                }
+                if (me.getKey().equals("currDayTime")){
+                    mapParam.put("currDayTime",me.getValue());
+                }
+                if (me.getKey().equals("currMonthTime")){
+                    mapParam.put("currMonthTime",me.getValue());
                 }
             }
-            List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiVendor(mapValue);
-            List<ApiFinance> apiFinanceTypeList = apiFinanceMapper.queryApiVendorType(mapValue);
+            mapParam.put("years", CalendarTools.getYearMonthCount(1));
+            mapParam.put("months",CalendarTools.getMonthCount(1));
+            mapParam.put("weeks",CalendarTools.getYearWeekCount(1));
+            List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiVendor(mapParam);
+            List<ApiFinance> apiFinanceTypeList = apiFinanceMapper.queryApiVendorType(mapParam);
             if (apiFinanceTypeList != null && apiFinanceTypeList.size() > 0){
                 for (int i=0; i<apiFinanceTypeList.size(); i++){
                     ApiFinance apiFinance = apiFinanceTypeList.get(i);

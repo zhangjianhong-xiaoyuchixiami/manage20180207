@@ -1,11 +1,6 @@
 package org.qydata.tools;
 
 
-import org.qydata.dst.ApiFinance;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by jonhn on 2017/3/15.
  */
@@ -40,7 +35,7 @@ public class ExportDataHander {
      * @param apiFinanceList
      * @return
      */
-    public static List<ApiFinance> processApiFinance(List<ApiFinance> apiFinanceList){
+    /*public static List<ApiFinance> processApiFinance(List<ApiFinance> apiFinanceList){
         List<ApiFinance> apiFinances = new ArrayList<>();
         if (apiFinanceList != null){
             for (int i=0; i<apiFinanceList.size(); i++){
@@ -68,7 +63,7 @@ public class ExportDataHander {
             }
         }
         return apiFinances;
-    }
+    }*/
 
 
 

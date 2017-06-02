@@ -102,15 +102,13 @@
         (
             SELECT apiId,totleCost weekTotleCost
             FROM qyfinance.bkvwApiWeekMonthAmount
-            WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
-            AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+            WHERE typeId=1 AND tableId=3 AND years = #{years} AND weeks = #{weeks}
         ) bb ON aa.id=bb.apiId
         LEFT JOIN
         (
             SELECT apiId,totleCost monthTotleCost
             FROM qyfinance.bkvwApiWeekMonthAmount
-            WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
-            AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+            WHERE typeId=2 AND tableId=3 AND years = #{years} AND months = #{months}
         ) cc ON aa.id=cc.apiId
 
         LEFT JOIN
@@ -124,12 +122,12 @@
             <where>
                 <if test="beginDate != null and beginDate != ''">
                     <![CDATA[
-                        AND consuTime >= ''
+                        AND consuTime >= #{beginDate}
                     ]]>
                 </if>
                 <if test="endDate != null and endDate != ''">
                     <![CDATA[
-                        AND consuTime <= ''
+                        AND consuTime <= #{endDate}
                      ]]>
                 </if>
             </where>
@@ -142,7 +140,7 @@
             LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
             WHERE b.ok=1
             AND b.isMock=0
-            AND b.createTime >= '2017-06-01 00:00:00'
+            AND b.createTime >= #{currMonthTime}
             GROUP BY a.apiId
         ) currMonth ON aa.id=currMonth.apiId
         LEFT JOIN
@@ -152,7 +150,7 @@
             LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
             WHERE b.ok=1
             AND b.isMock=0
-            AND b.createTime >= '2017-06-01 00:00:00'
+            AND b.createTime >= #{currDayTime}
             GROUP BY a.apiId
         ) currDay ON aa.id=currDay.apiId
         LEFT JOIN
@@ -163,7 +161,7 @@
             WHERE b.ok = 1
             AND b.isMock = 0
             AND b.cost > 0
-            AND b.createTime >= '2017-06-01 00:00:00'
+            AND b.createTime >= #{currDayTime}
             GROUP BY a.apiId
         ) currDayFee ON aa.id=currDayFee.apiId
         <where>
@@ -182,87 +180,7 @@
         </where>
     </select>
 
-    <!--Api财务总览-周消费总额-->
-    <select id="getCountApiWeekFinance" parameterType="map" resultType="int">
-        SELECT sum(bb.weekTotleCost)
-        FROM qyfinance.bkvwApi aa
-        LEFT JOIN
-        (
-            SELECT apiId,totleCost weekTotleCost
-            FROM qyfinance.bkvwApiWeekMonthAmount
-            WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
-            AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
-        ) bb ON aa.id=bb.apiId
-        <where>
-            <if test="statusList!=null and statusList.size()!=0">
-                aa.status in
-                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
-                    #{status}
-                </foreach>
-            </if>
-            <if test="vendorId != null and vendorId != ''">
-                AND aa.vendorId=#{vendorId}
-            </if>
-            <if test="apiTypeId != null and apiTypeId != ''">
-                AND aa.apiTypeId=#{apiTypeId}
-            </if>
-        </where>
-    </select>
 
-    <!--Api财务总览-月消费总额-->
-    <select id="getCountApiMonthFinance" parameterType="map" resultType="int">
-        SELECT sum(cc.monthTotleCost)
-        FROM qyfinance.bkvwApi aa
-        LEFT JOIN
-        (
-            SELECT apiId,totleCost monthTotleCost
-            FROM qyfinance.bkvwApiWeekMonthAmount
-            WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
-            AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
-        ) cc ON aa.id=cc.apiId
-        <where>
-            <if test="statusList!=null and statusList.size()!=0">
-                aa.status in
-                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
-                    #{status}
-                </foreach>
-            </if>
-            <if test="vendorId != null and vendorId != ''">
-                AND aa.vendorId=#{vendorId}
-            </if>
-            <if test="apiTypeId != null and apiTypeId != ''">
-                AND aa.apiTypeId=#{apiTypeId}
-            </if>
-        </where>
-    </select>
-
-    <!--Api财务总览-消费总额-->
-    <select id="getCountApiTotleFinance" parameterType="map" resultType="int">
-        SELECT sum(dd.consumeTotleAmount)
-        FROM qyfinance.bkvwApi aa
-        LEFT JOIN
-        (
-        SELECT sum(cost) consumeTotleAmount,apiId
-        FROM qyfinance.bkvwApiRequestLog
-        WHERE ok=1
-        AND isMock=0
-        GROUP BY apiId
-        ) dd ON aa.id=dd.apiId
-        <where>
-            <if test="statusList!=null and statusList.size()!=0">
-                aa.status in
-                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
-                    #{status}
-                </foreach>
-            </if>
-            <if test="vendorId != null and vendorId != ''">
-                AND aa.vendorId=#{vendorId}
-            </if>
-            <if test="apiTypeId != null and apiTypeId != ''">
-                AND aa.apiTypeId=#{apiTypeId}
-            </if>
-        </where>
-    </select>
 
     <!--查询Api类型-->
     <select id="queryApiType" parameterType="map" resultType="org.qydata.entity.ApiType">
@@ -369,15 +287,13 @@
             (
                 SELECT apiId,totleCost weekTotleCost
                 FROM qyfinance.bkvwApiWeekMonthAmount
-                WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
-                AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
+                WHERE typeId=1 AND tableId=3 AND years = #{years} AND weeks = #{weeks}
             ) bb ON aa.id=bb.apiId
             LEFT JOIN
             (
                 SELECT apiId,totleCost monthTotleCost
                 FROM qyfinance.bkvwApiWeekMonthAmount
-                WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
-                AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
+                WHERE typeId=2 AND tableId=3 AND years = #{years} AND months = #{months}
             ) cc ON aa.id=cc.apiId
             LEFT JOIN
             (
@@ -386,12 +302,12 @@
                 <where>
                     <if test="beginDate != null and beginDate != ''">
                         <![CDATA[
-                            AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
+                            AND consuTime >= #{beginDate}
                         ]]>
                     </if>
                     <if test="endDate != null and endDate != ''">
                         <![CDATA[
-                            AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
+                            AND consuTime <= #{endDate}
                         ]]>
                     </if>
                 </where>
@@ -405,21 +321,23 @@
             ) ee ON aa.id=ee.apiId
             LEFT JOIN
             (
-                SELECT sum(cost) currMonthCost,apiId
-                FROM qyfinance.bkvwApiRequestLog
-                WHERE ok=1
-                AND isMock=0
-                AND DATE_FORMAT(createTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 0 month),'%Y-%m')
-                GROUP BY apiId
+                SELECT sum(b.cost) currMonthCost,apiId
+                FROM qyfinance.finance_ApiRequestLog a
+                LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
+                WHERE b.ok=1
+                AND b.isMock=0
+                AND b.createTime >= #{currMonthTime}
+                GROUP BY a.apiId
             ) currMonth ON aa.id=currMonth.apiId
             LEFT JOIN
             (
-                SELECT sum(cost) currDayCost,apiId
-                FROM qyfinance.bkvwApiRequestLog
-                WHERE TO_DAYS(createTime) = TO_DAYS(NOW())
-                AND ok=1
-                AND isMock=0
-                GROUP BY apiId
+                SELECT sum(b.cost) currDayCost,apiId
+                FROM qyfinance.finance_ApiRequestLog a
+                LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
+                WHERE b.ok=1
+                AND b.isMock=0
+                AND b.createTime >= #{currDayTime}
+                GROUP BY a.apiId
             ) currDay ON aa.id=currDay.apiId
             GROUP BY aa.vendorId
         ) ee
@@ -464,12 +382,12 @@
             <where>
                 <if test="beginDate != null and beginDate != ''">
                     <![CDATA[
-                        AND consuTime>=str_to_date(#{beginDate},'%Y/%m/%d')
+                        AND consuTime >= #{beginDate}
                      ]]>
                 </if>
                 <if test="endDate != null and endDate != ''">
                     <![CDATA[
-                        AND consuTime<=str_to_date(#{endDate},'%Y/%m/%d')
+                        AND consuTime <= #{endDate}
                     ]]>
                 </if>
             </where>
@@ -477,89 +395,28 @@
         ) bb ON aa.apiId=bb.apiId
         LEFT JOIN
         (
-            SELECT sum(cost) typeCurrDayCost,count(apiRequestLogId) typeCurrDayUsageAmount,apiId
-            FROM qyfinance.bkvwApiRequestLog
-            WHERE TO_DAYS(createTime) = TO_DAYS(NOW())
-            AND ok=1
-            AND isMock=0
-            GROUP BY apiId
+            SELECT sum(b.cost) typeCurrDayCost,count(b.id) typeCurrDayUsageAmount,apiId
+            FROM qyfinance.finance_ApiRequestLog a
+            LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
+            WHERE b.ok=1
+            AND b.isMock=0
+            AND b.createTime >= #{currDayTime}
+            GROUP BY a.apiId
         ) cc ON aa.apiId=cc.apiId
         LEFT JOIN
         (
-            SELECT count(apiRequestLogId) typeFeeCurrDayAmount,apiId
-            FROM qyfinance.bkvwApiRequestLog
-            WHERE TO_DAYS(createTime) = TO_DAYS(NOW())
-            AND ok=1
-            AND cost>0
-            AND isMock=0
-            GROUP BY apiId
+            SELECT count(b.id) typeFeeCurrDayAmount,apiId
+            FROM qyfinance.finance_ApiRequestLog a
+            LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
+            WHERE b.ok=1
+            AND b.cost>0
+            AND b.isMock=0
+            AND b.createTime >= #{currDayTime}
+            GROUP BY a.apiId
         ) dd ON aa.apiId=dd.apiId
         ORDER BY aa.apiTypeName ASC,aa.status DESC
     </select>
 
-    <!--以APIVendor统计消费信息-周消费总额-->
-    <select id="getCountWeekApiVendor" parameterType="map" resultType="Integer">
-        SELECT sum(ee.weekTotleCost)
-        FROM (
-            SELECT aa.vendorId,aa.vendorName,sum(bb.weekTotleCost) weekTotleCost
-            FROM qyfinance.bkvwApi aa
-            LEFT JOIN
-            (
-                SELECT apiId,totleCost weekTotleCost
-                FROM qyfinance.bkvwApiWeekMonthAmount
-                WHERE typeId=1 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x')
-                AND weeks=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%v')
-            ) bb ON aa.id=bb.apiId
-            GROUP BY aa.vendorId,aa.vendorName
-        ) ee
-        LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
-        <where>
-            <if test="statusList!=null and statusList.size()!=0">
-                gg.status in
-                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
-                    #{status}
-                </foreach>
-            </if>
-            <if test="vendorId != null and vendorId != ''">
-                AND ee.vendorId=#{vendorId}
-            </if>
-            <if test="partnerId != null and partnerId != ''">
-                AND gg.partnerId=#{partnerId}
-            </if>
-        </where>
-    </select>
-
-    <!--以APIVendor统计消费信息-月消费总额-->
-    <select id="getCountMonthApiVendor" parameterType="map" resultType="Integer">
-        SELECT sum(ee.monthTotleCost)
-        FROM (
-            SELECT aa.vendorId,aa.vendorName,sum(cc.monthTotleCost) monthTotleCost
-            FROM qyfinance.bkvwApi aa
-            LEFT JOIN
-            (
-                SELECT apiId,totleCost monthTotleCost
-                FROM qyfinance.bkvwApiWeekMonthAmount
-                WHERE typeId=2 AND tableId=3 AND years=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y')
-                AND months=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%m')
-            ) cc ON aa.id=cc.apiId
-            GROUP BY aa.vendorId,aa.vendorName
-        ) ee
-        LEFT JOIN qyfinance.bkvwApiVendor gg ON ee.vendorId=gg.vendorId
-        <where>
-            <if test="statusList!=null and statusList.size()!=0">
-                gg.status in
-                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
-                    #{status}
-                </foreach>
-            </if>
-            <if test="vendorId != null and vendorId != ''">
-                AND ee.vendorId=#{vendorId}
-            </if>
-            <if test="partnerId != null and partnerId != ''">
-                AND gg.partnerId=#{partnerId}
-            </if>
-        </where>
-    </select>
 
 </mapper>
 

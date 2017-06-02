@@ -284,41 +284,41 @@
         ff.name subTypeName
         FROM
         (
-        SELECT
-        customerId,
-        apiTypeId,
-        ifnull(stid,0) stid,
-        sum(sumAmount) sumAmount,
-        sum(countTotle) countTotle,
-        sum(countSuccess) countSuccess
-        FROM qyfinance.bkvwCompanyApiTypeConsumeDayCount
-        <where>
-            <if test="beginDate != null and beginDate != ''">
-                <![CDATA[
-                    AND consuTime >= #{beginDate}
-                ]]>
-            </if>
-            <if test="endDate != null and endDate != ''">
-                <![CDATA[
-                    AND consuTime <= #{endDate}
-                ]]>
-            </if>
-        </where>
-        GROUP BY customerId,apiTypeId,stid
+            SELECT
+            customerId,
+            apiTypeId,
+            ifnull(stid,0) stid,
+            sum(sumAmount) sumAmount,
+            sum(countTotle) countTotle,
+            sum(countSuccess) countSuccess
+            FROM qyfinance.bkvwCompanyApiTypeConsumeDayCount
+            <where>
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND consuTime >= #{beginDate}
+                    ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND consuTime <= #{endDate}
+                    ]]>
+                </if>
+            </where>
+            GROUP BY customerId,apiTypeId,stid
         ) aa
         LEFT JOIN
         (
-        SELECT
-        a.customerId,
-        a.apiTypeId,
-        ifnull(a.stid,0) stid,
-        sum(b.amount) sumAmount,
-        count(a.id) countTotle,
-        count(b.id) countSuccess
-        FROM qyfinance.finance_CustomerRequestLog a
-        LEFT JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
-        WHERE a.createTime >= #{currDayTime}
-        GROUP BY a.customerId,a.apiTypeId,a.stid
+            SELECT
+            a.customerId,
+            a.apiTypeId,
+            ifnull(a.stid,0) stid,
+            sum(b.amount) sumAmount,
+            count(a.id) countTotle,
+            count(b.id) countSuccess
+            FROM qyfinance.finance_CustomerRequestLog a
+            LEFT JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+            WHERE a.createTime >= #{currDayTime}
+            GROUP BY a.customerId,a.apiTypeId,a.stid
         ) bb ON aa.customerId = bb.customerId AND aa.apiTypeId = bb.apiTypeId AND aa.stid = bb.stid
         LEFT JOIN qyfinance.finance_Customer cc ON aa.customerId = cc.id
         LEFT JOIN qyfinance.bkvwCompanyApi dd ON cc.companyId=dd.companyId AND aa.apiTypeId=dd.apiTypeId AND aa.stid=dd.subTypeId

@@ -14,6 +14,7 @@ import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.PowerUserService;
 import org.qydata.service.RoleService;
+import org.qydata.tools.CalendarTools;
 import org.qydata.tools.ExportDataHander;
 import org.qydata.tools.ExportIoOperate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ public class CustomerFinanceExcelAop {
      */
     @Around("execution(* org.qydata.controller.FinanceController.queryAllCustomer(..))")
     public Object queryAllCustomerExportExcel(ProceedingJoinPoint point) throws Throwable {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Object args [] = point.getArgs();
         System.out.println("************* 判断是否是执行导出操作 *************");
         if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
@@ -62,10 +65,10 @@ public class CustomerFinanceExcelAop {
                 map.put("partnerId",args[2]);
             }
             if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", args[3]+" "+"00:00:00");
+                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", args[4]+" "+"23:59:59");
+                map.put("endDate", sdf.format(sdfInput.parse((String) args[4]))+" "+"23:59:59");
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];
@@ -78,6 +81,8 @@ public class CustomerFinanceExcelAop {
                 statusList.add(-1);
             }
             map.put("statusList", statusList);
+            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+            map.put("currMonthTime", CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
             List<CustomerFinance> customerFinanceList = null;
             Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
@@ -124,6 +129,8 @@ public class CustomerFinanceExcelAop {
      */
     @Around("execution(* org.qydata.controller.FinanceController.queryAllCustomerByDeptId(..))")
     public Object queryAllCustomerByDeptIdExportExcel(ProceedingJoinPoint point) throws Throwable {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Object args [] = point.getArgs();
         System.out.println("************* 判断是否是执行导出操作 *************");
         if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
@@ -142,10 +149,10 @@ public class CustomerFinanceExcelAop {
                 map.put("partnerId",args[2]);
             }
             if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", args[3]+" "+"00:00:00");
+                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", args[4]+" "+"23:59:59");
+                map.put("endDate", sdf.format(sdfInput.parse((String) args[4]))+" "+"23:59:59");
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];
@@ -158,6 +165,8 @@ public class CustomerFinanceExcelAop {
                 statusList.add(-1);
             }
             map.put("statusList", statusList);
+            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+            map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
             List<CustomerFinance> customerFinanceList = null;
             Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();

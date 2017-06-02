@@ -8,12 +8,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.qydata.dst.ApiFinance;
 import org.qydata.entity.ApiRequestLog;
 import org.qydata.service.ApiFinanceService;
+import org.qydata.tools.CalendarTools;
 import org.qydata.tools.ExportDataHander;
 import org.qydata.tools.ExportIoOperate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -35,6 +37,8 @@ public class ApiFinanceExcelAop {
      */
     @Around("execution(* org.qydata.controller.ApiFinanceController.findAllApiRecord(..))")
     public Object findAllApiRecordExportExcel(ProceedingJoinPoint point) throws Throwable {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Object args [] = point.getArgs();
         System.out.println("************* 判断是否是执行导出操作 *************");
         if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
@@ -47,10 +51,10 @@ public class ApiFinanceExcelAop {
                 map.put("apiTypeId",args[2]);
             }
             if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", args[3]+" "+"00:00:00");
+                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", args[4]+" "+"23:59:59");
+                map.put("endDate", sdf.format(sdfInput.parse((String) args[4]))+" "+"23:59:59");
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];
@@ -63,6 +67,8 @@ public class ApiFinanceExcelAop {
                 statusList.add(-1);
             }
             map.put("statusList", statusList);
+            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+            map.put("currMonthTime", CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
             List<ApiFinance> apiFinanceList = null;
             Map<String,Object> mapResult = apiFinanceService.queryApiOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
@@ -171,6 +177,8 @@ public class ApiFinanceExcelAop {
      */
     @Around("execution(* org.qydata.controller.ApiFinanceController.findAllApiVendorConsume(..))")
     public Object findAllApiVendorConsumeExportExcel(ProceedingJoinPoint point) throws Throwable {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Object args [] = point.getArgs();
         System.out.println("************* 判断是否是执行导出操作 *************");
         if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
@@ -183,10 +191,10 @@ public class ApiFinanceExcelAop {
                 map.put("partnerId",args[2]);
             }
             if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", args[3]+" "+"00:00:00");
+                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", args[4]+" "+"23:59:59");
+                map.put("endDate", sdf.format(sdfInput.parse((String) args[4]))+" "+"23:59:59");
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];
@@ -199,6 +207,8 @@ public class ApiFinanceExcelAop {
                 statusList.add(-1);
             }
             map.put("statusList", statusList);
+            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+            map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
             List<ApiFinance> apiFinanceList = null;
             Map<String,Object> mapResult = apiFinanceService.queryApiVendor(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
