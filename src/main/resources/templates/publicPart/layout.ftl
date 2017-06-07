@@ -206,6 +206,14 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="partnersFinancialAccount">
+                                    <a href="/partner/export-excel">
+                                        合作公司Excel导出
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
                         </ul>
 
                     </li>
