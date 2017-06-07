@@ -2,11 +2,10 @@ package org.qydata.service.impl;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.config.annotation.DataSourceService;
-import org.qydata.dst.CustomerApiType;
-import org.qydata.dst.CustomerApiVendor;
-import org.qydata.dst.CustomerFinance;
+import org.qydata.dst.*;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
@@ -14,6 +13,7 @@ import org.qydata.tools.CalendarTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -28,8 +28,68 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     @Override
     @DataSourceService
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
-        Map<String,Object> mapTran = new HashMap<>();
-        List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomerOverAllFinance(map);
+        Map<String,Object> mapOverAllParam = new HashMap<String,Object>();
+        Map<String,Object> mapApiTypeParam = new HashMap<String,Object>();
+        Map<String,Object> mapWeekMonthParam = new HashMap<String,Object>();
+        Set<Map.Entry<String,Object>> set = map.entrySet();
+        Iterator<Map.Entry<String,Object>> iterator = set.iterator();
+        while(iterator.hasNext()){
+            Map.Entry<String,Object> me = iterator.next();
+            if("content".equals(me.getKey())){
+                mapOverAllParam.put("content",me.getValue());
+            }
+            if("partnerId".equals(me.getKey())){
+                mapOverAllParam.put("partnerId",me.getValue());
+            }
+            if("beginDate".equals(me.getKey())){
+                mapOverAllParam.put("beginDate",me.getValue());
+                mapApiTypeParam.put("beginDate",me.getValue());
+            }
+            if("endDate".equals(me.getKey())){
+                mapOverAllParam.put("endDate",me.getValue());
+                mapApiTypeParam.put("endDate",me.getValue());
+            }
+            if("statusList".equals(me.getKey())){
+                mapOverAllParam.put("statusList",me.getValue());
+            }
+            if("currDayTime".equals(me.getKey())){
+                mapOverAllParam.put("currDayTime",me.getValue());
+                mapApiTypeParam.put("currDayTime",me.getValue());
+            }
+            if("currMonthTime".equals(me.getKey())){
+                mapOverAllParam.put("currMonthTime",me.getValue());
+            }
+            if("deptIdList".equals(me.getKey())){
+                mapOverAllParam.put("deptIdList",me.getValue());
+            }
+        }
+
+        mapWeekMonthParam.put("years",CalendarTools.getYearMonthCount(1));
+        mapWeekMonthParam.put("months",CalendarTools.getMonthCount(1));
+        mapWeekMonthParam.put("weeks",CalendarTools.getYearWeekCount(1));
+
+        List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomerOverAllFinance(mapOverAllParam);
+        List<CustomerFinance> customerFinanceApiTypeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(mapApiTypeParam);
+        List<CustomerWeekMonthConsume> customerWeekMonthConsumeList = customerFinanceMapper.queryCustomerWeekMonthConsume(mapWeekMonthParam);
+
+        if (map.get("endDate") == null || new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
+            if (customerFinanceApiTypeConsumeList != null){
+                for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
+                    CustomerFinance customerFinanceApiTypeConsume = customerFinanceApiTypeConsumeList.get(i);
+                    List<CompanyApi> companyApiList = customerFinanceApiTypeConsume.getCompanyApiList();
+                    if (companyApiList != null){
+                        for (int j = 0; j < companyApiList.size(); j++) {
+                            CompanyApi companyApi = companyApiList.get(j);
+                            CompanyApiCount companyApiCount = companyApi.getCompanyApiCount();
+                            companyApiCount.setSumAmount(companyApiCount.getSumAmount() + companyApiCount.getCurrDaySumAmount());
+                            companyApiCount.setCountTotle(companyApiCount.getCountTotle() + companyApiCount.getCurrDayCountTotle());
+                            companyApiCount.setCountSuccess(companyApiCount.getCountSuccess() + companyApiCount.getCurrDayCountSuccess());
+                        }
+                    }
+                }
+            }
+        }
+
         long weekChargeAmount = 0L;
         long weekConsumeAmount = 0L;
         long monthChargeAmount = 0L;
@@ -39,42 +99,67 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         long currMonthTotleConsumeAmount = 0L;
         long currDayTotleConsumeAmount = 0L;
         List<CustomerFinance> customerFinanceList = new ArrayList<>();
-        if (list != null){
+        if (list != null) {
             Iterator<CustomerFinance> it = list.iterator();
-            while (it.hasNext()){
+            while (it.hasNext()) {
                 CustomerFinance customerFinance = it.next();
-                if (customerFinance.getChargeWeekTotleAmount() != null){
+
+                if (customerFinanceApiTypeConsumeList != null) {
+                    for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
+                        CustomerFinance customerFinanceApiTypeConsume = customerFinanceApiTypeConsumeList.get(i);
+                        List<CompanyApi> companyApiList = customerFinanceApiTypeConsume.getCompanyApiList();
+                        if (customerFinance.getId() == customerFinanceApiTypeConsume.getId()) {
+                            customerFinance.setCompanyApiList(companyApiList);
+                        }
+                    }
+                }
+
+                if (customerWeekMonthConsumeList != null) {
+                    for (int i = 0; i < customerWeekMonthConsumeList.size(); i++) {
+                        CustomerWeekMonthConsume customerWeekMonthConsume = customerWeekMonthConsumeList.get(i);
+                        if (customerFinance.getId() == customerWeekMonthConsume.getCustomerId()) {
+                            customerFinance.setChargeWeekTotleAmount(customerWeekMonthConsume.getChargeWeekTotleAmount());
+                            customerFinance.setChargeMonthTotleAmount(customerWeekMonthConsume.getChargeMonthTotleAmount());
+                            customerFinance.setConsumeWeekTotleAmount(customerWeekMonthConsume.getConsumeWeekTotleAmount());
+                            customerFinance.setConsumeMonthTotleAmount(customerWeekMonthConsume.getConsumeMonthTotleAmount());
+                        }
+                    }
+                }
+
+                if (customerFinance.getChargeWeekTotleAmount() != null) {
                     weekChargeAmount += customerFinance.getChargeWeekTotleAmount();
                 }
-                if (customerFinance.getConsumeWeekTotleAmount() != null){
+                if (customerFinance.getConsumeWeekTotleAmount() != null) {
                     weekConsumeAmount += customerFinance.getConsumeWeekTotleAmount();
                 }
-                if (customerFinance.getChargeMonthTotleAmount() != null){
+                if (customerFinance.getChargeMonthTotleAmount() != null) {
                     monthChargeAmount += customerFinance.getChargeMonthTotleAmount();
                 }
-                if (customerFinance.getConsumeMonthTotleAmount() != null){
+                if (customerFinance.getConsumeMonthTotleAmount() != null) {
                     monthConsumeAmount += customerFinance.getConsumeMonthTotleAmount();
                 }
-                if (customerFinance.getChargeTotleAmount() != null){
+                if (customerFinance.getChargeTotleAmount() != null) {
                     totleChargeAmount += customerFinance.getChargeTotleAmount();
                 }
-                if (customerFinance.getConsumeTotleAmount() != null){
+                if (customerFinance.getConsumeTotleAmount() != null) {
                     totleConsumeAmount += customerFinance.getConsumeTotleAmount();
                 }
-                if (customerFinance.getCurrMonthAmount() != null){
+                if (customerFinance.getCurrMonthAmount() != null) {
                     currMonthTotleConsumeAmount += customerFinance.getCurrMonthAmount();
                 }
-                if (customerFinance.getCurrDayAmount() != null){
+                if (customerFinance.getCurrDayAmount() != null) {
                     currDayTotleConsumeAmount += customerFinance.getCurrDayAmount();
                 }
-                if (customerFinance.getBalance() >=0){
+                if (customerFinance.getBalance() >= 0) {
                     customerFinance.setUsableFloor(customerFinance.getFloor());
-                }else {
-                    customerFinance.setUsableFloor(customerFinance.getFloor()-customerFinance.getBalance());
+                } else {
+                    customerFinance.setUsableFloor(customerFinance.getFloor() - customerFinance.getBalance());
                 }
                 customerFinanceList.add(customerFinance);
             }
         }
+
+        Map<String,Object> mapTran = new HashMap<>();
         mapTran.put("weekChargeAmount",weekChargeAmount);
         mapTran.put("weekConsumeAmount",weekConsumeAmount);
         mapTran.put("monthChargeAmount",monthChargeAmount);
@@ -85,6 +170,16 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapTran.put("currDayTotleConsumeAmount",currDayTotleConsumeAmount);
         mapTran.put("customerFinanceList",customerFinanceList);
         return mapTran;
+    }
+
+    @Override
+    public List<CustomerApiTypeConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
+        return customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
+    }
+
+    @Override
+    public String queryCustomerCompanyNameById(Integer id) {
+        return customerFinanceMapper.queryCustomerCompanyNameById(id);
     }
 
     @Override

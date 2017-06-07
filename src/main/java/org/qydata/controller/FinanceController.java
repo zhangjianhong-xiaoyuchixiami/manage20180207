@@ -5,6 +5,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.SecurityUtils;
+import org.qydata.dst.CustomerApiTypeConsume;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.User;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
@@ -42,6 +44,8 @@ public class FinanceController {
      */
     @RequestMapping(value = "/find-all-customer")
     public ModelAndView queryAllCustomer(String export, String content, Integer partnerId, String beginDate, String endDate,String [] status, Model model)throws Exception{
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String,Object> map = new HashMap<>();
         if(content != null){
             map.put("content",content);
@@ -50,11 +54,11 @@ public class FinanceController {
             map.put("partnerId",partnerId);
         }
         if(beginDate != null && beginDate != ""){
-            map.put("beginDate", beginDate+" "+"00:00:00");
+            map.put("beginDate", sdf.format(sdfInput.parse(beginDate))+" "+"00:00:00");
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate+" "+"23:59:59");
+            map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
             model.addAttribute("endDate",endDate);
         }
         List<String> statusList = new ArrayList();
@@ -67,6 +71,8 @@ public class FinanceController {
             statusList.add("-1");
         }
         map.put("statusList", statusList);
+        map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+        map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
         Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -108,6 +114,7 @@ public class FinanceController {
         model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
         model.addAttribute("year",CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
+        model.addAttribute("week_month",CalendarTools.getWeekMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));
         return new ModelAndView("/finance/customerFinancialAccount");
     }
@@ -118,8 +125,10 @@ public class FinanceController {
      * @param content
      * @return
      */
-    @RequestMapping(value = ("/find-all-customer-by-dept-id"))
+    @RequestMapping(value = "/find-all-customer-by-dept-id")
     public ModelAndView queryAllCustomerByDeptId(String export,String content,Integer partnerId,String beginDate,String endDate,String [] status, Model model)throws Exception{
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         User user = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
         List deptList = new ArrayList();
         Map<String, Object> map = new HashMap<>();
@@ -135,11 +144,13 @@ public class FinanceController {
                 map.put("partnerId", partnerId);
             }
             if(beginDate != null && beginDate != ""){
-                map.put("beginDate", beginDate+" "+"00:00:00");
+                System.out.println(sdfInput.parse(beginDate));
+                map.put("beginDate", sdf.format(sdfInput.parse(beginDate))+" "+"00:00:00");
                 model.addAttribute("beginDate",beginDate);
             }
             if(endDate != null && endDate != ""){
-                map.put("endDate", endDate+" "+"23:59:59");
+                System.out.println(sdfInput.parse(endDate));
+                map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
                 model.addAttribute("endDate",endDate);
             }
             List<String> statusList = new ArrayList();
@@ -152,6 +163,8 @@ public class FinanceController {
                 statusList.add("-1");
             }
             map.put("statusList", statusList);
+            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+            map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
             Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
             Set<Map.Entry<String,Object>> set = mapResult.entrySet();
             Iterator<Map.Entry<String,Object>> it = set.iterator();
@@ -193,12 +206,46 @@ public class FinanceController {
             model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
             model.addAttribute("year",CalendarTools.getYearMonthCount(1));
             model.addAttribute("month",CalendarTools.getMonthCount(1));
+            model.addAttribute("week_month",CalendarTools.getWeekMonthCount(1));
             model.addAttribute("week",CalendarTools.getYearWeekCount(1));
             return new ModelAndView("/finance/customerFinancialAccount");
         }
         return new ModelAndView("/finance/customerFinancialAccount");
     }
 
+    /**
+     * 加载客户当天各产品类型的消费数据
+     * @param customerId
+     * @return
+     * @throws InterruptedException
+     */
+    @RequestMapping(value = "/find-all-customer/curr-day-api-type-consume")
+    @ResponseBody
+    public String queryCustomerCurrDayApiTypeConsume(Integer customerId) throws InterruptedException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        Map<String,Object> map = new HashMap<>();
+        map.put("customerId",customerId);
+        map.put("consuTime",sdf.format(new Date()));
+        List<CustomerApiTypeConsume> customerApiTypeConsumeList = customerFinanceService.queryCustomerCurrDayApiTypeConsume(map);
+        Map<String,Object> mapJson = new HashMap<>();
+        mapJson.put("customerApiTypeConsumeList",customerApiTypeConsumeList);
+        return new Gson().toJson(mapJson);
+    }
+
+    /**
+     * 客户当天各产品类型的消费数据弹框的标题显示
+     * @param customerId
+     * @return
+     * @throws InterruptedException
+     */
+    @RequestMapping(value = "/find-all-customer/company-name")
+    @ResponseBody
+    public String queryCustomerCompanyName(Integer customerId) throws InterruptedException {
+        String companyName = customerFinanceService.queryCustomerCompanyNameById(customerId);
+        Map<String,Object> mapJson = new HashMap<>();
+        mapJson.put("companyName",companyName);
+        return new Gson().toJson(mapJson);
+    }
 
     /**
      * 指定账号充值记录

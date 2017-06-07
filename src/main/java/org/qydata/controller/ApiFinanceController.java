@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -35,17 +36,19 @@ public class ApiFinanceController {
      * @return
      */
     @RequestMapping("/find-all-api-record")
-    public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId, String beginDate,String endDate,String [] status,Model model){
+    public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId, String beginDate,String endDate,String [] status,Model model) throws Exception {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String,Object> map = new HashedMap();
         if (vendorId !=null){
             map.put("vendorId",vendorId);
         }
-        if (beginDate != null && beginDate != "" ) {
-            map.put("beginDate", beginDate+" "+"00:00:00");
+        if(beginDate != null && beginDate != ""){
+            map.put("beginDate", sdf.format(sdfInput.parse(beginDate))+" "+"00:00:00");
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate+" "+"23:59:59");
+            map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
             model.addAttribute("endDate",endDate);
         }
         List<ApiVendor> apiVendorList  = null;
@@ -63,6 +66,8 @@ public class ApiFinanceController {
             statusList.add("-1");
         }
         map.put("statusList", statusList);
+        map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+        map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         Map<String,Object> mapResult = apiFinanceService.queryApiOverAllFinance(map);
         List<ApiFinance> apiFinanceList = null;
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
@@ -112,6 +117,7 @@ public class ApiFinanceController {
         model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
         model.addAttribute("year", CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
+        model.addAttribute("week_month",CalendarTools.getWeekMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));
         return new ModelAndView("/finance/apiRecord");
     }
@@ -165,7 +171,9 @@ public class ApiFinanceController {
      * @throws Exception
      */
     @RequestMapping("/find-all-api-vendor-consume")
-    public ModelAndView findAllApiVendorConsume(String export,Integer vendorId,Integer partnerId,String beginDate,String endDate,String [] status,Model model){
+    public ModelAndView findAllApiVendorConsume(String export,Integer vendorId,Integer partnerId,String beginDate,String endDate,String [] status,Model model)throws Exception{
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String,Object> map = new HashMap<>();
         if(vendorId != null){
             map.put("vendorId",vendorId);
@@ -173,12 +181,12 @@ public class ApiFinanceController {
         if(partnerId != null){
             map.put("partnerId",partnerId);
         }
-        if (beginDate != null && beginDate != "" ) {
-            map.put("beginDate", beginDate+" "+"00:00:00");
+        if(beginDate != null && beginDate != ""){
+            map.put("beginDate", sdf.format(sdfInput.parse(beginDate))+" "+"00:00:00");
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate+" "+"23:59:59");
+            map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
             model.addAttribute("endDate",endDate);
         }
         List<String> statusList = new ArrayList();
@@ -191,6 +199,8 @@ public class ApiFinanceController {
             statusList.add("-1");
         }
         map.put("statusList", statusList);
+        map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+        map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         List<ApiFinance> apiFinanceList = null;
         Map<String,Object> mapResult = apiFinanceService.queryApiVendor(map);
         Set<Map.Entry<String,Object>> set = mapResult.entrySet();
@@ -207,25 +217,27 @@ public class ApiFinanceController {
         long weekTotleAmount = 0L;
         long monthTotleAmount = 0L;
         long consumeTotleAmount = 0L;
-        for (int j=0; j<apiFinanceList.size(); j++){
-            ApiFinance apiFinance = apiFinanceList.get(j);
-            if (apiFinance.getBalance() != null) {
-                totleBalance = totleBalance + apiFinance.getBalance();
-            }
-            if (apiFinance.getCurrMonthCost() != null) {
-                currMonthTotleCost = currMonthTotleCost + apiFinance.getCurrMonthCost();
-            }
-            if (apiFinance.getCurrDayCost() != null) {
-                currDayTotleCost = currDayTotleCost + apiFinance.getCurrDayCost();
-            }
-            if (apiFinance.getWeekTotleCost() != null) {
-                weekTotleAmount = weekTotleAmount + apiFinance.getWeekTotleCost();
-            }
-            if (apiFinance.getMonthTotleCost() != null) {
-                monthTotleAmount = monthTotleAmount + apiFinance.getMonthTotleCost();
-            }
-            if (apiFinance.getConsumeTotleAmount() != null) {
-                consumeTotleAmount = consumeTotleAmount + apiFinance.getConsumeTotleAmount();
+        if (apiFinanceList != null && apiFinanceList.size() >0) {
+            for (int j = 0; j < apiFinanceList.size(); j++) {
+                ApiFinance apiFinance = apiFinanceList.get(j);
+                if (apiFinance.getBalance() != null) {
+                    totleBalance = totleBalance + apiFinance.getBalance();
+                }
+                if (apiFinance.getCurrMonthCost() != null) {
+                    currMonthTotleCost = currMonthTotleCost + apiFinance.getCurrMonthCost();
+                }
+                if (apiFinance.getCurrDayCost() != null) {
+                    currDayTotleCost = currDayTotleCost + apiFinance.getCurrDayCost();
+                }
+                if (apiFinance.getWeekTotleCost() != null) {
+                    weekTotleAmount = weekTotleAmount + apiFinance.getWeekTotleCost();
+                }
+                if (apiFinance.getMonthTotleCost() != null) {
+                    monthTotleAmount = monthTotleAmount + apiFinance.getMonthTotleCost();
+                }
+                if (apiFinance.getConsumeTotleAmount() != null) {
+                    consumeTotleAmount = consumeTotleAmount + apiFinance.getConsumeTotleAmount();
+                }
             }
         }
         model.addAttribute("weekTotleAmount",weekTotleAmount);
@@ -244,6 +256,7 @@ public class ApiFinanceController {
         model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
         model.addAttribute("year",CalendarTools.getYearMonthCount(1));
         model.addAttribute("month",CalendarTools.getMonthCount(1));
+        model.addAttribute("week_month",CalendarTools.getWeekMonthCount(1));
         model.addAttribute("week",CalendarTools.getYearWeekCount(1));
         return new ModelAndView("/finance/apiVendorRecord");
     }

@@ -15,21 +15,21 @@ public class CustomerFinance implements Serializable {
     private Integer id;
     private Integer companyId;
     private String companyName;
-    private Long balance;
+    private Integer balance;
     private Integer partnerId;
     private String partnerName;
-    private Long floor;
-    private Long surplusFloor;
-    private Long usableFloor;
+    private Integer floor;
+    private Integer surplusFloor;
+    private Integer usableFloor;
     private Integer companyStatus;
-    private Long chargeWeekTotleAmount;
-    private Long chargeMonthTotleAmount;
-    private Long consumeWeekTotleAmount;
-    private Long consumeMonthTotleAmount;
-    private Long chargeTotleAmount;
-    private Long consumeTotleAmount;
-    private Long currMonthAmount;
-    private Long currDayAmount;
+    private Integer chargeWeekTotleAmount;
+    private Integer chargeMonthTotleAmount;
+    private Integer consumeWeekTotleAmount;
+    private Integer consumeMonthTotleAmount;
+    private Integer chargeTotleAmount;
+    private Integer consumeTotleAmount;
+    private Integer currMonthAmount;
+    private Integer currDayAmount;
     private List<CompanyApi> companyApiList;
 
     public Integer getPartnerId() {
@@ -72,76 +72,36 @@ public class CustomerFinance implements Serializable {
         this.companyName = companyName;
     }
 
-    public Long getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 
-    public Long getChargeWeekTotleAmount() {
-        return chargeWeekTotleAmount;
-    }
-
-    public void setChargeWeekTotleAmount(Long chargeWeekTotleAmount) {
-        this.chargeWeekTotleAmount = chargeWeekTotleAmount;
-    }
-
-    public Long getChargeMonthTotleAmount() {
-        return chargeMonthTotleAmount;
-    }
-
-    public void setChargeMonthTotleAmount(Long chargeMonthTotleAmount) {
-        this.chargeMonthTotleAmount = chargeMonthTotleAmount;
-    }
-
-    public Long getConsumeWeekTotleAmount() {
-        return consumeWeekTotleAmount;
-    }
-
-    public void setConsumeWeekTotleAmount(Long consumeWeekTotleAmount) {
-        this.consumeWeekTotleAmount = consumeWeekTotleAmount;
-    }
-
-    public Long getConsumeMonthTotleAmount() {
-        return consumeMonthTotleAmount;
-    }
-
-    public void setConsumeMonthTotleAmount(Long consumeMonthTotleAmount) {
-        this.consumeMonthTotleAmount = consumeMonthTotleAmount;
-    }
-
-    public Long getChargeTotleAmount() {
-        return chargeTotleAmount;
-    }
-
-    public void setChargeTotleAmount(Long chargeTotleAmount) {
-        this.chargeTotleAmount = chargeTotleAmount;
-    }
-
-    public Long getConsumeTotleAmount() {
-        return consumeTotleAmount;
-    }
-
-    public void setConsumeTotleAmount(Long consumeTotleAmount) {
-        this.consumeTotleAmount = consumeTotleAmount;
-    }
-
-    public List<CompanyApi> getCompanyApiList() {
-        return companyApiList;
-    }
-
-    public void setCompanyApiList(List<CompanyApi> companyApiList) {
-        this.companyApiList = companyApiList;
-    }
-
-    public Long getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
-    public void setFloor(Long floor) {
+    public void setFloor(Integer floor) {
         this.floor = floor;
+    }
+
+    public Integer getSurplusFloor() {
+        return surplusFloor;
+    }
+
+    public void setSurplusFloor(Integer surplusFloor) {
+        this.surplusFloor = surplusFloor;
+    }
+
+    public Integer getUsableFloor() {
+        return usableFloor;
+    }
+
+    public void setUsableFloor(Integer usableFloor) {
+        this.usableFloor = usableFloor;
     }
 
     public Integer getCompanyStatus() {
@@ -152,36 +112,76 @@ public class CustomerFinance implements Serializable {
         this.companyStatus = companyStatus;
     }
 
-    public Long getSurplusFloor() {
-        return surplusFloor;
+    public Integer getChargeWeekTotleAmount() {
+        return chargeWeekTotleAmount;
     }
 
-    public void setSurplusFloor(Long surplusFloor) {
-        this.surplusFloor = surplusFloor;
+    public void setChargeWeekTotleAmount(Integer chargeWeekTotleAmount) {
+        this.chargeWeekTotleAmount = chargeWeekTotleAmount;
     }
 
-    public Long getCurrMonthAmount() {
+    public Integer getChargeMonthTotleAmount() {
+        return chargeMonthTotleAmount;
+    }
+
+    public void setChargeMonthTotleAmount(Integer chargeMonthTotleAmount) {
+        this.chargeMonthTotleAmount = chargeMonthTotleAmount;
+    }
+
+    public Integer getConsumeWeekTotleAmount() {
+        return consumeWeekTotleAmount;
+    }
+
+    public void setConsumeWeekTotleAmount(Integer consumeWeekTotleAmount) {
+        this.consumeWeekTotleAmount = consumeWeekTotleAmount;
+    }
+
+    public Integer getConsumeMonthTotleAmount() {
+        return consumeMonthTotleAmount;
+    }
+
+    public void setConsumeMonthTotleAmount(Integer consumeMonthTotleAmount) {
+        this.consumeMonthTotleAmount = consumeMonthTotleAmount;
+    }
+
+    public Integer getChargeTotleAmount() {
+        return chargeTotleAmount;
+    }
+
+    public void setChargeTotleAmount(Integer chargeTotleAmount) {
+        this.chargeTotleAmount = chargeTotleAmount;
+    }
+
+    public Integer getConsumeTotleAmount() {
+        return consumeTotleAmount;
+    }
+
+    public void setConsumeTotleAmount(Integer consumeTotleAmount) {
+        this.consumeTotleAmount = consumeTotleAmount;
+    }
+
+    public Integer getCurrMonthAmount() {
         return currMonthAmount;
     }
 
-    public void setCurrMonthAmount(Long currMonthAmount) {
+    public void setCurrMonthAmount(Integer currMonthAmount) {
         this.currMonthAmount = currMonthAmount;
     }
 
-    public Long getCurrDayAmount() {
+    public Integer getCurrDayAmount() {
         return currDayAmount;
     }
 
-    public void setCurrDayAmount(Long currDayAmount) {
+    public void setCurrDayAmount(Integer currDayAmount) {
         this.currDayAmount = currDayAmount;
     }
 
-    public Long getUsableFloor() {
-        return usableFloor;
+    public List<CompanyApi> getCompanyApiList() {
+        return companyApiList;
     }
 
-    public void setUsableFloor(Long usableFloor) {
-        this.usableFloor = usableFloor;
+    public void setCompanyApiList(List<CompanyApi> companyApiList) {
+        this.companyApiList = companyApiList;
     }
 
     @Override

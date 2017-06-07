@@ -125,6 +125,11 @@ var CustomerFinanceAccount = function () {
                         //上月消费
                         "aTargets": [ 12 ],
                         "sType": "html-percent"
+                    },
+                    {
+                        //当天消费
+                        "aTargets": [ 14 ],
+                        "sType": "html-percent"
                     }
 
                 ],

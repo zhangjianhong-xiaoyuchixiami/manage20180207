@@ -1,15 +1,22 @@
 package org.qydata.tools;
 
 
-import org.qydata.dst.ApiFinance;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by jonhn on 2017/3/15.
  */
 public class ExportDataHander {
+
+    /**
+     * 处理导出Excel操作的分和元装换
+     * @param data
+     * @return
+     */
+    public static Double pointsIntoRMB(Integer data){
+        if (data == null){
+            return 0.0;
+        }
+        return (data/100.0);
+    }
 
     /**
      * 处理导出Excel操作的分和元装换
@@ -28,7 +35,7 @@ public class ExportDataHander {
      * @param apiFinanceList
      * @return
      */
-    public static List<ApiFinance> processApiFinance(List<ApiFinance> apiFinanceList){
+    /*public static List<ApiFinance> processApiFinance(List<ApiFinance> apiFinanceList){
         List<ApiFinance> apiFinances = new ArrayList<>();
         if (apiFinanceList != null){
             for (int i=0; i<apiFinanceList.size(); i++){
@@ -56,7 +63,7 @@ public class ExportDataHander {
             }
         }
         return apiFinances;
-    }
+    }*/
 
 
 

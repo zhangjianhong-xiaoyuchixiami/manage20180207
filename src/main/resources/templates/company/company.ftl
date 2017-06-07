@@ -115,7 +115,7 @@
                                                     <th><input type="checkbox" id="allChecked" class="group-checkable" data-set="#companySample_1 .checkboxes"/></th>
                                                     <th>公司名称</th>
                                                     <th>信用额度</th>
-                                                    <th>剩余信用额度</th>
+                                                    <th>可用额度</th>
                                                     <@shiro.hasPermission name="customer:findAllCustomer">
                                                         <th>合作公司</th>
                                                     </@shiro.hasPermission>
@@ -142,7 +142,7 @@
                                                                 <td><input class="checkboxes" type="checkbox" id="checkBoxCompanyId" name="checkBoxCompanyId" value="${company.companyId}"/></td>
                                                                 <td data-title="公司名称">${company.companyName!''}</td>
                                                                 <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
-                                                                <td data-title="剩余信用额度">${(company.surplusFloor/100.0)?c}</td>
+                                                                <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="合作公司">
                                                                         <#if company.partnerId??>
@@ -270,7 +270,7 @@
                                                     <th><input type="checkbox" id="allUnBanChecked" class="group-checkable" data-set="#companySample_2 .checkboxes"/></th>
                                                     <th>公司名称</th>
                                                     <th>信用额度</th>
-                                                    <th>剩余信用额度</th>
+                                                    <th>可用额度</th>
                                                     <@shiro.hasPermission name="customer:findAllCustomer">
                                                         <th>合作公司</th>
                                                     </@shiro.hasPermission>
@@ -297,7 +297,7 @@
                                                                 <td><input class="checkboxes" type="checkbox" id="checkUnBanBoxCompanyId" name="checkUnBanBoxCompanyId" value="${company.companyId}"/></td>
                                                                 <td data-title="公司名称" class="font-text-decoration">${company.companyName!''}</td>
                                                                 <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
-                                                                <td data-title="剩余信用额度">${(company.surplusFloor/100.0)?c}</td>
+                                                                <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="合作公司">
                                                                         <#if company.partnerId??>

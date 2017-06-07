@@ -262,7 +262,7 @@
                                         <th>合作公司</th>
                                         <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
                                         <th>所剩余额（单位：元）</th>
-                                        <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                        <th>${year!''}年第${week!''}周消费（单位：元）</th>
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
@@ -360,7 +360,7 @@
                                                     <#if apiFinance.apiTypeConsumeList??>
                                                         <#list apiFinance.apiTypeConsumeList as apiType>
                                                             <span>
-                                                            ${(apiType.feeUsageAmount)!'0'}
+                                                            ${(apiType.apiTypefeeAmount)!'0'}
                                                                         </span><br/>
                                                         </#list>
                                                     </#if>
