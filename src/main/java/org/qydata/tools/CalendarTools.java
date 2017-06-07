@@ -121,7 +121,6 @@ public class CalendarTools {
         int date = c.get(Calendar.DATE);
         String today = year + "/" + month + "/" + date;
         //String today = "2017/01/01";
-        System.out.println(today);
         Date data = null;
         try {
             data = dateFormat.parse(today);
@@ -129,8 +128,6 @@ public class CalendarTools {
             c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//每周从周一开始
             c.setMinimalDaysInFirstWeek(7);  //设置每周最少为7天
             c.setTime(data);
-            System.out.println(c.get(Calendar.WEEK_OF_YEAR));
-            System.out.println(c.get(Calendar.YEAR));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -224,6 +221,17 @@ public class CalendarTools {
     }
 
     /**
+     * 根据系统时间获取某一月的月份
+     * @return
+     */
+    public static Integer getWeekMonthCount(int count){
+        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
+        c.add(Calendar.MONTH,-(count));
+        Integer month = c.get(Calendar.MONTH)+2;
+        return month;
+    }
+
+    /**
      * @param date1 需要比较的时间 不能为空(null),需要正确的日期格式
      * @param date2 被比较的时间  为空(null)则为当前时间
      * @param stype 返回值类型   0为多少天，1为多少个月，2为多少年
@@ -273,4 +281,17 @@ public class CalendarTools {
         return simple.format(date);
 
     }
+
+    /**
+     * 取得当前月的第一天
+     * @return
+     */
+    public static String getCurrentMonthFirstDay(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH,1);
+        String firstDay = sdf.format(calendar.getTime());
+        return firstDay;
+    }
+
 }

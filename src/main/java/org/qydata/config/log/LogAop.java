@@ -15,7 +15,6 @@ import org.qydata.service.LogService;
 import org.qydata.service.PowerUserService;
 import org.qydata.service.UserService;
 import org.qydata.tools.ClientIpTools;
-import org.qydata.tools.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,11 +71,6 @@ public class LogAop {
     public void doBefore(JoinPoint joinPoint) throws InterruptedException{
         Date beginTime = new Date();
         beginTimeThreadLocal.set(beginTime);//线程绑定变量（该数据只有当前请求的线程可见）
-        Object[] args = joinPoint.getArgs();
-        System.out.println("操作Id"+args[0]);
-        Log log = new Log();
-        log.setOperationBeforData(JSONObject.fromObject(logOperatorDataBeforAfterService.queryApiVendorBalanceById((Integer) args[0])).toString());
-        logThreadLocal.set(log);
     }
 
 
@@ -97,11 +91,6 @@ public class LogAop {
                 String requestUri=request.getRequestURI();//请求的Uri
                 String method=request.getMethod();        //请求的方法类型(post/get)
                 Map<String,String[]> params=request.getParameterMap(); //请求提交的参数
-                String operationBeforData = logThreadLocal.get().getOperationBeforData();
-                String operationAfterData = JSONObject.fromObject(logOperatorDataBeforAfterService.queryApiVendorBalanceById((Integer) args[0])).toString();
-                long beginTime = beginTimeThreadLocal.get().getTime();//得到线程绑定的局部变量（开始时间）
-                long endTime = System.currentTimeMillis();  //2、结束时间
-
 
                 Log log=new Log();
                 log.setTitle(getControllerMethodDescription2(joinPoint));
@@ -110,11 +99,7 @@ public class LogAop {
                 log.setRequestUri(requestUri);
                 log.setMethod(method);
                 log.setParams(JSONObject.fromObject(params).toString());
-                log.setOperationBeforData(operationBeforData);
-                log.setOperationAfterData(operationAfterData);
                 log.setUserId(user.getId());
-                log.setBeginTime(beginTimeThreadLocal.get());
-                log.setTimeOut(DateUtils.formatDateTime(endTime - beginTime));
                 new SaveLogThread(log, logService).start();
                 log.setId(log.getId());
                 logThreadLocal.set(log);

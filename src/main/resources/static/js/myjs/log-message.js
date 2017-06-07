@@ -11,20 +11,16 @@ var LogLeftBar = function () {
             function fnFormatDetails ( oTable, nTr)
             {
                 var aData = oTable.fnGetData( nTr );
-                var sOut = '<table>';
+                var sOut = '<table style="width: 100%">';
                 sOut += '<tr><th style="width: 15%">标题:</th><td>'+ aData[1] +'</td></tr>';
                 sOut += '<tr><th>类型:</th><td>'+ aData[2] +'</td></tr>';
                 sOut += '<tr><th>请求地址:</th><td>'+ aData[3] +'</td></tr>';
                 sOut += '<tr><th>URI:</th><td>'+ aData[4] +'</td></tr>';
                 sOut += '<tr><th>请求方式:</th><td>'+ aData[5] +'</td></tr>';
                 sOut += '<tr><th>提交参数:</th><td>'+ aData[6] +'</td></tr>';
-                sOut += '<tr><th>操作前数据:</th><td>'+ aData[7] +'</td></tr>';
-                sOut += '<tr><th>操作后数据:</th><td>'+ aData[8] +'</td></tr>';
-                sOut += '<tr><th>异常:</th><td>'+ aData[9] +'</td></tr>';
-                sOut += '<tr><th>操作开始时间:</th><td>'+ aData[10] +'</td></tr>';
-                sOut += '<tr><th>请求超时:</th><td>'+ aData[11] +'</td></tr>';
-                sOut += '<tr><th>操作人:</th><td>'+ aData[12] +'</td></tr>';
-                sOut += '<tr><th>创建时间:</th><td>'+ aData[13] +'</td></tr>';
+                sOut += '<tr><th>异常:</th><td>'+ aData[7] +'</td></tr>';
+                sOut += '<tr><th>操作人:</th><td>'+ aData[8] +'</td></tr>';
+                sOut += '<tr><th>创建时间:</th><td>'+ aData[9] +'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -60,11 +56,7 @@ var LogLeftBar = function () {
 
             var oTable = $('#sample_1').dataTable({
                 "aoColumns": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
+                    {"bSortable": false},
                     null,
                     null,
                     null,
@@ -75,7 +67,7 @@ var LogLeftBar = function () {
                     null,
                     null
                 ],
-                "aaSorting": [[13, 'desc']],
+                "aaSorting": [[9, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

@@ -98,7 +98,7 @@
 
                             <div class="pull-left margin-right-20 head-search-bottom">
 
-                                <label class="control-label">创建时间</label>
+                                <label class="control-label">操作时间</label>
 
                                 <div class="controls">
 
@@ -146,13 +146,13 @@
                                         <th>URI</th>
                                         <th>请求方式</th>
                                         <th>提交参数</th>
-                                        <th>操作前数据</th>
-                                        <th>操作后数据</th>
+                                       <#-- <th>操作前数据</th>
+                                        <th>操作后数据</th>-->
                                         <th>异常</th>
-                                        <th>操作开始时间</th>
-                                        <th>请求超时</th>
+                                      <#--  <th>操作开始时间</th>
+                                        <th>请求超时</th>-->
                                         <th>操作人</th>
-                                        <th>创建时间</th>
+                                        <th>操作时间</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -169,11 +169,11 @@
                                                 <td class="table-td-layout-fixed">${log.requestUri!'无'}</td>
                                                 <td class="table-td-layout-fixed">${log.method!'无'}</td>
                                                 <td class="table-td-layout-fixed">${log.params!'无'}</td>
-                                                <td class="table-td-layout-fixed">${log.operationBeforData!'无'}</td>
-                                                <td class="table-td-layout-fixed">${log.operationAfterData!'无'}</td>
+                                           <#--     <td class="table-td-layout-fixed">${log.operationBeforData!'无'}</td>
+                                                <td class="table-td-layout-fixed">${log.operationAfterData!'无'}</td>-->
                                                 <td class="table-td-layout-fixed">${log.error!'无'}</td>
-                                                <td class="table-td-layout-fixed">${(log.beginTime?datetime)!'无'}</td>
-                                                <td class="table-td-layout-fixed">${log.timeOut!'无'}</td>
+                                              <#--  <td class="table-td-layout-fixed">${(log.beginTime?datetime)!'无'}</td>-->
+                                             <#--   <td class="table-td-layout-fixed">${log.timeOut!'无'}</td>-->
                                                 <td class="table-td-layout-fixed">${(log.user.email)!'无'}</td>
                                                 <td class="table-td-layout-fixed">${(log.createTime?datetime)!'无'}</td>
                                             </tr>
@@ -204,8 +204,6 @@
     <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
 
     <script src="/js/myjs/log-message.js"></script>
-
-
 
     <script type="text/javascript">
 

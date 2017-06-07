@@ -198,6 +198,7 @@ public class CompanyController {
         JSONArray jsonArray = JSONArray.fromObject(customerBalanceModifyReasonList);
         return jsonArray.toString();
     }
+
     /**
      * 充值/扣费
      * @param customerId
@@ -207,6 +208,7 @@ public class CompanyController {
      */
     @RequestMapping("/update-customer-balance")
     @ResponseBody
+    @SystemControllerLog(description = "账号充值/扣费")
     public String updateCustomerBalance(Integer customerId,Integer reason,String amount){
         System.out.println(customerId);
         System.out.println(reason);
@@ -238,6 +240,7 @@ public class CompanyController {
         }
         return gson.toJson(map);
     }
+
     /**
      * 禁用账号
      * @param authId
@@ -245,6 +248,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/ban")
     @ResponseBody
+    @SystemControllerLog(description = "账号禁用")
     public String customerBan(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -256,6 +260,7 @@ public class CompanyController {
         map.put("error","禁用失败！");
         return gson.toJson(map);
     }
+
     /**
      * 解禁账号
      * @param authId
@@ -263,6 +268,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/unban")
     @ResponseBody
+    @SystemControllerLog(description = "账号解禁")
     public String customerUnBan(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -281,6 +287,7 @@ public class CompanyController {
      */
     @RequestMapping("/ban")
     @ResponseBody
+    @SystemControllerLog(description = "公司禁用")
     public String companyBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] companyId = request.getParameterValues("companyId[]");
@@ -295,6 +302,7 @@ public class CompanyController {
      */
     @RequestMapping("/unban")
     @ResponseBody
+    @SystemControllerLog(description = "公司解禁")
     public String companyUnBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] companyId = request.getParameterValues("companyId[]");
@@ -325,6 +333,7 @@ public class CompanyController {
      */
     @RequestMapping("/ban-api")
     @ResponseBody
+    @SystemControllerLog(description = "产品权限禁用")
     public String banCompanyApiById(Integer companyId,Integer id){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -344,6 +353,7 @@ public class CompanyController {
      */
     @RequestMapping("/unban-api")
     @ResponseBody
+    @SystemControllerLog(description = "产品权限解禁")
     public String unBanCompanyApiById(Integer id){
         companyService.unBanCompanyApi(id);
         return "";
@@ -371,6 +381,7 @@ public class CompanyController {
      */
     @RequestMapping("/add-company-api")
     @ResponseBody
+    @SystemControllerLog(description = "新增产品权限")
     public String addCompanyApi(int companyId,String apiTypeId,String price){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
@@ -420,7 +431,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/delete-ip")
     @ResponseBody
-    @SystemControllerLog(description = "删除正式账号Ip")
+    @SystemControllerLog(description = "正式账号删除Ip")
     public String deleteIpById(Integer customerId,Integer id) throws Exception {
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -445,6 +456,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/add/ip")
     @ResponseBody
+    @SystemControllerLog(description = "正式账号添加IP")
     public String addCustomerIp(Integer customerId,String beginIp,String endIp){
         Map<String,Object> map = new HashMap<>();
         Gson gson = new Gson();

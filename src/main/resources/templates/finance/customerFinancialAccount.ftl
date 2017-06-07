@@ -377,8 +377,8 @@
                                         <th>余额（单位：元）</th>
                                         <th>充值总额（单位：元）</th>
                                         <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
-                                        <th>${year!''}年${month!''}月第${week!''}周充值（单位：元）</th>
-                                        <th>${year!''}年${month!''}月第${week!''}周消费（单位：元）</th>
+                                        <th>${year!''}年第${week!''}周充值（单位：元）</th>
+                                        <th>${year!''}年第${week!''}周消费（单位：元）</th>
                                         <th>${year!''}年${month!''}月充值（单位：元）</th>
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
@@ -424,7 +424,7 @@
                                                 <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="本月消费"><#if customer.currMonthAmount??>${(-customer.currMonthAmount/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="当月消费"><#if customer.currDayAmount??>${(-customer.currDayAmount/100.0)?c}<#else >0</#if></td>
+                                                <td data-title="当天消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})"><#if customer.currDayAmount??>${(-customer.currDayAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="产品类型" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
                                                         <#list customer.companyApiList as companyApi>
@@ -518,6 +518,31 @@
                                 </table>
                             </div>
 
+                        <#--客户当天产品类型消费弹框-->
+                            <div id="form_modal_customer_curr_day_api_type_consume" class="modal hide fade myModalCurrDayApiTypeConsume" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_customer_curr_day_api_type_consume" aria-hidden="true">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    <h4 id="myModalLabel_customer_curr_day_api_type_consume"><span id="customer_company_name"></span>当天各产品类型消费情况</h4>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <table class="table table-striped table-hover table-bordered table-condensed" id="simple_customer_curr_day_api_type_consume">
+                                        <thead>
+                                        <tr>
+                                            <th>产品类型</th>
+                                            <th>当前价格</th>
+                                            <th>总消费额（单位：元）</th>
+                                            <th>请求次数</th>
+                                            <th>成功次数</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -553,6 +578,8 @@
     <script src="/js/myjs/customer-finance-account-forbid.js"></script>
 
     <script src="/js/oldlocal/customer-finance-account.js"></script>
+
+    <script src="/js/oldlocal/customer-finance-curr-day-api-type-consume.js"></script>
 
     <script src="/js/locales/dataTables-sort-plungin.js"></script>
 
