@@ -22,6 +22,7 @@ public interface LogService {
      * @param log
      * @return
      */
+
     public boolean updateLog(Log log);
 
     /**

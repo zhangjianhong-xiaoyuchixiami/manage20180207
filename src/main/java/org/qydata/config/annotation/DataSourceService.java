@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Created by jonhn on 2017/4/14.
  */
-@Target({ ElementType.PARAMETER, ElementType.METHOD })
+@Target({ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DataSourceService {
 

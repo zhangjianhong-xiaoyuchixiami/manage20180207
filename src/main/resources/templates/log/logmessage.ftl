@@ -36,13 +36,13 @@
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" id="reasonId" name="reasonId" value="1">入库
+                                        <input type="checkbox" id="typeId" name="typeId" value="1">入库
 
                                     </label>
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" id="reasonId" name="reasonId" value="2">错误
+                                        <input type="checkbox" id="typeId" name="typeId" value="2">错误
 
                                     </label>
 
@@ -56,7 +56,7 @@
 
                                 <div class="controls">
 
-                                    <input id="beginDate" name="beginDate" class="m-wrap small-big" type="text">
+                                    <input id="title" name="title" class="m-wrap small-big" type="text">
 
                                 </div>
 
@@ -67,7 +67,7 @@
 
                                 <div class="controls">
 
-                                    <input id="beginDate" name="beginDate" class="m-wrap small-big" type="text">
+                                    <input id="address" name="address" class="m-wrap small-big" type="text">
 
                                 </div>
 
@@ -78,7 +78,7 @@
 
                                 <div class="controls">
 
-                                    <input id="beginDate" name="beginDate" class="m-wrap small-big" type="text">
+                                    <input id="reqWay" name="reqWay" class="m-wrap small-big" type="text">
 
                                 </div>
 
@@ -90,7 +90,7 @@
 
                                 <div class="controls">
 
-                                    <input id="beginDate" name="beginDate" class="m-wrap small-big" type="text">
+                                    <input id="operator" name="operator" class="m-wrap small-big" type="text">
 
                                 </div>
 
@@ -104,7 +104,7 @@
 
                                     <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
 
-                                        <input id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+                                        <input id="operDate" name="operDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
 
                                     </div>
 

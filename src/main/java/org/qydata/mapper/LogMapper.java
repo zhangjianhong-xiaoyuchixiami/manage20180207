@@ -15,14 +15,14 @@ public interface LogMapper {
      * @param log
      * @return
      */
-    public boolean createLog(Log log);
+    public int createLog(Log log);
 
     /**
      * 修改日志
      * @param log
      * @return
      */
-    public boolean updateLog(Log log);
+    public int updateLog(Log log);
 
     /**
      * 查询日志

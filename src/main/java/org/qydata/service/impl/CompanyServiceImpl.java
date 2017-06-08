@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.*;
@@ -156,53 +157,52 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public int updateCustomerBalance(Integer customerId, Integer reason, Long amount) {
+    @SystemServiceLog(description = "账号充值/扣费")
+    public int updateCustomerBalance(Integer customerId, Integer reason, Long amount) throws Exception{
         final String uri = "https://192.168.111.147:8989/admin/customer/balance/charge";
-        int result = 0;
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("cid",customerId);
         map.put("rid",reason);
         map.put("amount",amount*100);
-        try {
-            result = HttpClientUtil.doGet(uri,map,null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+
+       int  code = HttpClientUtil.doGet(uri,map,null);
+       if (200 == code){
+           return code;
+       }
+        throw new Exception("https请求异常，请求状态码statusCode="+code);
     }
 
     @Override
-    public int updateCustomerBan(String authId) {
+    @SystemServiceLog(description = "账号禁用")
+    public int updateCustomerBan(String authId) throws Exception{
         final String uri = "https://192.168.111.147:8989/admin/customer/ban";
-        int result = 0;
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("authid",authId);
-        try {
-            result = HttpClientUtil.doGet(uri,map,null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
         }
-        return result;
+        throw new Exception("https请求异常，请求状态码statusCode="+code);
     }
 
     @Override
-    public int updateCustomerUnBan(String authId) {
+    @SystemServiceLog(description = "账号解禁")
+    public int updateCustomerUnBan(String authId) throws Exception{
         final String uri = "https://192.168.111.147:8989/admin/customer/unban";
-        int result = 0;
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("authid",authId);
-        try {
-            result = HttpClientUtil.doGet(uri,map,null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
         }
-        return result;
+        throw new Exception("https请求异常，请求状态码statusCode="+code);
     }
 
     @Override
+    @SystemServiceLog(description = "公司禁用")
     public Map<String,Object> updateCompanyBan(String [] companyId) {
         final String uri = "https://192.168.111.147:8989/admin/company/ban";
         Map<String,Object> mapResu = new HashMap<>();
@@ -214,7 +214,6 @@ public class CompanyServiceImpl implements CompanyService {
             try {
                 int result = HttpClientUtil.doGet(uri,map,null);
                 if (result != 200){
-
                     sb.append(companyMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
                     mapResu.put("fail","公司名称是："+sb+"禁用失败其余禁用正常");
                 }
@@ -226,6 +225,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @SystemServiceLog(description = "公司解禁")
     public Map<String,Object> updateCompanyUnBan(String [] companyId) {
         final String uri = "https://192.168.111.147:8989/admin/company/unban";
         Map<String,Object> mapResu = new HashMap<>();
@@ -254,24 +254,25 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public int banCompanyApi(Integer companyId,Integer id) {
+    @SystemServiceLog(description = "产品权限禁用")
+    public int banCompanyApi(Integer companyId,Integer id)throws Exception {
         final String uri = "https://192.168.111.147:8989/admin/company/api/del";
-        int result = 0;
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("cid",companyId);
         map.put("id",id);
-        try {
-            result = HttpClientUtil.doGet(uri,map,null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
         }
-        return result;
+        throw new Exception("https请求异常，请求状态码statusCode="+code);
     }
 
     @Override
-    public boolean unBanCompanyApi(Integer id) {
-        return companyMapper.unBanCompanyApi(id);
+    @SystemServiceLog(description = "产品权限解禁")
+    public int unBanCompanyApi(Integer id) {
+        companyMapper.unBanCompanyApi(id);
+        return 0;
     }
 
     @Override
@@ -310,7 +311,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public int addCompanyApi(Integer companyId, String apiTypeId, String price) {
+    @SystemServiceLog(description = "新增产品权限")
+    public int addCompanyApi(Integer companyId, String apiTypeId, String price)throws Exception {
         String uri = "https://192.168.111.147:8989/admin/company/api/put";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
@@ -323,13 +325,39 @@ public class CompanyServiceImpl implements CompanyService {
             map.put("tid",apiTypeIds[0]);
             map.put("stid",apiTypeIds[1]);
         }
-        int result = 0;
-        try {
-            result = HttpClientUtil.doGet(uri,map,null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
         }
-        return result;
+        throw new Exception("https请求异常，请求状态码statusCode="+code);
+
+    }
+
+    @Override
+    @SystemServiceLog(description = "修改产品价格")
+    public int updateCompanyApiPrice(Integer companyId, String apiTypeId, String price) throws Exception{
+
+        String uri = "https://192.168.111.147:8989/admin/company/api/put";
+        Map<String,Object> map = new HashMap<>();
+        map.put("k",123456);
+        map.put("cid",companyId);
+        map.put("price",(int)(Double.parseDouble(price)*100));
+        if (RegexUtil.isTwoUnderLine(apiTypeId)){
+            Integer tid = companyMapper.queryApiTypeIdByName(apiTypeId);
+            map.put("tid",tid);
+
+        }else {
+            String apiTypeIds [] = apiTypeId.split("--");
+            Integer tid = companyMapper.queryApiTypeIdByName(apiTypeIds[0]);
+            Integer stid = companyMapper.queryStidByName(apiTypeIds[1]);
+            map.put("tid",tid);
+            map.put("stid",stid);
+        }
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
+        }
+        throw new Exception("https请求异常，请求状态码statusCode="+code);
 
     }
 
@@ -339,9 +367,9 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public int addCustomerIp(Integer customerId,String begIp, String endIp) {
+    @SystemServiceLog(description = "正式账号添加IP")
+    public int addCustomerIp(Integer customerId,String begIp, String endIp) throws Exception{
         final String uri = "https://192.168.111.147:8989/admin/customer/ip/add";
-        int result = 0;
         System.out.println("customerId------"+customerId);
         System.out.println("begIp------"+begIp);
         System.out.println("endIp------"+endIp);
@@ -350,17 +378,17 @@ public class CompanyServiceImpl implements CompanyService {
         map.put("cid",customerId);
         map.put("bip",begIp);
         map.put("eip",endIp);
-        try {
-            result = HttpClientUtil.doGet(uri,map,null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
         }
-        return result;
+        throw new Exception("https请求异常，请求状态码statusCode="+code);
     }
 
     @Override
+    @SystemServiceLog(description = "正式账号删除Ip")
     public int deleteIpById(Integer customerId,Integer id) throws Exception {
-        String uri = "https://192.168.111.147:8989/admin/customer/ip/del";
+        String uri = "https://192.168.111.147:8989/admin/customer/ip/del00";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("cid",customerId);

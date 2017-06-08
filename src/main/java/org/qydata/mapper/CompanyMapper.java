@@ -124,4 +124,19 @@ public interface CompanyMapper {
      * @return
      */
     public boolean deleteIpById(Integer id);
+
+    /**
+     *通过产品类型查找Id，用于修改产品价格
+     * @param name
+     * @return
+     */
+    public Integer queryApiTypeIdByName(String name);
+
+    /**
+     *通过产品子类型查找Id，用于修改产品价格
+     * @param name
+     * @return
+     */
+    public Integer queryStidByName(String name);
+
 }

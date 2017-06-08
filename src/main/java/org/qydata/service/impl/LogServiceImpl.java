@@ -6,6 +6,8 @@ import org.qydata.mapper.LogMapper;
 import org.qydata.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 import java.util.Map;
@@ -20,14 +22,25 @@ public class LogServiceImpl implements LogService {
 
     @Override
     @DataSourceService
+    @Transactional
     public boolean createLog(Log log) {
-        return logMapper.createLog(log);
+        int result = logMapper.createLog(log);
+        if (result != 1){
+            return false;
+        }
+        return true;
     }
 
     @Override
     @DataSourceService
+    @Transactional
     public boolean updateLog(Log log) {
-        return logMapper.updateLog(log);
+       int result = logMapper.updateLog(log);
+       if (result != 1){
+           TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+           return false;
+       }
+        return true;
     }
 
     @Override

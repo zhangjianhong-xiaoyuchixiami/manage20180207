@@ -419,7 +419,7 @@
                                 <div class="control-group"></div>
                                 <div class="control-group"></div>
                                 <div id="error_alert_update_balance"></div>
-                                <div id="update_balance_customerId" class="controls" style="display: none;"></div>
+                                <span id="update_balance_customerId" style="display: none;"></span>
                                 <div id="" class="control-group">
                                     <label class="control-label">请输入金额<span class="required">*</span></label>
                                     <div class="controls">

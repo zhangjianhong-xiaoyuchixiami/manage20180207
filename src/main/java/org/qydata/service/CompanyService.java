@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.CompanyApi;
@@ -68,35 +69,40 @@ public interface CompanyService {
      * @param amount
      * @return
      */
-    public int updateCustomerBalance(Integer customerId,Integer reason,Long amount);
+    @SystemServiceLog(description = "账号充值/扣费")
+    public int updateCustomerBalance(Integer customerId,Integer reason,Long amount)throws Exception;
 
     /**
      * 禁用账号
      * @param authId
      * @return
      */
-    public int updateCustomerBan(String authId);
+    @SystemServiceLog(description = "账号禁用")
+    public int updateCustomerBan(String authId)throws Exception;
 
     /**
      * 解禁账号
      * @param authId
      * @return
      */
-    public int updateCustomerUnBan(String authId);
+    @SystemServiceLog(description = "账号解禁")
+    public int updateCustomerUnBan(String authId)throws Exception;
 
     /**
      * 禁用公司
      * @param companyId
      * @return
      */
-    public Map<String,Object> updateCompanyBan(String [] companyId);
+    @SystemServiceLog(description = "公司禁用")
+    public Map<String,Object> updateCompanyBan(String [] companyId)throws Exception;
 
     /**
      * 解禁公司
      * @param companyId
      * @return
      */
-    public Map<String,Object> updateCompanyUnBan(String [] companyId);
+    @SystemServiceLog(description = "公司解禁")
+    public Map<String,Object> updateCompanyUnBan(String [] companyId)throws Exception;
 
     /**
      * 给正式账号添加Ip
@@ -104,7 +110,8 @@ public interface CompanyService {
      * @param endIp
      * @return
      */
-    public int addCustomerIp(Integer customerId,String begIp,String endIp);
+    @SystemServiceLog(description = "正式账号添加IP")
+    public int addCustomerIp(Integer customerId,String begIp,String endIp)throws Exception;
 
     /**
      * 根据公司Id查找公司已拥有权限的Api
@@ -118,14 +125,17 @@ public interface CompanyService {
      * @param id
      * @return
      */
-    public int banCompanyApi(Integer companyId,Integer id);
+    @SystemServiceLog(description = "产品权限禁用")
+    public int banCompanyApi(Integer companyId,Integer id)throws Exception;
 
     /**
      * 解禁产品权限
      * @param id
      * @return
      */
-    public boolean unBanCompanyApi(Integer id);
+    @SystemServiceLog(description = "产品权限解禁")
+    public int unBanCompanyApi(Integer id)throws Exception;
+
 
     /**
      * 查询可会未拥有的产品权限列表,用于给可会分配新的权限
@@ -135,13 +145,24 @@ public interface CompanyService {
     public List<ApiTypeSubType> queryNotHaveApi(Integer companyId);
 
     /**
-     * 新增保存产品权限
+     * 保存产品权限
      * @param companyId
      * @param apiTypeId
      * @param price
      * @return
      */
-    public int addCompanyApi(Integer companyId,String apiTypeId,String price);
+    @SystemServiceLog(description = "新增产品权限")
+    public int addCompanyApi(Integer companyId,String apiTypeId,String price)throws Exception;
+
+    /**
+     * 修改产品价格
+     * @param companyId
+     * @param apiTypeId
+     * @param price
+     * @return
+     */
+    @SystemServiceLog(description = "修改产品价格")
+    public int updateCompanyApiPrice(Integer companyId,String apiTypeId,String price)throws Exception;
 
     /**
      * 根据账号Id查找Ip
@@ -155,6 +176,7 @@ public interface CompanyService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "正式账号删除Ip")
     public int deleteIpById(Integer customerId,Integer id) throws Exception;
 
 

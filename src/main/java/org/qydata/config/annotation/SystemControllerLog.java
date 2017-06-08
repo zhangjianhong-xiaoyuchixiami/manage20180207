@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  */
 
 
-@Target({ ElementType.PARAMETER, ElementType.METHOD })
+@Target({ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SystemControllerLog {
 

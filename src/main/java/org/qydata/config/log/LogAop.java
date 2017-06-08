@@ -62,11 +62,11 @@ public class LogAop {
     }
 
     /**
-     * 前置通知 用于拦截Controller层记录用户的操作的开始时间
+     * 前置通知 用于拦截Service层记录用户的操作的开始时间
      * @param joinPoint 切点
      * @throws InterruptedException
      */
-    @Before("controllerAspect()")
+    @Before("serviceAspect()")
     @Order(value = 1)
     public void doBefore(JoinPoint joinPoint) throws InterruptedException{
         Date beginTime = new Date();
@@ -75,11 +75,11 @@ public class LogAop {
 
 
     /**
-     * 后置通知 用于拦截Controller层记录用户的操作
+     * 后置通知 用于拦截Service层记录用户的操作
      * @param joinPoint 切点
      */
     @SuppressWarnings("unchecked")
-    @After("controllerAspect()")
+    @After("serviceAspect()")
     @Order(value = 1)
     public void doAfter(JoinPoint joinPoint) {
         try {
@@ -93,7 +93,7 @@ public class LogAop {
                 Map<String,String[]> params=request.getParameterMap(); //请求提交的参数
 
                 Log log=new Log();
-                log.setTitle(getControllerMethodDescription2(joinPoint));
+                log.setTitle(getServiceMethodDescription(joinPoint));
                 log.setTypeId(typeId);
                 log.setRemoteAddr(remoteAddr);
                 log.setRequestUri(requestUri);
@@ -114,8 +114,8 @@ public class LogAop {
      * @param joinPoint
      * @param e
      */
-    @AfterThrowing(pointcut = "controllerAspect()", throwing = "e")
-    @Order(value = 10)
+    @AfterThrowing(pointcut = "serviceAspect()", throwing = "e")
+    @Order(value = 1)
     public  void doAfterThrowing(JoinPoint joinPoint, Exception  e) {
         System.out.println("*********************************异常*************************************");
         Log log = logThreadLocal.get();
@@ -127,15 +127,14 @@ public class LogAop {
     /**
      * 获取注解中对方法的描述信息 用于service层注解
      * @param joinPoint 切点
-     * @return discription
+     * @return description
      */
-    public static String getServiceMthodDescription2(JoinPoint joinPoint) {
+    public static String getServiceMethodDescription(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        SystemServiceLog serviceLog = method
-                .getAnnotation(SystemServiceLog.class);
-        String discription = serviceLog.description();
-        return discription;
+        SystemServiceLog serviceLog = method.getAnnotation(SystemServiceLog.class);
+        String description = serviceLog.description();
+        return description;
     }
 
 
@@ -143,14 +142,14 @@ public class LogAop {
      * 获取注解中对方法的描述信息 用于Controller层注解
      *
      * @param joinPoint 切点
-     * @return discription
+     * @return description
      */
-    public static String getControllerMethodDescription2(JoinPoint joinPoint) {
+    public static String getControllerMethodDescription(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         SystemControllerLog controllerLog = method.getAnnotation(SystemControllerLog.class);
-        String discription = controllerLog.description();
-        return discription;
+        String description = controllerLog.description();
+        return description;
     }
 
     /**

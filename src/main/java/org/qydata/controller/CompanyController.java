@@ -2,7 +2,6 @@ package org.qydata.controller;
 
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
-import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.entity.*;
 import org.qydata.service.CompanyService;
@@ -208,7 +207,6 @@ public class CompanyController {
      */
     @RequestMapping("/update-customer-balance")
     @ResponseBody
-    @SystemControllerLog(description = "账号充值/扣费")
     public String updateCustomerBalance(Integer customerId,Integer reason,String amount){
         System.out.println(customerId);
         System.out.println(reason);
@@ -232,7 +230,12 @@ public class CompanyController {
             map.put("reasonMessage","请选择理由!");
             return gson.toJson(map);
         }
-        int code = companyService.updateCustomerBalance(customerId, reason, Long.parseLong(amount));
+        int code = 0;
+        try {
+            code = companyService.updateCustomerBalance(customerId, reason, Long.parseLong(amount));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (200 == code ){
             map.put("successMessage","恭喜你，操作成功！");
         }else {
@@ -248,11 +251,15 @@ public class CompanyController {
      */
     @RequestMapping("/customer/ban")
     @ResponseBody
-    @SystemControllerLog(description = "账号禁用")
     public String customerBan(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
-        int code = companyService.updateCustomerBan(authId);
+        int code = 0;
+        try {
+            code = companyService.updateCustomerBan(authId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (200 == code){
             map.put("success","禁用成功！");
             return gson.toJson(map);
@@ -268,11 +275,15 @@ public class CompanyController {
      */
     @RequestMapping("/customer/unban")
     @ResponseBody
-    @SystemControllerLog(description = "账号解禁")
     public String customerUnBan(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
-        int code = companyService.updateCustomerUnBan(authId);
+        int code = 0;
+        try {
+            code = companyService.updateCustomerUnBan(authId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (200 == code){
             map.put("success","禁用成功！");
             return gson.toJson(map);
@@ -287,11 +298,15 @@ public class CompanyController {
      */
     @RequestMapping("/ban")
     @ResponseBody
-    @SystemControllerLog(description = "公司禁用")
     public String companyBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] companyId = request.getParameterValues("companyId[]");
-        Map<String,Object> mapResu = companyService.updateCompanyBan(companyId);
+        Map<String,Object> mapResu = null;
+        try {
+            mapResu = companyService.updateCompanyBan(companyId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return gson.toJson(mapResu);
     }
 
@@ -302,11 +317,15 @@ public class CompanyController {
      */
     @RequestMapping("/unban")
     @ResponseBody
-    @SystemControllerLog(description = "公司解禁")
     public String companyUnBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] companyId = request.getParameterValues("companyId[]");
-        Map<String,Object> mapResu = companyService.updateCompanyUnBan(companyId);
+        Map<String,Object> mapResu = null;
+        try {
+            mapResu = companyService.updateCompanyUnBan(companyId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return gson.toJson(mapResu);
     }
 
@@ -333,11 +352,15 @@ public class CompanyController {
      */
     @RequestMapping("/ban-api")
     @ResponseBody
-    @SystemControllerLog(description = "产品权限禁用")
     public String banCompanyApiById(Integer companyId,Integer id){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
-        int code = companyService.banCompanyApi(companyId,id);
+        int code = 0;
+        try {
+            code = companyService.banCompanyApi(companyId,id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (200 == code){
             map.put("success","操作成功！");
             return gson.toJson(map);
@@ -353,9 +376,12 @@ public class CompanyController {
      */
     @RequestMapping("/unban-api")
     @ResponseBody
-    @SystemControllerLog(description = "产品权限解禁")
     public String unBanCompanyApiById(Integer id){
-        companyService.unBanCompanyApi(id);
+        try {
+            companyService.unBanCompanyApi(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "";
     }
 
@@ -373,7 +399,7 @@ public class CompanyController {
     }
 
     /**
-     * 新增保存产品权限
+     * 保存产品权限
      * @param companyId
      * @param apiTypeId
      * @param price
@@ -381,7 +407,6 @@ public class CompanyController {
      */
     @RequestMapping("/add-company-api")
     @ResponseBody
-    @SystemControllerLog(description = "新增产品权限")
     public String addCompanyApi(int companyId,String apiTypeId,String price){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
@@ -402,7 +427,51 @@ public class CompanyController {
                 return gson.toJson(map);
             }
         }
-        int code = companyService.addCompanyApi(companyId, apiTypeId, price);
+        int code = 0;
+        try {
+            code = companyService.addCompanyApi(companyId, apiTypeId, price);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (200 == code){
+            map.put("successMessage","操作成功!");
+            return gson.toJson(map);
+        }
+        map.put("errorMessage","操作失败!");
+        return gson.toJson(map);
+    }
+
+    /**
+     * 修改产品价格
+     * @param companyId
+     * @param apiTypeId
+     * @param price
+     * @return
+     */
+    @RequestMapping("/mod-company-api-price")
+    @ResponseBody
+    public String midCompanyApiPrice(int companyId,String apiTypeId,String price){
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        if(RegexUtil.isNull(price)){
+            map.put("priceMessage","请输入金额!");
+            return gson.toJson(map);
+        }
+        if(!RegexUtil.isFloatZero(price)){
+            map.put("priceMessage","金额格式不正确!");
+            return gson.toJson(map);
+        }else {
+            if (Double.parseDouble(price)<=0){
+                map.put("priceMessage","金额必须大于0!");
+                return gson.toJson(map);
+            }
+        }
+        int code = 0;
+        try {
+            code = companyService.updateCompanyApiPrice(companyId, apiTypeId, price);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (200 == code){
             map.put("successMessage","操作成功!");
             return gson.toJson(map);
@@ -431,15 +500,14 @@ public class CompanyController {
      */
     @RequestMapping("/customer/delete-ip")
     @ResponseBody
-    @SystemControllerLog(description = "正式账号删除Ip")
-    public String deleteIpById(Integer customerId,Integer id) throws Exception {
+    public String deleteIpById(Integer customerId,Integer id) {
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
         int code = 0;
         try {
             code = companyService.deleteIpById(customerId, id);
         }catch (Exception e){
-            throw e;
+             e.printStackTrace();
         }
         if (200 == code){
             map.put("success","操作成功！");
@@ -456,7 +524,6 @@ public class CompanyController {
      */
     @RequestMapping("/customer/add/ip")
     @ResponseBody
-    @SystemControllerLog(description = "正式账号添加IP")
     public String addCustomerIp(Integer customerId,String beginIp,String endIp){
         Map<String,Object> map = new HashMap<>();
         Gson gson = new Gson();
@@ -468,7 +535,12 @@ public class CompanyController {
             map.put("endIpMessage","请输入正确的Ip格式，如：192.168.111.112!");
             return gson.toJson(map);
         }
-        int result = companyService.addCustomerIp(customerId,beginIp,endIp);
+        int result = 0;
+        try {
+            result = companyService.addCustomerIp(customerId,beginIp,endIp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (200 == result){
             map.put("success","操作成功");
             return gson.toJson(map);

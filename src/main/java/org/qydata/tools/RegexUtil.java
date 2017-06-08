@@ -12,18 +12,20 @@ import java.util.regex.Pattern;
  */
 public class RegexUtil {
 
-    public static void main(String[] args) {
-        int aa [] = {1,2,3};
-        int bb [] = {1,2,3,4};
-        if (aa.length <= bb.length){
-            System.out.println("nihao");
-        }else{
-            System.out.println("tahao");
+    /**
+     * 判断是否含有“--”
+     * @param str
+     * @return
+     */
+    public final static boolean isTwoUnderLine(String str){
+        if (str.contains("-")){
+            return false;
         }
+        return true;
     }
 
     /**
-     * 判断是否含有“.”
+     * 判断是否含有“-”
      * @param str
      * @return
      */

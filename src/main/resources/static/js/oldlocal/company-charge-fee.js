@@ -9,14 +9,8 @@ function chargeBalance(customerId) {
         dataType: "json",
         success: function (data) {
             $("#error_alert_update_balance").empty();
-            $("#update_balance_customerId").empty();
+            $("#update_balance_customerId").html(customerId);
             $("#update_balance_amountMsg").empty();
-            var op=document.createElement("input");
-            op.value=customerId;
-            op.type="text";
-            op.id="customerId";
-            op.name="customerId";
-            $("#authId-account-controls").append(op);
             if(data != null){
                 $("#update_balance_reasonId ").empty();
                 $("#update_balance_reasonId").append("<option value=''>请选择...</option>");
@@ -75,7 +69,7 @@ $("#update_balance_reasonId").focus(function () {
 $("#update-balance-btn-black-btn-primary").on("click",function () {
 
     if (confirm("确定要给该账号充值吗？")){
-        var customerId=$("#customerId").val();
+        var customerId=$("#update_balance_customerId").html();
         var amount=$("#update_balance_amount").val();
         var reason=$("#update_balance_reasonId").val();
         $.ajax({

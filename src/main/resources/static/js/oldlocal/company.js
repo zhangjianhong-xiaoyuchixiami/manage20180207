@@ -80,44 +80,48 @@ $("#batchUnBanCompany").on('click',function () {
 
 /*禁用账号*/
 function banCustomer(authId) {
-    $.ajax({
-        type: "post",
-        url: "/company/customer/ban",
-        data: {"authId": authId},
-        dataType: "json",
-        success: function (data) {
-            if (data != null){
-                if (data.success != null){
-                    alert("禁用成功");
-                    window.location.href=window.location.href;
-                    return;
-                }
-                if (data.error != null){
-                    alert("禁用失败");
+    if (confirm("确定要执行当前操作吗？")) {
+        $.ajax({
+            type: "post",
+            url: "/company/customer/ban",
+            data: {"authId": authId},
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    if (data.success != null) {
+                        alert("禁用成功");
+                        window.location.href = window.location.href;
+                        return;
+                    }
+                    if (data.error != null) {
+                        alert("禁用失败");
+                    }
                 }
             }
-        }
-    })
+        })
+    }
 }
 
 /*解禁账号*/
 function unBanCustomer(authId) {
-    $.ajax({
-        type: "post",
-        url: "/company/customer/unban",
-        data: {"authId": authId},
-        dataType: "json",
-        success: function (data) {
-            if (data != null){
-                if (data.success != null){
-                    alert("启用成功");
-                    window.location.href=window.location.href;
-                    return;
-                }
-                if (data.error != null){
-                    alert("启用失败");
+    if (confirm("确定要执行当前操作吗？")) {
+        $.ajax({
+            type: "post",
+            url: "/company/customer/unban",
+            data: {"authId": authId},
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    if (data.success != null) {
+                        alert("启用成功");
+                        window.location.href = window.location.href;
+                        return;
+                    }
+                    if (data.error != null) {
+                        alert("启用失败");
+                    }
                 }
             }
-        }
-    })
+        })
+    }
 }
