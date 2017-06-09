@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.entity.User;
 import org.qydata.entity.log.Log;
 
 import java.util.List;
@@ -30,4 +31,10 @@ public interface LogMapper {
      * @return
      */
     public List<Log> queryLog(Map<String,Object> map);
+
+    /**
+     * 查询用户，用于日志界面搜索操作人
+     * @return
+     */
+    public List<User> queryUser();
 }

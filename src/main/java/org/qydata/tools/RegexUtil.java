@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  */
 public class RegexUtil {
 
+
     /**
      * 判断是否含有“--”
      * @param str

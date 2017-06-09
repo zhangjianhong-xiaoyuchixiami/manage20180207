@@ -7,7 +7,6 @@ import org.qydata.entity.CompanyApi;
 import org.qydata.entity.CustomerBalanceModifyReason;
 import org.qydata.entity.CustomerIp;
 import org.qydata.entity.Partner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -37,23 +36,14 @@ public interface CompanyService {
      * @param endIp
      * @return
      */
-    @Transactional
-    public boolean addCompanyCustomer(String companyName,String authId,String partnerId,String apiTypeId_subId [],String price [],String begIp [],String endIp []);
+    @SystemServiceLog(description = "新增客户")
+    public int addCompanyCustomer(String companyName,String authId,String partnerId,String apiTypeId_subId [],String price [],String begIp [],String endIp [])throws Exception;
 
     /**
      * 查找全部的合作公司
      * @return
      */
     public List<Partner> findAllPartner();
-
-    /**
-     * 添加账号
-     * @param authId
-     * @param companyId
-     * @return
-     */
-    @Transactional
-    public boolean addCustomer(String authId,Integer companyId);
 
     /**
      * 查询充值或扣费理由

@@ -12,6 +12,10 @@ function findCompanyApi(companyId) {
 
     $('#simple_company_api_1').dataTable().fnDestroy();
 
+    var width =  $('#form_modal_company_api_status').width();
+
+    $('#simple_company_api_1').width(width-35);
+
     $.ajax({
         type: "post",
         url: "/company/find-company-api",
@@ -81,9 +85,6 @@ function findCompanyApi(companyId) {
                 }
             });
 
-            var width =  $('#form_modal_company_api_status').width();
-
-            $('#simple_company_api_1').width(width-35);
         }
     })
 }

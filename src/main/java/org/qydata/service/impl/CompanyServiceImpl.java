@@ -41,66 +41,82 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean addCompanyCustomer(String companyName,String authId,String partnerId,String apiTypeId_subId [],String price [],String begIp [],String endIp []) {
-
-        String uri = "https://192.168.111.147:8989/admin/company/api/put";
+    @SystemServiceLog(description = "新增客户")
+    public int addCompanyCustomer(String companyName,String authId,String partnerId,String apiTypeId_subId [],String price [],String begIp [],String endIp [])throws Exception {
+        String uri = "https://api.qydata.org:9000/admin/customer/add-package";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
-        map.put("comName",companyName);
-        map.put("authId",authId);
+        map.put("name",companyName);
+        map.put("key",authId);
         if (partnerId != null){
-            map.put("partnerId",partnerId);
+            map.put("pid",partnerId);
         }
+        System.out.println(apiTypeId_subId.length);
+        System.out.println(price.length);
+        System.out.println(begIp.length);
+        System.out.println(endIp.length);
+        StringBuffer atsArray = new StringBuffer();
         if (apiTypeId_subId != null && apiTypeId_subId.length > 0){
             if (price != null && price.length > 0){
                 if (apiTypeId_subId.length <= price.length){
                     for ( int i=0 ; i<apiTypeId_subId.length ; i++ ){
-                        if (RegexUtil.isPoint(apiTypeId_subId[i])){
-                            map.put("tid",apiTypeId_subId[i]);
-                        }else {
-                            String apiTypeIds [] = apiTypeId_subId[i].split(".");
-                            map.put("tid",apiTypeIds[0]);
-                            map.put("stid",apiTypeIds[1]);
+                        if (apiTypeId_subId[i] != "" && price[i] != ""){
+                            if (RegexUtil.isPoint(apiTypeId_subId[i])){
+                                atsArray.append( apiTypeId_subId[i]+"-0:"+(Integer.parseInt(price[i])*100)+",") ;
+                            }else {
+                                atsArray.append(apiTypeId_subId[i]+":"+(Integer.parseInt(price[i])*100)+",") ;
+                            }
                         }
-                        map.put("price",price[i]);
                     }
                 }else {
                     for ( int i=0 ; i<price.length ; i++ ){
-                        if (RegexUtil.isPoint(apiTypeId_subId[i])){
-                            map.put("tid",apiTypeId_subId[i]);
+                        if (apiTypeId_subId[i] != "" && price[i] != "") {
+                            if (RegexUtil.isPoint(apiTypeId_subId[i])) {
+                                atsArray.append(apiTypeId_subId[i] + "-0:" + (Integer.parseInt(price[i]) * 100) + ",");
 
-                        }else {
-                            String apiTypeIds [] = apiTypeId_subId[i].split(".");
-                            map.put("tid",apiTypeIds[0]);
-                            map.put("stid",apiTypeIds[1]);
+                            } else {
+                                atsArray.append(apiTypeId_subId[i] + ":" + (Integer.parseInt(price[i]) * 100) + ",");
+                            }
                         }
-                        map.put("price",price[i]);
                     }
                 }
             }
         }
+        if (atsArray != null && atsArray.length() >0){
+            String newAtsArray = atsArray.substring(0,atsArray.lastIndexOf(","));
+            System.out.println(newAtsArray);
+            map.put("ats",newAtsArray);
+        }
+        StringBuffer ipsArray = new StringBuffer() ;
         if (begIp != null && begIp.length > 0){
             if (endIp != null && endIp.length > 0){
                 if (begIp.length <= endIp.length){
                     for ( int j=0 ; j<begIp.length ; j++ ){
-                        map.put("begIp",begIp[j]);
-                        map.put("endIp",endIp[j]);
+                        if (begIp[j] != null && endIp[j] != ""){
+                            ipsArray.append(begIp[j]+"-"+endIp[j]+",") ;
+                        }
                     }
                 }else {
                     for ( int j=0 ; j<endIp.length ; j++ ){
-                        map.put("begIp",begIp[j]);
-                        map.put("endIp",endIp[j]);
+                        if (begIp[j] != null && endIp[j] != "") {
+                            ipsArray.append(begIp[j] + "-" + endIp[j] + ",");
+                        }
                     }
                 }
             }
         }
-        int result = 0;
-        try {
-            result = HttpClientUtil.doGet(uri,map,null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (ipsArray != null && ipsArray.length() >0){
+            String newIpsArray = ipsArray.substring(0,ipsArray.lastIndexOf(","));
+            System.out.println(newIpsArray);
+            map.put("ips",newIpsArray);
         }
-        return false;
+
+        int code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
+        }
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
+
     }
 
     @Override
@@ -113,38 +129,7 @@ public class CompanyServiceImpl implements CompanyService {
         return null;
     }
 
-    @Override
-    public boolean addCustomer(String authId, Integer companyId) {
-        try {
-            Integer deptId = companyMapper.findDeptIdByCompanyId(companyId);
-            //向客户表中插入数据
-            Customer customerB = new Customer();
-            customerB.setAuthId(authId.trim() + "_test");
-            customerB.setCompanyId(companyId);
-            customerMapper.insertCustomerTest(customerB);
 
-            Customer customerA = new Customer();
-            customerA.setAuthId(authId.trim());
-            customerA.setCompanyId(companyId);
-            customerMapper.insertCustomer(customerA);
-            if (deptId != null){
-                //向部门客户映射表中插入数据
-                CustomerDept customerDeptA = new CustomerDept();
-                customerDeptA.setCustomerId(customerA.getId());
-                customerDeptA.setDeptId(deptId);
-                customerDeptMapper.insertCustomerDept(customerDeptA);
-
-                CustomerDept customerDeptB = new CustomerDept();
-                customerDeptB.setCustomerId(customerB.getId());
-                customerDeptB.setDeptId(deptId);
-                customerDeptMapper.insertCustomerDept(customerDeptB);
-            }
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list) {
@@ -159,24 +144,24 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "账号充值/扣费")
     public int updateCustomerBalance(Integer customerId, Integer reason, Long amount) throws Exception{
-        final String uri = "https://192.168.111.147:8989/admin/customer/balance/charge";
+        final String uri = "https://api.qydata.org:9000/admin/customer/balance/charge";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("cid",customerId);
         map.put("rid",reason);
         map.put("amount",amount*100);
 
-       int  code = HttpClientUtil.doGet(uri,map,null);
-       if (200 == code){
-           return code;
-       }
-        throw new Exception("https请求异常，请求状态码statusCode="+code);
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
+        }
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override
     @SystemServiceLog(description = "账号禁用")
     public int updateCustomerBan(String authId) throws Exception{
-        final String uri = "https://192.168.111.147:8989/admin/customer/ban";
+        final String uri = "https://api.qydata.org:9000/admin/customer/ban";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("authid",authId);
@@ -184,13 +169,13 @@ public class CompanyServiceImpl implements CompanyService {
         if (200 == code){
             return code;
         }
-        throw new Exception("https请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override
     @SystemServiceLog(description = "账号解禁")
     public int updateCustomerUnBan(String authId) throws Exception{
-        final String uri = "https://192.168.111.147:8989/admin/customer/unban";
+        final String uri = "https://api.qydata.org:9000/admin/customer/unban";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("authid",authId);
@@ -198,27 +183,23 @@ public class CompanyServiceImpl implements CompanyService {
         if (200 == code){
             return code;
         }
-        throw new Exception("https请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override
     @SystemServiceLog(description = "公司禁用")
-    public Map<String,Object> updateCompanyBan(String [] companyId) {
-        final String uri = "https://192.168.111.147:8989/admin/company/ban";
+    public Map<String,Object> updateCompanyBan(String [] companyId) throws Exception{
+        final String uri = "https://api.qydata.org:9000/admin/company/ban";
         Map<String,Object> mapResu = new HashMap<>();
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<companyId.length; i++){
             Map<String,Object> map = new HashMap<>();
             map.put("k",123456);
             map.put("cid",companyId[i]);
-            try {
-                int result = HttpClientUtil.doGet(uri,map,null);
-                if (result != 200){
-                    sb.append(companyMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
-                    mapResu.put("fail","公司名称是："+sb+"禁用失败其余禁用正常");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            int code = HttpClientUtil.doGet(uri,map,null);
+            if (code != 200){
+                sb.append(companyMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
+                mapResu.put("fail","公司名称是："+sb+"禁用失败其余禁用正常");
             }
         }
         return mapResu;
@@ -226,23 +207,18 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @SystemServiceLog(description = "公司解禁")
-    public Map<String,Object> updateCompanyUnBan(String [] companyId) {
-        final String uri = "https://192.168.111.147:8989/admin/company/unban";
+    public Map<String,Object> updateCompanyUnBan(String [] companyId) throws Exception{
+        final String uri = "https://api.qydata.org:9000/admin/company/unban";
         Map<String,Object> mapResu = new HashMap<>();
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<companyId.length; i++){
             Map<String,Object> map = new HashMap<>();
             map.put("k",123456);
             map.put("cid",companyId[i]);
-            try {
-                int result = HttpClientUtil.doGet(uri,map,null);
-                if (result != 200){
-
-                    sb.append(companyMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
-                    mapResu.put("fail","公司名称是："+sb+"启用失败其余启用正常");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            int code = HttpClientUtil.doGet(uri,map,null);
+            if (code != 200){
+                sb.append(companyMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
+                mapResu.put("fail","公司名称是："+sb+"启用失败其余启用正常");
             }
         }
         return mapResu;
@@ -256,7 +232,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "产品权限禁用")
     public int banCompanyApi(Integer companyId,Integer id)throws Exception {
-        final String uri = "https://192.168.111.147:8989/admin/company/api/del";
+        final String uri = "https://api.qydata.org:9000/admin/company/api/del";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("cid",companyId);
@@ -265,7 +241,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (200 == code){
             return code;
         }
-        throw new Exception("https请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override
@@ -313,7 +289,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "新增产品权限")
     public int addCompanyApi(Integer companyId, String apiTypeId, String price)throws Exception {
-        String uri = "https://192.168.111.147:8989/admin/company/api/put";
+        String uri = "https://api.qydata.org:9000/admin/company/api/put";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("cid",companyId);
@@ -329,7 +305,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (200 == code){
             return code;
         }
-        throw new Exception("https请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
 
     }
 
@@ -337,7 +313,7 @@ public class CompanyServiceImpl implements CompanyService {
     @SystemServiceLog(description = "修改产品价格")
     public int updateCompanyApiPrice(Integer companyId, String apiTypeId, String price) throws Exception{
 
-        String uri = "https://192.168.111.147:8989/admin/company/api/put";
+        String uri = "https://api.qydata.org:9000/admin/company/api/put";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("cid",companyId);
@@ -357,7 +333,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (200 == code){
             return code;
         }
-        throw new Exception("https请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
 
     }
 
@@ -369,7 +345,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "正式账号添加IP")
     public int addCustomerIp(Integer customerId,String begIp, String endIp) throws Exception{
-        final String uri = "https://192.168.111.147:8989/admin/customer/ip/add";
+        final String uri = "https://api.qydata.org:9000/admin/customer/ip/add";
         System.out.println("customerId------"+customerId);
         System.out.println("begIp------"+begIp);
         System.out.println("endIp------"+endIp);
@@ -382,13 +358,13 @@ public class CompanyServiceImpl implements CompanyService {
         if (200 == code){
             return code;
         }
-        throw new Exception("https请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override
     @SystemServiceLog(description = "正式账号删除Ip")
     public int deleteIpById(Integer customerId,Integer id) throws Exception {
-        String uri = "https://192.168.111.147:8989/admin/customer/ip/del00";
+        String uri = "https://api.qydata.org:9000/admin/customer/ip/del";
         Map<String,Object> map = new HashMap<>();
         map.put("k",123456);
         map.put("cid",customerId);
@@ -397,7 +373,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (200 == code){
             return code;
         }
-        throw new Exception("https请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override

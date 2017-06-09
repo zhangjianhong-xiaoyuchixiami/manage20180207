@@ -624,7 +624,7 @@
 
                                                             <button class="close" data-dismiss="alert"></button>
 
-                                                            对不起，请检查你的输入！
+                                                            <span id="tip">对不起，请检查你的输入！</span>
 
                                                         </div>
 
@@ -1026,6 +1026,7 @@
             Company.init();
             CompanyForbid.init();
         });
+
 
         /*Api-点击添加一栏*/
         $('#control-group-add-api-href').on('click',function () {

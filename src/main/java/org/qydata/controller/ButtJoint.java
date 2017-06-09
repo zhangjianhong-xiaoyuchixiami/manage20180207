@@ -12,11 +12,10 @@ import java.util.List;
  */
 public interface ButtJoint {
 
-/*    @RequestMapping("customer/add-package")
-    public List<Customer> customerAddPackage(@RequestParam("name")String name, @RequestParam("key")String key, @RequestParam(value = "ats", defaultValue = "") String apiTypes, @RequestParam(value = "ips", defaultValue = "") String ips)
+    /*例如/admin/customer/add-package?name=千眼内部测试2&key=qydata2&ats=5-1:50&ips=xxx&k=xxx*/
 
-    例如/admin/customer/add-package?name=千眼内部测试2&key=qydata2&ats=5-1:50&ips=xxx&k=xxx*/
-
+    @RequestMapping("customer/add-package")
+    public List<Customer> customerAddPackage(@RequestParam("name")String name, @RequestParam("key")String key, @RequestParam(value = "ats", defaultValue = "") String apiTypes, @RequestParam(value = "ips", defaultValue = "") String ips);
 
     //添加公司
     @Transactional

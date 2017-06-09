@@ -50,7 +50,6 @@ public class CompanyController {
     }
 
 
-
     /**
      * 查找客户
      * @param partnerId
@@ -115,7 +114,14 @@ public class CompanyController {
         String add_api_type_sub_price [] = request.getParameterValues("add_api_type_sub_price[]");
         String beginIp [] = request.getParameterValues("beginIp[]");
         String endIp [] = request.getParameterValues("endIp[]");
+        System.out.println(companyName);
+        System.out.println(authId);
+        System.out.println(partnerId);
 
+        System.out.println(add_api_type_sub[0]);
+        System.out.println(add_api_type_sub_price[0]);
+        System.out.println(beginIp[0]);
+        System.out.println(endIp[0]);
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if(RegexUtil.isNull(companyName)){
@@ -130,43 +136,21 @@ public class CompanyController {
             map.put("authIdMessage","账户格式输入不正确!");
             return gson.toJson(map);
         }
-
-        boolean flag = companyService.addCompanyCustomer(companyName,authId,partnerId,add_api_type_sub,add_api_type_sub_price,beginIp,endIp);
-        if (flag){
-            map.put("successMessage","恭喜你，操作成功！");
-        }else {
-            map.put("errorMessage","操作失败，请检查你的输入");
+        int code = 0;
+        try {
+            code = companyService.addCompanyCustomer(companyName,authId,partnerId,add_api_type_sub,add_api_type_sub_price,beginIp,endIp);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return gson.toJson(map);
-    }
-    /**
-     * 添加公司账号
-     * @param authId
-     * @param companyId
-     * @return
-     */
-    @RequestMapping(value = "/add-customer-account")
-    @ResponseBody
-    public String addCustomerAccount(String authId,Integer companyId){
-        Gson gson = new Gson();
-        Map<String,Object> map = new HashMap();
-
-        if(RegexUtil.isNull(authId)){
-            map.put("authIdMessage","请输入账户!");
+        if (200 == code){
+            map.put("success","操作成功！");
             return gson.toJson(map);
         }
-        if(!RegexUtil.stringCheck(authId)){
-            map.put("authIdMessage","账户格式输入不正确!");
-            return gson.toJson(map);
-        }
-        boolean flag = companyService.addCustomer(authId, companyId);
-        if (flag){
-            map.put("successMessage","恭喜你，操作成功！");
-        }else {
-            map.put("errorMessage","操作失败，请检查你的输入");
-        }
+        map.put("error","操作失败！");
         return gson.toJson(map);
     }
+
+
     /**
      * 充值弹框
      * @return
@@ -182,6 +166,7 @@ public class CompanyController {
         JSONArray jsonArray = JSONArray.fromObject(customerBalanceModifyReasonList);
         return jsonArray.toString();
     }
+
     /**
      * 扣费弹框
      * @return
@@ -306,6 +291,7 @@ public class CompanyController {
             mapResu = companyService.updateCompanyBan(companyId);
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return gson.toJson(mapResu);
     }

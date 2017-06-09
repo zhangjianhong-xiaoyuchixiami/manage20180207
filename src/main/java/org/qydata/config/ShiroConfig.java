@@ -346,11 +346,30 @@ public class ShiroConfig {
 		chains.put("/company/find-all-company-customer-by-dept-id", "authc,perms");
 
 		//客户管理Ajax
+		chains.put("/company/findCustomerByAuthId", "authc");
 		chains.put("/company/add-company-customer", "authc");
 		chains.put("/company/add-customer-account", "authc");
-		chains.put("/company/update-customer-balance", "authc");
 		chains.put("/company/charge-customer-balance", "authc");
 		chains.put("/company/consume-customer-balance", "authc");
+		chains.put("/company/update-customer-balance", "authc");
+		chains.put("/company/customer/ban", "authc");
+		chains.put("/company/customer/unban", "authc");
+		chains.put("/company/ban", "authc");
+		chains.put("/company/unban", "authc");
+		chains.put("/company/find-company-api", "authc");
+		chains.put("/company/ban-api", "authc");
+		chains.put("/company/unban-api", "authc");
+		chains.put("/company/query-not-have-api", "authc");
+		chains.put("/company/add-company-api", "authc");
+		chains.put("/company/mod-company-api-price", "authc");
+		chains.put("/company/customer/find-ip", "authc");
+		chains.put("/company/customer/delete-ip", "authc");
+		chains.put("/company/customer/add/ip", "authc");
+		chains.put("/company/find-all-api-type", "authc");
+
+
+		//日志管理
+		chains.put("/log/log-message", "authc,perms");
 
 		//产品管理
 		chains.put("/api/api-message", "authc,perms");

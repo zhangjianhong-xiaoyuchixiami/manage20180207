@@ -345,7 +345,6 @@ var AddCompanyAllotApiAddIp = function () {
                 'nextSelector': '.button-next',
                 'previousSelector': '.button-previous',
                 onTabClick: function (tab, navigation, index) {
-                    alert('on tab click disabled');
                     return false;
                 },
                 onNext: function (tab, navigation, index) {
@@ -430,7 +429,7 @@ var AddCompanyAllotApiAddIp = function () {
             //表单提交
             $('#form_wizard_1 .button-submit').click(function () {
 
-                var companyCustomerName = $('#companyCustomerName').val();
+                var companyName = $('#companyCustomerName').val();
                 var authId = $('#authId').val();
                 var partnerId = $('#partnerId').val();
 
@@ -451,7 +450,7 @@ var AddCompanyAllotApiAddIp = function () {
                     endIp.push($.trim($(this).val()));
                 });
 
-                console.log('companyCustomerName =' + companyCustomerName) ;
+                console.log('companyName =' + companyName) ;
                 console.log('authId =' + authId) ;
                 console.log('partnerId =' + partnerId) ;
                 console.log('add_api_type_sub =' + add_api_type_sub) ;
@@ -459,7 +458,32 @@ var AddCompanyAllotApiAddIp = function () {
                 console.log('beginIp =' + beginIp) ;
                 console.log('endIp =' + endIp) ;
 
-
+                $.ajax({
+                    type: "post",
+                    url: "/company/add-company-customer",
+                    data: {
+                        "companyName" : companyName,
+                        "authId" : authId,
+                        "partnerId" : partnerId,
+                        "add_api_type_sub" : add_api_type_sub,
+                        "add_api_type_sub_price" : add_api_type_sub_price,
+                        "beginIp" : beginIp,
+                        "endIp" : endIp
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != null) {
+                            if (data.success != null) {
+                                window.location.href = window.location.href;
+                            }
+                            if (data.error != null) {
+                                $("#tip").html("操作失败！");
+                                error.show();
+                                return;
+                            }
+                        }
+                    }
+                })
 
             }).hide();
 

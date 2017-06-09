@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 import org.qydata.config.annotation.DataSourceService;
+import org.qydata.entity.User;
 import org.qydata.entity.log.Log;
 import org.qydata.mapper.LogMapper;
 import org.qydata.service.LogService;
@@ -47,5 +48,10 @@ public class LogServiceImpl implements LogService {
     @DataSourceService
     public List<Log> queryLog(Map<String, Object> map) {
         return logMapper.queryLog(map);
+    }
+
+    @Override
+    public List<User> queryUser() {
+        return logMapper.queryUser();
     }
 }

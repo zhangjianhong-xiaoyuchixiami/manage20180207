@@ -70,7 +70,7 @@ $("#batchUnBanCompany").on('click',function () {
                         window.location.href=window.location.href;
                         return;
                     }
-                    alert("禁用成功");
+                    alert("启用成功");
                     window.location.href=window.location.href;
                 }
             }

@@ -13,6 +13,10 @@ function showIp(customerId) {
 
     $('#simple_customer_ip_1').dataTable().fnDestroy();
 
+    var width =  $('#form_modal_customer_ip_list').width();
+
+    $('#simple_customer_ip_1').width(width-35);
+
     $.ajax({
         type: "post",
         url: "/company/customer/find-ip",
@@ -61,9 +65,6 @@ function showIp(customerId) {
                 }
             });
 
-            var width =  $('#form_modal_customer_ip_list').width();
-
-            $('#simple_customer_ip_1').width(width-35);
         }
     })
 }
