@@ -24,7 +24,7 @@ function showIp(customerId) {
         dataType: "json",
         beforeSend:function () {
             var myContent = "<tr>" +
-                "<td rowspan='3'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "<td rowspan='2'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                 "</tr>"
             $("#simple_customer_ip_1 tbody").append(myContent);
         },
@@ -39,7 +39,6 @@ function showIp(customerId) {
                     var myContent = "<tr>" +
                         "<td>" + data[i].beginIpRaw + "</td>" +
                         "<td>" + data[i].endIpRaw + "</td>" +
-                        "<td><a href='javaScript:;' class='warning' onclick='deleteIp("+ data[i].id +','+ customerId +")'>删除</a></td>" +
                         "</tr>"
                     $("#simple_customer_ip_1 tbody").append(myContent);
                 }
@@ -47,7 +46,6 @@ function showIp(customerId) {
 
             oTableEditIp = $('#simple_customer_ip_1').dataTable({
                 "aoColumns": [
-                    { "bSortable": false},
                     { "bSortable": false},
                     { "bSortable": false}
                 ],

@@ -53,7 +53,7 @@
     <select id="findAllCompany" parameterType="map" resultMap="CustomerCompany_Customer_Map">
         SELECT a.id customerId,a.typeId,a.typeName,a.authId,a.authPass,a.balance,a.createTime customerCreateTime,
         a.status,a.statusName,
-        b.companyId,b.companyName,b.partnerId,b.partnerName,a.createTime companyCreateTime,b.companyStatus,
+        b.companyId,b.companyName,b.partnerId,b.partnerName,b.companyStatus,
         c.companyBalance,c.floor,
         ((-c.floor)+c.companyBalance) surplusFloor
         FROM qyfinance.bkvwCustomer a
@@ -98,6 +98,10 @@
     <!--查找全部的合作公司-->
     <select id="findAllPartner" resultType="org.qydata.entity.Partner">
         SELECT id,name FROM qyfinance.bkvwPartner
+    </select>
+    
+    <select id="findPartnerByEmail" parameterType="String" resultType="org.qydata.entity.Partner">
+        SELECT deptId id,deptName name FROM qyfinance.bkvw_user_UserDept WHERE email = #{param}
     </select>
 
     <!--根据公司Id查找部门编号-->
@@ -163,6 +167,13 @@
         SELECT id
         FROM qyfinance.bkvwMobileOperatorChinese
         WHERE name = #{param} OR chineseName = #{param}
+    </select>
+
+    <!--获取访问api.data的key-->
+    <select id="queryAuthKey" parameterType="String" resultType="String">
+        SELECT value
+        FROM qydata.SiteConf
+        WHERE name = #{param}
     </select>
 
 </mapper>

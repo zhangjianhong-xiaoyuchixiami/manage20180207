@@ -77,7 +77,11 @@ $("#update-balance-btn-black-btn-primary").on("click",function () {
             url: "/company/update-customer-balance",
             data: {"customerId":customerId,"amount":amount,"reason":reason},
             dataType: "json",
+            beforeSend:function () {
+                openProgress();
+            },
             success: function (result) {
+                closeProgress();
                 if(result.amountMessage != null){
                     $("#update_balance_amountMsg").empty();
                     $("#update_balance_amountMsg").html('<font color="red">'+result.amountMessage+'</font>');
@@ -95,7 +99,8 @@ $("#update-balance-btn-black-btn-primary").on("click",function () {
                 }
                 if (result.successMessage != null){
                     alert("操作成功");
-                    window.location.href=window.location.href
+                   // window.location.href=window.location.href
+                    location.reload();
                 }
             }
         });

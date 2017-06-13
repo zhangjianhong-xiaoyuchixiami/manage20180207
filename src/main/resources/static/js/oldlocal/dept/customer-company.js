@@ -18,17 +18,15 @@ var Company = function () {
                     '<th>余额</th>' +
                     '<th>状态</th>' +
                     '<th>Ip段</th>' +
-                    '<th>操作</th>' +
                     '</tr>';
 
                 sOut += '<tr>' +
+                    '<td>'+aData[5]+'</td>' +
+                    '<td>'+aData[6]+'</td>' +
                     '<td>'+aData[7]+'</td>' +
                     '<td>'+aData[8]+'</td>' +
                     '<td>'+aData[9]+'</td>' +
                     '<td>'+aData[10]+'</td>' +
-                    '<td>'+aData[11]+'</td>' +
-                    '<td>'+aData[12]+'</td>' +
-                    '<td>'+aData[13]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -66,22 +64,19 @@ var Company = function () {
             var oTable = $('#companySample_1').dataTable({
                 "aoColumns": [
                     { "bSortable": false},  //0  展开符号
-                    { "bSortable": false},  //1  展开符号
-                    null,  //2  companyName
-                    null,  //3  floor
-                    null,  //4  superFloor
-                    null,  //5  partnerName
-                    null,  //6  balance
-                    { "bVisible": false},  //6 customerId
-                    { "bVisible": false},  //7 typeId
-                    { "bVisible": false},  //8 typeName
-                    { "bVisible": false},  //9 authId
-                    { "bVisible": false },  //10 authPass
-                    { "bVisible": false }, //11 balance
-                    { "bVisible": false },  //12 操作
-                    { "bSortable": false}  // 13
+                    null,  //1  companyName
+                    null,  //2  floor
+                    null,  //3  superFloor
+                    null,  //4  balance
+                    { "bVisible": false},  //5 customerId
+                    { "bVisible": false},  //6 typeId
+                    { "bVisible": false},  //7 typeName
+                    { "bVisible": false},  //8 authId
+                    { "bVisible": false },  //9 authPass
+                    { "bVisible": false }, //10 balance
+                    { "bSortable": false}  // 11
                 ],
-                "aaSorting": [[6, 'desc']],
+                "aaSorting": [[4, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

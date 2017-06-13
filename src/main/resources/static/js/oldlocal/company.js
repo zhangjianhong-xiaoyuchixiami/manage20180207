@@ -32,15 +32,21 @@ $("#batchBanCompany").on('click',function () {
             url:"/company/ban",
             data:{"companyId": companyId},
             dataType:'json',
+            beforeSend:function () {
+                openProgress();
+            },
             success:function(data){
+                closeProgress();
                 if (data != null){
                     if (data.fail != null){
                         alert(data.fail);
-                        window.location.href=window.location.href;
+                        //window.location.href=window.location.href;
+                        location.reload();
                         return;
                     }
                     alert("禁用成功");
-                    window.location.href=window.location.href;
+                    //window.location.href=window.location.href;
+                    location.reload();
                 }
             }
         });
@@ -63,15 +69,21 @@ $("#batchUnBanCompany").on('click',function () {
             url:"/company/unban",
             data:{"companyId": companyId},
             dataType:'json',
+            beforeSend:function () {
+                openProgress();
+            },
             success:function(data){
+                closeProgress();
                 if (data != null){
                     if (data.fail != null){
                         alert(data.fail);
-                        window.location.href=window.location.href;
+                        //window.location.href=window.location.href;
+                        location.reload();
                         return;
                     }
                     alert("启用成功");
-                    window.location.href=window.location.href;
+                    //window.location.href=window.location.href;
+                    location.reload();
                 }
             }
         });
@@ -86,11 +98,16 @@ function banCustomer(authId) {
             url: "/company/customer/ban",
             data: {"authId": authId},
             dataType: "json",
-            success: function (data) {
+            beforeSend:function () {
+                openProgress();
+            },
+            success:function(data){
+                closeProgress();
                 if (data != null) {
                     if (data.success != null) {
                         alert("禁用成功");
-                        window.location.href = window.location.href;
+                        //window.location.href = window.location.href;
+                        location.reload();
                         return;
                     }
                     if (data.error != null) {
@@ -110,11 +127,16 @@ function unBanCustomer(authId) {
             url: "/company/customer/unban",
             data: {"authId": authId},
             dataType: "json",
-            success: function (data) {
+            beforeSend:function () {
+                openProgress();
+            },
+            success:function(data){
+                closeProgress();
                 if (data != null) {
                     if (data.success != null) {
                         alert("启用成功");
-                        window.location.href = window.location.href;
+                        //window.location.href = window.location.href;
+                        location.reload();
                         return;
                     }
                     if (data.error != null) {

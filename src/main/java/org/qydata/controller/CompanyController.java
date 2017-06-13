@@ -68,7 +68,6 @@ public class CompanyController {
         model.addAttribute("companyList",companyService.findAllCompany(map));
         model.addAttribute("apiTypeList",companyService.queryAllApi());
         model.addAttribute("content",content);
-        model.addAttribute("pageSize",20);
         return "/company/company";
     }
     /**
@@ -93,20 +92,23 @@ public class CompanyController {
             if (content != null) {
                 map.put("content", content);
             }
-            model.addAttribute("partnerList",companyService.findAllPartner());
+            model.addAttribute("partnerList",companyService.findPartnerByEmail(user.getEmail()));
             model.addAttribute("companyList",companyService.findAllCompany(map));
+            model.addAttribute("apiTypeList",companyService.queryAllApi());
             model.addAttribute("content",content);
-            return "/company/company";
+            return "/company/company-dept";
         }
-        return "/company/company";
+        return "/company/company-dept";
     }
+
+
     /**
      * 新增客户
      * @return
      */
     @RequestMapping(value = "/add-company-customer")
     @ResponseBody
-    public String addCompanyCustomer(HttpServletRequest request ){
+    public String addCompanyCustomer(HttpServletRequest request ) {
         String companyName = request.getParameter("companyName").trim();
         String authId = request.getParameter("authId").trim();
         String partnerId = request.getParameter("partnerId").trim();
@@ -114,14 +116,7 @@ public class CompanyController {
         String add_api_type_sub_price [] = request.getParameterValues("add_api_type_sub_price[]");
         String beginIp [] = request.getParameterValues("beginIp[]");
         String endIp [] = request.getParameterValues("endIp[]");
-        System.out.println(companyName);
-        System.out.println(authId);
-        System.out.println(partnerId);
 
-        System.out.println(add_api_type_sub[0]);
-        System.out.println(add_api_type_sub_price[0]);
-        System.out.println(beginIp[0]);
-        System.out.println(endIp[0]);
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if(RegexUtil.isNull(companyName)){
@@ -322,8 +317,7 @@ public class CompanyController {
      */
     @RequestMapping("/find-company-api")
     @ResponseBody
-    public String queryCompanyApiByCompanyId(Integer companyId){
-        System.out.println(companyId);
+    public String queryCompanyApiByCompanyId(Integer companyId) {
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
         map.put("companyId",companyId);
@@ -473,7 +467,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/find-ip")
     @ResponseBody
-    public String queryCustomerIpById(Integer customerId){
+    public String queryCustomerIpById(Integer customerId) {
         Gson gson = new Gson();
         List<CustomerIp> customerIpList = companyService.queryCustomerIpById(customerId);
         return gson.toJson(customerIpList);
@@ -585,7 +579,6 @@ public class CompanyController {
         }
         return gson.toJson(apiTypeSubTypeList);
     }
-
 
 
 }

@@ -45,7 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int addCompanyCustomer(String companyName,String authId,String partnerId,String apiTypeId_subId [],String price [],String begIp [],String endIp [])throws Exception {
         String uri = "https://api.qydata.org:9000/admin/customer/add-package";
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("name",companyName);
         map.put("key",authId);
         if (partnerId != null){
@@ -129,6 +129,10 @@ public class CompanyServiceImpl implements CompanyService {
         return null;
     }
 
+    @Override
+    public List<Partner> findPartnerByEmail(String email) {
+        return companyMapper.findPartnerByEmail(email);
+    }
 
 
     @Override
@@ -146,7 +150,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int updateCustomerBalance(Integer customerId, Integer reason, Long amount) throws Exception{
         final String uri = "https://api.qydata.org:9000/admin/customer/balance/charge";
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",customerId);
         map.put("rid",reason);
         map.put("amount",amount*100);
@@ -163,7 +167,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int updateCustomerBan(String authId) throws Exception{
         final String uri = "https://api.qydata.org:9000/admin/customer/ban";
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("authid",authId);
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
@@ -177,7 +181,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int updateCustomerUnBan(String authId) throws Exception{
         final String uri = "https://api.qydata.org:9000/admin/customer/unban";
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("authid",authId);
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
@@ -194,7 +198,7 @@ public class CompanyServiceImpl implements CompanyService {
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<companyId.length; i++){
             Map<String,Object> map = new HashMap<>();
-            map.put("k",123456);
+            map.put("k",companyMapper.queryAuthKey("admin.k"));
             map.put("cid",companyId[i]);
             int code = HttpClientUtil.doGet(uri,map,null);
             if (code != 200){
@@ -213,7 +217,7 @@ public class CompanyServiceImpl implements CompanyService {
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<companyId.length; i++){
             Map<String,Object> map = new HashMap<>();
-            map.put("k",123456);
+            map.put("k",companyMapper.queryAuthKey("admin.k"));
             map.put("cid",companyId[i]);
             int code = HttpClientUtil.doGet(uri,map,null);
             if (code != 200){
@@ -234,7 +238,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int banCompanyApi(Integer companyId,Integer id)throws Exception {
         final String uri = "https://api.qydata.org:9000/admin/company/api/del";
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("id",id);
         int  code = HttpClientUtil.doGet(uri,map,null);
@@ -291,7 +295,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int addCompanyApi(Integer companyId, String apiTypeId, String price)throws Exception {
         String uri = "https://api.qydata.org:9000/admin/company/api/put";
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("price",(int)(Double.parseDouble(price)*100));
         if (RegexUtil.isDot(apiTypeId)){
@@ -315,7 +319,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         String uri = "https://api.qydata.org:9000/admin/company/api/put";
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("price",(int)(Double.parseDouble(price)*100));
         if (RegexUtil.isTwoUnderLine(apiTypeId)){
@@ -346,11 +350,8 @@ public class CompanyServiceImpl implements CompanyService {
     @SystemServiceLog(description = "正式账号添加IP")
     public int addCustomerIp(Integer customerId,String begIp, String endIp) throws Exception{
         final String uri = "https://api.qydata.org:9000/admin/customer/ip/add";
-        System.out.println("customerId------"+customerId);
-        System.out.println("begIp------"+begIp);
-        System.out.println("endIp------"+endIp);
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",customerId);
         map.put("bip",begIp);
         map.put("eip",endIp);
@@ -364,9 +365,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "正式账号删除Ip")
     public int deleteIpById(Integer customerId,Integer id) throws Exception {
+        String key = companyMapper.queryAuthKey("admin.k");
         String uri = "https://api.qydata.org:9000/admin/customer/ip/del";
         Map<String,Object> map = new HashMap<>();
-        map.put("k",123456);
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",customerId);
         map.put("id",id);
         int code = HttpClientUtil.doGet(uri,map,null);

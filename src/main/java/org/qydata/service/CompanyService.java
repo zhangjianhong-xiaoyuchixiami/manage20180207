@@ -46,6 +46,14 @@ public interface CompanyService {
     public List<Partner> findAllPartner();
 
     /**
+     * 查找全部的合作公司通过邮箱
+     * @return
+     * @throws Exception
+     */
+    public List<Partner> findPartnerByEmail(String email);
+
+
+    /**
      * 查询充值或扣费理由
      * @param list
      * @return

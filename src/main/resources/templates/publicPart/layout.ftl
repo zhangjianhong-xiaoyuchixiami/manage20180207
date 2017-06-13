@@ -13,6 +13,8 @@
     <meta content="width=device-width, height=device-height, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
+    <link rel="stylesheet" href="http://tawian.io/text-spinners/spinners.css">
+    <link rel="stylesheet" type="text/css" href="/css/local/progress.css"/>
     <link rel="stylesheet" type="text/css" href="/css/local/main-response-table.css"/>
     <link rel="stylesheet" type="text/css" href="/css/local/head-search.css"/>
     <link rel="stylesheet" type="text/css" href="/css/local/bootstrap-multiselect.css"/>
@@ -206,13 +208,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                           <#-- <@shiro.hasPermission name="customer:findAllCustomer">
-                                <li id="partnersFinancialAccount">
-                                    <a href="/partner/export-excel">
-                                        合作公司Excel导出
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>-->
+                        <#-- <@shiro.hasPermission name="customer:findAllCustomer">
+                             <li id="partnersFinancialAccount">
+                                 <a href="/partner/export-excel">
+                                     合作公司Excel导出
+                                 </a>
+                             </li>
+                         </@shiro.hasPermission>-->
 
                         </ul>
 
@@ -417,6 +419,12 @@
             </ul>
 
         </div>
+
+       <#-- <div class="cube">
+            <div class="tg-qe-progress-bar myactive">
+                <div class="bar"></div>
+            </div>
+        </div>-->
 
     </div>
 

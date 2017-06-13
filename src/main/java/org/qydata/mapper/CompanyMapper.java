@@ -36,6 +36,13 @@ public interface CompanyMapper {
     public List<Partner> findAllPartner()throws Exception;
 
     /**
+     * 查找全部的合作公司通过邮箱
+     * @return
+     * @throws Exception
+     */
+    public List<Partner> findPartnerByEmail(String email);
+
+    /**
      * 根据公司Id查找部门编号
      * @param companyId
      * @return
@@ -138,5 +145,12 @@ public interface CompanyMapper {
      * @return
      */
     public Integer queryStidByName(String name);
+
+    /**
+     * 获取访问api.data的key
+     * @param key
+     * @return
+     */
+    public String queryAuthKey(String key);
 
 }

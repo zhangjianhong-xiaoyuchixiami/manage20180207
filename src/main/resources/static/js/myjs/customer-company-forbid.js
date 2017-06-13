@@ -22,13 +22,13 @@ var CompanyForbid = function () {
                     '</tr>';
 
                 sOut += '<tr>' +
+                    '<td>'+aData[7]+'</td>' +
                     '<td>'+aData[8]+'</td>' +
                     '<td>'+aData[9]+'</td>' +
                     '<td>'+aData[10]+'</td>' +
                     '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[12]+'</td>' +
                     '<td>'+aData[13]+'</td>' +
-                    '<td>'+aData[14]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -66,13 +66,12 @@ var CompanyForbid = function () {
             var oTable = $('#companySample_2').dataTable({
                 "aoColumns": [
                     { "bSortable": false},  //0  展开符号
-                    { "bSortable": false},  //0  展开符号
-                    null,  //1  companyName
-                    null,  //2
-                    null,
-                    null, //3  partnerName
-                    null,  //4  companyBalance
-                    null,  //5  companyCreateTime
+                    { "bSortable": false},  //1  展开符号
+                    null,  //2  companyName
+                    null,  //3  floor
+                    null,  //4  superFloor
+                    null,  //5  partnerName
+                    null,  //6  balance
                     { "bVisible": false},  //6 customerId
                     { "bVisible": false},  //7 typeId
                     { "bVisible": false},  //8 typeName
@@ -82,7 +81,7 @@ var CompanyForbid = function () {
                     { "bVisible": false },  //12 操作
                     { "bSortable": false}  // 13
                 ],
-                "aaSorting": [[4, 'desc']],
+                "aaSorting": [[6, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

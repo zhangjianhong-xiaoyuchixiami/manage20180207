@@ -23,7 +23,7 @@ function findCompanyApi(companyId) {
         dataType: "json",
         beforeSend:function () {
             var myContent = "<tr>" +
-                "<td rowspan='4'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "<td rowspan='3'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                 "</tr>"
             $("#simple_company_api_1 tbody").append(myContent);
         },
@@ -42,20 +42,12 @@ function findCompanyApi(companyId) {
                                 "<td style='width: 40%'>" + data[i].apiType.name + "</td>" +
                                 "<td style='width: 25%'>" + (data[i].price / 100.0) + "</td>" +
                                 "<td style='width: 15%'>正在使用</td>" +
-                                "<td style='width: 20%'>" +
-                                "<a class='edit' href='javaScript:;'>修改价格</a>" + "&nbsp;|&nbsp;" +
-                                "<a class='warning' href='javaScript:;' onclick='banCompanyApi(" + data[i].id + ',' + companyId + ")'>禁用</a>" +
-                                "</td>" +
                                 "</tr>"
                         } else {
                             myContent = "<tr>" +
                                 "<td style='width: 40%'>" + data[i].apiType.name + "--" + data[i].mobileOperator.name + "</td>" +
                                 "<td style='width: 25%'>" + (data[i].price / 100.0) + "</td>" +
                                 "<td style='width: 15%'>正在使用</td>" +
-                                "<td style='width: 20%'>" +
-                                "<a class='edit' href='javaScript:;'>修改价格</a>" + "&nbsp;|&nbsp;" +
-                                "<a class='warning' href='javaScript:;' onclick='banCompanyApi(" + data[i].id + ',' + companyId + ")'>禁用</a>" +
-                                "</td>" +
                                 "</tr>"
                         }
                         $("#simple_company_api_1 tbody").append(myContent);
@@ -66,7 +58,6 @@ function findCompanyApi(companyId) {
 
             oTableEdit = $('#simple_company_api_1').dataTable({
                 "aoColumns": [
-                    { "bSortable": false},
                     { "bSortable": false},
                     { "bSortable": false},
                     { "bSortable": false}

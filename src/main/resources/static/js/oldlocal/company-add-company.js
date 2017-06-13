@@ -427,7 +427,7 @@ var AddCompanyAllotApiAddIp = function () {
             $('#form_wizard_1').find('.button-previous').hide();
 
             //表单提交
-            $('#form_wizard_1 .button-submit').click(function () {
+            $('#form_wizard_1 .button-submit').on("click",function () {
 
                 var companyName = $('#companyCustomerName').val();
                 var authId = $('#authId').val();
@@ -450,14 +450,6 @@ var AddCompanyAllotApiAddIp = function () {
                     endIp.push($.trim($(this).val()));
                 });
 
-                console.log('companyName =' + companyName) ;
-                console.log('authId =' + authId) ;
-                console.log('partnerId =' + partnerId) ;
-                console.log('add_api_type_sub =' + add_api_type_sub) ;
-                console.log('add_api_type_sub_price =' + add_api_type_sub_price) ;
-                console.log('beginIp =' + beginIp) ;
-                console.log('endIp =' + endIp) ;
-
                 $.ajax({
                     type: "post",
                     url: "/company/add-company-customer",
@@ -471,20 +463,25 @@ var AddCompanyAllotApiAddIp = function () {
                         "endIp" : endIp
                     },
                     dataType: "json",
+                    beforeSend:function () {
+                        openProgress();
+                    },
                     success: function (data) {
+                        closeProgress();
                         if (data != null) {
-                            if (data.success != null) {
-                                window.location.href = window.location.href;
-                            }
                             if (data.error != null) {
                                 $("#tip").html("操作失败！");
                                 error.show();
                                 return;
                             }
+                            if (data.success != null) {
+                                alert("操作成功");
+                               // window.location.href=window.location.href
+                                location.reload();
+                            }
                         }
                     }
                 })
-
             }).hide();
 
         }

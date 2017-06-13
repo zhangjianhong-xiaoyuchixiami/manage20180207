@@ -25,7 +25,7 @@ function currDayApiTypeConsume(customerId) {
         dataType: "json",
         beforeSend:function () {
                 var myContent = "<tr>" +
-                    "<td rowspan='5'>" + '正在加载，请稍后...' + "</td>" +
+                    "<td rowspan='5'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                     "</tr>";
                 $("#simple_customer_curr_day_api_type_consume tbody").append(myContent);
         },

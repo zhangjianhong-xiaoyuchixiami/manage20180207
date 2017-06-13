@@ -18,25 +18,21 @@
 
                 <div class="span12">
 
-                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                    <form action="/company/find-all-company-customer-by-dept-id" class="form-bottom" method="get">
 
-                        <form action="/company/find-all-company-customer-by-dept-id" class="form-bottom" method="get">
+                        <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                            <div class="clearfix margin-bottom-20 head-search-clearfix-top">
+                            <div class="pull-left head-search-bottom head-search-top">
 
-                                <div class="pull-left head-search-bottom head-search-top">
+                                <label class="control-label">&nbsp;&nbsp;</label>
 
-                                    <label class="control-label">&nbsp;&nbsp;</label>
+                                <div class="controls">
 
-                                    <div class="controls">
+                                    <div class="input-append">
 
-                                        <div class="input-append">
+                                        <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
 
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
-
-                                            <button class="btn black" type="submit">搜索</button>
-
-                                        </div>
+                                        <button class="btn black" type="submit">搜索</button>
 
                                     </div>
 
@@ -44,39 +40,9 @@
 
                             </div>
 
-                        </form>
+                        </div>
 
-                    </@shiro.hasPermission>
-
-                    <@shiro.hasPermission name="customer:findAllCustomer">
-
-                        <form action="/company/find-all-company-customer" method="get">
-
-                            <div class="clearfix margin-bottom-20">
-
-                                <div class="control-group pull-left" style="margin-bottom: -20px;margin-top: -25px;">
-
-                                    <label class="control-label">&nbsp;&nbsp;</label>
-
-                                    <div class="controls">
-
-                                        <div class="input-append">
-
-                                            <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
-
-                                            <button class="btn black" type="submit">搜索</button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-
-                    </@shiro.hasPermission>
+                    </form>
 
                     <div class="tabbable tabbable-custom boxless">
 
@@ -97,42 +63,20 @@
 
                                     <div class="portlet-body">
 
-                                        <div class="clearfix margin-bottom-5">
-                                            <@shiro.hasPermission name="customer:findAllCustomer">
-                                                <div class="btn-group">
-                                                    <a class="btn black" style="margin-right: 10px;" id="add-partner" href="#form_modal_from_wizard" data-toggle="modal">
-                                                        新增客户
-                                                    </a>
-                                                    <a class="btn red" id="batchBanCompany" style="margin-right: 10px;" href="javaScript:;">
-                                                        批量禁用客户
-                                                    </a>
-                                                </div>
-                                            </@shiro.hasPermission>
-                                        </div>
-
                                         <div class="table-responsive">
                                             <table class="table table-striped table-hover table-bordered table-condensed" id="companySample_1">
                                                 <thead>
                                                 <tr>
-                                                    <th><input type="checkbox" id="allChecked" class="group-checkable" data-set="#companySample_1 .checkboxes"/></th>
                                                     <th>公司名称</th>
                                                     <th>信用额度</th>
                                                     <th>可用额度</th>
-                                                    <@shiro.hasPermission name="customer:findAllCustomer">
-                                                        <th>合作公司</th>
-                                                    </@shiro.hasPermission>
-                                                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                        <th style="display: none">合作公司</th>
-                                                    </@shiro.hasPermission>
                                                     <th>余额</th>
-                                                <#-- <th>创建时间</th>-->
                                                     <th class="table-td-none">账号authId</th>
                                                     <th class="table-td-none">账号类型</th>
                                                     <th class="table-td-none">账号密码</th>
                                                     <th class="table-td-none">账号余额</th>
                                                     <th class="table-td-none">账号状态</th>
                                                     <th class="table-td-none">账号Ip段</th>
-                                                    <th class="table-td-none">账号操作</th>
                                                     <th style="text-align: center;">操作</th>
                                                 </tr>
                                                 </thead>
@@ -141,24 +85,10 @@
                                                         <#list companyList as company>
                                                             <#if company.companyStatus == 0>
                                                             <tr>
-                                                                <td><input class="checkboxes" type="checkbox" id="checkBoxCompanyId" name="checkBoxCompanyId" value="${company.companyId}"/></td>
                                                                 <td data-title="公司名称">${company.companyName!''}</td>
                                                                 <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
                                                                 <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
-                                                                <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                    <td data-title="合作公司">
-                                                                        <#if company.partnerId??>
-                                                                            <a href="/company/find-all-company-customer?partnerId=${company.partnerId}">${company.partnerName!'无'}</a>
-                                                                        <#else >
-                                                                            无
-                                                                        </#if>
-                                                                    </td>
-                                                                </@shiro.hasPermission>
-                                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                                    <td data-title="合作公司" style="display: none"><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
-                                                                </@shiro.hasPermission>
                                                                 <td data-title="余额"><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
-                                                            <#-- <td data-title="创建时间">${company.companyCreateTime?date}</td>-->
                                                                 <td data-title="账号authId" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
@@ -219,26 +149,6 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                    <td data-title="账号操作" class="table-td-none">
-                                                                        <#if company.customerList??>
-                                                                            <#list company.customerList as customer>
-                                                                                <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
-                                                                                |
-                                                                                <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
-                                                                                    <a href="javaScript:;" onclick="banCustomer('${customer.authId}')" class="warning">禁用</a><br/>
-                                                                                <#else >
-                                                                                    <a href="javaScript:;" onclick="unBanCustomer('${customer.authId}')">启用</a><br/>
-                                                                                </#if>
-                                                                            </#list>
-                                                                        </#if>
-                                                                    </td>
-                                                                </@shiro.hasPermission>
-                                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                                    <td data-title="账号操作" class="table-td-none">
-                                                                        无
-                                                                    </td>
-                                                                </@shiro.hasPermission>
                                                                 <td data-title="操作" style="text-align: center;">
                                                                     <a href="#form_modal_company_api_status" onclick="findCompanyApi(${company.companyId})" data-toggle="modal">产品权限管理</a>
                                                                 </td>
@@ -264,40 +174,20 @@
 
                                     <div class="portlet-body">
 
-                                        <div class="clearfix margin-bottom-5">
-                                            <@shiro.hasPermission name="customer:findAllCustomer">
-                                                <div class="btn-group">
-                                                    <a class="btn blue" id="batchUnBanCompany" style="margin-right: 10px;" href="javaScript:;">
-                                                        批量启用客户
-                                                    </a>
-                                                </div>
-                                            </@shiro.hasPermission>
-
-                                        </div>
-
                                         <div class="table-responsive">
                                             <table class="table table-striped table-hover table-bordered table-condensed" id="companySample_2">
                                                 <thead>
                                                 <tr>
-                                                    <th><input type="checkbox" id="allUnBanChecked" class="group-checkable" data-set="#companySample_2 .checkboxes"/></th>
                                                     <th>公司名称</th>
                                                     <th>信用额度</th>
                                                     <th>可用额度</th>
-                                                    <@shiro.hasPermission name="customer:findAllCustomer">
-                                                        <th>合作公司</th>
-                                                    </@shiro.hasPermission>
-                                                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                        <th style="display: none">合作公司</th>
-                                                    </@shiro.hasPermission>
                                                     <th>余额</th>
-                                                <#--   <th>创建时间</th>-->
                                                     <th class="table-td-none">账号authId</th>
                                                     <th class="table-td-none">账号类型</th>
                                                     <th class="table-td-none">账号密码</th>
                                                     <th class="table-td-none">账号余额</th>
                                                     <th class="table-td-none">账号状态</th>
                                                     <th class="table-td-none">账号Ip段</th>
-                                                    <th class="table-td-none">账号操作</th>
                                                     <th style="text-align: center;">操作</th>
                                                 </tr>
                                                 </thead>
@@ -306,24 +196,10 @@
                                                         <#list companyList as company>
                                                             <#if company.companyStatus != 0>
                                                             <tr>
-                                                                <td><input class="checkboxes" type="checkbox" id="checkUnBanBoxCompanyId" name="checkUnBanBoxCompanyId" value="${company.companyId}"/></td>
                                                                 <td data-title="公司名称" class="font-text-decoration">${company.companyName!''}</td>
                                                                 <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
                                                                 <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
-                                                                <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                    <td data-title="合作公司">
-                                                                        <#if company.partnerId??>
-                                                                            <a href="/company/find-all-company-customer?partnerId=${company.partnerId}">${company.partnerName!'无'}</a>
-                                                                        <#else >
-                                                                            无
-                                                                        </#if>
-                                                                    </td>
-                                                                </@shiro.hasPermission>
-                                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                                    <td data-title="合作公司" style="display: none"><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
-                                                                </@shiro.hasPermission>
                                                                 <td data-title="余额"><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
-                                                            <#--         <td data-title="创建时间">${company.companyCreateTime?date}</td>-->
                                                                 <td data-title="账号authId" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
@@ -384,26 +260,6 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <@shiro.hasPermission name="customer:findAllCustomer">
-                                                                    <td data-title="账号操作" class="table-td-none">
-                                                                        <#if company.customerList??>
-                                                                            <#list company.customerList as customer>
-                                                                                <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
-                                                                                |
-                                                                                <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
-                                                                                    <a href="javaScript:;" onclick="banCustomer('${customer.authId}')" class="warning">禁用</a><br/>
-                                                                                <#else >
-                                                                                    <a href="javaScript:;" onclick="unBanCustomer('${customer.authId}')">启用</a><br/>
-                                                                                </#if>
-                                                                            </#list>
-                                                                        </#if>
-                                                                    </td>
-                                                                </@shiro.hasPermission>
-                                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                                    <td data-title="账号操作" class="table-td-none">
-                                                                        无
-                                                                    </td>
-                                                                </@shiro.hasPermission>
                                                                 <td data-title="操作" style="text-align: center;">
                                                                     <a href="#form_modal_company_api_status" onclick="findCompanyApi(${company.companyId})" data-toggle="modal">产品权限管理</a>
                                                                 </td>
@@ -493,7 +349,6 @@
                                         <th style="width: 40%">产品名称</th>
                                         <th style="width: 25%">价格（单位：元）</th>
                                         <th style="width: 15%">状态</th>
-                                        <th style="width: 20%">操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -532,7 +387,6 @@
                                 <tr>
                                     <th>起始Ip</th>
                                     <th>结束Ip</th>
-                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -1028,13 +882,13 @@
 
     <script src="/js/locales/bootstrap-multiselect.js"></script>
 
-    <script src="/js/myjs/customer-company.js"></script>
+    <script src="/js/oldlocal/dept/customer-company.js"></script>
 
-    <script src="/js/myjs/customer-company-forbid.js"></script>
+    <script src="/js/oldlocal/dept/customer-company-forbid.js"></script>
 
-    <script src="/js/oldlocal/company-api-operator.js"></script>
+    <script src="/js/oldlocal/dept/company-api-operator.js"></script>
 
-    <script src="/js/oldlocal/company-ip-operator.js"></script>
+    <script src="/js/oldlocal/dept/company-ip-operator.js"></script>
 
     <script src="/js/oldlocal/company-charge-fee.js"></script>
 
