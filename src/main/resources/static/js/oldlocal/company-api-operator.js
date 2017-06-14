@@ -165,7 +165,7 @@ function editRow(oTableEdit, nRow) {
 
 }
 
-
+/*重置表格*/
 function restoreRow(oTableEdit, nRow) {
     var aData = oTableEdit.fnGetData(nRow);
     var jqTds = $('>td', nRow);
@@ -176,17 +176,6 @@ function restoreRow(oTableEdit, nRow) {
     oTableEdit.fnDraw();
 }
 
-/*编辑*/
-function editRowPrice(oTableEdit, nRow) {
-    var aData = oTableEdit.fnGetData(nRow);
-    var jqTds = $('>td', nRow);
-    jqTds[0].innerHTML = aData[0];
-    jqTds[1].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[1] + '">';
-    jqTds[2].innerHTML = aData[2];
-    jqTds[3].innerHTML = '<a class="savePrice" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancelPrice" href="javaScript:;">取消</a>';
-}
-
-
 /*取消*/
 $('#simple_company_api_1 a.cancel').live('click', function (e) {
     e.preventDefault();
@@ -195,19 +184,24 @@ $('#simple_company_api_1 a.cancel').live('click', function (e) {
 
 });
 
-/*取消*/
-$('#simple_company_api_1 a.cancelPrice').live('click', function (e) {
-    e.preventDefault();
-    restoreRow(oTableEdit, nEditing);
-    nEditing = null;
-});
-
 /*保存*/
 $('#simple_company_api_1 a.save').live('click', function (e) {
-    var apiType_companyId = $('#apiType_companyId').html();
-    var apiTypeId_subTypeId = $('#apiTypeId_subTypeId').val();
-    var apiType_price = $('#apiType_price').val();
-    if (confirm("确定要执行当前操作吗？")) {
+
+    swal({
+        title: "确定要添加吗？",   //弹出框的title
+        type: "question",    //弹出框类型
+        showCancelButton: true, //是否显示取消按钮
+        allowOutsideClick: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",//取消按钮文本
+        confirmButtonText: "确定添加"//确定按钮上面的文档
+    }).then(function () {
+
+        var apiType_companyId = $('#apiType_companyId').html();
+        var apiTypeId_subTypeId = $('#apiTypeId_subTypeId').val();
+        var apiType_price = $('#apiType_price').val();
+
         $.ajax({
             type: "post",
             url: "/company/add-company-api",
@@ -237,25 +231,33 @@ $('#simple_company_api_1 a.save').live('click', function (e) {
                     return;
                 }
                 if (data.errorMessage != null) {
-                    $("#error_alert_company_api").empty();
-                    $("#error_alert_company_api").append(
-                        '<div class="alert alert-error show">' +
-                        '<button class="close" data-dismiss="alert"></button>' +
-                        '<span>' + data.errorMessage + '</span>' +
-                        '</div>');
+                    swal(
+                        '失败',
+                        '哎呦，添加失败了',
+                        'error'
+                    );
                     return;
                 }
                 if (data.successMessage != null) {
-                    alert("操作成功");
-                    $("#error_alert_company_api").empty();
+                    swal(
+                        '成功',
+                        '该权限已被添加',
+                        'success'
+                    );
                     findCompanyApi(apiType_companyId);
                 }
             }
-        })
-    }
+        });
+
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
+
 });
 
 
+/*修改价格*/
 $('#simple_company_api_1 a.edit').live('click', function (e) {
     e.preventDefault();
     var nRow = $(this).parents('tr')[0];
@@ -269,6 +271,17 @@ $('#simple_company_api_1 a.edit').live('click', function (e) {
     }
 });
 
+/*编辑价格*/
+function editRowPrice(oTableEdit, nRow) {
+    var aData = oTableEdit.fnGetData(nRow);
+    var jqTds = $('>td', nRow);
+    jqTds[0].innerHTML = aData[0];
+    jqTds[1].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[1] + '">';
+    jqTds[2].innerHTML = aData[2];
+    jqTds[3].innerHTML = '<a class="savePrice" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancelPrice" href="javaScript:;">取消</a>';
+}
+
+/*修改价格*/
 $('#simple_company_api_1 a.savePrice').live('click', function (e) {
     e.preventDefault();
     var nRow = $(this).parents('tr')[0];
@@ -276,21 +289,33 @@ $('#simple_company_api_1 a.savePrice').live('click', function (e) {
     nEditing = nRow;
 });
 
+/*取消价格*/
+$('#simple_company_api_1 a.cancelPrice').live('click', function (e) {
+    e.preventDefault();
+    restoreRow(oTableEdit, nEditing);
+    nEditing = null;
+});
 
+/*修改价格-提交数据*/
 function saveRow(oTableEdit, nRow) {
-    var aData = oTableEdit.fnGetData(nRow);
-    var jqInputs = $('input', nRow);
 
-    console.log(aData[0]);
-    console.log(jqInputs[0].value);
-    console.log(aData[2]);
-    console.log(aData[3]);
+    swal({
+        title: "确定要修改吗？",   //弹出框的title
+        type: "question",    //弹出框类型
+        showCancelButton: true, //是否显示取消按钮
+        allowOutsideClick: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",//取消按钮文本
+        confirmButtonText: "确定修改"//确定按钮上面的文档
+    }).then(function () {
 
-    var apiType_companyId = $('#apiType_companyId').html();
-    var apiType_stid = aData[0];
-    var price = jqInputs[0].value;
+        var aData = oTableEdit.fnGetData(nRow);
+        var jqInputs = $('input', nRow);
+        var apiType_companyId = $('#apiType_companyId').html();
+        var apiType_stid = aData[0];
+        var price = jqInputs[0].value;
 
-    if (confirm("确定要执行当前操作吗？")) {
         $.ajax({
             type: "post",
             url: "/company//mod-company-api-price",
@@ -311,28 +336,46 @@ function saveRow(oTableEdit, nRow) {
                     return;
                 }
                 if (data.errorMessage != null) {
-                    $("#error_alert_company_api").empty();
-                    $("#error_alert_company_api").append(
-                        '<div class="alert alert-error show">' +
-                        '<button class="close" data-dismiss="alert"></button>' +
-                        '<span>' + data.errorMessage + '</span>' +
-                        '</div>');
+                    swal(
+                        '失败',
+                        '哎呦，修改失败了',
+                        'error'
+                    );
                     return;
                 }
                 if (data.successMessage != null) {
-                    alert("操作成功");
-                    $("#error_alert_company_api").empty();
+                    swal(
+                        '成功',
+                        '该价格已被修改',
+                        'success'
+                    );
                     findCompanyApi(apiType_companyId);
                 }
             }
         })
-    }
+
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
+
 }
 
-/*禁用产品权限*/
 
+/*禁用产品权限*/
 function banCompanyApi(id, companyId) {
-    if (confirm("确定要执行当前操作吗？")) {
+
+    swal({
+        title: "确定要禁用吗？",   //弹出框的title
+        type: "warning",    //弹出框类型
+        showCancelButton: true, //是否显示取消按钮
+        allowOutsideClick: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",//取消按钮文本
+        confirmButtonText: "确定禁用！"//确定按钮上面的文档
+    }).then(function () {
+
         $.ajax({
             type: "post",
             url: "/company/ban-api",
@@ -345,21 +388,31 @@ function banCompanyApi(id, companyId) {
                 closeProgress();
                 if (data != null) {
                     if (data.success != null) {
-                        alert("禁用成功！");
+                        swal(
+                            '成功',
+                            '该权限已被禁用',
+                            'success'
+                        );
                         findCompanyApi(companyId);
                         return;
                     }
                     if (data.error != null) {
-                        alert("禁用失败！");
-                        findCompanyApi(companyId);
+                        swal(
+                            '失败',
+                            '哎呦，禁用失败了',
+                            'error'
+                        );
                     }
                 }
-
-
             }
-        })
-    }
+        });
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
+
 }
+
 
 /*启用产品权限*/
 function unBanCompanyApi(id,companyId) {

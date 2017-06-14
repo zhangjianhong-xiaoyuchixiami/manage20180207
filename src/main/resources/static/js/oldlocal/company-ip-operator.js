@@ -112,10 +112,21 @@ $('#simple_customer_ip_1 a.cancel').live('click', function (e) {
     oTableEditIp.fnDeleteRow(nEditingIp);
 });
 
-/*保存*/
+
+/*提交保存Ip*/
 $('#simple_customer_ip_1 a.edit').live('click', function (e) {
 
-    if (confirm("确定要执行当前操作吗？")) {
+    swal({
+        title: "确定要添加吗？",   //弹出框的title
+        type: "question",    //弹出框类型
+        showCancelButton: true, //是否显示取消按钮
+        allowOutsideClick: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",//取消按钮文本
+        confirmButtonText: "确定添加"//确定按钮上面的文档
+    }).then(function () {
+
         var ip_customerId = $('#ip_customerId').html();
         var ip_beginIp = $('#ip_beginIp').val();
         var ip_endIp = $('#ip_endIp').val();
@@ -148,22 +159,28 @@ $('#simple_customer_ip_1 a.edit').live('click', function (e) {
                     return;
                 }
                 if (data.fail != null) {
-                    $("#error_alert_customer_ip").empty();
-                    $("#error_alert_customer_ip").append(
-                        '<div class="alert alert-error show">' +
-                        '<button class="close" data-dismiss="alert"></button>' +
-                        '<span>' + data.fail + '</span>' +
-                        '</div>');
+                    swal(
+                        '失败',
+                        '哎呦，添加失败了',
+                        'error'
+                    );
                     return;
                 }
                 if (data.success != null) {
-                    alert("操作成功");
-                    $("#error_alert_customer_ip").empty();
+                    swal(
+                        '成功',
+                        '该Ip已被添加',
+                        'success'
+                    );
                     showIp(ip_customerId);
                 }
             }
         })
-    }
+
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
 
 });
 
@@ -171,27 +188,50 @@ $('#simple_customer_ip_1 a.edit').live('click', function (e) {
 /*删除Ip*/
 function deleteIp(id,customerId) {
 
-    if (confirm("确定要执行当前操作吗？")) {
+    swal({
+        title: "确定要删除吗？",   //弹出框的title
+        type: "warning",    //弹出框类型
+        showCancelButton: true, //是否显示取消按钮
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",//取消按钮文本
+        confirmButtonText: "确定删除"//确定按钮上面的文档
+    }).then(function () {
+
         $.ajax({
             type: "post",
             url: "/company/customer/delete-ip",
             data: {"customerId": customerId, "id": id},
             dataType: "json",
-            beforeSend:function () {
+            beforeSend: function () {
                 openProgress();
             },
             success: function (data) {
                 closeProgress();
                 if (data != null) {
                     if (data.success != null) {
-                        alert("操作成功");
+                        swal(
+                            '成功',
+                            '该Ip已被删除',
+                            'success'
+                        );
                         showIp(customerId);
                         return;
                     }
-                    alert("操作失败！");
+                    if (data.fail != null) {
+                        swal(
+                            '失败',
+                            '哎呦，删除失败了',
+                            'error'
+                        );
+                    }
                 }
-
             }
         })
-    }
+
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
+
 }

@@ -126,6 +126,41 @@ var Company = function () {
             jQuery('#companySample_1_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
             jQuery('#companySample_1_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
 
+            var nowEditing = null;
+
+            $('#companySample_1 a.edit-floor-normal').live('click',function (e) {
+                e.preventDefault();
+                var nRow = $(this).parents('tr')[0];
+                if (nowEditing !== null && nowEditing != nRow) {
+                    restoreRow(oTable, nowEditing);
+                    editRow(oTable, nRow);
+                    nowEditing = nRow;
+                }else {
+                    editRow(oTable, nRow);
+                    nowEditing = nRow;
+                }
+            });
+
+            function restoreRow(oTable, nRow) {
+                var aData = oTable.fnGetData(nRow);
+                var jqTds = $('>td', nRow);
+
+                for (var i = 0, iLen = jqTds.length; i < iLen; i++) {
+                    oTable.fnUpdate(aData[i], nRow, i, false);
+                }
+                oTable.fnDraw();
+            }
+
+            /*编辑*/
+            function editRow(oTable, nRow) {
+                var aData = oTable.fnGetData(nRow);
+                var jqTds = $('>td', nRow);
+                //jqTds[0].innerHTML = aData[0];
+                jqTds[3].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[3] + '">';
+                //jqTds[2].innerHTML = aData[2];
+                //jqTds[3].innerHTML = '<a class="savePrice" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancelPrice" href="javaScript:;">取消</a>';
+            }
+
 
             /*左侧导航*/
             $('#customerManage').addClass('active');

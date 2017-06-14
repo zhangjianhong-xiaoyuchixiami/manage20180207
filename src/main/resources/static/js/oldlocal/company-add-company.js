@@ -429,59 +429,90 @@ var AddCompanyAllotApiAddIp = function () {
             //表单提交
             $('#form_wizard_1 .button-submit').on("click",function () {
 
-                var companyName = $('#companyCustomerName').val();
-                var authId = $('#authId').val();
-                var partnerId = $('#partnerId').val();
+                swal({
+                    title: "确定要添加吗？",   //弹出框的title
+                    type: "question",    //弹出框类型
+                    showCancelButton: true, //是否显示取消按钮
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: "取消",//取消按钮文本
+                    confirmButtonText: "确定添加"//确定按钮上面的文档
+                }).then(function () {
 
-                var add_api_type_sub = [] ;
-                $("select[id='add_api_type_sub']").each(function(){
-                    add_api_type_sub.push($.trim($(this).val()));
-                });
-                var add_api_type_sub_price = [] ;
-                $("input[id='add_api_type_sub_price']").each(function(){
-                    add_api_type_sub_price.push($.trim($(this).val()));
-                });
-                var beginIp = [];
-                $("input[id='input_ipv4_begin']").each(function(){
-                    beginIp.push($.trim($(this).val()));
-                });
-                var endIp = [];
-                $("input[id='input_ipv4_end']").each(function(){
-                    endIp.push($.trim($(this).val()));
-                });
+                    var companyName = $('#companyCustomerName').val();
+                    var authId = $('#authId').val();
+                    var partnerId = $('#partnerId').val();
 
-                $.ajax({
-                    type: "post",
-                    url: "/company/add-company-customer",
-                    data: {
-                        "companyName" : companyName,
-                        "authId" : authId,
-                        "partnerId" : partnerId,
-                        "add_api_type_sub" : add_api_type_sub,
-                        "add_api_type_sub_price" : add_api_type_sub_price,
-                        "beginIp" : beginIp,
-                        "endIp" : endIp
-                    },
-                    dataType: "json",
-                    beforeSend:function () {
-                        openProgress();
-                    },
-                    success: function (data) {
-                        closeProgress();
-                        if (data != null) {
-                            if (data.error != null) {
-                                $("#tip").html("操作失败！");
-                                error.show();
-                                return;
-                            }
-                            if (data.success != null) {
-                                alert("操作成功");
-                               // window.location.href=window.location.href
-                                location.reload();
+                    var add_api_type_sub = [] ;
+                    $("select[id='add_api_type_sub']").each(function(){
+                        add_api_type_sub.push($.trim($(this).val()));
+                    });
+                    var add_api_type_sub_price = [] ;
+                    $("input[id='add_api_type_sub_price']").each(function(){
+                        add_api_type_sub_price.push($.trim($(this).val()));
+                    });
+                    var beginIp = [];
+                    $("input[id='input_ipv4_begin']").each(function(){
+                        beginIp.push($.trim($(this).val()));
+                    });
+                    var endIp = [];
+                    $("input[id='input_ipv4_end']").each(function(){
+                        endIp.push($.trim($(this).val()));
+                    });
+
+                    $.ajax({
+                        type: "post",
+                        url: "/company/add-company-customer",
+                        data: {
+                            "companyName" : companyName,
+                            "authId" : authId,
+                            "partnerId" : partnerId,
+                            "add_api_type_sub" : add_api_type_sub,
+                            "add_api_type_sub_price" : add_api_type_sub_price,
+                            "beginIp" : beginIp,
+                            "endIp" : endIp
+                        },
+                        dataType: "json",
+                        beforeSend:function () {
+                            openProgress();
+                        },
+                        success: function (data) {
+                            closeProgress();
+                            if (data != null) {
+                                if (data.error != null) {
+                                    swal({
+                                        title: "失败",
+                                        text: "哎呦，添加失败了",
+                                        type: "error",
+                                        showCancelButton: false,
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: "确定"
+                                    }).then(function () {
+                                        return;
+                                    })
+                                }
+                                if (data.success != null){
+                                    swal({
+                                        title: "成功",
+                                        text: "添加成功",
+                                        type: "success",
+                                        showCancelButton: false, //是否显示取消按钮
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: "确定"//确定按钮上面的文档
+                                    }).then(function () {
+                                        location.reload();
+                                    })
+                                }
                             }
                         }
-                    }
-                })
+                    })
+
+                },function(dismiss) {
+                    // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                    if (dismiss === 'cancel') {}
+                });
+
             }).hide();
 
         }

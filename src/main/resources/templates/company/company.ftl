@@ -143,7 +143,7 @@
                                                             <tr>
                                                                 <td><input class="checkboxes" type="checkbox" id="checkBoxCompanyId" name="checkBoxCompanyId" value="${company.companyId}"/></td>
                                                                 <td data-title="公司名称">${company.companyName!''}</td>
-                                                                <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
+                                                                <td data-title="信用额度"><a href="javaScript:;" class="edit-floor-normal">${(-company.floor/100.0)?c}</a></td>
                                                                 <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="合作公司">
@@ -1022,6 +1022,10 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
     </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+
     <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
@@ -1210,7 +1214,7 @@
                     // 参数
                     var op = {
                         opacity: 0.8,
-                        z: 100000,
+                        z: 1055,
                         bgcolor: '#ccc'
                     };
                     var original=$(document.body);

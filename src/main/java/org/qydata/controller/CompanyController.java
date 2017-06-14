@@ -201,7 +201,7 @@ public class CompanyController {
             map.put("amountMessage","金额格式不正确!");
             return gson.toJson(map);
         }else {
-            if (Long.parseLong(amount)<=0){
+            if (Double.parseDouble(amount)<=0){
                 map.put("amountMessage","金额必须大于0!");
                 return gson.toJson(map);
             }
@@ -212,7 +212,7 @@ public class CompanyController {
         }
         int code = 0;
         try {
-            code = companyService.updateCustomerBalance(customerId, reason, Long.parseLong(amount));
+            code = companyService.updateCustomerBalance(customerId, reason, amount.trim());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -286,7 +286,6 @@ public class CompanyController {
             mapResu = companyService.updateCompanyBan(companyId);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return gson.toJson(mapResu);
     }
@@ -493,7 +492,7 @@ public class CompanyController {
             map.put("success","操作成功！");
             return gson.toJson(map);
         }
-        map.put("error","操作失败！");
+        map.put("fail","操作失败！");
         return gson.toJson(map);
     }
 

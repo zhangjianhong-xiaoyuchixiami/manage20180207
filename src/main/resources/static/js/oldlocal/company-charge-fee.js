@@ -68,10 +68,22 @@ $("#update_balance_reasonId").focus(function () {
 /*以下操作是给账号充值或扣费-点击提交按钮提交数据*/
 $("#update-balance-btn-black-btn-primary").on("click",function () {
 
-    if (confirm("确定要给该账号充值吗？")){
+
+    swal({
+        title: "确定要充值吗？",   //弹出框的title
+        type: "question",    //弹出框类型
+        showCancelButton: true, //是否显示取消按钮
+        allowOutsideClick: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",//取消按钮文本
+        confirmButtonText: "确定充值"//确定按钮上面的文档
+    }).then(function () {
+
         var customerId=$("#update_balance_customerId").html();
         var amount=$("#update_balance_amount").val();
         var reason=$("#update_balance_reasonId").val();
+
         $.ajax({
             type: "post",
             url: "/company/update-customer-balance",
@@ -93,16 +105,35 @@ $("#update-balance-btn-black-btn-primary").on("click",function () {
                     return;
                 }
                 if(result.errorMessage != null) {
-                    $("#error_alert_update_balance").empty();
-                    $("#error_alert_update_balance").append('<div class="alert alert-error show"><button class="close" data-dismiss="alert"></button><span>'+result.errorMessage+'</span></div>')
-                    return;
+                    swal({
+                        title: "失败",
+                        text: "哎呦，充值失败了",
+                        type: "error",
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: "确定"
+                    }).then(function () {
+                        return;
+                    })
                 }
-                if (result.successMessage != null){
-                    alert("操作成功");
-                   // window.location.href=window.location.href
-                    location.reload();
+                if(result.successMessage != null){
+                    swal({
+                        title: "成功",
+                        text: "充值成功",
+                        type: "success",
+                        showCancelButton: false, //是否显示取消按钮
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: "确定"//确定按钮上面的文档
+                    }).then(function () {
+                        location.reload();
+                    })
                 }
             }
         });
-    }
+
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
+
 });

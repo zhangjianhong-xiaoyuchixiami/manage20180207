@@ -1064,7 +1064,7 @@
                     // 参数
                     var op = {
                         opacity: 0.8,
-                        z: 100000,
+                        z: 1055,
                         bgcolor: '#ccc'
                     };
                     var original=$(document.body);

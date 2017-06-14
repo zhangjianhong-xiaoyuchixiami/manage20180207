@@ -25,31 +25,71 @@ $("#batchBanCompany").on('click',function () {
     });
 
     if (companyId == null || companyId == ""){
-        alert("请先选择要禁用的公司")
-    }else {
-        $.ajax({
-            type:'post',
-            url:"/company/ban",
-            data:{"companyId": companyId},
-            dataType:'json',
-            beforeSend:function () {
-                openProgress();
-            },
-            success:function(data){
-                closeProgress();
-                if (data != null){
-                    if (data.fail != null){
-                        alert(data.fail);
-                        //window.location.href=window.location.href;
-                        location.reload();
-                        return;
-                    }
-                    alert("禁用成功");
-                    //window.location.href=window.location.href;
-                    location.reload();
-                }
-            }
+        swal({
+            title: "操作提示",
+            text: "请先选择要禁用的公司！",
+            type: "info",
+            confirmButtonText: "确定"
         });
+    }else {
+
+        swal({
+            title: "确定要禁用吗？",   //弹出框的title
+            type: "question",    //弹出框类型
+            showCancelButton: true, //是否显示取消按钮
+            allowOutsideClick: false,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: "取消",//取消按钮文本
+            confirmButtonText: "确定禁用"//确定按钮上面的文档
+        }).then(function () {
+
+            $.ajax({
+                type:'post',
+                url:"/company/ban",
+                data:{"companyId": companyId},
+                dataType:'json',
+                beforeSend:function () {
+                    openProgress();
+                },
+                success:function(data){
+                    closeProgress();
+                    if (data != null){
+                        if (data.fail != null){
+                            swal({
+                                title: "操作提示",
+                                text: data.fail,
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: "确定"
+                            }).then(function () {
+                                location.reload();
+                                return;
+                            })
+                        }
+                        if (data.success != null){
+                            swal({
+                                title: "操作提示",
+                                text: "禁用成功",
+                                type: "success",
+                                showCancelButton: false, //是否显示取消按钮
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: "确定"//确定按钮上面的文档
+                            }).then(function () {
+                                location.reload();
+                            })
+                        }
+                    }
+
+                }
+            });
+
+        },function(dismiss) {
+            // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+            if (dismiss === 'cancel') {}
+        });
+
     }
 });
 
@@ -62,37 +102,87 @@ $("#batchUnBanCompany").on('click',function () {
     });
 
     if (companyId == null || companyId == ""){
-        alert("请先选择要启用的公司")
-    }else {
-        $.ajax({
-            type:'post',
-            url:"/company/unban",
-            data:{"companyId": companyId},
-            dataType:'json',
-            beforeSend:function () {
-                openProgress();
-            },
-            success:function(data){
-                closeProgress();
-                if (data != null){
-                    if (data.fail != null){
-                        alert(data.fail);
-                        //window.location.href=window.location.href;
-                        location.reload();
-                        return;
-                    }
-                    alert("启用成功");
-                    //window.location.href=window.location.href;
-                    location.reload();
-                }
-            }
+        swal({
+            title: "操作提示",
+            text: "请先选择要启用的公司！",
+            type: "info",
+            confirmButtonText: "确定"
         });
+    }else {
+
+        swal({
+            title: "确定要启用吗？",   //弹出框的title
+            type: "question",    //弹出框类型
+            showCancelButton: true, //是否显示取消按钮
+            allowOutsideClick: false,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: "取消",//取消按钮文本
+            confirmButtonText: "确定启用"//确定按钮上面的文档
+        }).then(function () {
+
+            $.ajax({
+                type:'post',
+                url:"/company/unban",
+                data:{"companyId": companyId},
+                dataType:'json',
+                beforeSend:function () {
+                    openProgress();
+                },
+                success:function(data){
+                    closeProgress();
+                    if (data != null){
+                        if (data.fail != null){
+                            swal({
+                                title: "操作提示",
+                                text: data.fail,
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: "确定"
+                            }).then(function () {
+                                location.reload();
+                                return;
+                            })
+                        }
+                        if (data.success != null){
+                            swal({
+                                title: "操作提示",
+                                text: "启用成功",
+                                type: "success",
+                                showCancelButton: false, //是否显示取消按钮
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: "确定"//确定按钮上面的文档
+                            }).then(function () {
+                                location.reload();
+                            })
+                        }
+                    }
+                }
+            });
+
+        },function(dismiss) {
+            // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+            if (dismiss === 'cancel') {}
+        });
+
     }
 });
 
 /*禁用账号*/
 function banCustomer(authId) {
-    if (confirm("确定要执行当前操作吗？")) {
+
+    swal({
+        title: "确定要禁用吗？",   //弹出框的title
+        type: "question",    //弹出框类型
+        showCancelButton: true, //是否显示取消按钮
+        allowOutsideClick: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",//取消按钮文本
+        confirmButtonText: "确定禁用"//确定按钮上面的文档
+    }).then(function () {
+
         $.ajax({
             type: "post",
             url: "/company/customer/ban",
@@ -104,24 +194,56 @@ function banCustomer(authId) {
             success:function(data){
                 closeProgress();
                 if (data != null) {
-                    if (data.success != null) {
-                        alert("禁用成功");
-                        //window.location.href = window.location.href;
-                        location.reload();
-                        return;
+                    if (data.success != null){
+                        swal({
+                            title: "操作提示",
+                            text: "禁用成功",
+                            type: "success",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
+                        }).then(function () {
+                            location.reload();
+                            return;
+                        })
                     }
                     if (data.error != null) {
-                        alert("禁用失败");
+                        swal({
+                            title: "操作提示",
+                            text: "哎呦，禁用失败",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"
+                        }).then(function () {
+                            location.reload();
+                        })
                     }
                 }
             }
         })
-    }
+
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
+
 }
 
 /*解禁账号*/
 function unBanCustomer(authId) {
-    if (confirm("确定要执行当前操作吗？")) {
+
+    swal({
+        title: "确定要启用吗？",   //弹出框的title
+        type: "question",    //弹出框类型
+        showCancelButton: true, //是否显示取消按钮
+        allowOutsideClick: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",//取消按钮文本
+        confirmButtonText: "确定启用"//确定按钮上面的文档
+    }).then(function () {
+
         $.ajax({
             type: "post",
             url: "/company/customer/unban",
@@ -133,17 +255,38 @@ function unBanCustomer(authId) {
             success:function(data){
                 closeProgress();
                 if (data != null) {
-                    if (data.success != null) {
-                        alert("启用成功");
-                        //window.location.href = window.location.href;
-                        location.reload();
-                        return;
+                    if (data.success != null){
+                        swal({
+                            title: "操作提示",
+                            text: "启用成功",
+                            type: "success",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
+                        }).then(function () {
+                            location.reload();
+                            return;
+                        })
                     }
                     if (data.error != null) {
-                        alert("启用失败");
+                        swal({
+                            title: "操作提示",
+                            text: "哎呦，启用失败",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"
+                        }).then(function () {
+                            location.reload();
+                        })
                     }
                 }
             }
         })
-    }
+
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
+
 }

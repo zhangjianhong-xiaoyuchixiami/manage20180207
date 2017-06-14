@@ -68,7 +68,7 @@ public interface CompanyService {
      * @return
      */
     @SystemServiceLog(description = "账号充值/扣费")
-    public int updateCustomerBalance(Integer customerId,Integer reason,Long amount)throws Exception;
+    public int updateCustomerBalance(Integer customerId,Integer reason,String amount)throws Exception;
 
     /**
      * 禁用账号

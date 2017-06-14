@@ -48,6 +48,8 @@
     <link rel="stylesheet" type="text/css" href="/css/icon.css" />
     <link rel="shortcut icon" href="/image/favicon.ico" />
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" rel="stylesheet">
+
     <style>
         a:hover {text-decoration: none;}
     </style>
