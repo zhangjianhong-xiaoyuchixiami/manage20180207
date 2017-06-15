@@ -184,4 +184,7 @@ public interface CompanyService {
      */
     public List<ApiTypeSubType> queryAllApi();
 
+    @SystemServiceLog(description = "修改信用额度")
+    public int updateCredit(Integer companyId,Integer credit) throws Exception;
+
 }

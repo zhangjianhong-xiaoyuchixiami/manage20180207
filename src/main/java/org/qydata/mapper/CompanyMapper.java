@@ -153,4 +153,11 @@ public interface CompanyMapper {
      */
     public String queryAuthKey(String key);
 
+    /**
+     * 根据公司Id查找正式账号Id，用于修改信用额度
+     * @param companyId
+     * @return
+     */
+    public Customer queryOfficAuthIdByCompanyId(Integer companyId);
+
 }

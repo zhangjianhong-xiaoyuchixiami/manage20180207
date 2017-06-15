@@ -580,4 +580,26 @@ public class CompanyController {
     }
 
 
+    @RequestMapping("/customer/update-credit")
+    @ResponseBody
+    public String updateCredit(Integer companyId,Integer credit){
+        System.out.println(companyId);
+        System.out.println(credit);
+        Map<String,Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        int code = 0;
+        try {
+            code = companyService.updateCredit(companyId,credit);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (200 == code){
+            map.put("success","操作成功");
+            return gson.toJson(map);
+        }
+        map.put("fail","修改失败，请检查你的操作");
+        return gson.toJson(map);
+    }
+
+
 }

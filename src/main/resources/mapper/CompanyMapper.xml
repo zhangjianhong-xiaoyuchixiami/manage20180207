@@ -176,4 +176,12 @@
         WHERE name = #{param}
     </select>
 
+    <!--根据公司Id查找正式账号Id，用于修改信用额度-->
+    <select id="queryOfficAuthIdByCompanyId" parameterType="int" resultType="org.qydata.entity.Customer">
+        SELECT id,authId
+        FROM qyfinance.bkvwCustomer
+        WHERE companyId = #{param}
+        AND typeId = 1
+    </select>
+
 </mapper>

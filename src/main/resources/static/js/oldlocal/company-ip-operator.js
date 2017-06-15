@@ -84,7 +84,12 @@ var nEditingIp = null;
 $('#simple_customer_ip_1_new').live('click',function (e) {
 
     if ($("#simple_customer_ip_1 input").attr('id')){
-        alert("请先完成当前操作！");
+        swal({
+            title: "操作提示",
+            text: "请先完成当前操作！",
+            type: "info",
+            confirmButtonText: "确定"
+        });
         return;
     }else {
         e.preventDefault();

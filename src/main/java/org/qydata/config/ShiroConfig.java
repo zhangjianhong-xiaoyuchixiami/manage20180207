@@ -366,7 +366,7 @@ public class ShiroConfig {
 		chains.put("/company/customer/delete-ip", "authc");
 		chains.put("/company/customer/add/ip", "authc");
 		chains.put("/company/find-all-api-type", "authc");
-
+		chains.put("/company/customer/update-credit", "authc");
 
 		//日志管理
 		chains.put("/log/log-message", "authc,perms");

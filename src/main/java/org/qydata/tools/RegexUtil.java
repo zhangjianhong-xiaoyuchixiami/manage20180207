@@ -237,6 +237,7 @@ public class RegexUtil {
         return match(str, "^(-?\\d+)(\\.\\d+)?$");
     }
 
+
     /**
      * 联系电话(手机/电话皆可)验证
      *

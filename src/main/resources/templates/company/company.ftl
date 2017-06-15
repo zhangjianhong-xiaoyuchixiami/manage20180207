@@ -143,7 +143,7 @@
                                                             <tr>
                                                                 <td><input class="checkboxes" type="checkbox" id="checkBoxCompanyId" name="checkBoxCompanyId" value="${company.companyId}"/></td>
                                                                 <td data-title="公司名称">${company.companyName!''}</td>
-                                                                <td data-title="信用额度"><a href="javaScript:;" class="edit-floor-normal">${(-company.floor/100.0)?c}</a></td>
+                                                                <td data-title="信用额度"><a href="javaScript:;" onclick="updateCredit(${company.companyId},${company.floor?c})" class="edit-floor-normal" data-toggle="tooltip" data-placement="bottom" title="点击修改信用额度">${(-company.floor/100.0)?c}</a></td>
                                                                 <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="合作公司">
@@ -308,7 +308,7 @@
                                                             <tr>
                                                                 <td><input class="checkboxes" type="checkbox" id="checkUnBanBoxCompanyId" name="checkUnBanBoxCompanyId" value="${company.companyId}"/></td>
                                                                 <td data-title="公司名称" class="font-text-decoration">${company.companyName!''}</td>
-                                                                <td data-title="信用额度">${(-company.floor/100.0)?c}</td>
+                                                                <td data-title="信用额度"><a href="javaScript:;" onclick="updateCredit(${company.companyId},${company.floor?c})" class="edit-floor-normal" data-toggle="tooltip" data-placement="bottom" title="点击修改信用额度">${(-company.floor/100.0)?c}</a></td>
                                                                 <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="合作公司">
@@ -1022,9 +1022,9 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
+    <script src="/js/sweetalert/sweetalert2.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <script src="/js/sweetalert/core.js"></script>
 
     <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
 
@@ -1041,6 +1041,8 @@
     <script src="/js/oldlocal/company-ip-operator.js"></script>
 
     <script src="/js/oldlocal/company-charge-fee.js"></script>
+
+    <script src="/js/oldlocal/company-credit.js"></script>
 
     <script src="/js/oldlocal/company.js"></script>
 
@@ -1089,7 +1091,12 @@
             console.log(res);
 
             if (res == null || res == "" || res == "请选择..."){
-                alert("亲，请先完成当前选择后再点击添加按钮哦！");
+                swal({
+                    title: "操作提示",
+                    text: "亲，请先完成当前选择后再点击添加按钮哦！",
+                    type: "info",
+                    confirmButtonText: "确定"
+                });
                 return;
             }
 
@@ -1148,7 +1155,12 @@
                         );
 
                     }else {
-                        alert("亲，你已选择了所有的产品类型哦！");
+                        swal({
+                            title: "操作提示",
+                            text: "亲，你已选择了所有的产品类型哦！",
+                            type: "info",
+                            confirmButtonText: "确定"
+                        });
                     }
                 }
             });

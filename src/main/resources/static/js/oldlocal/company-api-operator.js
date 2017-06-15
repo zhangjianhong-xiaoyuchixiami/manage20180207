@@ -111,15 +111,30 @@ $('#simple_company_api_1_new').live('click',function (e) {
         dataType: "json",
         success: function (data) {
             if (data == null){
-                alert("该客户已具有全部产品权限！");
+                swal({
+                    title: "操作提示",
+                    text: "该客户已具有全部产品权限！",
+                    type: "info",
+                    confirmButtonText: "确定"
+                });
                 return;
             }
             if (data != null && data.length <= 0){
-                alert("该客户已具有全部产品权限！");
+                swal({
+                    title: "操作提示",
+                    text: "该客户已具有全部产品权限！",
+                    type: "info",
+                    confirmButtonText: "确定"
+                });
                 return;
             }
             if ($("#simple_company_api_1 input").attr('id')){
-                alert("请先完成当前操作！");
+                swal({
+                    title: "操作提示",
+                    text: "请先完成当前操作！",
+                    type: "info",
+                    confirmButtonText: "确定"
+                });
                 return;
             }else {
                 e.preventDefault();
@@ -143,8 +158,8 @@ function editRow(oTableEdit, nRow) {
         data: {"companyId": apiType_companyId},
         dataType: "json",
         success: function (data) {
-            jqTds[0].innerHTML = '<select class="m-wrap small" id="apiTypeId_subTypeId" name="apiTypeId_subTypeId">' +
-                '<option value="">请选择</option></select>';
+            jqTds[0].innerHTML = '<select class="" id="apiTypeId_subTypeId" name="apiTypeId_subTypeId">' +
+                '<option value="">请选择...</option></select>';
             jqTds[1].innerHTML = '<input type="text" class="m-wrap small" id="apiType_price" name="apiType_price" placeholder="单位：元">';
             jqTds[2].innerHTML = '';
             jqTds[3].innerHTML = '<a class="save" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancel" href="javaScript:;">取消</a>';
