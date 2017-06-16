@@ -17,7 +17,6 @@ var Company = function () {
                     '<th>密码</th>' +
                     '<th>余额</th>' +
                     '<th>状态</th>' +
-                    '<th>Ip段</th>' +
                     '<th>操作</th>' +
                     '</tr>';
 
@@ -28,7 +27,6 @@ var Company = function () {
                     '<td>'+aData[10]+'</td>' +
                     '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[12]+'</td>' +
-                    '<td>'+aData[13]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -72,14 +70,13 @@ var Company = function () {
                     null,  //4  superFloor
                     null,  //5  partnerName
                     null,  //6  balance
-                    { "bVisible": false},  //6 customerId
-                    { "bVisible": false},  //7 typeId
-                    { "bVisible": false},  //8 typeName
-                    { "bVisible": false},  //9 authId
-                    { "bVisible": false },  //10 authPass
-                    { "bVisible": false }, //11 balance
-                    { "bVisible": false },  //12 操作
-                    { "bSortable": false}  // 13
+                    { "bVisible": false},  //7 authId
+                    { "bVisible": false},  //8 typeId
+                    { "bVisible": false},  //9 authPass
+                    { "bVisible": false},  //10 balance
+                    { "bVisible": false },  //11 status
+                    { "bVisible": false },  //12 账号操作
+                    { "bSortable": false}  // 13 公司操作
                 ],
                 "aaSorting": [[6, 'desc']],
                 "aLengthMenu": [

@@ -16,7 +16,7 @@
 
     <link rel="stylesheet" type="text/css" href="/css/local/progress.css"/>
     <link rel="stylesheet" type="text/css" href="/css/local/main-response-table.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/local/head-search.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/local/customer-style.css"/>
     <link rel="stylesheet" type="text/css" href="/css/local/bootstrap-multiselect.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.min.css"/>

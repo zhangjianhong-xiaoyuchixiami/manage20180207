@@ -76,8 +76,7 @@
                                                     <th class="table-td-none">账号密码</th>
                                                     <th class="table-td-none">账号余额</th>
                                                     <th class="table-td-none">账号状态</th>
-                                                    <th class="table-td-none">账号Ip段</th>
-                                                    <th style="text-align: center;">操作</th>
+                                                    <th style="text-align: center; width: 20%;">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -139,18 +138,10 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td data-title="账号Ip段" class="table-td-none">
-                                                                    <#if company.customerList??>
-                                                                        <#list company.customerList as customer>
-                                                                            <#if customer.customerType.id == 1>
-                                                                                <a href="#form_modal_customer_ip_list"  onclick="showIp(${customer.id})" data-toggle="modal">Ip管理</a>
-                                                                            </#if>
-                                                                            <br/>
-                                                                        </#list>
-                                                                    </#if>
-                                                                </td>
-                                                                <td data-title="操作" style="text-align: center;">
+                                                                <td data-title="操作" style="text-align: center; width: 20%;">
                                                                     <a href="#form_modal_company_api_status" onclick="findCompanyApi(${company.companyId})" data-toggle="modal">产品权限管理</a>
+                                                                    &nbsp;|&nbsp;
+                                                                    <a href="#form_modal_customer_ip_list"  onclick="showIp(${company.companyId})" data-toggle="modal">Ip管理</a>
                                                                 </td>
                                                             </tr>
                                                             </#if>
@@ -187,8 +178,7 @@
                                                     <th class="table-td-none">账号密码</th>
                                                     <th class="table-td-none">账号余额</th>
                                                     <th class="table-td-none">账号状态</th>
-                                                    <th class="table-td-none">账号Ip段</th>
-                                                    <th style="text-align: center;">操作</th>
+                                                    <th style="text-align: center; width: 20%;">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -250,18 +240,10 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td data-title="账号Ip段" class="table-td-none">
-                                                                    <#if company.customerList??>
-                                                                        <#list company.customerList as customer>
-                                                                            <#if customer.customerType.id == 1>
-                                                                                <a href="#form_modal_customer_ip_list"  onclick="showIp(${customer.id})" data-toggle="modal">Ip管理</a>
-                                                                            </#if>
-                                                                            <br/>
-                                                                        </#list>
-                                                                    </#if>
-                                                                </td>
-                                                                <td data-title="操作" style="text-align: center;">
+                                                                <td data-title="操作" style="text-align: center; width: 20%">
                                                                     <a href="#form_modal_company_api_status" onclick="findCompanyApi(${company.companyId})" data-toggle="modal">产品权限管理</a>
+                                                                    &nbsp;|&nbsp;
+                                                                    <a href="#form_modal_customer_ip_list"  onclick="showIp(${company.companyId})" data-toggle="modal">Ip管理</a>
                                                                 </td>
                                                             </tr>
                                                             </#if>
@@ -896,251 +878,21 @@
 
     <script src="/js/oldlocal/company-add-company.js"></script>
 
+    <script src="/js/multi/ajax-session-timeout.js"></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
-            AddCompanyAllotApiAddIp.init();
             Company.init();
             CompanyForbid.init();
 
-            //全局的ajax访问，处理ajax清求时sesion超时
-            $.ajaxSetup({
-                contentType:"application/x-www-form-urlencoded;charset=utf-8",
-                complete:function(XMLHttpRequest,textStatus){
-                    //通过XMLHttpRequest取得响应头，sessionstatus，
-                    var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus");
-                    if(sessionstatus=="timeout"){
-                        //如果超时就处理 ，指定要跳转的页面
-                        //window.location.href = window.location.href;
-                        location.reload();
-                    }
-                }
-            });
-
         });
 
 
-        /*Api-点击添加一栏*/
-        $('#control-group-add-api-href').on('click',function () {
-
-            var add_api_type_sub = [];
-            $("select[id='add_api_type_sub']").each(function(){
-                add_api_type_sub.push($(this).val());
-            });
-
-            console.log(add_api_type_sub);
-
-            var count = add_api_type_sub.length + 1 ;
-
-            console.log(count);
-
-            var res = $('select[name="add_api_type_sub_'+ (count-1) +'"]').val();
-
-            console.log(res);
-
-            if (res == null || res == "" || res == "请选择..."){
-                alert("亲，请先完成当前选择后再点击添加按钮哦！");
-                return;
-            }
-
-            $.ajax({
-                type: "post",
-                url: "/company/find-all-api-type",
-                data: {"add_api_type_sub" : add_api_type_sub},
-                dataType: "json",
-                success: function (data) {
-
-                    if(data != null && data.length > 0 ){
-                        $('#control-group-add-api').append(
-                                '<div class="form-section" style="border-bottom: 1px solid #999;">' +
-                                '<div class="control-group">' +
-                                '<label class="control-label">产品类型</label>' +
-                                '<div class="controls">' +
-                                '<select id="add_api_type_sub" name="add_api_type_sub_'+ count +'" class="span6 m-wrap">' +
-                                '<option value="">请选择...</option>' +
-                                '</select>' +
-                                '<span class="help-inline"></span>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="control-group">' +
-                                '<label class="control-label">产品价格</label>' +
-                                '<div class="controls">' +
-                                '<input type="text" id="add_api_type_sub_price" name="add_api_type_sub_price_'+ count +'" class="span6 m-wrap" placeholder="单位：元"/>' +
-                                '<span class="help-inline"></span>' +
-                                '<span class="help-block">说明：只能输入数字并且大于等于0</span>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div>'
-                        );
-                        var myContent = null;
-                        for (var i = 0; i < data.length; i++){
-                            if (data[i].mobileOperatorName == null){
-                                myContent="<option value='"+ data[i].apiTypeId +"'>"+ data[i].apiTypeName +"</option>";
-                            }else{
-                                myContent="<option value='"+data[i].apiTypeId+'-'+data[i].mobileOperatorId+"'>"+ data[i].apiTypeName+'--'+data[i].mobileOperatorName +"</option>";
-                            }
-                            $('select[name="add_api_type_sub_'+ count +'"]').append(myContent);
-                        }
-
-                        $('#control-group-add-api-affirm').append(
-                                '<div class="control-group">' +
-                                '<label class="control-label">产品类型:</label>' +
-                                '<div class="controls">' +
-                                '<span class="text display-value" data-display="add_api_type_sub_'+ count +'"></span>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="control-group">' +
-                                '<label class="control-label">价格:</label>' +
-                                '<div class="controls">' +
-                                '<span class="text display-value" data-display="add_api_type_sub_price_'+ count +'"></span>' +
-                                '</div>' +
-                                '</div>'
-                        );
-
-                    }else {
-                        alert("亲，你已选择了所有的产品类型哦！");
-                    }
-                }
-            });
-
-        });
-
-        /*Ip-点击添加一栏*/
-        $('#control-group-add-ip-href').on('click',function () {
-
-            var input_ipv4_begin = [];
-            $("input[id='input_ipv4_begin']").each(function(){
-                input_ipv4_begin.push($(this).val());
-            });
-
-            var count = input_ipv4_begin.length ;
-
-            $('#control-group-add-ip').append(
-                    '<div class="form-section" style="border-bottom: 1px solid #999;">' +
-                    '<div class="control-group">' +
-                    '<label class="control-label">起始Ip</label>'+
-                    '<div class="controls">' +
-                    '<input type="text" class="span6 m-wrap" id="input_ipv4_begin" name="input_ipv4_begin_'+ count +'"/>' +
-                    '<span class="help-inline"></span>' +
-                    '<span class="help-block">例如：192.168.111.123</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="control-group">' +
-                    '<label class="control-label">终止Ip</label>' +
-                    '<div class="controls">' +
-                    '<input type="text" class="span6 m-wrap" id="input_ipv4_end" name="input_ipv4_end_'+ count +'"/>' +
-                    '<span class="help-inline"></span>' +
-                    '<span class="help-block">例如：192.168.111.123</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>'
-            );
-
-            $('#control-group-add-ip-affirm').append(
-                    '<div class="control-group">' +
-                    '<label class="control-label">起始Ip:</label>' +
-                    '<div class="controls">' +
-                    '<span class="text display-value" data-display="input_ipv4_begin_'+ count +'"></span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="control-group">' +
-                    '<label class="control-label">终止Ip:</label>' +
-                    '<div class="controls">' +
-                    '<span class="text display-value" data-display="input_ipv4_end_'+ count +'"></span>' +
-                    '</div>' +
-                    '</div>'
-            );
-        });
 
 
     </script>
 
-    <script type="text/javascript">
-
-        (function(){
-            $.extend($.fn,{
-                mask: function(msg,maskDivClass){
-                    this.unmask();
-                    // 参数
-                    var op = {
-                        opacity: 0.8,
-                        z: 1055,
-                        bgcolor: '#ccc'
-                    };
-                    var original=$(document.body);
-                    var position={top:0,left:0};
-                    if(this[0] && this[0]!==window.document){
-                        original=this;
-                        position=original.position();
-                    }
-                    // 创建一个 Mask 层，追加到对象中
-                    var maskDiv=$('<div class="maskdivgen" aria-hidden="true">&nbsp;</div>');
-                    maskDiv.appendTo(original);
-                    var maskWidth=original.outerWidth();
-                    if(!maskWidth){
-                        maskWidth=original.width();
-                    }
-                    var maskHeight=document.body.scrollHeight;
-                    if(!maskHeight){
-                        maskHeight=original.height();
-                    }
-                    maskDiv.css({
-                        position: 'absolute',
-                        top: position.top,
-                        left: position.left,
-                        'z-index': op.z,
-                        width: maskWidth,
-                        height:maskHeight,
-                        'background-color': op.bgcolor,
-                        opacity: 0
-                    });
-                    if(maskDivClass){
-                        maskDiv.addClass(maskDivClass);
-                    }
-                    if(msg){
-
-                        var msgDiv=$('<div style="position:absolute;padding:2px;background:#ccca;text-align: center"><div style="line-height:24px;border:#a3bad9 1px solid;background:white;padding:2px 10px 2px 10px;">'+msg+'<span class="loading"></span></div></div>');
-
-                        //var msgDiv=$('<div style="position:absolute;"><div class="cube" style="line-height:24px;border:#a3bad9 1px solid;background:white;padding:2px 10px 2px 10px;"><div class="tg-qe-progress-bar myactive"><div class="bar"></div></div></div></div>');
-
-                        msgDiv.appendTo(maskDiv);
-                        var widthspace=(maskDiv.width()-msgDiv.width());
-                        var heightspace=(maskDiv.height()-msgDiv.height());
-                        msgDiv.css({
-                            cursor:'wait',
-                            top:(heightspace/2-2),
-                            left:(widthspace/2-2)
-                        });
-                    }
-                    maskDiv.fadeIn('fast', function(){
-                        // 淡入淡出效果
-                        $(this).fadeTo('slow', op.opacity);
-                    });
-                    return maskDiv;
-                },
-                unmask: function(){
-                    var original=$(document.body);
-                    if(this[0] && this[0]!==window.document){
-                        original=$(this[0]);
-                    }
-                    original.find("> div.maskdivgen").fadeOut('slow',0,function(){
-                        $(this).remove();
-                    });
-                }
-            });
-        })();
-
-        function closeProgress() {
-            $('#testhovertree').unmask()
-        }
-
-        function openProgress() {
-            $(document).mask('正在处理,请稍后').click(function () {
-                $(document).unmask()
-            })
-        }
-
-    </script>
 
     </#if>
 

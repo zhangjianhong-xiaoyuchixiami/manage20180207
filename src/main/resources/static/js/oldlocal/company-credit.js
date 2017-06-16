@@ -47,7 +47,7 @@ function updateCredit(id,floor) {
                             confirmButtonText: "确定",
                             html: '已将信用额度修改为：' + value
                         }).then(function () {
-                            location.reload();
+                            window.location.href = window.location.href ;
                             return;
                         });
 

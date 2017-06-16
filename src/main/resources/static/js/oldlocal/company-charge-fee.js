@@ -33,14 +33,8 @@ function consumeBalance(customerId) {
         dataType: "json",
         success: function (data) {
             $("#error_alert_update_balance").empty();
-            $("#update_balance_customerId").empty();
+            $("#update_balance_customerId").html(customerId);
             $("#update_balance_amountMsg").empty();
-            var op=document.createElement("input");
-            op.value=customerId;
-            op.type="text";
-            op.id="customerId";
-            op.name="customerId";
-            $("#authId-account-controls").append(op);
             if(data != null){
                 $("#update_balance_reasonId ").empty();
                 $("#update_balance_reasonId").append("<option value=''>请选择...</option>");
@@ -80,14 +74,14 @@ $("#update-balance-btn-black-btn-primary").on("click",function () {
         confirmButtonText: "确定充值"//确定按钮上面的文档
     }).then(function () {
 
-        var customerId=$("#update_balance_customerId").html();
+        var companyId=$("#update_balance_customerId").html();
         var amount=$("#update_balance_amount").val();
         var reason=$("#update_balance_reasonId").val();
 
         $.ajax({
             type: "post",
             url: "/company/update-customer-balance",
-            data: {"customerId":customerId,"amount":amount,"reason":reason},
+            data: {"companyId":companyId,"amount":amount,"reason":reason},
             dataType: "json",
             beforeSend:function () {
                 openProgress();
@@ -119,7 +113,7 @@ $("#update-balance-btn-black-btn-primary").on("click",function () {
                 if(result.successMessage != null){
                     swal({
                         title: "成功",
-                        text: "充值成功",
+                        html: '已成功充值：' + amount,
                         type: "success",
                         showCancelButton: false, //是否显示取消按钮
                         confirmButtonColor: '#3085d6',

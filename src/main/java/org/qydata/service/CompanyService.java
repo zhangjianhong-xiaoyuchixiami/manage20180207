@@ -62,13 +62,13 @@ public interface CompanyService {
 
     /**
      * 修改账号余额
-     * @param customerId
+     * @param companyId
      * @param reason
      * @param amount
      * @return
      */
     @SystemServiceLog(description = "账号充值/扣费")
-    public int updateCustomerBalance(Integer customerId,Integer reason,String amount)throws Exception;
+    public int updateCustomerBalance(Integer companyId,Integer reason,String amount)throws Exception;
 
     /**
      * 禁用账号
@@ -109,7 +109,7 @@ public interface CompanyService {
      * @return
      */
     @SystemServiceLog(description = "正式账号添加IP")
-    public int addCustomerIp(Integer customerId,String begIp,String endIp)throws Exception;
+    public int addCustomerIp(Integer companyId,String begIp,String endIp)throws Exception;
 
     /**
      * 根据公司Id查找公司已拥有权限的Api
@@ -164,10 +164,10 @@ public interface CompanyService {
 
     /**
      * 根据账号Id查找Ip
-     * @param customerId
+     * @param companyId
      * @return
      */
-    public List<CustomerIp> queryCustomerIpById(Integer customerId);
+    public List<CustomerIp> queryCustomerIpById(Integer companyId);
 
     /**
      * 根据Id删除Ip
@@ -175,7 +175,7 @@ public interface CompanyService {
      * @return
      */
     @SystemServiceLog(description = "正式账号删除Ip")
-    public int deleteIpById(Integer customerId,Integer id) throws Exception;
+    public int deleteIpById(Integer companyId,Integer id) throws Exception;
 
 
     /**

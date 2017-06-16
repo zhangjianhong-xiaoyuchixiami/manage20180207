@@ -17,7 +17,6 @@ var CompanyForbid = function () {
                     '<th>密码</th>' +
                     '<th>余额</th>' +
                     '<th>状态</th>' +
-                    '<th>Ip段</th>' +
                     '</tr>';
 
                 sOut += '<tr>' +
@@ -26,7 +25,6 @@ var CompanyForbid = function () {
                     '<td>'+aData[7]+'</td>' +
                     '<td>'+aData[8]+'</td>' +
                     '<td>'+aData[9]+'</td>' +
-                    '<td>'+aData[10]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -68,13 +66,12 @@ var CompanyForbid = function () {
                     null,  //2  floor
                     null,  //3  superFloor
                     null,  //4  balance
-                    { "bVisible": false},  //5 customerId
+                    { "bVisible": false},  //5 authId
                     { "bVisible": false},  //6 typeId
-                    { "bVisible": false},  //7 typeName
-                    { "bVisible": false},  //8 authId
-                    { "bVisible": false },  //9 authPass
-                    { "bVisible": false }, //10 balance
-                    { "bSortable": false}  // 11
+                    { "bVisible": false},  //7 authPass
+                    { "bVisible": false},  //8 balance
+                    { "bVisible": false },  //9 status
+                    { "bSortable": false}  // 10
                 ],
                 "aaSorting": [[4, 'desc']],
                 "aLengthMenu": [

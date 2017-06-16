@@ -33,8 +33,8 @@
 
                                 <div class="controls">
 
-                                    <select id="apiTypeId" name="apiTypeId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                        <option value="">请选择...</option>
+                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="apiTypeId" name="apiTypeId">
+                                        <option value=""></option>
                                         <#if apiTypeList??>
                                             <#list apiTypeList as apiType>
                                                 <option <#if apiTypeId?? && apiTypeId==apiType.id>selected="selected"</#if> value="${apiType.id}">${apiType.name}</option>
@@ -51,8 +51,8 @@
 
                                 <div class="controls">
 
-                                    <select id="vendorId" name="vendorId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                        <option value="">请选择...</option>
+                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId">
+                                        <option value=""></option>
                                         <#if apiVendorList??>
                                             <#list apiVendorList as apiVendor>
                                                 <option <#if vendorId?? && vendorId==apiVendor.id>selected="selected"</#if> value="${apiVendor.id}">${apiVendor.name}<#if apiVendor.partner??>@${apiVendor.partner.name}</#if></option>

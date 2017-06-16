@@ -3,7 +3,7 @@
 var oTableEditIp = null;
 
 /*显示Ip*/
-function showIp(customerId) {
+function showIp(companyId) {
 
     $("#error_alert_customer_ip").empty();
 
@@ -20,7 +20,7 @@ function showIp(customerId) {
     $.ajax({
         type: "post",
         url: "/company/customer/find-ip",
-        data: {"customerId": customerId},
+        data: {"companyId": companyId},
         dataType: "json",
         beforeSend:function () {
             var myContent = "<tr>" +
@@ -30,7 +30,7 @@ function showIp(customerId) {
         },
         success: function (data) {
 
-            $('#ip_customerId').html(customerId);
+            $('#ip_customerId').html(companyId);
 
             $("#simple_customer_ip_1 tbody").empty();
 
@@ -39,7 +39,7 @@ function showIp(customerId) {
                     var myContent = "<tr>" +
                         "<td>" + data[i].beginIpRaw + "</td>" +
                         "<td>" + data[i].endIpRaw + "</td>" +
-                        "<td><a href='javaScript:;' class='warning' onclick='deleteIp("+ data[i].id +','+ customerId +")'>删除</a></td>" +
+                        "<td><a href='javaScript:;' class='warning' onclick='deleteIp("+ data[i].id +','+ companyId +")'>删除</a></td>" +
                         "</tr>"
                     $("#simple_customer_ip_1 tbody").append(myContent);
                 }
@@ -83,7 +83,7 @@ var nEditingIp = null;
 /*新增*/
 $('#simple_customer_ip_1_new').live('click',function (e) {
 
-    if ($("#simple_customer_ip_1 input").attr('id')){
+    if ($("#ip_beginIp").length > 0){
         swal({
             title: "操作提示",
             text: "请先完成当前操作！",
@@ -104,8 +104,8 @@ $('#simple_customer_ip_1_new').live('click',function (e) {
 /*编辑*/
 function editRowIp(oTableEditIp,nRow) {
     var jqTds = $('>td', nRow);
-    jqTds[0].innerHTML = '<input type="text" class="m-wrap small" id="ip_beginIp" name="ip_beginIp" placeholder="请输入起始Ip">';
-    jqTds[1].innerHTML = '<input type="text" class="m-wrap small" id="ip_endIp" name="ip_endIp" placeholder="请输入结束Ip">';
+    jqTds[0].innerHTML = '<input type="text" class="span9 m-wrap" id="ip_beginIp" name="ip_beginIp" placeholder="请输入起始Ip">';
+    jqTds[1].innerHTML = '<input type="text" class="span9 m-wrap" id="ip_endIp" name="ip_endIp" placeholder="请输入结束Ip">';
     jqTds[2].innerHTML = '<a class="edit" href="javaScript:;">保存</a>|<a class="cancel" href="javaScript:;">取消</a>';
     $('#ip_beginIp').ipAddress();
     $('#ip_endIp').ipAddress();
@@ -132,13 +132,13 @@ $('#simple_customer_ip_1 a.edit').live('click', function (e) {
         confirmButtonText: "确定添加"//确定按钮上面的文档
     }).then(function () {
 
-        var ip_customerId = $('#ip_customerId').html();
+        var ip_companyId = $('#ip_customerId').html();
         var ip_beginIp = $('#ip_beginIp').val();
         var ip_endIp = $('#ip_endIp').val();
         $.ajax({
             type: "post",
             url: "/company/customer/add/ip",
-            data: {"customerId": ip_customerId, "beginIp": ip_beginIp, "endIp": ip_endIp},
+            data: {"companyId": ip_companyId, "beginIp": ip_beginIp, "endIp": ip_endIp},
             dataType: "json",
             beforeSend:function () {
                 openProgress();
@@ -177,7 +177,7 @@ $('#simple_customer_ip_1 a.edit').live('click', function (e) {
                         '该Ip已被添加',
                         'success'
                     );
-                    showIp(ip_customerId);
+                    showIp(ip_companyId);
                 }
             }
         })
@@ -191,7 +191,7 @@ $('#simple_customer_ip_1 a.edit').live('click', function (e) {
 
 
 /*删除Ip*/
-function deleteIp(id,customerId) {
+function deleteIp(id,companyId) {
 
     swal({
         title: "确定要删除吗？",   //弹出框的title
@@ -206,7 +206,7 @@ function deleteIp(id,customerId) {
         $.ajax({
             type: "post",
             url: "/company/customer/delete-ip",
-            data: {"customerId": customerId, "id": id},
+            data: {"companyId": companyId, "id": id},
             dataType: "json",
             beforeSend: function () {
                 openProgress();
@@ -220,7 +220,7 @@ function deleteIp(id,customerId) {
                             '该Ip已被删除',
                             'success'
                         );
-                        showIp(customerId);
+                        showIp(companyId);
                         return;
                     }
                     if (data.fail != null) {

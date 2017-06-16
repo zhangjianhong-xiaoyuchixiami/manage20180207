@@ -147,11 +147,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @SystemServiceLog(description = "账号充值/扣费")
-    public int updateCustomerBalance(Integer customerId, Integer reason, String amount) throws Exception{
+    public int updateCustomerBalance(Integer companyId, Integer reason, String amount) throws Exception{
         final String uri = "https://api.qydata.org:9000/admin/customer/balance/charge";
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("cid",customerId);
+        map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
         map.put("rid",reason);
         map.put("amount",(int)(Double.parseDouble(amount)*100));
 
@@ -346,17 +346,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<CustomerIp> queryCustomerIpById(Integer customerId) {
-        return companyMapper.queryCustomerIpById(customerId);
+    public List<CustomerIp> queryCustomerIpById(Integer companyId) {
+        return companyMapper.queryCustomerIpById(companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
     }
 
     @Override
     @SystemServiceLog(description = "正式账号添加IP")
-    public int addCustomerIp(Integer customerId,String begIp, String endIp) throws Exception{
+    public int addCustomerIp(Integer companyId,String begIp, String endIp) throws Exception{
         final String uri = "https://api.qydata.org:9000/admin/customer/ip/add";
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("cid",customerId);
+        map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
         map.put("bip",begIp);
         map.put("eip",endIp);
         int  code = HttpClientUtil.doGet(uri,map,null);
@@ -368,12 +368,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @SystemServiceLog(description = "正式账号删除Ip")
-    public int deleteIpById(Integer customerId,Integer id) throws Exception {
-        String key = companyMapper.queryAuthKey("admin.k");
+    public int deleteIpById(Integer companyId,Integer id) throws Exception {
         String uri = "https://api.qydata.org:9000/admin/customer/ip/del";
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("cid",customerId);
+        map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
         map.put("id",id);
         int code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){

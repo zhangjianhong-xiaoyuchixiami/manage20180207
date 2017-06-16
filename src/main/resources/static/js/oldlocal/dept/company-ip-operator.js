@@ -3,7 +3,7 @@
 var oTableEditIp = null;
 
 /*显示Ip*/
-function showIp(customerId) {
+function showIp(companyId) {
 
     $("#error_alert_customer_ip").empty();
 
@@ -20,7 +20,7 @@ function showIp(customerId) {
     $.ajax({
         type: "post",
         url: "/company/customer/find-ip",
-        data: {"customerId": customerId},
+        data: {"companyId": companyId},
         dataType: "json",
         beforeSend:function () {
             var myContent = "<tr>" +
@@ -30,7 +30,7 @@ function showIp(customerId) {
         },
         success: function (data) {
 
-            $('#ip_customerId').html(customerId);
+            $('#ip_customerId').html(companyId);
 
             $("#simple_customer_ip_1 tbody").empty();
 
@@ -76,120 +76,3 @@ function showIp(customerId) {
 }
 
 
-var nEditingIp = null;
-
-/*新增*/
-$('#simple_customer_ip_1_new').live('click',function (e) {
-
-    if ($("#simple_customer_ip_1 input").attr('id')){
-        alert("请先完成当前操作！");
-        return;
-    }else {
-        e.preventDefault();
-        var aiNew = oTableEditIp.fnAddData(['', '', '']);
-        var nRow = oTableEditIp.fnGetNodes(aiNew[0]);
-        editRowIp(oTableEditIp, nRow);
-        nEditingIp = nRow;
-    }
-
-});
-
-/*编辑*/
-function editRowIp(oTableEditIp,nRow) {
-    var jqTds = $('>td', nRow);
-    jqTds[0].innerHTML = '<input type="text" class="m-wrap small" id="ip_beginIp" name="ip_beginIp" placeholder="请输入起始Ip">';
-    jqTds[1].innerHTML = '<input type="text" class="m-wrap small" id="ip_endIp" name="ip_endIp" placeholder="请输入结束Ip">';
-    jqTds[2].innerHTML = '<a class="edit" href="javaScript:;">保存</a>|<a class="cancel" href="javaScript:;">取消</a>';
-    $('#ip_beginIp').ipAddress();
-    $('#ip_endIp').ipAddress();
-}
-
-/*取消*/
-$('#simple_customer_ip_1 a.cancel').live('click', function (e) {
-    e.preventDefault();
-    oTableEditIp.fnDeleteRow(nEditingIp);
-});
-
-/*保存*/
-$('#simple_customer_ip_1 a.edit').live('click', function (e) {
-
-    if (confirm("确定要执行当前操作吗？")) {
-        var ip_customerId = $('#ip_customerId').html();
-        var ip_beginIp = $('#ip_beginIp').val();
-        var ip_endIp = $('#ip_endIp').val();
-        $.ajax({
-            type: "post",
-            url: "/company/customer/add/ip",
-            data: {"customerId": ip_customerId, "beginIp": ip_beginIp, "endIp": ip_endIp},
-            dataType: "json",
-            beforeSend:function () {
-                openProgress();
-            },
-            success: function (data) {
-                closeProgress();
-                if (data.beginIpMessage != null) {
-                    $("#error_alert_customer_ip").empty();
-                    $("#error_alert_customer_ip").append(
-                        '<div class="alert alert-error show">' +
-                        '<button class="close" data-dismiss="alert"></button>' +
-                        '<span>' + data.beginIpMessage + '</span>' +
-                        '</div>');
-                    return;
-                }
-                if (data.endIpMessage != null) {
-                    $("#error_alert_customer_ip").empty();
-                    $("#error_alert_customer_ip").append(
-                        '<div class="alert alert-error show">' +
-                        '<button class="close" data-dismiss="alert"></button>' +
-                        '<span>' + data.endIpMessage + '</span>' +
-                        '</div>');
-                    return;
-                }
-                if (data.fail != null) {
-                    $("#error_alert_customer_ip").empty();
-                    $("#error_alert_customer_ip").append(
-                        '<div class="alert alert-error show">' +
-                        '<button class="close" data-dismiss="alert"></button>' +
-                        '<span>' + data.fail + '</span>' +
-                        '</div>');
-                    return;
-                }
-                if (data.success != null) {
-                    alert("操作成功");
-                    $("#error_alert_customer_ip").empty();
-                    showIp(ip_customerId);
-                }
-            }
-        })
-    }
-
-});
-
-
-/*删除Ip*/
-function deleteIp(id,customerId) {
-
-    if (confirm("确定要执行当前操作吗？")) {
-        $.ajax({
-            type: "post",
-            url: "/company/customer/delete-ip",
-            data: {"customerId": customerId, "id": id},
-            dataType: "json",
-            beforeSend:function () {
-                openProgress();
-            },
-            success: function (data) {
-                closeProgress();
-                if (data != null) {
-                    if (data.success != null) {
-                        alert("操作成功");
-                        showIp(customerId);
-                        return;
-                    }
-                    alert("操作失败！");
-                }
-
-            }
-        })
-    }
-}

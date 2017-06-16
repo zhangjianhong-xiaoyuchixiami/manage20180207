@@ -382,7 +382,7 @@
                                         <th>${year!''}年${month!''}月充值（单位：元）</th>
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
-                                        <th>${currYear!''}年${currMonth!''}月第${currDay!''}日消费（单位：元）</th>
+                                        <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
                                         <th class="table-td-none">产品类型</th>
                                         <th class="table-td-none">产品价格</th>
                                         <th class="table-td-none">总消费额</th>

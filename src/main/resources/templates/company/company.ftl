@@ -100,12 +100,12 @@
                                         <div class="clearfix margin-bottom-5">
                                             <@shiro.hasPermission name="customer:findAllCustomer">
                                                 <div class="btn-group">
-                                                    <a class="btn black" style="margin-right: 10px;" id="add-partner" href="#form_modal_from_wizard" data-toggle="modal">
-                                                        新增客户
-                                                    </a>
-                                                    <a class="btn red" id="batchBanCompany" style="margin-right: 10px;" href="javaScript:;">
-                                                        批量禁用客户
-                                                    </a>
+                                                    <button class="btn-icon black" id="add-partner" data-target="#form_modal_from_wizard" data-toggle="modal">
+                                                        <i class="icon-plus-sign"></i>添加
+                                                    </button>
+                                                    <button class="btn-icon red" id="batchBanCompany">
+                                                        <i class="icon-remove-sign"></i>禁用
+                                                    </button>
                                                 </div>
                                             </@shiro.hasPermission>
                                         </div>
@@ -125,15 +125,13 @@
                                                         <th style="display: none">合作公司</th>
                                                     </@shiro.hasPermission>
                                                     <th>余额</th>
-                                                <#-- <th>创建时间</th>-->
                                                     <th class="table-td-none">账号authId</th>
                                                     <th class="table-td-none">账号类型</th>
                                                     <th class="table-td-none">账号密码</th>
                                                     <th class="table-td-none">账号余额</th>
                                                     <th class="table-td-none">账号状态</th>
-                                                    <th class="table-td-none">账号Ip段</th>
                                                     <th class="table-td-none">账号操作</th>
-                                                    <th style="text-align: center;">操作</th>
+                                                    <th style="text-align: center; width: 25%;">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -158,7 +156,6 @@
                                                                     <td data-title="合作公司" style="display: none"><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
                                                                 </@shiro.hasPermission>
                                                                 <td data-title="余额"><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
-                                                            <#-- <td data-title="创建时间">${company.companyCreateTime?date}</td>-->
                                                                 <td data-title="账号authId" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
@@ -209,22 +206,10 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td data-title="账号Ip段" class="table-td-none">
-                                                                    <#if company.customerList??>
-                                                                        <#list company.customerList as customer>
-                                                                            <#if customer.customerType.id == 1>
-                                                                                <a href="#form_modal_customer_ip_list"  onclick="showIp(${customer.id})" data-toggle="modal">Ip管理</a>
-                                                                            </#if>
-                                                                            <br/>
-                                                                        </#list>
-                                                                    </#if>
-                                                                </td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="账号操作" class="table-td-none">
                                                                         <#if company.customerList??>
                                                                             <#list company.customerList as customer>
-                                                                                <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
-                                                                                |
                                                                                 <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
                                                                                     <a href="javaScript:;" onclick="banCustomer('${customer.authId}')" class="warning">禁用</a><br/>
                                                                                 <#else >
@@ -239,8 +224,12 @@
                                                                         无
                                                                     </td>
                                                                 </@shiro.hasPermission>
-                                                                <td data-title="操作" style="text-align: center;">
+                                                                <td data-title="操作" style="text-align: center; width: 25%;">
                                                                     <a href="#form_modal_company_api_status" onclick="findCompanyApi(${company.companyId})" data-toggle="modal">产品权限管理</a>
+                                                                    &nbsp;|&nbsp;
+                                                                    <a href="#form_modal_customer_ip_list"  onclick="showIp(${company.companyId})" data-toggle="modal">Ip管理</a>
+                                                                    &nbsp;|&nbsp;
+                                                                    <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${company.companyId})" data-toggle="modal">充值</a>
                                                                 </td>
                                                             </tr>
                                                             </#if>
@@ -267,9 +256,9 @@
                                         <div class="clearfix margin-bottom-5">
                                             <@shiro.hasPermission name="customer:findAllCustomer">
                                                 <div class="btn-group">
-                                                    <a class="btn blue" id="batchUnBanCompany" style="margin-right: 10px;" href="javaScript:;">
-                                                        批量启用客户
-                                                    </a>
+                                                    <button class="btn-icon black" id="batchUnBanCompany">
+                                                        <i class="icon-plus-sign"></i>启用
+                                                    </button>
                                                 </div>
                                             </@shiro.hasPermission>
 
@@ -290,15 +279,13 @@
                                                         <th style="display: none">合作公司</th>
                                                     </@shiro.hasPermission>
                                                     <th>余额</th>
-                                                <#--   <th>创建时间</th>-->
                                                     <th class="table-td-none">账号authId</th>
                                                     <th class="table-td-none">账号类型</th>
                                                     <th class="table-td-none">账号密码</th>
                                                     <th class="table-td-none">账号余额</th>
                                                     <th class="table-td-none">账号状态</th>
-                                                    <th class="table-td-none">账号Ip段</th>
                                                     <th class="table-td-none">账号操作</th>
-                                                    <th style="text-align: center;">操作</th>
+                                                    <th style="text-align: center; width: 25%;">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -323,7 +310,6 @@
                                                                     <td data-title="合作公司" style="display: none"><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
                                                                 </@shiro.hasPermission>
                                                                 <td data-title="余额"><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
-                                                            <#--         <td data-title="创建时间">${company.companyCreateTime?date}</td>-->
                                                                 <td data-title="账号authId" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
@@ -374,22 +360,10 @@
                                                                         </#list>
                                                                     </#if>
                                                                 </td>
-                                                                <td data-title="账号Ip段" class="table-td-none">
-                                                                    <#if company.customerList??>
-                                                                        <#list company.customerList as customer>
-                                                                            <#if customer.customerType.id == 1>
-                                                                                <a href="#form_modal_customer_ip_list"  onclick="showIp(${customer.id})" data-toggle="modal">Ip管理</a>
-                                                                            </#if>
-                                                                            <br/>
-                                                                        </#list>
-                                                                    </#if>
-                                                                </td>
                                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                                     <td data-title="账号操作" class="table-td-none">
                                                                         <#if company.customerList??>
                                                                             <#list company.customerList as customer>
-                                                                                <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${customer.id})" data-toggle="modal">充值</a>
-                                                                                |
                                                                                 <#if (customer.customerStatus.id)?? && customer.customerStatus.id ==0>
                                                                                     <a href="javaScript:;" onclick="banCustomer('${customer.authId}')" class="warning">禁用</a><br/>
                                                                                 <#else >
@@ -404,8 +378,12 @@
                                                                         无
                                                                     </td>
                                                                 </@shiro.hasPermission>
-                                                                <td data-title="操作" style="text-align: center;">
+                                                                <td data-title="操作" style="text-align: center; width: 25%;">
                                                                     <a href="#form_modal_company_api_status" onclick="findCompanyApi(${company.companyId})" data-toggle="modal">产品权限管理</a>
+                                                                    &nbsp;|&nbsp;
+                                                                    <a href="#form_modal_customer_ip_list"  onclick="showIp(${company.companyId})" data-toggle="modal">Ip管理</a>
+                                                                    &nbsp;|&nbsp;
+                                                                    <a href="#form_modal_update_balance" id="charge_Balance" onclick="chargeBalance(${company.companyId})" data-toggle="modal">充值</a>
                                                                 </td>
                                                             </tr>
                                                             </#if>
@@ -475,7 +453,7 @@
                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                     <div class="btn-group" style="margin-bottom: 10px;">
                                         <a id="simple_company_api_1_new" class="btn black">
-                                            添加产品权限<i class="icon-plus"></i>
+                                            添加<i class="icon-plus"></i>
                                         </a>
                                     </div>
                                 </@shiro.hasPermission>
@@ -516,7 +494,7 @@
                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                     <div class="btn-group" style="margin-bottom: 10px;">
                                         <a id="simple_customer_ip_1_new" class="btn black">
-                                            添加Ip<i class="icon-plus"></i>
+                                            添加<i class="icon-plus"></i>
                                         </a>
                                     </div>
                                 </@shiro.hasPermission>
@@ -701,7 +679,7 @@
                                                             <h3 class="block">添加产品权限</h3>
 
                                                             <div class="control-group text-right">
-                                                                <a href="#" id="control-group-add-api-href"><span><i class="icon-plus"></i>点击添加一栏</span></a>
+                                                                <a href="javaScript:;" id="control-group-add-api-href"><span><i class="icon-plus"></i>添加一栏</span></a>
                                                             </div>
 
                                                             <div id="control-group-add-api">
@@ -760,7 +738,7 @@
                                                             <h3 class="block">添加正式账号Ip</h3>
 
                                                             <div class="control-group text-right">
-                                                                <a href="#" id="control-group-add-ip-href"><span><i class="icon-plus"></i>点击添加一栏</span></a>
+                                                                <a href="javaScript:;" id="control-group-add-ip-href"><span><i class="icon-plus"></i>添加一栏</span></a>
                                                             </div>
 
                                                             <div id="control-group-add-ip">
@@ -989,46 +967,43 @@
 
     <script type="text/javascript" src="/assect/jquery-migrate-1.2.1.min.js"></script>
 
-    <script type="text/javascript" src="/assect/chosen.jquery.min.js"></script>
-
     <script type="text/javascript" src="/assect/select2.min.js"></script>
 
     <script type="text/javascript" src="/assect/jquery.input-ip-address-control-1.0.min.js"></script>
 
-    <script src="/assect/app.js"></script>
+    <script type="text/javascript" src="/assect/app.js"></script>
 
-    <script src="/assect/form-wizard.js"></script>
+    <script type="text/javascript" src="/assect/form-wizard.js"></script>
 
-    <script>
+    <script type="text/javascript" src="/assect/chosen.jquery.min.js"></script>
 
-        jQuery(document).ready(function() {
+    <script src="/js/multi/shade.js"></script>
 
-            App.init();
+    <script src="/js/multi/ajax-session-timeout.js"></script>
 
-        });
-
-    </script>
-
-    <script type="text/javascript">
+   <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-37564768-1']);
         _gaq.push(['_setDomainName', 'keenthemes.com']);
         _gaq.push(['_setAllowLinker', true]);
         _gaq.push(['_trackPageview']);
-        (function() {    var ga = document.createElement('script');
+        (function() {
+            var ga = document.createElement('script');
             ga.type = 'text/javascript';
             ga.async = true;
             ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
     </script>
 
     <script src="/js/sweetalert/sweetalert2.min.js"></script>
 
     <script src="/js/sweetalert/core.js"></script>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/former/jquery.dataTables.js" type="text/javascript" ></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
+    <script src="/js/former/DT_bootstrap.js" type="text/javascript" ></script>
 
     <script src="/js/locales/bootstrap-multiselect.js"></script>
 
@@ -1051,258 +1026,15 @@
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
+            App.init();
             AddCompanyAllotApiAddIp.init();
             Company.init();
             CompanyForbid.init();
 
-            //全局的ajax访问，处理ajax清求时sesion超时
-            $.ajaxSetup({
-                contentType:"application/x-www-form-urlencoded;charset=utf-8",
-                complete:function(XMLHttpRequest,textStatus){
-                    //通过XMLHttpRequest取得响应头，sessionstatus，
-                    var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus");
-                    if(sessionstatus=="timeout"){
-                        //如果超时就处理 ，指定要跳转的页面
-                        //window.location.href = window.location.href;
-                        location.reload();
-                    }
-                }
-            });
-
         });
-
-
-        /*Api-点击添加一栏*/
-        $('#control-group-add-api-href').on('click',function () {
-
-            var add_api_type_sub = [];
-            $("select[id='add_api_type_sub']").each(function(){
-                add_api_type_sub.push($(this).val());
-            });
-
-            console.log(add_api_type_sub);
-
-            var count = add_api_type_sub.length + 1 ;
-
-            console.log(count);
-
-            var res = $('select[name="add_api_type_sub_'+ (count-1) +'"]').val();
-
-            console.log(res);
-
-            if (res == null || res == "" || res == "请选择..."){
-                swal({
-                    title: "操作提示",
-                    text: "亲，请先完成当前选择后再点击添加按钮哦！",
-                    type: "info",
-                    confirmButtonText: "确定"
-                });
-                return;
-            }
-
-            $.ajax({
-                type: "post",
-                url: "/company/find-all-api-type",
-                data: {"add_api_type_sub" : add_api_type_sub},
-                dataType: "json",
-                success: function (data) {
-
-                    if(data != null && data.length > 0 ){
-                        $('#control-group-add-api').append(
-                                '<div class="form-section" style="border-bottom: 1px solid #999;">' +
-                                '<div class="control-group">' +
-                                '<label class="control-label">产品类型</label>' +
-                                '<div class="controls">' +
-                                '<select id="add_api_type_sub" name="add_api_type_sub_'+ count +'" class="span6 m-wrap">' +
-                                '<option value="">请选择...</option>' +
-                                '</select>' +
-                                '<span class="help-inline"></span>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="control-group">' +
-                                '<label class="control-label">产品价格</label>' +
-                                '<div class="controls">' +
-                                '<input type="text" id="add_api_type_sub_price" name="add_api_type_sub_price_'+ count +'" class="span6 m-wrap" placeholder="单位：元"/>' +
-                                '<span class="help-inline"></span>' +
-                                '<span class="help-block">说明：只能输入数字并且大于等于0</span>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div>'
-                        );
-                        var myContent = null;
-                        for (var i = 0; i < data.length; i++){
-                            if (data[i].mobileOperatorName == null){
-                                myContent="<option value='"+ data[i].apiTypeId +"'>"+ data[i].apiTypeName +"</option>";
-                            }else{
-                                myContent="<option value='"+data[i].apiTypeId+'-'+data[i].mobileOperatorId+"'>"+ data[i].apiTypeName+'--'+data[i].mobileOperatorName +"</option>";
-                            }
-                            $('select[name="add_api_type_sub_'+ count +'"]').append(myContent);
-                        }
-
-                        $('#control-group-add-api-affirm').append(
-                                '<div class="control-group">' +
-                                '<label class="control-label">产品类型:</label>' +
-                                '<div class="controls">' +
-                                '<span class="text display-value" data-display="add_api_type_sub_'+ count +'"></span>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="control-group">' +
-                                '<label class="control-label">价格:</label>' +
-                                '<div class="controls">' +
-                                '<span class="text display-value" data-display="add_api_type_sub_price_'+ count +'"></span>' +
-                                '</div>' +
-                                '</div>'
-                        );
-
-                    }else {
-                        swal({
-                            title: "操作提示",
-                            text: "亲，你已选择了所有的产品类型哦！",
-                            type: "info",
-                            confirmButtonText: "确定"
-                        });
-                    }
-                }
-            });
-
-        });
-
-        /*Ip-点击添加一栏*/
-        $('#control-group-add-ip-href').on('click',function () {
-
-            var input_ipv4_begin = [];
-            $("input[id='input_ipv4_begin']").each(function(){
-                input_ipv4_begin.push($(this).val());
-            });
-
-            var count = input_ipv4_begin.length ;
-
-            $('#control-group-add-ip').append(
-                    '<div class="form-section" style="border-bottom: 1px solid #999;">' +
-                    '<div class="control-group">' +
-                    '<label class="control-label">起始Ip</label>'+
-                    '<div class="controls">' +
-                    '<input type="text" class="span6 m-wrap" id="input_ipv4_begin" name="input_ipv4_begin_'+ count +'"/>' +
-                    '<span class="help-inline"></span>' +
-                    '<span class="help-block">例如：192.168.111.123</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="control-group">' +
-                    '<label class="control-label">终止Ip</label>' +
-                    '<div class="controls">' +
-                    '<input type="text" class="span6 m-wrap" id="input_ipv4_end" name="input_ipv4_end_'+ count +'"/>' +
-                    '<span class="help-inline"></span>' +
-                    '<span class="help-block">例如：192.168.111.123</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>'
-            );
-
-            $('#control-group-add-ip-affirm').append(
-                    '<div class="control-group">' +
-                    '<label class="control-label">起始Ip:</label>' +
-                    '<div class="controls">' +
-                    '<span class="text display-value" data-display="input_ipv4_begin_'+ count +'"></span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="control-group">' +
-                    '<label class="control-label">终止Ip:</label>' +
-                    '<div class="controls">' +
-                    '<span class="text display-value" data-display="input_ipv4_end_'+ count +'"></span>' +
-                    '</div>' +
-                    '</div>'
-            );
-        });
-
 
     </script>
 
-    <script type="text/javascript">
-
-        (function(){
-            $.extend($.fn,{
-                mask: function(msg,maskDivClass){
-                    this.unmask();
-                    // 参数
-                    var op = {
-                        opacity: 0.8,
-                        z: 1055,
-                        bgcolor: '#ccc'
-                    };
-                    var original=$(document.body);
-                    var position={top:0,left:0};
-                    if(this[0] && this[0]!==window.document){
-                        original=this;
-                        position=original.position();
-                    }
-                    // 创建一个 Mask 层，追加到对象中
-                    var maskDiv=$('<div class="maskdivgen" aria-hidden="true">&nbsp;</div>');
-                    maskDiv.appendTo(original);
-                    var maskWidth=original.outerWidth();
-                    if(!maskWidth){
-                        maskWidth=original.width();
-                    }
-                    var maskHeight=document.body.scrollHeight;
-                    if(!maskHeight){
-                        maskHeight=original.height();
-                    }
-                    maskDiv.css({
-                        position: 'absolute',
-                        top: position.top,
-                        left: position.left,
-                        'z-index': op.z,
-                        width: maskWidth,
-                        height:maskHeight,
-                        'background-color': op.bgcolor,
-                        opacity: 0
-                    });
-                    if(maskDivClass){
-                        maskDiv.addClass(maskDivClass);
-                    }
-                    if(msg){
-
-                        var msgDiv=$('<div style="position:absolute;padding:2px;background:#ccca;text-align: center"><div style="line-height:24px;border:#a3bad9 1px solid;background:white;padding:2px 10px 2px 10px;">'+msg+'<span class="loading"></span></div></div>');
-
-                        //var msgDiv=$('<div style="position:absolute;"><div class="cube" style="line-height:24px;border:#a3bad9 1px solid;background:white;padding:2px 10px 2px 10px;"><div class="tg-qe-progress-bar myactive"><div class="bar"></div></div></div></div>');
-
-                        msgDiv.appendTo(maskDiv);
-                        var widthspace=(maskDiv.width()-msgDiv.width());
-                        var heightspace=(maskDiv.height()-msgDiv.height());
-                        msgDiv.css({
-                            cursor:'wait',
-                            top:(heightspace/2-2),
-                            left:(widthspace/2-2)
-                        });
-                    }
-                    maskDiv.fadeIn('fast', function(){
-                        // 淡入淡出效果
-                        $(this).fadeTo('slow', op.opacity);
-                    });
-                    return maskDiv;
-                },
-                unmask: function(){
-                    var original=$(document.body);
-                    if(this[0] && this[0]!==window.document){
-                        original=$(this[0]);
-                    }
-                    original.find("> div.maskdivgen").fadeOut('slow',0,function(){
-                        $(this).remove();
-                    });
-                }
-            });
-        })();
-
-        function closeProgress() {
-            $('#testhovertree').unmask()
-        }
-
-        function openProgress() {
-            $(document).mask('正在处理,请稍后').click(function () {
-                $(document).unmask()
-            })
-        }
-
-    </script>
 
     </#if>
 

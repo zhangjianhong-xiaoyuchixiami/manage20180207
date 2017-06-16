@@ -203,7 +203,7 @@ function banCustomer(authId) {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: "确定"//确定按钮上面的文档
                         }).then(function () {
-                            location.reload();
+                            window.location.href = window.location.href ;
                             return;
                         })
                     }
@@ -216,7 +216,7 @@ function banCustomer(authId) {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: "确定"
                         }).then(function () {
-                            location.reload();
+                            window.location.href = window.location.href ;
                         })
                     }
                 }
@@ -264,7 +264,7 @@ function unBanCustomer(authId) {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: "确定"//确定按钮上面的文档
                         }).then(function () {
-                            location.reload();
+                            window.location.href = window.location.href ;
                             return;
                         })
                     }
@@ -277,7 +277,7 @@ function unBanCustomer(authId) {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: "确定"
                         }).then(function () {
-                            location.reload();
+                            window.location.href = window.location.href ;
                         })
                     }
                 }

@@ -183,7 +183,12 @@ public class TestController {
     @RequestMapping("/test-map")
     @ResponseBody
     public String testMap(){
-       return testService.testMap().toString();
+        return testService.testMap().toString();
+    }
+
+    @RequestMapping("/test-select")
+    public String select(){
+        return "/test/form_component";
     }
 
 }

@@ -68,8 +68,8 @@
 
                                 <div class="controls">
 
-                                    <select id="vendorId" name="vendorId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                        <option value="">请选择...</option>
+                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId">
+                                        <option value=""></option>
                                         <#if apiVendorList??>
                                             <#list apiVendorList as apiVendor>
                                                 <option <#if vendorId?? && vendorId==apiVendor.id>selected="selected"</#if> value="${apiVendor.id}">${apiVendor.name}</option>
@@ -266,7 +266,7 @@
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
-                                        <th style="text-align: center; width: 5%;">操作</th>
+                                        <th style="text-align: center; width: 10%;">操作</th>
                                         <th class="table-td-none">类型</th>
                                         <th class="table-td-none">当前价格</th>
                                         <th class="table-td-none">消费总额</th>
@@ -300,7 +300,7 @@
                                                 <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="本月消费"><#if apiFinance.currMonthCost??>${(apiFinance.currMonthCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="当天消费"><#if apiFinance.currDayCost??>${(apiFinance.currDayCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="操作" style="text-align: center;width: 5%;">
+                                                <td data-title="操作" style="text-align: center;width: 10%;">
                                                     <a href="#form_modal4" onclick="charge(${apiFinance.vendorId})" data-toggle="modal">充值</a>
                                                 </td>
                                                 <td data-title="类型" class="table-td-none">

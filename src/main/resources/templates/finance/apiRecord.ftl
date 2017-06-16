@@ -57,8 +57,8 @@
 
                                 <div class="controls">
 
-                                    <select id="apiTypeId" name="apiTypeId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                        <option value="">请选择...</option>
+                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="apiTypeId" name="apiTypeId">
+                                        <option value=""></option>
                                         <#if apiTypeList??>
                                             <#list apiTypeList as apiType>
                                                 <option <#if apiTypeId?? && apiTypeId==apiType.id>selected="selected"</#if> value="${apiType.id}">${apiType.name}</option>
@@ -73,16 +73,17 @@
 
                                 <label class="control-label">产品供应商</label>
 
-                                <div class="controls">
+                                <div id="vendorId_chosen" class="controls">
 
-                                    <select id="vendorId" name="vendorId" class="medium m-wrap1" tabindex="1" style="width: 105px;">
-                                        <option value="">请选择...</option>
+                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId">
+                                        <option value=""></option>
                                         <#if apiVendorList??>
                                             <#list apiVendorList as apiVendor>
                                                 <option <#if vendorId?? && vendorId==apiVendor.id>selected="selected"</#if> value="${apiVendor.id}">${apiVendor.name}</option>
                                             </#list>
                                         </#if>
                                     </select>
+
                                 </div>
 
                             </div>
@@ -269,8 +270,8 @@
                                         <th>${year!''}年第${week!''}周消费（单位：元）</th>
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
-                                        <th>${currYear!''}年${currMonth!''}月第${currDay!''}日消费（单位：元）</th>
-                                        <th style="text-align: center;">操作</th>
+                                        <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
+                                        <th style="text-align: center; width: 10%;" >操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -300,7 +301,7 @@
                                                 <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="本月消费"><#if apiFinance.currMonthCost??>${(apiFinance.currMonthCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="当天消费"><#if apiFinance.currDayCost??>${(apiFinance.currDayCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="操作" style="text-align: center;">
+                                                <td data-title="操作" style="text-align: center; width: 10%;">
                                                     <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
                                                 </td>
                                             </tr>
@@ -330,9 +331,9 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <#--<script src="https://code.highcharts.com/highcharts.js"></script>
 
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 
     <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
 

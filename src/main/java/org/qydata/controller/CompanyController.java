@@ -180,17 +180,14 @@ public class CompanyController {
 
     /**
      * 充值/扣费
-     * @param customerId
+     * @param companyId
      * @param reason
      * @param amount
      * @return
      */
     @RequestMapping("/update-customer-balance")
     @ResponseBody
-    public String updateCustomerBalance(Integer customerId,Integer reason,String amount){
-        System.out.println(customerId);
-        System.out.println(reason);
-        System.out.println(amount);
+    public String updateCustomerBalance(Integer companyId,Integer reason,String amount){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if(RegexUtil.isNull(amount)){
@@ -212,7 +209,7 @@ public class CompanyController {
         }
         int code = 0;
         try {
-            code = companyService.updateCustomerBalance(customerId, reason, amount.trim());
+            code = companyService.updateCustomerBalance(companyId, reason, amount.trim());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -461,14 +458,14 @@ public class CompanyController {
 
     /**
      * 根据账号Id查询Ip
-     * @param customerId
+     * @param companyId
      * @return
      */
     @RequestMapping("/customer/find-ip")
     @ResponseBody
-    public String queryCustomerIpById(Integer customerId) {
+    public String queryCustomerIpById(Integer companyId) {
         Gson gson = new Gson();
-        List<CustomerIp> customerIpList = companyService.queryCustomerIpById(customerId);
+        List<CustomerIp> customerIpList = companyService.queryCustomerIpById(companyId);
         return gson.toJson(customerIpList);
     }
 
@@ -479,12 +476,12 @@ public class CompanyController {
      */
     @RequestMapping("/customer/delete-ip")
     @ResponseBody
-    public String deleteIpById(Integer customerId,Integer id) {
+    public String deleteIpById(Integer companyId,Integer id) {
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
         int code = 0;
         try {
-            code = companyService.deleteIpById(customerId, id);
+            code = companyService.deleteIpById(companyId, id);
         }catch (Exception e){
              e.printStackTrace();
         }
@@ -498,12 +495,12 @@ public class CompanyController {
 
     /**
      * 给账号添加IP
-     * @param customerId
+     * @param companyId
      * @return
      */
     @RequestMapping("/customer/add/ip")
     @ResponseBody
-    public String addCustomerIp(Integer customerId,String beginIp,String endIp){
+    public String addCustomerIp(Integer companyId,String beginIp,String endIp){
         Map<String,Object> map = new HashMap<>();
         Gson gson = new Gson();
         if(!RegexUtil.isIp(beginIp)){
@@ -516,7 +513,7 @@ public class CompanyController {
         }
         int result = 0;
         try {
-            result = companyService.addCustomerIp(customerId,beginIp,endIp);
+            result = companyService.addCustomerIp(companyId,beginIp,endIp);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -580,6 +577,12 @@ public class CompanyController {
     }
 
 
+    /**
+     * 修改信用额度
+     * @param companyId
+     * @param credit
+     * @return
+     */
     @RequestMapping("/customer/update-credit")
     @ResponseBody
     public String updateCredit(Integer companyId,Integer credit){

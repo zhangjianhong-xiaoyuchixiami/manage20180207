@@ -115,7 +115,12 @@ var Api = function () {
             });
 
             $("#apiTypeId").change(function () {
+
                 var param = $("#apiTypeId").val();
+
+                $("#vendorId_chosen ").empty();
+                $("#vendorId_chosen").append('<select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId"><option value=""></option></select>');
+
                 if (param !=null) {
                     $.ajax({
                         url: '/api/find-api-vendor-by-api-type-id',
@@ -124,8 +129,6 @@ var Api = function () {
                         dataType: 'json',
                         success: function (data) {
                             if(data != null){
-                                $("#vendorId ").empty();
-                                $("#vendorId").append("<option value=''>请选择...</option>");
                                 for (var i=0; i<data.length; i++){
                                     var op=document.createElement("option");
                                     op.value=data[i].id;
@@ -136,6 +139,11 @@ var Api = function () {
                         }
                     });
                 }
+
+                $.getScript("/assect/chosen.jquery.min.js",function () {
+                    $('.chosen').chosen()
+                })
+
             });
 
         }

@@ -501,7 +501,7 @@ var AddCompanyAllotApiAddIp = function () {
                                         confirmButtonColor: '#3085d6',
                                         confirmButtonText: "确定"//确定按钮上面的文档
                                     }).then(function () {
-                                        location.reload();
+                                        window.location.href = window.location.href ;
                                     })
                                 }
                             }
@@ -514,6 +514,149 @@ var AddCompanyAllotApiAddIp = function () {
                 });
 
             }).hide();
+
+            /*Api-点击添加一栏*/
+            $('#control-group-add-api-href').on('click',function () {
+
+                var add_api_type_sub = [];
+                $("select[id='add_api_type_sub']").each(function(){
+                    add_api_type_sub.push($(this).val());
+                });
+
+                console.log(add_api_type_sub);
+
+                var count = add_api_type_sub.length + 1 ;
+
+                console.log(count);
+
+                var res = $('select[name="add_api_type_sub_'+ (count-1) +'"]').val();
+
+                console.log(res);
+
+                if (res == null || res == "" || res == "请选择..."){
+                    swal({
+                        title: "操作提示",
+                        text: "亲，请先完成当前选择后再点击添加按钮哦！",
+                        type: "info",
+                        confirmButtonText: "确定"
+                    });
+                    return;
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "/company/find-all-api-type",
+                    data: {"add_api_type_sub" : add_api_type_sub},
+                    dataType: "json",
+                    success: function (data) {
+
+                        if(data != null && data.length > 0 ){
+                            $('#control-group-add-api').append(
+                                '<div class="form-section" style="border-bottom: 1px solid #999;">' +
+                                '<div class="control-group">' +
+                                '<label class="control-label">产品类型</label>' +
+                                '<div class="controls">' +
+                                '<select id="add_api_type_sub" name="add_api_type_sub_'+ count +'" class="span6 m-wrap">' +
+                                '<option value="">请选择...</option>' +
+                                '</select>' +
+                                '<span class="help-inline"></span>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="control-group">' +
+                                '<label class="control-label">产品价格</label>' +
+                                '<div class="controls">' +
+                                '<input type="text" id="add_api_type_sub_price" name="add_api_type_sub_price_'+ count +'" class="span6 m-wrap" placeholder="单位：元"/>' +
+                                '<span class="help-inline"></span>' +
+                                '<span class="help-block">说明：只能输入数字并且大于等于0</span>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div>'
+                            );
+                            var myContent = null;
+                            for (var i = 0; i < data.length; i++){
+                                if (data[i].mobileOperatorName == null){
+                                    myContent="<option value='"+ data[i].apiTypeId +"'>"+ data[i].apiTypeName +"</option>";
+                                }else{
+                                    myContent="<option value='"+data[i].apiTypeId+'-'+data[i].mobileOperatorId+"'>"+ data[i].apiTypeName+'--'+data[i].mobileOperatorName +"</option>";
+                                }
+                                $('select[name="add_api_type_sub_'+ count +'"]').append(myContent);
+                            }
+
+                            $('#control-group-add-api-affirm').append(
+                                '<div class="control-group">' +
+                                '<label class="control-label">产品类型:</label>' +
+                                '<div class="controls">' +
+                                '<span class="text display-value" data-display="add_api_type_sub_'+ count +'"></span>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="control-group">' +
+                                '<label class="control-label">价格:</label>' +
+                                '<div class="controls">' +
+                                '<span class="text display-value" data-display="add_api_type_sub_price_'+ count +'"></span>' +
+                                '</div>' +
+                                '</div>'
+                            );
+
+                        }else {
+                            swal({
+                                title: "操作提示",
+                                text: "亲，你已选择了所有的产品类型哦！",
+                                type: "info",
+                                confirmButtonText: "确定"
+                            });
+                        }
+                    }
+                });
+
+            });
+
+            /*Ip-点击添加一栏*/
+            $('#control-group-add-ip-href').on('click',function () {
+
+                var input_ipv4_begin = [];
+                $("input[id='input_ipv4_begin']").each(function(){
+                    input_ipv4_begin.push($(this).val());
+                });
+
+                var count = input_ipv4_begin.length ;
+
+                $('#control-group-add-ip').append(
+                    '<div class="form-section" style="border-bottom: 1px solid #999;">' +
+                    '<div class="control-group">' +
+                    '<label class="control-label">起始Ip</label>'+
+                    '<div class="controls">' +
+                    '<input type="text" class="span6 m-wrap" id="input_ipv4_begin" name="input_ipv4_begin_'+ count +'"/>' +
+                    '<span class="help-inline"></span>' +
+                    '<span class="help-block">例如：192.168.111.123</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="control-group">' +
+                    '<label class="control-label">终止Ip</label>' +
+                    '<div class="controls">' +
+                    '<input type="text" class="span6 m-wrap" id="input_ipv4_end" name="input_ipv4_end_'+ count +'"/>' +
+                    '<span class="help-inline"></span>' +
+                    '<span class="help-block">例如：192.168.111.123</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                );
+
+                $('#control-group-add-ip-affirm').append(
+                    '<div class="control-group">' +
+                    '<label class="control-label">起始Ip:</label>' +
+                    '<div class="controls">' +
+                    '<span class="text display-value" data-display="input_ipv4_begin_'+ count +'"></span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="control-group">' +
+                    '<label class="control-label">终止Ip:</label>' +
+                    '<div class="controls">' +
+                    '<span class="text display-value" data-display="input_ipv4_end_'+ count +'"></span>' +
+                    '</div>' +
+                    '</div>'
+                );
+            });
+
 
         }
 

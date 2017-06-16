@@ -86,22 +86,16 @@
         ORDER BY a.typeId ASC
     </select>
 
-    <!--添加客户信息-->
-    <insert id="addCompany" parameterType="org.qydata.entity.Company" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO qydata.CustomerCompany(partnerId,name)
-        VALUES (#{partnerId},#{name})
-        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-    </insert>
-
     <!--查找全部的合作公司-->
     <select id="findAllPartner" resultType="org.qydata.entity.Partner">
         SELECT id,name FROM qyfinance.bkvwPartner
     </select>
-    
+
+    <!--根据用户邮箱查找所属部门-->
     <select id="findPartnerByEmail" parameterType="String" resultType="org.qydata.entity.Partner">
-        SELECT deptId id,deptName name FROM qyfinance.bkvw_user_UserDept WHERE email = #{param}
+        SELECT deptId id,deptName name
+        FROM qyfinance.bkvw_user_UserDept
+        WHERE email = #{param}
     </select>
 
     <!--根据公司Id查找部门编号-->
@@ -123,7 +117,6 @@
             </if>
         </where>
     </select>
-
 
     <!--根据公司Id查找公司名称-用于禁用/解禁公司的操作提醒-->
     <select id="queryCompanyNameByCompanyId" parameterType="int" resultType="String">
@@ -176,7 +169,7 @@
         WHERE name = #{param}
     </select>
 
-    <!--根据公司Id查找正式账号Id，用于修改信用额度-->
+    <!--根据公司Id查找正式账号Id，用于修改信用额度，添加ip，删除ip，查找ip，充值-->
     <select id="queryOfficAuthIdByCompanyId" parameterType="int" resultType="org.qydata.entity.Customer">
         SELECT id,authId
         FROM qyfinance.bkvwCustomer
