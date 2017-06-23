@@ -23,13 +23,11 @@
 
                 <div class="span12">
 
-                    <div id="fileupload">
-
-                        <input type="file" id="file" name="file" />
-
-                        <input type="button" id="upload" value="上传文件" />
-
-                    </div>
+                    <form action="/file-upload-service" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" class="fileUpload" multiple>
+                        <button id="px-submit" type="submit">上传</button>
+                        <button id="px-clear" type="reset">取消</button>
+                    </form>
 
                 </div>
 
@@ -48,13 +46,19 @@
         <@puj.publicJs></@puj.publicJs>
 
 
-    <script src="/js/multi/ajaxfileupload.js"></script>
+    <script src="/js/upload/jquery.fileUploader.js"></script>
+
+    <script src="/js/upload/jquery-ui-1.8.14.custom.min.js"></script>
+
 
     <script>
 
         jQuery(document).ready(function() {
 
-            //文件上传
+
+            $('.fileUpload').fileUploader();
+
+          /*  //文件上传
             $(function() {
                 $("#upload").click(ajaxFileUpload);
             });
@@ -82,7 +86,7 @@
                     }
                 });
             }
-
+*/
         });
 
     </script>

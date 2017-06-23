@@ -11,7 +11,6 @@ import org.qydata.entity.ApiVendor;
 import org.qydata.entity.User;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.PowerUserService;
-import org.qydata.service.RoleService;
 import org.qydata.tools.CalendarTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +33,6 @@ import static java.lang.Integer.parseInt;
 public class FinanceController {
 
     @Autowired private CustomerFinanceService customerFinanceService;
-    @Autowired private RoleService roleService;
     @Autowired private PowerUserService powerUserService;
     /**
      * 查找公司财务账单
@@ -246,6 +244,17 @@ public class FinanceController {
         mapJson.put("companyName",companyName);
         return new Gson().toJson(mapJson);
     }
+
+
+    @RequestMapping("/find-all-customer/cache")
+    public String queryCustomerCacheConsume(Model model){
+
+        model.addAttribute("currYear",CalendarTools.getYearMonthCount(0));
+        model.addAttribute("currMonth",CalendarTools.getMonthCount(0));
+        model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
+        return "/finance/customerCacheFinancialAccount";
+    }
+
 
     /**
      * 指定账号充值记录

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,14 +27,16 @@ public class ApiVendorExcelController {
     }
 
     @RequestMapping("/file-upload-service")
-    @ResponseBody
-    public String readExcelFile(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request) {
+
+    public void readExcelFile(@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) {
         String filePath =  FileUploadUtils.uploadExcelFile(request,file);
+        System.out.println("你好");
         if (filePath != null){
             //ReadExcelUtils.readExcelSheet(filePath);
             apiVendorExcelService.readExcelFile(filePath);
+
         }
-        return "/excel/api_vendor_excel";
+
     }
 
 

@@ -1,4 +1,4 @@
-var CustomerFinanceAccount = function () {
+var CustomerCacheFinanceAccount = function () {
 
     return {
 
@@ -27,17 +27,11 @@ var CustomerFinanceAccount = function () {
                 sOut += '<tr><th colspan="5">时间范围：'+beginDate+'--'+endDate+'</th></tr>';
                 sOut += '<tr>' +
                     '<th>购买产品</th>' +
-                    '<th>当前价格</th>' +
-                    '<th>总消费额（单位：元）</th>' +
-                    '<th>请求次数</th>' +
-                    '<th>成功次数</th>' +
+                    '<th>调用缓存次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
-                    '<td>'+aData[15]+'</td>' +
-                    '<td>'+aData[16]+'</td>' +
-                    '<td>'+aData[17]+'</td>' +
-                    '<td>'+aData[18]+'</td>' +
-                    '<td>'+aData[19]+'</td>' +
+                    '<td>'+aData[6]+'</td>' +
+                    '<td>'+aData[7]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -71,69 +65,19 @@ var CustomerFinanceAccount = function () {
                 }
             });
 
-            //customerFinancialAccount表格配置
+
             var oTable = $('#sample_2').dataTable({
                 "aoColumns": [
                     {"bSortable": false},  //0
-                    {"bSortable": false},  //1
+                    null,  //1
                     null,  //2
                     null,  //3
                     null,  //4
-                    null,  //5 可用额度
-                    null,  //6 余额
-                    null,  //7 充值
-                    null,  //8
-                    { "bVisible": false},  //9
-                    { "bVisible": false},  //10
-                    { "bVisible": false},  //11
-                    { "bVisible": false},  //12
-                    null,  //13
-                    null,  //14
-                    { "bVisible": false },  //15
-                    { "bVisible": false },  //16
-                    { "bVisible": false },  //17
-                    { "bVisible": false },  //18
-                    { "bVisible": false }   //19
+                    null,  //5
+                    { "bVisible": false },  //6
+                    { "bVisible": false }  //7
                 ],
-                "aoColumnDefs": [
-                    {
-                        //充值总额
-                        "aTargets": [ 7 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //消费总额
-                        "aTargets": [ 8 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //上周充值
-                        "aTargets": [ 9 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //上周消费
-                        "aTargets": [ 10 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //上月充值
-                        "aTargets": [ 11 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //上月消费
-                        "aTargets": [ 12 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        //当天消费
-                        "aTargets": [ 13 ],
-                        "sType": "html-percent"
-                    }
-
-                ],
-                "aaSorting": [[14, 'desc']],
+                "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -158,29 +102,6 @@ var CustomerFinanceAccount = function () {
                     }
                 }
             });
-
-            /*表格显示列控制*/
-            $('#sample_2_column_toggler input[type="checkbox"]').change(function(){
-                /* Get the DataTables object again - this is not a recreation, just a get of the object */
-                var iCol = parseInt($(this).attr("data-column"));
-                var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
-                oTable.fnSetColumnVis(iCol, (bVis ? false : true));
-            });
-
-            /*状态正常全选操作*/
-            jQuery('#sample_2 .group-checkable').change(function () {
-                var set = jQuery(this).attr("data-set");
-                var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function () {
-                    if (checked) {
-                        $(this).attr("checked", true);
-                    } else {
-                        $(this).attr("checked", false);
-                    }
-                });
-                jQuery.uniform.update(set);
-            });
-
 
         }
 

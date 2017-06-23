@@ -53,8 +53,9 @@
     <#--弹框样式控制-->
     <link rel="stylesheet" type="text/css" href="/css/sweetlert/sweet-alert2.css" />
     <#--文件上传样式控制-->
-    <link rel="stylesheet" href="/css/jquery.fancybox.css"/>
-    <link rel="stylesheet" href="/css/jquery.fileupload-ui.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/upload/jquery-ui-1.8.14.custom.css" />
+    <link rel="stylesheet" type="text/css" href="/css/upload/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/css/upload/fileUploader.css" />
 
     <style>
         a:hover {text-decoration: none;}
@@ -184,6 +185,14 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="customerListCache">
+                                    <a href="/finance/find-all-customer/cache">
+                                        客户调用缓存情况
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
                             <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                 <li id="customerListBalanceLog">
                                     <a href="/finance/find-all-customer-by-dept-id">
@@ -215,6 +224,12 @@
                                     </a>
                                 </li>
                             </@shiro.hasPermission>
+
+                            <li id="">
+                                <a href="/file-upload">
+                                    上传文件
+                                </a>
+                            </li>
 
                         <#-- <@shiro.hasPermission name="customer:findAllCustomer">
                              <li id="partnersFinancialAccount">
