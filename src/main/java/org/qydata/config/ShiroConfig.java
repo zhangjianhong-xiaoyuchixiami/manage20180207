@@ -314,7 +314,8 @@ public class ShiroConfig {
 		chains.put("/finance/find-all-customer/company-name", "authc");
 		chains.put("/email/preview-customer-finance-account", "authc");
 		chains.put("/email/send-customer-finance-account", "authc");
-		chains.put("/download-consume-check", "authc");
+		//远程下载Excel，不能配置
+		//chains.put("/download-consume-check", "authc");
 
 
 		//级联
