@@ -310,8 +310,12 @@ public class ShiroConfig {
 		chains.put("/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail", "authc,perms");
 		chains.put("/finance/find-all-customer/find-week-record-by-customer-id", "authc,perms");
 		chains.put("/finance/find-all-customer/find-month-record-by-customer-id", "authc,perms");
-		//chains.put("/finance/find-all-customer/curr-day-api-type-consume", "authc");
-		//chains.put("/finance/find-all-customer/company-name", "authc");
+		chains.put("/finance/find-all-customer/curr-day-api-type-consume", "authc");
+		chains.put("/finance/find-all-customer/company-name", "authc");
+		chains.put("/email/preview-customer-finance-account", "authc");
+		chains.put("/email/send-customer-finance-account", "authc");
+		chains.put("/download-consume-check", "authc");
+
 
 		//级联
 		chains.put("/finance/find-api-vendor-by-api-type-id", "authc");
@@ -374,6 +378,7 @@ public class ShiroConfig {
 		//产品管理
 		chains.put("/api/api-message", "authc,perms");
 		chains.put("/api/api-message-by-company", "authc,perms");
+		chains.put("/api/api-monitor", "authc,perms");
 
 
 		//客户请求日志

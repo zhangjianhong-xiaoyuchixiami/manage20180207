@@ -1,13 +1,7 @@
 package org.qydata.mapper;
 
-import org.qydata.dst.CustomerApiTypeConsume;
-import org.qydata.dst.CustomerApiVendor;
-import org.qydata.dst.CustomerFinance;
-import org.qydata.dst.CustomerWeekMonthConsume;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
-import org.qydata.entity.CustomerBalanceLog;
-import org.qydata.entity.WeekMonthAmount;
+import org.qydata.dst.*;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -52,6 +46,36 @@ public interface CustomerFinanceMapper {
      * @return
      */
     public List<CustomerWeekMonthConsume> queryCustomerWeekMonthConsume(Map<String,Object> map);
+
+    /**
+     * 查询客户消费总额
+     * @param map
+     * @return
+     */
+    public List<CustomerTotleConsume> queryCustomerTotleConsume(Map<String,Object> map) ;
+
+    /**
+     * 查询客户邮箱，1、用于判断是否存在邮箱，2、发送账单是填写收件人
+     * @param map
+     * @return
+     */
+    public List<CustomerCompanyEmail> queryCustomerEmail(Map<String,Object> map);
+
+    /**
+     * 查询客户账单，1、用于判断是否存在上月账单
+     * @param map
+     * @return
+     */
+    public List<CustomerConsumeExcel> queryCustomerAccountExcel(Map<String,Object> map);
+
+    /**
+     * 根据customerId查询companyId
+     * @param customerId
+     * @return
+     */
+    public int queryCompanyIdByCustomerId(int customerId);
+
+
 
     /**
      * 查询客户的充值记录

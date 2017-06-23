@@ -75,10 +75,10 @@ var CustomerFinanceAccount = function () {
             var oTable = $('#sample_2').dataTable({
                 "aoColumns": [
                     {"bSortable": false},  //0
-                    null,  //1
+                    {"bSortable": false},  //1
                     null,  //2
                     null,  //3
-                    { "bVisible": false},  //4 剩余额度
+                    null,  //4
                     null,  //5 可用额度
                     null,  //6 余额
                     null,  //7 充值
@@ -128,7 +128,7 @@ var CustomerFinanceAccount = function () {
                     },
                     {
                         //当天消费
-                        "aTargets": [ 14 ],
+                        "aTargets": [ 13 ],
                         "sType": "html-percent"
                     }
 
@@ -169,6 +169,19 @@ var CustomerFinanceAccount = function () {
                 oTable.fnSetColumnVis(iCol, (bVis ? false : true));
             });
 
+            /*状态正常全选操作*/
+            jQuery('#sample_2 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
 
 
         }

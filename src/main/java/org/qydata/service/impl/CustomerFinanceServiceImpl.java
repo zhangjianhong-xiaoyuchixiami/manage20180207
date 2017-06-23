@@ -3,10 +3,7 @@ package org.qydata.service.impl;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.config.annotation.DataSourceService;
 import org.qydata.dst.*;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
-import org.qydata.entity.CompanyApi;
-import org.qydata.entity.WeekMonthAmount;
+import org.qydata.entity.*;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.tools.CalendarTools;
@@ -28,9 +25,13 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     @Override
     @DataSourceService
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
-        Map<String,Object> mapOverAllParam = new HashMap<String,Object>();
-        Map<String,Object> mapApiTypeParam = new HashMap<String,Object>();
-        Map<String,Object> mapWeekMonthParam = new HashMap<String,Object>();
+
+        Map<String,Object> mapOverAllParam = new HashMap<>();
+        Map<String,Object> mapApiTypeParam = new HashMap<>();
+        Map<String,Object> mapWeekMonthParam = new HashMap<>();
+        Map<String,Object> mapTotleConsumeParam = new HashMap<>();
+        Map<String,Object> mapEmailParam = new HashMap<>();
+        Map<String,Object> mapExcelParam = new HashMap<>();
         Set<Map.Entry<String,Object>> set = map.entrySet();
         Iterator<Map.Entry<String,Object>> iterator = set.iterator();
         while(iterator.hasNext()){
@@ -42,22 +43,22 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 mapOverAllParam.put("partnerId",me.getValue());
             }
             if("beginDate".equals(me.getKey())){
-                mapOverAllParam.put("beginDate",me.getValue());
                 mapApiTypeParam.put("beginDate",me.getValue());
+                mapTotleConsumeParam.put("beginDate",me.getValue());
             }
             if("endDate".equals(me.getKey())){
-                mapOverAllParam.put("endDate",me.getValue());
                 mapApiTypeParam.put("endDate",me.getValue());
+                mapTotleConsumeParam.put("endDate",me.getValue());
             }
             if("statusList".equals(me.getKey())){
                 mapOverAllParam.put("statusList",me.getValue());
             }
             if("currDayTime".equals(me.getKey())){
-                mapOverAllParam.put("currDayTime",me.getValue());
                 mapApiTypeParam.put("currDayTime",me.getValue());
+                mapTotleConsumeParam.put("currDayTime",me.getValue());
             }
             if("currMonthTime".equals(me.getKey())){
-                mapOverAllParam.put("currMonthTime",me.getValue());
+                mapTotleConsumeParam.put("currMonthTime",me.getValue());
             }
             if("deptIdList".equals(me.getKey())){
                 mapOverAllParam.put("deptIdList",me.getValue());
@@ -67,10 +68,15 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapWeekMonthParam.put("years",CalendarTools.getYearMonthCount(1));
         mapWeekMonthParam.put("months",CalendarTools.getMonthCount(1));
         mapWeekMonthParam.put("weeks",CalendarTools.getYearWeekCount(1));
+        mapExcelParam.put("years",CalendarTools.getYearMonthCount(1));
+        mapExcelParam.put("months",CalendarTools.getMonthCount(1));
 
         List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomerOverAllFinance(mapOverAllParam);
         List<CustomerFinance> customerFinanceApiTypeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(mapApiTypeParam);
         List<CustomerWeekMonthConsume> customerWeekMonthConsumeList = customerFinanceMapper.queryCustomerWeekMonthConsume(mapWeekMonthParam);
+        List<CustomerTotleConsume> customerTotleConsumeList = customerFinanceMapper.queryCustomerTotleConsume(mapTotleConsumeParam);
+        List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapEmailParam);
+        List<CustomerConsumeExcel> customerConsumeExcelList = customerFinanceMapper.queryCustomerAccountExcel(mapExcelParam);
 
         if (map.get("endDate") == null || new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
             if (customerFinanceApiTypeConsumeList != null){
@@ -104,6 +110,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             while (it.hasNext()) {
                 CustomerFinance customerFinance = it.next();
 
+                customerFinance.setSurplusFloor((-customerFinance.getFloor()) + customerFinance.getBalance());
+
+                /*封装各类型消费*/
                 if (customerFinanceApiTypeConsumeList != null) {
                     for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
                         CustomerFinance customerFinanceApiTypeConsume = customerFinanceApiTypeConsumeList.get(i);
@@ -114,6 +123,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     }
                 }
 
+                /*封装周月消费*/
                 if (customerWeekMonthConsumeList != null) {
                     for (int i = 0; i < customerWeekMonthConsumeList.size(); i++) {
                         CustomerWeekMonthConsume customerWeekMonthConsume = customerWeekMonthConsumeList.get(i);
@@ -122,6 +132,41 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                             customerFinance.setChargeMonthTotleAmount(customerWeekMonthConsume.getChargeMonthTotleAmount());
                             customerFinance.setConsumeWeekTotleAmount(customerWeekMonthConsume.getConsumeWeekTotleAmount());
                             customerFinance.setConsumeMonthTotleAmount(customerWeekMonthConsume.getConsumeMonthTotleAmount());
+                        }
+                    }
+                }
+
+                /*封装消费总额和当月当天消费*/
+                if (customerTotleConsumeList != null){
+                    for (int i = 0; i < customerTotleConsumeList.size() ; i++) {
+                        CustomerTotleConsume customerTotleConsume = customerTotleConsumeList.get(i);
+                        if (customerFinance.getId() == customerTotleConsume.getCustomerId()){
+                            customerFinance.setChargeTotleAmount(customerTotleConsume.getChargeTotleAmount());
+                            customerFinance.setConsumeTotleAmount(customerTotleConsume.getConsumeTotleAmount());
+                            customerFinance.setCurrMonthAmount(customerTotleConsume.getCurrMonthAmount());
+                            customerFinance.setCurrDayAmount(customerTotleConsume.getCurrDayAmount());
+                        }
+                    }
+                }
+
+                /*封装邮箱*/
+                if (customerCompanyEmailList != null){
+                    for (int i = 0; i < customerCompanyEmailList.size() ; i++) {
+                        CustomerCompanyEmail customerCompanyEmail = customerCompanyEmailList.get(i);
+                        if (customerCompanyEmail.getEmail() != null && customerCompanyEmail.getEmail().length() > 0){
+                            if (customerFinance.getCompanyId() == customerCompanyEmail.getCompanyId()){
+                                customerFinance.setEmail(customerCompanyEmail.getEmail());
+                            }
+                        }
+                    }
+                }
+
+                /*封装账单*/
+                if(customerConsumeExcelList != null){
+                    for (int i = 0; i < customerConsumeExcelList.size(); i++) {
+                        CustomerConsumeExcel customerConsumeExcel = customerConsumeExcelList.get(i);
+                        if (customerFinance.getId() == customerConsumeExcel.getCustomerId()){
+                            customerFinance.setConsuTime(customerConsumeExcel.getConsuTime());
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 
 
-$(function () { $("[data-toggle='tooltip']").tooltip(); });
+
+
 
 /*展示密码*/
 function showPassword(id) {

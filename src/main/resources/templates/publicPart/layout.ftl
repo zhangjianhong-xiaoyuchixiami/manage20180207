@@ -48,8 +48,13 @@
     <link rel="stylesheet" type="text/css" href="/css/icon.css" />
     <link rel="shortcut icon" href="/image/favicon.ico" />
 
+    <#--加载中动态显示控制-->
     <link rel="stylesheet" type="text/css" href="/css/sweetlert/spinners.css" />
+    <#--弹框样式控制-->
     <link rel="stylesheet" type="text/css" href="/css/sweetlert/sweet-alert2.css" />
+    <#--文件上传样式控制-->
+    <link rel="stylesheet" href="/css/jquery.fancybox.css"/>
+    <link rel="stylesheet" href="/css/jquery.fileupload-ui.css"/>
 
     <style>
         a:hover {text-decoration: none;}
@@ -247,6 +252,14 @@
                                 <li id="apiProductList">
                                     <a href="/api/api-message">
                                         产品信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                <li id="apiMonitor">
+                                    <a href="/api/api-monitor">
+                                        产品监控
                                     </a>
                                 </li>
                             </@shiro.hasPermission>

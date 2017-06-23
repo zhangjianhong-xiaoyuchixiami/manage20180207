@@ -8,6 +8,7 @@
 <#import "../publicPart/publicJs.ftl" as puj>
 
 <@layout ; section>
+
     <#if section = "head">
 
     <#elseif section = "content" >
@@ -270,13 +271,11 @@
 
                                     <div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
 
-                                        <label><input type="checkbox" checked data-column="1">公司名称</label>
+                                        <label><input type="checkbox" checked data-column="2">公司名称</label>
 
-                                        <label><input type="checkbox" checked data-column="2">合作公司</label>
+                                        <label><input type="checkbox" checked data-column="3">合作公司</label>
 
-                                        <label><input type="checkbox" checked data-column="3">信用额度</label>
-
-                                        <label><input type="checkbox" data-column="4">剩余信用额度</label>
+                                        <label><input type="checkbox" checked data-column="4">信用额度</label>
 
                                         <label><input type="checkbox" checked data-column="5">可用额度</label>
 
@@ -307,6 +306,19 @@
                         </div>
 
                         <div class="portlet-body">
+
+                            <div class="clearfix margin-bottom-5">
+                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                    <div class="btn-group">
+                                        <button class="btn-icon black" id="previewCheckBoxCustomerFinanceCustomerId">
+                                            <i class="icon-envelope"></i>预览账单
+                                        </button>
+                                        <button class="btn-icon black" id="sendCheckBoxCustomerFinanceCustomerId">
+                                            <i class="icon-envelope"></i>发送账单
+                                        </button>
+                                    </div>
+                                </@shiro.hasPermission>
+                            </div>
 
                             <div class="clearfix margin-bottom-5">
 
@@ -361,9 +373,11 @@
                             </div>
 
                             <div class="table-responsive">
+
                                 <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
                                     <thead>
                                     <tr>
+                                        <th><input disabled="disabled" type="checkbox" id="allChecked" class="group-checkable" data-set="#sample_2 .checkboxes"/></th>
                                         <th>公司名称</th>
                                         <@shiro.hasPermission name="customer:findAllCustomer">
                                             <th>合作公司</th>
@@ -372,7 +386,6 @@
                                             <th style="display: none">合作公司</th>
                                         </@shiro.hasPermission>
                                         <th>信用额度（单位：元）</th>
-                                        <th>剩余信用额度（单位：元）</th>
                                         <th>可用额度（单位：元）</th>
                                         <th>余额（单位：元）</th>
                                         <th>充值总额（单位：元）</th>
@@ -394,6 +407,7 @@
                                         <#if customerFinanceList??>
                                             <#list customerFinanceList as customer>
                                             <tr>
+                                                <td><input <#if customer.email?? && customer.consuTime??><#else >disabled="disabled"</#if> class="checkboxes" type="checkbox" id="checkBoxCustomerFinanceCustomerId" name="checkBoxCustomerFinanceCustomerId" value="${customer.id}"/></td>
                                                 <#if customer.companyStatus == 0>
                                                 <td data-title="公司名称">
                                                 <#else >
@@ -414,17 +428,16 @@
                                                     <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                                 </@shiro.hasPermission>
                                                 <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
-                                                <td data-title="剩余信用额度">${(-customer.usableFloor/100.0)?c}</td>
                                                 <td data-title="可用额度">${(customer.surplusFloor/100.0)?c}</td>
                                                 <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看消费记录"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="本月消费"><#if customer.currMonthAmount??>${(-customer.currMonthAmount/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="当天消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})"><#if customer.currDayAmount??>${(-customer.currDayAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="当天消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况"><#if customer.currDayAmount??>${(-customer.currDayAmount/100.0)?c}<#else >0</#if></a></td>
                                                 <td data-title="产品类型" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
                                                         <#list customer.companyApiList as companyApi>
@@ -516,6 +529,7 @@
                                     </tbody>
 
                                 </table>
+
                             </div>
 
                         <#--客户当天产品类型消费弹框-->
@@ -567,26 +581,27 @@
 
     <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="/js/locales/dataTables-sort-plungin.js"></script>
 
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="/js/sweetalert/sweetalert2.min.js"></script>
+
+    <script src="/js/sweetalert/core.js"></script>
 
     <script src="/js/myjs/customerleftbar.js"></script>
 
     <script src="/js/myjs/customer-finance-account.js"></script>
 
-    <script src="/js/myjs/customer-finance-account-forbid.js"></script>
-
     <script src="/js/oldlocal/customer-finance-account.js"></script>
 
     <script src="/js/oldlocal/customer-finance-curr-day-api-type-consume.js"></script>
 
-    <script src="/js/locales/dataTables-sort-plungin.js"></script>
+    <script src="/js/oldlocal/customer-finance-account-send-email.js"></script>
 
     <script>
         jQuery(document).ready(function() {
             CustomerFinanceAccount.init();
             CustomerLeftBar.init();
+
         });
 
     </script>

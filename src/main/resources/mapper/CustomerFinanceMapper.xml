@@ -12,11 +12,6 @@
         <result column="partnerId" property="partnerId"/>
         <result column="partnerName" property="partnerName"/>
         <result column="floor" property="floor"/>
-        <result column="chargeTotleAmount" property="chargeTotleAmount"/>
-        <result column="consumeTotleAmount" property="consumeTotleAmount"/>
-        <result column="surplusFloor" property="surplusFloor"/>
-        <result column="currMonthAmount" property="currMonthAmount"/>
-        <result column="currDayAmount" property="currDayAmount"/>
     </resultMap>
 
     <resultMap id="CustomerFinance_CompanyApi_Map" type="org.qydata.dst.CustomerFinance" extends="CustomerFinance_Map">
@@ -143,92 +138,49 @@
         <result column="consumeMonthTotleAmount" property="consumeMonthTotleAmount"/>
     </resultMap>
 
+    <resultMap id="CustomerTotleConsume_Map" type="org.qydata.dst.CustomerTotleConsume">
+        <result column="customerId" property="customerId"/>
+        <result column="chargeTotleAmount" property="chargeTotleAmount"/>
+        <result column="consumeTotleAmount" property="consumeTotleAmount"/>
+        <result column="currMonthAmount" property="currMonthAmount"/>
+        <result column="currDayAmount" property="currDayAmount"/>
+    </resultMap>
 
     <!--查询客户的财务开始-->
 
     <!--查询客户的财务-->
     <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_Map">
         SELECT
-        aa.id,
-        aa.balance,
-        aa.companyId,
-        aa.companyName,
-        aa.partnerId,
-        aa.partnerName,
-        aa.floor,
-        aa.companyStatus,
-        ff.chargeTotleAmount,
-        gg.consumeTotleAmount,
-        ((-aa.floor)+aa.balance) surplusFloor,
-        currMonth.currMonthAmount,
-        currDay.currDayAmount
-        FROM
-        (
-            SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,a.floor,a.companyStatus,
-            b.name partnerName
-            FROM qyfinance.bkvwCustomer a
-            LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
-            LEFT JOIN qyfinance.bkvwCustomerDept d ON a.id=d.customerId
-            WHERE a.typeId in(1)
-            <if test="deptIdList!=null and deptIdList.size()!=0">
-                and d.deptId in
-                <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
-                    #{deptId}
-                </foreach>
-            </if>
-            <if test="statusList!=null and statusList.size()!=0">
-                and a.companyStatus in
-                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
-                    #{status}
-                </foreach>
-            </if>
-            <if test="partnerId!=null and partnerId!=''">
-                and a.partnerId=#{partnerId}
-            </if>
-            <if test="content!=null and content!=''">
-                and a.companyName like '%${content}%'
-            </if>
-        ) aa
-        LEFT JOIN
-        (
-            SELECT customerId,sum(amount) chargeTotleAmount
-            FROM qyfinance.finance_CustomerBalanceLog
-            WHERE reasonId in (1,2,3)
-            GROUP BY customerId
-        ) ff ON aa.id=ff.customerId
-        LEFT JOIN
-        (
-            SELECT customerId,sum(amount) consumeTotleAmount
-            FROM qyfinance.finance_CustomerBalanceLog
-            WHERE reasonId in (-1,-2,-3)
-            <if test="beginDate != null and beginDate != ''">
-                <![CDATA[
-                        AND createTime >= #{beginDate}
-                    ]]>
-            </if>
-            <if test="endDate != null and endDate != ''">
-                <![CDATA[
-                        AND createTime <= #{endDate}
-                    ]]>
-            </if>
-            GROUP BY customerId
-        ) gg ON aa.id=gg.customerId
-        LEFT JOIN
-        (
-            SELECT sum(amount) currMonthAmount,customerId
-            FROM qyfinance.finance_CustomerBalanceLog
-            WHERE reasonId in (-1,-2,-3)
-            AND createTime >= #{currMonthTime}
-            GROUP BY customerId
-        ) currMonth ON aa.id=currMonth.customerId
-        LEFT JOIN
-        (
-            SELECT sum(amount) currDayAmount,customerId
-            FROM qyfinance.finance_CustomerBalanceLog
-            WHERE reasonId in (-1,-2,-3)
-            AND createTime >= #{currDayTime}
-            GROUP BY customerId
-        ) currDay ON aa.id=currDay.customerId
+        a.id,
+        a.balance,
+        a.companyId,
+        a.companyName,
+        a.partnerId,
+        b.name partnerName,
+        a.floor,
+        a.companyStatus
+        FROM qyfinance.bkvwCustomer a
+        LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        LEFT JOIN qyfinance.bkvwCustomerDept c ON a.id=c.customerId
+        WHERE a.typeId = 1
+        <if test="deptIdList!=null and deptIdList.size()!=0">
+            and c.deptId in
+            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                #{deptId}
+            </foreach>
+        </if>
+        <if test="statusList!=null and statusList.size()!=0">
+            and a.companyStatus in
+            <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
+                #{status}
+            </foreach>
+        </if>
+        <if test="partnerId!=null and partnerId!=''">
+            and a.partnerId=#{partnerId}
+        </if>
+        <if test="content!=null and content!=''">
+            and a.companyName like '%${content}%'
+        </if>
     </select>
 
     <!--查询客户当天各产品类型的消费情况-->
@@ -268,7 +220,7 @@
     <!--查询客户各产品的消费情况-->
     <select id="queryCustomerApiTypeConsume" parameterType="map" resultMap="CustomerFinance_CompanyApiType_Map">
         SELECT
-        aa.customerId,
+        base.id customerId,
         aa.apiTypeId,
         aa.stid subTypeId,
         ifnull(aa.sumAmount,0) sumAmount,
@@ -282,7 +234,8 @@
         dd.enabled,
         ee.name apiTypeName,
         ff.name subTypeName
-        FROM
+        FROM qyfinance.bkvwCustomer base
+        LEFT JOIN
         (
             SELECT
             customerId,
@@ -305,7 +258,7 @@
                 </if>
             </where>
             GROUP BY customerId,apiTypeId,stid
-        ) aa
+        ) aa ON  base.id = aa.customerId
         LEFT JOIN
         (
             SELECT
@@ -324,41 +277,121 @@
         LEFT JOIN qyfinance.bkvwCompanyApi dd ON cc.companyId=dd.companyId AND aa.apiTypeId=dd.apiTypeId AND aa.stid=dd.subTypeId
         LEFT JOIN qyfinance.bkvwApiType ee ON aa.apiTypeId=ee.id
         LEFT JOIN qyfinance.bkvwMobileOperator ff ON aa.stid=ff.id
+        WHERE base.typeId = 1
         ORDER BY ee.name ASC,dd.enabled DESC
     </select>
 
     <!--查询客户周月消费总额-->
     <select id="queryCustomerWeekMonthConsume" parameterType="map" resultMap="CustomerWeekMonthConsume_Map">
         SELECT
-        aa.customerId,
+        base.id customerId,
         aa.chargeWeekTotleAmount,
         bb.chargeMonthTotleAmount,
         cc.consumeWeekTotleAmount,
         dd.consumeMonthTotleAmount
-        FROM
+        FROM qyfinance.bkvwCustomer base
+        LEFT JOIN
         (
             SELECT customerId,totleAmount chargeWeekTotleAmount
             FROM qyfinance.finance_WeekMonthAmount
             WHERE weekMonthTypeId=1 AND tableId=1 AND years=#{years} AND weeks=#{weeks}
-        ) aa
+        ) aa ON base.id = aa.customerId
         LEFT JOIN
         (
             SELECT customerId,totleAmount chargeMonthTotleAmount
             FROM qyfinance.finance_WeekMonthAmount
             WHERE weekMonthTypeId=2 AND tableId=1 AND years=#{years} AND months=#{months}
-        ) bb ON aa.customerId=bb.customerId
+        ) bb ON base.id = bb.customerId
         LEFT JOIN
         (
             SELECT customerId,totleAmount consumeWeekTotleAmount
             FROM qyfinance.finance_WeekMonthAmount
             WHERE weekMonthTypeId=1 AND tableId=2 AND years=#{years} AND weeks=#{weeks}
-        ) cc ON aa.customerId=cc.customerId
+        ) cc ON base.id = cc.customerId
         LEFT JOIN
         (
             SELECT customerId,totleAmount consumeMonthTotleAmount
             FROM qyfinance.finance_WeekMonthAmount
             WHERE weekMonthTypeId=2 AND tableId=2 AND years=#{years} AND months=#{months}
-        ) dd ON aa.customerId=dd.customerId
+        ) dd ON base.id = dd.customerId
+        WHERE base.typeId = 1
+    </select>
+
+    <!--查询客户消费总额-->
+    <select id="queryCustomerTotleConsume" parameterType="map" resultMap="CustomerTotleConsume_Map">
+        SELECT
+        base.id customerId,
+        a.chargeTotleAmount,
+        b.consumeTotleAmount,
+        c.currMonthAmount,
+        d.currDayAmount
+        FROM qyfinance.bkvwCustomer base
+        LEFT JOIN
+        (
+            SELECT customerId,sum(amount) chargeTotleAmount
+            FROM qyfinance.finance_CustomerBalanceLog
+            WHERE reasonId in (1,2,3)
+            GROUP BY customerId
+        ) a ON base.id = a.customerId
+        LEFT JOIN
+        (
+            SELECT customerId,sum(amount) consumeTotleAmount
+            FROM qyfinance.finance_CustomerBalanceLog
+            WHERE reasonId in (-1,-2,-3)
+            <if test="beginDate != null and beginDate != ''">
+                <![CDATA[
+                    AND createTime >= #{beginDate}
+                ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                    AND createTime <= #{endDate}
+                ]]>
+            </if>
+            GROUP BY customerId
+        ) b ON base.id = b.customerId
+        LEFT JOIN
+        (
+            SELECT sum(amount) currMonthAmount,customerId
+            FROM qyfinance.finance_CustomerBalanceLog
+            WHERE reasonId in (-1,-2,-3)
+            AND createTime >= #{currMonthTime}
+            GROUP BY customerId
+        ) c ON base.id = c.customerId
+        LEFT JOIN
+        (
+            SELECT sum(amount) currDayAmount,customerId
+            FROM qyfinance.finance_CustomerBalanceLog
+            WHERE reasonId in (-1,-2,-3)
+            AND createTime >= #{currDayTime}
+            GROUP BY customerId
+        ) d ON base.id = d.customerId
+        WHERE base.typeId = 1
+    </select>
+
+    <!--查询客户邮箱，1、用于判断是否存在邮箱，2、发送账单是填写收件人-->
+    <select id="queryCustomerEmail" parameterType="map" resultType="org.qydata.entity.CustomerCompanyEmail">
+        SELECT id companyId,email
+        FROM qyfinance.excel_CustomerCompanyEmail
+        <where>
+            <if test="companyId != null and companyId != ''">
+                id = #{companyId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询客户账单，1、用于判断是否存在上月账单-->
+    <select id="queryCustomerAccountExcel" parameterType="map" resultType="org.qydata.entity.CustomerConsumeExcel">
+        SELECT year,month,customerId,excelCode,consuTime
+        FROM qyfinance.excel_CustomerConsumeExcel
+        WHERE year = #{years} AND month = #{months}
+    </select>
+
+    <!--根据customerId查询companyId-->
+    <select id="queryCompanyIdByCustomerId" parameterType="int" resultType="int">
+        SELECT companyId
+        FROM qyfinance.bkvwCustomer
+        WHERE id = #{param}
     </select>
 
     <!--查询客户的财务结束-->

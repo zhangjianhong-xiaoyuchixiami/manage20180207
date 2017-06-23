@@ -1,11 +1,13 @@
 package org.qydata.service.impl;
 
 import org.qydata.config.annotation.DataSourceService;
+import org.qydata.entity.ApiBan;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.Company;
 import org.qydata.mapper.ApiMapper;
 import org.qydata.service.ApiService;
+import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -129,5 +131,19 @@ public class ApiServiceImpl implements ApiService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<ApiBan> queryApiMonitor() {
+        Map<String,Object> mapParam = new HashMap<>();
+        mapParam.put("time", CalendarUtil.getCurrentLastHour());
+        List<ApiBan> apiBanList = apiMapper.queryApiMonitor(mapParam);
+        if (apiBanList != null){
+            for (int i = 0; i < apiBanList.size() ; i++) {
+                ApiBan apiBan = apiBanList.get(i);
+                apiBan.setFailRate(((double) apiBan.getFailCount()/(double)apiBan.getTotleCount())*100.0);
+            }
+        }
+        return apiBanList;
     }
 }

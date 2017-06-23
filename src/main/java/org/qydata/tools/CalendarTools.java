@@ -12,7 +12,6 @@ import java.util.Date;
 public class CalendarTools {
 
 
-
     /**
      * 计算某年某周的开始日期
      * @param yearNum 格式 yyyy  ，必须大于1900年度 小于9999年

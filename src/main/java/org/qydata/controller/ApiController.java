@@ -1,15 +1,13 @@
 package org.qydata.controller;
 
+import org.qydata.entity.ApiBan;
 import org.qydata.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by jonhn on 2017/2/28.
@@ -94,6 +92,18 @@ public class ApiController {
         model.addAttribute("apiTypeId",apiTypeId);
         model.addAttribute("companyId",companyId);
         return "api/companyapiproduct";
+    }
+
+    /**
+     * 查询api最近请求的失败次数
+     * @param model
+     * @return
+     */
+    @RequestMapping("/api-monitor")
+    public String queryApiMonitor(Model model){
+        List<ApiBan> apiBanList = apiService.queryApiMonitor();
+        model.addAttribute("apiBanList",apiBanList);
+        return "/api/apimonitor";
     }
 
 

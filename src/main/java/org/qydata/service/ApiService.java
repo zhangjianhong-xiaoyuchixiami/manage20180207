@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.entity.ApiBan;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.Company;
@@ -51,5 +52,11 @@ public interface ApiService {
      * @return
      */
     public List<Company> queryCompany();
+
+    /**
+     * 查询api最近请求的失败次数
+     * @return
+     */
+    public List<ApiBan> queryApiMonitor();
 
 }

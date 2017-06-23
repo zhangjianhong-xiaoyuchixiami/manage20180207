@@ -1,7 +1,5 @@
 package org.qydata.dst;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.qydata.entity.CompanyApi;
 
 import java.io.Serializable;
@@ -19,8 +17,8 @@ public class CustomerFinance implements Serializable {
     private Integer partnerId;
     private String partnerName;
     private Integer floor;
-    private Integer surplusFloor;
-    private Integer usableFloor;
+    private Integer surplusFloor;  //可用额度
+    private Integer usableFloor;   //剩余信用额度
     private Integer companyStatus;
     private Integer chargeWeekTotleAmount;
     private Integer chargeMonthTotleAmount;
@@ -30,6 +28,8 @@ public class CustomerFinance implements Serializable {
     private Integer consumeTotleAmount;
     private Integer currMonthAmount;
     private Integer currDayAmount;
+    private String email;
+    private String consuTime;  //上月excel账单
     private List<CompanyApi> companyApiList;
 
     public Integer getPartnerId() {
@@ -184,14 +184,20 @@ public class CustomerFinance implements Serializable {
         this.companyApiList = companyApiList;
     }
 
-    @Override
-    public String toString() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String getEmail() {
+        return email;
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getConsuTime() {
+        return consuTime;
+    }
+
+    public void setConsuTime(String consuTime) {
+        this.consuTime = consuTime;
+    }
+
 }

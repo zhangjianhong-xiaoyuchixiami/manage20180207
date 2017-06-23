@@ -74,6 +74,24 @@
         </association>
     </resultMap>
 
+    <resultMap id="ApiBan_Map" type="org.qydata.entity.ApiBan">
+        <result column="apiId" property="apiId"/>
+        <result column="totleCount" property="totleCount"/>
+        <result column="failCount" property="failCount"/>
+        <result column="fc" property="fc"/>
+        <result column="ts" property="ts"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="apiTypeName" property="apiTypeName"/>
+        <result column="vendorId" property="vendorId"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+        <collection property="mobileOperatorList" ofType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorId" property="id"/>
+            <result column="mobileOperatorName" property="name"/>
+        </collection>
+    </resultMap>
+
     <!--查询产品-->
     <select id="queryApi" parameterType="map" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
         SELECT aa.apiId,aa.apiName,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.cost,
@@ -159,6 +177,50 @@
         FROM qyfinance.bkvw_api_CustomerCompanyPartner
     </select>
 
+    <select id="queryApiMonitor" parameterType="map" resultMap="ApiBan_Map">
+        SELECT aaa.apiId,aaa.totleCount,aaa.failCount,
+        bbb.fc,bbb.ts,bbb.apiTypeId,bbb.apiTypeName,bbb.vendorId,bbb.vendorName,bbb.partnerId,bbb.partnerName,
+        bbb.mobileOperatorId,bbb.mobileOperatorName
+        FROM
+        (
+            SELECT
+            success.apiId,
+            ifnull(success.successCount,0) successCount,
+            ifnull(fail.failCount,0) failCount,
+            ifnull(success.successCount,0)+ifnull(fail.failCount,0) totleCount
+            FROM
+            (
+                SELECT a.apiId,ifnull(count(b.id),0) successCount
+                FROM
+                (
+                        SELECT aa.apiId
+                        FROM qydata.ApiBan aa
+                        LEFT JOIN qydata.Api bb ON aa.apiId = bb.id
+                        WHERE bb.status = 0
+                ) a
+                LEFT JOIN qyfinance.finance_ApiRequestLog b ON a.apiId = b.apiId
+                LEFT JOIN qyfinance.finance_ApiResponseLog c ON b.id = c.requestLogId
+                WHERE c.createTime >= #{time} AND c.ok = 1
+                GROUP BY a.apiId
+            ) success
+            LEFT JOIN
+            (
+                SELECT a.apiId,ifnull(count(b.id),0) failCount
+                FROM
+                (
+                        SELECT aa.apiId
+                        FROM qydata.ApiBan aa
+                        LEFT JOIN qydata.Api bb ON aa.apiId = bb.id
+                        WHERE bb.status = 0
+                ) a
+                LEFT JOIN qyfinance.finance_ApiRequestLog b ON a.apiId = b.apiId
+                LEFT JOIN qyfinance.finance_ApiResponseLog c ON b.id = c.requestLogId
+                WHERE c.createTime >= #{time} AND c.ok = 0
+                GROUP BY a.apiId
+            ) fail ON success.apiId = fail.apiId
+        ) aaa
+        INNER JOIN qyfinance.bkvwApiBan bbb ON aaa.apiId = bbb.apiId
+    </select>
 
 </mapper>
 

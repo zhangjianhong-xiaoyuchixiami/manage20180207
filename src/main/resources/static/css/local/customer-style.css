@@ -75,12 +75,13 @@
     -moz-box-shadow: none ;
     box-shadow: none ;
 }
-.red{
+.btn-icon.red{
     color: #b94a48;
 }
-.black{
+.btn-icon.black{
     color: #555555;
 }
+
 
 .btn-icon:hover,
 .btn-icon:focus,

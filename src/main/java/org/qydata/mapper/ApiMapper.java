@@ -1,10 +1,7 @@
 package org.qydata.mapper;
 
 import org.qydata.dst.CustomerApiPartner;
-import org.qydata.entity.Api;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
-import org.qydata.entity.Company;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -56,5 +53,11 @@ public interface ApiMapper {
      * @throws Exception
      */
     public List<Company> queryCompany()throws Exception;
+
+    /**
+     * 查询api最近请求的失败次数
+     * @return
+     */
+    public List<ApiBan> queryApiMonitor(Map<String,Object> map);
 
 }
