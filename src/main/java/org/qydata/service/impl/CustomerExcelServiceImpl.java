@@ -10,6 +10,9 @@ import org.qydata.tools.email.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.MimeUtility;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -60,14 +63,22 @@ public class CustomerExcelServiceImpl implements CustomerExcelService {
                     }
                 }
                 String title = companyName+"对账单";
-                String content = "您好，附件是贵公司"+CalendarUtil.getCurrentDateLastMonthYear()+"年"+CalendarUtil.getCurrentDateLastMonthMonth()+"月"+"数据调用情况，请您核对。如有问题，请返回贵司统计结果，若对我司统计结果无异议，请邮件回复确认，谢谢！";
-                String url = "http://localhost/download-consume-check?customerId="+customerId[i]+
+                String content = "您好，附件是贵司"+CalendarUtil.getCurrentDateLastMonthYear()+"年"+CalendarUtil.getCurrentDateLastMonthMonth()+"月"+"数据调用情况，请您核对。如有问题，请返回贵司统计结果，若对我司统计结果无异议，请邮件回复确认，谢谢！";
+                String url = "http://192.168.111.148:7779/download-consume-check?customerId="+customerId[i]+
                         "&year="+ CalendarUtil.getCurrentDateLastMonthYear() +
                         "&month="+CalendarUtil.getCurrentDateLastMonthMonth() +
-                        "&companyName="+companyName;
-                String name = CalendarUtil.getCurrentDateLastMonthYear()+"-"+CalendarUtil.getCurrentDateLastMonthMonth()+companyName+".xls";
+                        "&companyName="+ URLEncoder.encode(companyName);
+                //String name = CalendarUtil.getCurrentDateLastMonthYear()+"-"+CalendarUtil.getCurrentDateLastMonthMonth()+companyName+".xls";
+                String name = "xxxx.xls";
+                String  fileName = null; // 解决中文附件乱码
                 try {
-                    SendEmail.sendMail(to,title,content,url,name);
+                    fileName = MimeUtility.encodeText(name);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    SendEmail.sendMail(to,title,content,url,fileName);
                 } catch (Exception e) {
                     sb.append(companyName+"，");
                     mapResu.put("fail",sb+"邮件发送失败其余发送正常");

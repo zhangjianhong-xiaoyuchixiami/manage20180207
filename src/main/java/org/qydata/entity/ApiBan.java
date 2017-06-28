@@ -12,7 +12,7 @@ public class ApiBan implements Serializable {
     private Integer apiId;
     private Integer totleCount;
     private Integer failCount;
-    private Double failRate;
+    private Long failRate;
     private Integer fc;
     private Timestamp ts;
     private Integer apiTypeId;
@@ -48,11 +48,11 @@ public class ApiBan implements Serializable {
         this.failCount = failCount;
     }
 
-    public Double getFailRate() {
+    public Long getFailRate() {
         return failRate;
     }
 
-    public void setFailRate(Double failRate) {
+    public void setFailRate(Long failRate) {
         this.failRate = failRate;
     }
 

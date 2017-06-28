@@ -25,31 +25,9 @@
 
                 <#--搜索框-->
 
-                    <form action="/finance/find-all-customer" class="form-bottom find_all_customer" method="get">
+                    <form action="/cache/find-all-customer" class="form-bottom find_all_customer" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
-
-                            <div class="pull-left head-search-bottom">
-
-                                <label class="control-label">公司状态</label>
-
-                                <div class="controls">
-
-                                    <label class="checkbox">
-
-                                        <input type="checkbox" <#if statusArray??><#list statusArray as status><#if status=="0">checked="checked"</#if></#list></#if> id="status" name="status" value="0">状态正常
-
-                                    </label>
-
-                                    <label class="checkbox">
-
-                                        <input type="checkbox" <#if statusArray??><#list statusArray as status><#if status=="-1">checked="checked"</#if></#list></#if> id="status" name="status" value="-1">被禁用
-
-                                    </label>
-
-                                </div>
-
-                            </div>
 
                             <div class="pull-left head-search-bottom">
 
@@ -59,7 +37,7 @@
 
                                     <div class="input-append">
 
-                                        <input class="m-wrap" <#if content??>value="${content}" </#if> type="text" id="companyName" name="content" placeholder="请输入公司名称">
+                                        <input class="m-wrap" <#if companyName??>value="${companyName}" </#if> type="text" id="companyName" name="companyName" placeholder="请输入公司名称">
 
                                     </div>
 
@@ -130,7 +108,7 @@
                                     <tr>
                                         <th>公司名称</th>
                                         <th>合作公司</th>
-                                        <th>调用总数（${beginDate!'开通后'}--${endDate!'至今'})</th>
+                                        <th>调用缓存总数（${beginDate!'开通后'}--${endDate!'至今'})</th>
                                         <th>${currYear!''}年${currMonth!''}月调用缓存次数</th>
                                         <th>${currYear!''}年${currMonth!''}月${currDay!''}日调用缓存次数</th>
                                         <th class="table-td-none">产品类型</th>
@@ -138,15 +116,34 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td data-title="公司名称">北京千眼数合科技有限公司</td>
-                                        <td data-title="合作公司">无</td>
-                                        <td data-title="调用总数">2000</td>
-                                        <td data-title="本月调用次数">1000</td>
-                                        <td data-title="当天调用次数"><a>100</a></td>
-                                        <td data-title="产品类型" class="table-td-none">手机三要素--移动</td>
-                                        <td data-title="调用缓存次数" class="table-td-none">100</td>
-                                    </tr>
+                                    <#if customerCacheConsumeList??>
+                                        <#list customerCacheConsumeList as customerCacheConsume>
+                                        <tr>
+                                            <td data-title="公司名称">${customerCacheConsume.companyName}</td>
+                                            <td data-title="合作公司"><#if customerCacheConsume.partnerId??><a href="/cache/find-all-customer?partnerId=${customerCacheConsume.partnerId}">${customerCacheConsume.partnerName}</a><#else >无</#if></td>
+                                            <td data-title="调用缓存总数"><#if customerCacheConsume.cacheCount??>${customerCacheConsume.cacheCount?c}<#else >0</#if></td>
+                                            <td data-title="本月调用缓存次数"><#if customerCacheConsume.currMonthCacheCount??>${customerCacheConsume.currMonthCacheCount?c}<#else >0</#if></td>
+                                            <td data-title="当天调用缓存次数"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayCacheApiTypeConsume(${customerCacheConsume.customerId})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天缓存调用情况"><#if customerCacheConsume.currDayCacheCount??>${customerCacheConsume.currDayCacheCount?c}<#else >0</#if></a></td>
+                                            <td data-title="产品类型" class="table-td-none">
+                                                <#if customerCacheConsume.customerCacheApiTypeConsumeList ??>
+                                                    <#list customerCacheConsume.customerCacheApiTypeConsumeList as customerCacheApiTypeConsume>
+                                                        <span>${customerCacheApiTypeConsume.apiTypeName_stidName!''}</span>
+                                                        </br>
+                                                    </#list>
+                                                </#if>
+                                            </td>
+                                            <td data-title="调用缓存次数" class="table-td-none">
+                                                <#if customerCacheConsume.customerCacheApiTypeConsumeList ??>
+                                                    <#list customerCacheConsume.customerCacheApiTypeConsumeList as customerCacheApiTypeConsume>
+                                                        <span><#if customerCacheApiTypeConsume.cacheCount??>${customerCacheApiTypeConsume.cacheCount?c}<#else >0</#if></span>
+                                                        </br>
+                                                    </#list>
+                                                </#if>
+                                            </td>
+                                        </tr>
+                                        </#list>
+                                    </#if>
+
                                     </tbody>
 
                                 </table>
@@ -157,7 +154,7 @@
                             <div id="form_modal_customer_curr_day_api_type_consume" class="modal hide fade myModalCurrDayApiTypeConsume" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_customer_curr_day_api_type_consume" aria-hidden="true">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                    <h4 id="myModalLabel_customer_curr_day_api_type_consume"><span id="customer_company_name"></span>当天各产品类型消费情况</h4>
+                                    <h4 id="myModalLabel_customer_curr_day_api_type_consume"><span id="customer_company_name"></span>当天各产品调用缓存情况</h4>
                                 </div>
 
                                 <div class="modal-body">
@@ -166,10 +163,7 @@
                                         <thead>
                                         <tr>
                                             <th>产品类型</th>
-                                            <th>当前价格</th>
-                                            <th>总消费额（单位：元）</th>
-                                            <th>请求次数</th>
-                                            <th>成功次数</th>
+                                            <th>调用缓存次数</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -211,6 +205,8 @@
     <script src="/js/myjs/customer-cache-finance-account.js"></script>
 
     <script src="/js/myjs/customer-cache-left-bar.js"></script>
+
+    <script src="/js/oldlocal/customer-finance-curr-day-cache-api-type-consume.js"></script>
 
     <script>
         jQuery(document).ready(function () {

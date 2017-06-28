@@ -177,6 +177,7 @@
         FROM qyfinance.bkvw_api_CustomerCompanyPartner
     </select>
 
+    <!--产品监控-->
     <select id="queryApiMonitor" parameterType="map" resultMap="ApiBan_Map">
         SELECT aaa.apiId,aaa.totleCount,aaa.failCount,
         bbb.fc,bbb.ts,bbb.apiTypeId,bbb.apiTypeName,bbb.vendorId,bbb.vendorName,bbb.partnerId,bbb.partnerName,

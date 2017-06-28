@@ -11,13 +11,6 @@ import java.net.URL;
 public class SendEmail {
 
 
-    public static void main(String[] args) {
-        String [] to = new String[]{"zhangjianhong@qianyandata.com","sdsa"} ;
-
-        System.out.println(to[0]);System.out.println(to[1]);
-
-    }
-
     /**
      * 发送邮件
      * @param to 收件人邮箱地址
@@ -31,12 +24,12 @@ public class SendEmail {
         EmailAttachment attachment = new EmailAttachment();
         attachment.setURL(new URL(url));
         attachment.setDisposition(EmailAttachment.ATTACHMENT);
-        attachment.setDescription("对账单");
+        attachment.setDescription("这是一个对账单");
         attachment.setName(emailName);//自定义文件名，并且格式要一致，不然邮件收到的话，有可能读不出来
 
 
         try {
-            MultiPartEmail email = new MultiPartEmail    ();
+            MultiPartEmail email = new MultiPartEmail();
             email.setTLS(true);
             //发送主机服务器
             email.setHostName("smtp.mxhichina.com");

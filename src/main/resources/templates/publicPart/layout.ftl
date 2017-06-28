@@ -53,9 +53,9 @@
     <#--弹框样式控制-->
     <link rel="stylesheet" type="text/css" href="/css/sweetlert/sweet-alert2.css" />
     <#--文件上传样式控制-->
-    <link rel="stylesheet" type="text/css" href="/css/upload/jquery-ui-1.8.14.custom.css" />
+   <#-- <link rel="stylesheet" type="text/css" href="/css/upload/jquery-ui-1.8.14.custom.css" />
     <link rel="stylesheet" type="text/css" href="/css/upload/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/css/upload/fileUploader.css" />
+    <link rel="stylesheet" type="text/css" href="/css/upload/fileUploader.css" />-->
 
     <style>
         a:hover {text-decoration: none;}
@@ -187,7 +187,7 @@
 
                             <@shiro.hasPermission name="customer:findAllCustomer">
                                 <li id="customerListCache">
-                                    <a href="/finance/find-all-customer/cache">
+                                    <a href="/cache/find-all-customer">
                                         客户调用缓存情况
                                     </a>
                                 </li>
@@ -225,11 +225,11 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <li id="">
+                          <#--  <li id="">
                                 <a href="/file-upload">
                                     上传文件
                                 </a>
-                            </li>
+                            </li>-->
 
                         <#-- <@shiro.hasPermission name="customer:findAllCustomer">
                              <li id="partnersFinancialAccount">

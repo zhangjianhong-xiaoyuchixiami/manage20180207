@@ -246,16 +246,6 @@ public class FinanceController {
     }
 
 
-    @RequestMapping("/find-all-customer/cache")
-    public String queryCustomerCacheConsume(Model model){
-
-        model.addAttribute("currYear",CalendarTools.getYearMonthCount(0));
-        model.addAttribute("currMonth",CalendarTools.getMonthCount(0));
-        model.addAttribute("currDay",CalendarTools.getYearMonthDayCount(0));
-        return "/finance/customerCacheFinancialAccount";
-    }
-
-
     /**
      * 指定账号充值记录
      * @param customerId

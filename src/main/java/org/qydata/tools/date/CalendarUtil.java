@@ -1,7 +1,9 @@
 package org.qydata.tools.date;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by jonhn on 2017/3/8.
@@ -40,6 +42,39 @@ public class CalendarUtil {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         return month;
+    }
+
+    /**
+     *获取输入日期的后一天
+     * @param str
+     * @return
+     * @throws ParseException
+     */
+    public static String getAfterDayByInputTime(String str) {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        Date date = null;
+        try {
+            date = sdfInput.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE,1);
+       return sdf.format(calendar.getTime());
+    }
+
+    /**
+     *获取当前日期的后一天
+     * @return
+     * @throws ParseException
+     */
+    public static String getCurrTimeAfterDay() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE,1);
+        return sdf.format(calendar.getTime());
     }
 
 

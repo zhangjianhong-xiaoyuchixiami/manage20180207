@@ -317,6 +317,10 @@ public class ShiroConfig {
 		//远程下载Excel，不能配置
 		//chains.put("/download-consume-check", "authc");
 
+		//客户调用缓存账单
+		chains.put("/cache/find-all-customer", "authc,perms");
+		chains.put("/cache/find-all-customer/curr-day-api-type-consume", "authc");
+		chains.put("/cache/find-all-customer/company-name", "authc");
 
 		//级联
 		chains.put("/finance/find-api-vendor-by-api-type-id", "authc");

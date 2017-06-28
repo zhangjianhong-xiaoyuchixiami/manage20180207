@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.CustomerCacheFinanceMapper">
+
+    <resultMap id="CustomerCacheConsume_Map" type="org.qydata.dst.CustomerCacheConsume">
+        <result column="customerId" property="customerId"/>
+        <result column="companyId" property="companyId"/>
+        <result column="companyName" property="companyName"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+    </resultMap>
+
+    <resultMap id="queryCustomerCacheConsumeByDate_Map" type="org.qydata.dst.CustomerCacheConsume">
+        <result column="customerId" property="customerId"/>
+        <result column="costCount" property="costCount"/>
+        <result column="costUpCount" property="costUpCount"/>
+    </resultMap>
+
+    <resultMap id="CustomerCacheApiTypeConsume_Map" type="org.qydata.dst.CustomerCacheConsume">
+        <result column="customerId" property="customerId"/>
+        <collection property="customerCacheApiTypeConsumeList" ofType="org.qydata.dst.CustomerCacheApiTypeConsume">
+            <result column="apiTypeId" property="apiTypeId"/>
+            <result column="stid" property="stid"/>
+            <result column="costCount" property="costCount"/>
+            <result column="costUpCount" property="costUpCount"/>
+            <result column="cacheCount" property="cacheCount"/>
+            <result column="apiTypeName" property="apiTypeName"/>
+            <result column="stidName" property="stidName"/>
+            <result column="apiTypeName_stidName" property="apiTypeName_stidName"/>
+        </collection>
+    </resultMap>
+
+    <!--查找客户缓存使用情况-->
+    <select id="queryCustomerCacheConsume" parameterType="map" resultMap="CustomerCacheConsume_Map">
+        SELECT aa.id customerId,aa.companyId,aa.companyName,bb.id partnerId,bb.name partnerName
+        FROM qyfinance.bkvwCustomer aa
+        LEFT JOIN qyfinance.bkvwPartner bb ON aa.partnerId = bb.id
+        WHERE aa.typeId = 1 AND aa.companyId IS NOT NULL
+        <if test="companyName != null and companyName != ''" >
+            AND aa.companyName LIKE '%${companyName}%'
+        </if>
+        <if test="partnerId != null and partnerId != ''" >
+            AND aa.partnerId = #{partnerId}
+        </if>
+    </select>
+
+    <!--统计客户缓存调用总数（开通后至昨天）-->
+    <select id="queryCustomerTotleCacheConsume" parameterType="map" resultMap="queryCustomerCacheConsumeByDate_Map">
+        SELECT a.customerId,sum(a.costCount) costCount,sum(a.costUpCount) costUpCount
+        FROM qyfinance.CompanyApiTypeConsumeDayCountCache a
+        <where>
+            <if test="beginDate != null and beginDate != ''" >
+                a.consuTime >= #{beginDate}
+            </if>
+            <if test="endDate != null and endDate != ''" >
+                <![CDATA[
+                  AND a.consuTime < #{endDate}
+                ]]>
+            </if>
+        </where>
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询客户各产品类型缓存调用情况（开通后至昨天）-->
+    <select id="queryCustomerApiTypeCacheConsume" parameterType="map" resultMap="CustomerCacheApiTypeConsume_Map">
+        SELECT aa.customerId,aa.apiTypeId,aa.stid,aa.costCount,aa.costUpCount,(aa.costCount-aa.costUpCount) cacheCount,
+        bb.name apiTypeName,cc.name stidName,CONCAT_WS('--',bb.name,cc.name) apiTypeName_stidName
+        FROM
+        (
+        SELECT a.customerId,a.apiTypeId,a.stid,sum(a.costCount) costCount,sum(a.costUpCount) costUpCount
+        FROM qyfinance.CompanyApiTypeConsumeDayCountCache a
+        <where>
+            <if test="beginDate != null and beginDate != ''" >
+                a.consuTime >= #{beginDate}
+            </if>
+            <if test="endDate != null and endDate != ''" >
+                <![CDATA[
+                  AND a.consuTime < #{endDate}
+                ]]>
+            </if>
+        </where>
+        GROUP BY a.customerId,a.apiTypeId,a.stid
+        ) aa
+        LEFT JOIN qyfinance.bkvwApiType bb ON aa.apiTypeId = bb.id
+        LEFT JOIN qyfinance.bkvwMobileOperator cc ON aa.stid = cc.id
+        WHERE (aa.costCount-aa.costUpCount) > 0
+    </select>
+
+    <!--查询客户各产品类型缓存调用情况（今天）-->
+    <select id="queryCustomerApiTypeCacheConsumeCurrDay" parameterType="map" resultMap="CustomerCacheApiTypeConsume_Map">
+        SELECT aa.customerId,aa.apiTypeId,aa.stid,aa.costCount,aa.costUpCount,(aa.costCount-aa.costUpCount) cacheCount,
+        bb.name apiTypeName,cc.name stidName,CONCAT_WS('--',bb.name,cc.name) apiTypeName_stidName
+        FROM
+        (
+            SELECT a.customerId,a.apiTypeId,a.stid,
+            count(b.id) costCount,
+            count(c.id) costUpCount
+            FROM qyfinance.finance_CustomerRequestLog a
+            INNER JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+            LEFT JOIN qyfinance.finance_ApiRequestLog c ON a.id = c.customerReqLogId
+            WHERE a.createTime >= #{endDate}
+            GROUP BY a.customerId,a.apiTypeId,a.stid
+        ) aa
+        LEFT JOIN qyfinance.bkvwApiType bb ON aa.apiTypeId = bb.id
+        LEFT JOIN qyfinance.bkvwMobileOperator cc ON aa.stid = cc.id
+    </select>
+
+    <!--查询客户当月缓存调用情况-->
+    <select id="queryCustomerCacheConsumeByCurrMonth" parameterType="map" resultMap="queryCustomerCacheConsumeByDate_Map">
+       SELECT a.customerId,sum(a.costCount) costCount,sum(a.costUpCount) costUpCount
+       FROM qyfinance.CompanyApiTypeConsumeDayCountCache a
+       WHERE a.consuTime >= #{time}
+       GROUP BY a.customerId
+    </select>
+
+    <!--查询客户当天缓存调用情况-->
+    <select id="queryCustomerCacheConsumeByCurrDay" parameterType="map" resultMap="queryCustomerCacheConsumeByDate_Map">
+        SELECT a.customerId,count(b.id) costCount,count(c.id) costUpCount
+        FROM qyfinance.finance_CustomerRequestLog a
+        INNER JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+        LEFT JOIN qyfinance.finance_ApiRequestLog c ON a.id = c.customerReqLogId
+        WHERE a.createTime >= #{time}
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询客户各产品类型缓存调用情况（今天，点击显示列表）-->
+    <select id="queryCustomerCurrDayApiTypeCacheConsume" parameterType="map" resultType="org.qydata.dst.CustomerCacheApiTypeConsume">
+        SELECT aa.apiTypeId,aa.stid,aa.costCount,aa.costUpCount,(aa.costCount-aa.costUpCount) cacheCount,
+        bb.name apiTypeName,cc.name stidName,CONCAT_WS('--',bb.name,cc.name) apiTypeName_stidName
+        FROM
+        (
+            SELECT a.apiTypeId,a.stid,
+            count(b.id) costCount,
+            count(c.id) costUpCount
+            FROM qyfinance.finance_CustomerRequestLog a
+            INNER JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+            LEFT JOIN qyfinance.finance_ApiRequestLog c ON a.id = c.customerReqLogId
+            WHERE a.createTime >= #{time}
+            AND a.customerId = #{customerId}
+            GROUP BY a.apiTypeId,a.stid
+        ) aa
+        LEFT JOIN qyfinance.bkvwApiType bb ON aa.apiTypeId = bb.id
+        LEFT JOIN qyfinance.bkvwMobileOperator cc ON aa.stid = cc.id
+        WHERE (aa.costCount-aa.costUpCount) > 0
+    </select>
+
+
+</mapper>
+

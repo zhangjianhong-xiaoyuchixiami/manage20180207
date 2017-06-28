@@ -141,7 +141,7 @@ public class ApiServiceImpl implements ApiService {
         if (apiBanList != null){
             for (int i = 0; i < apiBanList.size() ; i++) {
                 ApiBan apiBan = apiBanList.get(i);
-                apiBan.setFailRate(((double) apiBan.getFailCount()/(double)apiBan.getTotleCount())*100.0);
+                apiBan.setFailRate(Math.round(((double) apiBan.getFailCount()/(double)apiBan.getTotleCount())*100));
             }
         }
         return apiBanList;

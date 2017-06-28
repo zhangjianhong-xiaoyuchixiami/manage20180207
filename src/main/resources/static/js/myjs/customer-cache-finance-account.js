@@ -15,9 +15,32 @@ var CustomerCacheFinanceAccount = function () {
                 beginDate = '开通后'
             }
             if ($('#endDate').val() != null && $('#endDate').val() != ''){
-                endDate = $('#endDate').val();
+               var endDateText = $('#endDate').val();
+               var currDate = getNowFormatDate();
+               console.log(currDate)
+                if (endDateText == currDate){
+                    endDate =  '昨天'
+                }else {
+                    endDate = endDateText
+                }
             }else {
-                endDate = '至今'
+                endDate = '昨天'
+            }
+
+            //取得当前日期
+            function getNowFormatDate() {
+                var date = new Date();
+                var seperator1 = "/";
+                var month = date.getMonth() + 1;
+                var strDate = date.getDate();
+                if (month >= 1 && month <= 9) {
+                    month = "0" + month;
+                }
+                if (strDate >= 0 && strDate <= 9) {
+                    strDate = "0" + strDate;
+                }
+                var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+                return currentdate;
             }
 
             function fnFormatDetails ( oTable, nTr ,beginDate,endDate)
@@ -76,6 +99,13 @@ var CustomerCacheFinanceAccount = function () {
                     null,  //5
                     { "bVisible": false },  //6
                     { "bVisible": false }  //7
+                ],
+                "aoColumnDefs": [
+                    {
+                        //当天缓存调用数
+                        "aTargets": [ 5 ],
+                        "sType": "html-percent"
+                    }
                 ],
                 "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [
