@@ -384,6 +384,8 @@ public class ShiroConfig {
 		chains.put("/api/api-message", "authc,perms");
 		chains.put("/api/api-message-by-company", "authc,perms");
 		chains.put("/api/api-monitor", "authc,perms");
+		chains.put("/api/ban", "authc");
+		chains.put("/api/unban", "authc");
 
 
 		//客户请求日志

@@ -45,7 +45,6 @@
         </collection>
     </resultMap>
 
-
     <resultMap id="ApiType_Map" type="org.qydata.entity.ApiType">
         <result column="id" property="id"/>
         <result column="name" property="name"/>
@@ -221,6 +220,13 @@
             ) fail ON success.apiId = fail.apiId
         ) aaa
         INNER JOIN qyfinance.bkvwApiBan bbb ON aaa.apiId = bbb.apiId
+    </select>
+
+    <!--查询产品类型名称、子类型名称、供应商名称-->
+    <select id="queryApiTypeNameStidNameVendorNameByApiId" parameterType="int" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
+        SELECT a.apiId,a.apiTypeName,a.vendorName,a.mobileOperatorName
+        FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+        WHERE a.apiId = #{param}
     </select>
 
 </mapper>

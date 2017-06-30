@@ -41,20 +41,20 @@ function findCompanyApi(companyId) {
                     if (data[i].enabled != 0) {
                         if (data[i].mobileOperator == null) {
                             myContent = "<tr>" +
-                                "<td style='width: 40%'>" + data[i].apiType.name + "</td>" +
-                                "<td style='width: 25%'>" + (data[i].price / 100.0) + "</td>" +
-                                "<td style='width: 15%'>正在使用</td>" +
-                                "<td style='width: 20%'>" +
+                                "<td>" + data[i].apiType.name + "</td>" +
+                                "<td>" + (data[i].price / 100.0) + "</td>" +
+                                "<td>正在使用</td>" +
+                                "<td>" +
                                 "<a class='edit' href='javaScript:;'>修改价格</a>" + "&nbsp;|&nbsp;" +
                                 "<a class='warning' href='javaScript:;' onclick='banCompanyApi(" + data[i].id + ',' + companyId + ")'>禁用</a>" +
                                 "</td>" +
                                 "</tr>"
                         } else {
                             myContent = "<tr>" +
-                                "<td style='width: 40%'>" + data[i].apiType.name + "--" + data[i].mobileOperator.name + "</td>" +
-                                "<td style='width: 25%'>" + (data[i].price / 100.0) + "</td>" +
-                                "<td style='width: 15%'>正在使用</td>" +
-                                "<td style='width: 20%'>" +
+                                "<td>" + data[i].apiType.name + "--" + data[i].mobileOperator.name + "</td>" +
+                                "<td>" + (data[i].price / 100.0) + "</td>" +
+                                "<td>正在使用</td>" +
+                                "<td>" +
                                 "<a class='edit' href='javaScript:;'>修改价格</a>" + "&nbsp;|&nbsp;" +
                                 "<a class='warning' href='javaScript:;' onclick='banCompanyApi(" + data[i].id + ',' + companyId + ")'>禁用</a>" +
                                 "</td>" +
@@ -101,103 +101,98 @@ function findCompanyApi(companyId) {
 
 var nEditing = null;
 
-jQuery(document).ready(function () {
+/*新增*/
+$('#simple_company_api_1_new').on('click',function (e) {
 
-    /*新增*/
-    $('#simple_company_api_1_new').on('click',function (e) {
+    var apiType_companyId = $('#apiType_companyId').html();
 
-        var apiType_companyId = $('#apiType_companyId').html();
-
-        $.ajax({
-            type: "post",
-            url: "/company/query-not-have-api",
-            data: {"companyId": apiType_companyId},
-            dataType: "json",
-            success: function (data) {
-                if (data == null){
-                    swal({
-                        title: "操作提示",
-                        text: "该客户已具有全部产品权限！",
-                        type: "info",
-                        confirmButtonText: "确定"
-                    });
-                    return;
-                }
-                if (data != null && data.length <= 0){
-                    swal({
-                        title: "操作提示",
-                        text: "该客户已具有全部产品权限！",
-                        type: "info",
-                        confirmButtonText: "确定"
-                    });
-                    return;
-                }
-                if ($("#apiType_price").length > 0){
-
-                   var demo = $("#apiType_price").length;
-
-                    console.log(demo)
-
-                    swal({
-                        title: "操作提示",
-                        text: "请先完成当前操作！",
-                        type: "info",
-                        confirmButtonText: "确定"
-                    });
-                    return;
-                }else {
-                    e.preventDefault();
-                    var aiNew = oTableEdit.fnAddData(['', '', '', '']);
-                    var nRow = oTableEdit.fnGetNodes(aiNew[0]);
-                    editRow(oTableEdit, nRow);
-                    nEditing = nRow;
-                }
+    $.ajax({
+        type: "post",
+        url: "/company/query-not-have-api",
+        data: {"companyId": apiType_companyId},
+        dataType: "json",
+        success: function (data) {
+            if (data == null){
+                swal({
+                    title: "操作提示",
+                    text: "该客户已具有全部产品权限！",
+                    type: "info",
+                    confirmButtonText: "确定"
+                });
+                return;
             }
-        });
+            if (data != null && data.length <= 0){
+                swal({
+                    title: "操作提示",
+                    text: "该客户已具有全部产品权限！",
+                    type: "info",
+                    confirmButtonText: "确定"
+                });
+                return;
+            }
+            if ($("#apiType_price").length > 0){
 
+                var demo = $("#apiType_price").length;
+
+                console.log(demo)
+
+                swal({
+                    title: "操作提示",
+                    text: "请先完成当前操作！",
+                    type: "info",
+                    confirmButtonText: "确定"
+                });
+                return;
+            }else {
+                e.preventDefault();
+                var aiNew = oTableEdit.fnAddData(['', '', '', '']);
+                var nRow = oTableEdit.fnGetNodes(aiNew[0]);
+                editRow(oTableEdit, nRow);
+                nEditing = nRow;
+            }
+        }
     });
 
-    /*编辑*/
-    function editRow(oTableEdit, nRow) {
-
-        var jqTds = $('>td', nRow);
-        var apiType_companyId = $('#apiType_companyId').html();
-
-        $.ajax({
-            type: "post",
-            url: "/company/query-not-have-api",
-            data: {"companyId": apiType_companyId},
-            dataType: "json",
-            success: function (data) {
-                jqTds[0].innerHTML = '<select class="" tabindex="1" id="apiTypeId_subTypeId" name="apiTypeId_subTypeId">' +
-                    '<option value="">请选择...</option></select>';
-                jqTds[1].innerHTML = '<input type="text" class="span9 m-wrap" id="apiType_price" name="apiType_price" placeholder="单位：元">';
-                jqTds[2].innerHTML = '';
-                jqTds[3].innerHTML = '<a class="save" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancel" href="javaScript:;">取消</a>';
-
-                if (data != null){
-                    var myContent = null;
-                    for (var i = 0; i < data.length; i++){
-                        if (data[i].mobileOperatorName == null){
-                            myContent="<option value='"+ data[i].apiTypeId +"'>"+ data[i].apiTypeName +"</option>";
-                        }else{
-                            myContent="<option value='"+data[i].apiTypeId+','+data[i].mobileOperatorId+"'>"+ data[i].apiTypeName+'--'+data[i].mobileOperatorName +"</option>";
-                        }
-                        $('#apiTypeId_subTypeId').append(myContent);
-                    }
-                }
-            }
-        });
-
-      /*  $.getScript("/assect/chosen.jquery.min.js",function () {
-            $('.chosen').chosen()
-        })*/
-
-    }
 });
 
+/*编辑*/
+function editRow(oTableEdit, nRow) {
 
+    var jqTds = $('>td', nRow);
+    var apiType_companyId = $('#apiType_companyId').html();
 
+    $.ajax({
+        type: "post",
+        url: "/company/query-not-have-api",
+        data: {"companyId": apiType_companyId},
+        dataType: "json",
+        success: function (data) {
+
+            jqTds[0].innerHTML = '<select class="" tabindex="1" id="apiTypeId_subTypeId" name="apiTypeId_subTypeId">' +
+                '<option value="">请选择...</option></select>';
+            jqTds[1].innerHTML = '<input type="text" class="span9 m-wrap" id="apiType_price" name="apiType_price" placeholder="单位：元">';
+            jqTds[2].innerHTML = '';
+            jqTds[3].innerHTML = '<a class="save" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancel" href="javaScript:;">取消</a>';
+
+            if (data != null){
+                var myContent = null;
+                for (var i = 0; i < data.length; i++){
+                    if (data[i].mobileOperatorName == null){
+                        myContent="<option value='"+ data[i].apiTypeId +"'>"+ data[i].apiTypeName +"</option>";
+                    }else{
+                        myContent="<option value='"+data[i].apiTypeId+','+data[i].mobileOperatorId+"'>"+ data[i].apiTypeName+'--'+data[i].mobileOperatorName +"</option>";
+                    }
+                    $('#apiTypeId_subTypeId').append(myContent);
+                }
+            }
+        }
+    });
+
+    /*  $.getScript("/assect/chosen.jquery.min.js",function () {
+     $('.chosen').chosen()
+     })*/
+
+}
 
 /*重置表格*/
 function restoreRow(oTableEdit, nRow) {

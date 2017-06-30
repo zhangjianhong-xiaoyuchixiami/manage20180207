@@ -7,10 +7,10 @@ import org.qydata.entity.*;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -29,7 +29,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         Map<String,Object> mapOverAllParam = new HashMap<>();
         Map<String,Object> mapApiTypeParam = new HashMap<>();
         Map<String,Object> mapWeekMonthParam = new HashMap<>();
-        Map<String,Object> mapTotleConsumeParam = new HashMap<>();
+        Map<String,Object> mapTotleParam = new HashMap<>();
         Map<String,Object> mapEmailParam = new HashMap<>();
         Map<String,Object> mapExcelParam = new HashMap<>();
         Set<Map.Entry<String,Object>> set = map.entrySet();
@@ -44,21 +44,21 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }
             if("beginDate".equals(me.getKey())){
                 mapApiTypeParam.put("beginDate",me.getValue());
-                mapTotleConsumeParam.put("beginDate",me.getValue());
+                mapTotleParam.put("beginDate",me.getValue());
             }
             if("endDate".equals(me.getKey())){
                 mapApiTypeParam.put("endDate",me.getValue());
-                mapTotleConsumeParam.put("endDate",me.getValue());
+                mapTotleParam.put("endDate",me.getValue());
             }
             if("statusList".equals(me.getKey())){
                 mapOverAllParam.put("statusList",me.getValue());
             }
             if("currDayTime".equals(me.getKey())){
                 mapApiTypeParam.put("currDayTime",me.getValue());
-                mapTotleConsumeParam.put("currDayTime",me.getValue());
+                mapTotleParam.put("currDayTime",me.getValue());
             }
             if("currMonthTime".equals(me.getKey())){
-                mapTotleConsumeParam.put("currMonthTime",me.getValue());
+                mapTotleParam.put("currMonthTime",me.getValue());
             }
             if("deptIdList".equals(me.getKey())){
                 mapOverAllParam.put("deptIdList",me.getValue());
@@ -71,14 +71,26 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapExcelParam.put("years",CalendarTools.getYearMonthCount(1));
         mapExcelParam.put("months",CalendarTools.getMonthCount(1));
 
+        //财务账单客户列表
         List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomerOverAllFinance(mapOverAllParam);
+        //各类型
         List<CustomerFinance> customerFinanceApiTypeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(mapApiTypeParam);
+        //周月消费
         List<CustomerWeekMonthConsume> customerWeekMonthConsumeList = customerFinanceMapper.queryCustomerWeekMonthConsume(mapWeekMonthParam);
-        List<CustomerTotleConsume> customerTotleConsumeList = customerFinanceMapper.queryCustomerTotleConsume(mapTotleConsumeParam);
+        //客户充值
+        List<CustomerFinance> customerFinanceChargeList = customerFinanceMapper.queryCustomerChargeTotle(mapTotleParam);
+        //客户消费（至昨天）
+        List<CustomerFinance> customerFinanceConsumeList = customerFinanceMapper.queryCustomerConsumeTotle(mapTotleParam);
+        //客户本月消费（至昨天）
+        List<CustomerFinance> customerFinanceCurrMonthList = customerFinanceMapper.queryCustomerCurrMonthTotle(mapTotleParam);
+        //客户当天消费
+        List<CustomerFinance> customerFinanceCurrDayList = customerFinanceMapper.queryCustomerCurrDayTotle(mapTotleParam);
+        //查询客户邮箱
         List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapEmailParam);
+        //查询客户上月账单
         List<CustomerConsumeExcel> customerConsumeExcelList = customerFinanceMapper.queryCustomerAccountExcel(mapExcelParam);
 
-        if (map.get("endDate") == null || new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
+        if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate"))) {
             if (customerFinanceApiTypeConsumeList != null){
                 for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
                     CustomerFinance customerFinanceApiTypeConsume = customerFinanceApiTypeConsumeList.get(i);
@@ -136,18 +148,81 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     }
                 }
 
-                /*封装消费总额和当月当天消费*/
-                if (customerTotleConsumeList != null){
-                    for (int i = 0; i < customerTotleConsumeList.size() ; i++) {
-                        CustomerTotleConsume customerTotleConsume = customerTotleConsumeList.get(i);
-                        if (customerFinance.getId() == customerTotleConsume.getCustomerId()){
-                            customerFinance.setChargeTotleAmount(customerTotleConsume.getChargeTotleAmount());
-                            customerFinance.setConsumeTotleAmount(customerTotleConsume.getConsumeTotleAmount());
-                            customerFinance.setCurrMonthAmount(customerTotleConsume.getCurrMonthAmount());
-                            customerFinance.setCurrDayAmount(customerTotleConsume.getCurrDayAmount());
+                /*封装当天消费总额*/
+                if (customerFinanceCurrDayList != null){
+                    for (int i = 0; i < customerFinanceCurrDayList.size(); i++) {
+                        CustomerFinance customerFinanceCurrDay = customerFinanceCurrDayList.get(i);
+                        if (customerFinance.getId() == customerFinanceCurrDay.getId()){
+                            customerFinance.setCurrDayAmount(customerFinanceCurrDay.getCurrDayAmount());
                         }
                     }
                 }
+
+                /*封装当月消费总额（至昨天）*/
+                if (customerFinanceCurrMonthList != null){
+                    for (int i = 0; i < customerFinanceCurrMonthList.size(); i++) {
+                        CustomerFinance customerFinanceCurrMonth = customerFinanceCurrMonthList.get(i);
+                        if (customerFinance.getId() == customerFinanceCurrMonth.getId()){
+                            customerFinance.setCurrMonthAmount(customerFinanceCurrMonth.getCurrMonthAmount());
+                        }
+                    }
+                }
+
+                 /*封装当月消费总额（昨天 + 今天）*/
+                if (customerFinance.getCurrMonthAmount() != null){
+                    if (customerFinance.getCurrDayAmount() != null) {
+                        customerFinance.setCurrMonthAmount(customerFinance.getCurrMonthAmount() + customerFinance.getCurrDayAmount());
+                    }
+                }else {
+                    if (customerFinance.getCurrDayAmount() != null) {
+                        customerFinance.setCurrMonthAmount(customerFinance.getCurrDayAmount());
+                    }
+                }
+
+                /*封装充值总额*/
+                if (customerFinanceChargeList != null){
+                    for (int i = 0; i < customerFinanceChargeList.size() ; i++) {
+                        CustomerFinance customerFinanceCharge = customerFinanceChargeList.get(i);
+                        if (customerFinance.getId() == customerFinanceCharge.getId()){
+                            customerFinance.setChargeTotleAmount(customerFinanceCharge.getChargeTotleAmount());
+                        }
+                    }
+                }
+
+                /*封装消费总额（至昨天）*/
+                if (customerFinanceConsumeList != null){
+                    for (int i = 0; i < customerFinanceConsumeList.size(); i++) {
+                        CustomerFinance customerFinanceConsume = customerFinanceConsumeList.get(i);
+                        if (customerFinance.getId() == customerFinanceConsume.getId()){
+                            customerFinance.setConsumeTotleAmount(customerFinanceConsume.getConsumeTotleAmount());
+                        }
+                    }
+                }
+
+                 /*封装消费总额（至昨天 + 今天）*/
+                if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate")))
+                {
+                    if (customerFinance.getConsumeTotleAmount() != null){
+                        if (customerFinance.getCurrDayAmount() != null){
+                            customerFinance.setConsumeTotleAmount(customerFinance.getConsumeTotleAmount() + customerFinance.getCurrDayAmount());
+                        }
+                    }else {
+                        if (customerFinance.getCurrDayAmount() != null){
+                            customerFinance.setConsumeTotleAmount(customerFinance.getCurrDayAmount());
+                        }
+                    }
+                }
+
+               /* *//*封装充值总额*//*
+                if (customerFinance.getConsumeTotleAmount() != null){
+                    if (customerFinance.getBalance() != null){
+                        customerFinance.setChargeTotleAmount((-customerFinance.getConsumeTotleAmount()) + customerFinance.getBalance());
+                    }
+                }else {
+                    if (customerFinance.getBalance() != null){
+                        customerFinance.setChargeTotleAmount(customerFinance.getBalance());
+                    }
+                }*/
 
                 /*封装邮箱*/
                 if (customerCompanyEmailList != null){
@@ -170,6 +245,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                         }
                     }
                 }
+
+
 
                 if (customerFinance.getChargeWeekTotleAmount() != null) {
                     weekChargeAmount += customerFinance.getChargeWeekTotleAmount();

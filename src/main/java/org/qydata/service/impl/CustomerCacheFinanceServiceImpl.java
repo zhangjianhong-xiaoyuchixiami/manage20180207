@@ -69,8 +69,14 @@ public class CustomerCacheFinanceServiceImpl implements CustomerCacheFinanceServ
                 }
 
                 //当月(到昨天)+当天
-                if (customerCacheConsume.getCurrMonthCacheCount() != null && customerCacheConsume.getCurrDayCacheCount() !=null) {
-                    customerCacheConsume.setCurrMonthCacheCount(customerCacheConsume.getCurrMonthCacheCount() + customerCacheConsume.getCurrDayCacheCount());
+                if (customerCacheConsume.getCurrMonthCacheCount() != null ) {
+                    if (customerCacheConsume.getCurrDayCacheCount() !=null){
+                        customerCacheConsume.setCurrMonthCacheCount(customerCacheConsume.getCurrMonthCacheCount() + customerCacheConsume.getCurrDayCacheCount());
+                    }
+                }else {
+                    if (customerCacheConsume.getCurrDayCacheCount() !=null){
+                        customerCacheConsume.setCurrMonthCacheCount(customerCacheConsume.getCurrDayCacheCount());
+                    }
                 }
 
                 //缓存使用量（到昨天）

@@ -60,4 +60,11 @@ public interface ApiMapper {
      */
     public List<ApiBan> queryApiMonitor(Map<String,Object> map);
 
+    /**
+     * 查询产品类型名称、子类型名称、供应商名称
+     * @param apiId
+     * @return
+     */
+    public Api queryApiTypeNameStidNameVendorNameByApiId(Integer apiId);
+
 }

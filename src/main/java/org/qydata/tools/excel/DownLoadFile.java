@@ -20,7 +20,7 @@ public class DownLoadFile {
      * @throws IOException
      */
     public static ResponseEntity<byte[]> downloadFile(byte [] byteFile,String fileName) throws IOException {
-        String escapeFileName = new String(fileName.getBytes(), "UTF-8");
+        String escapeFileName = new String(fileName.getBytes(), "iso8859-1");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentDispositionFormData("attachment",escapeFileName+".xls");

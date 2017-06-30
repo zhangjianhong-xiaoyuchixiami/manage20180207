@@ -1,13 +1,13 @@
 package org.qydata.service.impl;
 
 import org.qydata.config.annotation.DataSourceService;
-import org.qydata.entity.ApiBan;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
-import org.qydata.entity.Company;
+import org.qydata.config.annotation.SystemServiceLog;
+import org.qydata.entity.*;
 import org.qydata.mapper.ApiMapper;
+import org.qydata.mapper.CompanyMapper;
 import org.qydata.service.ApiService;
 import org.qydata.tools.date.CalendarUtil;
+import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,8 @@ import java.util.*;
 public class ApiServiceImpl implements ApiService {
 
     @Autowired private ApiMapper apiMapper;
+
+    @Autowired private CompanyMapper companyMapper;
 
     @Override
     @DataSourceService
@@ -145,5 +147,99 @@ public class ApiServiceImpl implements ApiService {
             }
         }
         return apiBanList;
+    }
+
+    @Override
+    @SystemServiceLog(description = "产品禁用")
+    public Map<String,Object> updateApiBan(String [] apiId) throws Exception{
+        final String uri = "https://api.qydata.org:9000/admin/api/status";
+        Map<String,Object> mapResu = new HashMap<>();
+        StringBuffer sb = new StringBuffer();
+        for (int i=0; i<apiId.length; i++){
+            Map<String,Object> map = new HashMap<>();
+            map.put("k",companyMapper.queryAuthKey("admin.k"));
+            map.put("aid",apiId[i]);
+            map.put("s",-1);
+            int code = HttpClientUtil.doGet(uri,map,null);
+            if (code != 200){
+                String apiName = null;
+                Api api = apiMapper.queryApiTypeNameStidNameVendorNameByApiId(Integer.parseInt(apiId[i]));
+                if (api != null){
+                    ApiType apiType = api.getApiType();
+                    ApiVendor apiVendor = api.getApiVendor();
+                    List<MobileOperator> mobileOperatorList = api.getMobileOperatorList();
+                    if (apiType != null && apiType.getName() != null){
+                        apiName = apiType.getName();
+                        if (mobileOperatorList != null && mobileOperatorList.size() > 0){
+                            apiName = apiName + "--";
+                            for (int j = 0; j < mobileOperatorList.size() ; j++) {
+                                MobileOperator mobileOperator = mobileOperatorList.get(j);
+                                if (mobileOperator != null && mobileOperator.getName() != null){
+                                    apiName = apiName + mobileOperator.getName() + "，";
+                                }
+                            }
+                            if (apiName.lastIndexOf("，") != -1) {
+                                apiName = apiName.substring(0, apiName.lastIndexOf("，"));
+                            }
+                        }
+                        if (apiVendor != null && apiVendor.getName() != null){
+                            apiName = apiName + "@" + apiVendor.getName();
+                        }
+                    }
+                }
+                sb.append(apiName+"，");
+                mapResu.put("fail","产品名称是："+sb+"禁用失败其余禁用正常");
+            }else {
+                mapResu.put("success","禁用成功");
+            }
+        }
+        return mapResu;
+    }
+
+    @Override
+    @SystemServiceLog(description = "产品解禁")
+    public Map<String,Object> updateApiUnBan(String [] apiId) throws Exception{
+        final String uri = "https://api.qydata.org:9000/admin/api/status";
+        Map<String,Object> mapResu = new HashMap<>();
+        StringBuffer sb = new StringBuffer();
+        for (int i=0; i<apiId.length; i++){
+            Map<String,Object> map = new HashMap<>();
+            map.put("k",companyMapper.queryAuthKey("admin.k"));
+            map.put("aid",apiId[i]);
+            map.put("s",0);
+            int code = HttpClientUtil.doGet(uri,map,null);
+            if (code != 200){
+                String apiName = null;
+                Api api = apiMapper.queryApiTypeNameStidNameVendorNameByApiId(Integer.parseInt(apiId[i]));
+                if (api != null){
+                    ApiType apiType = api.getApiType();
+                    ApiVendor apiVendor = api.getApiVendor();
+                    List<MobileOperator> mobileOperatorList = api.getMobileOperatorList();
+                    if (apiType != null && apiType.getName() != null){
+                        apiName = apiType.getName();
+                        if (mobileOperatorList != null && mobileOperatorList.size() > 0){
+                            apiName = apiName + "--";
+                            for (int j = 0; j < mobileOperatorList.size() ; j++) {
+                                MobileOperator mobileOperator = mobileOperatorList.get(j);
+                                if (mobileOperator != null && mobileOperator.getName() != null){
+                                    apiName = apiName + mobileOperator.getName() + "，";
+                                }
+                            }
+                            if (apiName.lastIndexOf("，") != -1) {
+                                apiName = apiName.substring(0, apiName.lastIndexOf("，"));
+                            }
+                        }
+                        if (apiVendor != null && apiVendor.getName() != null){
+                            apiName = apiName + "@" + apiVendor.getName();
+                        }
+                    }
+                }
+                sb.append(apiName+"，");
+                mapResu.put("fail","产品名称是："+sb+"启用失败其余启用正常");
+            }else {
+                mapResu.put("success","启用成功");
+            }
+        }
+        return mapResu;
     }
 }

@@ -1,12 +1,15 @@
 package org.qydata.controller;
 
+import com.google.gson.Gson;
 import org.qydata.entity.ApiBan;
 import org.qydata.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -104,6 +107,43 @@ public class ApiController {
         List<ApiBan> apiBanList = apiService.queryApiMonitor();
         model.addAttribute("apiBanList",apiBanList);
         return "/api/apimonitor";
+    }
+
+    /**
+     * 禁用产品
+     * @return
+     */
+    @RequestMapping("/ban")
+    @ResponseBody
+    public String apiBan(HttpServletRequest request){
+        Gson gson = new Gson();
+        String [] apiId = request.getParameterValues("apiId[]");
+        Map<String,Object> mapResu = null;
+        try {
+            mapResu = apiService.updateApiBan(apiId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gson.toJson(mapResu);
+    }
+
+    /**
+     * 解禁产品
+     * @param request
+     * @return
+     */
+    @RequestMapping("/unban")
+    @ResponseBody
+    public String apiUnBan(HttpServletRequest request){
+        Gson gson = new Gson();
+        String [] apiId = request.getParameterValues("apiId[]");
+        Map<String,Object> mapResu = null;
+        try {
+            mapResu = apiService.updateApiUnBan(apiId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gson.toJson(mapResu);
     }
 
 

@@ -17,6 +17,7 @@ import org.qydata.service.RoleService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.ExportDataHander;
 import org.qydata.tools.ExportIoOperate;
+import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -68,7 +69,7 @@ public class CustomerFinanceExcelAop {
                 map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", sdf.format(sdfInput.parse((String) args[4]))+" "+"23:59:59");
+                map.put("endDate", CalendarUtil.getAfterDayByInputTime((String) args[4]));
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];
@@ -152,7 +153,7 @@ public class CustomerFinanceExcelAop {
                 map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", sdf.format(sdfInput.parse((String) args[4]))+" "+"23:59:59");
+                map.put("endDate", CalendarUtil.getAfterDayByInputTime((String) args[4]));
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];

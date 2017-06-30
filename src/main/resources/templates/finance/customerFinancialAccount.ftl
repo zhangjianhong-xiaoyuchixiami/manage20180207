@@ -307,7 +307,7 @@
 
                         <div class="portlet-body">
 
-                            <#--<div class="clearfix margin-bottom-5">
+                            <div class="clearfix margin-bottom-5">
                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                     <div class="btn-group">
                                         <button class="btn-icon black" id="previewCheckBoxCustomerFinanceCustomerId">
@@ -318,7 +318,7 @@
                                         </button>
                                     </div>
                                 </@shiro.hasPermission>
-                            </div>-->
+                            </div>
 
                             <div class="clearfix margin-bottom-5">
 
@@ -377,7 +377,7 @@
                                 <table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
                                     <thead>
                                     <tr>
-                                        <th style="display: none"><input disabled="disabled" type="checkbox" id="allChecked" class="group-checkable" data-set="#sample_2 .checkboxes"/></th>
+                                        <th><input disabled="disabled" type="checkbox" id="allChecked" class="group-checkable" data-set="#sample_2 .checkboxes"/></th>
                                         <th>公司名称</th>
                                         <@shiro.hasPermission name="customer:findAllCustomer">
                                             <th>合作公司</th>
@@ -407,7 +407,7 @@
                                         <#if customerFinanceList??>
                                             <#list customerFinanceList as customer>
                                             <tr>
-                                                <td style="display: none"><input <#if customer.email?? && customer.consuTime??><#else >disabled="disabled"</#if> class="checkboxes" type="checkbox" id="checkBoxCustomerFinanceCustomerId" name="checkBoxCustomerFinanceCustomerId" value="${customer.id}"/></td>
+                                                <td><input <#if customer.email?? && customer.consuTime??><#else >disabled="disabled"</#if> class="checkboxes" type="checkbox" id="checkBoxCustomerFinanceCustomerId" name="checkBoxCustomerFinanceCustomerId" value="${customer.id}"/></td>
                                                 <#if customer.companyStatus == 0>
                                                 <td data-title="公司名称">
                                                 <#else >

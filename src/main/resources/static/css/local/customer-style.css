@@ -4,7 +4,7 @@
  */
 
 .head-search-bottom{
-    margin-bottom: 0px;
+    margin-bottom: 0px !important;
 }
 
 .head-search-top{
@@ -25,6 +25,10 @@
 
 .table-top-bottom{
     margin-bottom: -10px;
+}
+
+.tip-remark{
+    margin-bottom: 10px !important;
 }
 
 .table-td-none{

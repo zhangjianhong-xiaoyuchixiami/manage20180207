@@ -58,5 +58,7 @@ public interface ButtJoint {
     @RequestMapping("customer/balance/charge")
     public void customerCharge(@RequestParam("rid")int reasonId, @RequestParam("cid")int customerId, @RequestParam("amount")int amount);
 
+    @RequestMapping("api/status")
+    public void apiStatus(@RequestParam("aid") int aid, @RequestParam("s") int status);
 
 }

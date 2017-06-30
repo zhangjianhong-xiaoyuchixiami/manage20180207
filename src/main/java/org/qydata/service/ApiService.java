@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.ApiBan;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
@@ -58,5 +59,22 @@ public interface ApiService {
      * @return
      */
     public List<ApiBan> queryApiMonitor();
+
+    /**
+     * 禁用公司
+     * @param apiId
+     * @return
+     */
+    @SystemServiceLog(description = "产品禁用")
+    public Map<String,Object> updateApiBan(String [] apiId)throws Exception;
+
+    /**
+     * 解禁公司
+     * @param apiId
+     * @return
+     */
+    @SystemServiceLog(description = "产品解禁")
+    public Map<String,Object> updateApiUnBan(String [] apiId)throws Exception;
+
 
 }

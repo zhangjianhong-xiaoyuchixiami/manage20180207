@@ -12,6 +12,7 @@ import org.qydata.entity.User;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.PowerUserService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,7 +57,7 @@ public class FinanceController {
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
+            map.put("endDate", CalendarUtil.getAfterDayByInputTime(endDate));
             model.addAttribute("endDate",endDate);
         }
         List<String> statusList = new ArrayList();

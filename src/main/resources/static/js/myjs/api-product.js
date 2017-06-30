@@ -11,6 +11,7 @@ var ApiProduct = function () {
             // apiRecord
             var oTable = $('#sample_product_1').dataTable({
                 "aoColumns": [
+                    { "bSortable": false},
                     null,
                     null,
                     null,
@@ -44,6 +45,7 @@ var ApiProduct = function () {
 
             var oTable2 = $('#sample_product_2').dataTable({
                 "aoColumns": [
+                    { "bSortable": false},
                     null,
                     null,
                     null,
@@ -73,6 +75,35 @@ var ApiProduct = function () {
                     }
                 },
                 "bFilter" : false //设置全文搜索框，默认true
+            });
+
+
+            /*状态正常全选操作*/
+            jQuery('#sample_product_1 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            /*状态禁用全选操作*/
+            jQuery('#sample_product_2 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
             });
 
 

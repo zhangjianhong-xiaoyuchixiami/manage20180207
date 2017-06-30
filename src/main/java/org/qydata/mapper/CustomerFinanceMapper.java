@@ -48,11 +48,33 @@ public interface CustomerFinanceMapper {
     public List<CustomerWeekMonthConsume> queryCustomerWeekMonthConsume(Map<String,Object> map);
 
     /**
-     * 查询客户消费总额
+     * 查询充值总额
      * @param map
      * @return
      */
-    public List<CustomerTotleConsume> queryCustomerTotleConsume(Map<String,Object> map) ;
+    public List<CustomerFinance> queryCustomerChargeTotle(Map<String,Object> map);
+
+    /**
+     * 查询消费总额（至昨天）
+     * @param map
+     * @return
+     */
+    public List<CustomerFinance> queryCustomerConsumeTotle(Map<String,Object> map);
+
+    /**
+     * 查询本月消费总额（至昨天）
+     * @param map
+     * @return
+     */
+    public List<CustomerFinance> queryCustomerCurrMonthTotle(Map<String,Object> map);
+
+    /**
+     * 查询当天消费总额
+     * @param map
+     * @return
+     */
+    public List<CustomerFinance> queryCustomerCurrDayTotle(Map<String,Object> map);
+
 
     /**
      * 查询客户邮箱，1、用于判断是否存在邮箱，2、发送账单是填写收件人

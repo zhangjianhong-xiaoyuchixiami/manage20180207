@@ -82,7 +82,7 @@ public class CustomerExcelController {
         map.put("month",month);
         CustomerConsumeExcel customerConsumeExcel = customerExcelService.queryCustomerConsumeExcelByCustomerId(map);
         if (customerConsumeExcel != null && customerConsumeExcel.getExcelCode() != null){
-            return DownLoadFile.downloadFile(customerConsumeExcel.getExcelCode(),"xxxx.xls");
+            return DownLoadFile.downloadFile(customerConsumeExcel.getExcelCode(),year+"-"+month+companyName);
         }
         return null;
     }
