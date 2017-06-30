@@ -47,10 +47,10 @@ public class ApiServiceImpl implements ApiService {
                     mapValueDead.put("partnerId",me.getValue());
                 }
             }
-            mapValue.put("status",0);
+            //mapValue.put("status",0);
             mapTran.put("queryApi",apiMapper.queryApi(mapValue));
-            mapValueDead.put("status",-1);
-            mapTran.put("queryApiDead",apiMapper.queryApi(mapValueDead));
+            //mapValueDead.put("status",-1);
+            //mapTran.put("queryApiDead",apiMapper.queryApi(mapValueDead));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,7 +150,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    @SystemServiceLog(description = "产品禁用")
+    @SystemServiceLog(description = "上游产品禁用")
     public Map<String,Object> updateApiBan(String [] apiId) throws Exception{
         final String uri = "https://api.qydata.org:9000/admin/api/status";
         Map<String,Object> mapResu = new HashMap<>();
@@ -197,7 +197,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    @SystemServiceLog(description = "产品解禁")
+    @SystemServiceLog(description = "上游产品解禁")
     public Map<String,Object> updateApiUnBan(String [] apiId) throws Exception{
         final String uri = "https://api.qydata.org:9000/admin/api/status";
         Map<String,Object> mapResu = new HashMap<>();
@@ -241,5 +241,23 @@ public class ApiServiceImpl implements ApiService {
             }
         }
         return mapResu;
+    }
+
+    @Override
+    @SystemServiceLog(description = "修改上游产品价格")
+    public int updatePrice(Integer aid, Double pic) throws Exception {
+        System.out.println(aid);
+        System.out.println(pic);
+        /*final String uri = "https://api.qydata.org:9000/admin/";
+        Map<String,Object> map = new HashMap<>();
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("aid",aid);
+        map.put("pic",pic*100);
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
+        }
+        throw new Exception("http请求异常，请求状态码statusCode="+code);*/
+        return 200;
     }
 }

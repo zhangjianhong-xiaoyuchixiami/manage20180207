@@ -77,8 +77,10 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<CustomerFinance> customerFinanceApiTypeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(mapApiTypeParam);
         //周月消费
         List<CustomerWeekMonthConsume> customerWeekMonthConsumeList = customerFinanceMapper.queryCustomerWeekMonthConsume(mapWeekMonthParam);
-        //客户充值
+        //客户充值（至昨天）
         List<CustomerFinance> customerFinanceChargeList = customerFinanceMapper.queryCustomerChargeTotle(mapTotleParam);
+        //客户充值（当天）
+        List<CustomerFinance> customerFinanceCurrDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
         //客户消费（至昨天）
         List<CustomerFinance> customerFinanceConsumeList = customerFinanceMapper.queryCustomerConsumeTotle(mapTotleParam);
         //客户本月消费（至昨天）
@@ -179,13 +181,24 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     }
                 }
 
-                /*封装充值总额*/
+                /*封装充值总额（至昨天）*/
                 if (customerFinanceChargeList != null){
                     for (int i = 0; i < customerFinanceChargeList.size() ; i++) {
                         CustomerFinance customerFinanceCharge = customerFinanceChargeList.get(i);
                         if (customerFinance.getId() == customerFinanceCharge.getId()){
                             customerFinance.setChargeTotleAmount(customerFinanceCharge.getChargeTotleAmount());
                         }
+                    }
+                }
+
+                 /*封装充值总额（昨天 + 今天）*/
+                if (customerFinance.getChargeTotleAmount() != null){
+                    if (customerFinance.getCurrDayChargeAmount() != null) {
+                        customerFinance.setChargeTotleAmount(customerFinance.getChargeTotleAmount() + customerFinance.getCurrDayChargeAmount());
+                    }
+                }else {
+                    if (customerFinance.getCurrDayChargeAmount() != null) {
+                        customerFinance.setChargeTotleAmount(customerFinance.getCurrDayChargeAmount());
                     }
                 }
 

@@ -191,4 +191,9 @@ public class TestController {
         return "/test/form_component";
     }
 
+    @RequestMapping("/test-app")
+    public String testApp(){
+        return "/test/company";
+    }
+
 }

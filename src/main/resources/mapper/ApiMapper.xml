@@ -104,12 +104,14 @@
                     SELECT a.apiTypeId,b.mobileOperatorId,min(a.cost) minCost,count(a.apiTypeId) apiTypeCount
                     FROM qyfinance.bkvwApi a
                     LEFT JOIN qyfinance.bkvwApiMobileOperator b ON a.id=b.apiId
+                    WHERE a.status = 0
                     GROUP BY a.apiTypeId,b.mobileOperatorId
                 ) cc ON aa.apiTypeId=cc.apiTypeId AND aa.mobileOperatorId=cc.mobileOperatorId
         LEFT JOIN
                 (
                     SELECT apiTypeId,min(cost) minCost,count(apiTypeId) apiTypeCount
                     FROM qyfinance.bkvwApi
+                    WHERE status = 0
                     GROUP BY apiTypeId
                 ) dd ON aa.apiTypeId=dd.apiTypeId
         <where>

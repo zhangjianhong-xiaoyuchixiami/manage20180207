@@ -246,7 +246,7 @@
                 </@shiro.hasAnyRoles>
 
             <#--产品管理-->
-                <@shiro.hasAnyRoles name="backAdmin">
+                <@shiro.hasAnyRoles name="backAdmin,finance">
 
                     <li id="apiProduct">
                         <a href="javascript:;">
@@ -275,6 +275,14 @@
                                 <li id="apiMonitor">
                                     <a href="/api/api-monitor">
                                         产品监控
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="api:api-price-change-log">
+                                <li id="apiPriceChangeLog">
+                                    <a href="/api/api-price-change-log">
+                                        产品价格变动日志
                                     </a>
                                 </li>
                             </@shiro.hasPermission>

@@ -1,5 +1,4 @@
 
-
 <#macro publicJs>
 
 <script src="/js/former/jquery-1.10.1.min.js" type="text/javascript"></script>
@@ -25,8 +24,6 @@
 <script src="/js/former/search.js"></script>
 
 <script type="text/javascript" src="/js/former/jquery.validate.min.js"></script>
-
-<script type="text/javascript" src="/js/former/select2.min.js"></script>
 
 <script type="text/javascript" src="/js/former/chosen.jquery.min.js"></script>
 

@@ -386,6 +386,8 @@ public class ShiroConfig {
 		chains.put("/api/api-monitor", "authc,perms");
 		chains.put("/api/ban", "authc");
 		chains.put("/api/unban", "authc");
+		chains.put("/api/update-price", "authc");
+		chains.put("/api/api-price-change-log", "authc,perms");
 
 
 		//客户请求日志

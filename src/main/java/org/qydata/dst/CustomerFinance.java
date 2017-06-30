@@ -28,6 +28,7 @@ public class CustomerFinance implements Serializable {
     private Integer consumeTotleAmount;
     private Integer currMonthAmount;
     private Integer currDayAmount;
+    private Integer currDayChargeAmount;
     private String email;
     private String consuTime;  //上月excel账单
     private List<CompanyApi> companyApiList;
@@ -200,4 +201,11 @@ public class CustomerFinance implements Serializable {
         this.consuTime = consuTime;
     }
 
+    public Integer getCurrDayChargeAmount() {
+        return currDayChargeAmount;
+    }
+
+    public void setCurrDayChargeAmount(Integer currDayChargeAmount) {
+        this.currDayChargeAmount = currDayChargeAmount;
+    }
 }

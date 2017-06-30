@@ -146,5 +146,38 @@ public class ApiController {
         return gson.toJson(mapResu);
     }
 
+    /**
+     * 修改上游产品价格
+     * @param aid
+     * @param pic
+     * @return
+     */
+    @RequestMapping("/update-price")
+    @ResponseBody
+    public String updatePrice(Integer aid,Double pic){
+
+        Map<String,Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        int code = 0;
+        try {
+            code = apiService.updatePrice(aid,pic);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (200 == code){
+            map.put("success","操作成功");
+            return gson.toJson(map);
+        }
+        map.put("fail","修改失败，请检查你的操作");
+        return gson.toJson(map);
+    }
+
+    @RequestMapping("/api-price-change-log")
+    public String queryApiPriceChangeLog(){
+
+        return "/api/api_price_change_log";
+    }
+
+
 
 }

@@ -127,31 +127,32 @@
                                             <tbody>
                                                 <#if apiList??>
                                                     <#list apiList as api>
-                                                        <#if api.proxyApi.minCost==api.cost>
-                                                        <tr class="success">
-                                                        <#else >
-                                                        <tr>
-                                                        </#if>
-
-                                                        <td data-title="选择"><input class="checkboxes" type="checkbox" id="checkBoxApiIdBan" name="checkBoxApiIdBan" value="${api.id}"/></td>
-                                                        <td data-title="产品类型">${api.apiType.name}
-                                                            <#if (api.mobileOperatorList?size>0)>--
-                                                                <#list api.mobileOperatorList as mobileOperator>
-                                                                ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
-                                                                </#list>
-                                                            </#if>
-                                                            <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
-                                                        </td>
-                                                        <td data-title="合作公司">
-                                                            <#if (api.apiVendor.partner.id)??>
-                                                                <a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
+                                                        <#if api.status == 0>
+                                                            <#if api.proxyApi.minCost==api.cost>
+                                                            <tr class="success">
                                                             <#else >
-                                                                无
+                                                            <tr>
                                                             </#if>
-                                                        </td>
-                                                        <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
-                                                        <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
-                                                    </tr>
+                                                            <td data-title="选择"><input class="checkboxes" type="checkbox" id="checkBoxApiIdBan" name="checkBoxApiIdBan" value="${api.id}"/></td>
+                                                            <td data-title="产品类型">${api.apiType.name}
+                                                                <#if (api.mobileOperatorList?size>0)>--
+                                                                    <#list api.mobileOperatorList as mobileOperator>
+                                                                    ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
+                                                                    </#list>
+                                                                </#if>
+                                                                <#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                            </td>
+                                                            <td data-title="合作公司">
+                                                                <#if (api.apiVendor.partner.id)??>
+                                                                    <a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
+                                                                <#else >
+                                                                    无
+                                                                </#if>
+                                                            </td>
+                                                            <td data-title="产品供应商">${api.apiVendor.name}<#if (api.apiVendor.partner)??>@${api.apiVendor.partner.name}</#if></td>
+                                                            <td data-title="价格（单位：元）"><#--<a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})">-->${(api.cost/100.0)?c}<#--</a>--></td>
+                                                        </tr>
+                                                        </#if>
                                                     </#list>
                                                 </#if>
                                             </tbody>
@@ -176,10 +177,6 @@
                                                     <i class="icon-ok-sign"></i>启用
                                                 </button>
                                             </div>
-
-                                            <div class="pull-right tip-remark">
-                                                <span>注：用绿色标注的行是产品主通道</span>
-                                            </div>
                                         </div>
 
                                         <table class="table table-striped table-bordered table-hover table-condensed" id="sample_product_2">
@@ -193,32 +190,30 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                <#if apiListDead??>
-                                                    <#list apiListDead as api>
-                                                        <#if api.proxyApi.minCost==api.cost>
-                                                        <tr class="success">
-                                                        <#else >
+                                                <#if apiList??>
+                                                    <#list apiList as api>
+                                                        <#if api.status != 0>
                                                         <tr>
+                                                            <td><input class="checkboxes" type="checkbox" id="checkBoxApiIdUnBan" name="checkBoxApiIdUnBan" value="${api.id}"/></td>
+                                                            <td data-title="产品类型" class="font-text-decoration">${api.apiType.name}
+                                                                <#if (api.mobileOperatorList?size>0)>--
+                                                                    <#list api.mobileOperatorList as mobileOperator>
+                                                                    ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
+                                                                    </#list>
+                                                                </#if>
+                                                                <#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                            </td>
+                                                            <td data-title="合作公司">
+                                                                <#if (api.apiVendor.partner.id)??>
+                                                                    <a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
+                                                                <#else >
+                                                                    无
+                                                                </#if>
+                                                            </td>
+                                                            <td data-title="产品供应商">${api.apiVendor.name}<#if (api.apiVendor.partner)??>@${api.apiVendor.partner.name}</#if></td>
+                                                            <td data-title="价格（单位：元）"><#--<a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})">-->${(api.cost/100.0)?c}<#--</a>--></td>
+                                                        </tr>
                                                         </#if>
-                                                        <td><input class="checkboxes" type="checkbox" id="checkBoxApiIdUnBan" name="checkBoxApiIdUnBan" value="${api.id}"/></td>
-                                                        <td data-title="产品类型" class="font-text-decoration">${api.apiType.name}
-                                                            <#if (api.mobileOperatorList?size>0)>--
-                                                                <#list api.mobileOperatorList as mobileOperator>
-                                                                ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
-                                                                </#list>
-                                                            </#if>
-                                                            <#if api.proxyApi.proxyApiTypeName??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
-                                                        </td>
-                                                        <td data-title="合作公司">
-                                                            <#if (api.apiVendor.partner.id)??>
-                                                                <a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
-                                                            <#else >
-                                                                无
-                                                            </#if>
-                                                        </td>
-                                                        <td data-title="产品供应商">${api.apiVendor.name}<#if api.apiVendor.partner??>@${api.apiVendor.partner.name}</#if></td>
-                                                        <td data-title="价格（单位：元）">${(api.cost/100.0)?c}</td>
-                                                    </tr>
                                                     </#list>
                                                 </#if>
                                             </tbody>
@@ -263,6 +258,7 @@
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
+
             ApiProduct.init();
 
             /*状态正常批量禁用Api操作*/
@@ -419,6 +415,76 @@
             });
 
         });
+
+        function updateApiPrice(id,price) {
+
+            var aid = id ;
+            var pic = price/100.0 ;
+            swal({
+                title: '修改产品价格',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",
+                confirmButtonText: "确定修改",
+                allowOutsideClick: true,
+                inputValue: pic,
+                inputValidator: function(value) {
+                    return new Promise(function(resolve, reject) {
+                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        if(!re.test(value)){
+                            reject('格式输入不正确！');
+                        } else {
+                            resolve();
+                        }
+                    });
+                }
+            }).then(function (value) {
+
+                $.ajax({
+                    type: "post",
+                    url: "/api/update-price",
+                    data: {"aid": aid, "pic": pic},
+                    dataType: "json",
+                    beforeSend: function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if (data != null) {
+                            if (data.success != null) {
+                                swal({
+                                    type: 'success',
+                                    title: '价格修改完成',
+                                    confirmButtonText: "确定",
+                                    html: '已将价格修改为：' + value
+                                }).then(function () {
+                                    window.location.href = window.location.href ;
+                                    return;
+                                });
+
+                            }
+                            if (data.fail != null) {
+
+                                swal({
+                                    type: 'error',
+                                    title: '失败',
+                                    text: "哎呦，修改失败了",
+                                    confirmButtonText: "确定"
+
+                                })
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                if (dismiss === 'cancel') {}
+            });
+
+        }
 
     </script>
 

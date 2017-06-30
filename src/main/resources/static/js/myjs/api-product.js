@@ -17,7 +17,7 @@ var ApiProduct = function () {
                     null,
                     null
                 ],
-                "aaSorting": [[0, 'asc']],
+                "aaSorting": [[1, 'asc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

@@ -65,7 +65,7 @@ public interface ApiService {
      * @param apiId
      * @return
      */
-    @SystemServiceLog(description = "产品禁用")
+    @SystemServiceLog(description = "上游产品禁用")
     public Map<String,Object> updateApiBan(String [] apiId)throws Exception;
 
     /**
@@ -73,8 +73,18 @@ public interface ApiService {
      * @param apiId
      * @return
      */
-    @SystemServiceLog(description = "产品解禁")
+    @SystemServiceLog(description = "上游产品解禁")
     public Map<String,Object> updateApiUnBan(String [] apiId)throws Exception;
+
+    /**
+     * 修改上游产品价格
+     * @param aid
+     * @param pic
+     * @return
+     * @throws Exception
+     */
+    @SystemServiceLog(description = "修改上游产品价格")
+    public int updatePrice(Integer aid,Double pic) throws Exception;
 
 
 }

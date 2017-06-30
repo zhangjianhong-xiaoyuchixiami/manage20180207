@@ -153,13 +153,13 @@ public interface CompanyService {
     public int addCompanyApi(Integer companyId,String apiTypeId,String price)throws Exception;
 
     /**
-     * 修改产品价格
+     * 修改下游产品价格
      * @param companyId
      * @param apiTypeId
      * @param price
      * @return
      */
-    @SystemServiceLog(description = "修改产品价格")
+    @SystemServiceLog(description = "修改下游产品价格")
     public int updateCompanyApiPrice(Integer companyId,String apiTypeId,String price)throws Exception;
 
     /**
@@ -184,6 +184,13 @@ public interface CompanyService {
      */
     public List<ApiTypeSubType> queryAllApi();
 
+    /**
+     * 修改信用额度
+     * @param companyId
+     * @param credit
+     * @return
+     * @throws Exception
+     */
     @SystemServiceLog(description = "修改信用额度")
     public int updateCredit(Integer companyId,Integer credit) throws Exception;
 

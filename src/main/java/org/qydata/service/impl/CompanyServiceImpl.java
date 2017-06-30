@@ -318,7 +318,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @SystemServiceLog(description = "修改产品价格")
+    @SystemServiceLog(description = "修改下游产品价格")
     public int updateCompanyApiPrice(Integer companyId, String apiTypeId, String price) throws Exception{
 
         String uri = "https://api.qydata.org:9000/admin/company/api/put";

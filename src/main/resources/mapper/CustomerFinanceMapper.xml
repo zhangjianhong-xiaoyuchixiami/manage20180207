@@ -303,11 +303,19 @@
         WHERE base.typeId = 1
     </select>
 
-    <!--查询充值总额-->
+    <!--查询充值总额（至昨天）-->
     <select id="queryCustomerChargeTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
-        SELECT customerId id,sum(amount) chargeTotleAmount
+        SELECT customerId id,sum(chargeAmount) chargeTotleAmount
+        FROM qyfinance.CustomerChargeDayCount
+        GROUP BY customerId
+    </select>
+
+    <!--查询充值总额（至昨天）-->
+    <select id="queryCustomerChargeCurrDay" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
+        SELECT customerId id,sum(amount) currDayChargeAmount
         FROM qyfinance.finance_CustomerBalanceLog
-        WHERE reasonId in (1,2,3)
+        WHERE reasonId in(1,2,3)
+        AND createTime >= #{currDayTime}
         GROUP BY customerId
     </select>
 
@@ -340,7 +348,7 @@
     <select id="queryCustomerCurrDayTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
         SELECT customerId id,sum(amount) currDayAmount
         FROM qyfinance.finance_CustomerBalanceLog
-        WHERE reasonId in (-1,-2,-3)
+        WHERE reasonId in (-1)
         AND createTime >= #{currDayTime}
         GROUP BY customerId
     </select>

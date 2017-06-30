@@ -6,6 +6,7 @@ import java.security.MessageDigest;
  * Created by Administrator on 2016/12/22.
  */
 public class Md5Tools {
+
     public static String md5(String plainText) {
         StringBuffer buf = new StringBuffer("");
         try {

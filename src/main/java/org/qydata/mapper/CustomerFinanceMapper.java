@@ -48,11 +48,18 @@ public interface CustomerFinanceMapper {
     public List<CustomerWeekMonthConsume> queryCustomerWeekMonthConsume(Map<String,Object> map);
 
     /**
-     * 查询充值总额
+     * 查询充值总额（至昨天）
      * @param map
      * @return
      */
     public List<CustomerFinance> queryCustomerChargeTotle(Map<String,Object> map);
+
+    /**
+     * 查询当天充值总额
+     * @param map
+     * @return
+     */
+    public List<CustomerFinance> queryCustomerChargeCurrDay(Map<String,Object> map);
 
     /**
      * 查询消费总额（至昨天）

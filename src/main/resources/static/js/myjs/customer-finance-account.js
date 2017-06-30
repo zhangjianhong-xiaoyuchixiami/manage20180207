@@ -128,7 +128,7 @@ var CustomerFinanceAccount = function () {
                     },
                     {
                         //当天消费
-                        "aTargets": [ 13 ],
+                        "aTargets": [ 14 ],
                         "sType": "html-percent"
                     }
 
