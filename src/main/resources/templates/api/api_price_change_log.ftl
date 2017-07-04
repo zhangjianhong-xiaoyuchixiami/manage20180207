@@ -49,7 +49,7 @@
 
                                 <div class="controls">
 
-                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId">
+                                    <select class="medium m-wrap" id="vendorId" name="vendorId">
                                         <option value=""></option>
                                     </select>
                                 </div>
@@ -62,7 +62,7 @@
 
                                 <div class="controls">
 
-                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="partnerId" name="partnerId">
+                                    <select class="medium m-wrap" id="partnerId" name="partnerId">
                                         <option value=""></option>
                                     </select>
                                 </div>
@@ -93,7 +93,9 @@
 
                                     <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
 
-                                        <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+                                        <input <#if beginDate??>value="${beginDate}" </#if> id="beginDate" name="beginDate" class="m-wrap" size="16" type="text" readonly style="width: 150px;">
+
+                                        <span class="add-on"><i class="icon-calendar"></i></span>
 
                                     </div>
 
@@ -109,7 +111,9 @@
 
                                     <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
 
-                                        <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap m-ctrl-medium date-picker" size="16" type="text" style="width: 150px;"><span class="add-on"><i class="icon-calendar"></i></span>
+                                        <input <#if endDate??>value="${endDate}" </#if> id="endDate" name="endDate" class="m-wrap " size="16" type="text" style="width: 150px;">
+
+                                        <span class="add-on"><i class="icon-calendar"></i></span>
 
                                     </div>
 
@@ -141,13 +145,13 @@
 
                         <div class="portlet-body no-more-tables">
 
-                         <div class="clearfix margin-bottom-5">
-                              <div class="btn-group pull-left">
-                                  <button class="btn-icon black" id="batchApiPriceLog">
-                                      <i class="icon-plus-sign"></i>添加
-                                  </button>
-                              </div>
-                          </div>
+                            <div class="clearfix margin-bottom-5">
+                                <div class="btn-group pull-left">
+                                    <button class="btn-icon black" id="batchApiPriceLog" data-target="#form_modal_add_price_change_log" data-toggle="modal">
+                                        <i class="icon-plus-sign"></i>添加
+                                    </button>
+                                </div>
+                            </div>
 
                             <table class="table table-striped table-bordered table-hover table-condensed" id="sample_api_price_change_log">
                                 <thead>
@@ -157,19 +161,19 @@
                                     <th>合作公司</th>
                                     <th>产品供应商</th>
                                     <th>价格（单位：元）</th>
-                                    <th>有效时间范围</th>
+                                    <th>生效区间</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <#if apiList??>
-                                        <#list apiList as api>
+                                    <#if apclList??>
+                                        <#list apclList as apcl>
                                         <tr>
-                                            <td data-title="选择"><input class="checkboxes" type="checkbox" id="checkBoxApiId" name="checkBoxApiId" value=""/></td>
-                                            <td data-title="产品类型"></td>
-                                            <td data-title="合作公司"></td>
-                                            <td data-title="产品供应商"></td>
-                                            <td data-title="价格（单位：元）"></td>
-                                            <td data-title="有效时间范围"></td>
+                                            <td data-title="选择"><input class="checkboxes" type="checkbox" id="checkBoxApiId" name="checkBoxApiId" value="${apcl.apiId}"/></td>
+                                            <td data-title="产品类型">${(apcl.apiType.name)!'无'}</td>
+                                            <td data-title="合作公司">${(apcl.partner.name)!'无'}</td>
+                                            <td data-title="产品供应商">${(apcl.apiVendor.name)!'无'}</td>
+                                            <td data-title="价格（单位：元）">${apcl.price/100.0}</td>
+                                            <td data-title="生效区间">${(apcl.timeRange)!'无'}</td>
                                         </tr>
                                         </#list>
                                     </#if>
@@ -178,6 +182,75 @@
 
                         </div>
 
+                    </div>
+
+                    <div id="form_modal_add_price_change_log" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_price_change_log" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h3 id="myModalLabel_add_price_change_log">请填写信息</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" class="form-horizontal">
+
+                                <span id="add_price_change_log_apiId" style="display: none;">
+
+                                </span>
+
+                                <div id="" class="control-group">
+                                    <label class="control-label">请选择产品类型<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <select id="add_price_change_log_apiTypeId" name="add_price_change_log_apiTypeId" class="medium m-wrap" tabindex="1">
+                                            <option value=""></option>
+                                        </select>
+                                        <span id="add_price_change_log_apiTypeIdMsg" class="help-inline"></span>
+                                    </div>
+                                </div>
+
+                                <div id="" class="control-group">
+                                    <label class="control-label">请选择产品供应商<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <select id="add_price_change_log_vendorId" name="add_price_change_log_vendorId" class="medium m-wrap" tabindex="1">
+                                            <option value=""></option>
+                                        </select>
+                                        <span id="add_price_change_log_vendorIdMsg" class="help-inline"></span>
+                                    </div>
+                                </div>
+
+                                <div id="" class="control-group">
+                                    <label class="control-label">请输入金额<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <input type="text" id="add_price_change_log_amount" name="add_price_change_log_amount" class="m-wrap medium" placeholder="（单位/元）">
+                                        <span id="add_price_change_log_amountMsg" class="help-line"></span>
+                                        <span class="help-block">说明：只能输入数字类型并且金额大于0</span>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+
+                                    <label class="control-label">请选择生效时间</label>
+
+                                    <div class="controls">
+
+                                        <div class="input-append date form_datetime" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                            <input id="add_price_change_log_Date" name="add_price_change_log_Date" size="16" type="text" value="" readonly class="m-wrap">
+
+                                            <span class="add-on"><i class="icon-remove"></i></span>
+
+                                            <span class="add-on"><i class="icon-calendar"></i></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                            <button class="btn black btn-primary" id="add-price-change-log-btn-black-btn-primary" type="button">提交</button>
+                        </div>
                     </div>
 
                 </div>
@@ -204,9 +277,11 @@
 
     <script src="/js/sweetalert/core.js"></script>
 
-    <script src="/js/former/select2.min.js" type="text/javascript" ></script>
+    <script src="/js/former/select2/select2.min.js"></script>
 
-    <script src="/js/former/i18n/zh-CN.js" type="text/javascript" ></script>
+    <script src="/js/former/select2/i18n/zh-CN.js"></script>
+
+    <script src="/js/former/bootstrap-datetimepicker.js"></script>
 
     <script src="/js/myjs/api-price-change-log.js"></script>
 
@@ -215,14 +290,6 @@
         jQuery(document).ready(function() {
 
             ApiPriceChangeLog.init();
-
-            $('#apiTypeId').select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
-
-
 
         });
 

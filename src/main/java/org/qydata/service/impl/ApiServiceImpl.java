@@ -7,10 +7,12 @@ import org.qydata.mapper.ApiMapper;
 import org.qydata.mapper.CompanyMapper;
 import org.qydata.service.ApiService;
 import org.qydata.tools.date.CalendarUtil;
+import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -259,5 +261,35 @@ public class ApiServiceImpl implements ApiService {
         }
         throw new Exception("http请求异常，请求状态码statusCode="+code);*/
         return 200;
+    }
+
+    @Override
+    public List<ApiPriceChanceLog> queryApiPriceChangeLog(Map<String, Object> map) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<ApiPriceChanceLog> apclList = apiMapper.queryApiPriceChangeLog(map);
+        if (apclList != null){
+            for (int i = 0; i < apclList.size() ; i++) {
+                ApiPriceChanceLog apcl = apclList.get(i);
+                ApiType apiType = apcl.getApiType();
+                if (apiType != null && apiType.getName() != null){
+                    String apiType_stidName = ApiTypeMobileOperatorNameUtils.apiTypeMobileOperatorName(apiType.getName(),apcl.getMobileOperatorList());
+                    apiType.setName(apiType_stidName);
+                    apcl.setApiType(apiType);
+                }
+                if (apcl.getTimeForce() != null){
+                    if (apcl.getTimeDead() != null){
+                        apcl.setTimeRange(sdf.format(apcl.getTimeForce()) + "-" + sdf.format(apcl.getTimeDead()));
+                    }else {
+                        apcl.setTimeRange(sdf.format(apcl.getTimeForce()) + "-至今");
+                    }
+                }
+            }
+        }
+        return apclList;
+    }
+
+    @Override
+    public boolean addApiPriceChangeLog(Integer tid, Integer vid, Double pic, String date) throws Exception {
+        return false;
     }
 }

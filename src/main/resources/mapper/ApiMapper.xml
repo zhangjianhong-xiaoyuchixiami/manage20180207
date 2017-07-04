@@ -91,6 +91,30 @@
         </collection>
     </resultMap>
 
+    <resultMap id="ApiPriceChangeLog_Map" type="org.qydata.entity.ApiPriceChanceLog">
+        <result column="id" property="id"/>
+        <result column="apiId" property="apiId"/>
+        <result column="price" property="price"/>
+        <result column="timeForce" property="timeForce"/>
+        <result column="timeDead" property="timeDead"/>
+        <association property="apiType" javaType="org.qydata.entity.ApiType">
+            <result column="apiTypeId" property="id"/>
+            <result column="apiTypeName" property="name"/>
+        </association>
+        <association property="apiVendor" javaType="org.qydata.entity.ApiVendor">
+            <result column="vendorId" property="id"/>
+            <result column="vendorName" property="name"/>
+        </association>
+        <association property="partner" javaType="org.qydata.entity.Partner">
+            <result column="partnerId" property="id"/>
+            <result column="partnerName" property="name"/>
+        </association>
+        <collection property="mobileOperatorList" ofType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorId" property="id"/>
+            <result column="mobileOperatorName" property="name"/>
+        </collection>
+    </resultMap>
+
     <!--查询产品-->
     <select id="queryApi" parameterType="map" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
         SELECT aa.apiId,aa.apiName,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.cost,
@@ -229,6 +253,42 @@
         SELECT a.apiId,a.apiTypeName,a.vendorName,a.mobileOperatorName
         FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
         WHERE a.apiId = #{param}
+    </select>
+
+    <!--查看产品改价记录-->
+    <select id="queryApiPriceChangeLog" parameterType="map" resultMap="ApiPriceChangeLog_Map">
+        SELECT a.id,a.apiId,a.price,a.timeForce,a.timeDead,
+        b.apiTypeId,b.apiTypeName,b.vendorId,b.vendorName,b.partnerId,b.partnerName,
+        b.mobileOperatorId,b.mobileOperatorName
+        FROM qyfinance.ApiPriceChanceLog a
+        LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+        <where>
+            <if test="apiTypeId != null and apiTypeId != '' ">
+                b.apiTypeId = #{apiTypeId}
+            </if>
+            <if test="vendorId != null and vendorId != '' ">
+               AND b.vendorId = #{vendorId}
+            </if>
+            <if test="partnerId != null and partnerId != '' ">
+               AND b.partnerId = #{partnerId}
+            </if>
+            <if test="lowPrice != null and lowPrice != '' ">
+               AND a.price >= #{lowPrice}
+            </if>
+            <if test="HighPrice != null and HighPrice != '' ">
+                <![CDATA[
+               AND a.price <= #{HighPrice}
+                ]]>
+            </if>
+            <if test="beginDate != null and beginDate != '' ">
+               AND a.timeForce >= #{beginDate}
+            </if>
+            <if test="endDate != null and endDate != '' ">
+                <![CDATA[
+               AND a.timeDead <= #{endDate} OR a.timeDead IS NULL
+                ]]>
+            </if>
+        </where>
     </select>
 
 </mapper>

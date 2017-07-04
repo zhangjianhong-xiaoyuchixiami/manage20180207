@@ -9,6 +9,7 @@ import org.qydata.entity.ApiVendor;
 import org.qydata.service.ApiFinanceService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.RegexUtil;
+import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,18 +38,17 @@ public class ApiFinanceController {
      */
     @RequestMapping("/find-all-api-record")
     public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId, String beginDate,String endDate,String [] status,Model model) throws Exception {
-        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String,Object> map = new HashedMap();
         if (vendorId !=null){
             map.put("vendorId",vendorId);
         }
         if(beginDate != null && beginDate != ""){
-            map.put("beginDate", sdf.format(sdfInput.parse(beginDate))+" "+"00:00:00");
+            map.put("beginDate", CalendarUtil.getTranByInputTime(beginDate));
             model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", sdf.format(sdfInput.parse(endDate))+" "+"23:59:59");
+            map.put("endDate", CalendarUtil.getAfterDayByInputTime(endDate));
             model.addAttribute("endDate",endDate);
         }
         List<ApiVendor> apiVendorList  = null;

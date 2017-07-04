@@ -284,12 +284,7 @@
                                                 <td data-title="产品类型" class="font-text-decoration">
                                                 </#if>
                                                 <a href="/api/find-all-api-record<#if apiFinance.apiTypeId??>?apiTypeId=${apiFinance.apiTypeId}</#if>">
-                                                ${apiFinance.apiTypeName}
-                                                    <#if (apiFinance.mobileOperatorList?size>0)>--
-                                                        <#list apiFinance.mobileOperatorList as mobileOperator>
-                                                        ${mobileOperator.name!''}<#if (apiFinance.mobileOperatorList?size>1)>,</#if>
-                                                        </#list>
-                                                    </#if>
+                                                ${(apiFinance.apiTypeName)!'无'}
                                                 </a>
                                             </td>
                                                 <td data-title="产品供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName!'无'}</a></td>
@@ -302,7 +297,7 @@
                                                 <td data-title="本月消费"><#if apiFinance.currMonthCost??>${(apiFinance.currMonthCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="当天消费"><#if apiFinance.currDayCost??>${(apiFinance.currDayCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="操作" style="text-align: center; width: 10%;">
-                                                    <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}<#if apiFinance.mobileOperator??>&mobileOperatorName=${apiFinance.mobileOperator.name}</#if>">消费明细</a>
+                                                    <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a>
                                                 </td>
                                             </tr>
                                             </#list>

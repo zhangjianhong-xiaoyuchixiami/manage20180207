@@ -11,6 +11,7 @@ import org.qydata.service.ApiFinanceService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.ExportDataHander;
 import org.qydata.tools.ExportIoOperate;
+import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +38,6 @@ public class ApiFinanceExcelAop {
      */
     @Around("execution(* org.qydata.controller.ApiFinanceController.findAllApiRecord(..))")
     public Object findAllApiRecordExportExcel(ProceedingJoinPoint point) throws Throwable {
-        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Object args [] = point.getArgs();
         System.out.println("************* 判断是否是执行导出操作 *************");
@@ -51,10 +51,11 @@ public class ApiFinanceExcelAop {
                 map.put("apiTypeId",args[2]);
             }
             if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
+                map.put("beginDate", CalendarUtil.getTranByInputTime((String) args[3]));
             }
             if(args[4] != null && args[4] != ""){
-                map.put("endDate", sdf.format(sdfInput.parse((String) args[4]))+" "+"23:59:59");
+                map.put("endDate", CalendarUtil.getAfterDayByInputTime((String) args[4]));
+
             }
             List statusList = new ArrayList();
             String status [] = (String[]) args[5];

@@ -55,8 +55,6 @@
 
 <script type="text/javascript" src="/js/former/jquery.input-ip-address-control-1.0.min.js"></script>
 
-<script type="text/javascript" src="/js/former/jquery.multi-select.js"></script>
-
 <script src="/js/former/bootstrap-modal.js" type="text/javascript" ></script>
 
 <script src="/js/former/bootstrap-modalmanager.js" type="text/javascript" ></script>

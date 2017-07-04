@@ -123,7 +123,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption"><i class="icon-user"></i><#if apiTypeName??>${apiTypeName!''}<#if mobileOperatorName??>——${mobileOperatorName!''}</#if></#if><#if vendorName??>@${vendorName!''}</#if></div>
+                            <div class="caption"><i class="icon-user"></i><#if apiTypeName??>${apiTypeName!''}</#if><#if vendorName??>@${vendorName!''}</#if></div>
 
                             <@d.tools idName="exportExcel" hrefName="/api/find-all-api-record/detail?export=true"></@d.tools>
 

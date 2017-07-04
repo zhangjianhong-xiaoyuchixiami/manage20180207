@@ -32,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="/css/jquery.gritter.css" />
     <link rel="stylesheet" type="text/css" href="/css/chosen.css" />
     <link rel="stylesheet" type="text/css" href="/css/select2_metro.css" />
+<#--<link rel="stylesheet" type="text/css" href="/css/select/select2.min.css" />-->
     <link rel="stylesheet" type="text/css" href="/css/jquery.tagsinput.css" />
     <link rel="stylesheet" type="text/css" href="/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-wysihtml5.css" />
@@ -48,14 +49,14 @@
     <link rel="stylesheet" type="text/css" href="/css/icon.css" />
     <link rel="shortcut icon" href="/image/favicon.ico" />
 
-    <#--加载中动态显示控制-->
+<#--加载中动态显示控制-->
     <link rel="stylesheet" type="text/css" href="/css/sweetlert/spinners.css" />
-    <#--弹框样式控制-->
+<#--弹框样式控制-->
     <link rel="stylesheet" type="text/css" href="/css/sweetlert/sweet-alert2.css" />
-    <#--文件上传样式控制-->
-   <#-- <link rel="stylesheet" type="text/css" href="/css/upload/jquery-ui-1.8.14.custom.css" />
-    <link rel="stylesheet" type="text/css" href="/css/upload/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/css/upload/fileUploader.css" />-->
+<#--文件上传样式控制-->
+<#-- <link rel="stylesheet" type="text/css" href="/css/upload/jquery-ui-1.8.14.custom.css" />
+ <link rel="stylesheet" type="text/css" href="/css/upload/reset.css" />
+ <link rel="stylesheet" type="text/css" href="/css/upload/fileUploader.css" />-->
 
     <style>
         a:hover {text-decoration: none;}
@@ -225,11 +226,11 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                          <#--  <li id="">
-                                <a href="/file-upload">
-                                    上传文件
-                                </a>
-                            </li>-->
+                        <#--  <li id="">
+                              <a href="/file-upload">
+                                  上传文件
+                              </a>
+                          </li>-->
 
                         <#-- <@shiro.hasPermission name="customer:findAllCustomer">
                              <li id="partnersFinancialAccount">
@@ -459,11 +460,11 @@
 
         </div>
 
-       <#-- <div class="cube">
-            <div class="tg-qe-progress-bar myactive">
-                <div class="bar"></div>
-            </div>
-        </div>-->
+    <#-- <div class="cube">
+         <div class="tg-qe-progress-bar myactive">
+             <div class="bar"></div>
+         </div>
+     </div>-->
 
     </div>
 

@@ -1,10 +1,7 @@
 package org.qydata.service;
 
 import org.qydata.config.annotation.SystemServiceLog;
-import org.qydata.entity.ApiBan;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
-import org.qydata.entity.Company;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -85,6 +82,24 @@ public interface ApiService {
      */
     @SystemServiceLog(description = "修改上游产品价格")
     public int updatePrice(Integer aid,Double pic) throws Exception;
+
+
+    /**
+     * 查看产品改价记录
+     * @return
+     */
+    public List<ApiPriceChanceLog> queryApiPriceChangeLog(Map<String,Object> map);
+
+    /**
+     * 新增产品价格记录
+     * @param tid
+     * @param vid
+     * @param pic
+     * @param date
+     * @return
+     */
+    @SystemServiceLog(description = "新增产品改价记录")
+    public boolean addApiPriceChangeLog(Integer tid,Integer vid,Double pic,String date) throws Exception;
 
 
 }

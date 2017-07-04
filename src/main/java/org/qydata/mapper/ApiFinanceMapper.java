@@ -19,28 +19,46 @@ public interface ApiFinanceMapper {
  public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map);
 
  /**
-  * Api财务总览-周消费总额
+  *查询当月消费（至昨天）
   * @param map
   * @return
-  * @throws Exception
   */
- public Integer getCountApiWeekFinance(Map<String,Object> map) throws Exception;
+ public List<ApiFinance> queryApiCurrMonthConsume(Map<String,Object> map);
 
  /**
-  * Api财务总览-月消费总额
+  *查询当天使用量
   * @param map
   * @return
-  * @throws Exception
   */
- public Integer getCountApiMonthFinance(Map<String,Object> map) throws Exception;
+ public List<ApiFinance> queryApiCurrDayUsage(Map<String,Object> map);
 
  /**
-  * Api财务总览-消费总额
+  *查询当天扣费量
   * @param map
   * @return
-  * @throws Exception
   */
- public Integer getCountApiTotleFinance(Map<String,Object> map) throws Exception;
+ public List<ApiFinance> queryApiCurrDayFee(Map<String,Object> map);
+
+ /**
+  *查询消费总额（至昨天）
+  * @param map
+  * @return
+  */
+ public List<ApiFinance> queryApiConsumeTotle(Map<String,Object> map);
+
+ /**
+  *查询上周消费总额
+  * @param map
+  * @return
+  */
+ public List<ApiFinance> queryApiLastWeekConsume(Map<String,Object> map);
+
+ /**
+  *查询上月消费总额
+  * @param map
+  * @return
+  */
+ public List<ApiFinance> queryApiLastMonthConsume(Map<String,Object> map);
 
 
  /**

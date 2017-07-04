@@ -67,6 +67,54 @@ var ApiPriceChangeLog = function () {
 
             $('#apiProductArrow').addClass('arrow open');
 
+            $('#apiTypeId').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $('#vendorId').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $('#partnerId').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $('#add_price_change_log_apiTypeId').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $('#add_price_change_log_vendorId').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $.fn.datetimepicker.dates['zh'] = {
+                days:       ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六","星期日"],
+                daysShort:  ["日", "一", "二", "三", "四", "五", "六","日"],
+                daysMin:    ["日", "一", "二", "三", "四", "五", "六","日"],
+                months:     ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月","十二月"],
+                monthsShort:  ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+                meridiem:    ["上午", "下午"],
+                today:       "今天"
+            };
+
+            $(".form_datetime").datetimepicker({
+                language:  'zh',
+                autoclose: true,
+                todayBtn: true,
+                format: "yyyy/mm/dd hh:ii",
+                titleFormat: "yyyy年mm月",
+                pickerPosition: (App.isRTL() ? "bottom-right" : "bottom-left")
+            });
 
         }
 

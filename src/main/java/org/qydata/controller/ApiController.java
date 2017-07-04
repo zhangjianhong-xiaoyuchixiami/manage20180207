@@ -2,6 +2,7 @@ package org.qydata.controller;
 
 import com.google.gson.Gson;
 import org.qydata.entity.ApiBan;
+import org.qydata.entity.ApiPriceChanceLog;
 import org.qydata.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -172,10 +173,53 @@ public class ApiController {
         return gson.toJson(map);
     }
 
+    /**
+     * 查看产品改价记录
+     * @return
+     */
     @RequestMapping("/api-price-change-log")
-    public String queryApiPriceChangeLog(){
-
+    public String queryApiPriceChangeLog(Integer tid, Integer vid, Integer pid, Double LPic, Double HPic, String beg, String end, Model model){
+        Map<String,Object> mapParam = new HashMap<>();
+        if (tid != null){
+            mapParam.put("apiTypeId",tid);
+        }
+        if (vid != null){
+            mapParam.put("vendorId",vid);
+        }
+        if (pid != null){
+            mapParam.put("partnerId",pid);
+        }
+        if (LPic != null){
+            mapParam.put("lowPrice",LPic);
+        }
+        if (HPic != null){
+            mapParam.put("HighPrice",HPic);
+        }
+        if (beg != null && beg != ""){
+            mapParam.put("beginDate",beg);
+        }
+        if (end != null && end != ""){
+            mapParam.put("endDate",end);
+        }
+        List<ApiPriceChanceLog> apclList =  apiService.queryApiPriceChangeLog(mapParam);
+        model.addAttribute("apclList",apclList);
         return "/api/api_price_change_log";
+    }
+
+    /**
+     * 新增产品价格记录
+     * @param tid
+     * @param vid
+     * @param pic
+     * @param date
+     * @return
+     */
+    @RequestMapping("/add-api-price-change")
+    @ResponseBody
+    public String addApiPriceChangeLog(Integer tid,Integer vid,Double pic,String date){
+
+
+        return "";
     }
 
 

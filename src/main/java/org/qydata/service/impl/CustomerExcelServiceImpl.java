@@ -50,7 +50,7 @@ public class CustomerExcelServiceImpl implements CustomerExcelService {
                 if (email != null){
                     to = new String[]{email};
                 }else {
-                    copyTo = new String[]{"ld@qianyandata.com","it@qianyandata.com"};
+                    copyTo = new String[]{"ld@qianyandata.com","it@qianyandata.com","accounting@qianyandata.com"};
                     Map<String,Object> mapParam = new HashMap<>();
                     mapParam.put("companyId",customerFinanceMapper.queryCompanyIdByCustomerId(Integer.parseInt(customerId[i])));
                     List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapParam);

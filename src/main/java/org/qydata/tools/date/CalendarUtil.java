@@ -66,6 +66,23 @@ public class CalendarUtil {
     }
 
     /**
+     *格式化输入日期
+     * @param str
+     * @return
+     * @throws ParseException
+     */
+    public static String getTranByInputTime(String str) {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        try {
+            return sdf.format(sdfInput.parse(str));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      *获取当前日期的后一天
      * @return
      * @throws ParseException

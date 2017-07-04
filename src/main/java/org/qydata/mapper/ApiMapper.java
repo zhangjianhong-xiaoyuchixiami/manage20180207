@@ -67,4 +67,21 @@ public interface ApiMapper {
      */
     public Api queryApiTypeNameStidNameVendorNameByApiId(Integer apiId);
 
+    /**
+     * 查看产品改价记录
+     * @return
+     */
+    public List<ApiPriceChanceLog> queryApiPriceChangeLog(Map<String,Object> map);
+
+    /**
+     * 新增产品价格记录
+     * @param tid
+     * @param vid
+     * @param pic
+     * @param date
+     * @return
+     */
+    public boolean addApiPriceChangeLog(Integer tid,Integer vid,Double pic,String date) throws Exception;
+
+
 }

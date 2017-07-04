@@ -10,6 +10,8 @@ import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.mapper.ApiFinanceMapper;
 import org.qydata.service.ApiFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.date.CalendarUtil;
+import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,53 +61,136 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
         mapParam.put("years", CalendarTools.getYearMonthCount(1));
         mapParam.put("months",CalendarTools.getMonthCount(1));
         mapParam.put("weeks",CalendarTools.getYearWeekCount(1));
+
+        /*Api财务总览*/
         List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiOverAllFinance(mapParam);
+        /*查询当月消费（至昨天）*/
+        List<ApiFinance> apiFinanceListCurrMonth = apiFinanceMapper.queryApiCurrMonthConsume(mapParam);
+        /*查询当天使用量*/
+        List<ApiFinance> apiFinanceListCurrDayUsage = apiFinanceMapper.queryApiCurrDayUsage(mapParam);
+        /*查询当天扣费量*/
+        List<ApiFinance> apiFinanceListCurrDayFee = apiFinanceMapper.queryApiCurrDayFee(mapParam);
+        /*查询消费总额（至昨天）*/
+        List<ApiFinance> apiFinanceListConsumeTotle = apiFinanceMapper.queryApiConsumeTotle(mapParam);
+        /*查询上周消费总额*/
+        List<ApiFinance> apiFinanceListLastWeek = apiFinanceMapper.queryApiLastWeekConsume(mapParam);
+        /*查询上月消费总额*/
+        List<ApiFinance> apiFinanceListLastMonth = apiFinanceMapper.queryApiLastMonthConsume(mapParam);
+
         if (apiFinanceList != null){
-            if (map.get("endDate") == null || new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
+            for (int i = 0; i < apiFinanceList.size() ; i++) {
+                ApiFinance apiFinance = apiFinanceList.get(i);
+                if (apiFinance != null){
 
-                for (int i = 0; i < apiFinanceList.size() ; i++) {
-                    ApiFinance apiFinance = apiFinanceList.get(i);
+                    /*封装类型和子类型名称*/
+                    if (apiFinance.getApiTypeId() != null){
+                        String apiTypeName_stidName = ApiTypeMobileOperatorNameUtils.apiTypeMobileOperatorName(apiFinance.getApiTypeName(),apiFinance.getMobileOperatorList());
+                        apiFinance.setApiTypeName(apiTypeName_stidName);
+                    }
 
-                    if (apiFinance.getConsumeTotleAmount() != null){
-                        if (apiFinance.getCurrDayCost() != null){
-                            apiFinance.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount() + apiFinance.getCurrDayCost());
-                        }else {
-                            apiFinance.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount());
-                        }
-                    }else {
-                        if (apiFinance.getCurrDayCost() != null){
-                            apiFinance.setConsumeTotleAmount(apiFinance.getCurrDayCost());
+                     /*封装当天消费金额和使用量*/
+                    if (apiFinanceListCurrDayUsage != null){
+                        for (int j = 0; j < apiFinanceListCurrDayUsage.size(); j++) {
+                            ApiFinance apiFinanceCurrDayUsage = apiFinanceListCurrDayUsage.get(j);
+                            if (apiFinance.getApiId() == apiFinanceCurrDayUsage.getApiId()){
+                                apiFinance.setCurrDayCost(apiFinanceCurrDayUsage.getCurrDayCost());
+                                apiFinance.setCurrDayUsageAmount(apiFinanceCurrDayUsage.getCurrDayUsageAmount());
+                            }
                         }
                     }
 
-                    if (apiFinance.getUsageAmount() != null){
-                        if (apiFinance.getCurrDayUsageAmount() != null){
-                            apiFinance.setUsageAmount(apiFinance.getUsageAmount() + apiFinance.getCurrDayUsageAmount());
-                        }else {
-                            apiFinance.setUsageAmount(apiFinance.getUsageAmount());
-                        }
-                    }else {
-                        if (apiFinance.getCurrDayUsageAmount() != null){
-                            apiFinance.setUsageAmount(apiFinance.getCurrDayUsageAmount());
+                    /*封装当天消费扣费量*/
+                    if (apiFinanceListCurrDayFee != null){
+                        for (int j = 0; j < apiFinanceListCurrDayFee.size(); j++) {
+                            ApiFinance apiFinanceCurrDayFee = apiFinanceListCurrDayFee.get(j);
+                            if (apiFinance.getApiId() == apiFinanceCurrDayFee.getApiId()){
+                                apiFinance.setCurrDayFeeAmount(apiFinanceCurrDayFee.getCurrDayFeeAmount());
+                            }
                         }
                     }
 
-                    if (apiFinance.getFeeUsageAmount() != null){
-                        if (apiFinance.getCurrDayFeeAmount() != null){
-                            apiFinance.setFeeUsageAmount(apiFinance.getFeeUsageAmount() + apiFinance.getCurrDayFeeAmount());
-                        }else {
-                            apiFinance.setFeeUsageAmount(apiFinance.getFeeUsageAmount());
-                        }
-                    }else {
-                        if (apiFinance.getCurrDayCost() != null){
-                            apiFinance.setFeeUsageAmount(apiFinance.getCurrDayFeeAmount());
+                    /*封装当月消费（至昨天）*/
+                    if (apiFinanceListCurrMonth != null){
+                        for (int j = 0; j < apiFinanceListCurrMonth.size(); j++) {
+                            ApiFinance apiFinanceCurrMonth = apiFinanceListCurrMonth.get(j);
+                            if (apiFinance.getApiId() == apiFinanceCurrMonth.getApiId()){
+                                apiFinance.setCurrMonthCost(apiFinanceCurrMonth.getCurrMonthCost());
+                            }
                         }
                     }
 
+                    /*封装当月消费（昨天 + 今天）*/
+                     /*封装当月消费总额（昨天 + 今天）*/
+                    if (apiFinance.getCurrMonthCost() != null){
+                        if (apiFinance.getCurrDayCost() != null) {
+                            apiFinance.setCurrMonthCost(apiFinance.getCurrMonthCost() + apiFinance.getCurrDayCost());
+                        }
+                    }else {
+                        if (apiFinance.getCurrDayCost() != null) {
+                            apiFinance.setCurrMonthCost(apiFinance.getCurrDayCost());
+                        }
+                    }
+
+                    /*封装消费总额（至昨天）*/
+                    if (apiFinanceListConsumeTotle != null){
+                        for (int j = 0; j < apiFinanceListConsumeTotle.size(); j++) {
+                            ApiFinance apiFinanceConsumeTotle = apiFinanceListConsumeTotle.get(j);
+                            if (apiFinance.getApiId() == apiFinanceConsumeTotle.getApiId()){
+                                apiFinance.setConsumeTotleAmount(apiFinanceConsumeTotle.getConsumeTotleAmount());
+                                apiFinance.setUsageAmount(apiFinanceConsumeTotle.getUsageAmount());
+                                apiFinance.setFeeUsageAmount(apiFinanceConsumeTotle.getFeeUsageAmount());
+                            }
+                        }
+                    }
+                    /*封装消费总额（昨天 + 今天）*/
+                    if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate")))
+                    {
+                        if (apiFinance.getConsumeTotleAmount() != null){
+                            if (apiFinance.getCurrDayCost() != null){
+                                apiFinance.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount() + apiFinance.getCurrDayCost());
+                            }
+                            if (apiFinance.getCurrDayUsageAmount() != null){
+                                apiFinance.setUsageAmount(apiFinance.getUsageAmount() + apiFinance.getCurrDayUsageAmount());
+                            }
+                            if (apiFinance.getCurrDayFeeAmount() != null){
+                                apiFinance.setFeeUsageAmount(apiFinance.getFeeUsageAmount() + apiFinance.getCurrDayFeeAmount());
+                            }
+                        }else {
+                            if (apiFinance.getCurrDayCost() != null){
+                                apiFinance.setConsumeTotleAmount(apiFinance.getCurrDayCost());
+                            }
+                            if (apiFinance.getCurrDayUsageAmount() != null){
+                                apiFinance.setUsageAmount(apiFinance.getCurrDayUsageAmount());
+                            }
+                            if (apiFinance.getCurrDayFeeAmount() != null){
+                                apiFinance.setFeeUsageAmount(apiFinance.getCurrDayFeeAmount());
+                            }
+                        }
+                    }
+
+                    /*封装上周消费*/
+                    if (apiFinanceListLastWeek != null){
+                        for (int j = 0; j < apiFinanceListLastWeek.size() ; j++) {
+                            ApiFinance apiFinanceLastWeek = apiFinanceListLastWeek.get(j);
+                            if (apiFinance.getApiId() == apiFinanceLastWeek.getApiId()){
+                                apiFinance.setWeekTotleCost(apiFinanceLastWeek.getWeekTotleCost());
+                            }
+                        }
+                    }
+
+                    /*封装上月消费*/
+                    if (apiFinanceListLastMonth != null){
+                        for (int j = 0; j < apiFinanceListLastMonth.size(); j++) {
+                            ApiFinance apiFinanceLastMonth = apiFinanceListLastMonth.get(j);
+                            if (apiFinance.getApiId() == apiFinanceLastMonth.getApiId()){
+                                apiFinance.setMonthTotleCost(apiFinanceLastMonth.getMonthTotleCost());
+                            }
+                        }
+                    }
                 }
-
             }
         }
+
         mapTran.put("queryApiOverAllFinance",apiFinanceList);
         return mapTran;
     }
