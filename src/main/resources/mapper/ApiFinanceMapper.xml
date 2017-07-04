@@ -248,7 +248,7 @@
         ifnull(ee.weekTotleCost,0) weekTotleCost,
         ifnull(ee.monthTotleCost,0) monthTotleCost,
         ifnull(ee.consumeTotleAmount,0) consumeTotleAmount,
-        ifnull(ee.currMonthCost,0) currMonthCost,
+        (ifnull(ee.currMonthCost,0) + ifnull(ee.currDayCost,0)) currMonthCost,
         ifnull(ee.currDayCost,0) currDayCost,
         gg.partnerId,
         gg.partnerName,
@@ -304,13 +304,10 @@
             ) ee ON aa.id=ee.apiId
             LEFT JOIN
             (
-                SELECT sum(b.cost) currMonthCost,apiId
-                FROM qyfinance.finance_ApiRequestLog a
-                LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
-                WHERE b.ok=1
-                AND b.isMock=0
-                AND b.createTime >= #{currMonthTime}
-                GROUP BY a.apiId
+                SELECT apiId,sum(totleCost) currMonthCost
+                FROM qyfinance.bkvwApiCostDayCount
+                WHERE consuTime >= #{currMonthTime}
+                GROUP BY apiId
             ) currMonth ON aa.id=currMonth.apiId
             LEFT JOIN
             (
