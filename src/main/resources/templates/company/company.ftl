@@ -2,6 +2,8 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<#import "../publicPart/publicJs.ftl" as puj>
+
 <@layout ; section>
 
     <#if section = "head">
@@ -18,7 +20,7 @@
 
                 <div class="span12">
 
-                    <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                    <@shiro.hasPermission name="company:find-all-company-customer-by-dept-id">
 
                         <form action="/company/find-all-company-customer-by-dept-id" class="form-bottom" method="get">
 
@@ -48,7 +50,7 @@
 
                     </@shiro.hasPermission>
 
-                    <@shiro.hasPermission name="customer:findAllCustomer">
+                    <@shiro.hasPermission name="company:find-all-company-customer">
 
                         <form action="/company/find-all-company-customer" method="get">
 
@@ -98,7 +100,7 @@
                                     <div class="portlet-body no-more-tables">
 
                                         <div class="clearfix margin-bottom-5">
-                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                            <@shiro.hasPermission name="company:find-all-company-customer">
                                                 <div class="btn-group">
                                                     <button class="btn-icon black" id="add-partner" data-target="#form_modal_from_wizard" data-toggle="modal">
                                                         <i class="icon-plus-sign"></i>添加
@@ -117,10 +119,10 @@
                                                 <th>公司名称</th>
                                                 <th class="numeric">信用额度</th>
                                                 <th class="numeric">可用额度</th>
-                                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                                <@shiro.hasPermission name="company:find-all-company-customer">
                                                     <th class="numeric">合作公司</th>
                                                 </@shiro.hasPermission>
-                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                <@shiro.hasPermission name="company:find-all-company-customer-by-dept-id">
                                                     <th class="numeric" style="display: none">合作公司</th>
                                                 </@shiro.hasPermission>
                                                 <th>余额</th>
@@ -142,7 +144,7 @@
                                                             <td data-title="公司名称">${company.companyName!''}</td>
                                                             <td data-title="信用额度" class="numeric"><a href="javaScript:;" onclick="updateCredit(${company.companyId},${company.floor?c})" class="edit-floor-normal" data-toggle="tooltip" data-placement="bottom" title="点击修改信用额度">${(-company.floor/100.0)?c}</a></td>
                                                             <td data-title="可用额度" class="numeric">${(company.surplusFloor/100.0)?c}</td>
-                                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                                            <@shiro.hasPermission name="company:find-all-company-customer">
                                                                 <td data-title="合作公司" class="numeric">
                                                                     <#if company.partnerId??>
                                                                         <a href="/company/find-all-company-customer?partnerId=${company.partnerId}">${company.partnerName!'无'}</a>
@@ -151,7 +153,7 @@
                                                                     </#if>
                                                                 </td>
                                                             </@shiro.hasPermission>
-                                                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                            <@shiro.hasPermission name="company:find-all-company-customer-by-dept-id">
                                                                 <td data-title="合作公司" class="numeric" style="display: none"><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
                                                             </@shiro.hasPermission>
                                                             <td data-title="余额"><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
@@ -205,7 +207,7 @@
                                                                     </#list>
                                                                 </#if>
                                                             </td>
-                                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                                            <@shiro.hasPermission name="company:find-all-company-customer">
                                                                 <td data-title="账号操作" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
@@ -218,7 +220,7 @@
                                                                     </#if>
                                                                 </td>
                                                             </@shiro.hasPermission>
-                                                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                            <@shiro.hasPermission name="company:find-all-company-customer-by-dept-id">
                                                                 <td data-title="账号操作" class="table-td-none">
                                                                     无
                                                                 </td>
@@ -252,7 +254,7 @@
                                     <div class="portlet-body no-more-tables">
 
                                         <div class="clearfix margin-bottom-5">
-                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                            <@shiro.hasPermission name="company:find-all-company-customer">
                                                 <div class="btn-group">
                                                     <button class="btn-icon black" id="batchUnBanCompany">
                                                         <i class="icon-plus-sign"></i>启用
@@ -269,10 +271,10 @@
                                                 <th>公司名称</th>
                                                 <th>信用额度</th>
                                                 <th>可用额度</th>
-                                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                                <@shiro.hasPermission name="company:find-all-company-customer">
                                                     <th>合作公司</th>
                                                 </@shiro.hasPermission>
-                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                <@shiro.hasPermission name="company:find-all-company-customer-by-dept-id">
                                                     <th style="display: none">合作公司</th>
                                                 </@shiro.hasPermission>
                                                 <th>余额</th>
@@ -294,7 +296,7 @@
                                                             <td data-title="公司名称" class="font-text-decoration">${company.companyName!''}</td>
                                                             <td data-title="信用额度"><a href="javaScript:;" onclick="updateCredit(${company.companyId},${company.floor?c})" class="edit-floor-normal" data-toggle="tooltip" data-placement="bottom" title="点击修改信用额度">${(-company.floor/100.0)?c}</a></td>
                                                             <td data-title="可用额度">${(company.surplusFloor/100.0)?c}</td>
-                                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                                            <@shiro.hasPermission name="company:find-all-company-customer">
                                                                 <td data-title="合作公司">
                                                                     <#if company.partnerId??>
                                                                         <a href="/company/find-all-company-customer?partnerId=${company.partnerId}">${company.partnerName!'无'}</a>
@@ -303,7 +305,7 @@
                                                                     </#if>
                                                                 </td>
                                                             </@shiro.hasPermission>
-                                                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                            <@shiro.hasPermission name="company:find-all-company-customer-by-dept-id">
                                                                 <td data-title="合作公司" style="display: none"><a href="/company/find-all-company-customer-by-dept-id<#if company.partnerId??>?partnerId=${company.partnerId}</#if>">${company.partnerName!'无'}</a></td>
                                                             </@shiro.hasPermission>
                                                             <td data-title="余额"><#if company.companyBalance??>${(company.companyBalance/100.0)?c}<#else >0</#if></td>
@@ -357,7 +359,7 @@
                                                                     </#list>
                                                                 </#if>
                                                             </td>
-                                                            <@shiro.hasPermission name="customer:findAllCustomer">
+                                                            <@shiro.hasPermission name="company:find-all-company-customer">
                                                                 <td data-title="账号操作" class="table-td-none">
                                                                     <#if company.customerList??>
                                                                         <#list company.customerList as customer>
@@ -370,7 +372,7 @@
                                                                     </#if>
                                                                 </td>
                                                             </@shiro.hasPermission>
-                                                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                            <@shiro.hasPermission name="company:find-all-company-customer-by-dept-id">
                                                                 <td data-title="账号操作" class="table-td-none">
                                                                     无
                                                                 </td>
@@ -446,7 +448,7 @@
                     <#--产品列表-->
                         <div class="modal-body">
                             <div class="clearfix">
-                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                <@shiro.hasPermission name="company:find-all-company-customer">
                                     <div class="btn-group" style="margin-bottom: 10px;">
                                         <a id="simple_company_api_1_new" class="btn black">
                                             添加<i class="icon-plus"></i>
@@ -487,7 +489,7 @@
 
                         <div class="modal-body">
                             <div class="clearfix">
-                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                <@shiro.hasPermission name="company:find-all-company-customer">
                                     <div class="btn-group" style="margin-bottom: 10px;">
                                         <a id="simple_customer_ip_1_new" class="btn black">
                                             添加<i class="icon-plus"></i>
@@ -657,8 +659,8 @@
                                                             <div class="control-group">
                                                                 <label class="control-label">请选择合作公司</label>
                                                                 <div class="controls">
-                                                                    <select id="partnerId" name="partnerId" class="span6 medium" tabindex="1">
-                                                                        <option value="">请选择...</option>
+                                                                    <select id="partnerId" name="partnerId" class="span6 medium">
+                                                                        <option value="">请选择</option>
                                                                         <#if partnerList??>
                                                                             <#list partnerList as partner>
                                                                                 <option value="${partner.id}">${partner.name}</option>
@@ -689,7 +691,7 @@
                                                                         <div class="controls">
 
                                                                             <select id="add_api_type_sub" name="add_api_type_sub_1" class="span6 m-wrap">
-                                                                                <option value="">请选择...</option>
+                                                                                <option value="">请选择</option>
                                                                                 <#if apiTypeList??>
                                                                                     <#list apiTypeList as apiType>
                                                                                         <#if apiType.mobileOperatorName??>
@@ -937,61 +939,7 @@
 
     <#elseif section = "privateJs">
 
-    <script src="/assect/jquery-1.10.1.min.js" type="text/javascript"></script>
-
-    <script src="/assect/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-
-    <script src="/assect/bootstrap.min.js" type="text/javascript"></script>
-
-    <script src="/assect/excanvas.min.js"></script>
-
-    <script src="/assect/respond.min.js"></script>
-
-    <script src="/assect/jquery.slimscroll.min.js" type="text/javascript"></script>
-
-    <script src="/assect/jquery.blockui.min.js" type="text/javascript"></script>
-
-    <script src="/assect/jquery.cookie.min.js" type="text/javascript"></script>
-
-    <script src="/assect/jquery.uniform.min.js" type="text/javascript" ></script>
-
-    <script type="text/javascript" src="/assect/jquery.validate.min.js"></script>
-
-    <script type="text/javascript" src="/assect/additional-methods.min.js"></script>
-
-    <script type="text/javascript" src="/assect/jquery.bootstrap.wizard.min.js"></script>
-
-    <script type="text/javascript" src="/assect/jquery-migrate-1.2.1.min.js"></script>
-
-    <script type="text/javascript" src="/assect/select2.min.js"></script>
-
-    <script type="text/javascript" src="/assect/jquery.input-ip-address-control-1.0.min.js"></script>
-
-    <script type="text/javascript" src="/assect/app.js"></script>
-
-    <script type="text/javascript" src="/assect/form-wizard.js"></script>
-
-    <script type="text/javascript" src="/assect/chosen.jquery.min.js"></script>
-
-    <script src="/js/multi/shade.js"></script>
-
-    <script src="/js/multi/ajax-session-timeout.js"></script>
-
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-37564768-1']);
-        _gaq.push(['_setDomainName', 'keenthemes.com']);
-        _gaq.push(['_setAllowLinker', true]);
-        _gaq.push(['_trackPageview']);
-        (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
+        <@puj.publicJs></@puj.publicJs>
 
     <script src="/js/sweetalert/sweetalert2.min.js"></script>
 
@@ -1001,7 +949,7 @@
 
     <script src="/js/former/DT_bootstrap.js" type="text/javascript" ></script>
 
-    <script src="/js/locales/bootstrap-multiselect.js"></script>
+    <script src="/js/locales/dataTables-sort-plungin.js"></script>
 
     <script src="/js/myjs/customer-company.js"></script>
 
@@ -1022,10 +970,22 @@
     <script type="text/javascript">
 
         jQuery(document).ready(function() {
-            App.init();
+
             AddCompanyAllotApiAddIp.init();
             Company.init();
             CompanyForbid.init();
+
+           /* $("#partnerId").select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            })
+
+            $("#add_api_type_sub").select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            })*/
 
         });
 

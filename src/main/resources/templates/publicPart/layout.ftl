@@ -122,7 +122,7 @@
 
                 </li>
             <#--客户管理-->
-                <@shiro.hasAnyRoles name="sell,backAdmin">
+                <@shiro.hasAnyRoles name="sell,backAdmin,finance">
 
                     <li class="" id="customerManage">
                         <a href="javascript:;">
@@ -139,7 +139,7 @@
 
                         <ul class="sub-menu">
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="company:find-all-company-customer">
                                 <li id="customerList">
                                     <a href="/company/find-all-company-customer">
                                         客户信息
@@ -147,7 +147,7 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                            <@shiro.hasPermission name="company:find-all-company-customer-by-dept-id">
                                 <li id="customerList">
                                     <a href="/company/find-all-company-customer-by-dept-id">
                                         客户信息
@@ -178,7 +178,7 @@
 
                         <ul class="sub-menu">
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="finance:find-all-customer">
                                 <li id="customerListBalanceLog">
                                     <a href="/finance/find-all-customer">
                                         客户财务账单
@@ -186,15 +186,7 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
-                                <li id="customerListCache">
-                                    <a href="/cache/find-all-customer">
-                                        客户调用缓存情况
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
-
-                            <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                            <@shiro.hasPermission name="finance:find-all-customer-by-dept-id">
                                 <li id="customerListBalanceLog">
                                     <a href="/finance/find-all-customer-by-dept-id">
                                         客户财务账单
@@ -202,7 +194,15 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="cache:find-all-customer">
+                                <li id="customerListCache">
+                                    <a href="/cache/find-all-customer">
+                                        客户调用缓存情况
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="api:find-all-api-record">
                                 <li id="apiRecordLog">
                                     <a href="/api/find-all-api-record">
                                         产品消费账单
@@ -210,7 +210,7 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="api:find-all-api-vendor-consume">
                                 <li id="apiVendorRecordLog">
                                     <a href="/api/find-all-api-vendor-consume">
                                         供应商财务账单
@@ -218,13 +218,21 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="partner:find-all-partner-financial-account">
                                 <li id="partnersFinancialAccount">
                                     <a href="/partner/find-all-partner-financial-account">
                                         合作公司来往账目
                                     </a>
                                 </li>
                             </@shiro.hasPermission>
+
+                            <#--<@shiro.hasPermission name="excel:extra-account">-->
+                              <#--  <li id="extra-account">
+                                    <a href="/excel/extra-account">
+                                        临时对账
+                                    </a>
+                                </li>-->
+                           <#-- </@shiro.hasPermission>-->
 
                         <#--  <li id="">
                               <a href="/file-upload">
@@ -264,7 +272,7 @@
 
                         <ul class="sub-menu">
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="api:api-message">
                                 <li id="apiProductList">
                                     <a href="/api/api-message">
                                         产品信息
@@ -272,7 +280,7 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="api:api-monitor">
                                 <li id="apiMonitor">
                                     <a href="/api/api-monitor">
                                         产品监控
@@ -288,10 +296,18 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="customer:findAllCustomer">
+                            <@shiro.hasPermission name="api:api-message-by-company">
                                 <li id="apiCompanyProductList">
                                     <a href="/api/api-message-by-company">
                                         客户产品信息
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="api:company:apiType-price-change-log">
+                                <li id="companyApiPriceChangeLog">
+                                    <a href="/api/company/apiType-price-change-log">
+                                        客户价格变动日志
                                     </a>
                                 </li>
                             </@shiro.hasPermission>

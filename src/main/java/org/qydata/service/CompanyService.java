@@ -159,7 +159,7 @@ public interface CompanyService {
      * @param price
      * @return
      */
-    @SystemServiceLog(description = "修改下游产品价格")
+    @SystemServiceLog(description = "修改客户产品价格")
     public int updateCompanyApiPrice(Integer companyId,String apiTypeId,String price)throws Exception;
 
     /**

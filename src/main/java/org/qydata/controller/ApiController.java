@@ -1,9 +1,11 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
-import org.qydata.entity.ApiBan;
-import org.qydata.entity.ApiPriceChanceLog;
+import org.qydata.dst.ApiTypeInfo;
+import org.qydata.dst.CustomerApiPartner;
+import org.qydata.entity.*;
 import org.qydata.service.ApiService;
+import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,78 +26,53 @@ public class ApiController {
 
     /**
      * 查询产品
+     * @param tid
+     * @param vid
+     * @param pid
+     * @param LPic
+     * @param HPic
      * @param model
-     * @param apiTypeId
-     * @param vendorId
      * @return
      */
     @RequestMapping(value = "/api-message")
-    public String queryApi(Model model,Integer apiTypeId,Integer vendorId,Integer partnerId){
+    public String queryApi(Integer tid,Integer vid,Integer pid,Double LPic, Double HPic,Integer statId, Model model){
         Map<String,Object> map = new HashMap<>();
-        if (apiTypeId != null){
-            map.put("apiTypeId",apiTypeId);
+        if (tid != null){
+            map.put("apiTypeId",tid);
+            model.addAttribute("tid",tid);
         }
-        if (vendorId != null){
-            map.put("vendorId",vendorId);
+        if (vid != null){
+            map.put("vendorId",vid);
+            model.addAttribute("vid",vid);
         }
-        if (partnerId != null){
-            map.put("partnerId",partnerId);
+        if (pid != null){
+            map.put("partnerId",pid);
+            model.addAttribute("pid",pid);
         }
-        Map<String,Object> mapResult = apiService.queryApi(map);
-        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
-        Iterator<Map.Entry<String,Object>> it = set.iterator();
-        while(it.hasNext()){
-            Map.Entry<String,Object> me = it.next();
-            if (me.getKey().equals("queryApi")){
-                model.addAttribute("apiList",me.getValue());
-            }
-            if (me.getKey().equals("queryApiDead")){
-                model.addAttribute("apiListDead",me.getValue());
-            }
+        if (LPic != null){
+            map.put("lowPrice",LPic*100);
+            model.addAttribute("LPic",LPic);
         }
+        if (HPic != null){
+            map.put("highPrice",HPic*100);
+            model.addAttribute("HPic",HPic);
+        }
+        if (statId != null && statId == 1){
+            map.put("statId",1);
+            model.addAttribute("statId",statId);
+        }
+        if (statId != null && statId == 2){
+            map.put("statId",2);
+            model.addAttribute("statId",statId);
+        }
+        List<Api> apiList = apiService.queryApi(map);
+        List<Partner> partnerList = apiService.queryPartner();
+        model.addAttribute("apiList",apiList);
+        model.addAttribute("partnerList",partnerList);
         model.addAttribute("apiTypeList",apiService.queryApiType());
         model.addAttribute("apiVendorList",apiService.queryApiVendor());
-        model.addAttribute("apiTypeId",apiTypeId);
-        model.addAttribute("vendorId",vendorId);
-        return "/api/apiproduct";
-    }
 
-    /**
-     * 以客户纬度查询产品
-     * @param model
-     * @param apiTypeId
-     * @param companyId
-     * @return
-     */
-    @RequestMapping("/api-message-by-company")
-    public String queryApiByCompanyId(Model model,Integer apiTypeId,Integer companyId,Integer partnerId){
-        Map<String,Object> map = new HashMap<>();
-        if (apiTypeId != null){
-            map.put("apiTypeId",apiTypeId);
-        }
-        if (companyId != null){
-            map.put("companyId",companyId);
-        }
-        if (partnerId != null){
-            map.put("partnerId",partnerId);
-        }
-        Map<String,Object> mapResult = apiService.queryApiByCompanyId(map);
-        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
-        Iterator<Map.Entry<String,Object>> it = set.iterator();
-        while(it.hasNext()){
-            Map.Entry<String,Object> me = it.next();
-            if (me.getKey().equals("queryApiByCompanyId")){
-                model.addAttribute("companyApiList",me.getValue());
-            }
-            if (me.getKey().equals("queryApiByCompanyIdDead")){
-                model.addAttribute("companyApiListDead",me.getValue());
-            }
-        }
-        model.addAttribute("apiTypeList",apiService.queryApiType());
-        model.addAttribute("companyList",apiService.queryCompany());
-        model.addAttribute("apiTypeId",apiTypeId);
-        model.addAttribute("companyId",companyId);
-        return "api/companyapiproduct";
+        return "/api/apiproduct";
     }
 
     /**
@@ -174,52 +151,247 @@ public class ApiController {
     }
 
     /**
-     * 查看产品改价记录
+     * 查看上游产品改价记录
      * @return
      */
     @RequestMapping("/api-price-change-log")
-    public String queryApiPriceChangeLog(Integer tid, Integer vid, Integer pid, Double LPic, Double HPic, String beg, String end, Model model){
+    public String queryApiPriceChangeLog(Integer tid, Integer vid, Integer pid, Double LPic, Double HPic, String beginDate, String endDate, Model model){
         Map<String,Object> mapParam = new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
         if (tid != null){
             mapParam.put("apiTypeId",tid);
+            model.addAttribute("tid",tid);
         }
         if (vid != null){
             mapParam.put("vendorId",vid);
+            model.addAttribute("vid",vid);
         }
         if (pid != null){
             mapParam.put("partnerId",pid);
+            model.addAttribute("pid",pid);
         }
         if (LPic != null){
-            mapParam.put("lowPrice",LPic);
+            mapParam.put("lowPrice",LPic*100);
+            model.addAttribute("LPic",LPic);
         }
         if (HPic != null){
-            mapParam.put("HighPrice",HPic);
+            mapParam.put("highPrice",HPic*100);
+            model.addAttribute("HPic",HPic);
         }
-        if (beg != null && beg != ""){
-            mapParam.put("beginDate",beg);
+        if (beginDate != null && beginDate != ""){
+            mapParam.put("beginDate", CalendarUtil.getTranByInputTime(beginDate));
+            model.addAttribute("beginDate",beginDate);
         }
-        if (end != null && end != ""){
-            mapParam.put("endDate",end);
+        if (endDate != null && endDate != ""){
+            mapParam.put("endDate",CalendarUtil.getAfterDayByInputTime(endDate));
+            model.addAttribute("endDate",endDate);
         }
         List<ApiPriceChanceLog> apclList =  apiService.queryApiPriceChangeLog(mapParam);
+        List<Api> apiList = apiService.queryAllApi(map);
+        List<ApiType> apiTypeList = apiService.queryApiType();
+        List<ApiVendor> apiVendorList = apiService.queryApiVendor();
+        List<Partner> partnerList = apiService.queryPartner();
         model.addAttribute("apclList",apclList);
+        model.addAttribute("apiList",apiList);
+        model.addAttribute("apiTypeList",apiTypeList);
+        model.addAttribute("apiVendorList",apiVendorList);
+        model.addAttribute("partnerList",partnerList);
         return "/api/api_price_change_log";
     }
 
     /**
-     * 新增产品价格记录
-     * @param tid
-     * @param vid
+     * 新增上游产品价格记录
+     * @param aid
      * @param pic
      * @param date
      * @return
      */
     @RequestMapping("/add-api-price-change")
     @ResponseBody
-    public String addApiPriceChangeLog(Integer tid,Integer vid,Double pic,String date){
+    public String addApiPriceChangeLog(Integer aid,Double pic,String date){
+        Map<String,Object> map = new HashMap<>();
+        boolean flag = false;
+        try {
+            flag = apiService.addApiPriceChangeLog(aid, pic, date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (flag){
+            map.put("success","新增改价记录成功！");
+            return new Gson().toJson(map);
+        }
+        map.put("fail","新增改价记录失败！");
+        return new Gson().toJson(map);
+    }
 
+    /**
+     * 以客户纬度查询产品
+     * @param cid
+     * @param pid
+     * @param tid
+     * @param LPic
+     * @param HPic
+     * @param model
+     * @return
+     */
+    @RequestMapping("/api-message-by-company")
+    public String queryApiByCompanyId(Integer cid,Integer pid,Integer tid,Double LPic, Double HPic,Model model){
+        Map<String,Object> map = new HashMap<>();
+        if (cid != null){
+            map.put("companyId",cid);
+            model.addAttribute("cid",cid);
+        }
+        if (pid != null){
+            map.put("partnerId",pid);
+            model.addAttribute("pid",pid);
+        }
+        if (tid != null){
+            map.put("apiTypeId",tid);
+            model.addAttribute("tid",tid);
+        }
+        if (LPic != null){
+            map.put("lowPrice",LPic*100);
+            model.addAttribute("LPic",LPic);
+        }
+        if (HPic != null){
+            map.put("highPrice",HPic*100);
+            model.addAttribute("HPic",HPic);
+        }
+        List<CustomerApiPartner> customerApiPartnerList = apiService.queryApiByCompanyId(map);
+        List<Partner> partnerList = apiService.queryPartner();
+        model.addAttribute("companyApiList",customerApiPartnerList);
+        model.addAttribute("apiTypeList",apiService.queryApiType());
+        model.addAttribute("companyList",apiService.queryCompany());
+        model.addAttribute("partnerList",partnerList);
+        return "api/companyapiproduct";
+    }
 
-        return "";
+    /**
+     * 修改客户产品价格
+     * @param cid
+     * @param tid
+     * @param stid
+     * @param pic
+     * @return
+     */
+    @RequestMapping("/company/mod-company-api-price")
+    @ResponseBody
+    public String midCompanyApiPrice(Integer cid,Integer tid,Integer stid,Double pic){
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        int code = 0;
+        try {
+            code = apiService.updateCompanyApiPrice(cid, tid, stid, pic);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (200 == code){
+            map.put("success","操作成功!");
+            return gson.toJson(map);
+        }
+        map.put("fail","操作失败!");
+        return gson.toJson(map);
+    }
+
+    /**
+     * 禁用客户产品权限
+     * @return
+     */
+    @RequestMapping("/company/ban-api")
+    @ResponseBody
+    public String banCompanyApiById(HttpServletRequest request){
+        String [] cid_id = request.getParameterValues("cid_id[]");
+        Gson gson = new Gson();
+        Map<String,Object> mapResu = null;
+        try {
+            mapResu = apiService.banCompanyApi(cid_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gson.toJson(mapResu);
+    }
+
+    /**
+     * 查看下游客户产品改价记录
+     * @return
+     */
+    @RequestMapping("/company/apiType-price-change-log")
+    public String queryCompanyApiPriceChangeLog(Integer cid, Integer pid, Integer tid, Double LPic, Double HPic, String beginDate, String endDate, Model model){
+        Map<String,Object> mapParam = new HashMap<>();
+        if (cid != null){
+            mapParam.put("companyId",cid);
+            model.addAttribute("cid",cid);
+        }
+        if (pid != null){
+            mapParam.put("partnerId",pid);
+            model.addAttribute("pid",pid);
+        }
+        if (tid != null){
+            mapParam.put("apiTypeId",tid);
+            model.addAttribute("tid",tid);
+        }
+        if (LPic != null){
+            mapParam.put("lowPrice",LPic*100);
+            model.addAttribute("LPic",LPic);
+        }
+        if (HPic != null){
+            mapParam.put("highPrice",HPic*100);
+            model.addAttribute("HPic",HPic);
+        }
+        if (beginDate != null && beginDate != ""){
+            mapParam.put("beginDate", CalendarUtil.getTranByInputTime(beginDate));
+            model.addAttribute("beginDate",beginDate);
+        }
+        if (endDate != null && endDate != ""){
+            mapParam.put("endDate",CalendarUtil.getAfterDayByInputTime(endDate));
+            model.addAttribute("endDate",endDate);
+        }
+        List<CompanyApiPriceChangeLog> capclList = apiService.queryCompanyApiPriceChangeLog(mapParam);
+        List<Company> companyList = apiService.queryCompany();
+        List<Partner> partnerList = apiService.queryPartner();
+        List<ApiType> apiTypeList = apiService.queryApiType();
+        model.addAttribute("capclList",capclList);
+        model.addAttribute("companyList",companyList);
+        model.addAttribute("partnerList",partnerList);
+        model.addAttribute("apiTypeList",apiTypeList);
+        return "/api/company_api_price_change_log";
+    }
+
+    /**
+     * 新增客户产品价格记录
+     * @param cid
+     * @param pic
+     * @param date
+     * @return
+     */
+    @RequestMapping("/company/add-apiType-price-change")
+    @ResponseBody
+    public String addCompanyApiPriceChangeLog(Integer cid,String tid_stid,Double pic,String date){
+        Map<String,Object> map = new HashMap<>();
+        boolean flag = false;
+        try {
+            flag = apiService.addCompanyApiPriceChangeLog(cid, tid_stid, pic, date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (flag){
+            map.put("success","新增改价记录成功！");
+            return new Gson().toJson(map);
+        }
+        map.put("fail","新增改价记录失败！");
+        return new Gson().toJson(map);
+    }
+
+    /**
+     * 根据公司Id查询所拥有的产品 -- 用于新增客户改价记录级联
+     * @param cid
+     * @return
+     */
+    @RequestMapping("/company/query-company-api-by-company-id")
+    @ResponseBody
+    public String queryCompanyApiByCompanyId(Integer cid){
+        List<ApiTypeInfo> companyApiList = apiService.queryCompanyApiByCompanyId(cid);
+        return new Gson().toJson(companyApiList);
     }
 
 

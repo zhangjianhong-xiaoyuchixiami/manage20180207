@@ -1,4 +1,4 @@
-var ApiPriceChangeLog = function () {
+var CompanyApiPriceChangeLog = function () {
 
     return {
 
@@ -19,26 +19,32 @@ var ApiPriceChangeLog = function () {
                 errorClass: 'validate-inline', // default input error message class
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
-                    add_price_change_log_apiId: {
+                    companyId: {
                         required: true
                     },
-                    add_price_change_log_amount: {
+                    tid_stid: {
+                        required: true
+                    },
+                    price: {
                         required: true,
                         number:true
                     },
-                    add_price_change_log_Date: {
+                    add_date: {
                         required: true
                     }
                 },
                 messages: {
-                    add_price_change_log_apiId:{
+                    companyId:{
+                        required:"请选择公司！"
+                    },
+                    tid_stid:{
                         required:"请选择产品！"
                     },
-                    add_price_change_log_amount:{
+                    price:{
                         required: "请输入金额！",
                         number:"金额格式不正确！"
                     },
-                    add_price_change_log_Date:{
+                    add_date:{
                         required:"请选择生效时间！"
                     }
                 },
@@ -78,13 +84,14 @@ var ApiPriceChangeLog = function () {
                         label.remove(); // remove error label here
                     } else { // display success icon for other inputs
                         label
-                            //.addClass('valid ok') // mark the current input as valid and display OK icon
+                        //.addClass('valid ok') // mark the current input as valid and display OK icon
                             .closest('.control-group').removeClass('error').addClass('success'); // set success class to the control group
                     }
                 }
             });
 
-            var oTable = $('#sample_api_price_change_log').dataTable({
+
+            var oTable = $('#sample_1').dataTable({
                 "aoColumns": [
                     { "bSortable": false},
                     null,
@@ -121,7 +128,7 @@ var ApiPriceChangeLog = function () {
 
 
             /*状态正常全选操作*/
-            jQuery('#sample_api_price_change_log .group-checkable').change(function () {
+            jQuery('#sample_1 .group-checkable').change(function () {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
                 jQuery(set).each(function () {
@@ -135,7 +142,7 @@ var ApiPriceChangeLog = function () {
             });
 
 
-            $('#apiPriceChangeLog').addClass('active');
+            $('#companyApiPriceChangeLog').addClass('active');
 
             $('#apiProduct').addClass('active');
 
@@ -143,13 +150,7 @@ var ApiPriceChangeLog = function () {
 
             $('#apiProductArrow').addClass('arrow open');
 
-            $('#tid').select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
-
-            $('#vid').select2({
+            $('#cid').select2({
                 language: "zh-CN",
                 placeholder: "请选择",
                 allowClear: true
@@ -161,13 +162,45 @@ var ApiPriceChangeLog = function () {
                 allowClear: true
             });
 
-            $('#add_price_change_log_apiId').select2({
+            $('#tid').select2({
                 language: "zh-CN",
                 placeholder: "请选择",
                 allowClear: true
             });
 
-            $("#add-price-change-log-btn-black-btn-primary").on("click",function () {
+            $('#companyId').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $('#tid_stid').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $('#companyId').change(function() {
+                $('#tid_stid').empty();
+                $('#tid_stid').append(' <option value=""></option>');
+                var companyId = $("#companyId").val();
+                $.ajax({
+                    type: "post",
+                    url: "/api/company/query-company-api-by-company-id",
+                    data: {"cid": companyId},
+                    dataType: "json",
+                    success:function (data) {
+                        if (data != null){
+                            for (var i =0; i < data.length; i++){
+                                var option	= '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                                $('#tid_stid').append(option);
+                            }
+                        }
+                    }
+                });
+            });
+
+            $("#add-btn-primary").on("click",function () {
 
                 if (form.valid() == false) {
                     return false;
@@ -184,24 +217,26 @@ var ApiPriceChangeLog = function () {
                     confirmButtonText: "确定添加"//确定按钮上面的文档
                 }).then(function () {
 
-                    var add_price_change_log_apiId = $('#add_price_change_log_apiId').val();
-                    var add_price_change_log_amount = $('#add_price_change_log_amount').val();
-                    var add_price_change_log_Date = $('#add_price_change_log_Date').val();
-                    console.log(add_price_change_log_apiId)
-                    console.log(add_price_change_log_amount)
-                    console.log(add_price_change_log_Date)
+                    var companyId = $('#companyId').val();
+                    var tid_stid = $('#tid_stid').val();
+                    var price = $('#price').val();
+                    var add_date = $('#add_date').val();
+                    console.log(companyId)
+                    console.log(tid_stid)
+                    console.log(price)
+                    console.log(add_date)
 
                     $.ajax({
                         type: "post",
-                        url: "/api/add-api-price-change",
-                        data: {"aid": add_price_change_log_apiId, "pic": add_price_change_log_amount, "date": add_price_change_log_Date},
+                        url: "/api/company/add-apiType-price-change",
+                        data: {"cid": companyId, "tid_stid":tid_stid,"pic": price, "date": add_date},
                         dataType: "json",
                         beforeSend:function () {
                             openProgress();
                         },
                         success: function (data) {
                             closeProgress();
-                            if (data != null){
+                            if(data != null){
                                 if (data.fail != null) {
                                     swal(
                                         '失败',

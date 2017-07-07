@@ -31,7 +31,7 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">产品状态</label>
+                                <label>产品状态</label>
 
                                 <div class="controls">
 
@@ -53,11 +53,11 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">产品类型</label>
+                                <label>产品类型</label>
 
                                 <div class="controls">
 
-                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="apiTypeId" name="apiTypeId">
+                                    <select class="medium m-wrap" id="apiTypeId" name="apiTypeId">
                                         <option value=""></option>
                                         <#if apiTypeList??>
                                             <#list apiTypeList as apiType>
@@ -71,11 +71,11 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">产品供应商</label>
+                                <label>产品供应商</label>
 
                                 <div id="vendorId_chosen" class="controls">
 
-                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId">
+                                    <select class="medium m-wrap" id="vendorId" name="vendorId">
                                         <option value=""></option>
                                         <#if apiVendorList??>
                                             <#list apiVendorList as apiVendor>
@@ -90,7 +90,7 @@
 
                             <div class="pull-left margin-right-20 head-search-bottom">
 
-                                <label class="control-label">起始日期</label>
+                                <label>起始日期</label>
 
                                 <div class="controls">
 
@@ -106,7 +106,7 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">结束日期</label>
+                                <label>结束日期</label>
 
                                 <div class="controls">
 
@@ -122,7 +122,7 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">&nbsp;&nbsp;</label>
+                                <label>&nbsp;&nbsp;</label>
 
                                 <div class="controls" >
 
@@ -342,6 +342,19 @@
 
         jQuery(document).ready(function() {
             Api.init();
+
+            $("#apiTypeId").select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $("#vendorId").select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
         });
     </script>
 

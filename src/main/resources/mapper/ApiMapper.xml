@@ -45,6 +45,12 @@
         </collection>
     </resultMap>
 
+    <resultMap id="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_ApiFake_Map" type="org.qydata.entity.Api" extends="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
+        <association property="apiFake" javaType="org.qydata.entity.ApiFake">
+            <result column="fakeV" property="fakeV"/>
+        </association>
+    </resultMap>
+
     <resultMap id="ApiType_Map" type="org.qydata.entity.ApiType">
         <result column="id" property="id"/>
         <result column="name" property="name"/>
@@ -115,29 +121,47 @@
         </collection>
     </resultMap>
 
+    <resultMap id="CompanyApiPriceChangeLog_Map" type="org.qydata.entity.CompanyApiPriceChangeLog">
+        <result column="id" property="id"/>
+        <result column="companyId" property="companyId"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="stid" property="stid"/>
+        <result column="price" property="price"/>
+        <result column="timeForce" property="timeForce"/>
+        <result column="timeDead" property="timeDead"/>
+        <result column="companyName" property="companyName"/>
+        <result column="apiTypeName" property="apiTypeName"/>
+        <result column="stidName" property="stidName"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+        <result column="apiType_stid" property="apiType_stid"/>
+    </resultMap>
+
     <!--查询产品-->
-    <select id="queryApi" parameterType="map" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
+    <select id="queryApi" parameterType="map" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_ApiFake_Map">
         SELECT aa.apiId,aa.apiName,aa.apiTypeId,aa.apiTypeName,aa.vendorId,aa.vendorName,aa.cost,
         aa.proxyApiId,aa.partnerId,aa.partnerName,aa.proxyApiTypeId,aa.mobileOperatorId,aa.mobileOperatorName,
         aa.status,bb.name proxyApiTypeName,ifnull(cc.minCost,dd.minCost) minCost,
-        ifnull(cc.apiTypeCount,dd.apiTypeCount) apiTypeCount
+        ifnull(cc.apiTypeCount,dd.apiTypeCount) apiTypeCount,
+        ee.fakeV
         FROM qyfinance.bkvw_api_ApiTypeVendorPartner aa
         LEFT JOIN qyfinance.bkvwApiType bb ON aa.proxyApiTypeId=bb.id
         LEFT JOIN
-                (
-                    SELECT a.apiTypeId,b.mobileOperatorId,min(a.cost) minCost,count(a.apiTypeId) apiTypeCount
-                    FROM qyfinance.bkvwApi a
-                    LEFT JOIN qyfinance.bkvwApiMobileOperator b ON a.id=b.apiId
-                    WHERE a.status = 0
-                    GROUP BY a.apiTypeId,b.mobileOperatorId
-                ) cc ON aa.apiTypeId=cc.apiTypeId AND aa.mobileOperatorId=cc.mobileOperatorId
+        (
+            SELECT a.apiTypeId,b.mobileOperatorId,min(a.cost) minCost,count(a.apiTypeId) apiTypeCount
+            FROM qyfinance.bkvwApi a
+            LEFT JOIN qyfinance.bkvwApiMobileOperator b ON a.id=b.apiId
+            WHERE a.status = 0
+            GROUP BY a.apiTypeId,b.mobileOperatorId
+        ) cc ON aa.apiTypeId=cc.apiTypeId AND aa.mobileOperatorId=cc.mobileOperatorId
         LEFT JOIN
-                (
-                    SELECT apiTypeId,min(cost) minCost,count(apiTypeId) apiTypeCount
-                    FROM qyfinance.bkvwApi
-                    WHERE status = 0
-                    GROUP BY apiTypeId
-                ) dd ON aa.apiTypeId=dd.apiTypeId
+        (
+            SELECT apiTypeId,min(cost) minCost,count(apiTypeId) apiTypeCount
+            FROM qyfinance.bkvwApi
+            WHERE status = 0
+            GROUP BY apiTypeId
+        ) dd ON aa.apiTypeId=dd.apiTypeId
+        LEFT JOIN qyfinance.ApiFake ee ON aa.apiId = ee.apiId
         <where>
             <if test="status != null and status != '' or status == 0">
                 aa.status=#{status}
@@ -151,20 +175,40 @@
             <if test="partnerId != null and partnerId != ''">
                 AND aa.partnerId=#{partnerId}
             </if>
+            <if test="lowPrice != null and lowPrice != '' ">
+                AND aa.cost >= #{lowPrice}
+            </if>
+            <if test="highPrice != null and highPrice != '' ">
+                <![CDATA[
+               AND aa.cost <= #{highPrice}
+                ]]>
+            </if>
+            <if test="statId != null and statId != '' and statId == 1 ">
+               AND ee.fakeV IS NOT NULL
+            </if>
+            <if test="statId != null and statId != '' and statId == 2 ">
+                AND ee.fakeV IS NULL
+            </if>
         </where>
     </select>
 
     <!--查询产品类型-->
     <select id="queryApiType" resultMap="ApiType_Map">
-        SELECT distinct(a.apiTypeId) id,b.name
-        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+        SELECT id,name
+        FROM qyfinance.bkvwApiType
     </select>
 
     <!--查询产品供应商-->
     <select id="queryApiVendor" resultMap="ApiVendor_Map">
-        SELECT distinct(a.vendorId) id,a.vendorName name,b.id partnerId,b.name partnerName
-        FROM qyfinance.bkvwApi a LEFT JOIN qyfinance.bkvwPartner b
-        ON a.partnerId=b.id
+        SELECT a.id,a.name,b.id partnerId,b.name partnerName
+        FROM qyfinance.finance_ApiVendor a
+        LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+    </select>
+
+    <!--查询合作公司-->
+    <select id="queryPartner" resultType="org.qydata.entity.Partner">
+        SELECT id,name
+        FROM qyfinance.bkvwPartner
     </select>
 
     <!--根据产品类型查询产品供应商-->
@@ -192,6 +236,14 @@
             </if>
             <if test="partnerId != null and partnerId != ''">
                 AND b.partnerId=#{partnerId}
+            </if>
+            <if test="lowPrice != null and lowPrice != '' ">
+                AND a.price >= #{lowPrice}
+            </if>
+            <if test="highPrice != null and highPrice != '' ">
+                <![CDATA[
+               AND a.price <= #{highPrice}
+                ]]>
             </if>
         </where>
     </select>
@@ -275,9 +327,9 @@
             <if test="lowPrice != null and lowPrice != '' ">
                AND a.price >= #{lowPrice}
             </if>
-            <if test="HighPrice != null and HighPrice != '' ">
+            <if test="highPrice != null and highPrice != '' ">
                 <![CDATA[
-               AND a.price <= #{HighPrice}
+               AND a.price <= #{highPrice}
                 ]]>
             </if>
             <if test="beginDate != null and beginDate != '' ">
@@ -290,6 +342,116 @@
             </if>
         </where>
     </select>
+
+    <!--根据aid查询同一产品上次改价记录，用于修改失效时间-->
+    <select id="queryApiChangeLogByApiId" parameterType="int" resultType="org.qydata.entity.ApiPriceChanceLog">
+        SELECT a.id,a.apiId,a.price,a.timeForce,a.timeDead
+        FROM qyfinance.ApiPriceChanceLog a
+        WHERE a.apiId = #{param} AND a.timeDead IS NULL
+    </select>
+
+    <!--修改产品失效时间-->
+    <update id="updateApiDeadTimeByApiId" parameterType="Object">
+        UPDATE qyfinance.ApiPriceChanceLog SET timeDead = #{param2} WHERE apiId = #{param1} AND timeDead IS NULL
+    </update>
+
+    <!--新增产品价格记录-->
+    <insert id="addApiPriceChangeLog" parameterType="org.qydata.entity.ApiPriceChanceLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiPriceChanceLog(apiId,price,timeForce,createTime)
+        VALUES(#{apiId},#{price},#{timeForce},now())
+    </insert>
+
+    <!--查询所有Api用于新增产品价格记录-->
+    <select id="queryAllApi" parameterType="map" resultMap="Api_ApiType_ApiVendor_ApiProxy_MobileOperator_Map">
+        SELECT a.apiId,a.apiTypeId,a.apiTypeName,a.vendorId,a.vendorName,a.mobileOperatorId,a.mobileOperatorName
+        FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+    </select>
+
+    <!--查看客户改价记录-->
+    <select id="queryCompanyApiPriceChangeLog" parameterType="map" resultMap="CompanyApiPriceChangeLog_Map">
+        SELECT a.id,a.companyId,a.apiTypeId,a.stid,a.price,a.timeForce,a.timeDead,
+        b.name companyName,c.name apiTypeName,d.name stidName,
+        e.id partnerId,e.name partnerName,CONCAT_WS('--',c.name,d.name) apiType_stid
+        FROM qyfinance.CompanyApiPriceChanceLog a
+        LEFT JOIN qyfinance.bkvwCustomerCompany b ON a.companyId = b.id
+        LEFT JOIN qyfinance.bkvwApiType c ON a.apiTypeId = c.id
+        LEFT JOIN qyfinance.bkvwMobileOperator d ON a.stid = d.id
+        LEFT JOIN qyfinance.bkvwPartner e ON b.partnerId = e.id
+        <where>
+            <if test="companyId != null and companyId != '' ">
+                a.companyId = #{companyId}
+            </if>
+            <if test="partnerId != null and partnerId != '' ">
+                AND e.id = #{partnerId}
+            </if>
+            <if test="apiTypeId != null and apiTypeId != '' ">
+                AND a.apiTypeId = #{apiTypeId}
+            </if>
+            <if test="lowPrice != null and lowPrice != '' ">
+                AND a.price >= #{lowPrice}
+            </if>
+            <if test="highPrice != null and highPrice != '' ">
+                <![CDATA[
+               AND a.price <= #{highPrice}
+                ]]>
+            </if>
+            <if test="beginDate != null and beginDate != '' ">
+                AND a.timeForce >= #{beginDate}
+            </if>
+            <if test="endDate != null and endDate != '' ">
+                <![CDATA[
+               AND a.timeDead <= #{endDate} OR a.timeDead IS NULL
+                ]]>
+            </if>
+        </where>
+    </select>
+
+    <!--根据公司Id查询所拥有的产品 - 用于新增客户改价记录级联-->
+    <select id="queryCompanyApiByCompanyId" parameterType="int" resultType="org.qydata.dst.ApiTypeInfo">
+        SELECT CONCAT_WS('-',a.apiTypeId,a.subTypeId) id,
+        CONCAT_WS('--',a.apiTypeName,a.subTypeName) name
+        FROM qyfinance.bkvwCompanyApi a
+        WHERE a.companyId = #{param}
+    </select>
+
+    <!--根据cid,tid,stid查询客户同一产品上次改价记录，用于修改失效时间-->
+    <select id="queryCompanyApiChangeLogByCidTidStid" parameterType="int" resultType="org.qydata.entity.CompanyApiPriceChangeLog">
+        SELECT a.id,a.companyId,a.apiTypeId,a.stid,a.price,a.timeForce,a.timeDead
+        FROM qyfinance.CompanyApiPriceChanceLog a
+        WHERE a.companyId = #{param1}
+        AND a.apiTypeId = #{param2}
+        AND a.stid = #{param3}
+        AND a.timeDead IS NULL
+    </select>
+
+    <!--修改客户同一产品失效时间-->
+    <update id="updateCompanyApiDeadTimeByCidTidStid" parameterType="Object">
+        UPDATE qyfinance.CompanyApiPriceChanceLog
+        SET timeDead = #{param4}
+        WHERE companyId = #{param1}
+        AND apiTypeId = #{param2}
+        AND stid = #{param3}
+        AND timeDead IS NULL
+    </update>
+
+    <!--新增产品价格记录-->
+    <insert id="addCompanyApiPriceChangeLog" parameterType="org.qydata.entity.CompanyApiPriceChangeLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.CompanyApiPriceChanceLog(companyId,apiTypeId,stid,price,timeForce,createTime)
+        VALUES(#{companyId},#{apiTypeId},#{stid},#{price},#{timeForce},now())
+    </insert>
+
+    <!--查询api是否已修改过初始价格-->
+    <select id="queryApiFakeByApiId" parameterType="int" resultType="org.qydata.entity.ApiFake">
+        SELECT id,apiId,fakeV
+        FROM qyfinance.ApiFake
+        WHERE apiId = #{param}
+    </select>
+
+    <!--添加api已改价记录-->
+    <insert id="addApiFake" parameterType="org.qydata.entity.ApiFake" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiFake(apiId,fakeV,createTime)
+        VALUES(#{apiId},#{fakeV},now())
+    </insert>
 
 </mapper>
 

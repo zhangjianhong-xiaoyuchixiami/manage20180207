@@ -119,7 +119,7 @@ var Api = function () {
                 var param = $("#apiTypeId").val();
 
                 $("#vendorId_chosen ").empty();
-                $("#vendorId_chosen").append('<select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId"><option value=""></option></select>');
+                $("#vendorId_chosen").append('<select class="medium m-wrap" id="vendorId" name="vendorId"><option value=""></option></select>');
 
                 if (param !=null) {
                     $.ajax({
@@ -140,9 +140,11 @@ var Api = function () {
                     });
                 }
 
-                $.getScript("/assect/chosen.jquery.min.js",function () {
-                    $('.chosen').chosen()
-                })
+                $("#vendorId").select2({
+                    language: "zh-CN",
+                    placeholder: "请选择",
+                    allowClear: true
+                });
 
             });
 

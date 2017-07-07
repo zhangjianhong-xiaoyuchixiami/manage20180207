@@ -1,8 +1,5 @@
 
 
-
-
-
 /*展示密码*/
 function showPassword(id) {
 

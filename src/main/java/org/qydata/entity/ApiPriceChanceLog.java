@@ -1,7 +1,7 @@
 package org.qydata.entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,8 +12,8 @@ public class ApiPriceChanceLog implements Serializable {
     private Integer id;
     private Integer apiId;
     private Integer price;
-    private Timestamp timeForce;
-    private Timestamp timeDead;
+    private Date timeForce;
+    private Date timeDead;
     private String timeRange;
     private ApiType apiType;
     private ApiVendor apiVendor;
@@ -44,19 +44,19 @@ public class ApiPriceChanceLog implements Serializable {
         this.price = price;
     }
 
-    public Timestamp getTimeForce() {
+    public Date getTimeForce() {
         return timeForce;
     }
 
-    public void setTimeForce(Timestamp timeForce) {
+    public void setTimeForce(Date timeForce) {
         this.timeForce = timeForce;
     }
 
-    public Timestamp getTimeDead() {
+    public Date getTimeDead() {
         return timeDead;
     }
 
-    public void setTimeDead(Timestamp timeDead) {
+    public void setTimeDead(Date timeDead) {
         this.timeDead = timeDead;
     }
 

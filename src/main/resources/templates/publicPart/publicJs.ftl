@@ -1,7 +1,7 @@
 
 <#macro publicJs>
 
-<script src="/js/former/jquery-1.10.1.min.js" type="text/javascript"></script>
+<#--<script src="/js/former/jquery-1.10.1.min.js" type="text/javascript"></script>
 
 <script src="/js/former/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
@@ -23,7 +23,7 @@
 
 <script src="/js/former/search.js"></script>
 
-<script type="text/javascript" src="/js/former/jquery.validate.min.js"></script>
+&lt;#&ndash;<script type="text/javascript" src="/js/former/jquery.validate.min.js"></script>&ndash;&gt;
 
 <script type="text/javascript" src="/js/former/chosen.jquery.min.js"></script>
 
@@ -81,17 +81,120 @@
 
 <script type="text/javascript" src="/assect/chosen.jquery.min.js"></script>
 
+<script src="/assect/jquery-1.10.1.min.js" type="text/javascript"></script>
+
+<script src="/assect/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+
+<script src="/assect/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="/assect/excanvas.min.js"></script>
+
+<script src="/assect/respond.min.js"></script>
+
+<script src="/assect/jquery.slimscroll.min.js" type="text/javascript"></script>
+
+<script src="/assect/jquery.blockui.min.js" type="text/javascript"></script>
+
+<script src="/assect/jquery.cookie.min.js" type="text/javascript"></script>
+
+<script src="/assect/jquery.uniform.min.js" type="text/javascript" ></script>
+
+<script type="text/javascript" src="/assect/jquery.validate.min.js"></script>
+
+<script type="text/javascript" src="/assect/additional-methods.min.js"></script>
+
+<script type="text/javascript" src="/assect/jquery.bootstrap.wizard.min.js"></script>
+
+<script type="text/javascript" src="/assect/jquery-migrate-1.2.1.min.js"></script>
+
+<script type="text/javascript" src="/assect/select2.min.js"></script>
+
+<script type="text/javascript" src="/assect/jquery.input-ip-address-control-1.0.min.js"></script>
+
+<script type="text/javascript" src="/assect/app.js"></script>
+
+<script type="text/javascript" src="/assect/form-wizard.js"></script>
+
+<script type="text/javascript" src="/assect/chosen.jquery.min.js"></script>
+
+<script src="/js/multi/shade.js"></script>
+
+<script src="/js/multi/ajax-session-timeout.js"></script>-->
+
+
+
+<script src="/assect/jquery-1.10.1.min.js" type="text/javascript"></script>
+
+<script src="/assect/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+
+<script src="/assect/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="/assect/excanvas.min.js"></script>
+
+<script src="/assect/respond.min.js"></script>
+
+<script src="/assect/jquery.slimscroll.min.js" type="text/javascript"></script>
+
+<script src="/assect/jquery.blockui.min.js" type="text/javascript"></script>
+
+<script src="/assect/jquery.cookie.min.js" type="text/javascript"></script>
+
+<script src="/assect/jquery.uniform.min.js" type="text/javascript" ></script>
+
+<#--表单验证插件开始-->
+
+<script type="text/javascript" src="/assect/jquery.validate.min.js"></script>
+
+<script type="text/javascript" src="/assect/additional-methods.min.js"></script>
+
+<#--表单验证插件结束-->
+
+<#--yyyy/MM/dd日期插件开始-->
+
+<script type="text/javascript" src="/js/former/bootstrap-datepicker.js"></script>
+
+<script type="text/javascript" src="/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+
+<script type="text/javascript" src="/js/locales/set-datepicker-zh-CN.js"></script>
+
+<#--yyyy/MM/dd日期插件结束-->
+
+<#--bootstrap-chosen下拉框插件开始-->
+
+<script type="text/javascript" src="/assect/chosen.jquery.min.js"></script>
+
+<#--bootstrap-chosen下拉框插件结束-->
+
+<#--select2下拉框插件开始-->
+
+<script src="/js/former/select2/select2.min.js"></script>
+
+<script src="/js/former/select2/i18n/zh-CN.js"></script>
+
+<#--select2下拉框插件结束-->
+
+<script type="text/javascript" src="/assect/jquery.bootstrap.wizard.min.js"></script>
+
+<script type="text/javascript" src="/assect/jquery-migrate-1.2.1.min.js"></script>
+
+<script type="text/javascript" src="/assect/jquery.input-ip-address-control-1.0.min.js"></script>
+
+<script type="text/javascript" src="/assect/app.js"></script>
+
+<script src="/js/multi/shade.js"></script>
+
+<script src="/js/multi/ajax-session-timeout.js"></script>
+
 <script>
 
     jQuery(document).ready(function() {
-        App.init();
 
-        Search.init();
+        App.init();
 
     });
 </script>
 
-<script type="text/javascript">
+<#--<script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-37564768-1']);
     _gaq.push(['_setDomainName', 'keenthemes.com']);
@@ -102,7 +205,7 @@
         ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
-</script>
+</script>-->
 
 
 

@@ -19,7 +19,7 @@ public class RegexUtil {
      * @return
      */
     public final static boolean isTwoUnderLine(String str){
-        if (str.contains("-")){
+        if (str.contains("--")){
             return false;
         }
         return true;

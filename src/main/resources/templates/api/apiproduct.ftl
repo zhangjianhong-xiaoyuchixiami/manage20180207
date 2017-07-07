@@ -29,15 +29,15 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">产品类型</label>
+                                <label>产品类型</label>
 
                                 <div class="controls">
 
-                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="apiTypeId" name="apiTypeId">
+                                    <select class="medium m-wrap" id="tid" name="tid">
                                         <option value=""></option>
                                         <#if apiTypeList??>
                                             <#list apiTypeList as apiType>
-                                                <option <#if apiTypeId?? && apiTypeId==apiType.id>selected="selected"</#if> value="${apiType.id}">${apiType.name}</option>
+                                                <option <#if tid?? && tid==apiType.id>selected="selected"</#if> value="${apiType.id}">${apiType.name}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -47,15 +47,15 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">产品供应商</label>
+                                <label>产品供应商</label>
 
                                 <div class="controls">
 
-                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId">
+                                    <select class="medium m-wrap" id="vid" name="vid">
                                         <option value=""></option>
                                         <#if apiVendorList??>
                                             <#list apiVendorList as apiVendor>
-                                                <option <#if vendorId?? && vendorId==apiVendor.id>selected="selected"</#if> value="${apiVendor.id}">${apiVendor.name}<#if apiVendor.partner??>@${apiVendor.partner.name}</#if></option>
+                                                <option <#if vid?? && vid==apiVendor.id>selected="selected"</#if> value="${apiVendor.id}">${apiVendor.name}<#if apiVendor.partner??>@${apiVendor.partner.name}</#if></option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -65,7 +65,56 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">&nbsp;&nbsp;</label>
+                                <label >合作公司</label>
+
+                                <div class="controls">
+
+                                    <select class="medium m-wrap" id="pid" name="pid">
+                                        <option value=""></option>
+                                        <#if partnerList??>
+                                            <#list partnerList as partner>
+                                                <option <#if pid?? && pid==partner.id>selected="selected"</#if> value="${partner.id}">${partner.name}</option>
+                                            </#list>
+                                        </#if>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="pull-left head-search-bottom">
+
+                                <label >价格区间</label>
+
+                                <div class="controls">
+
+                                    <input type="text" id="LPic" name="LPic" <#if LPic??> value="${LPic}" </#if> placeholder="最低价" class="m-wrap small">
+
+                                    --
+
+                                    <input type="text" id="HPic" name="HPic" <#if HPic??> value="${HPic}" </#if> placeholder="最高价" class="m-wrap small">
+
+                                </div>
+
+                            </div>
+
+                           <#-- <div class="pull-left head-search-bottom">
+
+                                <label >初始价格状态</label>
+
+                                <div class="controls">
+
+                                    <select class="medium m-wrap" id="statId" name="statId">
+                                        <option value=""></option>
+                                        <option <#if statId?? && statId== 1>selected="selected"</#if> value="1">已修改初始价格</option>
+                                        <option <#if statId?? && statId== 2>selected="selected"</#if> value="2">未修改初始价格</option>
+                                    </select>
+                                </div>
+
+                            </div>-->
+
+                            <div class="pull-left head-search-bottom">
+
+                                <label>&nbsp;&nbsp;</label>
 
                                 <div class="controls" >
 
@@ -110,7 +159,7 @@
                                             </div>
 
                                             <div class="pull-right tip-remark">
-                                                <span>注：用绿色标注的行是产品主通道</span>
+                                                <span>注：用绿色标注的行是产品主通道，红色标注的行是未修改初始价格的产品</span>
                                             </div>
                                         </div>
 
@@ -128,23 +177,22 @@
                                                 <#if apiList??>
                                                     <#list apiList as api>
                                                         <#if api.status == 0>
-                                                            <#if api.proxyApi.minCost==api.cost>
-                                                            <tr class="success">
+                                                            <#if api.apiFake?? && api.apiFake.fakeV??>
+                                                                <#if api.proxyApi.minCost==api.cost>
+                                                                <tr class="success">
+                                                                <#else >
+                                                                <tr>
+                                                                </#if>
                                                             <#else >
-                                                            <tr>
+                                                            <tr class="danger">
                                                             </#if>
                                                             <td data-title="选择"><input class="checkboxes" type="checkbox" id="checkBoxApiIdBan" name="checkBoxApiIdBan" value="${api.id}"/></td>
                                                             <td data-title="产品类型">${api.apiType.name}
-                                                                <#if (api.mobileOperatorList?size>0)>--
-                                                                    <#list api.mobileOperatorList as mobileOperator>
-                                                                    ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
-                                                                    </#list>
-                                                                </#if>
                                                                 <#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
                                                             </td>
                                                             <td data-title="合作公司">
                                                                 <#if (api.apiVendor.partner.id)??>
-                                                                    <a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
+                                                                    <a href="/api/api-message?pid=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
                                                                 <#else >
                                                                     无
                                                                 </#if>
@@ -177,6 +225,9 @@
                                                     <i class="icon-ok-sign"></i>启用
                                                 </button>
                                             </div>
+                                            <div class="pull-right tip-remark">
+                                                <span>注：红色标注的行是未修改初始价格的产品</span>
+                                            </div>
                                         </div>
 
                                         <table class="table table-striped table-bordered table-hover table-condensed" id="sample_product_2">
@@ -193,19 +244,18 @@
                                                 <#if apiList??>
                                                     <#list apiList as api>
                                                         <#if api.status != 0>
-                                                        <tr>
+                                                            <#if api.apiFake?? && api.apiFake.fakeV??>
+                                                            <tr>
+                                                            <#else >
+                                                            <tr class="danger">
+                                                            </#if>
                                                             <td><input class="checkboxes" type="checkbox" id="checkBoxApiIdUnBan" name="checkBoxApiIdUnBan" value="${api.id}"/></td>
                                                             <td data-title="产品类型" class="font-text-decoration">${api.apiType.name}
-                                                                <#if (api.mobileOperatorList?size>0)>--
-                                                                    <#list api.mobileOperatorList as mobileOperator>
-                                                                    ${mobileOperator.name}<#if (api.mobileOperatorList?size>1)>,</#if>
-                                                                    </#list>
-                                                                </#if>
                                                                 <#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
                                                             </td>
                                                             <td data-title="合作公司">
                                                                 <#if (api.apiVendor.partner.id)??>
-                                                                    <a href="/api/api-message?partnerId=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
+                                                                    <a href="/api/api-message?pid=${(api.apiVendor.partner.id)!''}">${(api.apiVendor.partner.name)!'无'}</a>
                                                                 <#else >
                                                                     无
                                                                 </#if>
@@ -261,159 +311,6 @@
 
             ApiProduct.init();
 
-            /*状态正常批量禁用Api操作*/
-            $("#batchBanApi").on('click',function () {
-
-                var apiId =[];//定义一个数组
-                $('input[name="checkBoxApiIdBan"]:checked').each(function(){
-                    apiId.push($.trim($(this).val()));
-                });
-
-                if (apiId == null || apiId == ""){
-                    swal({
-                        title: "操作提示",
-                        text: "请先选择要禁用的产品！",
-                        type: "info",
-                        confirmButtonText: "确定"
-                    });
-                }else {
-
-                    swal({
-                        title: "确定要禁用吗？",   //弹出框的title
-                        type: "question",    //弹出框类型
-                        showCancelButton: true, //是否显示取消按钮
-                        allowOutsideClick: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        cancelButtonText: "取消",//取消按钮文本
-                        confirmButtonText: "确定禁用"//确定按钮上面的文档
-                    }).then(function () {
-
-                        $.ajax({
-                            type:'post',
-                            url:"/api/ban",
-                            data:{"apiId": apiId},
-                            dataType:'json',
-                            beforeSend:function () {
-                                openProgress();
-                            },
-                            success:function(data){
-                                closeProgress();
-                                if (data != null){
-                                    if (data.fail != null){
-                                        swal({
-                                            title: "操作提示",
-                                            text: data.fail,
-                                            type: "error",
-                                            showCancelButton: false,
-                                            confirmButtonColor: '#3085d6',
-                                            confirmButtonText: "确定"
-                                        }).then(function () {
-                                            location.reload();
-                                            return;
-                                        })
-                                    }
-                                    if (data.success != null){
-                                        swal({
-                                            title: "操作提示",
-                                            text: "禁用成功",
-                                            type: "success",
-                                            showCancelButton: false, //是否显示取消按钮
-                                            confirmButtonColor: '#3085d6',
-                                            confirmButtonText: "确定"//确定按钮上面的文档
-                                        }).then(function () {
-                                            location.reload();
-                                        })
-                                    }
-                                }
-
-                            }
-                        });
-
-                    },function(dismiss) {
-                        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
-                        if (dismiss === 'cancel') {}
-                    });
-
-                }
-            });
-
-            /*状态禁用批量启用Api操作*/
-            $("#batchUnBanApi").on('click',function () {
-
-                var apiId =[];//定义一个数组
-                $('input[name="checkBoxApiIdUnBan"]:checked').each(function(){
-                    apiId.push($.trim($(this).val()));
-                });
-
-                if (apiId == null || apiId == ""){
-                    swal({
-                        title: "操作提示",
-                        text: "请先选择要启用的产品！",
-                        type: "info",
-                        confirmButtonText: "确定"
-                    });
-                }else {
-
-                    swal({
-                        title: "确定要启用吗？",   //弹出框的title
-                        type: "question",    //弹出框类型
-                        showCancelButton: true, //是否显示取消按钮
-                        allowOutsideClick: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        cancelButtonText: "取消",//取消按钮文本
-                        confirmButtonText: "确定启用"//确定按钮上面的文档
-                    }).then(function () {
-
-                        $.ajax({
-                            type:'post',
-                            url:"/api/unban",
-                            data:{"apiId": apiId},
-                            dataType:'json',
-                            beforeSend:function () {
-                                openProgress();
-                            },
-                            success:function(data){
-                                closeProgress();
-                                if (data != null){
-                                    if (data.fail != null){
-                                        swal({
-                                            title: "操作提示",
-                                            text: data.fail,
-                                            type: "error",
-                                            showCancelButton: false,
-                                            confirmButtonColor: '#3085d6',
-                                            confirmButtonText: "确定"
-                                        }).then(function () {
-                                            location.reload();
-                                            return;
-                                        })
-                                    }
-                                    if (data.success != null){
-                                        swal({
-                                            title: "操作提示",
-                                            text: "启用成功",
-                                            type: "success",
-                                            showCancelButton: false, //是否显示取消按钮
-                                            confirmButtonColor: '#3085d6',
-                                            confirmButtonText: "确定"//确定按钮上面的文档
-                                        }).then(function () {
-                                            location.reload();
-                                        })
-                                    }
-                                }
-                            }
-                        });
-
-                    },function(dismiss) {
-                        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
-                        if (dismiss === 'cancel') {}
-                    });
-
-                }
-            });
-
         });
 
         function updateApiPrice(id,price) {
@@ -445,7 +342,7 @@
                 $.ajax({
                     type: "post",
                     url: "/api/update-price",
-                    data: {"aid": aid, "pic": pic},
+                    data: {"aid": aid, "pic": value},
                     dataType: "json",
                     beforeSend: function () {
                         openProgress();

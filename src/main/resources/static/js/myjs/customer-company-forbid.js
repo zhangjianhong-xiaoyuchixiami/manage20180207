@@ -78,6 +78,12 @@ var CompanyForbid = function () {
                     { "bVisible": false },  //12 账号操作
                     { "bSortable": false}  // 13 公司操作
                 ],
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [ 3 ],
+                        "sType": "html-percent"
+                    }
+                ],
                 "aaSorting": [[6, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],

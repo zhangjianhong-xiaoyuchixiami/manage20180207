@@ -238,7 +238,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @SystemServiceLog(description = "产品权限禁用")
+    @SystemServiceLog(description = "客户产品权限禁用")
     public int banCompanyApi(Integer companyId,Integer id)throws Exception {
         final String uri = "https://api.qydata.org:9000/admin/company/api/del";
         Map<String,Object> map = new HashMap<>();
@@ -253,7 +253,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @SystemServiceLog(description = "产品权限解禁")
+    @SystemServiceLog(description = "客户产品权限解禁")
     public int unBanCompanyApi(Integer id) {
         companyMapper.unBanCompanyApi(id);
         return 0;
@@ -318,7 +318,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @SystemServiceLog(description = "修改下游产品价格")
+    @SystemServiceLog(description = "修改客户产品价格")
     public int updateCompanyApiPrice(Integer companyId, String apiTypeId, String price) throws Exception{
 
         String uri = "https://api.qydata.org:9000/admin/company/api/put";

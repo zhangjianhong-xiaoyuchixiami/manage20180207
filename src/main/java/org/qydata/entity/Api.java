@@ -33,6 +33,7 @@ public class Api implements Serializable {
     private ApiType apiType;
     private ProxyApi proxyApi;
     private MobileOperator mobileOperator;
+    private ApiFake apiFake;
     private List<Customer> customerList;
     private List<MobileOperator> mobileOperatorList;
 
@@ -214,6 +215,14 @@ public class Api implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public ApiFake getApiFake() {
+        return apiFake;
+    }
+
+    public void setApiFake(ApiFake apiFake) {
+        this.apiFake = apiFake;
     }
 
     @Override

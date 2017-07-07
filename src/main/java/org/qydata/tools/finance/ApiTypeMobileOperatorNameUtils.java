@@ -27,4 +27,24 @@ public class ApiTypeMobileOperatorNameUtils {
         return resuName;
     }
 
+    public static String apiTypeVendorMobileOperatorName(String name,String vendorName, List<MobileOperator> list){
+        String resuName = name;
+        if (list != null && list.size() > 0){
+            resuName = resuName + "--";
+            for (int i = 0; i < list.size() ; i++) {
+                MobileOperator mobileOperator = list.get(i);
+                if (mobileOperator != null && mobileOperator.getName() != null){
+                    resuName = resuName + mobileOperator.getName() + "，";
+                }
+            }
+            if (resuName.lastIndexOf("，") != -1) {
+                resuName = resuName.substring(0, resuName.lastIndexOf("，"));
+            }
+        }
+        if (vendorName != null){
+            resuName = resuName + "@" + vendorName;
+        }
+        return resuName;
+    }
+
 }

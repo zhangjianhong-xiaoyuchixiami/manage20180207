@@ -36,13 +36,13 @@
                         </div>
                     </div>
 
-                    <form action="/api/find-all-api-vendor-consume" class="form-bottom api_vendor" method="get">
+                    <form action="/api/find-all-api-vendor-consume" class="form-bottom" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">供应商状态</label>
+                                <label>供应商状态</label>
 
                                 <div class="controls">
 
@@ -64,11 +64,11 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">产品供应商</label>
+                                <label>产品供应商</label>
 
                                 <div class="controls">
 
-                                    <select class="medium m-wrap chosen" data-placeholder="请选择..." tabindex="1" id="vendorId" name="vendorId">
+                                    <select class="medium m-wrap" id="vendorId" name="vendorId">
                                         <option value=""></option>
                                         <#if apiVendorList??>
                                             <#list apiVendorList as apiVendor>
@@ -82,7 +82,7 @@
 
                             <div class="pull-left margin-right-20 head-search-bottom">
 
-                                <label class="control-label">起始日期</label>
+                                <label>起始日期</label>
 
                                 <div class="controls">
 
@@ -98,7 +98,7 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">结束日期</label>
+                                <label>结束日期</label>
 
                                 <div class="controls">
 
@@ -114,7 +114,7 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label class="control-label">&nbsp;&nbsp;</label>
+                                <label>&nbsp;&nbsp;</label>
 
                                 <div class="controls" >
 
@@ -460,9 +460,9 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+  <#--  <script src="https://code.highcharts.com/highcharts.js"></script>
 
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 
     <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
 
@@ -478,6 +478,13 @@
 
         jQuery(document).ready(function() {
             ApiVendorRecord.init();
+
+            $("#vendorId").select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
         });
 
     </script>

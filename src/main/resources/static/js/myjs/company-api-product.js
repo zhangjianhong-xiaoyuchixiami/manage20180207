@@ -8,15 +8,22 @@ var CompanyApiProduct = function () {
                 return;
             }
 
-            // apiRecord
+
             var oTable = $('#sample_company_product_1').dataTable({
                 "aoColumns": [
+                    { "bSortable": false},
                     null,
                     null,
                     null,
                     null
                 ],
-                "aaSorting": [[0, 'asc']],
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [ 4 ],
+                        "sType": "html-percent"
+                    }
+                ],
+                "aaSorting": [[1, 'asc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -42,14 +49,22 @@ var CompanyApiProduct = function () {
                 "bFilter" : false //设置全文搜索框，默认true
             });
 
+
             var oTable2 = $('#sample_company_product_2').dataTable({
                 "aoColumns": [
+                    { "bSortable": false},
                     null,
                     null,
                     null,
                     null
                 ],
-                "aaSorting": [[0, 'asc']],
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [ 4 ],
+                        "sType": "html-percent"
+                    }
+                ],
+                "aaSorting": [[1, 'asc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -73,6 +88,34 @@ var CompanyApiProduct = function () {
                     }
                 },
                 "bFilter" : false //设置全文搜索框，默认true
+            });
+
+            /*状态正常全选操作*/
+            jQuery('#sample_company_product_1 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            /*状态禁用全选操作*/
+            jQuery('#sample_company_product_2 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
             });
 
 
@@ -84,30 +127,100 @@ var CompanyApiProduct = function () {
 
             $('#apiProductArrow').addClass('arrow open');
 
+            $('#cid').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
 
-            /* $("#apiTypeId").change(function () {
-             var param = $("#apiTypeId").val();
-             if (param !=null) {
-             $.ajax({
-             url: '/api/api-vendor',
-             data: {"apiTypeId": param},
-             type: 'post',
-             dataType: 'json',
-             success: function (data) {
-             if(data != null){
-             $("#vendorId ").empty();
-             $("#vendorId").append("<option value=''>请选择...</option>");
-             for (var i=0; i<data.length; i++){
-             var op=document.createElement("option");
-             op.value=data[i].id;
-             op.innerHTML=data[i].name;
-             $("#vendorId").append(op);
-             }
-             }
-             }
-             });
-             }
-             });*/
+            $('#pid').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            $('#tid').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
+            /*状态正常批量禁用CompanyApi操作*/
+            $("#batch_add").on('click',function () {
+
+                var cid_id =[];//定义一个数组
+                $('input[name="checkBoxId"]:checked').each(function(){
+                    cid_id.push($.trim($(this).val()));
+                });
+
+                if (cid_id == null || cid_id == ""){
+                    swal({
+                        title: "操作提示",
+                        text: "请先选择要禁用的产品！",
+                        type: "info",
+                        confirmButtonText: "确定"
+                    });
+                }else {
+
+                    swal({
+                        title: "确定要禁用吗？",   //弹出框的title
+                        type: "question",    //弹出框类型
+                        showCancelButton: true, //是否显示取消按钮
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: "取消",//取消按钮文本
+                        confirmButtonText: "确定禁用"//确定按钮上面的文档
+                    }).then(function () {
+
+                        $.ajax({
+                            type:'post',
+                            url:"/api/company/ban-api",
+                            data:{"cid_id": cid_id},
+                            dataType:'json',
+                            beforeSend:function () {
+                                openProgress();
+                            },
+                            success:function(data){
+                                closeProgress();
+                                if (data != null){
+                                    if (data.fail != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.fail,
+                                            type: "error",
+                                            showCancelButton: false,
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"
+                                        }).then(function () {
+                                            window.location.href = window.location.href
+                                            return;
+                                        })
+                                    }
+                                    if (data.success != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: "禁用成功",
+                                            type: "success",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
+                                        }).then(function () {
+                                            window.location.href = window.location.href
+                                        })
+                                    }
+                                }
+
+                            }
+                        });
+
+                    },function(dismiss) {
+                        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                        if (dismiss === 'cancel') {}
+                    });
+
+                }
+            });
 
         }
 
