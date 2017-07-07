@@ -404,7 +404,7 @@
                     </div>
 
                 <#--修改余额-->
-                    <div id="form_modal_update_balance" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_update_balance" aria-hidden="true">
+                    <div id="form_modal_update_balance" class="modal hide fade myModal" role="dialog" aria-labelledby="myModalLabel_update_balance" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                             <h3 id="myModalLabel_update_balance">请填写信息</h3>
@@ -440,7 +440,7 @@
                     </div>
 
                 <#--产品管理-->
-                    <div id="form_modal_company_api_status" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_company_api_status" aria-hidden="true">
+                    <div id="form_modal_company_api_status" class="modal hide fade myModal" role="dialog" aria-labelledby="myModalLabel_company_api_status" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                             <h3 id="myModalLabel_company_api_status">产品权限管理</h3>
@@ -518,7 +518,7 @@
                     </div>
 
                 <#--新增客户-添加账号-批量分配权限-批量添加Ip-->
-                    <div id="form_modal_from_wizard" class="modal hide fade myModalWizard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_from_wizard" aria-hidden="true">
+                    <div id="form_modal_from_wizard" class="modal hide fade myModalWizard" role="dialog" aria-labelledby="myModalLabel_from_wizard" aria-hidden="true">
 
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -660,7 +660,7 @@
                                                                 <label class="control-label">请选择合作公司</label>
                                                                 <div class="controls">
                                                                     <select id="partnerId" name="partnerId" class="span6 medium">
-                                                                        <option value="">请选择</option>
+                                                                        <option value=""></option>
                                                                         <#if partnerList??>
                                                                             <#list partnerList as partner>
                                                                                 <option value="${partner.id}">${partner.name}</option>
@@ -691,7 +691,7 @@
                                                                         <div class="controls">
 
                                                                             <select id="add_api_type_sub" name="add_api_type_sub_1" class="span6 m-wrap">
-                                                                                <option value="">请选择</option>
+                                                                                <option value=""></option>
                                                                                 <#if apiTypeList??>
                                                                                     <#list apiTypeList as apiType>
                                                                                         <#if apiType.mobileOperatorName??>
@@ -941,31 +941,21 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script src="/js/sweetalert/sweetalert2.min.js"></script>
+    <script src="/js/myjs/customer-company.js?v=${ver}"></script>
 
-    <script src="/js/sweetalert/core.js"></script>
+    <script src="/js/myjs/customer-company-forbid.js?v=${ver}"></script>
 
-    <script src="/js/former/jquery.dataTables.js" type="text/javascript" ></script>
+    <script src="/js/oldlocal/company-api-operator.js?v=${ver}"></script>
 
-    <script src="/js/former/DT_bootstrap.js" type="text/javascript" ></script>
+    <script src="/js/oldlocal/company-ip-operator.js?v=${ver}"></script>
 
-    <script src="/js/locales/dataTables-sort-plungin.js"></script>
+    <script src="/js/oldlocal/company-charge-fee.js?v=${ver}"></script>
 
-    <script src="/js/myjs/customer-company.js"></script>
+    <script src="/js/oldlocal/company-credit.js?v=${ver}"></script>
 
-    <script src="/js/myjs/customer-company-forbid.js"></script>
+    <script src="/js/oldlocal/company.js?v=${ver}"></script>
 
-    <script src="/js/oldlocal/company-api-operator.js"></script>
-
-    <script src="/js/oldlocal/company-ip-operator.js"></script>
-
-    <script src="/js/oldlocal/company-charge-fee.js"></script>
-
-    <script src="/js/oldlocal/company-credit.js"></script>
-
-    <script src="/js/oldlocal/company.js"></script>
-
-    <script src="/js/oldlocal/company-add-company.js"></script>
+    <script src="/js/oldlocal/company-add-company.js?v=${ver}"></script>
 
     <script type="text/javascript">
 
@@ -975,7 +965,7 @@
             Company.init();
             CompanyForbid.init();
 
-           /* $("#partnerId").select2({
+            $("#partnerId").select2({
                 language: "zh-CN",
                 placeholder: "请选择",
                 allowClear: true
@@ -985,7 +975,7 @@
                 language: "zh-CN",
                 placeholder: "请选择",
                 allowClear: true
-            })*/
+            })
 
         });
 

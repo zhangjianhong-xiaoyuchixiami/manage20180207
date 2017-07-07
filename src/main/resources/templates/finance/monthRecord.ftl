@@ -227,19 +227,16 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
-
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
 
     <script src="https://code.highcharts.com/highcharts.js"></script>
 
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-    <script src="/js/myjs/customerleftbar.js"></script>
+    <script src="/js/myjs/customerleftbar.js?v=${ver}"></script>
 
-    <script src="/js/myjs/month-record.js"></script>
+    <script src="/js/myjs/month-record.js?v=${ver}"></script>
 
-    <script src="/js/oldlocal/month-Record.js"></script>
+    <script src="/js/oldlocal/month-Record.js?v=${ver}"></script>
 
     <script type="text/javascript">
 

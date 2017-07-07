@@ -191,15 +191,11 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/myjs/customer-charge.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
+    <script src="/js/myjs/customerleftbar.js?v=${ver}"></script>
 
-    <script src="/js/myjs/customer-charge.js"></script>
-
-    <script src="/js/myjs/customerleftbar.js"></script>
-
-    <script src="/js/oldlocal/customer-balance-log-record.js"></script>
+    <script src="/js/oldlocal/customer-balance-log-record.js?v=${ver}"></script>
 
     <script type="text/javascript">
 

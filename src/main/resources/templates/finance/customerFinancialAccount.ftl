@@ -577,25 +577,15 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/myjs/customerleftbar.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
+    <script src="/js/myjs/customer-finance-account.js?v=${ver}"></script>
 
-    <script src="/js/locales/dataTables-sort-plungin.js"></script>
+    <script src="/js/oldlocal/customer-finance-account.js?v=${ver}"></script>
 
-    <script src="/js/sweetalert/sweetalert2.min.js"></script>
+    <script src="/js/oldlocal/customer-finance-curr-day-api-type-consume.js?v=${ver}"></script>
 
-    <script src="/js/sweetalert/core.js"></script>
-
-    <script src="/js/myjs/customerleftbar.js"></script>
-
-    <script src="/js/myjs/customer-finance-account.js"></script>
-
-    <script src="/js/oldlocal/customer-finance-account.js"></script>
-
-    <script src="/js/oldlocal/customer-finance-curr-day-api-type-consume.js"></script>
-
-    <script src="/js/oldlocal/customer-finance-account-send-email.js"></script>
+    <script src="/js/oldlocal/customer-finance-account-send-email.js?v=${ver}"></script>
 
     <script>
         jQuery(document).ready(function() {

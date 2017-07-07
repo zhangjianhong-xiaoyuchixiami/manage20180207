@@ -197,7 +197,7 @@
 
                     </div>
 
-                    <div id="form_modal" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div id="form_modal" class="modal hide fade myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                             <h3 id="myModalLabel">请填写信息</h3>
@@ -301,19 +301,11 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/former/bootstrap-datetimepicker.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
+    <script src="/js/locales/set-datatimepicker-zh-CN.js?v=${ver}"></script>
 
-    <script src="/js/sweetalert/sweetalert2.min.js"></script>
-
-    <script src="/js/sweetalert/core.js"></script>
-
-    <script src="/js/former/bootstrap-datetimepicker.js"></script>
-
-    <script src="/js/locales/set-datatimepicker-zh-CN.js"></script>
-
-    <script src="/js/myjs/company-api-price-change-log.js"></script>
+    <script src="/js/myjs/company-api-price-change-log.js?v=${ver}"></script>
 
     <script type="text/javascript">
 
@@ -322,8 +314,6 @@
             CompanyApiPriceChangeLog.init();
 
         });
-
-
 
     </script>
 

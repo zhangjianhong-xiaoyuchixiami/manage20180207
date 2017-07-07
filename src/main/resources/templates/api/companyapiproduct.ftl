@@ -261,17 +261,7 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
-
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
-
-    <script src="/js/locales/dataTables-sort-plungin.js"></script>
-
-    <script src="/js/sweetalert/sweetalert2.min.js"></script>
-
-    <script src="/js/sweetalert/core.js"></script>
-
-    <script src="/js/myjs/company-api-product.js"></script>
+    <script src="/js/myjs/company-api-product.js?v=${ver}"></script>
 
     <script type="text/javascript">
 

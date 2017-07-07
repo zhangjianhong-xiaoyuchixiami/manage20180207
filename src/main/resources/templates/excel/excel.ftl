@@ -458,18 +458,6 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
-
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
-
-    <script src="/js/sweetalert/sweetalert2.min.js"></script>
-
-    <script src="/js/sweetalert/core.js"></script>
-
-    <script src="/js/former/select2/select2.min.js"></script>
-
-    <script src="/js/former/select2/i18n/zh-CN.js"></script>
-
     <script src="/js/former/bootstrap-datetimepicker.js"></script>
 
     </#if>

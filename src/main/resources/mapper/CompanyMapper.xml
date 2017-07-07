@@ -120,7 +120,7 @@
 
     <!--根据公司Id查找公司名称-用于禁用/解禁公司的操作提醒-->
     <select id="queryCompanyNameByCompanyId" parameterType="int" resultType="String">
-        SELECT DISTINCT(companyName)
+        SELECT DISTINCT companyName
         FROM qyfinance.bkvwCustomer
         WHERE companyId=#{param}
     </select>
@@ -136,9 +136,8 @@
 
     <!--查询全部产品权限-->
     <select id="queryAllApi" resultType="org.qydata.dst.ApiTypeSubType">
-        SELECT DISTINCT(a.apiTypeId) apiTypeId,a.apiTypeName,a.mobileOperatorId,a.mobileOperatorName
+        SELECT DISTINCT a.apiTypeId apiTypeId,a.apiTypeName,a.mobileOperatorId,a.mobileOperatorName
         FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
-        WHERE a.status=0
     </select>
 
     <!--根据账号Id查找Ip-->

@@ -330,13 +330,9 @@
 
     <script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/myjs/api.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
-
-    <script src="/js/myjs/api.js"></script>
-
-    <script src="/js/oldlocal/api-Record.js"></script>
+    <script src="/js/oldlocal/api-Record.js?v=${ver}"></script>
 
     <script type="text/javascript">
 

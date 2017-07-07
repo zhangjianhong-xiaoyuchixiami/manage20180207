@@ -169,7 +169,7 @@ function editRow(oTableEdit, nRow) {
         success: function (data) {
 
             jqTds[0].innerHTML = '<select class="medium m-wrap" id="apiTypeId_subTypeId" name="apiTypeId_subTypeId">' +
-                '<option value="">请选择</option></select>';
+                '<option value=""></option></select>';
             jqTds[1].innerHTML = '<input type="text" class="span9 m-wrap" id="apiType_price" name="apiType_price" placeholder="单位：元">';
             jqTds[2].innerHTML = '';
             jqTds[3].innerHTML = '<a class="save" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancel" href="javaScript:;">取消</a>';
@@ -186,14 +186,14 @@ function editRow(oTableEdit, nRow) {
                 }
             }
 
+            $("#apiTypeId_subTypeId").select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            })
+
         }
     });
-
-    /*$("#apiTypeId_subTypeId").select2({
-        language: "zh-CN",
-        placeholder: "请选择",
-        allowClear: true
-    })*/
 
 }
 

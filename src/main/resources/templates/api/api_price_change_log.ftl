@@ -23,7 +23,7 @@
 
                 <#--搜索框-->
 
-                    <form action="/api/api-price-change-log" class="form-bottom api_price_change_log" method="get">
+                    <form action="/api/api-price-change-log" class="form-bottom" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
@@ -197,7 +197,7 @@
 
                     </div>
 
-                    <div id="form_modal_add_price_change_log" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_add_price_change_log" aria-hidden="true">
+                    <div id="form_modal_add_price_change_log" class="modal hide fade myModal" role="dialog" aria-labelledby="myModalLabel_add_price_change_log" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                             <h3 id="myModalLabel_add_price_change_log">请填写信息</h3>
@@ -224,7 +224,7 @@
                                 <div id="" class="control-group">
                                     <label class="control-label">请选择产品<span class="required">*</span></label>
                                     <div class="controls">
-                                        <select id="add_price_change_log_apiId" name="add_price_change_log_apiId" class="large m-wrap" tabindex="1">
+                                        <select id="add_price_change_log_apiId" name="add_price_change_log_apiId" class="large m-wrap">
                                             <option value=""></option>
                                             <#if apiList??>
                                                 <#list apiList as api>
@@ -291,21 +291,11 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/former/bootstrap-datetimepicker.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
+    <script src="/js/locales/set-datatimepicker-zh-CN.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/assect/jquery.validate.min.js"></script>
-
-    <script src="/js/sweetalert/sweetalert2.min.js"></script>
-
-    <script src="/js/sweetalert/core.js"></script>
-
-    <script src="/js/former/bootstrap-datetimepicker.js"></script>
-
-    <script src="/js/locales/set-datatimepicker-zh-CN.js"></script>
-
-    <script src="/js/myjs/api-price-change-log.js"></script>
+    <script src="/js/myjs/api-price-change-log.js?v=${ver}"></script>
 
     <script type="text/javascript">
 

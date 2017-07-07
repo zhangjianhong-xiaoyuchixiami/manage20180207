@@ -205,15 +205,11 @@
 
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/myjs/customer-api-consume.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
+    <script src="/js/myjs/customerleftbar.js?v=${ver}"></script>
 
-    <script src="/js/myjs/customer-api-consume.js"></script>
-
-    <script src="/js/myjs/customerleftbar.js"></script>
-
-    <script src="/js/oldlocal/customer-api-consume-record.js"></script>
+    <script src="/js/oldlocal/customer-api-consume-record.js?v=${ver}"></script>
 
     <script type="text/javascript">
 

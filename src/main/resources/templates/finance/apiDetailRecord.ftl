@@ -184,13 +184,9 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/myjs/api-detail.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
-
-    <script src="/js/myjs/api-detail.js"></script>
-
-    <script src="/js/oldlocal/api-detail-Record.js"></script>
+    <script src="/js/oldlocal/api-detail-Record.js?v=${ver}"></script>
 
     <script type="text/javascript">
 

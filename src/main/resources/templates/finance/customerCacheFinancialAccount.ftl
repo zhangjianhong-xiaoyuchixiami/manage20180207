@@ -192,21 +192,11 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/myjs/customer-cache-finance-account.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
+    <script src="/js/myjs/customer-cache-left-bar.js?v=${ver}"></script>
 
-    <script src="/js/locales/dataTables-sort-plungin.js"></script>
-
-    <script src="/js/sweetalert/sweetalert2.min.js"></script>
-
-    <script src="/js/sweetalert/core.js"></script>
-
-    <script src="/js/myjs/customer-cache-finance-account.js"></script>
-
-    <script src="/js/myjs/customer-cache-left-bar.js"></script>
-
-    <script src="/js/oldlocal/customer-finance-curr-day-cache-api-type-consume.js"></script>
+    <script src="/js/oldlocal/customer-finance-curr-day-cache-api-type-consume.js?v=${ver}"></script>
 
     <script>
         jQuery(document).ready(function () {

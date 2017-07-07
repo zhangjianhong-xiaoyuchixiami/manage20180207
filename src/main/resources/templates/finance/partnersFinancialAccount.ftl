@@ -394,15 +394,9 @@
 
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
+    <script src="/js/myjs/partnersfinanceaccount.js?v=${ver}"></script>
 
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
-
-    <script src="/js/myjs/partnersfinanceaccount.js"></script>
-
-    <script src="/js/oldlocal/partner-finance-account.js"></script>
-
-    <script src="/js/locales/dataTables-sort-plungin.js"></script>
+    <script src="/js/oldlocal/partner-finance-account.js?v=${ver}"></script>
 
     <script>
         jQuery(document).ready(function() {

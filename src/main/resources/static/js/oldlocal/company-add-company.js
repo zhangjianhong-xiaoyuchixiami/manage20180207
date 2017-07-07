@@ -557,7 +557,7 @@ var AddCompanyAllotApiAddIp = function () {
                                 '<label class="control-label">产品类型</label>' +
                                 '<div class="controls">' +
                                 '<select id="add_api_type_sub" name="add_api_type_sub_'+ count +'" class="span6 m-wrap">' +
-                                '<option value="">请选择...</option>' +
+                                '<option value=""></option>' +
                                 '</select>' +
                                 '<span class="help-inline"></span>' +
                                 '</div>' +
@@ -582,6 +582,12 @@ var AddCompanyAllotApiAddIp = function () {
                                 $('select[name="add_api_type_sub_'+ count +'"]').append(myContent);
                             }
 
+                            $('select[name="add_api_type_sub_'+ count +'"]').select2({
+                                language: "zh-CN",
+                                placeholder: "请选择",
+                                allowClear: true
+                            });
+
                             $('#control-group-add-api-affirm').append(
                                 '<div class="control-group">' +
                                 '<label class="control-label">产品类型:</label>' +
@@ -605,6 +611,7 @@ var AddCompanyAllotApiAddIp = function () {
                                 confirmButtonText: "确定"
                             });
                         }
+
                     }
                 });
 

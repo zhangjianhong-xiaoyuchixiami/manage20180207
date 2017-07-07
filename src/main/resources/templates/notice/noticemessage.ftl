@@ -153,11 +153,7 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script type="text/javascript" src="/js/former/jquery.dataTables.js"></script>
-
-    <script type="text/javascript" src="/js/former/DT_bootstrap.js"></script>
-
-    <script src="/js/myjs/api-product.js"></script>
+    <script src="/js/myjs/api-product.js?v=${ver}"></script>
 
     <script type="text/javascript">
 
