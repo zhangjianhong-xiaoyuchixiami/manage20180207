@@ -400,6 +400,9 @@ public class ShiroConfig {
 		chains.put("/customer/find-all-customer-request-log-ajax", "authc,perms");
 		chains.put("/customer/find-all-customer-request-log/content", "authc,perms");
 
+		//财务对账
+		chains.put("/excel/extra-account", "authc,perms");
+
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.ExcelMapper">
+
+
+    <resultMap id="ExportExcel_Map" type="org.qydata.entity.ExportExcel">
+        <result column="apiTypeName_stidName" property="apiTypeName_stidName"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="sumCount" property="sumCount"/>
+        <result column="yearMonth" property="yearMonth"/>
+        <result column="yearMonthDay" property="yearMonthDay"/>
+        <result column="years" property="years"/>
+        <result column="months" property="months"/>
+        <result column="days" property="days"/>
+    </resultMap>
+
+
+    <!--统计合作方使用我方源  统计方式：汇总-->
+    <select id="queryPartnerUserOurBySum" parameterType="map" resultMap="ExportExcel_Map">
+        SELECT CONCAT_WS('-',b.name,d.name) apiTypeName_stidName,c.name vendorName,a.sumCount
+        FROM
+        (
+            SELECT sum(a.count) sumCount,b.apiTypeId,b.vendorId,b.mobileOperatorId
+            FROM
+            (
+                SELECT a.apiId,count(a.id) count
+                FROM
+                (
+                    SELECT IFNULL(d.apiId,a.chosenApiId) apiId,b.id
+                    FROM qydata.CustomerRequestLog a
+                    INNER JOIN qydata.CustomerBalanceLog b ON a.id = b.reqId
+                    LEFT JOIN qyfinance.bkvwCustomer c ON a.customerId = c.id
+                    LEFT JOIN qydata.CustomerResponseLog d ON a.id = d.reqId
+                    WHERE c.typeId = 1
+                    <if test="beginDate != null and beginDate != '' ">
+                        AND b.createTime >= #{beginDate}
+                    </if>
+                    <if test="endDate != null and endDate != '' ">
+                        <![CDATA[
+                        AND b.createTime < #{endDate}
+                         ]]>
+                    </if>
+                    <if test="cidList!=null and cidList.size()!=0">
+                        AND a.customerId NOT IN
+                        <foreach collection="cidList" item="cid" index="index" open="(" close=")" separator=",">
+                            #{cid}
+                        </foreach>
+                    </if>
+                    <if test="pid != null and pid != '' ">
+                        AND c.partnerId = #{pid}
+                    </if>
+                ) a
+                LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+                WHERE b.partnerId IS NULL
+                GROUP BY a.apiId
+            ) a
+            LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+            GROUP BY b.apiTypeId,b.vendorId,b.mobileOperatorId
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.finance_ApiVendor c ON a.vendorId = c.id
+        LEFT JOIN qyfinance.bkvwMobileOperator d ON a.mobileOperatorId = d.id
+        WHERE a.sumCount > 0
+    </select>
+
+    <!--统计合作方使用我方源  统计方式：按月-->
+    <select id="queryPartnerUserOurByMonth" parameterType="map" resultMap="ExportExcel_Map">
+        SELECT a.yearMonth,a.years,a.months,CONCAT_WS('-',b.name,d.name) apiTypeName_stidName,c.name vendorName,a.sumCount
+        FROM
+        (
+            SELECT a.yearMonth,a.years,a.months,sum(a.count) sumCount,b.apiTypeId,b.vendorId,b.mobileOperatorId
+            FROM
+            (
+                SELECT
+                DATE_FORMAT(a.createTime,'%Y-%m') yearMonth,
+                DATE_FORMAT(a.createTime,'%Y') years,
+                DATE_FORMAT(a.createTime,'%m') months,
+                a.apiId,count(a.id) count
+                FROM
+                (
+                    SELECT IFNULL(d.apiId,a.chosenApiId) apiId,b.id,a.createTime
+                    FROM qydata.CustomerRequestLog a
+                    INNER JOIN qydata.CustomerBalanceLog b ON a.id = b.reqId
+                    LEFT JOIN qyfinance.bkvwCustomer c ON a.customerId = c.id
+                    LEFT JOIN qydata.CustomerResponseLog d ON a.id = d.reqId
+                    WHERE c.typeId = 1
+                    <if test="beginDate != null and beginDate != '' ">
+                        AND b.createTime >= #{beginDate}
+                    </if>
+                    <if test="endDate != null and endDate != '' ">
+                        <![CDATA[
+                        AND b.createTime < #{endDate}
+                         ]]>
+                    </if>
+                    <if test="cidList!=null and cidList.size()!=0">
+                        AND a.customerId NOT IN
+                        <foreach collection="cidList" item="cid" index="index" open="(" close=")" separator=",">
+                            #{cid}
+                        </foreach>
+                    </if>
+                    <if test="pid != null and pid != '' ">
+                        AND c.partnerId = #{pid}
+                    </if>
+                ) a
+                LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+                WHERE b.partnerId IS NULL
+                GROUP BY DATE_FORMAT(a.createTime,'%Y-%m'),a.apiId
+            ) a
+            LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+            GROUP BY a.yearMonth,b.apiTypeId,b.vendorId,b.mobileOperatorId
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.finance_ApiVendor c ON a.vendorId = c.id
+        LEFT JOIN qyfinance.bkvwMobileOperator d ON a.mobileOperatorId = d.id
+        WHERE a.sumCount > 0
+    </select>
+
+    <!--统计合作方使用我方源  统计方式：按天-->
+    <select id="queryPartnerUserOurByDay" parameterType="map" resultMap="ExportExcel_Map">
+        SELECT a.yearMonthDay,a.years,a.months,a.days,CONCAT_WS('-',b.name,d.name) apiTypeName_stidName,c.name vendorName,a.sumCount
+        FROM
+        (
+            SELECT a.yearMonthDay,a.years,a.months,a.days,sum(a.count) sumCount,b.apiTypeId,b.vendorId,b.mobileOperatorId
+            FROM
+            (
+                SELECT
+                DATE_FORMAT(a.createTime,'%Y-%m-%d') yearMonthDay,
+                DATE_FORMAT(a.createTime,'%Y') years,
+                DATE_FORMAT(a.createTime,'%m') months,
+                DATE_FORMAT(a.createTime,'%d') days,
+                a.apiId,count(a.id) count
+                FROM
+                (
+                    SELECT IFNULL(d.apiId,a.chosenApiId) apiId,b.id,a.createTime
+                    FROM qydata.CustomerRequestLog a
+                    INNER JOIN qydata.CustomerBalanceLog b ON a.id = b.reqId
+                    LEFT JOIN qyfinance.bkvwCustomer c ON a.customerId = c.id
+                    LEFT JOIN qydata.CustomerResponseLog d ON a.id = d.reqId
+                    WHERE c.typeId = 1
+                    <if test="beginDate != null and beginDate != '' ">
+                        AND b.createTime >= #{beginDate}
+                    </if>
+                    <if test="endDate != null and endDate != '' ">
+                        <![CDATA[
+                                    AND b.createTime < #{endDate}
+                                     ]]>
+                    </if>
+                    <if test="cidList!=null and cidList.size()!=0">
+                        AND a.customerId NOT IN
+                        <foreach collection="cidList" item="cid" index="index" open="(" close=")" separator=",">
+                            #{cid}
+                        </foreach>
+                    </if>
+                    <if test="pid != null and pid != '' ">
+                        AND c.partnerId = #{pid}
+                    </if>
+                ) a
+                LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+                WHERE b.partnerId IS NULL
+                GROUP BY DATE_FORMAT(a.createTime,'%Y-%m-%d'),a.apiId
+            ) a
+            LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+            GROUP BY a.yearMonth,b.apiTypeId,b.vendorId,b.mobileOperatorId
+            ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.finance_ApiVendor c ON a.vendorId = c.id
+        LEFT JOIN qyfinance.bkvwMobileOperator d ON a.mobileOperatorId = d.id
+        WHERE a.sumCount > 0
+    </select>
+
+    <select id="">
+        SELECT CONCAT_WS('-',b.name,d.name) apiTypeName_stidName,c.name vendorName,a.amount,a.sumCount
+        FROM
+        (
+            SELECT a.amount,sum(a.count) sumCount,b.apiTypeId,b.vendorId,b.mobileOperatorId
+            FROM
+            (
+                SELECT a.apiId,a.amount,count(a.id) count
+                FROM
+                (
+                    SELECT IFNULL(d.apiId,a.chosenApiId) apiId,b.amount,b.id
+                    FROM qydata.CustomerRequestLog a
+                    INNER JOIN qydata.CustomerBalanceLog b ON a.id = b.reqId
+                    LEFT JOIN qyfinance.bkvwCustomer c ON a.customerId = c.id
+                    LEFT JOIN qydata.CustomerResponseLog d ON a.id = d.reqId
+                    WHERE
+                    b.createTime >= '2017-06-01 00:00:00'
+                    <![CDATA[
+                    AND b.createTime < '2017-07-01 00:00:00'
+                    ]]>
+                    AND a.customerId != 66
+                    AND c.typeId = 1
+                    AND c.partnerId IS NOT NULL
+                ) a
+                LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+                WHERE b.partnerId IS NULL
+                GROUP BY a.apiId,a.amount
+            ) a
+            LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
+            GROUP BY b.apiTypeId,b.vendorId,b.mobileOperatorId,a.amount
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.finance_ApiVendor c ON a.vendorId = c.id
+        LEFT JOIN qyfinance.bkvwMobileOperator d ON a.mobileOperatorId = d.id
+    </select>
+
+</mapper>
+

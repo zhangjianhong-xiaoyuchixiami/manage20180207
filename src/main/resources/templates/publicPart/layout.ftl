@@ -229,13 +229,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="excel:extra-account">-->
-                              <#--  <li id="extra-account">
+                            <@shiro.hasPermission name="excel:extra-account">
+                                <li id="extra-account">
                                     <a href="/excel/extra-account">
-                                        临时对账
+                                        财务对账
                                     </a>
-                                </li>-->
-                           <#-- </@shiro.hasPermission>-->
+                                </li>
+                            </@shiro.hasPermission>
 
                         <#--  <li id="">
                               <a href="/file-upload">
