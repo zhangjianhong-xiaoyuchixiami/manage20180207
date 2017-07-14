@@ -123,7 +123,7 @@ public interface CompanyService {
      * @param id
      * @return
      */
-    @SystemServiceLog(description = "产品权限禁用")
+    @SystemServiceLog(description = "客户产品权限禁用")
     public int banCompanyApi(Integer companyId,Integer id)throws Exception;
 
     /**
@@ -131,7 +131,7 @@ public interface CompanyService {
      * @param id
      * @return
      */
-    @SystemServiceLog(description = "产品权限解禁")
+    @SystemServiceLog(description = "客户产品权限解禁")
     public int unBanCompanyApi(Integer id)throws Exception;
 
 

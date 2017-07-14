@@ -9,12 +9,15 @@ public class ExportExcel implements Serializable {
 
     private String apiTypeName_stidName;
     private String vendorName;
-    private String sumCount;
+    private Integer sumCount;
     private String yearMonth;
     private String yearMonthDay;
     private String years;
     private String months;
     private String days;
+    private String consuTime;
+    private Double cost;
+    private Double sumCost;
 
     public String getApiTypeName_stidName() {
         return apiTypeName_stidName;
@@ -32,11 +35,11 @@ public class ExportExcel implements Serializable {
         this.vendorName = vendorName;
     }
 
-    public String getSumCount() {
+    public Integer getSumCount() {
         return sumCount;
     }
 
-    public void setSumCount(String sumCount) {
+    public void setSumCount(Integer sumCount) {
         this.sumCount = sumCount;
     }
 
@@ -78,5 +81,29 @@ public class ExportExcel implements Serializable {
 
     public void setDays(String days) {
         this.days = days;
+    }
+
+    public String getConsuTime() {
+        return consuTime;
+    }
+
+    public void setConsuTime(String consuTime) {
+        this.consuTime = consuTime;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public Double getSumCost() {
+        return sumCost;
+    }
+
+    public void setSumCost(Double sumCost) {
+        this.sumCost = sumCost;
     }
 }

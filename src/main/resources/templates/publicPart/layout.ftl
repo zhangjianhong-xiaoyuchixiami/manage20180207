@@ -50,16 +50,15 @@
     <link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
     <link rel="stylesheet" type="text/css" href="/css/search.css"/>
     <link rel="stylesheet" type="text/css" href="/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="/css/invoice.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"/>
     <link rel="shortcut icon" href="/image/favicon.ico" />
-
 <#--加载中动态显示控制-->
     <link rel="stylesheet" type="text/css" href="/css/sweetlert/spinners.css" />
 <#--弹框样式控制-->
     <link rel="stylesheet" type="text/css" href="/css/sweetlert/sweet-alert2.css" />
 <#--文件上传样式控制-->
-<#-- <link rel="stylesheet" type="text/css" href="/css/upload/jquery-ui-1.8.14.custom.css" />
- <link rel="stylesheet" type="text/css" href="/css/upload/reset.css" />
- <link rel="stylesheet" type="text/css" href="/css/upload/fileUploader.css" />-->
+    <link rel="stylesheet" type="text/css" href="/css/fileinput/fileinput.css" />
 
     <style>
         a:hover {text-decoration: none;}
@@ -229,10 +228,26 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="excel:extra-account">
-                                <li id="extra-account">
-                                    <a href="/excel/extra-account">
-                                        财务对账
+                            <@shiro.hasPermission name="excel:extra-account-customer">
+                                <li id="extra-account-customer">
+                                    <a href="/excel/extra-account-customer">
+                                        客户财务对账
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="excel:extra-account-vendor">
+                                <li id="extra-account-vendor">
+                                    <a href="/excel/extra-account-vendor">
+                                        供应商财务对账
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
+                            <@shiro.hasPermission name="excel:extra-account-partner">
+                                <li id="extra-account-partner">
+                                    <a href="/excel/extra-account-partner">
+                                        合作公司财务对账
                                     </a>
                                 </li>
                             </@shiro.hasPermission>

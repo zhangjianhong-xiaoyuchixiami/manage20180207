@@ -11,8 +11,6 @@ import java.util.Map;
  */
 public class ExportIoOperate {
 
-
-
     public static  void excelEndOperator(List<Map<String,Object>> list,String keys[],String columnNames[],String fileName,HttpServletResponse response) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
@@ -26,10 +24,6 @@ public class ExportIoOperate {
         response.reset();
         response.setContentType("application/octet-stream;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename="+ new String(fileName .getBytes(), "iso-8859-1") + ".xls" );
-
-
-
-
         ServletOutputStream out = null;
         try {
             out = response.getOutputStream();

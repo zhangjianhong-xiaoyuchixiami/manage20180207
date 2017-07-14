@@ -503,14 +503,6 @@ public class CompanyController {
     public String addCustomerIp(Integer companyId,String beginIp,String endIp){
         Map<String,Object> map = new HashMap<>();
         Gson gson = new Gson();
-        if(!RegexUtil.isIp(beginIp)){
-            map.put("beginIpMessage","请输入正确的Ip格式，如：192.168.111.112!");
-            return gson.toJson(map);
-        }
-        if(!RegexUtil.isIp(endIp)){
-            map.put("endIpMessage","请输入正确的Ip格式，如：192.168.111.112!");
-            return gson.toJson(map);
-        }
         int result = 0;
         try {
             result = companyService.addCustomerIp(companyId,beginIp,endIp);
