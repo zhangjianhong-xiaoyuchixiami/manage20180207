@@ -27,7 +27,7 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label >合作公司</label>
+                                <label class="">合作公司<span class="required">*</span></label>
 
                                 <div class="controls">
 
@@ -46,7 +46,7 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label >统计方式</label>
+                                <label class="">统计方式<span class="required">*</span></label>
 
                                 <div class="controls">
 
@@ -140,7 +140,7 @@
                         <div class="row-fluid">
 
                             <div class="pull-left">
-                                <span><h4>${pim!'对方'}使用我方源</h4></span>
+                                <span><h4><strong>${pim!'对方'}使用我方源</strong></h4></span>
                             </div>
 
                             <div class="pull-right">
@@ -179,7 +179,7 @@
                         <div class="row-fluid">
 
                             <div class="pull-left">
-                                <span><h4>我方使用${pim!'对方'}源</h4></span>
+                                <span><h4><strong>我方使用${pim!'对方'}源</strong></h4></span>
                             </div>
 
                             <table class="table table-hover table-condensed" id="sample_2">
@@ -214,7 +214,7 @@
                         <div class="row-fluid">
 
                             <div class="pull-left">
-                                <span><h4>${pim!'对方'}使用我方源售卖</h4></span>
+                                <span><h4><strong>${pim!'对方'}使用我方源售卖</strong></h4></span>
                             </div>
 
                             <table class="table table-hover table-condensed" id="sample_3">

@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.entity.ApiType;
 import org.qydata.entity.Company;
 import org.qydata.entity.Partner;
 import org.qydata.entity.excel.ExportExcel;
@@ -87,4 +88,46 @@ public interface ExcelMapper {
      * @return
      */
     public List<Company> queryCompanyByPid(Integer pid);
+
+    /**
+     * 根据公司companyId查询正式账号id
+     * @param cid
+     * @return
+     */
+    public Integer queryCustomerIdByCompanyId(Integer cid);
+
+    /**
+     * 统计客户消费情况  统计方式：汇总
+     * @param map
+     * @return
+     */
+    public List<ExportExcel> queryCustomerConsumeStatusBySum(Map<String,Object> map);
+
+    /**
+     * 统计客户消费情况  统计方式：按月
+     * @param map
+     * @return
+     */
+    public List<ExportExcel> queryCustomerConsumeStatusByMonth(Map<String,Object> map);
+
+    /**
+     * 统计客户消费情况  统计方式：按天
+     * @param map
+     * @return
+     */
+    public List<ExportExcel> queryCustomerConsumeStatusByDay(Map<String,Object> map);
+
+    /**
+     * 根据公司companyId查询公司名称
+     * @param cid
+     * @return
+     */
+    public String queryCompanyNameByCompanyId(Integer cid);
+
+    /**
+     * 公司Id查询产品类型
+     * @param cid
+     * @return
+     */
+    public List<ApiType> queryApiTypeByCid(Integer cid);
 }

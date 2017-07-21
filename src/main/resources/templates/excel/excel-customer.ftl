@@ -21,21 +21,21 @@
 
                 <div class="span12">
 
-                    <form action="/excel/extra-account-partner" id="submit_form" class="form-bottom-excel form-top" method="get">
+                    <form action="/excel/extra-account-customer" id="submit_form" class="form-bottom-excel form-top" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
                             <div class="pull-left head-search-bottom">
 
-                                <label >合作公司</label>
+                                <label class="">请选择客户<span class="required">*</span></label>
 
                                 <div class="controls">
 
-                                    <select class="medium m-wrap" id="pid" name="pid">
+                                    <select class="medium m-wrap" id="cid" name="cid">
                                         <option value=""></option>
-                                        <#if partnerList??>
-                                            <#list partnerList as partner>
-                                                <option <#if pid?? && pid==partner.id>selected="selected"</#if> value="${partner.id}">${partner.name}</option>
+                                        <#if companyList??>
+                                            <#list companyList as company>
+                                                <option <#if cid?? && cid==company.id>selected="selected"</#if> value="${company.id}">${company.name}<#if company.partner??>@${(company.partner.name)!''}</#if></option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -46,7 +46,7 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label >统计方式</label>
+                                <label class="">统计方式<span class="required">*</span></label>
 
                                 <div class="controls">
 
@@ -62,18 +62,19 @@
 
                             <div class="pull-left head-search-bottom">
 
-                                <label >不统计的客户</label>
+                                <label >产品类型</label>
 
-                                <div class="controls">
+                                <div id="tid_choose" class="controls">
 
-                                    <select class="medium m-wrap" multiple id="cid" name="cid">
+                                    <select class="medium m-wrap" multiple id="tid" name="tid">
                                         <option value=""></option>
-                                        <#if companyList??>
-                                            <#list companyList as company>
-                                                <option <#if cid??><#list cid as cid><#if cid?? && cid == company.id>selected="selected"</#if></#list></#if> value="${company.id}">${company.name}<#if company.partner??>@${(company.partner.name)!''}</#if></option>
+                                        <#if apiTypeList??>
+                                            <#list apiTypeList as apiType>
+                                                <option <#if tid??><#list tid as tid><#if tid?? && tid == apiType.id>selected="selected"</#if></#list></#if> value="${apiType.id}">${apiType.name}</option>
                                             </#list>
                                         </#if>
                                     </select>
+
                                 </div>
 
                             </div>
@@ -138,101 +139,29 @@
 
                         <div class="row-fluid">
 
-                            <div class="pull-left">
-                                <span><h4>${pim!'对方'}使用我方源</h4></span>
+                            <div class="pull-right">
+                                <a class="btn grey hidden-print" id="exportExcel" href="/excel/extra-account-customer?export=true">导出Excel  <i class="icon-share icon-black"></i></a>
                             </div>
 
                             <table class="table table-hover table-condensed" id="sample_1">
                                 <thead>
                                 <tr>
                                     <th>产品类型</th>
-                                    <th class="hidden-480">产品供应商</th>
-                                    <th class="hidden-480">进货价（单位：元）</th>
+                                    <th class="hidden-480">售卖价（单位：元）</th>
                                     <th>计费次数</th>
                                     <th class="hidden-480">金额（单位：元）</th>
                                     <th class="hidden-480">统计区间</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <#if exportExcelListPartnerUserOur ??>
-                                        <#list exportExcelListPartnerUserOur as excel>
+                                    <#if exportExcelList ??>
+                                        <#list exportExcelList as excel>
                                         <tr>
                                             <td>${excel.apiTypeName_stidName!''}</td>
-                                            <td class="hidden-480">${excel.vendorName!''}</td>
                                             <td class="hidden-480">${excel.cost!''}</td>
                                             <td>${excel.sumCount!''}</td>
                                             <td class="hidden-480">${excel.sumCost!''}</td>
                                             <td class="hidden-480">${excel.consuTime!''}</td>
-                                        </tr>
-                                        </#list>
-                                    </#if>
-                                </tbody>
-                            </table>
-
-                        </div>
-
-                        <div class="row-fluid">
-
-                            <div class="pull-left">
-                                <span><h4>我方使用${pim!'对方'}源</h4></span>
-                            </div>
-
-                            <table class="table table-hover table-condensed" id="sample_2">
-                                <thead>
-                                <tr>
-                                    <th>产品类型</th>
-                                    <th class="hidden-480">产品供应商</th>
-                                    <th class="hidden-480">进货价（单位：元）</th>
-                                    <th class="hidden-480">计费次数</th>
-                                    <th>金额（单位：元）</th>
-                                    <th>统计区间</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if exportExcelListOurUserPartner ??>
-                                        <#list exportExcelListOurUserPartner as excel>
-                                        <tr>
-                                            <td class="hidden-480">${excel.apiTypeName_stidName!''}</td>
-                                            <td>${excel.vendorName!''}</td>
-                                            <td>${excel.cost!''}</td>
-                                            <td class="hidden-480">${excel.sumCount!''}</td>
-                                            <td>${excel.sumCost!''}</td>
-                                            <td>${excel.consuTime!''}</td>
-                                        </tr>
-                                        </#list>
-                                    </#if>
-                                </tbody>
-                            </table>
-
-                        </div>
-
-                        <div class="row-fluid">
-
-                            <div class="pull-left">
-                                <span><h4>${pim!'对方'}使用我方源售卖</h4></span>
-                            </div>
-
-                            <table class="table table-hover table-condensed" id="sample_3">
-                                <thead>
-                                <tr>
-                                    <th class="hidden-480">产品类型</th>
-                                    <th>产品供应商</th>
-                                    <th>售卖价（单位：元）</th>
-                                    <th class="hidden-480">计费次数</th>
-                                    <th>金额（单位：元）</th>
-                                    <th>统计区间</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#if exportExcelListPartnerUserOurSell ??>
-                                        <#list exportExcelListPartnerUserOurSell as excel>
-                                        <tr>
-                                            <td class="hidden-480">${excel.apiTypeName_stidName!''}</td>
-                                            <td>${excel.vendorName!''}</td>
-                                            <td>${excel.cost!''}</td>
-                                            <td class="hidden-480">${excel.sumCount!''}</td>
-                                            <td>${excel.sumCost!''}</td>
-                                            <td>${excel.consuTime!''}</td>
                                         </tr>
                                         </#list>
                                     </#if>
@@ -251,29 +180,15 @@
 
                                 <ul class="unstyled amounts">
 
-                                    <li><strong>${pim!'对方'}使用我方源金额总计:</strong> ￥${partnerUserOurTotle!'0'}</li>
-
-                                    <li><strong>我方使用${pim!'对方'}源金额总计:</strong> ￥${ourUserPartnerTotle!'0'}</li>
-
-                                    <li><strong>${pim!'对方'}使用我方源售卖金额总计:</strong> ￥${partnerUserOurSellTotle!'0'}</li>
-
-                                    <#if sum?? && (sum >= 0) >
-
-                                        <li><strong>${pim!'对方'}应付我方金额总计:</strong> ￥${sum!'0'}</li>
-
-                                    </#if>
-
-                                    <#if sum?? && (sum < 0) >
-
-                                        <li><strong>我方应付${pim!'对方'}金额总计:</strong> ￥${sum!'0'}</li>
-
-                                    </#if>
+                                    <li><strong>金额总计:</strong> ￥${sumCost!'0'}</li>
 
                                 </ul>
 
-                                <br />
+                                </br>
 
-                                <a class="btn grey hidden-print" id="exportExcel" href="/excel/extra-account-partner?export=true">导出Excel  <i class="icon-share icon-black"></i></a>
+                                </br>
+
+                                </br>
 
                             </div>
 
@@ -299,78 +214,14 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script src="/js/fileinput/fileinput.js"></script>
-
-    <script src="/js/fileinput/zh.js"></script>
-
-    <script src="/js/myjs/excel/extra-excel.js?v=${ver}"></script>
+    <script src="/js/myjs/excel/extra-excel-customer.js?v=${ver}"></script>
 
     <script>
 
         jQuery(document).ready(function() {
 
-            ExtraExcel.init();
+            ExtraExcelCustomer.init();
 
-            (function($){
-                $.getUrlParam = function(name)
-                {
-                    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-                    var r = window.location.search.substr(1).match(reg);
-                    return r?decodeURIComponent(r[2]):'';  //含有中文请注意此处的编码和解码
-                }
-            })(jQuery);
-            var cid =[];//定义一个数组
-            cid.push($('#cid').val());
-            console.log(cid);
-            $(function(){
-                console.log($.getUrlParam('pid'));
-                console.log($.getUrlParam('wid'));
-                console.log($.getUrlParam('beginDate'));
-                console.log($.getUrlParam('endDate'));
-            });
-            var href = $("#exportExcel").attr('href');
-            if(href) {
-                href += (href.match(/\?/) ? '&' : '?') + 'pid=' + $.getUrlParam('pid') +
-                        (href.match(/\?/) ? '&' : '?') + 'wid=' + $.getUrlParam('wid') +
-                        (href.match(/\?/) ? '&' : '?') + 'cid=' + cid +
-                        (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate') +
-                        (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate');
-
-                $("#exportExcel").attr('href', href);
-            }
-
-            /* $(function () {
-                 $('#file-zh').fileinput({
-                     language: 'zh',
-                     uploadUrl: '/loan/upload/' + id + '.shtml',
-                     showPreview: false,
-                     elErrorContainer: "#fileError",
-                     browseClass: "btn btn-success btn-file btn-sm",
-                     browseLabel: "查找文件",
-                     browseIcon: '<i class="glyphicon glyphicon-search"></i>',
-                     removeClass: "btn btn-danger btn-file btn-sm",
-                     removeLabel: "清除",
-                     removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
-                     uploadClass: "btn btn-info btn-file btn-sm",
-                     uploadLabel: "上传",
-                     uploadIcon: '<i class="glyphicon glyphicon-upload"></i>'
-                 }).on("fileuploaded", function (e, data) {
-                     var res = data.response;
-                     if (res.code == 200) {
-                         location.href = res.url;
-                     }
-                 });
-             })*/
-
-
-        });
-
-        $("#file-0a").fileinput({
-            language: 'zh',
-            browseLabel: "查找文件",
-            removeLabel: "清除",
-            uploadLabel: "上传",
-//            uploadUrl: '/loan/upload/' + id + '.shtml',
         });
 
     </script>

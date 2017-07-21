@@ -2,6 +2,7 @@ package org.qydata.controller;
 
 
 import com.google.gson.Gson;
+import org.qydata.entity.ApiType;
 import org.qydata.entity.Company;
 import org.qydata.entity.Partner;
 import org.qydata.entity.excel.ExportExcel;
@@ -31,8 +32,19 @@ public class ExcelController {
     @Autowired
     private ApiService apiService;
 
+    /**
+     * 合作公司财务对账
+     * @param export
+     * @param pid
+     * @param wid
+     * @param cid
+     * @param beginDate
+     * @param endDate
+     * @param model
+     * @return
+     */
     @RequestMapping("/excel/extra-account-partner")
-    public ModelAndView extraAccount(String export, Integer pid, Integer wid, Integer [] cid, String beginDate, String endDate, Model model){
+    public ModelAndView extraAccountPartner(String export, Integer pid, Integer wid, Integer [] cid, String beginDate, String endDate, Model model){
         Map<String,Object> map = new HashMap<>();
         if (pid != null){
             map.put("pid",pid);
@@ -82,11 +94,58 @@ public class ExcelController {
         return new ModelAndView("/excel/excel-partner");
     }
 
+    /**
+     * 根据合作公司查找所属客户
+     * @param pid
+     * @return
+     */
     @RequestMapping("/excel/find-customer-by-pid")
     @ResponseBody
     public String queryCustomerByPid(@RequestParam("pid") Integer pid){
         List<Company> companyList = excelService.queryCompanyByPid(pid);
         return new Gson().toJson(companyList);
+    }
+
+    @RequestMapping("/excel/extra-account-customer")
+    public ModelAndView extraAccountCustomer(String export,Integer cid,Integer wid,Integer [] tid,String beginDate, String endDate, Model model){
+        Map<String,Object> map = new HashMap<>();
+        if (cid != null){
+            map.put("cid",cid);
+            model.addAttribute("cid",cid);
+            List<ApiType> apiTypeList = excelService.queryApiTypeByCid(cid);
+            model.addAttribute("apiTypeList",apiTypeList);
+        }
+        if (wid != null){
+            map.put("wid",wid);
+            model.addAttribute("wid",wid);
+        }
+        if (tid != null && tid.length > 0){
+            map.put("tid",tid);
+            model.addAttribute("tid",tid);
+        }
+        if (beginDate != null && beginDate != ""){
+            map.put("beginDate", beginDate);
+            model.addAttribute("beginDate",beginDate);
+        }
+        if (endDate != null && endDate != ""){
+            map.put("endDate",endDate);
+            model.addAttribute("endDate",endDate);
+        }
+        Map<String,Object> mapResu = excelService.queryExtraAccountCustomer(map);
+        List<ExportExcel> exportExcelList = (List<ExportExcel>) mapResu.get("exportExcelList");
+        Double sumCost = (Double)mapResu.get("sumCost");
+        model.addAttribute("exportExcelList",exportExcelList);
+        model.addAttribute("sumCost",sumCost);
+        model.addAttribute("companyList",apiService.queryCompany());
+        return new ModelAndView("/excel/excel-customer");
+    }
+
+
+    @RequestMapping("/excel/find-type-by-cid")
+    @ResponseBody
+    public String queryApiTypeByCid(@RequestParam("cid") Integer cid){
+        List<ApiType> apiTypeList = excelService.queryApiTypeByCid(cid);
+        return new Gson().toJson(apiTypeList);
     }
 
 }

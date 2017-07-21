@@ -103,3 +103,13 @@
 .btn-icon.disabled {
     background-color: #d8d8d8 !important;
 }
+
+.required {
+    color: #e02222;
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+.self-error {
+    color: #e02222;
+}

@@ -12,11 +12,15 @@ import org.qydata.tools.RegexUtil;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.qydata.tools.https.HttpClientUtil;
+import org.qydata.tools.thread.RecoverApiProbThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jonhn on 2017/2/28.
@@ -37,11 +41,6 @@ public class ApiServiceImpl implements ApiService {
                 Api api = apiList.get(i);
                 if (api != null){
                     ApiType apiType = api.getApiType();
-                    ApiFake apiFake = api.getApiFake();
-                    if (apiFake != null){
-                        System.out.println(apiFake.getFakeV());
-                    }
-
                     if (apiType != null && apiType.getName() != null){
                         String apiType_stidName = ApiTypeMobileOperatorNameUtils.apiTypeMobileOperatorName(apiType.getName(),api.getMobileOperatorList());
                         apiType.setName(apiType_stidName);
@@ -203,17 +202,16 @@ public class ApiServiceImpl implements ApiService {
             apiFakeParam.setFakeV(1);
             apiMapper.addApiFake(apiFakeParam);
         }
-        /*final String uri = "https://api.qydata.org:9000/admin/";
+        final String uri = "https://api.qydata.org:9000/admin/api/modify-cost";
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("aid",aid);
-        map.put("pic",pic*100);
+        map.put("v",pic*100);
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
             return code;
         }
-        throw new Exception("http请求异常，请求状态码statusCode="+code);*/
-        return 200;
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override
@@ -379,4 +377,93 @@ public class ApiServiceImpl implements ApiService {
         return mapResu;
     }
 
+    @Override
+    @SystemServiceLog(description = "修改上游产品当前配额")
+    public int updateApiCurrProb(Integer aid, Integer prob) throws Exception {
+//        final String uri = "https://api.qydata.org:9000/admin/api/modify-prob";
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("k",companyMapper.queryAuthKey("admin.k"));
+//        map.put("aid",aid);
+//        map.put("v",prob);
+//        int  code = HttpClientUtil.doGet(uri,map,null);
+//        if (200 == code){
+//            return code;
+//        }
+        int code = 200;
+        return code;
+        //throw new Exception("http请求异常，请求状态码statusCode="+code);
+    }
+
+    @Override
+    @SystemServiceLog(description = "修改上游产品预设配额")
+    public boolean updateApiDefProb(Integer aid, Integer prob) throws Exception {
+        try {
+            ApiExt apiExt =  apiMapper.queryApiDefProb(aid);
+            ApiExt apiExtParam = new ApiExt();
+            apiExtParam.setApiId(aid);
+            apiExtParam.setDefProb(prob);
+            int flag = 0;
+            if (apiExt != null){
+                flag = apiMapper.updateApiDefProb(apiExtParam);
+            }else {
+                flag = apiMapper.addApiDefProb(apiExtParam);
+            }
+            if (1 == flag){
+                return true;
+            }
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @SystemServiceLog(description = "修改上游产品预设比例")
+    public boolean updateApiDefProp(Integer aid, Double prop) throws Exception {
+        try {
+            ApiExt apiExt =  apiMapper.queryApiDefProp(aid);
+            ApiExt apiExtParam = new ApiExt();
+            apiExtParam.setApiId(aid);
+            apiExtParam.setDefProp((int)(prop * 100));
+            int flag = 0;
+            if (apiExt != null){
+                flag = apiMapper.updateApiDefProp(apiExtParam);
+            }else {
+                flag = apiMapper.addApiDefProp(apiExtParam);
+            }
+            if (1 == flag){
+                return true;
+            }
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateRecoverApiProb(String[] aid) throws Exception {
+        if (aid != null && aid.length > 0){
+            for (int i = 0; i < aid.length ; i++) {
+                RecoverApiProbThread runnable = new RecoverApiProbThread(Integer.parseInt(aid[i]),apiMapper,companyMapper);
+                new Thread(runnable).start();
+            }
+        }
+    }
+
+    @Override
+    public Integer queryApiTypeByApiId(Integer aid) {
+        try {
+            return apiMapper.queryApiTypeByApiId(aid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public RecoverProbLog queryDetailLogByApiId(Integer aid) {
+        return apiMapper.queryDetailLogByApiId(aid);
+    }
 }

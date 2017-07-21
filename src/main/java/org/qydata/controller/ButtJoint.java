@@ -61,4 +61,14 @@ public interface ButtJoint {
     @RequestMapping("api/status")
     public void apiStatus(@RequestParam("aid") int aid, @RequestParam("s") int status);
 
+    @RequestMapping(value = "api/modify-prob")
+    public void modifyApiProb(@RequestParam("aid") int aid, @RequestParam("v") int v);
+
+    @RequestMapping(value = "api/modify-cost")
+    public void modifyApiCost(@RequestParam("aid") int aid, @RequestParam("v") int v);
+
+    @RequestMapping("company/api/put")
+    public void companyApiPut(@RequestParam("cid")int cid, @RequestParam("tid")int tid, @RequestParam(value = "stid", defaultValue = "0") Integer stid, @RequestParam(value = "aid", defaultValue = "") Integer aid, @RequestParam("price")int price);
+
+
 }

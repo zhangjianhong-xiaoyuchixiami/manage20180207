@@ -39,27 +39,28 @@ function findCompanyApi(companyId) {
                 for (var i = 0; i < data.length; i++) {
                     var myContent;
                     if (data[i].enabled != 0) {
-                        if (data[i].mobileOperator == null) {
                             myContent = "<tr>" +
-                                "<td>" + data[i].apiType.name + "</td>" +
+                                "<td>" + data[i].type_stid_name + "</td>" +
                                 "<td>" + (data[i].price / 100.0) + "</td>" +
                                 "<td>正在使用</td>" +
                                 "<td>" +
                                 "<a class='edit' href='javaScript:;'>修改价格</a>" + "&nbsp;|&nbsp;" +
                                 "<a class='warning' href='javaScript:;' onclick='banCompanyApi(" + data[i].id + ',' + companyId + ")'>禁用</a>" +
                                 "</td>" +
-                                "</tr>"
-                        } else {
-                            myContent = "<tr>" +
-                                "<td>" + data[i].apiType.name + "--" + data[i].mobileOperator.name + "</td>" +
-                                "<td>" + (data[i].price / 100.0) + "</td>" +
-                                "<td>正在使用</td>" +
-                                "<td>" +
-                                "<a class='edit' href='javaScript:;'>修改价格</a>" + "&nbsp;|&nbsp;" +
-                                "<a class='warning' href='javaScript:;' onclick='banCompanyApi(" + data[i].id + ',' + companyId + ")'>禁用</a>" +
-                                "</td>" +
-                                "</tr>"
-                        }
+                                "</tr>";
+                        $("#simple_company_api_1 tbody").append(myContent);
+                    }else {
+                        myContent = "<tr>" +
+                            "<td class='font-text-decoration'>" + data[i].type_stid_name + "</td>" +
+                            "<td>" + (data[i].price / 100.0) + "</td>" +
+                            "<td class='warning'>已禁用</td>" +
+                            "<td>" +
+                            "<a class='edit' href='javaScript:;'>修改价格</a>" +
+                            // "&nbsp;|&nbsp;"
+                            // +
+                            // "<a href='javaScript:;' onclick='unBanCompanyApi(" + data[i].id + ',' + companyId + ")'>启用</a>" +
+                            "</td>" +
+                            "</tr>";
                         $("#simple_company_api_1 tbody").append(myContent);
                     }
 

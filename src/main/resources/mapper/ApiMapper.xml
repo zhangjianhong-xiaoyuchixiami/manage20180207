@@ -8,6 +8,9 @@
         <result column="apiName" property="name"/>
         <result column="cost" property="cost"/>
         <result column="status" property="status"/>
+        <result column="prob" property="prob"/>
+        <result column="defProb" property="defProb"/>
+        <result column="defProp" property="defProp"/>
     </resultMap>
 
     <resultMap id="Api_ApiType_Map" type="org.qydata.entity.Api" extends="Api_Map">
@@ -143,7 +146,7 @@
         aa.proxyApiId,aa.partnerId,aa.partnerName,aa.proxyApiTypeId,aa.mobileOperatorId,aa.mobileOperatorName,
         aa.status,bb.name proxyApiTypeName,ifnull(cc.minCost,dd.minCost) minCost,
         ifnull(cc.apiTypeCount,dd.apiTypeCount) apiTypeCount,
-        ee.fakeV
+        ee.fakeV,ff.prob,gg.defProb,gg.defProp
         FROM qyfinance.bkvw_api_ApiTypeVendorPartner aa
         LEFT JOIN qyfinance.bkvwApiType bb ON aa.proxyApiTypeId=bb.id
         LEFT JOIN
@@ -162,6 +165,8 @@
             GROUP BY apiTypeId
         ) dd ON aa.apiTypeId=dd.apiTypeId
         LEFT JOIN qyfinance.ApiFake ee ON aa.apiId = ee.apiId
+        LEFT JOIN qyfinance.bkvwApiProb ff ON aa.apiId = ff.id
+        LEFT JOIN qyfinance.ApiExt gg ON aa.apiId = gg.apiId
         <where>
             <if test="status != null and status != '' or status == 0">
                 aa.status=#{status}
@@ -453,5 +458,141 @@
         VALUES(#{apiId},#{fakeV},now())
     </insert>
 
+    <!--根据aid查询预设配额-->
+    <select id="queryApiDefProb" parameterType="int" resultType="org.qydata.entity.ApiExt">
+        SELECT id,apiId,defProb
+        FROM qyfinance.ApiExt
+        WHERE apiId = #{param}
+    </select>
+
+    <!--插入Api预设配额-->
+    <insert id="addApiDefProb" parameterType="org.qydata.entity.ApiExt" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiExt(apiId,defProb,createTime)
+        VALUES(#{apiId},#{defProb},now())
+    </insert>
+
+    <!--修改上游产品预设配额-->
+    <update id="updateApiDefProb" parameterType="org.qydata.entity.ApiExt">
+        UPDATE qyfinance.ApiExt SET defProb = #{defProb} WHERE apiId = #{apiId}
+    </update>
+
+    <!--根据aid查询预设比例-->
+    <select id="queryApiDefProp" parameterType="int" resultType="org.qydata.entity.ApiExt">
+        SELECT id,apiId,defProp
+        FROM qyfinance.ApiExt
+        WHERE apiId = #{param}
+    </select>
+
+    <!--插入Api预设比例-->
+    <insert id="addApiDefProp" parameterType="org.qydata.entity.ApiExt" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiExt(apiId,defProp,createTime)
+        VALUES(#{apiId},#{defProp},now())
+    </insert>
+
+    <!--修改上游产品预设比例-->
+    <update id="updateApiDefProp" parameterType="org.qydata.entity.ApiExt">
+        UPDATE qyfinance.ApiExt SET defProp = #{defProp} WHERE apiId = #{apiId}
+    </update>
+
+
+    <!--恢复配额开始*****************************************************************-->
+    <!--根据ApiId查询Api状态-->
+    <select id="queryApiStatusByApiId" parameterType="int" resultType="int">
+        SELECT id
+        FROM qyfinance.bkvwApi
+        WHERE id = #{param} AND status != 0
+    </select>
+
+    <!--根据ApiId查询Api类型-->
+    <select id="queryApiTypeByApiId" parameterType="int" resultType="int">
+        SELECT apiTypeId
+        FROM qyfinance.bkvwApi
+        WHERE id = #{param}
+    </select>
+
+    <!--获取除了要恢复的产品同一类型并且状态启用的通道数是多少-->
+    <select id="getCountUnifiedTypeNorStatusOther" parameterType="int" resultType="org.qydata.entity.Api">
+        SELECT id,apiTypeId,cost,status
+        FROM qyfinance.bkvwApi
+        WHERE apiTypeId = #{param2} AND id != #{param1} AND status = 0
+    </select>
+
+    <!--除了要恢复的产品筛选出统一类型价格最低做协作通道-->
+    <select id="getUnifiedTypeNorStatusOtherLowCost" parameterType="int" resultType="org.qydata.entity.Api">
+        SELECT id,apiTypeId,cost,status
+        FROM qyfinance.bkvwApi
+        WHERE apiTypeId = #{param2}
+        AND id != #{param1}
+        AND status = 0
+        AND cost =
+              (
+			    SELECT min(cost)
+				FROM qyfinance.bkvwApi
+				WHERE apiTypeId = #{param2}
+                AND id != #{param1}
+                AND status = 0
+			  )
+    </select>
+
+    <!--查询请求日志-->
+    <select id="queryApiRequestLog" parameterType="Object" resultType="org.qydata.entity.ApiResponseLog">
+        SELECT b.ok,b.resTime
+        FROM qyfinance.finance_ApiRequestLog a
+        INNER JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
+        WHERE a.apiId = #{param1} AND a.createTime >= #{param2}
+    </select>
+
+    <!--根据ApiId查询预设配额和预设比例-->
+    <select id="queryDefProbDefPropByApiId" parameterType="int" resultType="org.qydata.entity.ApiExt">
+        SELECT apiId,defProb,defProp
+        FROM qyfinance.ApiExt
+        WHERE apiId = #{param}
+    </select>
+
+    <!--判断此通道价格是否最低-->
+    <select id="getCurrApiIsLowCost" parameterType="int" resultType="int">
+        SELECT id
+        FROM qyfinance.bkvwApi
+        WHERE apiTypeId = #{param}
+        AND status = 0
+        AND cost =
+        (
+        SELECT min(cost)
+        FROM qyfinance.bkvwApi
+        WHERE apiTypeId = #{param}
+        AND status = 0
+        )
+    </select>
+
+    <!--插入恢复配额日志-->
+    <insert id="addRecoverProbLog" parameterType="org.qydata.entity.RecoverProbLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.RecoverProbLog(rApiId,ok,createTime)
+        VALUES(#{rApiId},#{ok},now())
+    </insert>
+
+    <!--修改恢复配额日志-->
+    <update id="updateRecoverProbLog" parameterType="org.qydata.entity.RecoverProbLog">
+        UPDATE qyfinance.RecoverProbLog
+        SET tApiId = #{tApiId},
+        phaseOneBeginTime = #{phaseOneBeginTime},
+        phaseOneEndTime = #{phaseOneEndTime},
+        phaseTwoBeginTime = #{phaseTwoBeginTime},
+        phaseTwoEndTime = #{phaseTwoEndTime},
+        ok = #{ok},
+        statusCode = #{statusCode}
+        WHERE id = #{id}
+    </update>
+
+    <!--查询产品恢复日志-->
+    <select id="queryDetailLogByApiId" parameterType="int" resultType="org.qydata.entity.RecoverProbLog">
+        SELECT a.id,a.rApiId,a.tApiId,a.ok,a.statusCode,b.name statusName,a.createTime
+        FROM qyfinance.RecoverProbLog a
+        LEFT JOIN qyfinance.RecoverProbLogMessage b ON a.statusCode = b.id
+        WHERE a.rApiId = #{param}
+        ORDER BY a.createTime DESC
+        limit 0,1
+    </select>
+
+    
 </mapper>
 

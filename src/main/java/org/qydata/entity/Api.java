@@ -1,7 +1,5 @@
 package org.qydata.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.qydata.dst.ProxyApi;
 
 import java.io.Serializable;
@@ -17,18 +15,13 @@ public class Api implements Serializable {
     private Integer apiTypeId;
     private Integer vendorId;
     private String name;
-    private Integer requestType;
-    private String url;
-    private String testUrl;
-    private String contentType;
-    private String requestClass;
-    private String responseClass;
     private Integer cost;
     private Integer status;
-    private Integer defaultPrice;
     private Integer proxyApiId;
     private Timestamp createTime;
-    private Timestamp timestamp;
+    private Integer prob;
+    private Integer defProb;
+    private Integer defProp;
     private ApiVendor apiVendor;
     private ApiType apiType;
     private ProxyApi proxyApi;
@@ -36,9 +29,6 @@ public class Api implements Serializable {
     private ApiFake apiFake;
     private List<Customer> customerList;
     private List<MobileOperator> mobileOperatorList;
-
-    public Api() {
-    }
 
     public Integer getId() {
         return id;
@@ -72,54 +62,6 @@ public class Api implements Serializable {
         this.name = name;
     }
 
-    public Integer getRequestType() {
-        return requestType;
-    }
-
-    public void setRequestType(Integer requestType) {
-        this.requestType = requestType;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getTestUrl() {
-        return testUrl;
-    }
-
-    public void setTestUrl(String testUrl) {
-        this.testUrl = testUrl;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public String getRequestClass() {
-        return requestClass;
-    }
-
-    public void setRequestClass(String requestClass) {
-        this.requestClass = requestClass;
-    }
-
-    public String getResponseClass() {
-        return responseClass;
-    }
-
-    public void setResponseClass(String responseClass) {
-        this.responseClass = responseClass;
-    }
-
     public Integer getCost() {
         return cost;
     }
@@ -128,12 +70,20 @@ public class Api implements Serializable {
         this.cost = cost;
     }
 
-    public Integer getDefaultPrice() {
-        return defaultPrice;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setDefaultPrice(Integer defaultPrice) {
-        this.defaultPrice = defaultPrice;
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getProxyApiId() {
+        return proxyApiId;
+    }
+
+    public void setProxyApiId(Integer proxyApiId) {
+        this.proxyApiId = proxyApiId;
     }
 
     public Timestamp getCreateTime() {
@@ -144,12 +94,28 @@ public class Api implements Serializable {
         this.createTime = createTime;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Integer getProb() {
+        return prob;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setProb(Integer prob) {
+        this.prob = prob;
+    }
+
+    public Integer getDefProb() {
+        return defProb;
+    }
+
+    public void setDefProb(Integer defProb) {
+        this.defProb = defProb;
+    }
+
+    public Integer getDefProp() {
+        return defProp;
+    }
+
+    public void setDefProp(Integer defProp) {
+        this.defProp = defProp;
     }
 
     public ApiVendor getApiVendor() {
@@ -168,23 +134,6 @@ public class Api implements Serializable {
         this.apiType = apiType;
     }
 
-
-    public List<Customer> getCustomerList() {
-        return customerList;
-    }
-
-    public void setCustomerList(List<Customer> customerList) {
-        this.customerList = customerList;
-    }
-
-    public Integer getProxyApiId() {
-        return proxyApiId;
-    }
-
-    public void setProxyApiId(Integer proxyApiId) {
-        this.proxyApiId = proxyApiId;
-    }
-
     public ProxyApi getProxyApi() {
         return proxyApi;
     }
@@ -201,22 +150,6 @@ public class Api implements Serializable {
         this.mobileOperator = mobileOperator;
     }
 
-    public List<MobileOperator> getMobileOperatorList() {
-        return mobileOperatorList;
-    }
-
-    public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
-        this.mobileOperatorList = mobileOperatorList;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public ApiFake getApiFake() {
         return apiFake;
     }
@@ -225,14 +158,19 @@ public class Api implements Serializable {
         this.apiFake = apiFake;
     }
 
-    @Override
-    public String toString() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
+    }
+
+    public List<MobileOperator> getMobileOperatorList() {
+        return mobileOperatorList;
+    }
+
+    public void setMobileOperatorList(List<MobileOperator> mobileOperatorList) {
+        this.mobileOperatorList = mobileOperatorList;
     }
 }

@@ -17,6 +17,7 @@ public class CompanyApi implements Serializable {
     private Integer price;
     private Integer enabled;
     private Timestamp createTime;
+    private String type_stid_name;
     private ApiType apiType;
     private MobileOperator mobileOperator;
     private CompanyApiCount companyApiCount;
@@ -99,5 +100,13 @@ public class CompanyApi implements Serializable {
 
     public void setCompanyApiCount(CompanyApiCount companyApiCount) {
         this.companyApiCount = companyApiCount;
+    }
+
+    public String getType_stid_name() {
+        return type_stid_name;
+    }
+
+    public void setType_stid_name(String type_stid_name) {
+        this.type_stid_name = type_stid_name;
     }
 }

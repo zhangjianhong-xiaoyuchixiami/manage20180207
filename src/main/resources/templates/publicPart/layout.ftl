@@ -96,7 +96,7 @@
 
                         <ul class="dropdown-menu">
 
-                            <li><a href="/user/updatePasswordView"><i class="icon-calendar"></i>修改密码</a></li>
+                            <li><a href="/user/updatePasswordView"><i class="icon-edit"></i>修改密码</a></li>
 
                             <li><a href="/view/logout"><i class="icon-key"></i> 退出</a></li>
 
@@ -204,6 +204,14 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <@shiro.hasPermission name="excel:extra-account-customer">
+                                <li id="extra-account-customer">
+                                    <a href="/excel/extra-account-customer">
+                                        客户临时对账
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
                             <@shiro.hasPermission name="api:find-all-api-record">
                                 <li id="apiRecordLog">
                                     <a href="/api/find-all-api-record">
@@ -220,26 +228,18 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <@shiro.hasPermission name="excel:extra-account-vendor">
+                                <li id="extra-account-vendor">
+                                    <a href="/excel/extra-account-vendor">
+                                        供应商临时对账
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
                             <@shiro.hasPermission name="partner:find-all-partner-financial-account">
                                 <li id="partnersFinancialAccount">
                                     <a href="/partner/find-all-partner-financial-account">
                                         合作公司来往账目
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
-
-                            <@shiro.hasPermission name="excel:extra-account-customer">
-                                <li id="extra-account-customer">
-                                    <a href="/excel/extra-account-customer">
-                                        客户财务对账
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
-
-                            <@shiro.hasPermission name="excel:extra-account-vendor">
-                                <li id="extra-account-vendor">
-                                    <a href="/excel/extra-account-vendor">
-                                        供应商财务对账
                                     </a>
                                 </li>
                             </@shiro.hasPermission>

@@ -1,11 +1,10 @@
 package org.qydata.tools.excel;
 
-import org.qydata.tools.excel.original.ExportPartnerExcel;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Map;
 
 /**
  * Created by jonhn on 2017/1/12.
@@ -13,12 +12,12 @@ import java.util.Map;
 public class ExportExcelIoUtils {
 
 
-    public static  void exportExcelIo(Map<String,Object> map,String fileName,HttpServletResponse response)  {
+    public static  void exportExcelIo(Workbook wb, String fileName, HttpServletResponse response)  {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            ExportPartnerExcel.createExcel(map).write(os);
+            wb.write(os);
             byte[] content = os.toByteArray();
             InputStream is = new ByteArrayInputStream(content);
             // 设置response参数，可以打开下载页面
@@ -46,4 +45,8 @@ public class ExportExcelIoUtils {
             }
         }
     }
+
+
+
 }
+

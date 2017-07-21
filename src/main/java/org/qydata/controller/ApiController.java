@@ -394,6 +394,119 @@ public class ApiController {
         return new Gson().toJson(companyApiList);
     }
 
+    /**
+     * 修改上游产品的当前配额
+     * @param aid
+     * @param prob
+     * @return
+     */
+    @RequestMapping("/update-curr-prob")
+    @ResponseBody
+    public String midApiCurrProb(Integer aid,Integer prob){
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        int code = 0;
+        try {
+            code = apiService.updateApiCurrProb(aid,prob);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (200 == code){
+            map.put("success","操作成功!");
+            return gson.toJson(map);
+        }
+        map.put("fail","操作失败!");
+        return gson.toJson(map);
+    }
 
+    /**
+     * 修改上游产品的预设配额
+     * @param aid
+     * @param prob
+     * @return
+     */
+    @RequestMapping("/update-def-prob")
+    @ResponseBody
+    public String midApiDefProb(Integer aid,Integer prob){
 
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        boolean code = false;
+        try {
+            code = apiService.updateApiDefProb(aid,prob);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (code){
+            map.put("success","操作成功!");
+            return gson.toJson(map);
+        }
+        map.put("fail","操作失败!");
+        return gson.toJson(map);
+    }
+
+    /**
+     * 修改上游产品的预设比例
+     * @param aid
+     * @param prop
+     * @return
+     */
+    @RequestMapping("/update-def-prop")
+    @ResponseBody
+    public String midApiDefProp(Integer aid,Double prop){
+
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        boolean code = false;
+        try {
+            code = apiService.updateApiDefProp(aid,prop);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (code){
+            map.put("success","操作成功!");
+            return gson.toJson(map);
+        }
+        map.put("fail","操作失败!");
+        return gson.toJson(map);
+    }
+
+    /**
+     * 恢复上游产品的配额
+     * @return
+     */
+    @RequestMapping("/recover-prob")
+    @ResponseBody
+    public String recoverApiProb(HttpServletRequest request){
+        String [] aid = request.getParameterValues("aid[]");
+        Map<String,Object> map = new HashMap<>();
+        if (aid != null && aid.length > 0){
+            Set<Integer> tidSet = new HashSet<Integer>();
+            for (int i = 0; i < aid.length ; i++) {
+                Integer tid = apiService.queryApiTypeByApiId(Integer.parseInt(aid[i]));
+                tidSet.add(tid);
+            }
+            if (tidSet.size() == aid.length){
+                try {
+                    apiService.updateRecoverApiProb(aid);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                map.put("success","已开始执行恢复操作！");
+                return new Gson().toJson(map);
+            }else {
+                map.put("fail","统一类型产品存在多个，请检查你的选择！");
+                return new Gson().toJson(map);
+            }
+        }
+        map.put("fail","请先选择要恢复的产品！");
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping("/query-detail-log")
+    @ResponseBody
+    public String queryDetailLog(Integer aid){
+        RecoverProbLog recoverProbLog = apiService.queryDetailLogByApiId(aid);
+        return new Gson().toJson(recoverProbLog);
+    }
 }

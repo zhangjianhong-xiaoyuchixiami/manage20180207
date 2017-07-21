@@ -161,4 +161,59 @@ public interface ApiService {
     @SystemServiceLog(description = "客户产品权限禁用")
     public Map<String,Object> banCompanyApi(String [] cid_id)throws Exception;
 
+    /**
+     * 修改上游产品当前配额
+     * @param aid
+     * @param prob
+     * @return
+     * @throws Exception
+     */
+    @SystemServiceLog(description = "修改上游产品当前配额")
+    public int updateApiCurrProb(Integer aid,Integer prob)throws Exception;
+
+    /**
+     * 修改上游产品预设配额
+     * @param aid
+     * @param prob
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    @SystemServiceLog(description = "修改上游产品预设配额")
+    public boolean updateApiDefProb(Integer aid,Integer prob)throws Exception;
+
+    /**
+     * 修改上游产品预设比例
+     * @param aid
+     * @param prop
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    @SystemServiceLog(description = "修改上游产品预设比例")
+    public boolean updateApiDefProp(Integer aid,Double prop)throws Exception;
+
+    /**
+     * 恢复上游产品配额
+     * @param aid
+     * @return
+     * @throws Exception
+     */
+    @SystemServiceLog(description = "恢复上游产品配额")
+    public void updateRecoverApiProb(String [] aid)throws Exception;
+
+    /**
+     * 根据ApiId查询Api类型
+     * @param aid
+     * @return
+     */
+    public Integer queryApiTypeByApiId(Integer aid);
+
+    /**
+     * 查询产品恢复日志
+     * @param aid
+     * @return
+     */
+    public RecoverProbLog queryDetailLogByApiId(Integer aid);
+
 }

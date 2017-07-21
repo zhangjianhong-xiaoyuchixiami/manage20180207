@@ -97,20 +97,20 @@
 
                             </div>
 
-                           <#-- <div class="pull-left head-search-bottom">
+                        <#-- <div class="pull-left head-search-bottom">
 
-                                <label >初始价格状态</label>
+                             <label >初始价格状态</label>
 
-                                <div class="controls">
+                             <div class="controls">
 
-                                    <select class="medium m-wrap" id="statId" name="statId">
-                                        <option value=""></option>
-                                        <option <#if statId?? && statId== 1>selected="selected"</#if> value="1">已修改初始价格</option>
-                                        <option <#if statId?? && statId== 2>selected="selected"</#if> value="2">未修改初始价格</option>
-                                    </select>
-                                </div>
+                                 <select class="medium m-wrap" id="statId" name="statId">
+                                     <option value=""></option>
+                                     <option <#if statId?? && statId== 1>selected="selected"</#if> value="1">已修改初始价格</option>
+                                     <option <#if statId?? && statId== 2>selected="selected"</#if> value="2">未修改初始价格</option>
+                                 </select>
+                             </div>
 
-                            </div>-->
+                         </div>-->
 
                             <div class="pull-left head-search-bottom">
 
@@ -171,6 +171,10 @@
                                                 <th>合作公司</th>
                                                 <th>产品供应商</th>
                                                 <th>价格（单位：元）</th>
+                                                <th>当前配额</th>
+                                                <th>预设配额</th>
+                                                <th>预设比例</th>
+                                                <th>恢复详情</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -198,7 +202,11 @@
                                                                 </#if>
                                                             </td>
                                                             <td data-title="产品供应商">${api.apiVendor.name}<#if (api.apiVendor.partner)??>@${api.apiVendor.partner.name}</#if></td>
-                                                            <td data-title="价格（单位：元）"><#--<a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})">-->${(api.cost/100.0)?c}<#--</a>--></td>
+                                                            <td data-title="价格（单位：元）"><a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改产品价格">${(api.cost/100.0)?c}</a></td>
+                                                            <td data-title="当前配额"><a href="javaScript:;" onclick="updateApiCurrProb(${api.id},${(api.prob)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改当前配额">${api.prob!'0'}</a></td>
+                                                            <td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>
+                                                            <td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>
+                                                            <td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>
                                                         </tr>
                                                         </#if>
                                                     </#list>
@@ -225,6 +233,11 @@
                                                     <i class="icon-ok-sign"></i>启用
                                                 </button>
                                             </div>
+                                            <div class="btn-group pull-left">
+                                                <button class="btn-icon black" id="batchRecoverApi">
+                                                    <i class="icon-refresh"></i>恢复配额
+                                                </button>
+                                            </div>
                                             <div class="pull-right tip-remark">
                                                 <span>注：红色标注的行是未修改初始价格的产品</span>
                                             </div>
@@ -238,6 +251,10 @@
                                                 <th>合作公司</th>
                                                 <th>产品供应商</th>
                                                 <th>价格（单位：元）</th>
+                                                <th>当前配额</th>
+                                                <th>预设配额</th>
+                                                <th>预设比例</th>
+                                                <th>恢复详情</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -261,7 +278,11 @@
                                                                 </#if>
                                                             </td>
                                                             <td data-title="产品供应商">${api.apiVendor.name}<#if (api.apiVendor.partner)??>@${api.apiVendor.partner.name}</#if></td>
-                                                            <td data-title="价格（单位：元）"><#--<a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})">-->${(api.cost/100.0)?c}<#--</a>--></td>
+                                                            <td data-title="价格（单位：元）"><a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改产品价格">${(api.cost/100.0)?c}</a></td>
+                                                            <td data-title="当前配额"><a href="javaScript:;" onclick="updateApiCurrProb(${api.id},${(api.prob)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改当前配额">${api.prob!'0'}</a></td>
+                                                            <td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>
+                                                            <td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>
+                                                            <td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>
                                                         </tr>
                                                         </#if>
                                                     </#list>
@@ -302,6 +323,12 @@
         jQuery(document).ready(function() {
 
             ApiProduct.init();
+
+        });
+
+        $(function () {
+
+            $("[data-toggle='tooltip']").tooltip();
 
         });
 
@@ -373,6 +400,238 @@
                 if (dismiss === 'cancel') {}
             });
 
+        }
+
+        function updateApiCurrProb(id,prob) {
+
+            var aid = id ;
+            var prob_w = prob ;
+            swal({
+                title: '修改产品当前配额',
+                input: 'number',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",
+                confirmButtonText: "确定修改",
+                allowOutsideClick: true,
+                inputValue: prob_w,
+                inputValidator: function(value) {
+                    return new Promise(function(resolve, reject) {
+                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        if(!re.test(value)){
+                            reject('格式输入不正确！');
+                        } else {
+                            resolve();
+                        }
+                    });
+                }
+            }).then(function (value) {
+
+                $.ajax({
+                    type: "post",
+                    url: "/api/update-curr-prob",
+                    data: {"aid": aid, "prob": value},
+                    dataType: "json",
+                    beforeSend: function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if (data != null) {
+                            if (data.success != null) {
+                                swal({
+                                    type: 'success',
+                                    title: '当前配额修改完成',
+                                    confirmButtonText: "确定",
+                                    html: '已将当前配额修改为：' + value
+                                }).then(function () {
+                                    window.location.href = window.location.href ;
+                                    return;
+                                });
+
+                            }
+                            if (data.fail != null) {
+
+                                swal({
+                                    type: 'error',
+                                    title: '失败',
+                                    text: "哎呦，修改失败了",
+                                    confirmButtonText: "确定"
+
+                                })
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                if (dismiss === 'cancel') {}
+            });
+
+        }
+
+        function updateApiDefProb(id,prob) {
+
+            var aid = id ;
+            var prob_w  = prob ;
+            swal({
+                title: '修改产品预设配额',
+                input: 'number',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",
+                confirmButtonText: "确定修改",
+                allowOutsideClick: true,
+                inputValue: prob_w,
+                inputValidator: function(value) {
+                    return new Promise(function(resolve, reject) {
+                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        if(!re.test(value)){
+                            reject('格式输入不正确！');
+                        } else {
+                            resolve();
+                        }
+                    });
+                }
+            }).then(function (value) {
+
+                $.ajax({
+                    type: "post",
+                    url: "/api/update-def-prob",
+                    data: {"aid": aid, "prob": value},
+                    dataType: "json",
+                    beforeSend: function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if (data != null) {
+                            if (data.success != null) {
+                                swal({
+                                    type: 'success',
+                                    title: '预设配额修改完成',
+                                    confirmButtonText: "确定",
+                                    html: '已将预设配额修改为：' + value
+                                }).then(function () {
+                                    window.location.href = window.location.href ;
+                                    return;
+                                });
+
+                            }
+                            if (data.fail != null) {
+
+                                swal({
+                                    type: 'error',
+                                    title: '失败',
+                                    text: "哎呦，修改失败了",
+                                    confirmButtonText: "确定"
+
+                                })
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                if (dismiss === 'cancel') {}
+            });
+
+        }
+
+        function updateApiDefProp(id,prop) {
+
+            var aid = id ;
+            var prop_w  = prop/100 ;
+            swal({
+                title: '修改产品预设比例',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",
+                confirmButtonText: "确定修改",
+                allowOutsideClick: true,
+                inputValue: prop_w,
+                inputValidator: function(value) {
+                    return new Promise(function(resolve, reject) {
+                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        if(!re.test(value)){
+                            reject('格式输入不正确！');
+                        } else {
+                            resolve();
+                        }
+                    });
+                }
+            }).then(function (value) {
+
+                $.ajax({
+                    type: "post",
+                    url: "/api/update-def-prop",
+                    data: {"aid": aid, "prop": value},
+                    dataType: "json",
+                    beforeSend: function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if (data != null) {
+                            if (data.success != null) {
+                                swal({
+                                    type: 'success',
+                                    title: '预设比例修改完成',
+                                    confirmButtonText: "确定",
+                                    html: '已将预设比例修改为：' + value * 100 + "%"
+                                }).then(function () {
+                                    window.location.href = window.location.href ;
+                                    return;
+                                });
+
+                            }
+                            if (data.fail != null) {
+
+                                swal({
+                                    type: 'error',
+                                    title: '失败',
+                                    text: "哎呦，修改失败了",
+                                    confirmButtonText: "确定"
+
+                                })
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                if (dismiss === 'cancel') {}
+            });
+
+        }
+        
+        function lookDetailLog(id) {
+            $.ajax({
+                type: "post",
+                url: "/api/query-detail-log",
+                data: {"aid": id},
+                dataType: "json",
+                success: function (data) {
+                    var value = "无";
+                    if (data != null) {
+                        if (data.statusName != null) {
+                            value = data.statusName
+                        }
+                    }
+                    swal({
+                        title: '恢复详情',
+                        confirmButtonText: "确定",
+                        html: value
+                    })
+                }
+            });
         }
 
     </script>

@@ -15,7 +15,11 @@ var ApiProduct = function () {
                     null,
                     null,
                     null,
-                    null
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false}
                 ],
                 "aaSorting": [[1, 'asc']],
                 "aLengthMenu": [
@@ -49,7 +53,11 @@ var ApiProduct = function () {
                     null,
                     null,
                     null,
-                    null
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false}
                 ],
                 "aaSorting": [[0, 'asc']],
                 "aLengthMenu": [
@@ -278,6 +286,74 @@ var ApiProduct = function () {
                                             confirmButtonText: "确定"//确定按钮上面的文档
                                         }).then(function () {
                                             location.reload();
+                                        })
+                                    }
+                                }
+                            }
+                        });
+
+                    },function(dismiss) {
+                        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                        if (dismiss === 'cancel') {}
+                    });
+
+                }
+            });
+
+            /*状态禁用批量恢复Api配额操作*/
+            $("#batchRecoverApi").on('click',function () {
+
+                var apiId =[];//定义一个数组
+                $('input[name="checkBoxApiIdUnBan"]:checked').each(function(){
+                    apiId.push($.trim($(this).val()));
+                });
+
+                if (apiId == null || apiId == ""){
+                    swal({
+                        title: "操作提示",
+                        text: "请先选择要恢复的产品！",
+                        type: "info",
+                        confirmButtonText: "确定"
+                    });
+                }else {
+
+                    swal({
+                        title: "确定要进行恢复操作吗？",   //弹出框的title
+                        type: "question",    //弹出框类型
+                        showCancelButton: true, //是否显示取消按钮
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: "取消",//取消按钮文本
+                        confirmButtonText: "确定"//确定按钮上面的文档
+                    }).then(function () {
+
+                        $.ajax({
+                            type:'post',
+                            url:"/api/recover-prob",
+                            data:{"aid": apiId},
+                            dataType:'json',
+                            success:function(data){
+                                if (data != null) {
+                                    if (data.success != null) {
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.success,
+                                            type: "success",
+                                            showCancelButton: false,
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"
+                                        });
+                                        return;
+                                    }
+                                    if (data.fail != null) {
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.fail,
+                                            type: "error",
+                                            showCancelButton: false,
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"
                                         })
                                     }
                                 }

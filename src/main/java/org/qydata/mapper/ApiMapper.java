@@ -162,4 +162,128 @@ public interface ApiMapper {
      */
     public boolean addApiFake(ApiFake apiFake);
 
+    /**
+     * 根据aid查询预设配额
+     * @param aid
+     * @return
+     */
+    public ApiExt queryApiDefProb(Integer aid);
+
+    /**
+     * 插入Api预设配额
+     * @param apiExt
+     * @return
+     */
+    public int addApiDefProb(ApiExt apiExt);
+
+    /**
+     * 修改上游产品预设配额
+     * @param apiExt
+     * @return
+     * @throws Exception
+     */
+    public int updateApiDefProb(ApiExt apiExt)throws Exception;
+
+    /**
+     * 根据aid查询预设比例
+     * @param aid
+     * @return
+     */
+    public ApiExt queryApiDefProp(Integer aid);
+
+    /**
+     * 插入Api预设比例
+     * @param apiExt
+     * @return
+     */
+    public int addApiDefProp(ApiExt apiExt);
+
+    /**
+     * 修改上游产品预设比例
+     * @param apiExt
+     * @return
+     * @throws Exception
+     */
+    public int updateApiDefProp(ApiExt apiExt)throws Exception;
+
+
+    //恢复配额开始*****************************************************************
+
+
+    /**
+     * 根据ApiId查询Api状态
+     * @param aid
+     * @return
+     */
+    public  Integer queryApiStatusByApiId(Integer aid)throws Exception;
+
+    /**
+     * 根据ApiId查询Api类型
+     * @param aid
+     * @return
+     */
+    public Integer queryApiTypeByApiId(Integer aid) throws Exception;
+
+    /**
+     * 获取除了要恢复的产品同一类型并且状态启用的通道数是多少
+     * @param aid
+     * @return
+     */
+    public List<Api> getCountUnifiedTypeNorStatusOther(Integer aid,Integer tid) throws Exception;
+
+    /**
+     * 除了要恢复的产品筛选出统一类型价格最低做协作通道
+     * @param aid
+     * @return
+     */
+    public Api getUnifiedTypeNorStatusOtherLowCost(Integer aid,Integer tid) throws Exception;
+
+    /**
+     *查询请求日志
+     * @param aid
+     * @return
+     */
+    public List<ApiResponseLog> queryApiRequestLog(Integer aid, String begTime) throws Exception;
+
+    /**
+     * 根据ApiId查询预设配额和预设比例
+     * @param apiId
+     * @return
+     * @throws Exception
+     */
+    public ApiExt queryDefProbDefPropByApiId(Integer apiId)throws Exception;
+
+    /**
+     * 判断此通道价格是否最低
+     * @param tid
+     * @return
+     * @throws Exception
+     */
+    public Integer getCurrApiIsLowCost(Integer tid)throws Exception;
+
+    /**
+     * 插入恢复配额日志
+     * @param recoverProbLog
+     * @return
+     * @throws Exception
+     */
+    public int addRecoverProbLog(RecoverProbLog recoverProbLog)throws Exception;
+
+
+    /**
+     * 修改恢复配额日志
+     * @param recoverProbLog
+     * @return
+     * @throws Exception
+     */
+    public int updateRecoverProbLog(RecoverProbLog recoverProbLog)throws Exception;
+
+
+    /**
+     * 查询产品恢复日志
+     * @param aid
+     * @return
+     */
+    public RecoverProbLog queryDetailLogByApiId(Integer aid);
+
 }
