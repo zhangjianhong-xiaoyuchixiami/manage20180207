@@ -86,13 +86,21 @@ public class ExcelServiceImpl implements ExcelService {
                     for (int i = 0; i < exportExcelListPartnerUserOur.size(); i++) {
                         ExportExcel exportExcel = exportExcelListPartnerUserOur.get(i);
                         if (beginDate != null && endDate != null) {
-                            exportExcel.setConsuTime(beginDate + "-" + endDate);
+                            if (CalendarUtil.isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(endDate)){
+                                exportExcel.setConsuTime(beginDate + "-" + "昨天");
+                            }else {
+                                exportExcel.setConsuTime(beginDate + "-" + endDate);
+                            }
                         }
                         if (beginDate != null && endDate == null) {
                             exportExcel.setConsuTime(beginDate + "-" + "昨天");
                         }
                         if (beginDate == null && endDate != null) {
-                            exportExcel.setConsuTime("开通后" + "-" + endDate);
+                            if (CalendarUtil.isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(endDate)){
+                                exportExcel.setConsuTime("开通后" + "-" + "昨天");
+                            }else {
+                                exportExcel.setConsuTime("开通后" + "-" + endDate);
+                            }
                         }
                         if (beginDate == null && endDate == null) {
                             exportExcel.setConsuTime("开通后" + "-" + "昨天");
@@ -112,13 +120,21 @@ public class ExcelServiceImpl implements ExcelService {
                     for (int i = 0; i < exportExcelListOurUserPartner.size(); i++) {
                         ExportExcel exportExcel = exportExcelListOurUserPartner.get(i);
                         if (beginDate != null && endDate != null) {
-                            exportExcel.setConsuTime(beginDate + "-" + endDate);
+                            if (CalendarUtil.isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(endDate)){
+                                exportExcel.setConsuTime(beginDate + "-" + "昨天");
+                            }else {
+                                exportExcel.setConsuTime(beginDate + "-" + endDate);
+                            }
                         }
                         if (beginDate != null && endDate == null) {
                             exportExcel.setConsuTime(beginDate + "-" + "昨天");
                         }
                         if (beginDate == null && endDate != null) {
-                            exportExcel.setConsuTime("开通后" + "-" + endDate);
+                            if (CalendarUtil.isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(endDate)){
+                                exportExcel.setConsuTime("开通后" + "-" + "昨天");
+                            }else {
+                                exportExcel.setConsuTime("开通后" + "-" + endDate);
+                            }
                         }
                         if (beginDate == null && endDate == null) {
                             exportExcel.setConsuTime("开通后" + "-" + "昨天");
@@ -138,13 +154,21 @@ public class ExcelServiceImpl implements ExcelService {
                     for (int i = 0; i < exportExcelListPartnerUserOurSell.size(); i++) {
                         ExportExcel exportExcel = exportExcelListPartnerUserOurSell.get(i);
                         if (beginDate != null && endDate != null) {
-                            exportExcel.setConsuTime(beginDate + "-" + endDate);
+                            if (CalendarUtil.isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(endDate)){
+                                exportExcel.setConsuTime(beginDate + "-" + "昨天");
+                            }else {
+                                exportExcel.setConsuTime(beginDate + "-" + endDate);
+                            }
                         }
                         if (beginDate != null && endDate == null) {
                             exportExcel.setConsuTime(beginDate + "-" + "昨天");
                         }
                         if (beginDate == null && endDate != null) {
-                            exportExcel.setConsuTime("开通后" + "-" + endDate);
+                            if (CalendarUtil.isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(endDate)){
+                                exportExcel.setConsuTime("开通后" + "-" + "昨天");
+                            }else {
+                                exportExcel.setConsuTime("开通后" + "-" + endDate);
+                            }
                         }
                         if (beginDate == null && endDate == null) {
                             exportExcel.setConsuTime("开通后" + "-" + "昨天");
@@ -350,13 +374,21 @@ public class ExcelServiceImpl implements ExcelService {
                     for (int i = 0; i < exportExcelList.size(); i++) {
                         ExportExcel exportExcel = exportExcelList.get(i);
                         if (beginDate != null && endDate != null) {
-                            exportExcel.setConsuTime(beginDate + "-" + endDate);
+                            if (CalendarUtil.isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(endDate)){
+                                exportExcel.setConsuTime(beginDate + "-" + "昨天");
+                            }else {
+                                exportExcel.setConsuTime(beginDate + "-" + endDate);
+                            }
                         }
                         if (beginDate != null && endDate == null) {
                             exportExcel.setConsuTime(beginDate + "-" + "昨天");
                         }
                         if (beginDate == null && endDate != null) {
-                            exportExcel.setConsuTime("开通后" + "-" + endDate);
+                            if (CalendarUtil.isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(endDate)){
+                                exportExcel.setConsuTime("开通后" + "-" + "昨天");
+                            }else {
+                                exportExcel.setConsuTime("开通后" + "-" + endDate);
+                            }
                         }
                         if (beginDate == null && endDate == null) {
                             exportExcel.setConsuTime("开通后" + "-" + "昨天");

@@ -370,7 +370,8 @@ public class ShiroConfig {
 		chains.put("/company/unban-api", "authc");
 		chains.put("/company/query-not-have-api", "authc");
 		chains.put("/company/add-company-api", "authc");
-		chains.put("/company/mod-company-api-price", "authc");
+		chains.put("/company/mid-company-api-price", "authc");
+		chains.put("/company/mid-company-api-appoint-api", "authc");
 		chains.put("/company/customer/find-ip", "authc");
 		chains.put("/company/customer/delete-ip", "authc");
 		chains.put("/company/customer/add/ip", "authc");
@@ -394,6 +395,12 @@ public class ShiroConfig {
 		chains.put("/api/company/query-company-api-by-company-id", "authc");
 		chains.put("/api/company/mod-company-api-price", "authc");
 		chains.put("/api/company/ban-api", "authc");
+
+		chains.put("/api/update-curr-prob", "authc");
+		chains.put("/api/update-def-prob", "authc");
+		chains.put("/api/update-def-prop", "authc");
+		chains.put("/api/recover-prob", "authc");
+		chains.put("/api/query-detail-log", "authc");
 
 		//客户请求日志
 		chains.put("/customer/find-all-customer-request-log", "authc,perms");

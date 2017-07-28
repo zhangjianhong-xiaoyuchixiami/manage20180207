@@ -286,4 +286,31 @@ public interface ApiMapper {
      */
     public RecoverProbLog queryDetailLogByApiId(Integer aid);
 
+
+    /**
+     * 检查当前是否在进行恢复配额操作
+     * @return
+     */
+    public List<RecoverProbCheck> queryAllRecoverProbCheck(Map<String,Object> map);
+
+    /**
+     * 进行恢复检查记录是否存在
+     * @return
+     */
+    public RecoverProbCheck queryRecoverProbCheck(Integer tid);
+
+    /**
+     * 进行恢复配额操作时修改执行标记
+     * @return
+     */
+    public int updateRecoverProbCheck(RecoverProbCheck recoverProbCheck);
+
+    /**
+     * 进行恢复配额操作时插入执行标记
+     * @param recoverProbCheck
+     * @return
+     */
+    public int insertRecoverProbCheck(RecoverProbCheck recoverProbCheck);
+
+
 }

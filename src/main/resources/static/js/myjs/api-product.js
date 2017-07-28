@@ -179,7 +179,7 @@ var ApiProduct = function () {
                             type:'post',
                             url:"/api/ban",
                             data:{"apiId": apiId},
-                            dataType:'json',
+                            dataType:"json",
                             beforeSend:function () {
                                 openProgress();
                             },
@@ -209,10 +209,22 @@ var ApiProduct = function () {
                                             confirmButtonText: "确定"//确定按钮上面的文档
                                         }).then(function () {
                                             location.reload();
+                                            return;
+                                        })
+                                    }
+                                    if (data.warning != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.warning,
+                                            type: "warning",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
+                                        }).then(function () {
+
                                         })
                                     }
                                 }
-
                             }
                         });
 
@@ -286,6 +298,19 @@ var ApiProduct = function () {
                                             confirmButtonText: "确定"//确定按钮上面的文档
                                         }).then(function () {
                                             location.reload();
+                                            return;
+                                        })
+                                    }
+                                    if (data.warning != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.warning,
+                                            type: "warning",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
+                                        }).then(function () {
+
                                         })
                                     }
                                 }

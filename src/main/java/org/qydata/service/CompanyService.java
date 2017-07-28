@@ -3,10 +3,7 @@ package org.qydata.service;
 import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.dst.CustomerCompanyPartner;
-import org.qydata.entity.CompanyApi;
-import org.qydata.entity.CustomerBalanceModifyReason;
-import org.qydata.entity.CustomerIp;
-import org.qydata.entity.Partner;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -132,7 +129,7 @@ public interface CompanyService {
      * @return
      */
     @SystemServiceLog(description = "客户产品权限解禁")
-    public int unBanCompanyApi(Integer id)throws Exception;
+    public int unBanCompanyApi(Integer companyId,Integer id)throws Exception;
 
 
     /**
@@ -150,17 +147,14 @@ public interface CompanyService {
      * @return
      */
     @SystemServiceLog(description = "新增产品权限")
-    public int addCompanyApi(Integer companyId,String apiTypeId,String price)throws Exception;
+    public int addCompanyApi(Integer companyId,String apiTypeId,String price,String aid)throws Exception;
 
     /**
      * 修改下游产品价格
-     * @param companyId
-     * @param apiTypeId
-     * @param price
      * @return
      */
     @SystemServiceLog(description = "修改客户产品价格")
-    public int updateCompanyApiPrice(Integer companyId,String apiTypeId,String price)throws Exception;
+    public int updateCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic)throws Exception;
 
     /**
      * 根据账号Id查找Ip
@@ -193,5 +187,19 @@ public interface CompanyService {
      */
     @SystemServiceLog(description = "修改信用额度")
     public int updateCredit(Integer companyId,Integer credit) throws Exception;
+
+    /**
+     * 根据产品类型查找统一产品类型的产品列表
+     * @param tid_stid
+     * @return
+     */
+    public List<Api> queryApiByTypeId(String tid_stid);
+
+    /**
+     * 修改指定产品
+     * @return
+     */
+    @SystemServiceLog(description = "修改指定产品")
+    public int updateCompanyApiAppointApi(Integer companyId,Integer tid,Integer stid,String pic,Integer aid)throws Exception;
 
 }

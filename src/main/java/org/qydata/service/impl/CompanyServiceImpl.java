@@ -2,12 +2,11 @@ package org.qydata.service.impl;
 
 
 import org.qydata.config.annotation.SystemServiceLog;
+import org.qydata.constants.GlobalStaticConstants;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.*;
 import org.qydata.mapper.CompanyMapper;
-import org.qydata.mapper.CustomerDeptMapper;
-import org.qydata.mapper.CustomerMapper;
 import org.qydata.service.CompanyService;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.https.HttpClientUtil;
@@ -26,9 +25,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired private CompanyMapper companyMapper;
 
-    @Autowired  private CustomerDeptMapper customerDeptMapper;
-
-    @Autowired  private CustomerMapper customerMapper;
 
     @Override
     public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {
@@ -43,7 +39,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "新增客户")
     public int addCompanyCustomer(String companyName,String authId,String partnerId,String apiTypeId_subId [],String price [],String begIp [],String endIp [])throws Exception {
-        String uri = "https://api.qydata.org:9000/admin/customer/add-package";
+        String uri = GlobalStaticConstants.ADD_COMPANY;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("name",companyName);
@@ -148,7 +144,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "账号充值/扣费")
     public int updateCustomerBalance(Integer companyId, Integer reason, String amount) throws Exception{
-        final String uri = "https://api.qydata.org:9000/admin/customer/balance/charge";
+        String uri = GlobalStaticConstants.CUSTOMER_BALANCE_CHARGE;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
@@ -165,7 +161,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "账号禁用")
     public int updateCustomerBan(String authId) throws Exception{
-        final String uri = "https://api.qydata.org:9000/admin/customer/ban";
+        String uri = GlobalStaticConstants.CUSTOMER_BAN;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("authid",authId);
@@ -179,7 +175,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "账号解禁")
     public int updateCustomerUnBan(String authId) throws Exception{
-        final String uri = "https://api.qydata.org:9000/admin/customer/unban";
+        String uri = GlobalStaticConstants.CUSTOMER_UNBAN;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("authid",authId);
@@ -193,7 +189,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "公司禁用")
     public Map<String,Object> updateCompanyBan(String [] companyId) throws Exception{
-        final String uri = "https://api.qydata.org:9000/admin/company/ban";
+        String uri = GlobalStaticConstants.COMPANY_BAN;
         Map<String,Object> mapResu = new HashMap<>();
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<companyId.length; i++){
@@ -214,7 +210,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "公司解禁")
     public Map<String,Object> updateCompanyUnBan(String [] companyId) throws Exception{
-        final String uri = "https://api.qydata.org:9000/admin/company/unban";
+        String uri = GlobalStaticConstants.COMPANY_UNBAN;
         Map<String,Object> mapResu = new HashMap<>();
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<companyId.length; i++){
@@ -234,13 +230,30 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyApi> queryCompanyApiByCompanyId(Map<String, Object> map) {
-        return companyMapper.queryCompanyApiByCompanyId(map);
+        List<CompanyApi> resu = companyMapper.queryCompanyApiByCompanyId(map);
+        if (resu != null){
+            for (int i = 0; i < resu.size() ; i++) {
+                CompanyApi companyApi = resu.get(i);
+                if (companyApi != null){
+                    if (companyApi.getBtypeName() != null){
+                        if (companyApi.getCvendorName() != null){
+                            companyApi.setBtypeName(companyApi.getBtypeName() + "@" + companyApi.getCvendorName());
+                        }else {
+                            companyApi.setBtypeName(companyApi.getBtypeName());
+                        }
+                    }else {
+                        companyApi.setBtypeName("无");
+                    }
+                }
+            }
+        }
+        return resu;
     }
 
     @Override
     @SystemServiceLog(description = "客户产品权限禁用")
     public int banCompanyApi(Integer companyId,Integer id)throws Exception {
-        final String uri = "https://api.qydata.org:9000/admin/company/api/del";
+        String uri = GlobalStaticConstants.COMPANY_API_DEL;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
@@ -254,9 +267,17 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @SystemServiceLog(description = "客户产品权限解禁")
-    public int unBanCompanyApi(Integer id) {
-        companyMapper.unBanCompanyApi(id);
-        return 0;
+    public int unBanCompanyApi(Integer companyId,Integer id) throws Exception {
+        String uri = GlobalStaticConstants.COMPANY_API_ENABLE;
+        Map<String,Object> map = new HashMap<>();
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("cid",companyId);
+        map.put("id",id);
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
+        }
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override
@@ -296,18 +317,21 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @SystemServiceLog(description = "新增产品权限")
-    public int addCompanyApi(Integer companyId, String apiTypeId, String price)throws Exception {
-        String uri = "https://api.qydata.org:9000/admin/company/api/put";
+    public int addCompanyApi(Integer companyId, String apiTypeId, String price,String aid)throws Exception {
+        String uri = GlobalStaticConstants.COMPANY_API_PUT;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("price",(int)(Double.parseDouble(price)*100));
-        if (RegexUtil.isDot(apiTypeId)){
+        if (RegexUtil.isPoint(apiTypeId)){
             map.put("tid",apiTypeId);
         }else {
-            String apiTypeIds [] = apiTypeId.split(",");
+            String apiTypeIds [] = apiTypeId.split("-");
             map.put("tid",apiTypeIds[0]);
             map.put("stid",apiTypeIds[1]);
+        }
+        if (aid != null && aid != ""){
+            map.put("aid",aid);
         }
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
@@ -319,22 +343,18 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @SystemServiceLog(description = "修改客户产品价格")
-    public int updateCompanyApiPrice(Integer companyId, String apiTypeId, String price) throws Exception{
-
-        String uri = "https://api.qydata.org:9000/admin/company/api/put";
+    public int updateCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic) throws Exception{
+        System.out.println(companyId);
+        System.out.println(tid);
+        System.out.println(stid);
+        System.out.println(pic);
+        String uri = GlobalStaticConstants.COMPANY_API_PUT;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
-        map.put("price",(int)(Double.parseDouble(price)*100));
-        if (RegexUtil.isTwoUnderLine(apiTypeId)){
-            Integer tid = companyMapper.queryApiTypeIdByName(apiTypeId);
-            map.put("tid",tid);
-
-        }else {
-            String apiTypeIds [] = apiTypeId.split("--");
-            Integer tid = companyMapper.queryApiTypeIdByName(apiTypeIds[0]);
-            Integer stid = companyMapper.queryStidByName(apiTypeIds[1]);
-            map.put("tid",tid);
+        map.put("price",(int)(Double.parseDouble(pic)*100));
+        map.put("tid",tid);
+        if (stid != null){
             map.put("stid",stid);
         }
         int  code = HttpClientUtil.doGet(uri,map,null);
@@ -342,7 +362,6 @@ public class CompanyServiceImpl implements CompanyService {
             return code;
         }
         throw new Exception("http请求异常，请求状态码statusCode="+code);
-
     }
 
     @Override
@@ -353,7 +372,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "正式账号添加IP")
     public int addCustomerIp(Integer companyId,String begIp, String endIp) throws Exception{
-        final String uri = "https://api.qydata.org:9000/admin/customer/ip/add";
+        String uri = GlobalStaticConstants.CUSTOMER_ADD_IP;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
@@ -369,7 +388,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "正式账号删除Ip")
     public int deleteIpById(Integer companyId,Integer id) throws Exception {
-        String uri = "https://api.qydata.org:9000/admin/customer/ip/del";
+        String uri = GlobalStaticConstants.CUSTOMER_DEL_IP;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
@@ -389,11 +408,57 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @SystemServiceLog(description = "修改信用额度")
     public int updateCredit(Integer companyId, Integer credit) throws Exception {
-        final String uri = "https://api.qydata.org:9000/admin/customer/credit/put";
+        String uri = GlobalStaticConstants.CUSTOMER_CREDIT_PUT;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
         map.put("amount",credit*100);
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
+        }
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
+    }
+
+    @Override
+    public List<Api> queryApiByTypeId(String tid_stid) {
+        System.out.println(tid_stid);
+        Integer tid = null;
+        if (RegexUtil.isPoint(tid_stid)){
+            tid = Integer.parseInt(tid_stid);
+        }else {
+            String tid_stids [] = tid_stid.split("-");
+            tid = Integer.parseInt(tid_stids[0]);
+        }
+        List<Api> apiList = companyMapper.queryApiByTypeId(tid);
+        if (apiList != null){
+            for (int i = 0; i < apiList.size() ; i++) {
+                Api api = apiList.get(i);
+                if (api != null){
+                    if (api.getTypeName() != null){
+                        if (api.getVendorName() != null){
+                            api.setName(api.getTypeName() + "@" + api.getVendorName());
+                        }
+                    }
+                }
+            }
+        }
+        return apiList;
+    }
+
+    @Override
+    @SystemServiceLog(description = "修改指定产品")
+    public int updateCompanyApiAppointApi(Integer companyId, Integer tid, Integer stid, String pic, Integer aid) throws Exception {
+        String uri = GlobalStaticConstants.COMPANY_API_PUT;
+        Map<String,Object> map = new HashMap<>();
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("cid",companyId);
+        map.put("tid",tid);
+        if (stid != null){
+            map.put("stid",stid);
+        }
+        map.put("price",pic);
+        map.put("aid",aid);
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
             return code;

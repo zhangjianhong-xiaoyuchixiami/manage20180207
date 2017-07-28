@@ -1,14 +1,17 @@
 package org.qydata.tools.prob;
 
+import org.qydata.constants.GlobalStaticConstants;
 import org.qydata.entity.ApiExt;
 import org.qydata.entity.ApiResponseLog;
 import org.qydata.entity.RecoverProbLog;
 import org.qydata.mapper.ApiMapper;
 import org.qydata.mapper.CompanyMapper;
+import org.qydata.tools.https.HttpClientUtil;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 /**
@@ -26,8 +29,8 @@ public class RecoverProb {
 
     public boolean isMeetTerm(Integer aid,String time){
         int restTimeCount = 0;
-        int averRestTime = 100;
-        int failCount = 100;
+        int averRestTime = 5001;
+        int failCount = 0;
         for (int count = 0; count < 5; ) {
             List<ApiResponseLog> apiResponseLogList = null;
             try {
@@ -49,38 +52,46 @@ public class RecoverProb {
                 }
                 count = apiResponseLogList.size();
                 if (count != 0){
-                    averRestTime = (restTimeCount / 1000) / count;
+                    averRestTime = (restTimeCount) / count;
                 }
             }
         }
-        if (averRestTime <= 5 && failCount <= 1) {
+        if (averRestTime <= 5000 && failCount <= 1) {
             return true;
         }
         return false;
     }
 
-    public int updateProb(Integer aid,Integer typeId){
+    public int updateProb(Integer aid,Integer taid,Integer typeId){
         if (typeId == null){
             typeId = 1;
         }
         try {
             //修改通道配额
-            int prob = 0;
             String value = companyMapper.queryAuthKey("admin.k");
             ApiExt apiExt = apiMapper.queryDefProbDefPropByApiId(aid);
-            if (apiExt != null) {
+            ApiExt apiExtTeam = apiMapper.queryDefProbDefPropByApiId(taid);
+            if (apiExt != null && apiExtTeam != null) {
                 if (typeId == 1){
-                    prob =(int) (apiExt.getDefProb() * (apiExt.getDefProp() / 100.0));
+                    int prob =(int) (apiExt.getDefProb() * (apiExt.getDefProp() / 100.0));
+                    int code = updateProb(value, aid, prob);
+                    int probTeam =(int) (apiExtTeam.getDefProb() * (apiExt.getDefProp() / 10.0));
+                    int codeTeam = updateProb(value, taid, probTeam);
+                    if (code == 200 && codeTeam == 200){
+                        return 200;
+                    }
                 }
                 if (typeId == 2){
-                    prob =(int) (apiExt.getDefProb() * (apiExt.getDefProp() / 10.0));
-                }
-                if (typeId == 3){
-                    prob = apiExt.getDefProb();
+                    int prob = apiExt.getDefProb();
+                    int code = updateProb(value, aid, prob);
+                    int probTeam = apiExtTeam.getDefProb();
+                    int codeTeam = updateProb(value, taid, probTeam);
+                    if (code == 200 && codeTeam == 200){
+                        return 200;
+                    }
                 }
             }
-            int code = updateProb(value, aid, prob);
-            return code;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,25 +135,23 @@ public class RecoverProb {
     }
 
     private int updateProb(String value,Integer aid,Integer prob){
-//        final String uri = "https://api.qydata.org:9000/admin/api/modify-prob";
-//        Map<String,Object> mapParam = new HashMap<>();
-//        mapParam.put("k",value);
-//        mapParam.put("aid",aid);
-//        mapParam.put("v",prob);
-//        int  code = HttpClientUtil.doGet(uri,mapParam,null);
-//        return code;
-        return 200;
+        String uri = GlobalStaticConstants.API_MODIFY_PROB;
+        Map<String,Object> mapParam = new HashMap<>();
+        mapParam.put("k",value);
+        mapParam.put("aid",aid);
+        mapParam.put("v",prob);
+        int code = HttpClientUtil.doGet(uri,mapParam,null);
+        return code;
     }
 
     private int updateApiStatus(String value,Integer aid,Integer sid){
-//        final String uri = "https://api.qydata.org:9000/admin/api/status";
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("k",value);
-//        map.put("aid",aid);
-//        map.put("s",sid);
-//        int code = HttpClientUtil.doGet(uri,map,null);
-//        return code;
-        return 200;
+        String uri = GlobalStaticConstants.API_STATUS;
+        Map<String,Object> map = new HashMap<>();
+        map.put("k",value);
+        map.put("aid",aid);
+        map.put("s",sid);
+        int code = HttpClientUtil.doGet(uri,map,null);
+        return code;
     }
 
 

@@ -2,6 +2,7 @@ package org.qydata.service.impl;
 
 import org.qydata.config.annotation.DataSourceService;
 import org.qydata.config.annotation.SystemServiceLog;
+import org.qydata.constants.GlobalStaticConstants;
 import org.qydata.dst.ApiTypeInfo;
 import org.qydata.dst.CustomerApiPartner;
 import org.qydata.entity.*;
@@ -28,21 +29,23 @@ import java.util.Map;
 @Service
 public class ApiServiceImpl implements ApiService {
 
-    @Autowired private ApiMapper apiMapper;
+    @Autowired
+    private ApiMapper apiMapper;
 
-    @Autowired private CompanyMapper companyMapper;
+    @Autowired
+    private CompanyMapper companyMapper;
 
     @Override
     @DataSourceService
-    public List<Api> queryApi(Map<String,Object> map) {
+    public List<Api> queryApi(Map<String, Object> map) {
         List<Api> apiList = apiMapper.queryApi(map);
-        if (apiList != null){
-            for (int i = 0; i < apiList.size() ; i++) {
+        if (apiList != null) {
+            for (int i = 0; i < apiList.size(); i++) {
                 Api api = apiList.get(i);
-                if (api != null){
+                if (api != null) {
                     ApiType apiType = api.getApiType();
-                    if (apiType != null && apiType.getName() != null){
-                        String apiType_stidName = ApiTypeMobileOperatorNameUtils.apiTypeMobileOperatorName(apiType.getName(),api.getMobileOperatorList());
+                    if (apiType != null && apiType.getName() != null) {
+                        String apiType_stidName = ApiTypeMobileOperatorNameUtils.apiTypeMobileOperatorName(apiType.getName(), api.getMobileOperatorList());
                         apiType.setName(apiType_stidName);
                     }
                 }
@@ -92,7 +95,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     @DataSourceService
     public List<CustomerApiPartner> queryApiByCompanyId(Map<String, Object> map) {
-        List<CustomerApiPartner> customerApiPartnerList =  apiMapper.queryApiByCompanyId(map);
+        List<CustomerApiPartner> customerApiPartnerList = apiMapper.queryApiByCompanyId(map);
         return customerApiPartnerList;
     }
 
@@ -109,13 +112,13 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public List<ApiBan> queryApiMonitor() {
-        Map<String,Object> mapParam = new HashMap<>();
+        Map<String, Object> mapParam = new HashMap<>();
         mapParam.put("time", CalendarUtil.getCurrentLastHour());
         List<ApiBan> apiBanList = apiMapper.queryApiMonitor(mapParam);
-        if (apiBanList != null){
-            for (int i = 0; i < apiBanList.size() ; i++) {
+        if (apiBanList != null) {
+            for (int i = 0; i < apiBanList.size(); i++) {
                 ApiBan apiBan = apiBanList.get(i);
-                apiBan.setFailRate(Math.round(((double) apiBan.getFailCount()/(double)apiBan.getTotleCount())*100));
+                apiBan.setFailRate(Math.round(((double) apiBan.getFailCount() / (double) apiBan.getTotleCount()) * 100));
             }
         }
         return apiBanList;
@@ -124,8 +127,8 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     @SystemServiceLog(description = "上游产品禁用")
-    public Map<String,Object> updateApiBan(String [] apiId) throws Exception{
-        final String uri = "https://api.qydata.org:9000/admin/api/status";
+    public Map<String, Object> updateApiBan(String[] apiId) throws Exception {
+        String uri = GlobalStaticConstants.API_STATUS;
         Map<String,Object> mapResu = new HashMap<>();
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<apiId.length; i++){
@@ -159,8 +162,8 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     @SystemServiceLog(description = "上游产品解禁")
-    public Map<String,Object> updateApiUnBan(String [] apiId) throws Exception{
-        final String uri = "https://api.qydata.org:9000/admin/api/status";
+    public Map<String, Object> updateApiUnBan(String[] apiId) throws Exception {
+        String uri = GlobalStaticConstants.API_STATUS;
         Map<String,Object> mapResu = new HashMap<>();
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<apiId.length; i++){
@@ -196,41 +199,41 @@ public class ApiServiceImpl implements ApiService {
     @SystemServiceLog(description = "修改上游产品价格")
     public int updatePrice(Integer aid, Double pic) throws Exception {
         ApiFake apiFake = apiMapper.queryApiFakeByApiId(aid);
-        if (apiFake == null){
+        if (apiFake == null) {
             ApiFake apiFakeParam = new ApiFake();
             apiFakeParam.setApiId(aid);
             apiFakeParam.setFakeV(1);
             apiMapper.addApiFake(apiFakeParam);
         }
-        final String uri = "https://api.qydata.org:9000/admin/api/modify-cost";
-        Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("aid",aid);
-        map.put("v",pic*100);
-        int  code = HttpClientUtil.doGet(uri,map,null);
-        if (200 == code){
+        String uri = GlobalStaticConstants.API_MODIFY_COST;
+        Map<String, Object> map = new HashMap<>();
+        map.put("k", companyMapper.queryAuthKey("admin.k"));
+        map.put("aid", aid);
+        map.put("v", pic * 100);
+        int code = HttpClientUtil.doGet(uri, map, null);
+        if (200 == code) {
             return code;
         }
-        throw new Exception("http请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode=" + code);
     }
 
     @Override
     public List<ApiPriceChanceLog> queryApiPriceChangeLog(Map<String, Object> map) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<ApiPriceChanceLog> apclList = apiMapper.queryApiPriceChangeLog(map);
-        if (apclList != null){
-            for (int i = 0; i < apclList.size() ; i++) {
+        if (apclList != null) {
+            for (int i = 0; i < apclList.size(); i++) {
                 ApiPriceChanceLog apcl = apclList.get(i);
                 ApiType apiType = apcl.getApiType();
-                if (apiType != null && apiType.getName() != null){
-                    String apiType_stidName = ApiTypeMobileOperatorNameUtils.apiTypeMobileOperatorName(apiType.getName(),apcl.getMobileOperatorList());
+                if (apiType != null && apiType.getName() != null) {
+                    String apiType_stidName = ApiTypeMobileOperatorNameUtils.apiTypeMobileOperatorName(apiType.getName(), apcl.getMobileOperatorList());
                     apiType.setName(apiType_stidName);
                     apcl.setApiType(apiType);
                 }
-                if (apcl.getTimeForce() != null){
-                    if (apcl.getTimeDead() != null){
+                if (apcl.getTimeForce() != null) {
+                    if (apcl.getTimeDead() != null) {
                         apcl.setTimeRange(sdf.format(apcl.getTimeForce()) + "--" + sdf.format(apcl.getTimeDead()));
-                    }else {
+                    } else {
                         apcl.setTimeRange(sdf.format(apcl.getTimeForce()) + "--至今");
                     }
                 }
@@ -245,12 +248,12 @@ public class ApiServiceImpl implements ApiService {
         String dateFormat = date + ":00";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         ApiPriceChanceLog apiPriceChanceLog = apiMapper.queryApiChangeLogByApiId(aid);
-        if (apiPriceChanceLog != null){
-            apiMapper.updateApiDeadTimeByApiId(aid,sdf.parse(dateFormat));
+        if (apiPriceChanceLog != null) {
+            apiMapper.updateApiDeadTimeByApiId(aid, sdf.parse(dateFormat));
         }
         ApiPriceChanceLog apcl = new ApiPriceChanceLog();
         apcl.setApiId(aid);
-        apcl.setPrice((int)(pic*100));
+        apcl.setPrice((int) (pic * 100));
         apcl.setTimeForce(sdf.parse(dateFormat));
         boolean flag = apiMapper.addApiPriceChangeLog(apcl);
         return flag;
@@ -259,19 +262,19 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public List<Api> queryAllApi(Map<String, Object> map) {
         List<Api> apiList = apiMapper.queryAllApi(map);
-        if (apiList != null){
+        if (apiList != null) {
             for (int i = 0; i < apiList.size(); i++) {
                 Api api = apiList.get(i);
                 String apiName = null;
                 String vendorName = null;
-                if (api != null){
+                if (api != null) {
                     ApiType apiType = api.getApiType();
                     ApiVendor apiVendor = api.getApiVendor();
-                    if (apiVendor != null){
+                    if (apiVendor != null) {
                         vendorName = apiVendor.getName();
                     }
-                    if (apiType != null && apiType.getName() != null){
-                        apiName = ApiTypeMobileOperatorNameUtils.apiTypeVendorMobileOperatorName(apiType.getName(),vendorName,api.getMobileOperatorList());
+                    if (apiType != null && apiType.getName() != null) {
+                        apiName = ApiTypeMobileOperatorNameUtils.apiTypeVendorMobileOperatorName(apiType.getName(), vendorName, api.getMobileOperatorList());
                     }
                 }
                 api.setName(apiName);
@@ -285,13 +288,13 @@ public class ApiServiceImpl implements ApiService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<CompanyApiPriceChangeLog> capclList = apiMapper.queryCompanyApiPriceChangeLog(map);
-        if (capclList != null){
-            for (int i = 0; i < capclList.size() ; i++) {
+        if (capclList != null) {
+            for (int i = 0; i < capclList.size(); i++) {
                 CompanyApiPriceChangeLog capcl = capclList.get(i);
-                if (capcl.getTimeForce() != null){
-                    if (capcl.getTimeDead() != null){
+                if (capcl.getTimeForce() != null) {
+                    if (capcl.getTimeDead() != null) {
                         capcl.setTimeRange(sdf.format(capcl.getTimeForce()) + "--" + sdf.format(capcl.getTimeDead()));
-                    }else {
+                    } else {
                         capcl.setTimeRange(sdf.format(capcl.getTimeForce()) + "--至今");
                     }
                 }
@@ -312,22 +315,22 @@ public class ApiServiceImpl implements ApiService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Integer tid = null;
         Integer stid = null;
-        if (RegexUtil.isPoint(tid_stid)){
+        if (RegexUtil.isPoint(tid_stid)) {
             tid = Integer.parseInt(tid_stid);
-        }else {
-            String tid_stids [] = tid_stid.split("-");
+        } else {
+            String tid_stids[] = tid_stid.split("-");
             tid = Integer.parseInt(tid_stids[0]);
             stid = Integer.parseInt(tid_stids[1]);
         }
-        CompanyApiPriceChangeLog companyApiPriceChangeLog = apiMapper.queryCompanyApiChangeLogByCidTidStid(cid,tid,stid);
-        if (companyApiPriceChangeLog != null){
-            apiMapper.updateCompanyApiDeadTimeByCidTidStid(cid,tid,stid,sdf.parse(dateFormat));
+        CompanyApiPriceChangeLog companyApiPriceChangeLog = apiMapper.queryCompanyApiChangeLogByCidTidStid(cid, tid, stid);
+        if (companyApiPriceChangeLog != null) {
+            apiMapper.updateCompanyApiDeadTimeByCidTidStid(cid, tid, stid, sdf.parse(dateFormat));
         }
         CompanyApiPriceChangeLog capcl = new CompanyApiPriceChangeLog();
         capcl.setCompanyId(cid);
         capcl.setApiTypeId(tid);
         capcl.setStid(stid);
-        capcl.setPrice((int)(pic*100));
+        capcl.setPrice((int) (pic * 100));
         capcl.setTimeForce(sdf.parse(dateFormat));
         boolean flag = apiMapper.addCompanyApiPriceChangeLog(capcl);
         return flag;
@@ -336,41 +339,41 @@ public class ApiServiceImpl implements ApiService {
     @Override
     @SystemServiceLog(description = "修改客户产品价格")
     public int updateCompanyApiPrice(Integer cid, Integer tid, Integer stid, Double pic) throws Exception {
-        String uri = "https://api.qydata.org:9000/admin/company/api/put";
-        Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("cid",cid);
-        map.put("price",(int)(pic*100));
-        map.put("tid",tid);
-        map.put("stid",stid);
-        int  code = HttpClientUtil.doGet(uri,map,null);
-        if (200 == code){
+        String uri = GlobalStaticConstants.COMPANY_API_PUT;
+        Map<String, Object> map = new HashMap<>();
+        map.put("k", companyMapper.queryAuthKey("admin.k"));
+        map.put("cid", cid);
+        map.put("price", (int) (pic * 100));
+        map.put("tid", tid);
+        map.put("stid", stid);
+        int code = HttpClientUtil.doGet(uri, map, null);
+        if (200 == code) {
             return code;
         }
-        throw new Exception("http请求异常，请求状态码statusCode="+code);
+        throw new Exception("http请求异常，请求状态码statusCode=" + code);
     }
 
     @Override
     @SystemServiceLog(description = "客户产品权限禁用")
-    public Map<String,Object> banCompanyApi(String [] cid_id) throws Exception {
-        final String uri = "https://api.qydata.org:9000/admin/company/api/del";
-        Map<String,Object> mapResu = new HashMap<>();
+    public Map<String, Object> banCompanyApi(String[] cid_id) throws Exception {
+        String uri = GlobalStaticConstants.COMPANY_API_DEL;
+        Map<String, Object> mapResu = new HashMap<>();
         StringBuffer sb = new StringBuffer();
-        if (cid_id != null){
-            for (int i = 0; i < cid_id.length ; i++) {
-                Map<String,Object> map = new HashMap<>();
-                String [] cid_ids = cid_id[i].split("-");
+        if (cid_id != null) {
+            for (int i = 0; i < cid_id.length; i++) {
+                Map<String, Object> map = new HashMap<>();
+                String[] cid_ids = cid_id[i].split("-");
                 Integer cid = Integer.parseInt(cid_ids[0]);
                 Integer id = Integer.parseInt(cid_ids[1]);
-                map.put("k",companyMapper.queryAuthKey("admin.k"));
-                map.put("cid",cid);
-                map.put("id",id);
-                int  code = HttpClientUtil.doGet(uri,map,null);
-                if (code != 200){
-                    sb.append(cid_id[i]+"，");
-                    mapResu.put("fail",sb+"禁用失败其余禁用正常");
-                }else {
-                    mapResu.put("success","禁用成功");
+                map.put("k", companyMapper.queryAuthKey("admin.k"));
+                map.put("cid", cid);
+                map.put("id", id);
+                int code = HttpClientUtil.doGet(uri, map, null);
+                if (code != 200) {
+                    sb.append(cid_id[i] + "，");
+                    mapResu.put("fail", sb + "禁用失败其余禁用正常");
+                } else {
+                    mapResu.put("success", "禁用成功");
                 }
             }
         }
@@ -380,40 +383,38 @@ public class ApiServiceImpl implements ApiService {
     @Override
     @SystemServiceLog(description = "修改上游产品当前配额")
     public int updateApiCurrProb(Integer aid, Integer prob) throws Exception {
-//        final String uri = "https://api.qydata.org:9000/admin/api/modify-prob";
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("k",companyMapper.queryAuthKey("admin.k"));
-//        map.put("aid",aid);
-//        map.put("v",prob);
-//        int  code = HttpClientUtil.doGet(uri,map,null);
-//        if (200 == code){
-//            return code;
-//        }
-        int code = 200;
-        return code;
-        //throw new Exception("http请求异常，请求状态码statusCode="+code);
+        String uri = GlobalStaticConstants.API_MODIFY_PROB;
+        Map<String,Object> map = new HashMap<>();
+        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("aid",aid);
+        map.put("v",prob);
+        int  code = HttpClientUtil.doGet(uri,map,null);
+        if (200 == code){
+            return code;
+        }
+        throw new Exception("http请求异常，请求状态码statusCode="+code);
     }
 
     @Override
     @SystemServiceLog(description = "修改上游产品预设配额")
     public boolean updateApiDefProb(Integer aid, Integer prob) throws Exception {
         try {
-            ApiExt apiExt =  apiMapper.queryApiDefProb(aid);
+            ApiExt apiExt = apiMapper.queryApiDefProb(aid);
             ApiExt apiExtParam = new ApiExt();
             apiExtParam.setApiId(aid);
             apiExtParam.setDefProb(prob);
             int flag = 0;
-            if (apiExt != null){
+            if (apiExt != null) {
                 flag = apiMapper.updateApiDefProb(apiExtParam);
-            }else {
+            } else {
                 flag = apiMapper.addApiDefProb(apiExtParam);
             }
-            if (1 == flag){
+            if (1 == flag) {
                 return true;
             }
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return false;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
@@ -422,32 +423,48 @@ public class ApiServiceImpl implements ApiService {
     @SystemServiceLog(description = "修改上游产品预设比例")
     public boolean updateApiDefProp(Integer aid, Double prop) throws Exception {
         try {
-            ApiExt apiExt =  apiMapper.queryApiDefProp(aid);
+            ApiExt apiExt = apiMapper.queryApiDefProp(aid);
             ApiExt apiExtParam = new ApiExt();
             apiExtParam.setApiId(aid);
-            apiExtParam.setDefProp((int)(prop * 100));
+            apiExtParam.setDefProp((int) (prop * 100));
             int flag = 0;
-            if (apiExt != null){
+            if (apiExt != null) {
                 flag = apiMapper.updateApiDefProp(apiExtParam);
-            }else {
+            } else {
                 flag = apiMapper.addApiDefProp(apiExtParam);
             }
-            if (1 == flag){
+            if (1 == flag) {
                 return true;
             }
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return false;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
     @Override
+    @SystemServiceLog(description = "恢复上游产品配额")
     public void updateRecoverApiProb(String[] aid) throws Exception {
-        if (aid != null && aid.length > 0){
-            for (int i = 0; i < aid.length ; i++) {
-                RecoverApiProbThread runnable = new RecoverApiProbThread(Integer.parseInt(aid[i]),apiMapper,companyMapper);
+        if (aid != null && aid.length > 0) {
+            for (int i = 0; i < aid.length; i++) {
+                RecoverApiProbThread runnable = new RecoverApiProbThread(Integer.parseInt(aid[i]), apiMapper, companyMapper);
                 new Thread(runnable).start();
+                Integer tid = apiMapper.queryApiTypeByApiId(Integer.parseInt(aid[i]));
+                RecoverProbCheck resu = apiMapper.queryRecoverProbCheck(tid);
+                if (resu != null){
+                    if (resu.getValue() != 0){
+                        RecoverProbCheck param = new RecoverProbCheck();
+                        param.setTid(tid);
+                        param.setValue(1);
+                        apiMapper.updateRecoverProbCheck(param);
+                    }
+                }else {
+                    RecoverProbCheck param = new RecoverProbCheck();
+                    param.setTid(tid);
+                    param.setValue(1);
+                    apiMapper.insertRecoverProbCheck(param);
+                }
             }
         }
     }
@@ -466,4 +483,14 @@ public class ApiServiceImpl implements ApiService {
     public RecoverProbLog queryDetailLogByApiId(Integer aid) {
         return apiMapper.queryDetailLogByApiId(aid);
     }
+
+    @Override
+    public List<RecoverProbCheck> queryAllRecoverProbCheck(Map<String, Object> map) {
+        return apiMapper.queryAllRecoverProbCheck(map);
+    }
+
+
 }
+
+
+

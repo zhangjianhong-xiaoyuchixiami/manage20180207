@@ -321,6 +321,8 @@ public class CompanyController {
         return gson.toJson(companyApiList);
     }
 
+
+
     /**
      * 禁用产品权限
      * @param id
@@ -352,13 +354,21 @@ public class CompanyController {
      */
     @RequestMapping("/unban-api")
     @ResponseBody
-    public String unBanCompanyApiById(Integer id){
+    public String unBanCompanyApiById(Integer companyId,Integer id){
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap<>();
+         int code = 0;
         try {
-            companyService.unBanCompanyApi(id);
+           code = companyService.unBanCompanyApi(companyId,id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        if (200 == code){
+            map.put("success","客户产品权限启用成功！");
+            return gson.toJson(map);
+        }
+        map.put("error","哎呀，操作失败了！");
+        return gson.toJson(map);
     }
 
     /**
@@ -383,7 +393,7 @@ public class CompanyController {
      */
     @RequestMapping("/add-company-api")
     @ResponseBody
-    public String addCompanyApi(int companyId,String apiTypeId,String price){
+    public String addCompanyApi(int companyId,String apiTypeId,String price,String aid){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if(RegexUtil.isNull(apiTypeId)){
@@ -405,7 +415,7 @@ public class CompanyController {
         }
         int code = 0;
         try {
-            code = companyService.addCompanyApi(companyId, apiTypeId, price);
+            code = companyService.addCompanyApi(companyId, apiTypeId, price,aid);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -418,42 +428,88 @@ public class CompanyController {
     }
 
     /**
-     * 修改产品价格
-     * @param companyId
-     * @param apiTypeId
-     * @param price
+     * 根据产品类型查找统一产品类型的产品列表
+     * @param tid_stid
      * @return
      */
-    @RequestMapping("/mod-company-api-price")
+    @RequestMapping("/query-api-by-typeId")
     @ResponseBody
-    public String midCompanyApiPrice(int companyId,String apiTypeId,String price){
+    public String queryApiByTypeId(String tid_stid){
+       List<Api> apiList = companyService.queryApiByTypeId(tid_stid);
+        return new Gson().toJson(apiList);
+    }
+
+    /**
+     * 修改产品价格
+     * @param companyId
+     * @return
+     */
+    @RequestMapping("/mid-company-api-price")
+    @ResponseBody
+    public String midCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
-        if(RegexUtil.isNull(price)){
-            map.put("priceMessage","请输入金额!");
-            return gson.toJson(map);
-        }
-        if(!RegexUtil.isFloatZero(price)){
-            map.put("priceMessage","金额格式不正确!");
-            return gson.toJson(map);
-        }else {
-            if (Double.parseDouble(price)<=0){
-                map.put("priceMessage","金额必须大于0!");
-                return gson.toJson(map);
-            }
-        }
         int code = 0;
         try {
-            code = companyService.updateCompanyApiPrice(companyId, apiTypeId, price);
+            code = companyService.updateCompanyApiPrice(companyId,tid,stid,pic);
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (200 == code){
-            map.put("successMessage","操作成功!");
+            map.put("success","价格修改完成!");
             return gson.toJson(map);
         }
-        map.put("errorMessage","操作失败!");
+        map.put("fail","哎呦，修改失败了!");
         return gson.toJson(map);
+    }
+
+    /**
+     *修改指定产品
+     * @return
+     */
+    @RequestMapping("/mid-company-api-appoint-api")
+    @ResponseBody
+    public String midCompanyApiAppointApi(Integer companyId,Integer tid,Integer stid,String pic,Integer aid){
+        System.out.println(companyId);
+        System.out.println(tid);
+        System.out.println(stid);
+        System.out.println(pic);
+        System.out.println(aid);
+        Gson gson = new Gson();
+        Map<String,Object> map = new HashMap();
+        int code = 0;
+        try {
+            code = companyService.updateCompanyApiAppointApi(companyId,tid,stid,pic,aid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (200 == code){
+            map.put("success","指定产品修改完成!");
+            return gson.toJson(map);
+        }
+        map.put("fail","哎呦，修改失败了!");
+        return gson.toJson(map);
+    }
+
+    /**
+     * 根据产品类型查询产品
+     * @param tid
+     * @return
+     */
+    @RequestMapping("/query-appoint-api-by-type")
+    @ResponseBody
+    public String queryAppointApiByTypeId(String tid){
+        List<Api> apiList = companyService.queryApiByTypeId(tid);
+        Map<Integer,String> map = new HashMap<>();
+        if (apiList != null){
+            for (int i = 0; i < apiList.size() ; i++) {
+                Api api = apiList.get(i);
+                if (api != null){
+                    map.put(api.getId(),api.getName());
+                }
+            }
+        }
+        return new Gson().toJson(map);
     }
 
     /**

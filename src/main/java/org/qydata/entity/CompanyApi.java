@@ -18,6 +18,9 @@ public class CompanyApi implements Serializable {
     private Integer enabled;
     private Timestamp createTime;
     private String type_stid_name;
+    private String btypeName;
+    private String cvendorName;
+    private Integer apiId;
     private ApiType apiType;
     private MobileOperator mobileOperator;
     private CompanyApiCount companyApiCount;
@@ -108,5 +111,29 @@ public class CompanyApi implements Serializable {
 
     public void setType_stid_name(String type_stid_name) {
         this.type_stid_name = type_stid_name;
+    }
+
+    public String getBtypeName() {
+        return btypeName;
+    }
+
+    public void setBtypeName(String btypeName) {
+        this.btypeName = btypeName;
+    }
+
+    public String getCvendorName() {
+        return cvendorName;
+    }
+
+    public void setCvendorName(String cvendorName) {
+        this.cvendorName = cvendorName;
+    }
+
+    public Integer getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(Integer apiId) {
+        this.apiId = apiId;
     }
 }

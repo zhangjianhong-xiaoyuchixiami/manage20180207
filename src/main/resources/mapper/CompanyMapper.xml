@@ -42,6 +42,9 @@
         <result column="enabled" property="enabled"/>
         <result column="createTime" property="createTime"/>
         <result column="type_stid_name" property="type_stid_name"/>
+        <result column="btypeName" property="btypeName"/>
+        <result column="cvendorName" property="cvendorName"/>
+        <result column="apiId" property="apiId"/>
         <association property="apiType" javaType="org.qydata.entity.ApiType">
             <result column="apiTypeName" property="name"/>
         </association>
@@ -129,10 +132,20 @@
     <!--根据公司Id查找公司已拥有权限的Api-->
     <select id="queryCompanyApiByCompanyId" parameterType="map" resultMap="CompanyApi_ApiType_Map">
         SELECT a.id,a.companyId,a.apiTypeId,a.subTypeId,a.price,a.enabled,a.createTime,
-        a.apiTypeName,a.subTypeName,CONCAT_WS('--',a.apiTypeName,a.subTypeName) type_stid_name
-        FROM qyfinance.bkvwCompanyApi a
-        WHERE a.companyId=#{companyId}
-
+        a.apiTypeName,a.subTypeName,a.type_stid_name,a.apiId,
+        b.name btypeName,c.name cvendorName
+        FROM
+        (
+            SELECT a.id,a.companyId,a.apiTypeId,a.subTypeId,a.price,a.enabled,a.createTime,
+            a.apiTypeName,a.subTypeName,
+            CONCAT_WS('--',a.apiTypeName,a.subTypeName) type_stid_name,a.apiId,
+            b.id bid,b.apiTypeId bapiTypeId,b.vendorId bvendorId
+            FROM qyfinance.bkvwCompanyApi a
+            LEFT JOIN qyfinance.bkvwApi b ON a.apiId = b.id
+            WHERE a.companyId=#{companyId}
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.bapiTypeId = b.id
+        LEFT JOIN qyfinance.finance_ApiVendor c ON a.bvendorId = c.id
     </select>
 
     <!--查询全部产品权限-->
@@ -175,6 +188,15 @@
         FROM qyfinance.bkvwCustomer
         WHERE companyId = #{param}
         AND typeId = 1
+    </select>
+
+    <!--根据产品类型查找统一产品类型的产品列表-->
+    <select id="queryApiByTypeId" parameterType="int" resultType="org.qydata.entity.Api">
+        SELECT a.id,a.apiTypeId,a.vendorId,b.name typeName,c.name vendorName
+        FROM qyfinance.bkvwApi a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.finance_ApiVendor c ON a.vendorId = c.id
+        WHERE a.apiTypeId = #{param}
     </select>
 
 </mapper>

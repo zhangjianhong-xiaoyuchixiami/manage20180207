@@ -1,6 +1,7 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
+import org.qydata.config.annotation.RecoverProbController;
 import org.qydata.dst.ApiTypeInfo;
 import org.qydata.dst.CustomerApiPartner;
 import org.qydata.entity.*;
@@ -93,6 +94,7 @@ public class ApiController {
      */
     @RequestMapping("/ban")
     @ResponseBody
+    @RecoverProbController
     public String apiBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] apiId = request.getParameterValues("apiId[]");
@@ -112,6 +114,7 @@ public class ApiController {
      */
     @RequestMapping("/unban")
     @ResponseBody
+    @RecoverProbController
     public String apiUnBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] apiId = request.getParameterValues("apiId[]");
@@ -402,6 +405,7 @@ public class ApiController {
      */
     @RequestMapping("/update-curr-prob")
     @ResponseBody
+    @RecoverProbController
     public String midApiCurrProb(Integer aid,Integer prob){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
@@ -427,6 +431,7 @@ public class ApiController {
      */
     @RequestMapping("/update-def-prob")
     @ResponseBody
+    @RecoverProbController
     public String midApiDefProb(Integer aid,Integer prob){
 
         Gson gson = new Gson();
@@ -453,6 +458,7 @@ public class ApiController {
      */
     @RequestMapping("/update-def-prop")
     @ResponseBody
+    @RecoverProbController
     public String midApiDefProp(Integer aid,Double prop){
 
         Gson gson = new Gson();
@@ -477,6 +483,7 @@ public class ApiController {
      */
     @RequestMapping("/recover-prob")
     @ResponseBody
+    @RecoverProbController
     public String recoverApiProb(HttpServletRequest request){
         String [] aid = request.getParameterValues("aid[]");
         Map<String,Object> map = new HashMap<>();
@@ -503,10 +510,16 @@ public class ApiController {
         return new Gson().toJson(map);
     }
 
+    /**
+     * 查询恢复日志
+     * @param aid
+     * @return
+     */
     @RequestMapping("/query-detail-log")
     @ResponseBody
     public String queryDetailLog(Integer aid){
         RecoverProbLog recoverProbLog = apiService.queryDetailLogByApiId(aid);
         return new Gson().toJson(recoverProbLog);
     }
+
 }

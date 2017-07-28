@@ -459,6 +459,19 @@
                                     text: "哎呦，修改失败了",
                                     confirmButtonText: "确定"
 
+                                });
+                                return;
+                            }
+                            if (data.warning != null){
+                                swal({
+                                    title: "操作提示",
+                                    text: data.warning,
+                                    type: "warning",
+                                    showCancelButton: false, //是否显示取消按钮
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "确定"//确定按钮上面的文档
+                                }).then(function () {
+
                                 })
                             }
                         }
@@ -529,6 +542,19 @@
                                     text: "哎呦，修改失败了",
                                     confirmButtonText: "确定"
 
+                                });
+                                return;
+                            }
+                            if (data.warning != null){
+                                swal({
+                                    title: "操作提示",
+                                    text: data.warning,
+                                    type: "warning",
+                                    showCancelButton: false, //是否显示取消按钮
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "确定"//确定按钮上面的文档
+                                }).then(function () {
+
                                 })
                             }
                         }
@@ -558,9 +584,9 @@
                 inputValue: prop_w,
                 inputValidator: function(value) {
                     return new Promise(function(resolve, reject) {
-                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        var re =new RegExp("^0.[0-9]{1,2}|0|1$");
                         if(!re.test(value)){
-                            reject('格式输入不正确！');
+                            reject('格式输入不正确，区间范围：[0,1]！');
                         } else {
                             resolve();
                         }
@@ -599,6 +625,19 @@
                                     text: "哎呦，修改失败了",
                                     confirmButtonText: "确定"
 
+                                });
+                                return;
+                            }
+                            if (data.warning != null){
+                                swal({
+                                    title: "操作提示",
+                                    text: data.warning,
+                                    type: "warning",
+                                    showCancelButton: false, //是否显示取消按钮
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "确定"//确定按钮上面的文档
+                                }).then(function () {
+
                                 })
                             }
                         }
@@ -621,8 +660,8 @@
                 success: function (data) {
                     var value = "无";
                     if (data != null) {
-                        if (data.statusName != null) {
-                            value = data.statusName
+                        if (data.statusName != null && data.createTime != null) {
+                            value = data.statusName + '（恢复日期：' + data.createTime+ '）'
                         }
                     }
                     swal({

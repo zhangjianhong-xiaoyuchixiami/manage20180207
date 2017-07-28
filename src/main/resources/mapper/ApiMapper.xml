@@ -593,6 +593,31 @@
         limit 0,1
     </select>
 
+    <!--检查当前是否在进行恢复配额操作-->
+    <select id="queryAllRecoverProbCheck" parameterType="map" resultType="org.qydata.entity.RecoverProbCheck">
+        SELECT tid,value
+        FROM qyfinance.RecoverProbCheck
+        WHERE value = #{value}
+    </select>
+
+    <!--进行恢复检查记录是否存在-->
+    <select id="queryRecoverProbCheck" parameterType="int" resultType="org.qydata.entity.RecoverProbCheck">
+        SELECT tid,value
+        FROM qyfinance.RecoverProbCheck
+        WHERE tid = #{param}
+    </select>
+
+    <!--进行恢复配额操作时插入执行标记-->
+    <insert id="insertRecoverProbCheck" parameterType="org.qydata.entity.RecoverProbCheck" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.RecoverProbCheck(tid,value)
+        VALUES(#{tid},#{value})
+    </insert>
+
+    <!--进行恢复配额操作时修改执行标记-->
+    <update id="updateRecoverProbCheck" parameterType="org.qydata.entity.RecoverProbCheck">
+        UPDATE qyfinance.RecoverProbCheck SET value = #{value}
+        WHERE tid = #{tid}
+    </update>
     
 </mapper>
 

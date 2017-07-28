@@ -1,6 +1,7 @@
 package org.qydata.tools.thread;
 
 import org.qydata.entity.Api;
+import org.qydata.entity.RecoverProbCheck;
 import org.qydata.mapper.ApiMapper;
 import org.qydata.mapper.CompanyMapper;
 import org.qydata.tools.prob.RecoverProb;
@@ -31,6 +32,7 @@ public class RecoverApiProbThread implements Runnable {
         //获取起始时间
         Date oneBeginDate = new Date();
         String oneBegTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(oneBeginDate);
+        Integer tid = 0;
         try{
             Integer apiStatus = apiMapper.queryApiStatusByApiId(aid);
             if (apiStatus != null) {
@@ -38,7 +40,7 @@ public class RecoverApiProbThread implements Runnable {
                 int updateSuccCode = recoverProb.updateApiStatus(aid, 0);
                 if (200 == updateSuccCode){
                     //查询要恢复通道的产品类型Id
-                    Integer tid = apiMapper.queryApiTypeByApiId(aid);
+                    tid = apiMapper.queryApiTypeByApiId(aid);
                     //获取除了要恢复的产品同一类型并且状态启用的通道数是多少
                     List<Api> apiList = apiMapper.getCountUnifiedTypeNorStatusOther(aid, tid);
                     if (apiList != null && apiList.size() >= 0) {
@@ -48,11 +50,10 @@ public class RecoverApiProbThread implements Runnable {
                         recoverProb.updateRunLog(recoverProbId,apiTeam.getId(),oneBeginDate,null,null,null,0,401);
                         if (recoverProb.isMeetTerm(aid,oneBegTime)) {
                             //修改通道配额
-                            int code = recoverProb.updateProb(aid,1);
+                            int code = recoverProb.updateProb(aid,apiTeam.getId(),1);
                             //修改协作通道配额
-                            int codeTeam = recoverProb.updateProb(apiTeam.getId(),2);
                             Date oneEndDate = new Date();
-                            if (200 == code && 200 == codeTeam) {
+                            if (200 == code) {
                                 //恢复成功，修改配额第一阶段完成
                                 recoverProb.updateRunLog(recoverProbId,apiTeam.getId(),oneBeginDate,oneEndDate,null,null,1,503);
                             } else {
@@ -68,13 +69,9 @@ public class RecoverApiProbThread implements Runnable {
                                 recoverProb.updateRunLog(recoverProbId,apiTeam.getId(),oneBeginDate,oneEndDate,endDate,null,1,402);
                                 if (recoverProb.isMeetTerm(aid,endTime)) {
                                     //修改通道配额
-                                    int codeTwo = recoverProb.updateProb(aid,3);
-                                    //修改协作通道配额
-                                    int codeTeamTwo = recoverProb.updateProb(apiTeam.getId(),3);
-
+                                    int codeTwo = recoverProb.updateProb(aid,apiTeam.getId(),2);
                                     Date twoEndDate = new Date();
-
-                                    if (200 == codeTwo && 200 == codeTeamTwo) {
+                                    if (200 == codeTwo) {
                                         //恢复成功，修改配额第二阶段完成
                                         recoverProb.updateRunLog(recoverProbId,apiTeam.getId(),oneBeginDate,oneEndDate,endDate,twoEndDate,1,504);
                                     } else {
@@ -83,10 +80,8 @@ public class RecoverApiProbThread implements Runnable {
                                     }
                                 }else {
                                     //修改通道配额
-                                    int codeBack = recoverProb.updateProb(aid,1);
-                                    //修改协作通道配额
-                                    int codeBackTeam = recoverProb.updateProb(apiTeam.getId(),2);
-                                    if (200 == codeBack && 200 == codeBackTeam){
+                                    int codeBack = recoverProb.updateProb(aid,apiTeam.getId(),1);
+                                    if (200 == codeBack){
                                         //恢复成功，修改配额第二阶段完成，修改配额第二阶段未满足恢复条件，已将配额修改为第一阶段配额
                                         recoverProb.updateRunLog(recoverProbId,apiTeam.getId(),oneBeginDate,oneEndDate,endDate,new Date(),1,505);
                                     }else {
@@ -121,6 +116,11 @@ public class RecoverApiProbThread implements Runnable {
             //恢复失败，程序异常，已将状态修改为-2，请联系管理员
             recoverProb.updateApiStatus(aid,-2);
             recoverProb.updateRunLog(recoverProbId,null,null,null,null,null,0,-500);
+        }finally {
+            RecoverProbCheck param = new RecoverProbCheck();
+            param.setTid(tid);
+            param.setValue(0);
+            apiMapper.updateRecoverProbCheck(param);
         }
     }
 }

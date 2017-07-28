@@ -228,13 +228,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="excel:extra-account-vendor">
-                                <li id="extra-account-vendor">
-                                    <a href="/excel/extra-account-vendor">
-                                        供应商临时对账
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="excel:extra-account-vendor">-->
+                                <#--<li id="extra-account-vendor">-->
+                                    <#--<a href="/excel/extra-account-vendor">-->
+                                        <#--供应商临时对账-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
                             <@shiro.hasPermission name="partner:find-all-partner-financial-account">
                                 <li id="partnersFinancialAccount">

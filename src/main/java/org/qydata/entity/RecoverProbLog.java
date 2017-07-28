@@ -18,6 +18,7 @@ public class RecoverProbLog implements Serializable {
     private Integer statusCode;
     private Integer ok;
     private String statusName;
+    private String createTime;
 
     public Integer getId() {
         return id;
@@ -98,5 +99,13 @@ public class RecoverProbLog implements Serializable {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 }

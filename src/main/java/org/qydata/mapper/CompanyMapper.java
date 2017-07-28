@@ -160,4 +160,11 @@ public interface CompanyMapper {
      */
     public Customer queryOfficAuthIdByCompanyId(Integer companyId);
 
+    /**
+     * 根据产品类型查找统一产品类型的产品列表
+     * @param tid
+     * @return
+     */
+    public List<Api> queryApiByTypeId(Integer tid);
+
 }

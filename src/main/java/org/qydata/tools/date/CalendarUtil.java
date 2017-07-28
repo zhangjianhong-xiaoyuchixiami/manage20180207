@@ -62,7 +62,7 @@ public class CalendarUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE,1);
-       return sdf.format(calendar.getTime());
+        return sdf.format(calendar.getTime());
     }
 
     /**
@@ -94,5 +94,27 @@ public class CalendarUtil {
         return sdf.format(calendar.getTime());
     }
 
+    /**
+     * 判断输入日期后一天和当前日期后一天是否相等
+     * @param time
+     * @return
+     */
+    public static boolean isInputTimeAfterDayGreaterThanEqualCurrTimeAfterDay(String time){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String inputTime = CalendarUtil.getAfterDayByInputTime(time);
+        String currTime = CalendarUtil.getCurrTimeAfterDay();
+        try {
+            Date inputDate = sdf.parse(inputTime);
+            Date currDate = sdf.parse(currTime);
+            long inputLong = inputDate.getTime();
+            long currLong = currDate.getTime();
+            if (inputLong >= currLong){
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

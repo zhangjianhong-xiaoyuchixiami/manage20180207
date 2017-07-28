@@ -70,5 +70,7 @@ public interface ButtJoint {
     @RequestMapping("company/api/put")
     public void companyApiPut(@RequestParam("cid")int cid, @RequestParam("tid")int tid, @RequestParam(value = "stid", defaultValue = "0") Integer stid, @RequestParam(value = "aid", defaultValue = "") Integer aid, @RequestParam("price")int price);
 
-
+    //客户权限启用
+    @RequestMapping("company/api/enable")
+    public void companyApiEnable(@RequestParam("cid")int cid, @RequestParam("id")int id);
 }

@@ -216,4 +216,11 @@ public interface ApiService {
      */
     public RecoverProbLog queryDetailLogByApiId(Integer aid);
 
+    /**
+     * 检查当前是否在进行恢复配额操作
+     * @return
+     */
+    public List<RecoverProbCheck> queryAllRecoverProbCheck(Map<String,Object> map);
+
+
 }
