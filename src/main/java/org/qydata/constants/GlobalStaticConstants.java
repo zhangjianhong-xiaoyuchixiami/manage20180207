@@ -38,4 +38,5 @@ public class GlobalStaticConstants {
  //产品价格修改
  public static final String API_MODIFY_COST = REQUEST_URL + "api/modify-cost";
 
+
 }

@@ -188,6 +188,14 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <@shiro.hasPermission name="finance:customer-history-bill">
+                                <li id="customer-history-bill">
+                                    <a href="/finance/customer-history-bill">
+                                        客户历史财务账单
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
                             <@shiro.hasPermission name="finance:find-all-customer-by-dept-id">
                                 <li id="customerListBalanceLog">
                                     <a href="/finance/find-all-customer-by-dept-id">
@@ -251,20 +259,6 @@
                                     </a>
                                 </li>
                             </@shiro.hasPermission>
-
-                        <#--  <li id="">
-                              <a href="/file-upload">
-                                  上传文件
-                              </a>
-                          </li>-->
-
-                        <#-- <@shiro.hasPermission name="customer:findAllCustomer">
-                             <li id="partnersFinancialAccount">
-                                 <a href="/partner/export-excel">
-                                     合作公司Excel导出
-                                 </a>
-                             </li>
-                         </@shiro.hasPermission>-->
 
                         </ul>
 
@@ -474,31 +468,9 @@
 
                 </@shiro.hasAnyRoles>
 
-            <#-- &lt;#&ndash;消息通知&ndash;&gt;
-                 <@shiro.hasAnyRoles name="backAdmin">
-
-                     <li>
-
-                         <a href="index.html">
-
-                             <i class="icon-bullhorn"></i>
-
-                             <span class="title">消息通知</span>
-
-                         </a>
-
-                     </li>
-                 </@shiro.hasAnyRoles>&ndash;&gt;-->
-
             </ul>
 
         </div>
-
-    <#-- <div class="cube">
-         <div class="tg-qe-progress-bar myactive">
-             <div class="bar"></div>
-         </div>
-     </div>-->
 
     </div>
 
@@ -514,7 +486,6 @@
 
         <div class="footer-inner">
 
-        <#--2016 &copy;-->
         </div>
 
         <div class="footer-tools">

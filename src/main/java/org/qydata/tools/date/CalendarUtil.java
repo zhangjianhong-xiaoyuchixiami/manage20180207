@@ -117,4 +117,16 @@ public class CalendarUtil {
         return false;
     }
 
+
+    /**
+     * 将当前时期格式化为“yyyy-MM-dd 00:00:00”的形式
+     * @return
+     */
+    public static String formatCurrTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        Date date = new Date();
+        return sdf.format(date);
+    }
+
+
 }

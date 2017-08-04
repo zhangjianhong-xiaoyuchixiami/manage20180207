@@ -310,7 +310,7 @@
         GROUP BY customerId
     </select>
 
-    <!--查询充值总额（至昨天）-->
+    <!--查询当天充值总额-->
     <select id="queryCustomerChargeCurrDay" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
         SELECT customerId id,sum(amount) currDayChargeAmount
         FROM qyfinance.finance_CustomerBalanceLog

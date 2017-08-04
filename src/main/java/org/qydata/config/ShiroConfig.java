@@ -411,6 +411,7 @@ public class ShiroConfig {
 		chains.put("/excel/extra-account-partner", "authc,perms");
 		chains.put("/excel/extra-account-vendor", "authc,perms");
 		chains.put("/excel/extra-account-customer", "authc,perms");
+		chains.put("/finance/customer-history-bill", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

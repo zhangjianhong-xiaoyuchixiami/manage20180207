@@ -1,10 +1,6 @@
 package org.qydata.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * Created by jonhn on 2016/12/15.
@@ -14,8 +10,9 @@ public class Company implements Serializable {
     private Integer id;
     private String name;
     private Integer partnerId;
+    private String partnerName;
     private Partner partner;
-    private Timestamp timestamp;
+
 
     public Integer getId() {
         return id;
@@ -41,12 +38,12 @@ public class Company implements Serializable {
         this.partnerId = partnerId;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public String getPartnerName() {
+        return partnerName;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setPartnerName(String partnerName) {
+        this.partnerName = partnerName;
     }
 
     public Partner getPartner() {
@@ -55,15 +52,5 @@ public class Company implements Serializable {
 
     public void setPartner(Partner partner) {
         this.partner = partner;
-    }
-
-    public String toString(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
