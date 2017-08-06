@@ -1,10 +1,12 @@
 package org.qydata.controller;
 
+import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.qydata.dst.CustomerHistoryBill;
 import org.qydata.dst.CustomerHistoryBillDetail;
 import org.qydata.entity.Company;
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.Partner;
 import org.qydata.service.CustomerHistoryBillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -147,10 +150,83 @@ public class CustomerHistoryBillController {
                 model.addAttribute("conTot",conTot);
             }
         }
+        List<String> conTimeList = billService.queryAllConsumeTime();
+        List<CompanyApi> companyApiList = billService.queryCompanyApiByCompanyId(cid);
+        model.addAttribute("conTimeList",conTimeList);
+        model.addAttribute("companyApiList",companyApiList);
         return "/finance/customer-history-bill-month-detail";
     }
 
-    public String customerHistoryBillDetail
+    /**
+     * 修改单价
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/update-cost")
+    @ResponseBody
+    public String customerHistoryBillDetailUpdateCost(Integer id,Double cost){
+        Map<String,Object> resu = new HashMap<>();
+        if (billService.updateCustomerHistoryBillCost(id,cost)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
+    /**
+     * 修改扣费量
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/update-amount")
+    @ResponseBody
+    public String customerHistoryBillDetailUpdateAmount(Integer id,Integer amount){
+        Map<String,Object> resu = new HashMap<>();
+        if (billService.updateCustomerHistoryBillAmount(id,amount)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
+    /**
+     * 增加
+     * @param cid
+     * @param tid
+     * @param cost
+     * @param amount
+     * @param yearMonth
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/add")
+    @ResponseBody
+    public String customerHistoryBillDetailAdd(Integer cid,String tid,Double cost,Integer amount,String yearMonth){
+        Map<String,Object> resu = new HashMap<>();
+        if (billService.addCustomerHistoryBill(cid, tid, cost, amount, yearMonth)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
+    /**
+     * 删除
+     * @param request
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/delete")
+    @ResponseBody
+    public String customerHistoryBillDetailDelete(HttpServletRequest request){
+        String [] id = request.getParameterValues("id[]");
+        Map<String,Object> resu = new HashMap<>();
+        if (billService.deleteCustomerHistoryBill(id)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
 
     /**
      * 客户历史账单消费走势

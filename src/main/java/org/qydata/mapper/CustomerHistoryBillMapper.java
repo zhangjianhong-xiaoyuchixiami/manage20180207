@@ -70,6 +70,36 @@ public interface CustomerHistoryBillMapper {
     public List<CustomerHistoryBillDetail> queryCustomerHistoryBillDetail(Map<String,Object> map);
 
     /**
+     * 修改单价
+     * @param id
+     * @param cost
+     * @return
+     */
+    public int updateCustomerHistoryBillCost(Integer id,Integer cost);
+
+    /**
+     * 修改扣费量
+     * @param id
+     * @param amount
+     * @return
+     */
+    public int updateCustomerHistoryBillAmount(Integer id,Integer amount);
+
+    /**
+     * 新增历史记录
+     * @param bill
+     * @return
+     */
+    public boolean addCustomerHistoryBill(CustomerHistoryBillDetail bill);
+
+    /**
+     * 删除历史记录
+     * @param list
+     * @return
+     */
+    public boolean deleteCustomerHistoryBill(List<String> list);
+
+    /**
      * 客户历史账单消费走势加载数据---加载月消费量
      * @param map
      * @return

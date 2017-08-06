@@ -1,6 +1,7 @@
 package org.qydata.service;
 
 import org.qydata.entity.Company;
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.Partner;
 
 import java.util.List;
@@ -42,6 +43,43 @@ public interface CustomerHistoryBillService {
      * @return
      */
     public Map<String,Object> queryCustomerHistoryBillDetail(Map<String,Object> map);
+
+    /**
+     * 修改单价
+     * @param id
+     * @param cost
+     * @return
+     */
+    public boolean updateCustomerHistoryBillCost(Integer id,Double cost);
+
+    /**
+     * 修改扣费量
+     * @param id
+     * @param amount
+     * @return
+     */
+    public boolean updateCustomerHistoryBillAmount(Integer id,Integer amount);
+
+    /**
+     * 新增历史记录
+     * @param cid
+     * @return
+     */
+    public boolean addCustomerHistoryBill(Integer cid,String tid,Double cost,Integer amount,String yearMonth);
+
+    /**
+     * 删除历史记录
+     * @param id
+     * @return
+     */
+    public boolean deleteCustomerHistoryBill(String [] id);
+
+    /**
+     * 查询客户产品权限
+     * @param cid
+     * @return
+     */
+    public List<CompanyApi> queryCompanyApiByCompanyId(Integer cid);
 
     /**
      * 客户历史账单消费走势加载数据

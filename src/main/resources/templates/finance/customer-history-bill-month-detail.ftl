@@ -35,6 +35,11 @@
 
                                     <select class="medium m-wrap" multiple id="cyc" name="cyc">
                                         <option value=""></option>
+                                        <#if conTimeList??>
+                                            <#list conTimeList as conTime>
+                                                <option <#if cyc??><#list cyc as cyc><#if cyc?? && cyc == conTime> selected="selected"</#if></#list></#if> value="${conTime}">${conTime}</option>
+                                            </#list>
+                                        </#if>
                                     </select>
 
                                 </div>
@@ -48,6 +53,11 @@
                                 <div class="controls">
                                     <select class="medium m-wrap" multiple id="tid" name="tid">
                                         <option value=""></option>
+                                        <#if companyApiList??>
+                                            <#list companyApiList as companyApi>
+                                                <option <#if tid??><#list tid as tid><#if tid?? && tid == companyApi.type_stid> selected="selected"</#if></#list></#if> value="${companyApi.type_stid}">${companyApi.type_stid_name}</option>
+                                            </#list>
+                                        </#if>
                                     </select>
                                 </div>
 
@@ -143,27 +153,16 @@
                         <div class="modal-body">
                             <form action="#" class="form-horizontal" id="submit_form">
 
-                                <div class="alert alert-error hide">
-
-                                    <button class="close" data-dismiss="alert"></button>
-
-                                    <span id="tip">对不起，请检查你的输入！</span>
-
-                                </div>
-
-                                <div class="alert alert-success hide">
-
-                                    <button class="close" data-dismiss="alert"></button>
-
-                                    恭喜您，操作成功!
-
-                                </div>
-
                                 <div id="" class="control-group">
                                     <label class="control-label">请选择产品<span class="required">*</span></label>
                                     <div class="controls">
                                         <select id="add_tid" name="add_tid" class="large m-wrap">
                                             <option value=""></option>
+                                            <#if companyApiList??>
+                                                <#list companyApiList as companyApi>
+                                                    <option value="${companyApi.type_stid}">${companyApi.type_stid_name}</option>
+                                                </#list>
+                                            </#if>
                                         </select>
                                     </div>
                                 </div>
@@ -189,6 +188,11 @@
                                     <div class="controls">
                                         <select id="add_cyc" name="add_cyc" class="large m-wrap">
                                             <option value=""></option>
+                                            <#if conTimeList??>
+                                                <#list conTimeList as conTime>
+                                                    <option value="${conTime}">${conTime}</option>
+                                                </#list>
+                                            </#if>
                                         </select>
                                     </div>
                                 </div>
@@ -217,15 +221,15 @@
 
         <@puj.publicJs></@puj.publicJs>
 
+    <script src="/js/multi/get-url-param.js?v=${ver}"></script>
+
     <script src="/js/myjs/customer-history_bill_month_detail.js?v=${ver}"></script>
 
     <script>
 
         jQuery(document).ready(function () {
             CustomerHistoryBillMonthDetail.init();
-        })
-
-
+        });
 
         $('#add_tid').select2({
             language: "zh-CN",
@@ -264,7 +268,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/finance/customer-history-bill/customer-history-bill-detail/update-cost",
+                    url: "/finance/customer-history-bill/detail/update-cost",
                     data: {"id": id, "cost": value},
                     dataType: "json",
                     beforeSend: function () {
@@ -331,7 +335,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/finance/customer-history-bill/customer-history-bill-detail/update-amount",
+                    url: "/finance/customer-history-bill/detail/update-amount",
                     data: {"id": id, "amount": value},
                     dataType: "json",
                     beforeSend: function () {

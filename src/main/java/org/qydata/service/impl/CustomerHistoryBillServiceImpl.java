@@ -279,6 +279,75 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    public boolean updateCustomerHistoryBillCost(Integer id, Double cost) {
+        int result = billMapper.updateCustomerHistoryBillCost(id,(int)(cost * 100));
+        if (result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateCustomerHistoryBillAmount(Integer id, Integer amount) {
+        int result = billMapper.updateCustomerHistoryBillAmount(id,amount);
+        if (result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addCustomerHistoryBill(Integer cid, String tid, Double cost, Integer amount, String yearMonth) {
+        CustomerHistoryBillDetail bill = new CustomerHistoryBillDetail();
+        bill.setCustomerId(cid);
+        if (RegexUtil.isPoint(tid)){
+            bill.setApiTypeId(Integer.parseInt(tid));
+        }else {
+            String [] tids = tid.split("-");
+            bill.setApiTypeId(Integer.parseInt(tids[0]));
+            bill.setStid(Integer.parseInt(tids[1]));
+        }
+        bill.setCost(cost * 100);
+        bill.setAmount(amount);
+        String [] yearMonths = yearMonth.split("-");
+        bill.setYear(Integer.parseInt(yearMonths[0]));
+        bill.setMonth(Integer.parseInt(yearMonths[1]));
+        bill.setYearMonth(yearMonth);
+        return billMapper.addCustomerHistoryBill(bill);
+    }
+
+    @Override
+    public boolean deleteCustomerHistoryBill(String[] id) {
+        List<String> list = new ArrayList<>();
+        if (id != null && id.length > 0){
+            for (int i = 0; i < id.length ; i++) {
+                list.add(id[i]);
+            }
+        }
+        return billMapper.deleteCustomerHistoryBill(list);
+    }
+
+    @Override
+    public List<CompanyApi> queryCompanyApiByCompanyId(Integer cid) {
+        Map<String,Object> param = new HashMap<>();
+        param.put("cid",cid);
+        List<CompanyApi> apiList = billMapper.queryCompanyApiByCompanyId(billMapper.queryCompanyIdByCustomerId(param));
+        if (apiList != null && apiList.size() > 0){
+            for (int i = 0; i < apiList.size() ; i++) {
+                CompanyApi api = apiList.get(i);
+                if (api != null) {
+                    if (api.getApiTypeId() != null){
+                        if (api.getSubTypeId() != null){
+                            api.setType_stid(api.getApiTypeId() + "-" + api.getSubTypeId());
+                        }
+                    }
+                }
+            }
+        }
+        return apiList;
+    }
+
+    @Override
     public Map<String, Object> queryCustomerHistoryBillTrendData(Map<String, Object> map) {
         List<String> yearMonthList = new ArrayList<>();
         for (int i = 0; i < 6 ; i++) {

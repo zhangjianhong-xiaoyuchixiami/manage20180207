@@ -116,6 +116,7 @@ var CustomerHistoryBillMonthDetail = function () {
                 errorClass: "self-error"
             });
 
+            /*新增历史记录*/
             $("#add_btn").on("click",function () {
 
                 if (form.valid() == false) {
@@ -133,19 +134,16 @@ var CustomerHistoryBillMonthDetail = function () {
                     confirmButtonText: "确定"//确定按钮上面的文档
                 }).then(function () {
 
-                    var companyId = $('#companyId').val();
-                    var tid_stid = $('#tid_stid').val();
-                    var price = $('#price').val();
-                    var add_date = $('#add_date').val();
-                    console.log(companyId)
-                    console.log(tid_stid)
-                    console.log(price)
-                    console.log(add_date)
+                    var cid = $.getUrlParam('cid');
+                    var add_tid = $('#add_tid').val();
+                    var add_cost = $('#add_cost').val();
+                    var add_amount = $('#add_amount').val();
+                    var add_cyc = $('#add_cyc').val();
 
                     $.ajax({
                         type: "post",
-                        url: "/api/company/add-apiType-price-change",
-                        data: {"cid": companyId, "tid_stid":tid_stid,"pic": price, "date": add_date},
+                        url: "/finance/customer-history-bill/detail/add",
+                        data: {"cid": cid, "tid":add_tid,"cost": add_cost, "amount": add_amount,"yearMonth": add_cyc},
                         dataType: "json",
                         beforeSend:function () {
                             openProgress();
@@ -183,7 +181,84 @@ var CustomerHistoryBillMonthDetail = function () {
                     if (dismiss === 'cancel') {}
                 });
 
-            })
+            });
+
+            /*删除历史记录*/
+            $("#del").on('click',function () {
+
+                var id =[];//定义一个数组
+                $('input[name="checkBox"]:checked').each(function(){
+                    id.push($.trim($(this).val()));
+                });
+
+                if (id == null || id == ""){
+                    swal({
+                        title: "操作提示",
+                        text: "请先选择要删除的列！",
+                        type: "info",
+                        confirmButtonText: "确定"
+                    });
+                }else {
+
+                    swal({
+                        title: "确定要删除吗？",   //弹出框的title
+                        type: "question",    //弹出框类型
+                        showCancelButton: true, //是否显示取消按钮
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: "取消",//取消按钮文本
+                        confirmButtonText: "确定"//确定按钮上面的文档
+                    }).then(function () {
+
+                        $.ajax({
+                            type:'post',
+                            url:"/finance/customer-history-bill/detail/delete",
+                            data:{"id": id},
+                            dataType:"json",
+                            beforeSend:function () {
+                                openProgress();
+                            },
+                            success:function(data){
+                                closeProgress();
+                                if (data != null){
+                                    if (data.fail != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: "删除失败",
+                                            type: "error",
+                                            showCancelButton: false,
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"
+                                        }).then(function () {
+                                            location.reload();
+                                            return;
+                                        })
+                                    }
+                                    if (data.success != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: "删除成功",
+                                            type: "success",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
+                                        }).then(function () {
+                                            location.reload();
+                                            return;
+                                        })
+                                    }
+                                }
+                            }
+                        });
+
+                    },function(dismiss) {
+                        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                        if (dismiss === 'cancel') {}
+                    });
+
+                }
+            });
 
         }
 

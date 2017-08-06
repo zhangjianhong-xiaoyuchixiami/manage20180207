@@ -17,6 +17,7 @@ public class CompanyApi implements Serializable {
     private Integer price;
     private Integer enabled;
     private Timestamp createTime;
+    private String type_stid;
     private String type_stid_name;
     private String btypeName;
     private String cvendorName;
@@ -135,5 +136,13 @@ public class CompanyApi implements Serializable {
 
     public void setApiId(Integer apiId) {
         this.apiId = apiId;
+    }
+
+    public String getType_stid() {
+        return type_stid;
+    }
+
+    public void setType_stid(String type_stid) {
+        this.type_stid = type_stid;
     }
 }

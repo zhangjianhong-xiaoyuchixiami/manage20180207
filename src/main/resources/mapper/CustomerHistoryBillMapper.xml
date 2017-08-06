@@ -157,6 +157,35 @@
         </if>
     </select>
 
+    <!--修改单价-->
+    <update id="updateCustomerHistoryBillCost" parameterType="int">
+        UPDATE qyfinance.CustomerHistoryBill
+        SET cost = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--修改扣费量-->
+    <update id="updateCustomerHistoryBillAmount" parameterType="int">
+        UPDATE qyfinance.CustomerHistoryBill
+        SET amount = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--新增历史记录-->
+    <insert id="addCustomerHistoryBill" parameterType="org.qydata.dst.CustomerHistoryBillDetail">
+        INSERT INTO qyfinance.CustomerHistoryBill(year,month,yearMonth,customerId,apiTypeId,stid,cost,amount,createTime)
+        VALUE(#{year},#{month},#{yearMonth},#{customerId},#{apiTypeId},#{stid},#{cost},#{amount},now())
+    </insert>
+
+    <!--删除历史记录-->
+    <delete id="deleteCustomerHistoryBill" parameterType="list">
+        DELETE FROM qyfinance.CustomerHistoryBill
+        WHERE id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
     <!--客户历史账单消费走势加载数据-加载月消费量-->
     <select id="queryCustomerHistoryBillTrendDataConsume" parameterType="map" resultMap="customerHistoryBillDetailMap">
         SELECT a.yearMonth,sum(a.amount) amount
@@ -172,7 +201,7 @@
 
     <!--客户历史账单消费走势加载数据-加载上月各产品扣费量-->
     <select id="queryCustomerHistoryBillTrendDataAmount" parameterType="map" resultMap="customerHistoryBillDetailMap">
-        SELECT a.customerId,a.yearMonth,a.apiTypeId,a.stid,a.amount,CONCAT_WS('-',b.name,c.name) apiTypeName
+        SELECT a.customerId,a.yearMonth,a.apiTypeId,a.stid,a.amount,CONCAT_WS('--',b.name,c.name) apiTypeName
         FROM qyfinance.CustomerHistoryBill a
         LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
         LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id
@@ -182,7 +211,7 @@
 
     <!--根据客户公司Id查询产品权限-->
     <select id="queryCompanyApiByCompanyId" parameterType="int" resultMap="companyApiMap">
-        SELECT a.id,a.apiTypeId,a.subTypeId,a.enabled,CONCAT_WS('-',b.name,c.name) apiTypeName
+        SELECT a.id,a.apiTypeId,a.subTypeId,a.enabled,CONCAT_WS('--',b.name,c.name) apiTypeName
         FROM qyfinance.finance_CompanyApi a
         LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
         LEFT JOIN qyfinance.bkvwMobileOperator c ON a.subTypeId = c.id
