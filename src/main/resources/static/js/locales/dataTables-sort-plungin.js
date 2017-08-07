@@ -4,7 +4,8 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     "html-percent-pre": function (a) {
         var x = String(a).replace(/<[\s\S]*?>/g, "");    //去除html标记
         x = x.replace(/&amp;nbsp;/ig, "");                   //去除空格
-        x = x.replace(/%/, "");                          //去除百分号
+        x = x.replace(/%/, "");
+        x = x.replace(/,/, "");
         return parseFloat(x);
     },
 

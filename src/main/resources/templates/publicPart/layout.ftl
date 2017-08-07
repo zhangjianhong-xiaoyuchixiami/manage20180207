@@ -330,6 +330,38 @@
 
                 </@shiro.hasAnyRoles>
 
+            <#--供应商管理-->
+                <@shiro.hasAnyRoles name="backAdmin,finance">
+
+                    <li id="vendor">
+                        <a href="javascript:;">
+
+                            <i class="icon-barcode"></i>
+
+                            <span class="title">供应商管理</span>
+
+                            <span class="" id="vendorSelect"></span>
+
+                            <span class="arrow " id="vendorArrow"></span>
+
+                        </a>
+
+                        <ul class="sub-menu">
+
+                            <#--<@shiro.hasPermission name="api:api-message">-->
+                                <li id="vendorList">
+                                    <a href="/vendor/all-vendor">
+                                        供应商信息
+                                    </a>
+                                </li>
+                            <#--</@shiro.hasPermission>-->
+
+                        </ul>
+
+                    </li>
+
+                </@shiro.hasAnyRoles>
+
             <#--客户请求日志-->
                 <@shiro.hasAnyRoles name="backAdmin">
 

@@ -39,6 +39,20 @@ var CustomerHistoryBillMonthDetail = function () {
                     null
                 ],
                 "aaSorting": [[1, 'desc']],
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [ 3 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 4 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 5 ],
+                        "sType": "html-percent"
+                    }
+                ],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

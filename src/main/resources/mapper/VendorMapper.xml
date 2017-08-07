@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.VendorMapper">
+
+    <resultMap id="vendorMap" type="org.qydata.entity.VendorExt">
+        <result column="vendorId" property="vendorId"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+        <result column="isPrepay" property="isPrepay"/>
+        <result column="isBalWarn" property="isBalWarn"/>
+        <result column="balance" property="balance"/>
+        <result column="totleCost" property="totleCost"/>
+        <result column="currDayCost" property="currDayCost"/>
+    </resultMap>
+
+    <!---->
+    <select id="queryAllVendor" parameterType="map" resultMap="vendorMap">
+        SELECT a.id vendorId,a.name vendorName,b.id partnerId,b.name partnerName,
+        c.isPrepay,c.isBalWarn,d.balance
+        FROM qyfinance.finance_ApiVendor a
+        LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId = b.id
+        LEFT JOIN qyfinance.ApiVendorExt c ON a.id = c.vendorId
+        LEFT JOIN qyfinance.ApiVendorBalance d ON a.id = d.vendorId
+        <where>
+            <if test="vidList != null and vidList.size > 0">
+                a.id IN
+                <foreach collection="vidList" item="vid" index="index" open="(" close=")" separator=",">
+                    #{vid}
+                </foreach>
+            </if>
+            <if test="pidList != null and pidList.size > 0">
+               a.partnerId IN
+                <foreach collection="pidList" item="pid" index="index" open="(" close=")" separator=",">
+                    #{pid}
+                </foreach>
+            </if>
+            <if test="preId != null and preId != ''">
+               c.isPrepay = #{preId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryVendorConsume" parameterType="map" resultMap="vendorMap">
+        SELECT b.vendorId,sum(a.totleCost) totleCost
+        FROM
+        (
+            SELECT apiId,sum(totleCost) totleCost
+            FROM qyfinance.bkvwApiCostDayCount
+            GROUP BY apiId
+        ) a
+        LEFT JOIN qyfinance.bkvwApi b ON a.apiId = b.id
+        GROUP BY b.vendorId
+    </select>
+
+    <select id="queryVendorConsumeCurrDay" parameterType="map" resultMap="vendorMap">
+        SELECT b.vendorId,sum(a.currDayCost) currDayCost
+        FROM
+        (
+            SELECT a.apiId,sum(b.cost) currDayCost
+            FROM qyfinance.finance_ApiRequestLog a
+            LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
+            WHERE b.ok = 1
+            AND b.cost > 0
+            AND b.isMock = 0
+            AND b.createTime >= #{currDayTime}
+            GROUP BY a.apiId
+        ) a
+        LEFT JOIN qyfinance.bkvwApi b ON a.apiId = b.id
+        GROUP BY b.vendorId
+    </select>
+
+    <!--查询合作公司-->
+    <select id="queryAllPartner" resultType="org.qydata.entity.Partner">
+        SELECT id,name
+        FROM qyfinance.bkvwPartner
+    </select>
+
+</mapper>
+

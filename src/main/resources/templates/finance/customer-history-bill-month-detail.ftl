@@ -23,9 +23,13 @@
 
                 <div class="span12">
 
-                    <form action="" class="form-bottom" method="get">
+                    <form action="/finance/customer-history-bill/detail" class="form-bottom" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
+
+                            <input style="display: none" id="cid" name="cid" value="${cid}">
+
+                            <input style="display: none" id="name" name="name" value="${name}">
 
                             <div class="pull-left head-search-bottom">
 
@@ -106,7 +110,6 @@
 
                                 <div class="pull-right tip-remark">
                                     <span class="pull-right">注：本页面与金额相关数字单位都为：元</span>
-                                    </br>
                                     </br>
                                     <span class="pull-right">消费总额&yen;：${conTot!'0.0'}元</span>
                                 </div>

@@ -2,49 +2,24 @@
  * Created by jonhn on 2017/7/28.
  */
 
-
-var CustomerHistoryBill = function () {
+var vendorMessage = function () {
 
     return {
 
         init: function () {
 
-            $('#customerBalance').addClass('active');
+            $('#vendor').addClass('active');
 
-            $('#customer-history-bill').addClass('active');
+            $('#vendorList').addClass('active');
 
-            $('#customerBalanceSelect').addClass('selected');
+            $('#vendorSelect').addClass('selected');
 
-            $('#customerBalanceArrow').addClass('arrow open');
-
-            $('#cid').select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
-
-            $('#pid').select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
-
-            $('#beg_month').select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
-
-            $('#end_month').select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
+            $('#vendorArrow').addClass('arrow open');
 
 
             var oTable = $('#sample_2').dataTable({
                 "aoColumns": [
-                    null,
+                    {"bSortable": false},
                     null,
                     null,
                     null,
@@ -53,15 +28,8 @@ var CustomerHistoryBill = function () {
                     null,
                     {"bSortable": false}
                 ],
+                "aaSorting": [[1, 'desc']],
                 "aoColumnDefs": [
-                    {
-                        "aTargets": [ 2 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 3 ],
-                        "sType": "html-percent"
-                    },
                     {
                         "aTargets": [ 4 ],
                         "sType": "html-percent"
@@ -75,7 +43,6 @@ var CustomerHistoryBill = function () {
                         "sType": "html-percent"
                     }
                 ],
-                "aaSorting": [[5, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -99,6 +66,20 @@ var CustomerHistoryBill = function () {
                         "sLast" : " 最后一页 "
                     }
                 }
+            });
+
+            /*状态正常全选操作*/
+            jQuery('#sample_2 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
             });
 
         }

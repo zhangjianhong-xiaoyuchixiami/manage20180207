@@ -23,7 +23,7 @@
 
                 <div class="span12">
 
-                    <form action="" class="form-bottom" method="get">
+                    <form action="/finance/customer-history-bill" class="form-bottom" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
