@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.entity.Partner;
 import org.qydata.entity.VendorExt;
 import org.qydata.mapper.VendorMapper;
@@ -125,4 +126,21 @@ public class VendorServiceImpl implements VendorService {
     public List<Partner> queryAllPartner() {
         return vendorMapper.queryAllPartner();
     }
+
+    @Override
+    public boolean updateVendorPrepay(Integer vid, Integer preId) {
+        return false;
+    }
+
+    @Override
+    public boolean updateVendorBalance(Integer vid, String amount, String date, String remark) {
+        return false;
+    }
+
+    @Override
+    public List<ApiVendorBalanceLog> queryVendorBalanceLog(Map<String, Object> map) {
+        return null;
+    }
+
+
 }

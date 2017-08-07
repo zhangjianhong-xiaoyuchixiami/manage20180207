@@ -129,11 +129,11 @@
                                             <td data-title="操作"><input class="checkboxes" type="checkbox" id="checkBox" name="checkBox" value="${vendor.vendorId}"/></td>
                                             <td>${vendor.vendorName!'无'}</td>
                                             <td>${vendor.partnerName!'无'}</td>
-                                            <td href="javaScript:;" onclick=""><a>${vendor.isPrepayName!'否'}</a></td>
+                                            <td href="javaScript:;" onclick="isPrepay(${vendor.vendorId})"><a>${vendor.isPrepayName!'否'}</a></td>
                                             <td><a href="/vendor/all-vendor/charge-record?vid=${vendor.vendorId}">${vendor.balance!'0'}</a></td>
                                             <td>${vendor.totleCost!'0'}</td>
                                             <td>${vendor.remaining!'0'}</td>
-                                            <td><a href="#form_modal" data-toggle="modal" onclick="">充值</a></td>
+                                            <td><a href="#form_modal" data-toggle="modal" onclick="charge(${vendor.vendorId})">充值</a></td>
                                         </tr>
                                         </#list>
                                     </#if>
@@ -157,7 +157,7 @@
 
                         <div class="modal-body">
 
-                            <form action="#" class="form-horizontal">
+                            <form action="#" class="form-horizontal" id="submit_form">
 
                                 <div class="control-group"></div>
 
@@ -211,12 +211,11 @@
 
                             <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
 
-                            <button class="btn black btn-primary" id="btn-black-btn-primary" type="button">提交</button>
+                            <button class="btn black btn-primary" id="add_btn" type="button">提交</button>
 
                         </div>
 
                     </div>
-
 
                 </div>
 
@@ -262,13 +261,164 @@
             allowClear: true
         });
 
-        function charge(var vid) {
+        function charge(vid){
             $("#charge_vid").val(vid)
         }
         
-        function isPrepay(var vid) {
-            
+        function isPrepay(vid) {
+
+            swal({
+                title: '修改是否预付',
+                input: 'select',
+                inputOptions: {
+                    '0': '否',
+                    '1': '是'
+                },
+                inputPlaceholder: '请选择',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",
+                confirmButtonText: "确定",
+                allowOutsideClick: true,
+                inputValidator: function(value) {
+                    return new Promise(function(resolve, reject) {
+                        if(value){
+                            resolve();
+                        } else {
+                            reject('请至少选择一项！');
+                        }
+                    });
+                }
+            }).then(function (value) {
+
+                $.ajax({
+                    type: "post",
+                    url: "/vendor/all-vendor/update-prepay",
+                    data: {"vid": vid, "preId": value},
+                    dataType: "json",
+                    beforeSend: function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if (data != null) {
+                            if (data.success != null) {
+                                swal({
+                                    type: 'success',
+                                    title: '修改完成',
+                                    confirmButtonText: "确定",
+                                    html: '已修改成功'
+                                }).then(function () {
+                                    window.location.href = window.location.href ;
+                                    return;
+                                });
+
+                            }
+                            if (data.fail != null) {
+
+                                swal({
+                                    type: 'error',
+                                    title: '失败',
+                                    text: "哎呦，修改失败了",
+                                    confirmButtonText: "确定"
+
+                                })
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                if (dismiss === 'cancel') {}
+            });
+
         }
+
+        var form = $('#submit_form');
+
+        form.validate({
+            rules: {
+                amount: {
+                    required: true,
+                    number:true
+                }
+            },
+            messages: {
+
+                amount:{
+                    required:"必填",
+                    number:"必须输入合法的数字"
+                }
+            },
+            errorClass: "self-error"
+        });
+
+        $("#add_btn").on("click",function () {
+
+            if (form.valid() == false) {
+                return false;
+            }
+
+            swal({
+                title: "确定要充值吗？",   //弹出框的title
+                type: "question",    //弹出框类型
+                showCancelButton: true, //是否显示取消按钮
+                allowOutsideClick: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",//取消按钮文本
+                confirmButtonText: "确定"//确定按钮上面的文档
+            }).then(function () {
+
+                var vid = $('#charge_vid').val();
+                var amount = $('#amount').val();
+                var date = $('#date').val();
+                var remark = $('#remark').val();
+
+                $.ajax({
+                    type: "post",
+                    url: "/vendor/all-vendor/charge",
+                    data: {"vid": vid, "amount":amount,"date": date, "remark": remark},
+                    dataType: "json",
+                    beforeSend:function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if(data != null){
+                            if (data.fail != null) {
+                                swal(
+                                        '失败',
+                                        '哎呦，充值失败了',
+                                        'error'
+                                );
+                                return;
+                            }
+                            if (data.success != null) {
+                                swal({
+                                    title: "成功",
+                                    html: '已充值成功',
+                                    type: "success",
+                                    showCancelButton: false, //是否显示取消按钮
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "确定"//确定按钮上面的文档
+                                }).then(function () {
+                                    window.location.href = window.location.href
+                                })
+
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                if (dismiss === 'cancel') {}
+            });
+
+        });
 
     </script>
 

@@ -1,5 +1,6 @@
 package org.qydata.controller;
 
+import com.google.gson.Gson;
 import org.qydata.entity.Partner;
 import org.qydata.entity.VendorExt;
 import org.qydata.service.VendorService;
@@ -44,13 +45,26 @@ public class VendorController {
 
     @RequestMapping("/all-vendor/charge")
     @ResponseBody
-    public String vendorCharge(Integer vid,String amount,String remark,String date){
+    public String vendorCharge(Integer vid,String amount,String date,String remark){
         return "";
     }
 
     @RequestMapping("/all-vendor/charge-record")
     public String vendorChargeRecord(Integer vid){
         return "";
+    }
+
+    @RequestMapping("/all-vendor/update-prepay")
+    @ResponseBody
+    public String vendorUpdatePrepay(Integer vid,Integer preId){
+        Map<String,Object> resu = new HashMap<>();
+       boolean flag = vendorService.updateVendorPrepay(vid,preId);
+       if (flag){
+           resu.put("success","success");
+           return new Gson().toJson(resu);
+       }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
     }
 
 }
