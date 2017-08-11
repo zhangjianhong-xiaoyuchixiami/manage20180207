@@ -16,9 +16,9 @@ var ApiProduct = function () {
                     null,
                     null,
                     null,
-                    null,
-                    null,
-                    null,
+                    // null,
+                    // null,
+                    // null,
                     { "bSortable": false}
                 ],
                 "aaSorting": [[1, 'asc']],
@@ -54,9 +54,9 @@ var ApiProduct = function () {
                     null,
                     null,
                     null,
-                    null,
-                    null,
-                    null,
+                    // null,
+                    // null,
+                    // null,
                     { "bSortable": false}
                 ],
                 "aaSorting": [[0, 'asc']],
@@ -220,8 +220,16 @@ var ApiProduct = function () {
                                             showCancelButton: false, //是否显示取消按钮
                                             confirmButtonColor: '#3085d6',
                                             confirmButtonText: "确定"//确定按钮上面的文档
-                                        }).then(function () {
-
+                                        })
+                                    }
+                                    if (data.role_warning != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.role_warning,
+                                            type: "warning",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
                                         })
                                     }
                                 }
@@ -309,8 +317,16 @@ var ApiProduct = function () {
                                             showCancelButton: false, //是否显示取消按钮
                                             confirmButtonColor: '#3085d6',
                                             confirmButtonText: "确定"//确定按钮上面的文档
-                                        }).then(function () {
-
+                                        })
+                                    }
+                                    if (data.role_warning != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.role_warning,
+                                            type: "warning",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
                                         })
                                     }
                                 }
@@ -379,6 +395,26 @@ var ApiProduct = function () {
                                             showCancelButton: false,
                                             confirmButtonColor: '#3085d6',
                                             confirmButtonText: "确定"
+                                        })
+                                    }
+                                    if (data.warning != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.warning,
+                                            type: "warning",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
+                                        })
+                                    }
+                                    if (data.role_warning != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: data.role_warning,
+                                            type: "warning",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
                                         })
                                     }
                                 }

@@ -112,8 +112,8 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
             for (int i = 0; i < billList.size() ; i++) {
                 CustomerHistoryBill bill = billList.get(i);
                 if (bill != null){
-                    if (bill.getCost() != null && bill.getAmount() != null){
-                        bill.setConsumeAmount((bill.getCost()/100.0) * bill.getAmount());
+                    if (bill.getConsumeAmount() != null ){
+                        bill.setConsumeAmount(bill.getConsumeAmount()/100.0);
                     }
                     if (bill.getFloor() != null){
                         if (bill.getFloor() == 0){

@@ -5,8 +5,7 @@
 
     <resultMap id="customerHistoryBillMap" type="org.qydata.dst.CustomerHistoryBill">
         <result column="customerId" property="customerId"/>
-        <result column="cost" property="cost"/>
-        <result column="amount" property="amount"/>
+        <result column="totleConsume" property="consumeAmount"/>
         <result column="floor" property="floor"/>
         <result column="balance" property="balance"/>
         <result column="companyId" property="companyId"/>
@@ -46,23 +45,28 @@
 
     <!--查询客户历史消费账单-->
     <select id="queryCustomerHistoryBill" parameterType="map" resultMap="customerHistoryBillMap">
-        SELECT a.customerId,a.cost,a.amount,
+        SELECT a.customerId,a.totleConsume,
         b.floor,b.balance,b.companyId,
         c.partnerId,c.name companyName,
         d.name partnerName
         FROM
         (
-            SELECT a.customerId,a.cost,sum(a.amount) amount
-            FROM qyfinance.CustomerHistoryBill a
-            <where>
-                <if test="begList != null and begList.size() > 0">
-                    AND a.yearMonth IN
-                    <foreach collection="begList" item="beg" index="index" open="(" close=")" separator=",">
-                        #{beg}
-                    </foreach>
-                </if>
-            </where>
-            GROUP BY a.customerId,a.cost
+            SELECT a.customerId,sum(a.totleConsume) totleConsume
+            FROM
+            (
+                SELECT a.customerId,a.cost * sum(a.amount) totleConsume
+                FROM qyfinance.CustomerHistoryBill a
+                <where>
+                    <if test="begList != null and begList.size() > 0">
+                        AND a.yearMonth IN
+                        <foreach collection="begList" item="beg" index="index" open="(" close=")" separator=",">
+                            #{beg}
+                        </foreach>
+                    </if>
+                </where>
+                GROUP BY a.customerId,a.cost
+            ) a
+            GROUP BY a.customerId
         ) a
         LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
         LEFT JOIN qyfinance.bkvwCustomerCompany c ON b.companyId = c.id
@@ -111,9 +115,8 @@
 
     <!--查询所有公司-->
     <select id="queryAllCompany" resultType="org.qydata.entity.Company">
-        SELECT a.id,a.name,b.id partnerId,b.name partnerName
-        FROM qyfinance.bkvwCustomerCompany a
-        LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId = b.id
+        SELECT companyId id,companyName name,partnerId,partnerName
+        FROM qyfinance.bkvw_api_CustomerCompanyPartner
     </select>
 
     <!--查询合作公司-->

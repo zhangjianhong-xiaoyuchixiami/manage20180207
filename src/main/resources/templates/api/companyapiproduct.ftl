@@ -293,7 +293,7 @@
                 inputValue: v_pic,
                 inputValidator: function(value) {
                     return new Promise(function(resolve, reject) {
-                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        var re =new RegExp("^(\\d+)(\\.\\d+)?$");
                         if(!re.test(value)){
                             reject('格式输入不正确！');
                         } else {
@@ -331,7 +331,7 @@
                                 swal({
                                     type: 'error',
                                     title: '失败',
-                                    text: "哎呦，修改失败了",
+                                    text: data.fail,
                                     confirmButtonText: "确定"
 
                                 })

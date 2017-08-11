@@ -8,8 +8,6 @@ import java.io.Serializable;
 public class CustomerHistoryBill implements Serializable {
 
     private Integer customerId;
-    private Double cost;
-    private Integer amount;
     private Double floor;
     private Double balance;
     private Double userFloor;
@@ -27,22 +25,6 @@ public class CustomerHistoryBill implements Serializable {
 
     public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
-    }
-
-    public Double getCost() {
-        return cost;
-    }
-
-    public void setCost(Double cost) {
-        this.cost = cost;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
     }
 
     public Double getFloor() {

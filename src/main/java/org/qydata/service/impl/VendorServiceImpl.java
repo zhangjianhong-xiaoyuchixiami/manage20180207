@@ -1,14 +1,18 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
+import org.qydata.entity.ApiVendorBalance;
 import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.entity.Partner;
 import org.qydata.entity.VendorExt;
+import org.qydata.mapper.ApiFinanceMapper;
 import org.qydata.mapper.VendorMapper;
 import org.qydata.service.VendorService;
 import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -19,6 +23,8 @@ public class VendorServiceImpl implements VendorService {
 
     @Autowired
     private VendorMapper vendorMapper;
+    @Autowired
+    private ApiFinanceMapper apiFinanceMapper;
 
     @Override
     public List<VendorExt> queryAllVendor(Map<String, Object> map) {
@@ -37,7 +43,7 @@ public class VendorServiceImpl implements VendorService {
                 pid = (Integer[]) me.getValue();
             }
             if (me.getKey().equals("preId")) {
-                preId = (Integer) me.getValue();
+                preId = (int) me.getValue();
             }
         }
         Map<String,Object> param = new HashMap<>();
@@ -55,6 +61,11 @@ public class VendorServiceImpl implements VendorService {
             }
             param.put("pidList",pidList);
         }
+        if (preId != null){
+            List<Integer> preIdList = new ArrayList<>();
+            preIdList.add(preId);
+            param.put("preIdList",preIdList);
+        }
         param.put("currDayTime", CalendarUtil.formatCurrTime());
         List<VendorExt> vendorExtList = vendorMapper.queryAllVendor(param);
         List<VendorExt> consumeExtList = vendorMapper.queryVendorConsume(param);
@@ -68,54 +79,56 @@ public class VendorServiceImpl implements VendorService {
                     }else {
                         vendorExt.setIsPrepayName("否");
                     }
-                   if (consumeExtList != null && consumeExtList.size() > 0){
-                       for (int j = 0; j < consumeExtList.size(); j++) {
-                           VendorExt consume = consumeExtList.get(j);
-                           if (consume != null){
-                               if (vendorExt.getVendorId() == consume.getVendorId()){
-                                   vendorExt.setTotleCost(consume.getTotleCost()/100.0);
-                               }
-                           }
-                       }
-                   }
-                   if (currDayList != null && currDayList.size() > 0){
-                       for (int j = 0; j < currDayList.size(); j++) {
-                           VendorExt currDay = currDayList.get(j);
-                           if (currDay != null){
-                               if (vendorExt.getVendorId() == currDay.getVendorId()){
-                                   vendorExt.setCurrDayCost(currDay.getCurrDayCost()/100.0);
-                               }
-                           }
-                       }
-                   }
+                    if (consumeExtList != null && consumeExtList.size() > 0){
+                        for (int j = 0; j < consumeExtList.size(); j++) {
+                            VendorExt consume = consumeExtList.get(j);
+                            if (consume != null){
+                                if (vendorExt.getVendorId() == consume.getVendorId()){
+                                    vendorExt.setTotleCost(consume.getTotleCost()/100.0);
+                                }
+                            }
+                        }
+                    }
+                    if (currDayList != null && currDayList.size() > 0){
+                        for (int j = 0; j < currDayList.size(); j++) {
+                            VendorExt currDay = currDayList.get(j);
+                            if (currDay != null){
+                                if (vendorExt.getVendorId() == currDay.getVendorId()){
+                                    vendorExt.setCurrDayCost(currDay.getCurrDayCost()/100.0);
+                                }
+                            }
+                        }
+                    }
 
-                   if (vendorExt.getBalance() != null){
-                       vendorExt.setBalance(vendorExt.getBalance()/100.0);
-                   }
+                    if (vendorExt.getBalance() != null){
+                        vendorExt.setBalance(vendorExt.getBalance()/100.0);
+                    }
 
-                   if (vendorExt.getTotleCost() != null){
-                       if (vendorExt.getCurrDayCost() != null){
-                           vendorExt.setTotleCost(vendorExt.getTotleCost() + vendorExt.getCurrDayCost());
-                       }else {
-                           vendorExt.setTotleCost(vendorExt.getTotleCost());
-                       }
-                   }else {
-                       if (vendorExt.getCurrDayCost() != null){
-                           vendorExt.setTotleCost(vendorExt.getCurrDayCost());
-                       }
-                   }
+                    if (vendorExt.getTotleCost() != null){
+                        if (vendorExt.getCurrDayCost() != null){
+                            vendorExt.setTotleCost(vendorExt.getTotleCost() + vendorExt.getCurrDayCost());
+                        }else {
+                            vendorExt.setTotleCost(vendorExt.getTotleCost());
+                        }
+                    }else {
+                        if (vendorExt.getCurrDayCost() != null){
+                            vendorExt.setTotleCost(vendorExt.getCurrDayCost());
+                        }
+                    }
 
-                   if (vendorExt.getTotleCost() != null){
-                       if (vendorExt.getBalance() != null){
-                           vendorExt.setRemaining(vendorExt.getBalance() - vendorExt.getTotleCost());
-                       }else {
-                           vendorExt.setRemaining(vendorExt.getTotleCost());
-                       }
-                   }else {
-                       if (vendorExt.getBalance() != null){
-                           vendorExt.setRemaining(vendorExt.getBalance());
-                       }
-                   }
+                    if (vendorExt.getTotleCost() != null){
+                        if (vendorExt.getBalance() != null){
+                            vendorExt.setRemaining(vendorExt.getBalance() - vendorExt.getTotleCost());
+                        }else {
+                            if(vendorExt.getTotleCost() != 0){
+                                vendorExt.setRemaining(-vendorExt.getTotleCost());
+                            }
+                        }
+                    }else {
+                        if (vendorExt.getBalance() != null){
+                            vendorExt.setRemaining(vendorExt.getBalance());
+                        }
+                    }
                 }
             }
         }
@@ -129,17 +142,67 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public boolean updateVendorPrepay(Integer vid, Integer preId) {
-        return false;
+        VendorExt vendorExt =  vendorMapper.queryVendorPrepay(vid);
+        if (vendorExt != null){
+            return vendorMapper.updateVendorPrepay(vid,preId);
+        }else {
+            VendorExt param = new VendorExt();
+            param.setVendorId(vid);
+            param.setIsPrepay(preId);
+            return vendorMapper.insertVendorPrepay(param);
+        }
+
     }
 
+    @SystemServiceLog(description = "供应商充值")
     @Override
-    public boolean updateVendorBalance(Integer vid, String amount, String date, String remark) {
-        return false;
+    public boolean updateVendorBalance(Integer vid, String amount, String date, String remark) throws Exception {
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            ApiVendorBalanceLog log = new ApiVendorBalanceLog();
+            log.setVendorId(vid);
+            log.setAmount(Double.parseDouble(amount)*100);
+            log.setRemark(remark);
+            if (date == "" || date == null){
+                log.setCreateTime(new Date());
+            }else {
+                log.setCreateTime(sdf.parse(date));
+            }
+            //插入充值日志
+            apiFinanceMapper.insertApiVendorBalanceLog(log);
+            ApiVendorBalance apiVendorBalance = apiFinanceMapper.queryApiVendorBalance(vid);
+            if (apiVendorBalance == null){
+                ApiVendorBalance param = new ApiVendorBalance();
+                param.setVendorId(vid);
+                apiFinanceMapper.insertApiVendorBalance(param);
+                apiFinanceMapper.updateApiVendorBalance(vid,((Long.parseLong(amount)*100)));
+            }else {
+                apiFinanceMapper.updateApiVendorBalance(vid,((Long.parseLong(amount)*100) + apiVendorBalance.getBalance()));
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @Override
     public List<ApiVendorBalanceLog> queryVendorBalanceLog(Map<String, Object> map) {
-        return null;
+        List<ApiVendorBalanceLog> logList = vendorMapper.queryVendorBalanceLog(map);
+        if (logList != null && logList.size() > 0){
+            for (int i = 0; i < logList.size() ; i++) {
+                ApiVendorBalanceLog log = logList.get(i);
+                if (log != null){
+                    if (log.getAmount() != null){
+                        log.setAmount(log.getAmount()/100.0);
+                    }
+                    if (log.getCreateTime() != null){
+                        log.setChargeTime(new SimpleDateFormat("yyyy-MM-dd").format(log.getCreateTime()));
+                    }
+                }
+            }
+        }
+        return logList;
     }
 
 

@@ -296,6 +296,16 @@ $('#simple_company_api_1 a.save').live('click', function (e) {
                     );
                     findCompanyApi(apiType_companyId);
                 }
+                if (data.role_warning != null){
+                    swal({
+                        title: "操作提示",
+                        text: data.role_warning,
+                        type: "warning",
+                        showCancelButton: false, //是否显示取消按钮
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: "确定"//确定按钮上面的文档
+                    })
+                }
             }
         });
 
@@ -348,6 +358,16 @@ function banCompanyApi(id, companyId) {
                             'error'
                         );
                     }
+                    if (data.role_warning != null){
+                        swal({
+                            title: "操作提示",
+                            text: data.role_warning,
+                            type: "warning",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
+                        })
+                    }
                 }
             }
         });
@@ -399,6 +419,16 @@ function unBanCompanyApi(id,companyId) {
                             'error'
                         );
                     }
+                    if (data.role_warning != null){
+                        swal({
+                            title: "操作提示",
+                            text: data.role_warning,
+                            type: "warning",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
+                        })
+                    }
                 }
             }
         });
@@ -423,7 +453,7 @@ function updatePrice(companyId,typeId,stid,price) {
         inputValue: pic,
         inputValidator: function(value) {
             return new Promise(function(resolve, reject) {
-                var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                var re =new RegExp("^(\\d+)(\\.\\d+)?$");
                 if(!re.test(value)){
                     reject('格式输入不正确！');
                 } else {
@@ -460,7 +490,7 @@ function updatePrice(companyId,typeId,stid,price) {
                         swal({
                             type: 'error',
                             title: '失败',
-                            text: "哎呦，修改失败了",
+                            text: data.fail,
                             confirmButtonText: "确定"
                         })
                     }
@@ -535,6 +565,16 @@ function updateAppointApi(companyId,typeId,stid,price,aid) {
                                         title: '失败',
                                         text: "哎呦，修改失败了",
                                         confirmButtonText: "确定"
+                                    })
+                                }
+                                if (data.role_warning != null){
+                                    swal({
+                                        title: "操作提示",
+                                        text: data.role_warning,
+                                        type: "warning",
+                                        showCancelButton: false, //是否显示取消按钮
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: "确定"//确定按钮上面的文档
                                     })
                                 }
                             }

@@ -10,13 +10,13 @@ public class ApiVendorBalanceLog implements Serializable {
 
     private Integer id;
     private Integer vendorId;
-    private Long amount;
-    private Integer reasonId;
+    private String vendorName;
+    private Double amount;
     private String remark;
     private Date createTime;
+    private String chargeTime;
 
     public Integer getId() {
-
         return id;
     }
 
@@ -32,20 +32,20 @@ public class ApiVendorBalanceLog implements Serializable {
         this.vendorId = vendorId;
     }
 
-    public Long getAmount() {
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
+
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
-    }
-
-    public Integer getReasonId() {
-        return reasonId;
-    }
-
-    public void setReasonId(Integer reasonId) {
-        this.reasonId = reasonId;
     }
 
     public String getRemark() {
@@ -62,5 +62,13 @@ public class ApiVendorBalanceLog implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getChargeTime() {
+        return chargeTime;
+    }
+
+    public void setChargeTime(String chargeTime) {
+        this.chargeTime = chargeTime;
     }
 }

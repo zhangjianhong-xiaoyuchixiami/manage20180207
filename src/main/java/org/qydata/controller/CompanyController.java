@@ -2,11 +2,13 @@ package org.qydata.controller;
 
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
+import org.qydata.config.annotation.RolePermission;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.entity.*;
 import org.qydata.service.CompanyService;
 import org.qydata.service.CustomerService;
 import org.qydata.tools.RegexUtil;
+import org.qydata.tools.checkNumber.CheckNumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,6 +110,7 @@ public class CompanyController {
      */
     @RequestMapping(value = "/add-company-customer")
     @ResponseBody
+    @RolePermission
     public String addCompanyCustomer(HttpServletRequest request ) {
         String companyName = request.getParameter("companyName").trim();
         String authId = request.getParameter("authId").trim();
@@ -228,6 +231,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/ban")
     @ResponseBody
+    @RolePermission
     public String customerBan(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -252,6 +256,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/unban")
     @ResponseBody
+    @RolePermission
     public String customerUnBan(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -275,6 +280,7 @@ public class CompanyController {
      */
     @RequestMapping("/ban")
     @ResponseBody
+    @RolePermission
     public String companyBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] companyId = request.getParameterValues("companyId[]");
@@ -294,6 +300,7 @@ public class CompanyController {
      */
     @RequestMapping("/unban")
     @ResponseBody
+    @RolePermission
     public String companyUnBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] companyId = request.getParameterValues("companyId[]");
@@ -321,8 +328,6 @@ public class CompanyController {
         return gson.toJson(companyApiList);
     }
 
-
-
     /**
      * 禁用产品权限
      * @param id
@@ -330,6 +335,7 @@ public class CompanyController {
      */
     @RequestMapping("/ban-api")
     @ResponseBody
+    @RolePermission
     public String banCompanyApiById(Integer companyId,Integer id){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -354,6 +360,7 @@ public class CompanyController {
      */
     @RequestMapping("/unban-api")
     @ResponseBody
+    @RolePermission
     public String unBanCompanyApiById(Integer companyId,Integer id){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -393,6 +400,7 @@ public class CompanyController {
      */
     @RequestMapping("/add-company-api")
     @ResponseBody
+    @RolePermission
     public String addCompanyApi(int companyId,String apiTypeId,String price,String aid){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
@@ -449,6 +457,10 @@ public class CompanyController {
     public String midCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
+        if (!CheckNumberUtil.isStipulateNumeric(pic)){
+            map.put("fail","数据格式不正确或大于最大值（修改最大值是：5）");
+            return gson.toJson(map);
+        }
         int code = 0;
         try {
             code = companyService.updateCompanyApiPrice(companyId,tid,stid,pic);
@@ -456,10 +468,10 @@ public class CompanyController {
             e.printStackTrace();
         }
         if (200 == code){
-            map.put("success","价格修改完成!");
+            map.put("success","价格修改完成");
             return gson.toJson(map);
         }
-        map.put("fail","哎呦，修改失败了!");
+        map.put("fail","哎呦，修改失败了");
         return gson.toJson(map);
     }
 
@@ -469,6 +481,7 @@ public class CompanyController {
      */
     @RequestMapping("/mid-company-api-appoint-api")
     @ResponseBody
+    @RolePermission
     public String midCompanyApiAppointApi(Integer companyId,Integer tid,Integer stid,String pic,Integer aid){
         System.out.println(companyId);
         System.out.println(tid);
@@ -532,6 +545,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/delete-ip")
     @ResponseBody
+    @RolePermission
     public String deleteIpById(Integer companyId,Integer id) {
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -556,6 +570,7 @@ public class CompanyController {
      */
     @RequestMapping("/customer/add/ip")
     @ResponseBody
+    @RolePermission
     public String addCustomerIp(Integer companyId,String beginIp,String endIp){
         Map<String,Object> map = new HashMap<>();
         Gson gson = new Gson();

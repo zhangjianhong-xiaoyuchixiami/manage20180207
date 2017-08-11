@@ -504,6 +504,16 @@ var AddCompanyAllotApiAddIp = function () {
                                         window.location.href = window.location.href ;
                                     })
                                 }
+                                if (data.role_warning != null){
+                                    swal({
+                                        title: "操作提示",
+                                        text: data.role_warning,
+                                        type: "warning",
+                                        showCancelButton: false, //是否显示取消按钮
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: "确定"//确定按钮上面的文档
+                                    })
+                                }
                             }
                         }
                     })

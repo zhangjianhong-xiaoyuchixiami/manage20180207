@@ -172,9 +172,9 @@
                                                 <th>产品供应商</th>
                                                 <th>价格（单位：元）</th>
                                                 <th>当前配额</th>
-                                                <th>预设配额</th>
-                                                <th>预设比例</th>
-                                                <th>恢复详情</th>
+                                                <#--<th>预设配额</th>-->
+                                                <#--<th>预设比例</th>-->
+                                                <#--<th>恢复详情</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -204,9 +204,9 @@
                                                             <td data-title="产品供应商">${api.apiVendor.name}<#if (api.apiVendor.partner)??>@${api.apiVendor.partner.name}</#if></td>
                                                             <td data-title="价格（单位：元）"><a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改产品价格">${(api.cost/100.0)?c}</a></td>
                                                             <td data-title="当前配额"><a href="javaScript:;" onclick="updateApiCurrProb(${api.id},${(api.prob)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改当前配额">${api.prob!'0'}</a></td>
-                                                            <td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>
-                                                            <td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>
-                                                            <td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>
+                                                            <#--<td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>-->
+                                                            <#--<td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>-->
+                                                            <#--<td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>-->
                                                         </tr>
                                                         </#if>
                                                     </#list>
@@ -233,11 +233,11 @@
                                                     <i class="icon-ok-sign"></i>启用
                                                 </button>
                                             </div>
-                                            <div class="btn-group pull-left">
-                                                <button class="btn-icon black" id="batchRecoverApi">
-                                                    <i class="icon-refresh"></i>恢复配额
-                                                </button>
-                                            </div>
+                                            <#--<div class="btn-group pull-left">-->
+                                                <#--<button class="btn-icon black" id="batchRecoverApi">-->
+                                                    <#--<i class="icon-refresh"></i>恢复配额-->
+                                                <#--</button>-->
+                                            <#--</div>-->
                                             <div class="pull-right tip-remark">
                                                 <span>注：红色标注的行是未修改初始价格的产品</span>
                                             </div>
@@ -252,9 +252,9 @@
                                                 <th>产品供应商</th>
                                                 <th>价格（单位：元）</th>
                                                 <th>当前配额</th>
-                                                <th>预设配额</th>
-                                                <th>预设比例</th>
-                                                <th>恢复详情</th>
+                                                <#--<th>预设配额</th>-->
+                                                <#--<th>预设比例</th>-->
+                                                <#--<th>恢复详情</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -280,9 +280,9 @@
                                                             <td data-title="产品供应商">${api.apiVendor.name}<#if (api.apiVendor.partner)??>@${api.apiVendor.partner.name}</#if></td>
                                                             <td data-title="价格（单位：元）"><a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改产品价格">${(api.cost/100.0)?c}</a></td>
                                                             <td data-title="当前配额"><a href="javaScript:;" onclick="updateApiCurrProb(${api.id},${(api.prob)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改当前配额">${api.prob!'0'}</a></td>
-                                                            <td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>
-                                                            <td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>
-                                                            <td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>
+                                                            <#--<td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>-->
+                                                            <#--<td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>-->
+                                                            <#--<td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>-->
                                                         </tr>
                                                         </#if>
                                                     </#list>
@@ -348,7 +348,7 @@
                 inputValue: pic,
                 inputValidator: function(value) {
                     return new Promise(function(resolve, reject) {
-                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        var re =new RegExp("^(\\d+)(\\.\\d+)?$");
                         if(!re.test(value)){
                             reject('格式输入不正确！');
                         } else {
@@ -386,7 +386,7 @@
                                 swal({
                                     type: 'error',
                                     title: '失败',
-                                    text: "哎呦，修改失败了",
+                                    text: data.fail,
                                     confirmButtonText: "确定"
 
                                 })
@@ -418,7 +418,7 @@
                 inputValue: prob_w,
                 inputValidator: function(value) {
                     return new Promise(function(resolve, reject) {
-                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        var re =new RegExp("^(\\d+)(\\.\\d+)?$");
                         if(!re.test(value)){
                             reject('格式输入不正确！');
                         } else {
@@ -470,8 +470,16 @@
                                     showCancelButton: false, //是否显示取消按钮
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: "确定"//确定按钮上面的文档
-                                }).then(function () {
-
+                                })
+                            }
+                            if (data.role_warning != null){
+                                swal({
+                                    title: "操作提示",
+                                    text: data.role_warning,
+                                    type: "warning",
+                                    showCancelButton: false, //是否显示取消按钮
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "确定"//确定按钮上面的文档
                                 })
                             }
                         }
@@ -553,8 +561,16 @@
                                     showCancelButton: false, //是否显示取消按钮
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: "确定"//确定按钮上面的文档
-                                }).then(function () {
-
+                                })
+                            }
+                            if (data.role_warning != null){
+                                swal({
+                                    title: "操作提示",
+                                    text: data.role_warning,
+                                    type: "warning",
+                                    showCancelButton: false, //是否显示取消按钮
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "确定"//确定按钮上面的文档
                                 })
                             }
                         }
@@ -636,8 +652,16 @@
                                     showCancelButton: false, //是否显示取消按钮
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: "确定"//确定按钮上面的文档
-                                }).then(function () {
-
+                                })
+                            }
+                            if (data.role_warning != null){
+                                swal({
+                                    title: "操作提示",
+                                    text: data.role_warning,
+                                    type: "warning",
+                                    showCancelButton: false, //是否显示取消按钮
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "确定"//确定按钮上面的文档
                                 })
                             }
                         }

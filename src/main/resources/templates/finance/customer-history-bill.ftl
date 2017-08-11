@@ -223,7 +223,7 @@
                                     <th>信用额度</th>
                                     <th>可用额度</th>
                                     <th>充值总额</th>
-                                    <th>消费总额</th>
+                                    <th>消费总额(截止上月末)</th>
                                     <th>余额</th>
                                     <th>操作</th>
                                 </tr>
@@ -237,7 +237,7 @@
                                         <td>${bill.floor!'0'}</td>
                                         <td>${bill.userFloor!'0'}</td>
                                         <td>${bill.chargeAmount!'0'}</td>
-                                        <td><a href="/finance/customer-history-bill/detail?cid=${bill.customerId}&name=${bill.companyName!'无'}">${bill.consumeAmount!'0'}</a></td>
+                                        <td><a href="/finance/customer-history-bill/detail?cid=${bill.customerId}&name=${bill.companyName!'无'}" data-toggle="tooltip" data-placement="bottom" title="点击查看消费记录">${bill.consumeAmount!'0'}</a></td>
                                         <td>${bill.balance!'0'}</td>
                                         <td><a href="/finance/customer-history-bill/trend?cid=${bill.customerId}&name=${bill.companyName!'无'}">消费走势</a></td>
                                     </tr>

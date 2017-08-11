@@ -179,6 +179,16 @@ $('#simple_customer_ip_1 a.edit').live('click', function (e) {
                     );
                     showIp(ip_companyId);
                 }
+                if (data.role_warning != null){
+                    swal({
+                        title: "操作提示",
+                        text: data.role_warning,
+                        type: "warning",
+                        showCancelButton: false, //是否显示取消按钮
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: "确定"//确定按钮上面的文档
+                    })
+                }
             }
         })
 
@@ -229,6 +239,16 @@ function deleteIp(id,companyId) {
                             '哎呦，删除失败了',
                             'error'
                         );
+                    }
+                    if (data.role_warning != null){
+                        swal({
+                            title: "操作提示",
+                            text: data.role_warning,
+                            type: "warning",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
+                        })
                     }
                 }
             }

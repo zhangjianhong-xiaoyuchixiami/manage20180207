@@ -134,8 +134,8 @@
                                             <td data-title="操作"><input class="checkboxes" type="checkbox" id="checkBox" name="checkBox" value="${billDetail.id}"/></td>
                                             <td>${billDetail.yearMonth!'无'}</td>
                                             <td>${billDetail.apiTypeName!'无'}</td>
-                                            <td><a href="javaScript:;" onclick="updateCost(${billDetail.id},${billDetail.cost})">${billDetail.cost!'0'}</a></td>
-                                            <td><a href="javaScript:;" onclick="updateAmount(${billDetail.id},${billDetail.amount})">${billDetail.amount!'0'}</a></td>
+                                            <td><a href="javaScript:;" onclick="updateCost(${billDetail.id},${billDetail.cost})" data-toggle="tooltip" data-placement="bottom" title="点击修改单价">${billDetail.cost!'0'}</a></td>
+                                            <td><a href="javaScript:;" onclick="updateAmount(${billDetail.id},${billDetail.amount?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改扣费量">${billDetail.amount!'0'}</a></td>
                                             <td>${billDetail.consumeAmount!'0'}</td>
                                         </tr>
                                         </#list>

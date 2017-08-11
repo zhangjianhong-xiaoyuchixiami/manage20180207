@@ -129,8 +129,8 @@
                                             <td data-title="操作"><input class="checkboxes" type="checkbox" id="checkBox" name="checkBox" value="${vendor.vendorId}"/></td>
                                             <td>${vendor.vendorName!'无'}</td>
                                             <td>${vendor.partnerName!'无'}</td>
-                                            <td href="javaScript:;" onclick="isPrepay(${vendor.vendorId})"><a>${vendor.isPrepayName!'否'}</a></td>
-                                            <td><a href="/vendor/all-vendor/charge-record?vid=${vendor.vendorId}">${vendor.balance!'0'}</a></td>
+                                            <td><a href="javaScript:;" onclick="isPrepay(${vendor.vendorId})" data-toggle="tooltip" data-placement="bottom" title="点击修改是否预付">${vendor.isPrepayName!'否'}</a></td>
+                                            <td><a href="/vendor/all-vendor/charge-record?vid=${vendor.vendorId}&name=${vendor.vendorName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${vendor.balance!'0'}</a></td>
                                             <td>${vendor.totleCost!'0'}</td>
                                             <td>${vendor.remaining!'0'}</td>
                                             <td><a href="#form_modal" data-toggle="modal" onclick="charge(${vendor.vendorId})">充值</a></td>
@@ -178,7 +178,7 @@
 
                                 <div class="control-group">
 
-                                    <label class="control-label">充值日期<span class="required">*</span></label>
+                                    <label class="control-label">充值日期</label>
 
                                     <div class="controls">
 
@@ -194,7 +194,7 @@
 
                                 <div class="control-group">
 
-                                    <label class="control-label">备&nbsp;注<span class="required">*</span></label>
+                                    <label class="control-label">备&nbsp;注</label>
 
                                     <div class="controls">
                                         <textarea class="medium m-wrap" id="remark" name="remark" rows="3"></textarea>

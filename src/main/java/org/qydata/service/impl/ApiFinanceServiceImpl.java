@@ -286,12 +286,12 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
 
     @Override
     @DataSourceService
-    public boolean updateApiVendorChargeLog(Integer vendorIdCharge, Long amount, String remark, String chargeDate)throws Exception{
+    public boolean updateApiVendorChargeLog(Integer vendorIdCharge, String amount, String remark, String chargeDate)throws Exception{
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         ApiVendorBalanceLog apiVendorBalanceLog = new ApiVendorBalanceLog();
         apiVendorBalanceLog.setVendorId(vendorIdCharge);
-        apiVendorBalanceLog.setAmount(amount*100);
+        apiVendorBalanceLog.setAmount(Double.parseDouble(amount)*100);
         apiVendorBalanceLog.setRemark(remark);
         if (chargeDate == "" || chargeDate == null){
             apiVendorBalanceLog.setCreateTime(new Date());
@@ -304,9 +304,9 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
             ApiVendorBalance apiVendorBalanceOne = new ApiVendorBalance();
             apiVendorBalanceOne.setVendorId(vendorIdCharge);
             apiFinanceMapper.insertApiVendorBalance(apiVendorBalanceOne);
-            apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((amount*100)));
+            apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((Long.parseLong(amount)*100)));
         }else {
-            apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((amount*100) + apiVendorBalance.getBalance()));
+            apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((Long.parseLong(amount)*100) + apiVendorBalance.getBalance()));
         }
         return apiFinanceMapper.insertApiVendorBalanceLog(apiVendorBalanceLog);
 

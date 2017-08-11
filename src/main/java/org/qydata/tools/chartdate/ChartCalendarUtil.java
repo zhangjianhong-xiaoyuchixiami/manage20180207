@@ -8,6 +8,8 @@ import java.util.Calendar;
 public class ChartCalendarUtil {
 
 
+
+
     /**
      * 取得当前时间的指定月的时间，格式“yyyy-MM”
      * @return
@@ -21,8 +23,5 @@ public class ChartCalendarUtil {
     }
 
 
-    public static void main(String[] args) {
-        System.out.println(getCurrentDateAssignYearMonth(-0));
-    }
 
 }

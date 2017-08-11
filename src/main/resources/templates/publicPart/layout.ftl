@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.1'/>
+    <#assign ver='1.0.0.2'/>
 
 <!DOCTYPE html>
 
@@ -163,7 +163,7 @@
                 </@shiro.hasAnyRoles>
 
             <#--财务管理-->
-                <@shiro.hasAnyRoles name="sell,backAdmin">
+                <@shiro.hasAnyRoles name="sell,backAdmin,finance">
 
                     <li class="" id="customerBalance">
                         <a href="javascript:;">
@@ -348,13 +348,13 @@
 
                         <ul class="sub-menu">
 
-                            <#--<@shiro.hasPermission name="api:api-message">-->
+                            <@shiro.hasPermission name="vendor:all-vendor">
                                 <li id="vendorList">
                                     <a href="/vendor/all-vendor">
                                         供应商信息
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
                         </ul>
 

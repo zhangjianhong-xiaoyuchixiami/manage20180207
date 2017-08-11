@@ -411,7 +411,23 @@ public class ShiroConfig {
 		chains.put("/excel/extra-account-partner", "authc,perms");
 		chains.put("/excel/extra-account-vendor", "authc,perms");
 		chains.put("/excel/extra-account-customer", "authc,perms");
+
+		//CustomerHistoryBillController
 		chains.put("/finance/customer-history-bill", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail/update-cost", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail/update-amount", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail/add", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail/delete", "authc,perms");
+		chains.put("/finance/customer-history-bill/trend", "authc,perms");
+		chains.put("/finance/customer-history-bill/trend/data", "authc,perms");
+
+		//VendorController
+		chains.put("/vendor/all-vendor", "authc,perms");
+		chains.put("/vendor/all-vendor/charge", "authc,perms");
+		chains.put("/vendor/all-vendor/charge-record", "authc,perms");
+		chains.put("/vendor/all-vendor/update-prepay", "authc,perms");
+
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

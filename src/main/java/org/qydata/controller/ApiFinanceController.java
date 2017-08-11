@@ -395,7 +395,7 @@ public class ApiFinanceController {
         }
         boolean flag = false;
         try {
-            flag = apiFinanceService.updateApiVendorChargeLog(vendorIdCharge, Long.parseLong(amount), remark, chargeDate);
+            flag = apiFinanceService.updateApiVendorChargeLog(vendorIdCharge, amount, remark, chargeDate);
         } catch (Exception e) {
             e.printStackTrace();
         }

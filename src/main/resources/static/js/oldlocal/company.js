@@ -78,6 +78,16 @@ $("#batchBanCompany").on('click',function () {
                                 location.reload();
                             })
                         }
+                        if (data.role_warning != null){
+                            swal({
+                                title: "操作提示",
+                                text: data.role_warning,
+                                type: "warning",
+                                showCancelButton: false, //是否显示取消按钮
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: "确定"//确定按钮上面的文档
+                            })
+                        }
                     }
 
                 }
@@ -155,6 +165,16 @@ $("#batchUnBanCompany").on('click',function () {
                                 location.reload();
                             })
                         }
+                        if (data.role_warning != null){
+                            swal({
+                                title: "操作提示",
+                                text: data.role_warning,
+                                type: "warning",
+                                showCancelButton: false, //是否显示取消按钮
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: "确定"//确定按钮上面的文档
+                            })
+                        }
                     }
                 }
             });
@@ -217,6 +237,16 @@ function banCustomer(authId) {
                             window.location.href = window.location.href ;
                         })
                     }
+                    if (data.role_warning != null){
+                        swal({
+                            title: "操作提示",
+                            text: data.role_warning,
+                            type: "warning",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
+                        })
+                    }
                 }
             }
         })
@@ -276,6 +306,16 @@ function unBanCustomer(authId) {
                             confirmButtonText: "确定"
                         }).then(function () {
                             window.location.href = window.location.href ;
+                        })
+                    }
+                    if (data.role_warning != null){
+                        swal({
+                            title: "操作提示",
+                            text: data.role_warning,
+                            type: "warning",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
                         })
                     }
                 }

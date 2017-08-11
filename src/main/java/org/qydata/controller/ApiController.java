@@ -2,10 +2,12 @@ package org.qydata.controller;
 
 import com.google.gson.Gson;
 import org.qydata.config.annotation.RecoverProbController;
+import org.qydata.config.annotation.RolePermission;
 import org.qydata.dst.ApiTypeInfo;
 import org.qydata.dst.CustomerApiPartner;
 import org.qydata.entity.*;
 import org.qydata.service.ApiService;
+import org.qydata.tools.checkNumber.CheckNumberUtil;
 import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,6 +97,7 @@ public class ApiController {
     @RequestMapping("/ban")
     @ResponseBody
     @RecoverProbController
+    @RolePermission
     public String apiBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] apiId = request.getParameterValues("apiId[]");
@@ -115,6 +118,7 @@ public class ApiController {
     @RequestMapping("/unban")
     @ResponseBody
     @RecoverProbController
+    @RolePermission
     public String apiUnBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] apiId = request.getParameterValues("apiId[]");
@@ -139,6 +143,10 @@ public class ApiController {
 
         Map<String,Object> map = new HashMap<>();
         Gson gson = new Gson();
+        if (!CheckNumberUtil.isStipulateNumeric(pic)){
+            map.put("fail","数据格式不正确或大于最大值（修改最大值是：5）");
+            return gson.toJson(map);
+        }
         int code = 0;
         try {
             code = apiService.updatePrice(aid,pic);
@@ -149,7 +157,7 @@ public class ApiController {
             map.put("success","操作成功");
             return gson.toJson(map);
         }
-        map.put("fail","修改失败，请检查你的操作");
+        map.put("fail","哎呦，修改失败了");
         return gson.toJson(map);
     }
 
@@ -282,6 +290,10 @@ public class ApiController {
     public String midCompanyApiPrice(Integer cid,Integer tid,Integer stid,Double pic){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
+        if (!CheckNumberUtil.isStipulateNumeric(pic)){
+            map.put("fail","数据格式不正确或大于最大值（修改最大值是：5）");
+            return gson.toJson(map);
+        }
         int code = 0;
         try {
             code = apiService.updateCompanyApiPrice(cid, tid, stid, pic);
@@ -292,7 +304,7 @@ public class ApiController {
             map.put("success","操作成功!");
             return gson.toJson(map);
         }
-        map.put("fail","操作失败!");
+        map.put("fail","哎呦，修改失败了");
         return gson.toJson(map);
     }
 
@@ -302,6 +314,7 @@ public class ApiController {
      */
     @RequestMapping("/company/ban-api")
     @ResponseBody
+    @RolePermission
     public String banCompanyApiById(HttpServletRequest request){
         String [] cid_id = request.getParameterValues("cid_id[]");
         Gson gson = new Gson();
@@ -406,6 +419,7 @@ public class ApiController {
     @RequestMapping("/update-curr-prob")
     @ResponseBody
     @RecoverProbController
+    @RolePermission
     public String midApiCurrProb(Integer aid,Integer prob){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
@@ -432,6 +446,7 @@ public class ApiController {
     @RequestMapping("/update-def-prob")
     @ResponseBody
     @RecoverProbController
+    @RolePermission
     public String midApiDefProb(Integer aid,Integer prob){
 
         Gson gson = new Gson();
@@ -459,6 +474,7 @@ public class ApiController {
     @RequestMapping("/update-def-prop")
     @ResponseBody
     @RecoverProbController
+    @RolePermission
     public String midApiDefProp(Integer aid,Double prop){
 
         Gson gson = new Gson();
@@ -484,6 +500,7 @@ public class ApiController {
     @RequestMapping("/recover-prob")
     @ResponseBody
     @RecoverProbController
+    @RolePermission
     public String recoverApiProb(HttpServletRequest request){
         String [] aid = request.getParameterValues("aid[]");
         Map<String,Object> map = new HashMap<>();

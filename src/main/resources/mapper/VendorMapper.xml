@@ -15,7 +15,16 @@
         <result column="currDayCost" property="currDayCost"/>
     </resultMap>
 
-    <!---->
+    <resultMap id="vendorChargeMap" type="org.qydata.entity.ApiVendorBalanceLog">
+        <result column="id" property="id"/>
+        <result column="vendorId" property="vendorId"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="amount" property="amount"/>
+        <result column="remark" property="remark"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <!--查询全部供应商-->
     <select id="queryAllVendor" parameterType="map" resultMap="vendorMap">
         SELECT a.id vendorId,a.name vendorName,b.id partnerId,b.name partnerName,
         c.isPrepay,c.isBalWarn,d.balance
@@ -31,17 +40,21 @@
                 </foreach>
             </if>
             <if test="pidList != null and pidList.size > 0">
-               a.partnerId IN
+              AND a.partnerId IN
                 <foreach collection="pidList" item="pid" index="index" open="(" close=")" separator=",">
                     #{pid}
                 </foreach>
             </if>
-            <if test="preId != null and preId != ''">
-               c.isPrepay = #{preId}
+            <if test="preIdList != null and preIdList.size > 0">
+              AND c.isPrepay IN
+                <foreach collection="preIdList" item="preId" index="index" open="(" close=")" separator=",">
+                    #{preId}
+                </foreach>
             </if>
         </where>
     </select>
 
+    <!--查询供应商消费金额（至昨天）-->
     <select id="queryVendorConsume" parameterType="map" resultMap="vendorMap">
         SELECT b.vendorId,sum(a.totleCost) totleCost
         FROM
@@ -54,6 +67,7 @@
         GROUP BY b.vendorId
     </select>
 
+    <!--查询供应商消费金额（今天）-->
     <select id="queryVendorConsumeCurrDay" parameterType="map" resultMap="vendorMap">
         SELECT b.vendorId,sum(a.currDayCost) currDayCost
         FROM
@@ -76,6 +90,33 @@
         SELECT id,name
         FROM qyfinance.bkvwPartner
     </select>
+
+    <!--查询充值记录-->
+    <select id="queryVendorBalanceLog" parameterType="map" resultMap="vendorChargeMap">
+        SELECT a.id,a.vendorId,a.amount,a.remark,a.createTime,b.name vendorName
+        FROM qyfinance.ApiVendorBalanceLog a
+        LEFT JOIN qyfinance.finance_ApiVendor b ON a.vendorId = b.id
+        WHERE a.vendorId = #{vid}
+    </select>
+
+    <!--修改供应商预付状态-->
+    <update id="updateVendorPrepay" parameterType="int" >
+        UPDATE qyfinance.ApiVendorExt SET isPrepay = #{param2}
+        WHERE vendorId = #{param1}
+    </update>
+
+    <!--修改供应商预付状态-->
+    <select id="queryVendorPrepay" parameterType="int" resultType="org.qydata.entity.VendorExt">
+        SELECT id,vendorId,isPrepay
+        FROM qyfinance.ApiVendorExt
+        WHERE vendorId = #{vid}
+    </select>
+
+    <!--修改供应商预付状态-->
+    <insert id="insertVendorPrepay" parameterType="org.qydata.entity.VendorExt">
+       INSERT INTO qyfinance.ApiVendorExt(vendorId,isPrepay)
+       VALUES(#{vendorId},#{isPrepay})
+    </insert>
 
 </mapper>
 

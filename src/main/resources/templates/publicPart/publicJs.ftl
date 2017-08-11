@@ -1,7 +1,7 @@
 
 <#macro publicJs>
 
-    <#assign ver='1.0.0.1'/>
+    <#assign ver='1.0.0.2'/>
 
 <script src="/assect/jquery-1.10.1.min.js?v=${ver}" type="text/javascript"></script>
 
@@ -82,6 +82,8 @@
 <script src="/js/multi/shade.js"></script>
 
 <script src="/js/multi/ajax-session-timeout.js"></script>
+
+<script src="/js/multi/tip.js"></script>
 
 <script>
 

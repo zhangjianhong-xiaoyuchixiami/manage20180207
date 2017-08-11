@@ -209,7 +209,7 @@ public class ApiServiceImpl implements ApiService {
         Map<String, Object> map = new HashMap<>();
         map.put("k", companyMapper.queryAuthKey("admin.k"));
         map.put("aid", aid);
-        map.put("v", pic * 100);
+        map.put("v", (int)(pic * 100));
         int code = HttpClientUtil.doGet(uri, map, null);
         if (200 == code) {
             return code;
