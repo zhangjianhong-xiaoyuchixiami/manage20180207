@@ -131,7 +131,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
                         CustomerFinance customerFinanceApiTypeConsume = customerFinanceApiTypeConsumeList.get(i);
                         List<CompanyApi> companyApiList = customerFinanceApiTypeConsume.getCompanyApiList();
-                        if (customerFinance.getId() == customerFinanceApiTypeConsume.getId()) {
+                        if (customerFinance.getId() == customerFinanceApiTypeConsume.getId() || customerFinance.getId().equals(customerFinanceApiTypeConsume.getId())) {
                             customerFinance.setCompanyApiList(companyApiList);
                         }
                     }
@@ -141,7 +141,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 if (customerWeekMonthConsumeList != null) {
                     for (int i = 0; i < customerWeekMonthConsumeList.size(); i++) {
                         CustomerWeekMonthConsume customerWeekMonthConsume = customerWeekMonthConsumeList.get(i);
-                        if (customerFinance.getId() == customerWeekMonthConsume.getCustomerId()) {
+                        if (customerFinance.getId() == customerWeekMonthConsume.getCustomerId() || customerFinance.getId().equals(customerWeekMonthConsume.getCustomerId())) {
                             customerFinance.setChargeWeekTotleAmount(customerWeekMonthConsume.getChargeWeekTotleAmount());
                             customerFinance.setChargeMonthTotleAmount(customerWeekMonthConsume.getChargeMonthTotleAmount());
                             customerFinance.setConsumeWeekTotleAmount(customerWeekMonthConsume.getConsumeWeekTotleAmount());
@@ -154,7 +154,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 if (customerFinanceCurrDayList != null){
                     for (int i = 0; i < customerFinanceCurrDayList.size(); i++) {
                         CustomerFinance customerFinanceCurrDay = customerFinanceCurrDayList.get(i);
-                        if (customerFinance.getId() == customerFinanceCurrDay.getId()){
+                        if (customerFinance.getId() == customerFinanceCurrDay.getId() || customerFinance.getId().equals(customerFinanceCurrDay.getId())){
                             customerFinance.setCurrDayAmount(customerFinanceCurrDay.getCurrDayAmount());
                         }
                     }
@@ -164,7 +164,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 if (customerFinanceCurrMonthList != null){
                     for (int i = 0; i < customerFinanceCurrMonthList.size(); i++) {
                         CustomerFinance customerFinanceCurrMonth = customerFinanceCurrMonthList.get(i);
-                        if (customerFinance.getId() == customerFinanceCurrMonth.getId()){
+                        if (customerFinance.getId() == customerFinanceCurrMonth.getId() ||customerFinance.getId().equals(customerFinanceCurrMonth.getId())){
                             customerFinance.setCurrMonthAmount(customerFinanceCurrMonth.getCurrMonthAmount());
                         }
                     }
@@ -185,8 +185,18 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 if (customerFinanceChargeList != null){
                     for (int i = 0; i < customerFinanceChargeList.size() ; i++) {
                         CustomerFinance customerFinanceCharge = customerFinanceChargeList.get(i);
-                        if (customerFinance.getId() == customerFinanceCharge.getId()){
+                        if (customerFinance.getId() == customerFinanceCharge.getId() ||customerFinance.getId().equals(customerFinanceCharge.getId())){
                             customerFinance.setChargeTotleAmount(customerFinanceCharge.getChargeTotleAmount());
+                        }
+                    }
+                }
+
+                 /*封装充值总额（今天）*/
+                if (customerFinanceCurrDayChargeList != null){
+                    for (int i = 0; i < customerFinanceCurrDayChargeList.size(); i++) {
+                        CustomerFinance currDayFinance = customerFinanceCurrDayChargeList.get(i);
+                        if (customerFinance.getId() == currDayFinance.getId() || customerFinance.getId().equals(currDayFinance.getId())){
+                            customerFinance.setCurrDayChargeAmount(currDayFinance.getCurrDayChargeAmount());
                         }
                     }
                 }
@@ -206,7 +216,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 if (customerFinanceConsumeList != null){
                     for (int i = 0; i < customerFinanceConsumeList.size(); i++) {
                         CustomerFinance customerFinanceConsume = customerFinanceConsumeList.get(i);
-                        if (customerFinance.getId() == customerFinanceConsume.getId()){
+                        if (customerFinance.getId() == customerFinanceConsume.getId() || customerFinance.getId().equals(customerFinanceConsume.getId())){
                             customerFinance.setConsumeTotleAmount(customerFinanceConsume.getConsumeTotleAmount());
                         }
                     }
@@ -226,23 +236,13 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     }
                 }
 
-               /* *//*封装充值总额*//*
-                if (customerFinance.getConsumeTotleAmount() != null){
-                    if (customerFinance.getBalance() != null){
-                        customerFinance.setChargeTotleAmount((-customerFinance.getConsumeTotleAmount()) + customerFinance.getBalance());
-                    }
-                }else {
-                    if (customerFinance.getBalance() != null){
-                        customerFinance.setChargeTotleAmount(customerFinance.getBalance());
-                    }
-                }*/
 
                 /*封装邮箱*/
                 if (customerCompanyEmailList != null){
                     for (int i = 0; i < customerCompanyEmailList.size() ; i++) {
                         CustomerCompanyEmail customerCompanyEmail = customerCompanyEmailList.get(i);
                         if (customerCompanyEmail.getEmail() != null && customerCompanyEmail.getEmail().length() > 0){
-                            if (customerFinance.getCompanyId() == customerCompanyEmail.getCompanyId()){
+                            if (customerFinance.getCompanyId() == customerCompanyEmail.getCompanyId() || customerFinance.getCompanyId().equals(customerCompanyEmail.getCompanyId())){
                                 customerFinance.setEmail(customerCompanyEmail.getEmail());
                             }
                         }
@@ -253,7 +253,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 if(customerConsumeExcelList != null){
                     for (int i = 0; i < customerConsumeExcelList.size(); i++) {
                         CustomerConsumeExcel customerConsumeExcel = customerConsumeExcelList.get(i);
-                        if (customerFinance.getId() == customerConsumeExcel.getCustomerId()){
+                        if (customerFinance.getId() == customerConsumeExcel.getCustomerId() || customerFinance.getId().equals(customerConsumeExcel.getCustomerId())){
                             customerFinance.setConsuTime(customerConsumeExcel.getConsuTime());
                         }
                     }

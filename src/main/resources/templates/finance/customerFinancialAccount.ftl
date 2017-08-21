@@ -400,7 +400,7 @@
                                         <th class="table-td-none">产品价格</th>
                                         <th class="table-td-none">总消费额</th>
                                         <th class="table-td-none">请求次数</th>
-                                        <th class="table-td-none">成功次数</th>
+                                        <th class="table-td-none">扣费次数</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -427,17 +427,22 @@
                                                 <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                     <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                                 </@shiro.hasPermission>
-                                                <td data-title="信用额度">${(-customer.floor/100.0)?c}</td>
-                                                <td data-title="可用额度">${(customer.surplusFloor/100.0)?c}</td>
-                                                <td data-title="账号余额"><#if customer.balance??>${(customer.balance/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录"><#if customer.chargeTotleAmount??>${(customer.chargeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看消费记录"><#if customer.consumeTotleAmount??>${(-customer.consumeTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeWeekTotleAmount??>${(customer.chargeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeWeekTotleAmount??>${(-customer.consumeWeekTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}"><#if customer.chargeMonthTotleAmount??>${(customer.chargeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}"><#if customer.consumeMonthTotleAmount??>${(-customer.consumeMonthTotleAmount/100.0)?c}<#else >0</#if></a></td>
-                                                <td data-title="本月消费"><#if customer.currMonthAmount??>${(-customer.currMonthAmount/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="当天消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况"><#if customer.currDayAmount??>${(-customer.currDayAmount/100.0)?c}<#else >0</#if></a></td>
+                                                <td data-title="信用额度">${(-customer.floor/100.0)!'0'}</td>
+                                                <td data-title="可用额度">${(customer.surplusFloor/100.0)!'0'}</td>
+                                                <td data-title="账号余额">${(customer.balance/100.0)!'0'}</td>
+                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${(customer.chargeTotleAmount/100.0)!'0'}</a></td>
+                                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                                <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看消费记录">${(-customer.consumeTotleAmount/100.0)!'0'}</a></td>
+                                                </@shiro.hasPermission>
+                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                    <td data-title="消费总额">${(-customer.consumeTotleAmount/100.0)!'0'}</td>
+                                                </@shiro.hasPermission>
+                                                <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}">${(customer.chargeWeekTotleAmount/100.0)!'0'}</a></td>
+                                                <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}">${(-customer.consumeWeekTotleAmount/100.0)!'0'}</a></td>
+                                                <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}">${(customer.chargeMonthTotleAmount/100.0)!'0'}</a></td>
+                                                <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}">${(-customer.consumeMonthTotleAmount/100.0)!'0'}</a></td>
+                                                <td data-title="本月消费">${(-customer.currMonthAmount/100.0)!'0'}</td>
+                                                <td data-title="当天消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${(-customer.currDayAmount/100.0)!'0'}</a></td>
                                                 <td data-title="产品类型" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
                                                         <#list customer.companyApiList as companyApi>
@@ -507,7 +512,7 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="成功次数" class="table-td-none">
+                                                <td data-title="扣费次数" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
                                                         <#list customer.companyApiList as companyApi>
                                                             <#if companyApi.apiTypeId??>
@@ -548,7 +553,7 @@
                                             <th>当前价格</th>
                                             <th>总消费额（单位：元）</th>
                                             <th>请求次数</th>
-                                            <th>成功次数</th>
+                                            <th>扣费次数</th>
                                         </tr>
                                         </thead>
                                         <tbody>

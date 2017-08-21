@@ -30,7 +30,7 @@ var CustomerFinanceAccount = function () {
                     '<th>当前价格</th>' +
                     '<th>总消费额（单位：元）</th>' +
                     '<th>请求次数</th>' +
-                    '<th>成功次数</th>' +
+                    '<th>扣费次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
                     '<td>'+aData[15]+'</td>' +
