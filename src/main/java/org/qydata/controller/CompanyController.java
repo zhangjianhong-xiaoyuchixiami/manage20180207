@@ -436,7 +436,7 @@ public class CompanyController {
     }
 
     /**
-     * 根据产品类型查找统一产品类型的产品列表
+     * 根据产品类型查找同一产品类型的产品列表
      * @param tid_stid
      * @return
      */
