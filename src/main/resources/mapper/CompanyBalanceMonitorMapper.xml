@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.CompanyBalanceMonitorMapper">
+
+    
+    <select id="queryCompanyBalanceMonitor">
+        SELECT a.id,a.name,a.partnerId,a.status,
+        b.isPrepay,b.isSendOpposite,b.ahead,c.name
+        FROM qyfinance.bkvwCustomerCompany a
+        LEFT JOIN qyfinance.CompanyExt b ON a.id = b.companyId
+        LEFT JOIN qyfinance.bkvwPartner c ON a.partnerId = c.id
+
+    </select>
+
+</mapper>
+

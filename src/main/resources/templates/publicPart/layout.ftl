@@ -157,6 +157,12 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <li id="customerBalanceMonitorList">
+                                <a href="/company/balance-monitor">
+                                    客户余额报警
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
 
