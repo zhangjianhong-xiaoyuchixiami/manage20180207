@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.entity.ApiVendorBalance;
 import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.entity.Partner;
 import org.qydata.entity.VendorExt;
@@ -66,5 +67,29 @@ public interface VendorMapper {
      * @return
      */
     public boolean insertVendorPrepay(VendorExt vendorExt);
+
+    /**
+     * 充值或扣费之前查询是否有余额记录，如果有直接修改，反之插入
+     * @return
+     */
+    public ApiVendorBalance queryVendorBalance(Integer vid);
+
+    /**
+     * 插入余额记录
+     * @return
+     */
+    public boolean insertVendorBalance(ApiVendorBalance balance);
+
+    /**
+     * 修改余额记录
+     * @return
+     */
+    public boolean updateVendorBalance(ApiVendorBalance balance);
+
+    /**
+     * 插入余额日志
+     * @return
+     */
+    public boolean insertVendorBalanceLog(ApiVendorBalanceLog log);
 
 }

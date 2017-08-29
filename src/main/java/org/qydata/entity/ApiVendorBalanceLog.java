@@ -15,6 +15,8 @@ public class ApiVendorBalanceLog implements Serializable {
     private String remark;
     private Date createTime;
     private String chargeTime;
+    private Integer reasonId;
+    private String reasonName;
 
     public Integer getId() {
         return id;
@@ -70,5 +72,21 @@ public class ApiVendorBalanceLog implements Serializable {
 
     public void setChargeTime(String chargeTime) {
         this.chargeTime = chargeTime;
+    }
+
+    public Integer getReasonId() {
+        return reasonId;
+    }
+
+    public void setReasonId(Integer reasonId) {
+        this.reasonId = reasonId;
+    }
+
+    public String getReasonName() {
+        return reasonName;
+    }
+
+    public void setReasonName(String reasonName) {
+        this.reasonName = reasonName;
     }
 }

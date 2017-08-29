@@ -21,6 +21,7 @@ var vendorChargeRecord = function () {
                 "aoColumns": [
                     null,
                     null,
+                    null,
                     null
                 ],
                 "aaSorting": [[1, 'desc']],

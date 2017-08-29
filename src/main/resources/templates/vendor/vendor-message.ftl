@@ -35,8 +35,8 @@
 
                                     <select class="medium m-wrap" multiple id="vid" name="vid">
                                         <option value=""></option>
-                                        <#if vendorExtList??>
-                                            <#list vendorExtList as vendor>
+                                        <#if vendorList??>
+                                            <#list vendorList as vendor>
                                                 <option <#if vid??><#list vid as vid><#if vid?? && vid == vendor.vendorId> selected="selected"</#if></#list></#if> value="${vendor.vendorId}">${vendor.vendorName}</option>
                                             </#list>
                                         </#if>
@@ -53,6 +53,7 @@
                                 <div class="controls">
                                     <select class="medium m-wrap" multiple id="pid" name="pid">
                                         <option value=""></option>
+                                        <option <#if pid??><#list pid as pid><#if pid?? && pid == -100> selected="selected"</#if></#list></#if> value="-100">无</option>
                                         <#if partnerList??>
                                             <#list partnerList as partnerId>
                                                 <option <#if pid??><#list pid as pid><#if pid?? && pid == partnerId.id> selected="selected"</#if></#list></#if> value="${partnerId.id}">${partnerId.name}</option>
@@ -99,7 +100,7 @@
 
                     <div class="portlet box grey">
 
-                        <div class="portlet-body">
+                        <div class="portlet-body no-more-tables">
 
                             <div class="clearfix margin-bottom-5">
 
@@ -126,14 +127,18 @@
                                     <#if vendorExtList??>
                                         <#list vendorExtList as vendor>
                                         <tr>
-                                            <td data-title="操作"><input class="checkboxes" type="checkbox" id="checkBox" name="checkBox" value="${vendor.vendorId}"/></td>
-                                            <td>${vendor.vendorName!'无'}</td>
-                                            <td>${vendor.partnerName!'无'}</td>
-                                            <td><a href="javaScript:;" onclick="isPrepay(${vendor.vendorId})" data-toggle="tooltip" data-placement="bottom" title="点击修改是否预付">${vendor.isPrepayName!'否'}</a></td>
-                                            <td><a href="/vendor/all-vendor/charge-record?vid=${vendor.vendorId}&name=${vendor.vendorName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${vendor.balance!'0'}</a></td>
-                                            <td>${vendor.totleCost!'0'}</td>
-                                            <td>${vendor.remaining!'0'}</td>
-                                            <td><a href="#form_modal" data-toggle="modal" onclick="charge(${vendor.vendorId})">充值</a></td>
+                                            <td data-title="多选框"><input class="checkboxes" type="checkbox" id="checkBox" name="checkBox" value="${vendor.vendorId}"/></td>
+                                            <td data-title="供应商">${vendor.vendorName!'无'}</td>
+                                            <td data-title="合作公司">${vendor.partnerName!'无'}</td>
+                                            <td data-title="是否预付"><a href="javaScript:;" onclick="isPrepay(${vendor.vendorId})" data-toggle="tooltip" data-placement="bottom" title="点击修改是否预付">${vendor.isPrepayName!'否'}</a></td>
+                                            <td data-title="充值金额"><a href="/vendor/all-vendor/charge-record?vid=${vendor.vendorId}&name=${vendor.vendorName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${vendor.balance!'0'}</a></td>
+                                            <td data-title="消费金额">${vendor.totleCost!'0'}</td>
+                                            <td data-title="余额">${vendor.remaining!'0'}</td>
+                                            <td data-title="操作">
+                                                <a href="#form_modal" data-toggle="modal" onclick="charge(${vendor.vendorId})">充值</a>
+                                                |
+                                                <a href="#form_modal_1" data-toggle="modal" onclick="fee(${vendor.vendorId})">扣费</a>
+                                            </td>
                                         </tr>
                                         </#list>
                                     </#if>
@@ -151,7 +156,7 @@
 
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 
-                            <h3 id="myModalLabel">请填写信息</h3>
+                            <h3 id="myModalLabel">请填写充值信息</h3>
 
                         </div>
 
@@ -171,14 +176,14 @@
 
                                     <div class="controls">
                                         <input type="text" id="amount" name="amount"  placeholder="（单位/元）" class="m-wrap medium">
-                                        <span class="help-block">说明：只能输入数字类型并且金额大于0</span>
+                                        <span class="help-block">说明：只能输入数字类型并且金额大于等于0</span>
                                     </div>
 
                                 </div>
 
                                 <div class="control-group">
 
-                                    <label class="control-label">充值日期</label>
+                                    <label class="control-label">日期</label>
 
                                     <div class="controls">
 
@@ -212,6 +217,78 @@
                             <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
 
                             <button class="btn black btn-primary" id="add_btn" type="button">提交</button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="form_modal_1" class="modal hide fade myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                            <h3 id="myModalLabel">请填写扣费信息</h3>
+
+                        </div>
+
+                        <div class="modal-body">
+
+                            <form action="#" class="form-horizontal" id="submit_form_fee">
+
+                                <div class="control-group"></div>
+
+                                <div class="control-group"></div>
+
+                                <input style="display: none" id="fee_vid" name="charge_vid" value="">
+
+                                <div class="control-group">
+
+                                    <label class="control-label">金&nbsp;额<span class="required">*</span></label>
+
+                                    <div class="controls">
+                                        <input type="text" id="amount_fee" name="amount_fee"  placeholder="（单位/元）" class="m-wrap medium">
+                                        <span class="help-block">说明：只能输入数字类型并且金额大于等于0</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="control-group">
+
+                                    <label class="control-label">日&nbsp;期</label>
+
+                                    <div class="controls">
+
+                                        <div class="input-append date date-picker" data-date-viewmode="years" data-date-minviewmode="months">
+
+                                            <input id="date_fee" name="date_fee" class="m-wrap m-ctrl-medium date-picker" size="16" type="text"><span class="add-on"><i class="icon-calendar"></i></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="control-group">
+
+                                    <label class="control-label">备&nbsp;注</label>
+
+                                    <div class="controls">
+                                        <textarea class="medium m-wrap" id="remark_fee" name="remark_fee" rows="3"></textarea>
+                                        <span class="help-block">说明：只能输入255个字符</span>
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+
+                            <button class="btn black btn-primary" id="add_btn_fee" type="button">提交</button>
 
                         </div>
 
@@ -263,6 +340,10 @@
 
         function charge(vid){
             $("#charge_vid").val(vid)
+        }
+
+        function fee(vid){
+            $("#fee_vid").val(vid)
         }
         
         function isPrepay(vid) {
@@ -342,14 +423,16 @@
             rules: {
                 amount: {
                     required: true,
-                    number:true
+                    number:true,
+                    min:0
                 }
             },
             messages: {
 
                 amount:{
                     required:"必填",
-                    number:"必须输入合法的数字"
+                    number:"必须输入合法的数字",
+                    min:"金额必须大于等于0"
                 }
             },
             errorClass: "self-error"
@@ -400,6 +483,93 @@
                                 swal({
                                     title: "成功",
                                     html: '已充值成功',
+                                    type: "success",
+                                    showCancelButton: false, //是否显示取消按钮
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "确定"//确定按钮上面的文档
+                                }).then(function () {
+                                    window.location.href = window.location.href
+                                })
+
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                if (dismiss === 'cancel') {}
+            });
+
+        });
+
+
+        var form_1 = $('#submit_form_fee');
+
+        form_1.validate({
+            rules: {
+                amount_fee: {
+                    required: true,
+                    number:true,
+                    min:0
+                }
+            },
+            messages: {
+
+                amount_fee:{
+                    required:"必填",
+                    number:"必须输入合法的数字",
+                    min:"金额必须大于等于0"
+                }
+            },
+            errorClass: "self-error"
+        });
+
+        $("#add_btn_fee").on("click",function () {
+
+            if (form_1.valid() == false) {
+                return false;
+            }
+
+            swal({
+                title: "确定要扣费吗？",   //弹出框的title
+                type: "question",    //弹出框类型
+                showCancelButton: true, //是否显示取消按钮
+                allowOutsideClick: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",//取消按钮文本
+                confirmButtonText: "确定"//确定按钮上面的文档
+            }).then(function () {
+
+                var vid = $('#fee_vid').val();
+                var amount = $('#amount_fee').val();
+                var date = $('#date_fee').val();
+                var remark = $('#remark_fee').val();
+
+                $.ajax({
+                    type: "post",
+                    url: "/vendor/all-vendor/fee",
+                    data: {"vid": vid, "amount":amount,"date": date, "remark": remark},
+                    dataType: "json",
+                    beforeSend:function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if(data != null){
+                            if (data.fail != null) {
+                                swal(
+                                        '失败',
+                                        '哎呦，扣费失败了',
+                                        'error'
+                                );
+                                return;
+                            }
+                            if (data.success != null) {
+                                swal({
+                                    title: "成功",
+                                    html: '已扣费成功',
                                     type: "success",
                                     showCancelButton: false, //是否显示取消按钮
                                     confirmButtonColor: '#3085d6',

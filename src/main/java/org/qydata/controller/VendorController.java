@@ -49,9 +49,12 @@ public class VendorController {
             model.addAttribute("preId",preId);
         }
         List<VendorExt> vendorExtList = vendorService.queryAllVendor(param);
+        Map<String,Object> param_1 = new HashMap<>();
+        List<VendorExt> vendorList = vendorService.queryAllVendor(param_1);
         List<Partner> partnerList = vendorService.queryAllPartner();
         model.addAttribute("vendorExtList",vendorExtList);
         model.addAttribute("partnerList",partnerList);
+        model.addAttribute("vendorList",vendorList);
         return "/vendor/vendor-message";
     }
 
@@ -65,10 +68,36 @@ public class VendorController {
      */
     @RequestMapping("/all-vendor/charge")
     @ResponseBody
-    public String vendorCharge(Integer vid,String amount,String date,String remark){
+    public String vendorCharge(Integer vid,Double amount,String date,String remark){
         boolean flag = false;
         try {
           flag = vendorService.updateVendorBalance(vid, amount, date, remark);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Map<String,Object> resu = new HashMap<>();
+        if (flag){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
+    /**
+     * 供应商扣费
+     * @param vid
+     * @param amount
+     * @param date
+     * @param remark
+     * @return
+     */
+    @RequestMapping("/all-vendor/fee")
+    @ResponseBody
+    public String vendorFee(Integer vid,Double amount,String date,String remark){
+        boolean flag = false;
+        try {
+            flag = vendorService.updateVendorBalance(vid, -amount, date, remark);
         } catch (Exception e) {
             e.printStackTrace();
         }

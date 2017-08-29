@@ -45,7 +45,19 @@ public interface VendorService {
      */
     @SystemServiceLog(description = "供应商充值")
     @Transactional
-    public boolean updateVendorBalance(Integer vid,String amount,String date,String remark) throws Exception;
+    public boolean updateVendorBalance(Integer vid,Double amount,String date,String remark) throws Exception;
+
+    /**
+     * 修改供应商余额
+     * @param vid
+     * @param amount
+     * @param date
+     * @param remark
+     * @return
+     */
+    @SystemServiceLog(description = "供应商扣费")
+    @Transactional
+    public boolean updateVendorBalanceFee(Integer vid,Double amount,String date,String remark) throws Exception;
 
     /**
      * 查询充值记录

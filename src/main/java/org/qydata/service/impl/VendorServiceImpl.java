@@ -57,7 +57,11 @@ public class VendorServiceImpl implements VendorService {
         if (pid != null){
             List<Integer> pidList = new ArrayList<>();
             for (int i = 0; i < pid.length ; i++) {
-                pidList.add(pid[i]);
+                if (!(pid[i] == -100 || "-100".equals(pid[i]))){
+                    pidList.add(pid[i]);
+                }else {
+                    param.put("nullPid",-100);
+                }
             }
             param.put("pidList",pidList);
         }
@@ -156,12 +160,12 @@ public class VendorServiceImpl implements VendorService {
 
     @SystemServiceLog(description = "供应商充值")
     @Override
-    public boolean updateVendorBalance(Integer vid, String amount, String date, String remark) throws Exception {
+    public boolean updateVendorBalance(Integer vid, Double amount, String date, String remark) throws Exception {
         try{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             ApiVendorBalanceLog log = new ApiVendorBalanceLog();
             log.setVendorId(vid);
-            log.setAmount(Double.parseDouble(amount)*100);
+            log.setAmount(amount*100);
             log.setRemark(remark);
             if (date == "" || date == null){
                 log.setCreateTime(new Date());
@@ -175,15 +179,22 @@ public class VendorServiceImpl implements VendorService {
                 ApiVendorBalance param = new ApiVendorBalance();
                 param.setVendorId(vid);
                 apiFinanceMapper.insertApiVendorBalance(param);
-                apiFinanceMapper.updateApiVendorBalance(vid,((Long.parseLong(amount)*100)));
+                apiFinanceMapper.updateApiVendorBalance(vid, (long) (amount*100));
             }else {
-                apiFinanceMapper.updateApiVendorBalance(vid,((Long.parseLong(amount)*100) + apiVendorBalance.getBalance()));
+                apiFinanceMapper.updateApiVendorBalance(vid, (long) ((amount*100) + apiVendorBalance.getBalance()));
             }
             return true;
         }catch (Exception e){
             e.printStackTrace();
             throw e;
         }
+    }
+
+    @SystemServiceLog(description = "供应商扣费")
+    @Override
+    public boolean updateVendorBalanceFee(Integer vid, Double amount, String date, String remark) throws Exception {
+
+        return false;
     }
 
     @Override
@@ -198,6 +209,9 @@ public class VendorServiceImpl implements VendorService {
                     }
                     if (log.getCreateTime() != null){
                         log.setChargeTime(new SimpleDateFormat("yyyy-MM-dd").format(log.getCreateTime()));
+                    }
+                    if (log.getRemark() == null || "".equals(log.getRemark())){
+                        log.setRemark("无");
                     }
                 }
             }

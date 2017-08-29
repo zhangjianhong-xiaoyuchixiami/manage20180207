@@ -22,6 +22,8 @@
         <result column="amount" property="amount"/>
         <result column="remark" property="remark"/>
         <result column="createTime" property="createTime"/>
+        <result column="reasonId" property="reasonId"/>
+        <result column="reasonName" property="reasonName"/>
     </resultMap>
 
     <!--查询全部供应商-->
@@ -50,6 +52,9 @@
                 <foreach collection="preIdList" item="preId" index="index" open="(" close=")" separator=",">
                     #{preId}
                 </foreach>
+            </if>
+            <if test="nullPid != null and nullPid != ''">
+              OR a.partnerId IS NULL
             </if>
         </where>
     </select>
@@ -93,9 +98,10 @@
 
     <!--查询充值记录-->
     <select id="queryVendorBalanceLog" parameterType="map" resultMap="vendorChargeMap">
-        SELECT a.id,a.vendorId,a.amount,a.remark,a.createTime,b.name vendorName
+        SELECT a.id,a.vendorId,a.amount,a.reasonId,a.remark,a.createTime,b.name vendorName,c.name reasonName
         FROM qyfinance.ApiVendorBalanceLog a
         LEFT JOIN qyfinance.finance_ApiVendor b ON a.vendorId = b.id
+        LEFT JOIN qyfinance.ApiVendorBalanceReason c ON a.reasonId = c.id
         WHERE a.vendorId = #{vid}
     </select>
 
@@ -116,6 +122,30 @@
     <insert id="insertVendorPrepay" parameterType="org.qydata.entity.VendorExt">
        INSERT INTO qyfinance.ApiVendorExt(vendorId,isPrepay)
        VALUES(#{vendorId},#{isPrepay})
+    </insert>
+
+    <!--充值或扣费之前查询是否有余额记录，如果有直接修改，反之插入-->
+    <select id="queryVendorBalance" parameterType="int" resultType="org.qydata.entity.ApiVendorBalance">
+         SELECT vendorId,balance FROM qyfinance.ApiVendorBalance WHERE vendorId=#{param}
+    </select>
+
+    <!--插入余额记录-->
+    <insert id="insertVendorBalance" parameterType="org.qydata.entity.ApiVendorBalance" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiVendorBalance(vendorId,balance,createTime)
+        VALUES(#{vendorId},#{balance},sysdate())
+    </insert>
+
+    <!--修改余额记录-->
+    <update id="updateVendorBalance" parameterType="org.qydata.entity.ApiVendorBalance">
+        UPDATE qyfinance.ApiVendorBalance
+        SET balance = balance + #{balance}
+        WHERE vendorId=#{vendorId}
+    </update>
+
+    <!--插入余额日志-->
+    <insert id="insertVendorBalanceLog" parameterType="org.qydata.entity.ApiVendorBalanceLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiVendorBalanceLog(vendorId,amount,reasonId,remark,createTime)
+        VALUES(#{vendorId},#{amount},#{reasonId},#{remark},#{createTime})
     </insert>
 
 </mapper>
