@@ -193,8 +193,33 @@ public class VendorServiceImpl implements VendorService {
     @SystemServiceLog(description = "供应商扣费")
     @Override
     public boolean updateVendorBalanceFee(Integer vid, Double amount, String date, String remark) throws Exception {
-
-        return false;
+        try {
+            ApiVendorBalance balance = vendorMapper.queryVendorBalance(vid);
+            ApiVendorBalance balanceParam = new ApiVendorBalance();
+            balanceParam.setVendorId(vid);
+            balanceParam.setBalance(-(amount * 100.0));
+            if (balance == null) {
+                vendorMapper.insertVendorBalance(balanceParam);
+            } else {
+                vendorMapper.updateVendorBalance(balanceParam);
+            }
+            ApiVendorBalanceLog logParam = new ApiVendorBalanceLog();
+            logParam.setVendorId(vid);
+            logParam.setAmount(-(amount * 100.0));
+            logParam.setReasonId(2);
+            logParam.setRemark(remark);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            if (date == "" || date == null) {
+                logParam.setCreateTime(new Date());
+            } else {
+                logParam.setCreateTime(sdf.parse(date));
+            }
+            vendorMapper.insertVendorBalanceLog(logParam);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @Override

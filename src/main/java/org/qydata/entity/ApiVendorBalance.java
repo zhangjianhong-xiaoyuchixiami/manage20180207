@@ -10,9 +10,9 @@ public class ApiVendorBalance implements Serializable {
 
     private Integer id;
     private Integer vendorId;
-    private Long balance;
+    private Double balance;
     private Timestamp createTime;
-    private Timestamp timestamp;
+
 
     public Integer getId() {
         return id;
@@ -30,11 +30,11 @@ public class ApiVendorBalance implements Serializable {
         this.vendorId = vendorId;
     }
 
-    public Long getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
@@ -44,13 +44,5 @@ public class ApiVendorBalance implements Serializable {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
     }
 }

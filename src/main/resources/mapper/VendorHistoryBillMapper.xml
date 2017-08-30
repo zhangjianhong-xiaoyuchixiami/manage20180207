@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.VendorHistoryBillMapper">
+
+
+
+    <!--<resultMap id="customerHistoryBillChargeMap" type="org.qydata.dst.CustomerHistoryBill">-->
+        <!--<result column="customerId" property="customerId"/>-->
+        <!--<result column="chargeAmount" property="chargeAmount"/>-->
+        <!--<result column="chargeCurrDayAmount" property="chargeCurrDayAmount"/>-->
+    <!--</resultMap>-->
+
+
+
+    <!--<resultMap id="companyApiMap" type="org.qydata.entity.CompanyApi">-->
+        <!--<result column="id" property="id"/>-->
+        <!--<result column="apiTypeId" property="apiTypeId"/>-->
+        <!--<result column="subTypeId" property="subTypeId"/>-->
+        <!--<result column="enabled" property="enabled"/>-->
+        <!--<result column="apiTypeName" property="type_stid_name"/>-->
+
+    <!--</resultMap>-->
+
+
+    <resultMap id="vendorHistoryBillMap" type="org.qydata.dst.VendorHistoryBill">
+        <result column="vendorId" property="vendorId"/>
+        <result column="consumeAmount" property="consumeAmount"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="chargeAmount" property="chargeAmount"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!--查询供应商历史财务账单-->
+    <select id="queryVendorHistoryBill" parameterType="map" resultMap="vendorHistoryBillMap">
+        SELECT a.vendorId,a.consumeAmount,b.name vendorName,c.balance chargeAmount,d.partnerId,d.partnerName,d.status
+        FROM
+        (
+            SELECT a.vendorId,sum(a.consumeAmount) consumeAmount
+            FROM
+            (
+                SELECT a.vendorId,a.cost * sum(a.amount) consumeAmount
+                FROM qyfinance.VendorHistoryBill a
+                <where>
+                    <if test="begList != null and begList.length > 0">
+                        AND a.yearMonth IN
+                        <foreach collection="begList" item="beg" index="index" open="(" close=")" separator=",">
+                            #{beg}
+                        </foreach>
+                    </if>
+                </where>
+                GROUP BY a.vendorId,a.cost
+            ) a
+            GROUP BY a.vendorId
+        ) a
+        LEFT JOIN qyfinance.finance_ApiVendor b ON a.vendorId = b.id
+        LEFT JOIN qyfinance.ApiVendorBalance c ON a.vendorId = c.vendorId
+        LEFT JOIN qyfinance.bkvwApiVendor d ON a.vendorId = d.vendorId
+       <where>
+           <if test="statusList != null and statusList.length > 0">
+               AND d.status IN
+               <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
+                   #{status}
+               </foreach>
+           </if>
+           <if test="vidList != null and vidList.length > 0">
+               AND a.id IN
+               <foreach collection="vidList" item="vid" index="index" open="(" close=")" separator=",">
+                   #{vid}
+               </foreach>
+           </if>
+           <if test="pid != null and pid != ''">
+               AND d.partnerId = #{pid}
+           </if>
+           <if test="nullPid != null and nullPid != ''">
+               AND d.partnerId IS NULL
+           </if>
+       </where>
+    </select>
+
+    <resultMap id="vendorHistoryBillDetailMap" type="org.qydata.dst.VendorHistoryBillDetail">
+        <result column="id" property="id"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="yearMonth" property="yearMonth"/>
+        <result column="vendorId" property="vendorId"/>
+        <result column="apiId" property="apiId"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="cost" property="cost"/>
+        <result column="amount" property="amount"/>
+        <result column="apiTypeName" property="apiTypeName"/>
+        <collection property="mobileList" ofType="org.qydata.entity.MobileOperator">
+            <result column="stid" property="id"/>
+            <result column="stidName" property="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryVendorHistoryBillDetail" parameterType="map" resultMap="vendorHistoryBillDetailMap">
+        SELECT a.id,a.year,a.month,a.yearMonth,a.vendorId,a.apiId,b.apiTypeId,c.mobileOperatorId stid,
+        a.cost,a.amount,d.name apiTypeName,e.name stidName
+        FROM qyfinance.VendorHistoryBill a
+        LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
+        LEFT JOIN qyfinance.bkvwApiMobileOperator c ON a.apiId = c.apiId
+        LEFT JOIN qyfinance.bkvwApiType d ON b.apiTypeId = d.id
+        LEFT JOIN qyfinance.bkvwMobileOperator e ON c.mobileOperatorId = e.id
+        WHERE a.vendorId = #{vid}
+        <if test="cycList != null and cycList.length > 0">
+            AND a.yearMonth IN
+            <foreach collection="cycList" item="cyc" index="index" open="(" close=")" separator=",">
+                #{cyc}
+            </foreach>
+        </if>
+        <if test="tidList != null and tidList.length > 0">
+            AND a.apiId IN
+            <foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">
+                #{tid}
+            </foreach>
+        </if>
+    </select>
+
+    <!--&lt;!&ndash;查询充值总额（至昨天）&ndash;&gt;-->
+    <!--<select id="queryCustomerChargeTotle" parameterType="map" resultMap="customerHistoryBillChargeMap">-->
+        <!--SELECT customerId,sum(chargeAmount) chargeAmount-->
+        <!--FROM qyfinance.CustomerChargeDayCount-->
+        <!--GROUP BY customerId-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;查询当天充值总额&ndash;&gt;-->
+    <!--<select id="queryCustomerChargeCurrDay" parameterType="map" resultMap="customerHistoryBillChargeMap">-->
+        <!--SELECT customerId,sum(amount) chargeCurrDayAmount-->
+        <!--FROM qyfinance.finance_CustomerBalanceLog-->
+        <!--WHERE reasonId in(1,2,3)-->
+        <!--AND createTime >= #{currDayTime}-->
+        <!--GROUP BY customerId-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;根据公司companyId查询正式账号id&ndash;&gt;-->
+    <!--<select id="queryCustomerIdByCompanyId" parameterType="int" resultType="int">-->
+        <!--SELECT id-->
+        <!--FROM qyfinance.finance_Customer-->
+        <!--WHERE companyId = #{param} AND typeId = 1-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;查询所有公司&ndash;&gt;-->
+    <!--<select id="queryAllCompany" resultType="org.qydata.entity.Company">-->
+        <!--SELECT companyId id,companyName name,partnerId,partnerName-->
+        <!--FROM qyfinance.bkvw_api_CustomerCompanyPartner-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;查询合作公司&ndash;&gt;-->
+    <!--<select id="queryAllPartner" resultType="org.qydata.entity.Partner">-->
+        <!--SELECT id,name-->
+        <!--FROM qyfinance.bkvwPartner-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;查询消费的月份&ndash;&gt;-->
+    <!--<select id="queryAllConsumeTime" resultType="String">-->
+        <!--SELECT DISTINCT a.yearMonth-->
+        <!--FROM qyfinance.CustomerHistoryBill a-->
+        <!--ORDER BY year DESC,month DESC-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;查询客户历史消费账单明细&ndash;&gt;-->
+    <!--<select id="queryCustomerHistoryBillDetail" parameterType="map" resultMap="customerHistoryBillDetailMap">-->
+        <!--SELECT a.id,a.year,a.month,a.yearMonth,a.customerId,a.apiTypeId,a.stid,a.cost,a.amount,-->
+        <!--b.name apiTypeName,c.name stidName-->
+        <!--FROM qyfinance.CustomerHistoryBill a-->
+        <!--LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id-->
+        <!--LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id-->
+        <!--WHERE a.customerId = #{cid}-->
+        <!--<if test="conList != null and conList.size() > 0">-->
+            <!--AND a.yearMonth IN-->
+            <!--<foreach collection="conList" item="con" index="index" open="(" close=")" separator=",">-->
+                <!--#{con}-->
+            <!--</foreach>-->
+        <!--</if>-->
+        <!--<if test="tidList != null and tidList.size() > 0">-->
+            <!--AND a.apiTypeId IN-->
+            <!--<foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">-->
+                <!--#{tid}-->
+            <!--</foreach>-->
+        <!--</if>-->
+        <!--<if test="stidList != null and stidList.size() > 0">-->
+            <!--AND a.stid IN-->
+            <!--<foreach collection="stidList" item="stid" index="index" open="(" close=")" separator=",">-->
+                <!--#{stid}-->
+            <!--</foreach>-->
+        <!--</if>-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;修改单价&ndash;&gt;-->
+    <!--<update id="updateCustomerHistoryBillCost" parameterType="int">-->
+        <!--UPDATE qyfinance.CustomerHistoryBill-->
+        <!--SET cost = #{param2}-->
+        <!--WHERE id = #{param1}-->
+    <!--</update>-->
+
+    <!--&lt;!&ndash;修改扣费量&ndash;&gt;-->
+    <!--<update id="updateCustomerHistoryBillAmount" parameterType="int">-->
+        <!--UPDATE qyfinance.CustomerHistoryBill-->
+        <!--SET amount = #{param2}-->
+        <!--WHERE id = #{param1}-->
+    <!--</update>-->
+
+    <!--&lt;!&ndash;新增历史记录&ndash;&gt;-->
+    <!--<insert id="addCustomerHistoryBill" parameterType="org.qydata.dst.CustomerHistoryBillDetail">-->
+        <!--INSERT INTO qyfinance.CustomerHistoryBill(year,month,yearMonth,customerId,apiTypeId,stid,cost,amount,createTime)-->
+        <!--VALUE(#{year},#{month},#{yearMonth},#{customerId},#{apiTypeId},#{stid},#{cost},#{amount},now())-->
+    <!--</insert>-->
+
+    <!--&lt;!&ndash;删除历史记录&ndash;&gt;-->
+    <!--<delete id="deleteCustomerHistoryBill" parameterType="list">-->
+        <!--DELETE FROM qyfinance.CustomerHistoryBill-->
+        <!--WHERE id IN-->
+        <!--<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">-->
+            <!--#{id}-->
+        <!--</foreach>-->
+    <!--</delete>-->
+
+    <!--&lt;!&ndash;客户历史账单消费走势加载数据-加载月消费量&ndash;&gt;-->
+    <!--<select id="queryCustomerHistoryBillTrendDataConsume" parameterType="map" resultMap="customerHistoryBillDetailMap">-->
+        <!--SELECT a.yearMonth,sum(a.amount) amount-->
+        <!--FROM qyfinance.CustomerHistoryBill a-->
+        <!--WHERE a.customerId = #{cid}-->
+        <!--AND a.yearMonth IN-->
+        <!--<foreach collection="yearMonthList" item="yearMonth" index="index" open="(" close=")" separator=",">-->
+            <!--#{yearMonth}-->
+        <!--</foreach>-->
+        <!--GROUP BY a.yearMonth-->
+
+    <!--</select>-->
+
+    <!--&lt;!&ndash;客户历史账单消费走势加载数据-加载上月各产品扣费量&ndash;&gt;-->
+    <!--<select id="queryCustomerHistoryBillTrendDataAmount" parameterType="map" resultMap="customerHistoryBillDetailMap">-->
+        <!--SELECT a.customerId,a.yearMonth,a.apiTypeId,a.stid,a.amount,CONCAT_WS('&#45;&#45;',b.name,c.name) apiTypeName-->
+        <!--FROM qyfinance.CustomerHistoryBill a-->
+        <!--LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id-->
+        <!--LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id-->
+        <!--WHERE a.customerId = #{cid}-->
+        <!--AND a.yearMonth = #{yearMonth}-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;根据客户公司Id查询产品权限&ndash;&gt;-->
+    <!--<select id="queryCompanyApiByCompanyId" parameterType="int" resultMap="companyApiMap">-->
+        <!--SELECT a.id,a.apiTypeId,a.subTypeId,a.enabled,CONCAT_WS('&#45;&#45;',b.name,c.name) apiTypeName-->
+        <!--FROM qyfinance.finance_CompanyApi a-->
+        <!--LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id-->
+        <!--LEFT JOIN qyfinance.bkvwMobileOperator c ON a.subTypeId = c.id-->
+        <!--WHERE a.companyId = #{param}-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;根据客户账号Id查询公司Id&ndash;&gt;-->
+    <!--<select id="queryCompanyIdByCustomerId" parameterType="map" resultType="int">-->
+        <!--SELECT companyId-->
+        <!--FROM qyfinance.finance_Customer a-->
+        <!--WHERE a.id = #{cid}-->
+    <!--</select>-->
+
+</mapper>
+
+

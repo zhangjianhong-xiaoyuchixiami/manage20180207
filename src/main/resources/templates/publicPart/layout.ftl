@@ -242,6 +242,14 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <#--<@shiro.hasPermission name="finance:vendor-history-bill">-->
+                                <li id="vendor-history-bill">
+                                    <a href="/finance/vendor-history-bill">
+                                        供应商历史财务账单
+                                    </a>
+                                </li>
+                            <#--</@shiro.hasPermission>-->
+
                             <#--<@shiro.hasPermission name="excel:extra-account-vendor">-->
                                 <#--<li id="extra-account-vendor">-->
                                     <#--<a href="/excel/extra-account-vendor">-->

@@ -97,7 +97,7 @@ public class VendorController {
     public String vendorFee(Integer vid,Double amount,String date,String remark){
         boolean flag = false;
         try {
-            flag = vendorService.updateVendorBalance(vid, -amount, date, remark);
+            flag = vendorService.updateVendorBalanceFee(vid, amount, date, remark);
         } catch (Exception e) {
             e.printStackTrace();
         }

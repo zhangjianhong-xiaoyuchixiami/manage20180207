@@ -306,7 +306,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
             apiFinanceMapper.insertApiVendorBalance(apiVendorBalanceOne);
             apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((Long.parseLong(amount)*100)));
         }else {
-            apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((Long.parseLong(amount)*100) + apiVendorBalance.getBalance()));
+           // apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((Long.parseLong(amount)*100) + apiVendorBalance.getBalance()));
         }
         return apiFinanceMapper.insertApiVendorBalanceLog(apiVendorBalanceLog);
 
