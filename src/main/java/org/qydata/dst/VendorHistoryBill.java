@@ -15,6 +15,9 @@ public class VendorHistoryBill implements Serializable {
     private Double chargeAmount;
     private Integer status;
     private Double balance;
+    private Double currMonthRealTimeConsume;
+    private Double currDayRealTimeConsume;
+    private Double staticConsumeAmount;
 
     public Integer getVendorId() {
         return vendorId;
@@ -78,5 +81,29 @@ public class VendorHistoryBill implements Serializable {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public Double getCurrMonthRealTimeConsume() {
+        return currMonthRealTimeConsume;
+    }
+
+    public void setCurrMonthRealTimeConsume(Double currMonthRealTimeConsume) {
+        this.currMonthRealTimeConsume = currMonthRealTimeConsume;
+    }
+
+    public Double getCurrDayRealTimeConsume() {
+        return currDayRealTimeConsume;
+    }
+
+    public void setCurrDayRealTimeConsume(Double currDayRealTimeConsume) {
+        this.currDayRealTimeConsume = currDayRealTimeConsume;
+    }
+
+    public Double getStaticConsumeAmount() {
+        return staticConsumeAmount;
+    }
+
+    public void setStaticConsumeAmount(Double staticConsumeAmount) {
+        this.staticConsumeAmount = staticConsumeAmount;
     }
 }

@@ -176,6 +176,7 @@ public class CompanyController {
         list.add(-1);
         list.add(-2);
         list.add(-3);
+        list.add(-4);
         List<CustomerBalanceModifyReason> customerBalanceModifyReasonList = companyService.findBalanceReason(list);
         JSONArray jsonArray = JSONArray.fromObject(customerBalanceModifyReasonList);
         return jsonArray.toString();

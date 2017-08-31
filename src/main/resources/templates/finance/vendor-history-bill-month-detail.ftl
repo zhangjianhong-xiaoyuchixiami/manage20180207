@@ -55,13 +55,27 @@
                                 <label>请选择产品</label>
 
                                 <div class="controls">
-                                    <select class="medium m-wrap" multiple id="tid" name="tid">
+                                    <select class="medium m-wrap" multiple id="aid" name="aid">
                                         <option value=""></option>
-                                        <#if companyApiList??>
-                                            <#list companyApiList as companyApi>
-                                                <option <#if tid??><#list tid as tid><#if tid?? && tid == companyApi.type_stid> selected="selected"</#if></#list></#if> value="${companyApi.type_stid}">${companyApi.type_stid_name}</option>
+                                        <#if apiList??>
+                                            <#list apiList as api>
+                                                <option <#if aid??><#list aid as aid><#if aid?? && aid == api.apiId> selected="selected"</#if></#list></#if> value="${api.apiId}">${api.apiTypeName}</option>
                                             </#list>
                                         </#if>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="pull-left head-search-bottom">
+
+                                <label>请选择状态</label>
+
+                                <div class="controls">
+                                    <select class="medium m-wrap" id="isLock" name="isLock">
+                                        <option value=""></option>
+                                        <option <#if isLock?? && isLock == 1> selected </#if> value="1">已锁定</option>
+                                        <option <#if isLock?? && isLock == 0> selected </#if> value="0">未锁定</option>
                                     </select>
                                 </div>
 
@@ -106,8 +120,11 @@
                                     <button class="btn-icon red" id="del">
                                         <i class=" icon-minus-sign"></i>删除
                                     </button>
-                                    <button class="btn-icon red" id="del">
-                                        <i class=" icon-minus-sign"></i>锁定
+                                    <button class="btn-icon black" id="lock">
+                                        <i class=" icon-lock"></i>锁定
+                                    </button>
+                                    <button class="btn-icon red" id="unlock">
+                                        <i class="  icon-unlock"></i>解除锁定
                                     </button>
                                 </div>
 
@@ -128,18 +145,20 @@
                                     <th>单价</th>
                                     <th>扣用量</th>
                                     <th>金额</th>
+                                    <th>状态</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#if billDetailList??>
                                         <#list billDetailList as billDetail>
-                                        <tr>
+                                        <tr <#if billDetail.isLock == 1> class="success" </#if>>
                                             <td data-title="多选框"><input class="checkboxes" type="checkbox" id="checkBox" name="checkBox" value="${billDetail.id}"/></td>
                                             <td data-title="周期">${billDetail.yearMonth!'无'}</td>
                                             <td data-title="产品名称">${billDetail.apiTypeName!'无'}</td>
                                             <td data-title="单价"><a href="javaScript:;" onclick="updateCost(${billDetail.id},${billDetail.cost})" data-toggle="tooltip" data-placement="bottom" title="点击修改单价">${billDetail.cost!'0'}</a></td>
                                             <td data-title="扣用量"><a href="javaScript:;" onclick="updateAmount(${billDetail.id},${billDetail.amount?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改扣费量">${billDetail.amount!'0'}</a></td>
                                             <td data-title="金额">${billDetail.consumeAmount!'0'}</td>
+                                            <td data-title="状态">${billDetail.isLockName!'无'}</td>
                                         </tr>
                                         </#list>
                                     </#if>
@@ -162,11 +181,11 @@
                                 <div id="" class="control-group">
                                     <label class="control-label">请选择产品<span class="required">*</span></label>
                                     <div class="controls">
-                                        <select id="add_tid" name="add_tid" class="large m-wrap">
+                                        <select id="add_aid" name="add_aid" class="large m-wrap">
                                             <option value=""></option>
-                                            <#if companyApiList??>
-                                                <#list companyApiList as companyApi>
-                                                    <option value="${companyApi.type_stid}">${companyApi.type_stid_name}</option>
+                                            <#if apiList??>
+                                                <#list apiList as api>
+                                                    <option value="${api.apiId}">${api.apiTypeName}</option>
                                                 </#list>
                                             </#if>
                                         </select>
@@ -229,15 +248,15 @@
 
     <script src="/js/multi/get-url-param.js?v=${ver}"></script>
 
-    <script src="/js/myjs/customer-history_bill_month_detail.js?v=${ver}"></script>
+    <script src="/js/myjs/vendor-history_bill_month_detail.js?v=${ver}"></script>
 
     <script>
 
         jQuery(document).ready(function () {
-            CustomerHistoryBillMonthDetail.init();
+            VendorHistoryBillMonthDetail.init();
         });
 
-        $('#add_tid').select2({
+        $('#add_aid').select2({
             language: "zh-CN",
             placeholder: "请选择",
             allowClear: true
@@ -250,113 +269,59 @@
         });
 
         function updateCost(id,cost) {
+
+            $.ajax({
+                type: "post",
+                url: "/finance/vendor-history-bill/detail/check-lock",
+                data: {"id": id},
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.lock != null && data.lock == "lock") {
+                            swal({
+                                title: "操作提示",
+                                text: "该数据已锁定，无法修改！",
+                                type: "info",
+                                confirmButtonText: "确定"
+                            })
+
+                        }
+                    }
+                }
+            });
+
             swal({
                 title: '修改产品单价',
                 html:
-                '<input id="input1" placeholder="单价" class="swal2-input">' +
-                '<textarea id="input2" placeholder="备注" class="swal2-textarea" rows="3"></textarea>',
+                '<input id="input1_cost" placeholder="单价" value="'+ cost +'" class="swal2-input">' +
+                '<textarea id="input2_cost" placeholder="备注" class="swal2-textarea" rows="3"></textarea>',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 cancelButtonText: "取消",
                 confirmButtonText: "确定",
                 allowOutsideClick: true,
-//                inputValue: cost,
-//                inputValidator: function(value) {
-//                    return new Promise(function(resolve, reject) {
-//                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
-//                        if(!re.test(value)){
-//                            reject('格式输入不正确！');
-//                        } else {
-//                            resolve();
-//                        }
-//                    });
-//                }
                 preConfirm: function () {
-                    return new Promise(function (resolve) {
-                        resolve([
-                            $('#input1').val(),
-                            $('#input2').val()
-                        ])
-                    })
-                },
-                onOpen: function () {
-                    $('#input1').focus()
-                }
-            }).then(function (value) {
-                console.log(JSON.stringify(value))
-
-//                $.ajax({
-//                    type: "post",
-//                    url: "/finance/customer-history-bill/detail/update-cost",
-//                    data: {"id": id, "cost": value},
-//                    dataType: "json",
-//                    beforeSend: function () {
-//                        openProgress();
-//                    },
-//                    success: function (data) {
-//                        closeProgress();
-//                        if (data != null) {
-//                            if (data.success != null) {
-//                                swal({
-//                                    type: 'success',
-//                                    title: '单价修改完成',
-//                                    confirmButtonText: "确定",
-//                                    html: '已将单价修改为：' + value
-//                                }).then(function () {
-//                                    window.location.href = window.location.href ;
-//                                    return;
-//                                });
-//
-//                            }
-//                            if (data.fail != null) {
-//
-//                                swal({
-//                                    type: 'error',
-//                                    title: '失败',
-//                                    text: "哎呦，修改失败了",
-//                                    confirmButtonText: "确定"
-//
-//                                })
-//                            }
-//                        }
-//                    }
-//                });
-
-            },function(dismiss) {
-                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
-                if (dismiss === 'cancel') {}
-            });
-
-        }
-        
-        function updateAmount(id,amount) {
-            swal({
-                title: '修改产品扣费量',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: "取消",
-                confirmButtonText: "确定",
-                allowOutsideClick: true,
-                inputValue: amount,
-                inputValidator: function(value) {
-                    return new Promise(function(resolve, reject) {
+                    return new Promise(function (resolve,reject) {
                         var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
-                        if(!re.test(value)){
+                        if(!re.test($('#input1_cost').val())){
                             reject('格式输入不正确！');
                         } else {
-                            resolve();
+                            resolve([
+                                $('#input1_cost').val(),
+                                $('#input2_cost').val()
+                            ])
                         }
-                    });
+                    })
                 }
             }).then(function (value) {
+                console.log(JSON.stringify(value));
+                console.log(value);
 
                 $.ajax({
                     type: "post",
-                    url: "/finance/customer-history-bill/detail/update-amount",
-                    data: {"id": id, "amount": value},
+                    url: "/finance/vendor-history-bill/detail/update-cost",
+                    data: {"id": id,"oldCost": cost,"data": JSON.stringify(value)},
                     dataType: "json",
                     beforeSend: function () {
                         openProgress();
@@ -367,9 +332,9 @@
                             if (data.success != null) {
                                 swal({
                                     type: 'success',
-                                    title: '扣费量修改完成',
-                                    confirmButtonText: "确定",
-                                    html: '已将扣费量修改为：' + value
+                                    title: '成功',
+                                    text: "单价修改完成",
+                                    confirmButtonText: "确定"
                                 }).then(function () {
                                     window.location.href = window.location.href ;
                                     return;
@@ -391,9 +356,101 @@
                 });
 
             },function(dismiss) {
-                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
                 if (dismiss === 'cancel') {}
             });
+        }
+        
+        function updateAmount(id,amount) {
+
+            $.ajax({
+                type: "post",
+                url: "/finance/vendor-history-bill/detail/check-lock",
+                data: {"id": id},
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.lock != null && data.lock == "lock") {
+                            swal({
+                                title: "操作提示",
+                                text: "该数据已锁定，无法修改！",
+                                type: "info",
+                                confirmButtonText: "确定"
+                            })
+
+                        }
+                    }
+                }
+            });
+
+            swal({
+                title: '修改产品扣费量',
+                html:
+                '<input id="input1_amount" placeholder="扣费量" value="'+ amount +'" class="swal2-input">' +
+                '<textarea id="input2_amount" placeholder="备注" class="swal2-textarea" rows="3"></textarea>',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",
+                confirmButtonText: "确定",
+                allowOutsideClick: true,
+                preConfirm: function () {
+                    return new Promise(function (resolve,reject) {
+                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        if(!re.test($('#input1_amount').val())){
+                            reject('格式输入不正确！');
+                        } else {
+                            resolve([
+                                $('#input1_amount').val(),
+                                $('#input2_amount').val()
+                            ])
+                        }
+                    })
+                }
+            }).then(function (value) {
+                console.log(JSON.stringify(value));
+                console.log(value);
+
+                $.ajax({
+                    type: "post",
+                    url: "/finance/vendor-history-bill/detail/update-amount",
+                    data: {"id": id,"oldAmount": amount,"data": JSON.stringify(value)},
+                    dataType: "json",
+                    beforeSend: function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if (data != null) {
+                            if (data.success != null) {
+                                swal({
+                                    type: 'success',
+                                    title: '成功',
+                                    text: "扣费量修改完成",
+                                    confirmButtonText: "确定"
+                                }).then(function () {
+                                    window.location.href = window.location.href ;
+                                    return;
+                                });
+
+                            }
+                            if (data.fail != null) {
+
+                                swal({
+                                    type: 'error',
+                                    title: '失败',
+                                    text: "哎呦，修改失败了",
+                                    confirmButtonText: "确定"
+
+                                })
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                if (dismiss === 'cancel') {}
+            });
+
         }
 
     </script>
