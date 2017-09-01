@@ -37,7 +37,7 @@
 
                                 <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">总额&yen;：${consumeTot!'0.0'}元</label>
+                                    <label class="control-label">总额&yen;：${chargeTot!'0.0'}元</label>
 
                                 </div>
 

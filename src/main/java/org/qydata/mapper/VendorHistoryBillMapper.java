@@ -125,4 +125,12 @@ public interface VendorHistoryBillMapper {
      */
     public Integer queryVendorHistoryBillLockById(Integer id);
 
+    /**
+     * 查看修改日志
+     * @param map
+     * @return
+     */
+    public List<VendorHistoryBillUpdateLog> queryVendorHistoryBillDetailUpdateLog(Map<String,Object> map);
+
+
 }

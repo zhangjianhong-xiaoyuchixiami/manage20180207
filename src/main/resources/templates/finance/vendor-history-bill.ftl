@@ -145,7 +145,9 @@
                                 </div>
 
                                 <div class="pull-right tip-remark">
-                                    <span>注：本页面与金额相关数字单位都为：元</span>
+                                    <span class="pull-right">注：1、本页面与金额相关数字单位都为：元</span>
+                                    </br>
+                                    <span class="pull-right">2、供应商余额 = 实际充值总额 -（截止上月末实际对账消费金额 + 当月实时消费金额）</span>
                                 </div>
                             </div>
 

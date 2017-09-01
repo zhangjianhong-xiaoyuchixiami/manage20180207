@@ -242,7 +242,18 @@
     <select id="queryVendorHistoryBillLockById" parameterType="int" resultType="Integer">
         SELECT a.isLock
         FROM qyfinance.VendorHistoryBill a
-        WHERE a.id #{param}
+        WHERE a.id = #{param}
+    </select>
+
+    <!--修改日志-->
+    <select id="queryVendorHistoryBillDetailUpdateLog" parameterType="map" resultType="org.qydata.entity.VendorHistoryBillUpdateLog">
+        SELECT a.beforData,a.afterData,a.content,a.type,b.name typeName,a.createTime
+        FROM qyfinance.VendorHistroyBillUpdateLog a
+        LEFT JOIN qyfinance.VendorHistoryBillUpdateLogType b ON a.type = b.id
+        WHERE a.vendorHistoryBillId = #{id}
+        <if test="typeId != null">
+            AND a.type = #{typeId}
+        </if>
     </select>
 
 </mapper>

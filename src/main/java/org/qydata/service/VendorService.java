@@ -1,7 +1,6 @@
 package org.qydata.service;
 
 import org.qydata.config.annotation.SystemServiceLog;
-import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.entity.Partner;
 import org.qydata.entity.VendorExt;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +63,6 @@ public interface VendorService {
      * @param map
      * @return
      */
-    public List<ApiVendorBalanceLog> queryVendorBalanceLog(Map<String,Object> map);
+    public Map<String,Object> queryVendorBalanceLog(Map<String,Object> map);
 
 }

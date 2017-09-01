@@ -29,15 +29,15 @@ var ApiVendorRecord = function () {
                     '<th>供应类型</th>' +
                     '<th>当前价格</th>' +
                     '<th>总消费额（单位：元）</th>' +
-                    '<th>调用次数</th>' +
+                    '<th>调用成功次数</th>' +
                     '<th>扣费次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
+                    '<td>'+aData[9]+'</td>' +
                     '<td>'+aData[10]+'</td>' +
                     '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[12]+'</td>' +
                     '<td>'+aData[13]+'</td>' +
-                    '<td>'+aData[14]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -85,7 +85,6 @@ var ApiVendorRecord = function () {
                     { "bVisible": false },
                     null,
                     null,
-                    { "bSortable": false },
                     { "bVisible": false },
                     { "bVisible": false },
                     { "bVisible": false },

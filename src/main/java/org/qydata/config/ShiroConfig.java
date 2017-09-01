@@ -425,9 +425,22 @@ public class ShiroConfig {
 		//VendorController
 		chains.put("/vendor/all-vendor", "authc,perms");
 		chains.put("/vendor/all-vendor/charge", "authc,perms");
+		chains.put("/vendor/all-vendor/fee", "authc,perms");
 		chains.put("/vendor/all-vendor/charge-record", "authc,perms");
 		chains.put("/vendor/all-vendor/update-prepay", "authc,perms");
 
+		//VendorHistoryBillController
+		chains.put("/finance/vendor-history-bill", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/update-cost", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/update-amount", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/lock", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/unLock", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/delete", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/add", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/check-lock", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/batch-check-lock", "authc,perms");
+		chains.put("/finance/vendor-history-bill/detail/log", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

@@ -97,13 +97,13 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
                 for (VendorHistoryBill currMonthBill : currMonthBillList) {
                     if (bill.getVendorId() == currMonthBill.getVendorId() || bill.getVendorId().equals(currMonthBill.getVendorId())){
                         if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() != null){
-                            bill.setBalance(bill.getBalance() + (currMonthBill.getCurrMonthRealTimeConsume()/100.0));
+                            bill.setBalance(bill.getBalance() - (currMonthBill.getCurrMonthRealTimeConsume()/100.0));
                         }
                         if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() == null){
                             bill.setBalance(bill.getBalance());
                         }
                         if (bill.getBalance() == null && currMonthBill.getCurrMonthRealTimeConsume() != null){
-                            bill.setBalance(currMonthBill.getCurrMonthRealTimeConsume()/100.0);
+                            bill.setBalance(-(currMonthBill.getCurrMonthRealTimeConsume()/100.0));
                         }
                     }
                 }
@@ -112,13 +112,13 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
                 for (VendorHistoryBill currDayBill : currDayBillList) {
                     if (bill.getVendorId() == currDayBill.getVendorId() || bill.getVendorId().equals(currDayBill.getVendorId())){
                         if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() != null){
-                            bill.setBalance(bill.getBalance() + (currDayBill.getCurrDayRealTimeConsume()/100.0));
+                            bill.setBalance(bill.getBalance() - (currDayBill.getCurrDayRealTimeConsume()/100.0));
                         }
                         if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() == null){
                             bill.setBalance(bill.getBalance());
                         }
                         if (bill.getBalance() == null && currDayBill.getCurrDayRealTimeConsume() != null){
-                            bill.setBalance(currDayBill.getCurrDayRealTimeConsume()/100.0);
+                            bill.setBalance(-(currDayBill.getCurrDayRealTimeConsume()/100.0));
                         }
                     }
                 }
@@ -285,5 +285,19 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     @Override
     public Integer queryVendorHistoryBillLockById(Integer id) {
         return billMapper.queryVendorHistoryBillLockById(id);
+    }
+
+    @Override
+    public List<VendorHistoryBillUpdateLog> queryVendorHistoryBillDetailUpdateLog(Map<String,Object> map) {
+        List<VendorHistoryBillUpdateLog> logList = billMapper.queryVendorHistoryBillDetailUpdateLog(map);
+        if (logList == null){
+            return null;
+        }
+        for (VendorHistoryBillUpdateLog log : logList) {
+            if (log.getContent() == null || log.getContent() == "" || "".equals(log.getContent())){
+                log.setContent("无");
+            }
+        }
+        return logList;
     }
 }

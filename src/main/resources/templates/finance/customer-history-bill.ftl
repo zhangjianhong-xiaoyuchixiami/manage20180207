@@ -195,7 +195,7 @@
 
                     <div class="portlet box grey">
 
-                        <div class="portlet-body">
+                        <div class="portlet-body no-more-tables">
 
                             <div class="clearfix margin-bottom-5">
                                 <div class="pull-left label-margin-bottom label-margin-right">
@@ -232,14 +232,14 @@
                                 <#if billList??>
                                     <#list billList as bill>
                                     <tr>
-                                        <td>${bill.companyName!'无'}</td>
-                                        <td>${bill.partnerName!'无'}</td>
-                                        <td>${bill.floor!'0'}</td>
-                                        <td>${bill.userFloor!'0'}</td>
-                                        <td>${bill.chargeAmount!'0'}</td>
-                                        <td><a href="/finance/customer-history-bill/detail?cid=${bill.customerId}&name=${bill.companyName!'无'}" data-toggle="tooltip" data-placement="bottom" title="点击查看消费记录">${bill.consumeAmount!'0'}</a></td>
-                                        <td>${bill.balance!'0'}</td>
-                                        <td><a href="/finance/customer-history-bill/trend?cid=${bill.customerId}&name=${bill.companyName!'无'}">消费走势</a></td>
+                                        <td data-title="公司名称">${bill.companyName!'无'}</td>
+                                        <td data-title="合作公司">${bill.partnerName!'无'}</td>
+                                        <td data-title="信用额度">${bill.floor!'0'}</td>
+                                        <td data-title="可用额度">${bill.userFloor!'0'}</td>
+                                        <td data-title="充值总额">${bill.chargeAmount!'0'}</td>
+                                        <td data-title="消费总额(不包含当月)"><a href="/finance/customer-history-bill/detail?cid=${bill.customerId}&name=${bill.companyName!'无'}" data-toggle="tooltip" data-placement="bottom" title="点击查看消费记录">${bill.consumeAmount!'0'}</a></td>
+                                        <td data-title="余额">${bill.balance!'0'}</td>
+                                        <td data-title="操作"><a href="/finance/customer-history-bill/trend?cid=${bill.customerId}&name=${bill.companyName!'无'}">消费走势</a></td>
                                     </tr>
                                     </#list>
                                 </#if>

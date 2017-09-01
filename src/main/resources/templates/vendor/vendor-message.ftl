@@ -135,9 +135,9 @@
                                             <td data-title="消费金额">${vendor.totleCost!'0'}</td>
                                             <td data-title="余额">${vendor.remaining!'0'}</td>
                                             <td data-title="操作">
-                                                <a href="#form_modal" data-toggle="modal" onclick="charge(${vendor.vendorId})">充值</a>
+                                                <a href="#form_modal" data-toggle="modal" onclick="charge(${vendor.vendorId})">正常充值</a>
                                                 |
-                                                <a href="#form_modal_1" data-toggle="modal" onclick="fee(${vendor.vendorId})">扣费</a>
+                                                <a href="#form_modal_1" data-toggle="modal" onclick="fee(${vendor.vendorId})">错充削减</a>
                                             </td>
                                         </tr>
                                         </#list>
@@ -183,7 +183,7 @@
 
                                 <div class="control-group">
 
-                                    <label class="control-label">日期</label>
+                                    <label class="control-label">日&nbsp;期</label>
 
                                     <div class="controls">
 

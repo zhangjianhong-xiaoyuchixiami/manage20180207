@@ -3,6 +3,7 @@ package org.qydata.service;
 import org.qydata.dst.ApiWeb;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.Partner;
+import org.qydata.entity.VendorHistoryBillUpdateLog;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -99,5 +100,12 @@ public interface VendorHistoryBillService {
      * @return
      */
     public Integer queryVendorHistoryBillLockById(Integer id);
+
+    /**
+     * 查看修改日志
+     * @param map
+     * @return
+     */
+    public List<VendorHistoryBillUpdateLog> queryVendorHistoryBillDetailUpdateLog(Map<String,Object> map);
 
 }

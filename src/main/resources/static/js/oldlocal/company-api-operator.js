@@ -524,8 +524,8 @@ function updateAppointApi(companyId,typeId,stid,price,aid) {
                     cancelButtonColor: '#d33',
                     cancelButtonText: "取消",
                     confirmButtonText: "确定",
-                    allowOutsideClick: true,
-                    inputValidator: function(value) {
+                    allowOutsideClick: true
+                   /* inputValidator: function(value) {
                         return new Promise(function(resolve, reject) {
                             if(value){
                                 resolve();
@@ -533,7 +533,7 @@ function updateAppointApi(companyId,typeId,stid,price,aid) {
                                 reject('请选择指定产品！');
                             }
                         });
-                    }
+                    }*/
                 }).then(function (value) {
 
                     $.ajax({

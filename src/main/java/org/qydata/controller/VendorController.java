@@ -1,7 +1,6 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
-import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.entity.Partner;
 import org.qydata.entity.VendorExt;
 import org.qydata.service.VendorService;
@@ -119,8 +118,17 @@ public class VendorController {
     public String vendorChargeRecord(Integer vid,String name,Model model){
         Map<String,Object> param = new HashMap<String,Object>();
         param.put("vid",vid);
-        List<ApiVendorBalanceLog>  logList = vendorService.queryVendorBalanceLog(param);
-        model.addAttribute("logList",logList);
+        Map<String,Object> resu = vendorService.queryVendorBalanceLog(param);
+        if (resu != null){
+            for (Map.Entry<String,Object> me : resu.entrySet()) {
+                if (me.getKey().equals("logList")) {
+                    model.addAttribute("logList",me.getValue());
+                }
+                if (me.getKey().equals("chargeTot")) {
+                    model.addAttribute("chargeTot",me.getValue());
+                }
+            }
+        }
         model.addAttribute("name",name);
         return "/vendor/vendor-charge-record";
     }

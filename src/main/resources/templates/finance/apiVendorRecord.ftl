@@ -168,7 +168,7 @@
 
                                         <label><input type="checkbox" checked data-column="7">本月消费</label>
 
-                                        <label><input type="checkbox" checked data-column="7">当天消费</label>
+                                        <label><input type="checkbox" checked data-column="8">当天消费</label>
 
                                     </div>
 
@@ -266,11 +266,11 @@
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
-                                        <th style="text-align: center; width: 10%;">操作</th>
+                                      <#--  <th style="text-align: center; width: 10%;">操作</th>-->
                                         <th class="table-td-none">类型</th>
                                         <th class="table-td-none">当前价格</th>
                                         <th class="table-td-none">消费总额</th>
-                                        <th class="table-td-none">调用次数</th>
+                                        <th class="table-td-none">调用成功次数</th>
                                         <th class="table-td-none">扣费次数</th>
                                     </tr>
                                     </thead>
@@ -300,9 +300,9 @@
                                                 <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="本月消费"><#if apiFinance.currMonthCost??>${(apiFinance.currMonthCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="当天消费"><#if apiFinance.currDayCost??>${(apiFinance.currDayCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="操作" style="text-align: center;width: 10%;">
+                                               <#-- <td data-title="操作" style="text-align: center;width: 10%;">
                                                     <a href="#form_modal4" onclick="charge(${apiFinance.vendorId})" data-toggle="modal">充值</a>
-                                                </td>
+                                                </td>-->
                                                 <td data-title="类型" class="table-td-none">
                                                     <#if apiFinance.apiTypeConsumeList??>
                                                         <#list apiFinance.apiTypeConsumeList as apiType>
@@ -347,7 +347,7 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="调用次数" class="table-td-none">
+                                                <td data-title="调用成功次数" class="table-td-none">
                                                     <#if apiFinance.apiTypeConsumeList??>
                                                         <#list apiFinance.apiTypeConsumeList as apiType>
                                                             <span>

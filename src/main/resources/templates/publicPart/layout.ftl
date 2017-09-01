@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.3'/>
+    <#assign ver='1.0.0.4'/>
 
 <!DOCTYPE html>
 
@@ -157,11 +157,11 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <li id="customerBalanceMonitorList">
-                                <a href="/company/balance-monitor">
-                                    客户余额报警
-                                </a>
-                            </li>
+                            <#--<li id="customerBalanceMonitorList">-->
+                                <#--<a href="/company/balance-monitor">-->
+                                    <#--客户余额报警-->
+                                <#--</a>-->
+                            <#--</li>-->
 
                         </ul>
                     </li>
@@ -242,13 +242,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="finance:vendor-history-bill">-->
+                            <@shiro.hasPermission name="finance:vendor-history-bill">
                                 <li id="vendor-history-bill">
                                     <a href="/finance/vendor-history-bill">
                                         供应商历史财务账单
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
                             <#--<@shiro.hasPermission name="excel:extra-account-vendor">-->
                                 <#--<li id="extra-account-vendor">-->

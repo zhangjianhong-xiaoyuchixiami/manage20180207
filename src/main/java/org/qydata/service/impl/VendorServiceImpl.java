@@ -162,27 +162,27 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public boolean updateVendorBalance(Integer vid, Double amount, String date, String remark) throws Exception {
         try{
+            ApiVendorBalance balance = vendorMapper.queryVendorBalance(vid);
+            ApiVendorBalance balanceParam = new ApiVendorBalance();
+            balanceParam.setVendorId(vid);
+            balanceParam.setBalance((amount * 100.0));
+            if (balance == null) {
+                vendorMapper.insertVendorBalance(balanceParam);
+            } else {
+                vendorMapper.updateVendorBalance(balanceParam);
+            }
+            ApiVendorBalanceLog logParam = new ApiVendorBalanceLog();
+            logParam.setVendorId(vid);
+            logParam.setAmount((amount * 100.0));
+            logParam.setReasonId(1);
+            logParam.setRemark(remark);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            ApiVendorBalanceLog log = new ApiVendorBalanceLog();
-            log.setVendorId(vid);
-            log.setAmount(amount*100);
-            log.setRemark(remark);
-            if (date == "" || date == null){
-                log.setCreateTime(new Date());
-            }else {
-                log.setCreateTime(sdf.parse(date));
+            if (date == "" || date == null) {
+                logParam.setCreateTime(new Date());
+            } else {
+                logParam.setCreateTime(sdf.parse(date));
             }
-            //插入充值日志
-            apiFinanceMapper.insertApiVendorBalanceLog(log);
-            ApiVendorBalance apiVendorBalance = apiFinanceMapper.queryApiVendorBalance(vid);
-            if (apiVendorBalance == null){
-                ApiVendorBalance param = new ApiVendorBalance();
-                param.setVendorId(vid);
-                apiFinanceMapper.insertApiVendorBalance(param);
-                apiFinanceMapper.updateApiVendorBalance(vid, (long) (amount*100));
-            }else {
-                apiFinanceMapper.updateApiVendorBalance(vid, (long) ((amount*100) + apiVendorBalance.getBalance()));
-            }
+            vendorMapper.insertVendorBalanceLog(logParam);
             return true;
         }catch (Exception e){
             e.printStackTrace();
@@ -223,14 +223,16 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public List<ApiVendorBalanceLog> queryVendorBalanceLog(Map<String, Object> map) {
+    public Map<String,Object> queryVendorBalanceLog(Map<String, Object> map) {
         List<ApiVendorBalanceLog> logList = vendorMapper.queryVendorBalanceLog(map);
+        Double chargeTot = 0.0;
         if (logList != null && logList.size() > 0){
             for (int i = 0; i < logList.size() ; i++) {
                 ApiVendorBalanceLog log = logList.get(i);
                 if (log != null){
                     if (log.getAmount() != null){
                         log.setAmount(log.getAmount()/100.0);
+                        chargeTot += log.getAmount();
                     }
                     if (log.getCreateTime() != null){
                         log.setChargeTime(new SimpleDateFormat("yyyy-MM-dd").format(log.getCreateTime()));
@@ -241,7 +243,10 @@ public class VendorServiceImpl implements VendorService {
                 }
             }
         }
-        return logList;
+        Map<String,Object> resu = new HashMap<>();
+        resu.put("logList",logList);
+        resu.put("chargeTot",chargeTot);
+        return resu;
     }
 
 

@@ -458,7 +458,9 @@ public class CompanyServiceImpl implements CompanyService {
             map.put("stid",stid);
         }
         map.put("price",pic);
-        map.put("aid",aid);
+        if (aid != null){
+            map.put("aid",aid);
+        }
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
             return code;

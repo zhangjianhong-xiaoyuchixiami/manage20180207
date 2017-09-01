@@ -2,6 +2,7 @@ package org.qydata.controller;
 
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
+import org.qydata.entity.VendorHistoryBillUpdateLog;
 import org.qydata.service.VendorHistoryBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -247,7 +248,7 @@ public class VendorHistoryBillController {
     public String queryVendorHistoryBillLock(Integer id){
        Integer lock = billService.queryVendorHistoryBillLockById(id);
         Map<String,Object> resu = new HashMap<>();
-        if (lock == 1 && "1".equals(lock)){
+        if (lock == 1 || "1".equals(lock)){
             resu.put("lock","lock");
             return new Gson().toJson(resu);
         }
@@ -279,6 +280,36 @@ public class VendorHistoryBillController {
         }
         resu.put("lock","unlock");
         return new Gson().toJson(resu);
+    }
+
+
+    /**
+     * 修改日志
+     * @param id
+     * @param vName
+     * @param tName
+     * @param cyc
+     * @param typeId
+     * @param model
+     * @return
+     */
+    @RequestMapping("/vendor-history-bill/detail/log")
+    public String vendorHistoryBillDetailUpdateLog(Integer id,String vName,String tName,String cyc,Integer typeId,Model model){
+        Map<String,Object> param = new HashMap<>();
+        if (id != null){
+            param.put("id",id);
+            model.addAttribute("id",id);
+        }
+        if (typeId != null){
+            param.put("typeId",typeId);
+            model.addAttribute("typeId",typeId);
+        }
+        List<VendorHistoryBillUpdateLog> logList = billService.queryVendorHistoryBillDetailUpdateLog(param) ;
+        model.addAttribute("vName",vName);
+        model.addAttribute("tName",tName);
+        model.addAttribute("cyc",cyc);
+        model.addAttribute("logList",logList);
+        return "/finance/vendor-history-bill-month-detail-update-log";
     }
 
 }
