@@ -2,6 +2,7 @@ package org.qydata.service;
 
 import org.qydata.entity.Company;
 import org.qydata.entity.CompanyApi;
+import org.qydata.entity.CustomerHistoryBillUpdateLog;
 import org.qydata.entity.Partner;
 
 import java.util.List;
@@ -47,18 +48,16 @@ public interface CustomerHistoryBillService {
     /**
      * 修改单价
      * @param id
-     * @param cost
      * @return
      */
-    public boolean updateCustomerHistoryBillCost(Integer id,Double cost);
+    public boolean updateCustomerHistoryBillCost(Integer id,Double oldCost,Double newCost,String content);
 
     /**
      * 修改扣费量
      * @param id
-     * @param amount
      * @return
      */
-    public boolean updateCustomerHistoryBillAmount(Integer id,Integer amount);
+    public boolean updateCustomerHistoryBillAmount(Integer id,Integer oldAmount,Integer newAmount,String content);
 
     /**
      * 新增历史记录
@@ -87,5 +86,27 @@ public interface CustomerHistoryBillService {
      * @return
      */
     public Map<String,Object> queryCustomerHistoryBillTrendData(Map<String,Object> map);
+
+    /**
+     * 修改锁定/解锁状态
+     * @param id
+     * @param isLock
+     * @return
+     */
+    public boolean updateCustomerHistoryBillIsLock(String [] id,Integer isLock);
+
+    /**
+     * 根据Id查看锁定状态
+     * @param id
+     * @return
+     */
+    public Integer queryCustomerHistoryBillLockById(Integer id);
+
+    /**
+     * 查看修改日志
+     * @param map
+     * @return
+     */
+    public List<CustomerHistoryBillUpdateLog> queryCustomerHistoryBillDetailUpdateLog(Map<String,Object> map);
 
 }

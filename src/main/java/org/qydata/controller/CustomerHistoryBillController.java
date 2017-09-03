@@ -7,6 +7,7 @@ import org.qydata.dst.CustomerHistoryBill;
 import org.qydata.dst.CustomerHistoryBillDetail;
 import org.qydata.entity.Company;
 import org.qydata.entity.CompanyApi;
+import org.qydata.entity.CustomerHistoryBillUpdateLog;
 import org.qydata.entity.Partner;
 import org.qydata.service.CustomerHistoryBillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,9 +164,12 @@ public class CustomerHistoryBillController {
      */
     @RequestMapping("/customer-history-bill/detail/update-cost")
     @ResponseBody
-    public String customerHistoryBillDetailUpdateCost(Integer id,Double cost){
+    public String customerHistoryBillDetailUpdateCost(Integer id,Double oldCost,String data){
+        JSONArray array = JSONArray.fromObject(data);
+        Double newCost = array.getDouble(0);
+        String content = array.getString(1);
         Map<String,Object> resu = new HashMap<>();
-        if (billService.updateCustomerHistoryBillCost(id,cost)){
+        if (billService.updateCustomerHistoryBillCost(id,oldCost,newCost,content)){
             resu.put("success","success");
             return new Gson().toJson(resu);
         }
@@ -179,9 +183,12 @@ public class CustomerHistoryBillController {
      */
     @RequestMapping("/customer-history-bill/detail/update-amount")
     @ResponseBody
-    public String customerHistoryBillDetailUpdateAmount(Integer id,Integer amount){
+    public String customerHistoryBillDetailUpdateAmount(Integer id,Integer oldAmount,String data){
+        JSONArray array = JSONArray.fromObject(data);
+        Integer newAmount = array.getInt(0);
+        String content = array.getString(1);
         Map<String,Object> resu = new HashMap<>();
-        if (billService.updateCustomerHistoryBillAmount(id,amount)){
+        if (billService.updateCustomerHistoryBillAmount(id,oldAmount,newAmount,content)){
             resu.put("success","success");
             return new Gson().toJson(resu);
         }
@@ -280,6 +287,116 @@ public class CustomerHistoryBillController {
         getObj.put("xList_2", jsonArrayX_2);
         getObj.put("seriesData_2", jsonArrayS_2);
         return getObj.toString();
+    }
+
+    /**
+     * 历史账单锁定
+     * @param request
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/lock")
+    @ResponseBody
+    public String customerHistoryBillDetailLock(HttpServletRequest request){
+        String [] id = request.getParameterValues("id[]");
+        Map<String,Object> resu = new HashMap<>();
+        if (billService.updateCustomerHistoryBillIsLock(id,1)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
+    /**
+     * 历史账单解锁定
+     * @param request
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/unLock")
+    @ResponseBody
+    public String customerHistoryBillDetailUnLock(HttpServletRequest request){
+        String [] id = request.getParameterValues("id[]");
+        Map<String,Object> resu = new HashMap<>();
+        if (billService.updateCustomerHistoryBillIsLock(id,0)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
+    /**
+     * 根据Id查看锁定状态
+     * @param id
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/check-lock")
+    @ResponseBody
+    public String queryCustomerHistoryBillLock(Integer id){
+        Integer lock = billService.queryCustomerHistoryBillLockById(id);
+        Map<String,Object> resu = new HashMap<>();
+        if (lock == 1 || "1".equals(lock)){
+            resu.put("lock","lock");
+            return new Gson().toJson(resu);
+        }
+        resu.put("lock","unlock");
+        return new Gson().toJson(resu);
+    }
+
+    /**
+     * 根据Id批量查看锁定状态
+     * @param request
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/batch-check-lock")
+    @ResponseBody
+    public String queryCustomerHistoryBillBatchLock(HttpServletRequest request){
+        String [] id = request.getParameterValues("id[]");
+        List<Integer> list = new ArrayList<>();
+        if (id != null){
+            for (String s : id) {
+                System.out.println(s);
+                Integer lock = billService.queryCustomerHistoryBillLockById(Integer.parseInt(s));
+                list.add(lock);
+            }
+        }
+        Map<String,Object> resu = new HashMap<>();
+        if (list.contains(1) || list.contains("1")){
+            resu.put("lock","lock");
+            return new Gson().toJson(resu);
+        }
+        resu.put("lock","unlock");
+        return new Gson().toJson(resu);
+    }
+
+
+    /**
+     * 查看修改日志
+     * @param id
+     * @param vName
+     * @param tName
+     * @param cyc
+     * @param typeId
+     * @param model
+     * @return
+     */
+    @RequestMapping("/customer-history-bill/detail/log")
+    public String customerHistoryBillDetailUpdateLog(Integer id,String vName,String tName,String cyc,Integer typeId,Model model){
+        Map<String,Object> param = new HashMap<>();
+        if (id != null){
+            param.put("id",id);
+            model.addAttribute("id",id);
+        }
+        if (typeId != null){
+            param.put("typeId",typeId);
+            model.addAttribute("typeId",typeId);
+        }
+        List<CustomerHistoryBillUpdateLog> logList = billService.queryCustomerHistoryBillDetailUpdateLog(param) ;
+        model.addAttribute("vName",vName);
+        model.addAttribute("tName",tName);
+        model.addAttribute("cyc",cyc);
+        model.addAttribute("logList",logList);
+        return "/finance/customer-history-bill-month-detail-update-log";
     }
 
 }

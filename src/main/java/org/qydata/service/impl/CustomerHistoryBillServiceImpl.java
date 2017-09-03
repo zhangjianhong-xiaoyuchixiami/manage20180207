@@ -4,9 +4,7 @@ import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.CustomerHistoryBill;
 import org.qydata.dst.CustomerHistoryBillDetail;
-import org.qydata.entity.Company;
-import org.qydata.entity.CompanyApi;
-import org.qydata.entity.Partner;
+import org.qydata.entity.*;
 import org.qydata.mapper.CustomerHistoryBillMapper;
 import org.qydata.service.CustomerHistoryBillService;
 import org.qydata.tools.RegexUtil;
@@ -279,18 +277,32 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
-    public boolean updateCustomerHistoryBillCost(Integer id, Double cost) {
-        int result = billMapper.updateCustomerHistoryBillCost(id,(int)(cost * 100));
-        if (result == 1){
+    public boolean updateCustomerHistoryBillCost(Integer id, Double oldCost, Double newCost, String content) {
+        boolean flag_1 = billMapper.updateCustomerHistoryBillCost(id, (int) (newCost*100));
+        CustomerHistoryBillUpdateLog log = new CustomerHistoryBillUpdateLog();
+        log.setCustomerHistoryBillId(id);
+        log.setBeforData((int) (oldCost*100));
+        log.setAfterData((int) (newCost*100));
+        log.setContent(content);
+        log.setTypeId(1);
+        boolean flag_2 = billMapper.insertCustomerHistoryBillUpdateLog(log);
+        if (flag_1 && flag_2){
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean updateCustomerHistoryBillAmount(Integer id, Integer amount) {
-        int result = billMapper.updateCustomerHistoryBillAmount(id,amount);
-        if (result == 1){
+    public boolean updateCustomerHistoryBillAmount(Integer id, Integer oldAmount, Integer newAmount, String content) {
+        boolean flag_1 = billMapper.updateCustomerHistoryBillAmount(id, newAmount);
+        CustomerHistoryBillUpdateLog log = new CustomerHistoryBillUpdateLog();
+        log.setCustomerHistoryBillId(id);
+        log.setBeforData(oldAmount);
+        log.setAfterData(newAmount);
+        log.setContent(content);
+        log.setTypeId(2);
+        boolean flag_2 = billMapper.insertCustomerHistoryBillUpdateLog(log);
+        if (flag_1 && flag_2){
             return true;
         }
         return false;
@@ -428,6 +440,37 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         resu.put("jsonArrayX_2",jsonArrayX_2);
         resu.put("jsonArrayS_2",jsonArrayS_2);
         return resu;
+    }
+
+    @Override
+    public boolean updateCustomerHistoryBillIsLock(String[] id, Integer isLock) {
+        Map<String,Object> map = new HashMap<>();
+        List<Integer> list = new ArrayList<>();
+        for (String s : id) {
+            list.add(Integer.parseInt(s));
+        }
+        map.put("isLock",isLock);
+        map.put("list",list);
+        return billMapper.updateCustomerHistoryBillIsLock(map);
+    }
+
+    @Override
+    public Integer queryCustomerHistoryBillLockById(Integer id) {
+        return billMapper.queryCustomerHistoryBillLockById(id);
+    }
+
+    @Override
+    public List<CustomerHistoryBillUpdateLog> queryCustomerHistoryBillDetailUpdateLog(Map<String, Object> map) {
+        List<CustomerHistoryBillUpdateLog> logList = billMapper.queryCustomerHistoryBillDetailUpdateLog(map);
+        if (logList == null){
+            return null;
+        }
+        for (CustomerHistoryBillUpdateLog log : logList) {
+            if (log.getContent() == null || log.getContent() == "" || "".equals(log.getContent())){
+                log.setContent("无");
+            }
+        }
+        return logList;
     }
 
 

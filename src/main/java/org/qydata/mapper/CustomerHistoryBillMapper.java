@@ -2,9 +2,7 @@ package org.qydata.mapper;
 
 import org.qydata.dst.CustomerHistoryBill;
 import org.qydata.dst.CustomerHistoryBillDetail;
-import org.qydata.entity.Company;
-import org.qydata.entity.CompanyApi;
-import org.qydata.entity.Partner;
+import org.qydata.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -75,7 +73,7 @@ public interface CustomerHistoryBillMapper {
      * @param cost
      * @return
      */
-    public int updateCustomerHistoryBillCost(Integer id,Integer cost);
+    public boolean updateCustomerHistoryBillCost(Integer id,Integer cost);
 
     /**
      * 修改扣费量
@@ -83,7 +81,7 @@ public interface CustomerHistoryBillMapper {
      * @param amount
      * @return
      */
-    public int updateCustomerHistoryBillAmount(Integer id,Integer amount);
+    public boolean updateCustomerHistoryBillAmount(Integer id,Integer amount);
 
     /**
      * 新增历史记录
@@ -127,5 +125,34 @@ public interface CustomerHistoryBillMapper {
      * @return
      */
     public Integer queryCompanyIdByCustomerId(Map<String,Object> map);
+
+    /**
+     * 修改锁定/解锁状态
+     * @param map
+     * @return
+     */
+    public boolean updateCustomerHistoryBillIsLock(Map<String,Object> map);
+
+    /**
+     * 添加修改日志
+     * @param log
+     * @return
+     */
+    public boolean insertCustomerHistoryBillUpdateLog(CustomerHistoryBillUpdateLog log);
+
+    /**
+     * 根据Id查看锁定状态
+     * @param id
+     * @return
+     */
+    public Integer queryCustomerHistoryBillLockById(Integer id);
+
+    /**
+     * 查看修改日志
+     * @param map
+     * @return
+     */
+    public List<CustomerHistoryBillUpdateLog> queryCustomerHistoryBillDetailUpdateLog(Map<String,Object> map);
+
 
 }
