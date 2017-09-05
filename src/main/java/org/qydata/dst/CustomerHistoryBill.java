@@ -18,6 +18,10 @@ public class CustomerHistoryBill implements Serializable {
     private Double chargeAmount;
     private Double chargeCurrDayAmount;
     private Double consumeAmount;
+    private Integer status;
+    private Double staticConsumeAmount;
+    private Double currMonthRealTimeConsume;
+    private Double currDayRealTimeConsume;
 
     public Integer getCustomerId() {
         return customerId;
@@ -105,5 +109,37 @@ public class CustomerHistoryBill implements Serializable {
 
     public void setConsumeAmount(Double consumeAmount) {
         this.consumeAmount = consumeAmount;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Double getStaticConsumeAmount() {
+        return staticConsumeAmount;
+    }
+
+    public void setStaticConsumeAmount(Double staticConsumeAmount) {
+        this.staticConsumeAmount = staticConsumeAmount;
+    }
+
+    public Double getCurrMonthRealTimeConsume() {
+        return currMonthRealTimeConsume;
+    }
+
+    public void setCurrMonthRealTimeConsume(Double currMonthRealTimeConsume) {
+        this.currMonthRealTimeConsume = currMonthRealTimeConsume;
+    }
+
+    public Double getCurrDayRealTimeConsume() {
+        return currDayRealTimeConsume;
+    }
+
+    public void setCurrDayRealTimeConsume(Double currDayRealTimeConsume) {
+        this.currDayRealTimeConsume = currDayRealTimeConsume;
     }
 }

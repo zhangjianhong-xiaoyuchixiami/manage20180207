@@ -34,6 +34,25 @@ public interface CustomerHistoryBillMapper {
      */
     public List<CustomerHistoryBill> queryCustomerChargeCurrDay(Map<String,Object> map);
 
+    /**
+     * 查询客户截止上月静态消费
+     * @return
+     */
+    public List<CustomerHistoryBill> queryCustomerStaticConsumeAmount();
+
+    /**
+     * 查询客户当月实时消费（不包括当天）
+     * @param map
+     * @return
+     */
+    public List<CustomerHistoryBill> queryCustomerCurrMonthRealTimeConsume(Map<String,Object> map);
+
+    /**
+     * 查询客户当天实时消费
+     * @param map
+     * @return
+     */
+    public List<CustomerHistoryBill> queryCustomerCurrDayRealTimeConsume(Map<String,Object> map);
 
     /**
      * 根据公司companyId查询正式账号id

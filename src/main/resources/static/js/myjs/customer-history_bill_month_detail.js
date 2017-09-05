@@ -36,6 +36,8 @@ var CustomerHistoryBillMonthDetail = function () {
                     null,
                     null,
                     null,
+                    null,
+                    null,
                     null
                 ],
                 "aaSorting": [[1, 'desc']],
@@ -197,6 +199,83 @@ var CustomerHistoryBillMonthDetail = function () {
 
             });
 
+            // /*删除历史记录*/
+            // $("#del").on('click',function () {
+            //
+            //     var id =[];//定义一个数组
+            //     $('input[name="checkBox"]:checked').each(function(){
+            //         id.push($.trim($(this).val()));
+            //     });
+            //
+            //     if (id == null || id == ""){
+            //         swal({
+            //             title: "操作提示",
+            //             text: "请先选择要删除的列！",
+            //             type: "info",
+            //             confirmButtonText: "确定"
+            //         });
+            //     }else {
+            //
+            //         swal({
+            //             title: "确定要删除吗？",   //弹出框的title
+            //             type: "question",    //弹出框类型
+            //             showCancelButton: true, //是否显示取消按钮
+            //             allowOutsideClick: false,
+            //             confirmButtonColor: '#3085d6',
+            //             cancelButtonColor: '#d33',
+            //             cancelButtonText: "取消",//取消按钮文本
+            //             confirmButtonText: "确定"//确定按钮上面的文档
+            //         }).then(function () {
+            //
+            //             $.ajax({
+            //                 type:'post',
+            //                 url:"/finance/customer-history-bill/detail/delete",
+            //                 data:{"id": id},
+            //                 dataType:"json",
+            //                 beforeSend:function () {
+            //                     openProgress();
+            //                 },
+            //                 success:function(data){
+            //                     closeProgress();
+            //                     if (data != null){
+            //                         if (data.fail != null){
+            //                             swal({
+            //                                 title: "操作提示",
+            //                                 text: "删除失败",
+            //                                 type: "error",
+            //                                 showCancelButton: false,
+            //                                 confirmButtonColor: '#3085d6',
+            //                                 confirmButtonText: "确定"
+            //                             }).then(function () {
+            //                                 location.reload();
+            //                                 return;
+            //                             })
+            //                         }
+            //                         if (data.success != null){
+            //                             swal({
+            //                                 title: "操作提示",
+            //                                 text: "删除成功",
+            //                                 type: "success",
+            //                                 showCancelButton: false, //是否显示取消按钮
+            //                                 confirmButtonColor: '#3085d6',
+            //                                 confirmButtonText: "确定"//确定按钮上面的文档
+            //                             }).then(function () {
+            //                                 location.reload();
+            //                                 return;
+            //                             })
+            //                         }
+            //                     }
+            //                 }
+            //             });
+            //
+            //         },function(dismiss) {
+            //             // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+            //             if (dismiss === 'cancel') {}
+            //         });
+            //
+            //     }
+            // });
+
             /*删除历史记录*/
             $("#del").on('click',function () {
 
@@ -214,8 +293,103 @@ var CustomerHistoryBillMonthDetail = function () {
                     });
                 }else {
 
+                    $.ajax({
+                        type: "post",
+                        url: "/finance/customer-history-bill/detail/batch-check-lock",
+                        data: {"id": id},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data != null) {
+                                if (data.lock != null && data.lock == "lock") {
+                                    swal({
+                                        title: "操作提示",
+                                        text: "存在已锁定的数据，无法修改！",
+                                        type: "info",
+                                        confirmButtonText: "确定"
+                                    });
+                                    return;
+                                }
+                                swal({
+                                    title: "确定要删除吗？",   //弹出框的title
+                                    type: "question",    //弹出框类型
+                                    showCancelButton: true, //是否显示取消按钮
+                                    allowOutsideClick: false,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    cancelButtonText: "取消",//取消按钮文本
+                                    confirmButtonText: "确定"//确定按钮上面的文档
+                                }).then(function () {
+
+                                    $.ajax({
+                                        type:'post',
+                                        url:"/finance/customer-history-bill/detail/delete",
+                                        data:{"id": id},
+                                        dataType:"json",
+                                        beforeSend:function () {
+                                            openProgress();
+                                        },
+                                        success:function(data){
+                                            closeProgress();
+                                            if (data != null){
+                                                if (data.fail != null){
+                                                    swal({
+                                                        title: "操作提示",
+                                                        text: "删除失败",
+                                                        type: "error",
+                                                        showCancelButton: false,
+                                                        confirmButtonColor: '#3085d6',
+                                                        confirmButtonText: "确定"
+                                                    }).then(function () {
+                                                        location.reload();
+                                                        return;
+                                                    })
+                                                }
+                                                if (data.success != null){
+                                                    swal({
+                                                        title: "操作提示",
+                                                        text: "删除成功",
+                                                        type: "success",
+                                                        showCancelButton: false, //是否显示取消按钮
+                                                        confirmButtonColor: '#3085d6',
+                                                        confirmButtonText: "确定"//确定按钮上面的文档
+                                                    }).then(function () {
+                                                        location.reload();
+                                                        return;
+                                                    })
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                },function(dismiss) {
+                                    // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                                    if (dismiss === 'cancel') {}
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+            /*锁定历史记录*/
+            $("#lock").on('click',function () {
+
+                var id =[];//定义一个数组
+                $('input[name="checkBox"]:checked').each(function(){
+                    id.push($.trim($(this).val()));
+                });
+
+                if (id == null || id == ""){
                     swal({
-                        title: "确定要删除吗？",   //弹出框的title
+                        title: "操作提示",
+                        text: "请先选择要锁定的列！",
+                        type: "info",
+                        confirmButtonText: "确定"
+                    });
+                }else {
+
+                    swal({
+                        title: "确定要锁定吗？",   //弹出框的title
                         type: "question",    //弹出框类型
                         showCancelButton: true, //是否显示取消按钮
                         allowOutsideClick: false,
@@ -227,7 +401,7 @@ var CustomerHistoryBillMonthDetail = function () {
 
                         $.ajax({
                             type:'post',
-                            url:"/finance/customer-history-bill/detail/delete",
+                            url:"/finance/customer-history-bill/detail/lock",
                             data:{"id": id},
                             dataType:"json",
                             beforeSend:function () {
@@ -239,7 +413,7 @@ var CustomerHistoryBillMonthDetail = function () {
                                     if (data.fail != null){
                                         swal({
                                             title: "操作提示",
-                                            text: "删除失败",
+                                            text: "锁定失败",
                                             type: "error",
                                             showCancelButton: false,
                                             confirmButtonColor: '#3085d6',
@@ -252,7 +426,7 @@ var CustomerHistoryBillMonthDetail = function () {
                                     if (data.success != null){
                                         swal({
                                             title: "操作提示",
-                                            text: "删除成功",
+                                            text: "锁定成功",
                                             type: "success",
                                             showCancelButton: false, //是否显示取消按钮
                                             confirmButtonColor: '#3085d6',
@@ -273,6 +447,84 @@ var CustomerHistoryBillMonthDetail = function () {
 
                 }
             });
+
+            /*解锁历史记录*/
+            $("#unlock").on('click',function () {
+
+                var id =[];//定义一个数组
+                $('input[name="checkBox"]:checked').each(function(){
+                    id.push($.trim($(this).val()));
+                });
+
+                if (id == null || id == ""){
+                    swal({
+                        title: "操作提示",
+                        text: "请先选择要解锁的列！",
+                        type: "info",
+                        confirmButtonText: "确定"
+                    });
+                }else {
+
+                    swal({
+                        title: "确定要解锁吗？",   //弹出框的title
+                        type: "question",    //弹出框类型
+                        showCancelButton: true, //是否显示取消按钮
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: "取消",//取消按钮文本
+                        confirmButtonText: "确定"//确定按钮上面的文档
+                    }).then(function () {
+
+                        $.ajax({
+                            type:'post',
+                            url:"/finance/customer-history-bill/detail/unLock",
+                            data:{"id": id},
+                            dataType:"json",
+                            beforeSend:function () {
+                                openProgress();
+                            },
+                            success:function(data){
+                                closeProgress();
+                                if (data != null){
+                                    if (data.fail != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: "解锁失败",
+                                            type: "error",
+                                            showCancelButton: false,
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"
+                                        }).then(function () {
+                                            location.reload();
+                                            return;
+                                        })
+                                    }
+                                    if (data.success != null){
+                                        swal({
+                                            title: "操作提示",
+                                            text: "解锁成功",
+                                            type: "success",
+                                            showCancelButton: false, //是否显示取消按钮
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: "确定"//确定按钮上面的文档
+                                        }).then(function () {
+                                            location.reload();
+                                            return;
+                                        })
+                                    }
+                                }
+                            }
+                        });
+
+                    },function(dismiss) {
+                        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                        if (dismiss === 'cancel') {}
+                    });
+
+                }
+            });
+
 
         }
 

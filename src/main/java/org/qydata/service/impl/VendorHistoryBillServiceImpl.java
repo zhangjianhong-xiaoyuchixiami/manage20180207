@@ -219,8 +219,8 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
         boolean flag_1 = billMapper.updateVendorHistoryBillCost(id, (int) (newCost*100));
         VendorHistoryBillUpdateLog log = new VendorHistoryBillUpdateLog();
         log.setVendorHistoryBillId(id);
-        log.setBeforData((int) (oldCost*100));
-        log.setAfterData((int) (newCost*100));
+        log.setBeforData( (oldCost*100));
+        log.setAfterData( (newCost*100));
         log.setContent(content);
         log.setType(1);
         boolean flag_2 = billMapper.insertVendorHistoryBillUpdateLog(log);
@@ -235,8 +235,8 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
         boolean flag_1 = billMapper.updateVendorHistoryBillAmount(id, newAmount);
         VendorHistoryBillUpdateLog log = new VendorHistoryBillUpdateLog();
         log.setVendorHistoryBillId(id);
-        log.setBeforData(oldAmount);
-        log.setAfterData(newAmount);
+        log.setBeforData((double)oldAmount);
+        log.setAfterData((double)newAmount);
         log.setContent(content);
         log.setType(2);
         boolean flag_2 = billMapper.insertVendorHistoryBillUpdateLog(log);
@@ -296,6 +296,12 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
         for (VendorHistoryBillUpdateLog log : logList) {
             if (log.getContent() == null || log.getContent() == "" || "".equals(log.getContent())){
                 log.setContent("无");
+            }
+            if(log.getBeforData() != null && log.getType() == 1){
+                log.setBeforData(log.getBeforData()/100.0);
+            }
+            if(log.getAfterData() != null && log.getType() == 1){
+                log.setAfterData(log.getAfterData()/100.0);
             }
         }
         return logList;

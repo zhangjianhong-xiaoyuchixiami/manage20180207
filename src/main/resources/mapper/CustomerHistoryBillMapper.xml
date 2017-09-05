@@ -7,11 +7,11 @@
         <result column="customerId" property="customerId"/>
         <result column="totleConsume" property="consumeAmount"/>
         <result column="floor" property="floor"/>
-        <result column="balance" property="balance"/>
         <result column="companyId" property="companyId"/>
         <result column="partnerId" property="partnerId"/>
         <result column="companyName" property="companyName"/>
         <result column="partnerName" property="partnerName"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <resultMap id="customerHistoryBillChargeMap" type="org.qydata.dst.CustomerHistoryBill">
@@ -32,6 +32,7 @@
         <result column="amount" property="amount"/>
         <result column="apiTypeName" property="apiTypeName"/>
         <result column="stidName" property="stidName"/>
+        <result column="isLock" property="isLock"/>
     </resultMap>
 
     <resultMap id="companyApiMap" type="org.qydata.entity.CompanyApi">
@@ -46,8 +47,8 @@
     <!--查询客户历史消费账单-->
     <select id="queryCustomerHistoryBill" parameterType="map" resultMap="customerHistoryBillMap">
         SELECT a.customerId,a.totleConsume,
-        b.floor,b.balance,b.companyId,
-        c.partnerId,c.name companyName,
+        b.floor,b.companyId,
+        c.partnerId,c.name companyName,c.status,
         d.name partnerName
         FROM
         (
@@ -88,6 +89,9 @@
         <if test="pid != null and pid != ''">
             AND c.partnerId = #{pid}
         </if>
+        <if test="nullPid != null and nullPid != ''">
+            AND c.partnerId IS NULL
+        </if>
     </select>
 
     <!--查询充值总额（至昨天）-->
@@ -104,6 +108,35 @@
         WHERE reasonId in(1,2,3)
         AND createTime >= #{currDayTime}
         GROUP BY customerId
+    </select>
+
+    <!--查询客户截止上月静态消费-->
+    <select id="queryCustomerStaticConsumeAmount" resultMap="customerHistoryBillMap">
+        SELECT a.customerId,sum(a.consumeAmount) staticConsumeAmount
+        FROM
+        (
+            SELECT a.customerId,a.cost * sum(a.amount) consumeAmount
+            FROM qyfinance.CustomerHistoryBill a
+            GROUP BY a.customerId,a.cost
+        ) a
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询客户当月实时消费（不包括当天）-->
+    <select id="queryCustomerCurrMonthRealTimeConsume" parameterType="map" resultMap="customerHistoryBillMap">
+        SELECT a.customerId,sum(-a.sumAmount) currMonthRealTimeConsume
+        FROM qyfinance.CompanyApiTypeConsumeDayCount a
+        WHERE a.consuTime >= #{currMonthTime}
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询客户当天实时消费-->
+    <select id="queryCustomerCurrDayRealTimeConsume" parameterType="map" resultMap="customerHistoryBillMap">
+        SELECT a.customerId,sum(-b.amount) currDayRealTimeConsume
+        FROM qyfinance.finance_CustomerRequestLog a
+        INNER JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+        WHERE b.createTime >= #{currDayTime}
+        GROUP BY a.customerId
     </select>
 
     <!--根据公司companyId查询正式账号id-->
@@ -134,7 +167,7 @@
 
     <!--查询客户历史消费账单明细-->
     <select id="queryCustomerHistoryBillDetail" parameterType="map" resultMap="customerHistoryBillDetailMap">
-        SELECT a.id,a.year,a.month,a.yearMonth,a.customerId,a.apiTypeId,a.stid,a.cost,a.amount,
+        SELECT a.id,a.year,a.month,a.yearMonth,a.customerId,a.apiTypeId,a.stid,a.cost,a.amount,a.isLock,
         b.name apiTypeName,c.name stidName
         FROM qyfinance.CustomerHistoryBill a
         LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
@@ -226,6 +259,40 @@
         SELECT companyId
         FROM qyfinance.finance_Customer a
         WHERE a.id = #{cid}
+    </select>
+
+    <!--改锁定/解锁状态-->
+    <update id="updateCustomerHistoryBillIsLock" parameterType="map">
+        UPDATE qyfinance.CustomerHistoryBill
+        SET isLock = #{isLock}
+        WHERE id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--添加修改日志-->
+    <insert id="insertCustomerHistoryBillUpdateLog" parameterType="org.qydata.entity.CustomerHistoryBillUpdateLog" >
+        INSERT INTO qyfinance.CustomerHistoryBillUpdateLog (customerHistoryBillId, beforData, afterData, content, typeId,createTime)
+        VALUES(#{customerHistoryBillId},#{beforData},#{afterData},#{content},#{typeId},now())
+    </insert>
+
+    <!--根据Id查看锁定状态-->
+    <select id="queryCustomerHistoryBillLockById" parameterType="int" resultType="Integer">
+        SELECT a.isLock
+        FROM qyfinance.CustomerHistoryBill a
+        WHERE a.id = #{param}
+    </select>
+
+    <!--修改日志-->
+    <select id="queryCustomerHistoryBillDetailUpdateLog" parameterType="map" resultType="org.qydata.entity.CustomerHistoryBillUpdateLog">
+        SELECT a.beforData,a.afterData,a.content,a.typeId,b.name typeName,a.createTime
+        FROM qyfinance.CustomerHistoryBillUpdateLog a
+        LEFT JOIN qyfinance.CustomerHistoryBillUpdateLogType b ON a.typeId = b.id
+        WHERE a.customerHistoryBillId = #{id}
+        <if test="typeId != null">
+            AND a.typeId = #{typeId}
+        </if>
     </select>
 
 </mapper>

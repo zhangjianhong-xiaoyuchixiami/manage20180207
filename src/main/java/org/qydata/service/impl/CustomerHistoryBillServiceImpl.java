@@ -4,9 +4,13 @@ import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.CustomerHistoryBill;
 import org.qydata.dst.CustomerHistoryBillDetail;
-import org.qydata.entity.*;
+import org.qydata.entity.Company;
+import org.qydata.entity.CompanyApi;
+import org.qydata.entity.CustomerHistoryBillUpdateLog;
+import org.qydata.entity.Partner;
 import org.qydata.mapper.CustomerHistoryBillMapper;
 import org.qydata.service.CustomerHistoryBillService;
+import org.qydata.tools.CalendarTools;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
 import org.qydata.tools.date.CalendarUtil;
@@ -25,18 +29,13 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     private CustomerHistoryBillMapper billMapper;
 
     @Override
-    public Map<String, Object> queryCustomerHistoryBill(Map<String, Object> map) {
+    public Map<String, Object>
+    queryCustomerHistoryBill(Map<String, Object> map) {
         Integer [] status = null;
         Integer [] cid = null;
         Integer pid = null;
-        Double LCredit = null;
-        Double HCredit = null;
-        Double LUserAble = null;
-        Double HUserAble = null;
-        Double LConsu = null;
-        Double HConsu = null;
         String [] beg_month = null;
-        String end_month = null;
+
         Set<Map.Entry<String, Object>> set = map.entrySet();
         Iterator<Map.Entry<String, Object>> it = set.iterator();
         while (it.hasNext()) {
@@ -50,29 +49,8 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
             if (me.getKey().equals("pid")) {
                 pid = (Integer) me.getValue();
             }
-            if (me.getKey().equals("LCredit")) {
-                LCredit = (Double) me.getValue();
-            }
-            if (me.getKey().equals("HCredit")) {
-                HCredit = (Double) me.getValue();
-            }
-            if (me.getKey().equals("LUserAble")) {
-                LUserAble = (Double) me.getValue();
-            }
-            if (me.getKey().equals("HUserAble")) {
-                HUserAble = (Double) me.getValue();
-            }
-            if (me.getKey().equals("LConsu")) {
-                LConsu = (Double) me.getValue();
-            }
-            if (me.getKey().equals("HConsu")) {
-                HConsu = (Double) me.getValue();
-            }
             if (me.getKey().equals("beg_month")) {
                 beg_month = (String[]) me.getValue();
-            }
-            if (me.getKey().equals("end_month")) {
-                end_month = (String) me.getValue();
             }
         }
         Map<String,Object> param = new HashMap<>();
@@ -91,7 +69,11 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
             param.put("cidList",cidList);
         }
         if (pid != null){
-            param.put("pid",pid);
+            if (pid == -100 || "-100".equals(pid)){
+                param.put("nullPid",pid);
+            }else {
+                param.put("pid", pid);
+            }
         }
         if (beg_month != null && beg_month.length > 0){
             List<String> begList = new ArrayList<>();
@@ -101,9 +83,13 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
             param.put("begList",begList);
         }
         param.put("currDayTime", CalendarUtil.formatCurrTime());
+        param.put("currMonthTime", CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         List<CustomerHistoryBill> billList = billMapper.queryCustomerHistoryBill(param);
         List<CustomerHistoryBill> billChargeList = billMapper.queryCustomerChargeTotle(param);
         List<CustomerHistoryBill> billChargeCurrDayList = billMapper.queryCustomerChargeCurrDay(param);
+        List<CustomerHistoryBill> billStaticConsume = billMapper.queryCustomerStaticConsumeAmount();
+        List<CustomerHistoryBill> billCurrMonthConsumeList = billMapper.queryCustomerCurrMonthRealTimeConsume(param);
+        List<CustomerHistoryBill> billCurrDayConsumeList = billMapper.queryCustomerCurrDayRealTimeConsume(param);
         Double chargeTot = 0.0;
         Double consumeTot = 0.0;
         if (billList != null){
@@ -119,12 +105,6 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                         }else {
                             bill.setFloor((-bill.getFloor())/100.0);
                         }
-                    }
-                    if (bill.getBalance() != null){
-                        bill.setBalance(bill.getBalance()/100.0);
-                    }
-                    if (bill.getFloor() != null && bill.getBalance() != null){
-                        bill.setUserFloor(bill.getFloor() + bill.getBalance());
                     }
                   /*封装充值总额（至昨天）*/
                     if (billChargeList != null){
@@ -156,6 +136,65 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                             bill.setChargeAmount(bill.getChargeCurrDayAmount());
                         }
                     }
+
+                    if (billStaticConsume != null){
+                        for (CustomerHistoryBill staticBill : billStaticConsume) {
+                            if (bill.getCustomerId() == staticBill.getCustomerId() || bill.getCustomerId().equals(staticBill.getCustomerId())){
+                                if (staticBill.getStaticConsumeAmount() != null){
+                                    bill.setStaticConsumeAmount(staticBill.getStaticConsumeAmount()/100.0);
+                                }
+                            }
+                        }
+                    }
+
+                    if (bill.getChargeAmount() != null && bill.getStaticConsumeAmount() != null){
+                        bill.setBalance(bill.getChargeAmount() - bill.getStaticConsumeAmount());
+                    }
+                    if (bill.getChargeAmount() != null && bill.getStaticConsumeAmount() == null){
+                        bill.setBalance(bill.getChargeAmount());
+                    }
+                    if (bill.getChargeAmount() == null && bill.getStaticConsumeAmount() != null){
+                        bill.setBalance(-(bill.getStaticConsumeAmount()));
+                    }
+
+                    if (billCurrMonthConsumeList != null){
+                        for (CustomerHistoryBill currMonthBill : billCurrMonthConsumeList) {
+                            if (bill.getCustomerId() == currMonthBill.getCustomerId() || bill.getCustomerId().equals(currMonthBill.getCustomerId())){
+                                if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() != null){
+                                    bill.setBalance(bill.getBalance() - (currMonthBill.getCurrMonthRealTimeConsume()/100.0));
+                                }
+                                if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() == null){
+                                    bill.setBalance(bill.getBalance());
+                                }
+                                if (bill.getBalance() == null && currMonthBill.getCurrMonthRealTimeConsume() != null){
+                                    bill.setBalance(-(currMonthBill.getCurrMonthRealTimeConsume()/100.0));
+                                }
+                            }
+                        }
+                    }
+                    if (billCurrDayConsumeList != null){
+                        for (CustomerHistoryBill currDayBill : billCurrDayConsumeList) {
+                            if (bill.getCustomerId() == currDayBill.getCustomerId() || bill.getCustomerId().equals(currDayBill.getCustomerId())){
+                                if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() != null){
+                                    bill.setBalance(bill.getBalance() - (currDayBill.getCurrDayRealTimeConsume()/100.0));
+                                }
+                                if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() == null){
+                                    bill.setBalance(bill.getBalance());
+                                }
+                                if (bill.getBalance() == null && currDayBill.getCurrDayRealTimeConsume() != null){
+                                    bill.setBalance(-(currDayBill.getCurrDayRealTimeConsume()/100.0));
+                                }
+                            }
+                        }
+                    }
+
+                    if (bill.getFloor() != null && bill.getBalance() != null){
+                        bill.setUserFloor(bill.getFloor() + bill.getBalance());
+                    }
+                    if (bill.getFloor() != null && bill.getBalance() == null){
+                        bill.setUserFloor(bill.getFloor());
+                    }
+
                     if (bill.getChargeAmount() != null){
                         chargeTot += bill.getChargeAmount();
                     }
@@ -267,6 +306,11 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                     if (billDetail.getConsumeAmount() != null){
                         conTot += billDetail.getConsumeAmount();
                     }
+                    if (billDetail.getIsLock() != null && billDetail.getIsLock() == 1 || "1".equals(billDetail.getIsLock())){
+                        billDetail.setIsLockName("已锁定");
+                    }else {
+                        billDetail.setIsLockName("未锁定");
+                    }
                 }
             }
         }
@@ -281,8 +325,8 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         boolean flag_1 = billMapper.updateCustomerHistoryBillCost(id, (int) (newCost*100));
         CustomerHistoryBillUpdateLog log = new CustomerHistoryBillUpdateLog();
         log.setCustomerHistoryBillId(id);
-        log.setBeforData((int) (oldCost*100));
-        log.setAfterData((int) (newCost*100));
+        log.setBeforData((oldCost*100));
+        log.setAfterData((newCost*100));
         log.setContent(content);
         log.setTypeId(1);
         boolean flag_2 = billMapper.insertCustomerHistoryBillUpdateLog(log);
@@ -297,8 +341,8 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         boolean flag_1 = billMapper.updateCustomerHistoryBillAmount(id, newAmount);
         CustomerHistoryBillUpdateLog log = new CustomerHistoryBillUpdateLog();
         log.setCustomerHistoryBillId(id);
-        log.setBeforData(oldAmount);
-        log.setAfterData(newAmount);
+        log.setBeforData((double)oldAmount);
+        log.setAfterData((double)newAmount);
         log.setContent(content);
         log.setTypeId(2);
         boolean flag_2 = billMapper.insertCustomerHistoryBillUpdateLog(log);
@@ -468,6 +512,12 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         for (CustomerHistoryBillUpdateLog log : logList) {
             if (log.getContent() == null || log.getContent() == "" || "".equals(log.getContent())){
                 log.setContent("无");
+            }
+            if(log.getBeforData() != null && log.getTypeId() == 1){
+                log.setBeforData(log.getBeforData()/100.0);
+            }
+            if(log.getAfterData() != null && log.getTypeId() == 1){
+                log.setAfterData(log.getAfterData()/100.0);
             }
         }
         return logList;

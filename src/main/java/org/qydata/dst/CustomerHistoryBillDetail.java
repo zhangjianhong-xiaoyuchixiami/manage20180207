@@ -19,6 +19,8 @@ public class CustomerHistoryBillDetail implements Serializable {
     private String apiTypeName;
     private String stidName;
     private Double consumeAmount;
+    private Integer isLock;
+    private String isLockName;
 
     public Integer getId() {
         return id;
@@ -114,5 +116,21 @@ public class CustomerHistoryBillDetail implements Serializable {
 
     public void setConsumeAmount(Double consumeAmount) {
         this.consumeAmount = consumeAmount;
+    }
+
+    public Integer getIsLock() {
+        return isLock;
+    }
+
+    public void setIsLock(Integer isLock) {
+        this.isLock = isLock;
+    }
+
+    public String getIsLockName() {
+        return isLockName;
+    }
+
+    public void setIsLockName(String isLockName) {
+        this.isLockName = isLockName;
     }
 }

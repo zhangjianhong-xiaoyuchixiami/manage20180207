@@ -7,8 +7,8 @@ public class VendorHistoryBillUpdateLog {
 
     private Integer id;
     private Integer vendorHistoryBillId;
-    private Integer beforData;
-    private Integer afterData;
+    private Double beforData;
+    private Double afterData;
     private String content;
     private Integer type;
     private String createTime;
@@ -30,19 +30,19 @@ public class VendorHistoryBillUpdateLog {
         this.vendorHistoryBillId = vendorHistoryBillId;
     }
 
-    public Integer getBeforData() {
+    public Double getBeforData() {
         return beforData;
     }
 
-    public void setBeforData(Integer beforData) {
+    public void setBeforData(Double beforData) {
         this.beforData = beforData;
     }
 
-    public Integer getAfterData() {
+    public Double getAfterData() {
         return afterData;
     }
 
-    public void setAfterData(Integer afterData) {
+    public void setAfterData(Double afterData) {
         this.afterData = afterData;
     }
 

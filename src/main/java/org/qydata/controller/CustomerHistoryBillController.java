@@ -373,7 +373,7 @@ public class CustomerHistoryBillController {
     /**
      * 查看修改日志
      * @param id
-     * @param vName
+     * @param cName
      * @param tName
      * @param cyc
      * @param typeId
@@ -381,7 +381,7 @@ public class CustomerHistoryBillController {
      * @return
      */
     @RequestMapping("/customer-history-bill/detail/log")
-    public String customerHistoryBillDetailUpdateLog(Integer id,String vName,String tName,String cyc,Integer typeId,Model model){
+    public String customerHistoryBillDetailUpdateLog(Integer id,String cName,String tName,String cyc,Integer typeId,Model model){
         Map<String,Object> param = new HashMap<>();
         if (id != null){
             param.put("id",id);
@@ -392,7 +392,7 @@ public class CustomerHistoryBillController {
             model.addAttribute("typeId",typeId);
         }
         List<CustomerHistoryBillUpdateLog> logList = billService.queryCustomerHistoryBillDetailUpdateLog(param) ;
-        model.addAttribute("vName",vName);
+        model.addAttribute("cName",cName);
         model.addAttribute("tName",tName);
         model.addAttribute("cyc",cyc);
         model.addAttribute("logList",logList);

@@ -23,13 +23,13 @@
 
                 <div class="span12">
 
-                    <form action="/finance/vendor-history-bill/detail/log" class="form-bottom" method="get">
+                    <form action="/finance/customer-history-bill/detail/log" class="form-bottom" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
                             <input style="display: none" id="id" name="id" value="${id?c}">
 
-                            <input style="display: none" id="vName" name="vName" value="${vName!''}">
+                            <input style="display: none" id="cName" name="cName" value="${cName!''}">
 
                             <input style="display: none" id="tName" name="tName" value="${tName!''}">
 
@@ -73,7 +73,7 @@
 
                         <div class="portlet-title">
 
-                            <div class="caption">${cyc!'无'}--${vName!'无'}@${tName!'无'}</div>
+                            <div class="caption">${cyc!'无'}--${cName!'无'}@${tName!'无'}</div>
 
                         </div>
 
@@ -137,12 +137,12 @@
 
     <script src="/js/multi/get-url-param.js?v=${ver}"></script>
 
-    <script src="/js/myjs/vendor-history_bill_month_detail_update_log.js?v=${ver}"></script>
+    <script src="/js/myjs/customer_history_bill_month_detail_update_log.js?v=${ver}"></script>
 
     <script>
 
         jQuery(document).ready(function () {
-            VendorHistoryBillMonthDetailUpdateLog.init();
+            CustomerHistoryBillMonthDetailUpdateLog.init();
         });
 
     </script>

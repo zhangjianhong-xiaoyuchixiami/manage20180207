@@ -83,7 +83,7 @@ public class VendorHistoryBillController {
      * @return
      */
     @RequestMapping("/vendor-history-bill/detail")
-    public String vendorHistoryBillDetail(Integer vid,String name, String [] cyc, String [] aid,Integer isLock,Model model){
+    public String vendorHistoryBillDetail(Integer vid,String name, String [] cyc, Integer [] aid,Integer isLock,Model model){
 
         Map<String,Object> param = new HashMap<>();
         if (vid != null){

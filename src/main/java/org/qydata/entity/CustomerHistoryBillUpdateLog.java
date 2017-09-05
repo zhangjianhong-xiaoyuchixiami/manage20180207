@@ -7,8 +7,8 @@ public class CustomerHistoryBillUpdateLog {
 
     private Integer id;
     private Integer customerHistoryBillId;
-    private Integer beforData;
-    private Integer afterData;
+    private Double beforData;
+    private Double afterData;
     private String content;
     private Integer typeId;
     private String createTime;
@@ -30,19 +30,19 @@ public class CustomerHistoryBillUpdateLog {
         this.customerHistoryBillId = customerHistoryBillId;
     }
 
-    public Integer getBeforData() {
+    public Double getBeforData() {
         return beforData;
     }
 
-    public void setBeforData(Integer beforData) {
+    public void setBeforData(Double beforData) {
         this.beforData = beforData;
     }
 
-    public Integer getAfterData() {
+    public Double getAfterData() {
         return afterData;
     }
 
-    public void setAfterData(Integer afterData) {
+    public void setAfterData(Double afterData) {
         this.afterData = afterData;
     }
 

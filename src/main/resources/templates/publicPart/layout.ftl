@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.4'/>
+    <#assign ver='1.0.0.6'/>
 
 <!DOCTYPE html>
 

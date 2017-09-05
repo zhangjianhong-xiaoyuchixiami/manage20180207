@@ -422,6 +422,12 @@ public class ShiroConfig {
 		chains.put("/finance/customer-history-bill/trend", "authc,perms");
 		chains.put("/finance/customer-history-bill/trend/data", "authc,perms");
 
+		chains.put("/finance/customer-history-bill/detail/lock", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail/unLock", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail/check-lock", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail/batch-check-lock", "authc,perms");
+		chains.put("/finance/customer-history-bill/detail/log", "authc,perms");
+
 		//VendorController
 		chains.put("/vendor/all-vendor", "authc,perms");
 		chains.put("/vendor/all-vendor/charge", "authc,perms");

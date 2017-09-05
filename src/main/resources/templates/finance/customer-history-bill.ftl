@@ -76,6 +76,7 @@
 
                                     <select class="medium m-wrap" id="pid" name="pid">
                                         <option value=""></option>
+                                        <option <#if pid?? && pid == -100> selected="selected"</#if> value="-100">无</option>
                                         <#if partnerList??>
                                             <#list partnerList as partner>
                                                 <option <#if pid?? && pid==partner.id>selected="selected"</#if> value="${partner.id}">${partner.name}</option>
@@ -211,7 +212,9 @@
                                 </div>
 
                                 <div class="pull-right tip-remark">
-                                    <span>注：本页面与金额相关数字单位都为：元</span>
+                                    <span class="pull-right">注：1、本页面与金额相关数字单位都为：元</span>
+                                    </br>
+                                    <span class="pull-right">2、客户余额 = 实际充值总额 -（截止上月末实际对账消费金额 + 当月实时消费金额）</span>
                                 </div>
                             </div>
 
@@ -232,7 +235,7 @@
                                 <#if billList??>
                                     <#list billList as bill>
                                     <tr>
-                                        <td data-title="公司名称">${bill.companyName!'无'}</td>
+                                        <td data-title="公司名称" <#if bill.status == -1> class="font-text-decoration" </#if>>${bill.companyName!'无'}</td>
                                         <td data-title="合作公司">${bill.partnerName!'无'}</td>
                                         <td data-title="信用额度">${bill.floor!'0'}</td>
                                         <td data-title="可用额度">${bill.userFloor!'0'}</td>
