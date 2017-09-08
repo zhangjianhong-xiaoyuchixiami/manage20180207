@@ -234,6 +234,12 @@
                                 </li>
                             </@shiro.hasPermission>
 
+                            <li id="api-turnover-bill">
+                                <a href="/finance/api-turnover-bill">
+                                    产品收入支出账单
+                                </a>
+                            </li>
+
                             <@shiro.hasPermission name="api:find-all-api-vendor-consume">
                                 <li id="apiVendorRecordLog">
                                     <a href="/api/find-all-api-vendor-consume">
