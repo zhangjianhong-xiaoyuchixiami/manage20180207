@@ -23,6 +23,13 @@ public class ApiTurnoverBillController {
     @Autowired
     private ApiTurnoverBillService billService;
 
+    /**
+     * 产品进出账单
+     * @param tid
+     * @param cyc
+     * @param model
+     * @return
+     */
     @RequestMapping("/api-turnover-bill")
     public String apiTurnoverBill(String [] tid,String cyc,Model model){
         Map<String,Object> param = new HashMap<>();
@@ -58,6 +65,14 @@ public class ApiTurnoverBillController {
         return "/finance/api-turnover-bill";
     }
 
+    /**
+     * 产品进出账单 - 明细
+     * @param tid
+     * @param name
+     * @param cyc
+     * @param model
+     * @return
+     */
     @RequestMapping("/api-turnover-bill/trend")
     public String apiTurnoverBillTrend(String tid,String name,String cyc,Model model){
         Map<String,Object> param = new HashMap<>();
@@ -86,6 +101,13 @@ public class ApiTurnoverBillController {
         return "/finance/api-turnover-bill-trend";
     }
 
+    /**
+     * 产品进出账单 - 明细 - 数据
+     * @param tid
+     * @param cyc
+     * @param model
+     * @return
+     */
     @RequestMapping("/api-turnover-bill/trend-data")
     @ResponseBody
     public String apiTurnoverBillTrendData(String tid,String cyc,Model model){

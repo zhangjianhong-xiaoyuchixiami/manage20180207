@@ -206,7 +206,6 @@
             ApiTurnoverBillTrend.init();
         });
 
-
         $(function () {
             var tid = $.getUrlParam('tid');
             var cyc = $.getUrlParam('cyc');

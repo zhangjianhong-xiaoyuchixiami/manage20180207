@@ -97,6 +97,18 @@ var CustomerFinanceAccount = function () {
                 ],
                 "aoColumnDefs": [
                     {
+                        "aTargets": [ 4 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 5 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 6 ],
+                        "sType": "html-percent"
+                    },
+                    {
                         //充值总额
                         "aTargets": [ 7 ],
                         "sType": "html-percent"
@@ -124,6 +136,11 @@ var CustomerFinanceAccount = function () {
                     {
                         //上月消费
                         "aTargets": [ 12 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        //上月消费
+                        "aTargets": [ 13 ],
                         "sType": "html-percent"
                     },
                     {

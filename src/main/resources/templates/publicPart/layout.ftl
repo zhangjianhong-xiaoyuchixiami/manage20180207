@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.6'/>
+    <#assign ver='1.0.0.7'/>
 
 <!DOCTYPE html>
 
@@ -157,11 +157,11 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <#--<li id="customerBalanceMonitorList">-->
-                                <#--<a href="/company/balance-monitor">-->
-                                    <#--客户余额报警-->
-                                <#--</a>-->
-                            <#--</li>-->
+                        <#--<li id="customerBalanceMonitorList">-->
+                        <#--<a href="/company/balance-monitor">-->
+                        <#--客户余额报警-->
+                        <#--</a>-->
+                        <#--</li>-->
 
                         </ul>
                     </li>
@@ -234,11 +234,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <li id="api-turnover-bill">
-                                <a href="/finance/api-turnover-bill">
-                                    产品收入支出账单
-                                </a>
-                            </li>
+                            <@shiro.hasPermission name="finance:api-turnover-bill">
+                                <li id="api-turnover-bill">
+                                    <a href="/finance/api-turnover-bill">
+                                        产品收入支出账单
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
                             <@shiro.hasPermission name="api:find-all-api-vendor-consume">
                                 <li id="apiVendorRecordLog">
@@ -256,13 +258,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="excel:extra-account-vendor">-->
-                                <#--<li id="extra-account-vendor">-->
-                                    <#--<a href="/excel/extra-account-vendor">-->
-                                        <#--供应商临时对账-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--</@shiro.hasPermission>-->
+                        <#--<@shiro.hasPermission name="excel:extra-account-vendor">-->
+                        <#--<li id="extra-account-vendor">-->
+                        <#--<a href="/excel/extra-account-vendor">-->
+                        <#--供应商临时对账-->
+                        <#--</a>-->
+                        <#--</li>-->
+                        <#--</@shiro.hasPermission>-->
 
                             <@shiro.hasPermission name="partner:find-all-partner-financial-account">
                                 <li id="partnersFinancialAccount">

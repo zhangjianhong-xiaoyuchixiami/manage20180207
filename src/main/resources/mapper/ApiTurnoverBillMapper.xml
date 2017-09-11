@@ -68,11 +68,11 @@
             (
                 SELECT a.apiTypeId,a.stid,a.cost,sum(a.amount) amount,a.cost*sum(a.amount) consume
                 FROM qyfinance.CustomerHistoryBill a
-                <where>
-                    <if test="cyc != null and cyc != ''">
-                        a.yearMonth = #{cyc}
-                    </if>
-                </where>
+                LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
+                WHERE b.typeId = 1
+                <if test="cyc != null and cyc != ''">
+                   AND a.yearMonth = #{cyc}
+                </if>
                 GROUP BY a.apiTypeId,a.stid,a.cost
             ) a
             GROUP BY a.apiTypeId,a.stid
@@ -177,11 +177,11 @@
         (
             SELECT a.customerId,a.apiTypeId,a.stid,a.cost,sum(a.amount) amount,a.cost*sum(a.amount) consume
             FROM qyfinance.CustomerHistoryBill a
-            <where>
-                <if test="cyc != null and cyc != ''">
-                    a.yearMonth = #{cyc}
-                </if>
-            </where>
+            LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
+            WHERE b.typeId = 1
+            <if test="cyc != null and cyc != ''">
+                AND a.yearMonth = #{cyc}
+            </if>
             GROUP BY a.customerId,a.apiTypeId,a.stid,a.cost
         ) a
         LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
@@ -226,6 +226,7 @@
             </where>
             GROUP BY a.vendorId
         ) a
+
         LEFT JOIN qyfinance.finance_ApiVendor b ON a.vendorId = b.id
         LEFT JOIN qyfinance.bkvwPartner c ON b.partnerId = c.id
     </select>
@@ -237,17 +238,17 @@
         (
             SELECT a.customerId,sum(a.amount) amount
             FROM qyfinance.CustomerHistoryBill a
-            <where>
-                <if test="cyc != null and cyc != ''">
-                    a.yearMonth = #{cyc}
-                </if>
-                <if test="apiTypeId != null and apiTypeId != ''">
-                    AND a.apiTypeId = #{apiTypeId}
-                </if>
-                <if test="apiTypeId != null and apiTypeId != ''">
-                    AND a.stid = #{stid}
-                </if>
-            </where>
+            LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
+            WHERE b.typeId = 1
+            <if test="cyc != null and cyc != ''">
+                AND a.yearMonth = #{cyc}
+            </if>
+            <if test="apiTypeId != null and apiTypeId != ''">
+                AND a.apiTypeId = #{apiTypeId}
+            </if>
+            <if test="apiTypeId != null and apiTypeId != ''">
+                AND a.stid = #{stid}
+            </if>
             GROUP BY a.customerId
         ) a
         LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id

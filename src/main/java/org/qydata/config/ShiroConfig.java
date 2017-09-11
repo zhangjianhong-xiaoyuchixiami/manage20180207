@@ -448,6 +448,12 @@ public class ShiroConfig {
 		chains.put("/finance/vendor-history-bill/detail/batch-check-lock", "authc,perms");
 		chains.put("/finance/vendor-history-bill/detail/log", "authc,perms");
 
+		//ApiTurnoverBillController
+		chains.put("/finance/api-turnover-bill", "authc,perms");
+		chains.put("/finance/api-turnover-bill/trend", "authc,perms");
+		chains.put("/finance/api-turnover-bill/trend-data", "authc,perms");
+
+
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}
