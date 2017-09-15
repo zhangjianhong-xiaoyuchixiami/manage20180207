@@ -1342,6 +1342,11 @@ Portlets
   margin-top: -13px;
 }
 
+.portlet-title .actions > .btn_1 {
+  padding: 4px 10px;
+  margin-top: -9px;
+}
+
 .portlet-title .actions > .btn-group > .btn {
   padding: 4px 10px;
   margin-top: -1px;

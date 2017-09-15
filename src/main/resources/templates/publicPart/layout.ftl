@@ -266,6 +266,12 @@
                         <#--</li>-->
                         <#--</@shiro.hasPermission>-->
 
+                            <li id="rebate">
+                                <a href="/finance/rebate">
+                                    代理人返佣账单
+                                </a>
+                            </li>
+
                             <@shiro.hasPermission name="partner:find-all-partner-financial-account">
                                 <li id="partnersFinancialAccount">
                                     <a href="/partner/find-all-partner-financial-account">

@@ -143,7 +143,7 @@
                                     <th>周期</th>
                                     <th>产品名称</th>
                                     <th>单价</th>
-                                    <th>扣用量</th>
+                                    <th>扣费量</th>
                                     <th>金额</th>
                                     <th>状态</th>
                                     <th>操作</th>
@@ -157,7 +157,7 @@
                                             <td data-title="周期">${billDetail.yearMonth!'无'}</td>
                                             <td data-title="产品名称">${billDetail.apiTypeName!'无'}</td>
                                             <td data-title="单价"><a href="javaScript:;" onclick="updateCost(${billDetail.id?c},${billDetail.cost})" data-toggle="tooltip" data-placement="bottom" title="点击修改单价">${billDetail.cost!'0'}</a></td>
-                                            <td data-title="扣用量"><a href="javaScript:;" onclick="updateAmount(${billDetail.id?c},${billDetail.amount?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改扣费量">${billDetail.amount!'0'}</a></td>
+                                            <td data-title="扣费量"><a href="javaScript:;" onclick="updateAmount(${billDetail.id?c},${billDetail.amount?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改扣费量">${billDetail.amount!'0'}</a></td>
                                             <td data-title="金额">${billDetail.consumeAmount!'0'}</td>
                                             <td data-title="状态">${billDetail.isLockName!'无'}</td>
                                             <td data-title="操作"><a href="/finance/vendor-history-bill/detail/log?id=${billDetail.id?c}&vName=${name!'无'}&tName=${billDetail.apiTypeName!'无'}&cyc=${billDetail.yearMonth!'无'}" data-toggle="tooltip" data-placement="bottom" title="点击查看修改日志">修改日志</a></td>

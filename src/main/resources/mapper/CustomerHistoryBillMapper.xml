@@ -209,8 +209,8 @@
 
     <!--新增历史记录-->
     <insert id="addCustomerHistoryBill" parameterType="org.qydata.dst.CustomerHistoryBillDetail">
-        INSERT INTO qyfinance.CustomerHistoryBill(year,month,yearMonth,customerId,apiTypeId,stid,cost,amount,createTime)
-        VALUE(#{year},#{month},#{yearMonth},#{customerId},#{apiTypeId},#{stid},#{cost},#{amount},now())
+        INSERT INTO qyfinance.CustomerHistoryBill(year,month,yearMonth,customerId,apiTypeId,stid,cost,amount,isLock,createTime)
+        VALUE(#{year},#{month},#{yearMonth},#{customerId},#{apiTypeId},#{stid},#{cost},#{amount},0,now())
     </insert>
 
     <!--删除历史记录-->
