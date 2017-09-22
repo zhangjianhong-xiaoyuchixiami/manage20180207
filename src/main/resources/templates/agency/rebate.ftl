@@ -31,7 +31,7 @@
 -->
                     </div>
 
-                    <form action="/excel/extra-account-customer" id="submit_form" class="form-bottom-excel form-top" method="get">
+                    <form action="/finance/rebate" id="submit_form" class="form-bottom-excel form-top" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
@@ -43,7 +43,7 @@
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" <#if statusArray??><#list statusArray as status><#if status=="0">checked="checked"</#if></#list></#if> id="status" name="status" value="0">包含税率
+                                        <input type="checkbox" <#if rate??> checked="checked" </#if> id="rate" name="rate" value="1">包含税率
 
                                     </label>
 
@@ -59,7 +59,7 @@
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" <#if statusArray??><#list statusArray as status><#if status=="0">checked="checked"</#if></#list></#if> id="status" name="status" value="0">包含缓存
+                                        <input type="checkbox" <#if cache??> checked="checked" </#if> id="cache" name="cache" value="1">包含缓存
 
                                     </label>
 
@@ -73,11 +73,11 @@
 
                                 <div class="controls">
 
-                                    <select class="medium m-wrap" multiple id="agency" name="agency">
+                                    <select class="medium m-wrap" id="agency" name="agency">
                                         <option value=""></option>
-                                        <#if companyList??>
-                                            <#list companyList as company>
-                                                <option <#if cid?? && cid==company.id>selected="selected"</#if> value="${company.id}">${company.name}<#if company.partner??>@${(company.partner.name)!''}</#if></option>
+                                        <#if agencyList??>
+                                            <#list agencyList as agency>
+                                                <option <#if agencyId?? && agencyId == agency.id>selected="selected"</#if> value="${agency.id}">${agency.name}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -90,11 +90,17 @@
 
                                 <label class="">请选择代理客户</label>
 
-                                <div class="controls">
+                                <div class="controls" id="cid_chosen">
 
                                     <select class="medium m-wrap" multiple id="cid" name="cid">
                                         <option value=""></option>
+                                        <#if companyList??>
+                                            <#list companyList as company>
+                                                <option <#if companyArray??><#list companyArray as array><#if array?? && array == company.companyId>selected="selected"</#if></#list></#if> value="${company.companyId}">${company.companyName}</option>
+                                            </#list>
+                                        </#if>
                                     </select>
+
                                 </div>
 
                             </div>
@@ -107,9 +113,9 @@
 
                                     <select class="medium m-wrap" multiple id="cyc" name="cyc">
                                         <option value=""></option>
-                                        <#if apiTypeList??>
-                                            <#list apiTypeList as apiType>
-                                                <option <#if tid??><#list tid as tid><#if tid?? && tid == apiType.id>selected="selected"</#if></#list></#if> value="${apiType.id}">${apiType.name}</option>
+                                        <#if cycleList??>
+                                            <#list cycleList as cycle>
+                                                <option <#if cycleArray??><#list cycleArray as array><#if array?? && array == cycle>selected="selected"</#if></#list></#if> value="${cycle}">${cycle}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -146,7 +152,7 @@
 
                                 <div class="actions">
 
-                                    <a class="btn grey hidden-print pull-right" style="margin-top: -9px" id="exportExcel" href="/excel/extra-account-customer?export=true">导出Excel  <i class="icon-share icon-black"></i></a>
+                                    <#--<a class="btn grey hidden-print pull-right" style="margin-top: -9px" id="exportExcel" href="/excel/extra-account-customer?export=true">导出Excel  <i class="icon-share icon-black"></i></a>-->
 
                                     <div class="btn-group">
 
@@ -176,6 +182,8 @@
 
                                             <label><input type="checkbox" checked data-column="7">净利润</label>
 
+                                            <label><input type="checkbox" checked data-column="8">详情</label>
+
                                         </div>
 
                                     </div>
@@ -195,6 +203,7 @@
                                     <th>首次业务回扣</th>
                                     <th>二次业务回扣</th>
                                     <th>净利润</th>
+                                    <th>详情</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -209,6 +218,7 @@
                                         <td>${bill.firstRebate!'--'}</td>
                                         <td>${bill.twiceRebate!'0'}</td>
                                         <td>${bill.netProfit!'0'}</td>
+                                        <td><a href="/finance/rebate/detail?agencyId=${bill.agencyId}">详情</a></td>
                                     </tr>
                                     </#list>
                                 </#if>

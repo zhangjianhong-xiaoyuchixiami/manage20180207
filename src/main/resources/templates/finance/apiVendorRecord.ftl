@@ -23,6 +23,14 @@
 
                 <div class="span12">
 
+                    <div class="alert alert-success">
+
+                        <button class="close" data-dismiss="alert"></button>
+
+                        本页面与金额有关字段单位都是元<br>
+
+                    </div>
+
                 <#--搜索框-->
 
                     <div class="pull-left head-search-bottom head-search-display">
@@ -158,17 +166,19 @@
 
                                         <label><input type="checkbox" checked data-column="2">合作公司</label>
 
-                                        <label><input type="checkbox" checked data-column="3">消费总额</label>
+                                        <label><input type="checkbox" checked data-column="3">充值总额</label>
 
-                                        <label><input type="checkbox" checked data-column="4">所剩余额</label>
+                                        <label><input type="checkbox" checked data-column="4">消费总额</label>
 
-                                        <label><input type="checkbox" data-column="5">上周消费</label>
+                                        <label><input type="checkbox" checked data-column="5">余额</label>
 
-                                        <label><input type="checkbox" data-column="6">上月消费</label>
+                                        <label><input type="checkbox" data-column="6">上周消费</label>
 
-                                        <label><input type="checkbox" checked data-column="7">本月消费</label>
+                                        <label><input type="checkbox" data-column="7">上月消费</label>
 
-                                        <label><input type="checkbox" checked data-column="8">当天消费</label>
+                                        <label><input type="checkbox" checked data-column="8">本月消费</label>
+
+                                        <label><input type="checkbox" checked data-column="9">当天消费</label>
 
                                     </div>
 
@@ -184,39 +194,39 @@
 
                                 <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">上周消费总额&yen;：<#if weekTotleAmount??><span>${(weekTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">上周消费总额&yen;：<span>${weekTotleAmount!'0'}元</span></label>
 
                                 </div>
 
                                 <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">上月消费总额&yen;：<#if monthTotleAmount??><span>${(monthTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">上月消费总额&yen;：<span>${monthTotleAmount!'0'}元</span></label>
 
                                 </div>
 
                                 <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">本月消费总额&yen;：<#if currMonthTotleCost??><span>${(currMonthTotleCost/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">本月消费总额&yen;：<span>${currMonthTotleCost!'0'}元</span></label>
 
                                 </div>
 
                                 <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">当天消费总额&yen;：<#if currDayTotleCost??><span>${(currDayTotleCost/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">当天消费总额&yen;：<span>${currDayTotleCost!'0'}元</span></label>
 
                                 </div>
 
                                 <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：<#if consumeTotleAmount??><span>${(consumeTotleAmount/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+                                    <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：<span>${consumeTotleAmount!'0'}元</span></label>
 
                                 </div>
 
-                                <div class="pull-left label-margin-bottom label-margin-right">
+                            <#--<div class="pull-left label-margin-bottom label-margin-right">-->
 
-                                    <label class="control-label">所剩余额&yen;：<#if totleBalance??><span>${(totleBalance/100.0)?c}元</span><#else ><span>0元</span></#if></label>
+                            <#--<label class="control-label">所剩余额&yen;：<#if totleBalance??><span>${(totleBalance/100.0)?c}元</span><#else ><span>0元</span></#if></label>-->
 
-                                </div>
+                            <#--</div>-->
 
                             <#--表字段总额-->
                             <#-- <div class="pull-right table-top-bottom">
@@ -260,13 +270,14 @@
                                     <tr>
                                         <th>供应商</th>
                                         <th>合作公司</th>
-                                        <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
-                                        <th>所剩余额（单位：元）</th>
-                                        <th>${year!''}年第${week!''}周消费（单位：元）</th>
-                                        <th>${year!''}年${month!''}月消费（单位：元）</th>
-                                        <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
-                                        <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
-                                      <#--  <th style="text-align: center; width: 10%;">操作</th>-->
+                                        <th>充值总额</th>
+                                        <th>消费总额（${beginDate!'开通后'}--${endDate!'至今'})</th>
+                                        <th>余额</th>
+                                        <th>${year!''}年第${week!''}周消费</th>
+                                        <th>${year!''}年${month!''}月消费</th>
+                                        <th>${currYear!''}年${currMonth!''}月消费</th>
+                                        <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费</th>
+                                    <#--  <th style="text-align: center; width: 10%;">操作</th>-->
                                         <th class="table-td-none">类型</th>
                                         <th class="table-td-none">当前价格</th>
                                         <th class="table-td-none">消费总额</th>
@@ -278,15 +289,7 @@
                                         <#if apiFinanceList??>
                                             <#list apiFinanceList as apiFinance>
                                             <tr>
-                                                <#if apiFinance.status == 0>
-                                                <td data-title="供应商">
-                                                <#else >
-                                                <td data-title="供应商" class="font-text-decoration">
-                                                </#if>
-                                                    <a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">
-                                                    ${apiFinance.vendorName}
-                                                    </a>
-                                                </td>
+                                                <td data-title="供应商" <#if apiFinance.status == 0> class="font-text-decoration" </#if> ><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName}</a></td>
                                                 <td data-title="合作公司">
                                                     <#if apiFinance.partnerId??>
                                                         <a href="/api/find-all-api-vendor-consume?partnerId=${apiFinance.partnerId?c}">${apiFinance.partnerName!'无'}</a>
@@ -294,15 +297,16 @@
                                                         无
                                                     </#if>
                                                 </td>
-                                                <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="所剩余额"><#if apiFinance.balance??>${(apiFinance.balance/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="本月消费"><#if apiFinance.currMonthCost??>${(apiFinance.currMonthCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="当天消费"><#if apiFinance.currDayCost??>${(apiFinance.currDayCost/100.0)?c}<#else >0</#if></td>
-                                               <#-- <td data-title="操作" style="text-align: center;width: 10%;">
-                                                    <a href="#form_modal4" onclick="charge(${apiFinance.vendorId})" data-toggle="modal">充值</a>
-                                                </td>-->
+                                                <td data-title="充值总额">${apiFinance.chargeAmount!'0'}</td>
+                                                <td data-title="消费总额">${apiFinance.consumeTotleAmount!'0'}</td>
+                                                <td data-title="余额">${apiFinance.balance!'0'}</td>
+                                                <td data-title="上周消费">${apiFinance.weekTotleCost!'0'}</td>
+                                                <td data-title="上月消费">${apiFinance.monthTotleCost!'0'}</td>
+                                                <td data-title="本月消费">${apiFinance.currMonthCost!'0'}</td>
+                                                <td data-title="当天消费">${apiFinance.currDayCost!'0'}</td>
+                                            <#-- <td data-title="操作" style="text-align: center;width: 10%;">
+                                                 <a href="#form_modal4" onclick="charge(${apiFinance.vendorId})" data-toggle="modal">充值</a>
+                                             </td>-->
                                                 <td data-title="类型" class="table-td-none">
                                                     <#if apiFinance.apiTypeConsumeList??>
                                                         <#list apiFinance.apiTypeConsumeList as apiType>
@@ -460,9 +464,9 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-  <#--  <script src="https://code.highcharts.com/highcharts.js"></script>
+    <#--  <script src="https://code.highcharts.com/highcharts.js"></script>
 
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>-->
+      <script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 
     <script src="/js/myjs/api-vendor.js?v=${ver}"></script>
 

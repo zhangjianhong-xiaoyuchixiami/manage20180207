@@ -5,8 +5,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.SecurityUtils;
-import org.qydata.dst.CustomerApiTypeConsume;
 import org.qydata.dst.CustomerApiVendor;
+import org.qydata.dst.customer.CustomerCurrDayConsume;
+import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.User;
 import org.qydata.service.CustomerFinanceService;
@@ -225,9 +226,30 @@ public class FinanceController {
         Map<String,Object> map = new HashMap<>();
         map.put("customerId",customerId);
         map.put("consuTime",sdf.format(new Date()));
-        List<CustomerApiTypeConsume> customerApiTypeConsumeList = customerFinanceService.queryCustomerCurrDayApiTypeConsume(map);
+        List<CustomerCurrDayConsume> consumeList = customerFinanceService.queryCustomerCurrDayApiTypeConsume(map);
         Map<String,Object> mapJson = new HashMap<>();
-        mapJson.put("customerApiTypeConsumeList",customerApiTypeConsumeList);
+        mapJson.put("consumeList",consumeList);
+        return new Gson().toJson(mapJson);
+    }
+
+    /**
+     * 查询客户当天各产品类型的消费情况，显示供应商和缓存
+     * @param cid
+     * @return
+     * @throws InterruptedException
+     */
+    @RequestMapping(value = "/find-all-customer/curr-day-api-type-consume-detail")
+    @ResponseBody
+    public String queryCustomerCurrDayConsumeDetail(Integer cid,Integer tid,Integer stid) throws InterruptedException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        Map<String,Object> map = new HashMap<>();
+        map.put("customerId",cid);
+        map.put("apiTypeId",tid);
+        map.put("stid",stid);
+        map.put("consuTime",sdf.format(new Date()));
+        List<CustomerCurrDayConsumeDetail> consumeList = customerFinanceService.queryCustomerCurrDayConsumeDetail(map);
+        Map<String,Object> mapJson = new HashMap<>();
+        mapJson.put("consumeList",consumeList);
         return new Gson().toJson(mapJson);
     }
 

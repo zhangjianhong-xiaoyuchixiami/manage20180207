@@ -25,7 +25,7 @@ var vendorMessage = function () {
                     null,
                     null,
                     null,
-                    null,
+                    // null,
                     {"bSortable": false}
                 ],
                 "aaSorting": [[1, 'desc']],

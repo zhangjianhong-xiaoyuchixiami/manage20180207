@@ -28,16 +28,16 @@ var ApiVendorRecord = function () {
                 sOut += '<tr>' +
                     '<th>供应类型</th>' +
                     '<th>当前价格</th>' +
-                    '<th>总消费额（单位：元）</th>' +
+                    '<th>总消费额</th>' +
                     '<th>调用成功次数</th>' +
                     '<th>扣费次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
-                    '<td>'+aData[9]+'</td>' +
                     '<td>'+aData[10]+'</td>' +
                     '<td>'+aData[11]+'</td>' +
                     '<td>'+aData[12]+'</td>' +
                     '<td>'+aData[13]+'</td>' +
+                    '<td>'+aData[14]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -81,6 +81,7 @@ var ApiVendorRecord = function () {
                     null,
                     null,
                     null,
+                    null,
                     { "bVisible": false },
                     { "bVisible": false },
                     null,
@@ -91,7 +92,45 @@ var ApiVendorRecord = function () {
                     { "bVisible": false },
                     { "bVisible": false }
                 ],
-                "aaSorting": [[8, 'desc']],
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [ 1 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 2 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 3 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 4 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 5 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 6 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 7 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 8 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 9 ],
+                        "sType": "html-percent"
+                    }
+                ],
+                "aaSorting": [[9, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

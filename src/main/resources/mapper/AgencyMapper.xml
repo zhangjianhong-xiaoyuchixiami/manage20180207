@@ -6,30 +6,32 @@
 
     <resultMap id="AgencyBill_Map" type="org.qydata.entity.agency.AgencyBill">
         <result column="agencyId" property="agencyId"/>
-        <result column="price" property="price"/>
-        <result column="cost" property="cost"/>
-        <result column="rebateEndPrice" property="rebateEndPrice"/>
-        <result column="resultCount" property="resultCount"/>
+        <result column="priceMoney" property="priceMoney"/>
+        <result column="costMoney" property="costMoney"/>
+        <result column="clearingMoney" property="clearingMoney"/>
         <result column="agencyName" property="agencyName"/>
         <result column="taxRate" property="taxRate"/>
         <result column="rebateRate" property="rebateRate"/>
     </resultMap>
 
     <select id="queryAgencyBill" parameterType="map" resultMap="AgencyBill_Map">
-        SELECT a.agencyId,a.price,a.cost,a.rebateEndPrice,a.resultCount,b.name agencyName,b.taxRate,b.rebateRate
+        SELECT a.agencyId,a.priceMoney,a.costMoney,a.clearingMoney,b.name agencyName,b.taxRate,b.rebateRate
         FROM
         (
-
-            SELECT a.agencyId,c.price*count(c.resultCount) ,c.cost*count(c.resultCount),c.rebateEndPrice*count(c.resultCount),count(c.resultCount) resultCount
-            FROM qyfinance.AgencyCustomer a
-            LEFT JOIN qyfinance.finance_Customer b ON a.companyId = b.companyId
-            LEFT JOIN qyfinance.CustomerRebateBill c ON b.id = c.customerId
-            <where>
-                <if test="agencyList != null and agencyList.length > 0">
-                    AND a.agencyId IN
-                    <foreach collection="agencyList" item="agency" index="index" open="(" close=")" separator=",">
-                        #{agency}
-                    </foreach>
+            SELECT a.agencyId,sum(a.priceMoney) priceMoney,sum(a.costMoney) costMoney,sum(a.firstRebate) clearingMoney
+            FROM
+            (
+                SELECT
+                a.agencyId,
+                c.price * sum(c.resultCount) priceMoney,
+                c.cost * sum(c.resultCount) costMoney,
+                c.rebateEndPrice * sum(c.resultCount) firstRebate
+                FROM qyfinance.finance_agency_company a
+                LEFT JOIN qyfinance.finance_Customer b ON a.companyId = b.companyId
+                LEFT JOIN qyfinance.CustomerRebateBill c ON b.id = c.customerId
+                WHERE a.agencyId IS NOT NULL
+                <if test="agency != null ">
+                    AND a.agencyId = #{agency}
                 </if>
                 <if test="cycList != null and cycList.length > 0">
                     AND c.cycle IN
@@ -46,34 +48,74 @@
                 <if test="noIncludeCache != null">
                     AND c.cost IS NOT NULL
                 </if>
-            </where>
-            GROUP BY a.agencyId,c.price,c.cost,c.rebateEndPrice
+                GROUP BY a.agencyId,c.price,c.cost,c.rebateEndPrice
+            ) a
+            GROUP BY a.agencyId
         ) a
         LEFT JOIN qyfinance.RebateAgency b ON a.agencyId = b.id
     </select>
 
-    <!--<select id="">-->
-        <!--SELECT a.companyId,a.agencyId,b.name,b.taxRate,b.rebateRate,c.-->
-        <!--FROM qyfinance.AgencyCustomer a-->
-        <!--LEFT JOIN qyfinance.RebateAgency b ON a.agencyId = b.id-->
-        <!--LEFT JOIN qyfinance.CustomerRebatePrice c ON a.companyId = c.companyId-->
-    <!--</select>-->
+    <select id="queryRebateAgency" resultType="org.qydata.entity.agency.RebateAgency">
+        SELECT a.id,a.name
+        FROM qyfinance.RebateAgency a
+    </select>
 
-    <!--<select id="">-->
-        <!--SELECT-->
-        <!--FROM qyfinance.CompanyApiTypeConsumeDayCount a-->
-        <!--<where>-->
-            <!--<if test="beginDate != null and beginDate != ''">-->
-               <!--a.consuTime >= #{beginDate}-->
-            <!--</if>-->
-            <!--<if test="endDate != null and endDate != ''">-->
-                <!--<![CDATA[-->
-                <!--AND a.consuTime < #{endDate}-->
-                <!--]]>-->
-            <!--</if>-->
-        <!--</where>-->
-    <!--</select>-->
+    <select id="queryAgencyCustomer" parameterType="map" resultType="org.qydata.entity.agency.AgencyCustomer">
+        SELECT b.id agencyId,b.name agencyName,d.id companyId,c.name companyName
+        FROM qyfinance.finance_agency_company a
+        LEFT JOIN qyfinance.RebateAgency b ON a.agencyId = b.id
+        LEFT JOIN qyfinance.bkvwCustomerCompany c ON a.companyId = c.id
+        LEFT JOIN qyfinance.finance_Customer d ON a.companyId = d.companyId
+        WHERE a.agencyId IS NOT NULL
+        AND d.typeId = 1
+        <if test="agency != null ">
+            AND a.agencyId = #{agency}
+        </if>
+    </select>
 
+    <select id="queryConsumeCycle" resultType="String">
+        SELECT DISTINCT a.cycle
+        FROM qyfinance.CustomerRebateBill a
+        ORDER BY a.cycle DESC
+    </select>
+
+    <resultMap id="AgencyBillDetail_Map" type="org.qydata.entity.agency.AgencyBillDetail">
+        <result column="id" property="id"/>
+        <result column="companyId" property="companyId"/>
+        <result column="customerId" property="customerId"/>
+        <result column="cycle" property="cycle"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="stid" property="stid"/>
+        <result column="apiId" property="apiId"/>
+        <result column="cost" property="cost"/>
+        <result column="price" property="price"/>
+        <result column="rebateBegPrice" property="rebateBegPrice"/>
+        <result column="rebateEndPrice" property="rebateEndPrice"/>
+        <result column="resultCount" property="resultCount"/>
+        <result column="companyName" property="companyName"/>
+        <result column="type_stid_name" property="type_stid_name"/>
+        <result column="vendor_partner_name" property="vendor_partner_name"/>
+    </resultMap>
+
+
+    <select id="queryAgencyBillDetail" parameterType="map" resultMap="AgencyBillDetail_Map">
+        SELECT b.companyId,c.id,c.customerId,c.cycle,c.apiTypeId,c.stid,c.apiId,c.cost,
+        c.price,c.rebateBegPrice,c.rebateEndPrice,c.resultCount,d.name companyName,
+        CONCAT_WS('-',e.name,f.name) type_stid_name,
+        CONCAT_WS('-',h.name ,i.name) vendor_partner_name
+        FROM qyfinance.finance_agency_company a
+        LEFT JOIN qyfinance.finance_Customer b ON a.companyId = b.companyId
+        LEFT JOIN qyfinance.CustomerRebateBill c ON b.id = c.customerId
+        LEFT JOIN qyfinance.bkvwCustomerCompany d ON a.companyId = d.id
+        LEFT JOIN qyfinance.bkvwApiType e ON c.apiTypeId = e.id
+        LEFT JOIN qyfinance.bkvwMobileOperator f ON c.stid = f.id
+        LEFT JOIN qyfinance.finance_Api g ON c.apiId = g.id
+        LEFT JOIN qyfinance.finance_ApiVendor h ON g.vendorId = h.id
+        LEFT JOIN qyfinance.bkvwPartner i ON h.partnerId = i.id
+        WHERE b.typeId = 1
+        AND c.resultCount > 0
+        AND a.agencyId = #{agencyId}
+    </select>
 
 </mapper>
 

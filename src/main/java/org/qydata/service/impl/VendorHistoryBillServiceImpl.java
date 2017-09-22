@@ -75,6 +75,8 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
 
             if (staticBillList != null){
                 for (VendorHistoryBill staticConsume : staticBillList) {
+                    System.out.println(staticConsume.getVendorId());
+                    System.out.println(bill.getVendorId());
                     if (bill.getVendorId() == staticConsume.getVendorId() || bill.getVendorId().equals(staticConsume.getVendorId())){
                         if (staticConsume.getStaticConsumeAmount() != null){
                             bill.setStaticConsumeAmount(staticConsume.getStaticConsumeAmount()/100.0);

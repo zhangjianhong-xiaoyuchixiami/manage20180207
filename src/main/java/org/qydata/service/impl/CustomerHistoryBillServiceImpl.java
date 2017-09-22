@@ -110,7 +110,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                     if (billChargeList != null){
                         for (int j = 0; j < billChargeList.size() ; j++) {
                             CustomerHistoryBill billCharge = billChargeList.get(j);
-                            if (bill.getCustomerId() == billCharge.getCustomerId()){
+                            if (bill.getCustomerId() == billCharge.getCustomerId() || bill.getCustomerId().equals(billCharge.getCustomerId())){
                                 bill.setChargeAmount(billCharge.getChargeAmount()/100.0);
                             }
                         }
@@ -120,7 +120,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                     if (billChargeCurrDayList != null){
                         for (int j = 0; j < billChargeCurrDayList.size() ; j++) {
                             CustomerHistoryBill billChargeCurrDay = billChargeCurrDayList.get(j);
-                            if (bill.getCustomerId() == billChargeCurrDay.getCustomerId()){
+                            if (bill.getCustomerId() == billChargeCurrDay.getCustomerId() || bill.getCustomerId().equals(billChargeCurrDay.getCustomerId())){
                                 bill.setChargeCurrDayAmount(billChargeCurrDay.getChargeCurrDayAmount()/100.0);
                             }
                         }

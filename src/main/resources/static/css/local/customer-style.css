@@ -113,3 +113,38 @@
 .self-error {
     color: #e02222;
 }
+
+.btn-icon_1{
+    border-radius:15%;
+    margin-right: 10px;
+    background-color: #e5e5e5;
+    background-image: none;
+    filter: none;
+    border: 0;
+    padding: 3px 7px;
+    text-shadow: none;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    outline: none;
+    -webkit-box-shadow: none ;
+    -moz-box-shadow: none ;
+    box-shadow: none ;
+}
+.btn-icon_1.red{
+    color: #b94a48;
+}
+.btn-icon_1.black{
+    color: #555555;
+}
+
+
+.btn-icon_1:hover,
+.btn-icon_1:focus,
+.btn-icon_1:active,
+.btn-icon_1.active,
+.btn-icon_1[disabled],
+.btn-icon_1.disabled {
+    background-color: #d8d8d8 !important;
+}

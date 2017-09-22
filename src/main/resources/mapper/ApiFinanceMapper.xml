@@ -252,8 +252,7 @@
         ifnull(ee.currDayCost,0) currDayCost,
         gg.partnerId,
         gg.partnerName,
-        gg.status apiVendorStatus,
-        (ifnull(ff.balance,0)-(ifnull(ee.consumeTotleAmountBalance,0)+ifnull(ee.currDayCost,0))) balance
+        gg.status apiVendorStatus
         FROM
         (
             SELECT
@@ -262,7 +261,6 @@
             sum(bb.weekTotleCost) weekTotleCost,
             sum(cc.monthTotleCost) monthTotleCost,
             sum(dd.consumeTotleAmount) consumeTotleAmount,
-            sum(ee.consumeTotleAmount) consumeTotleAmountBalance,
             sum(currMonth.currMonthCost) currMonthCost,
             sum(currDay.currDayCost) currDayCost
             FROM qyfinance.bkvwApi aa
@@ -296,12 +294,6 @@
                 </where>
                 GROUP BY apiId
             ) dd ON aa.id=dd.apiId
-            LEFT JOIN
-            (
-                SELECT apiId,sum(totleCost) consumeTotleAmount
-                FROM qyfinance.bkvwApiCostDayCount
-                GROUP BY apiId
-            ) ee ON aa.id=ee.apiId
             LEFT JOIN
             (
                 SELECT apiId,sum(totleCost) currMonthCost

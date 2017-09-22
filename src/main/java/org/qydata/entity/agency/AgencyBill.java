@@ -16,6 +16,7 @@ public class AgencyBill {
     private Double rebateRate;
     private Double costMoney;
     private Double priceMoney;
+    private Double clearingMoney;
     private Double grossProfit;
     private Double firstRebate;
     private Double twiceRebate;
@@ -139,5 +140,13 @@ public class AgencyBill {
 
     public void setNetProfit(Double netProfit) {
         this.netProfit = netProfit;
+    }
+
+    public Double getClearingMoney() {
+        return clearingMoney;
+    }
+
+    public void setClearingMoney(Double clearingMoney) {
+        this.clearingMoney = clearingMoney;
     }
 }

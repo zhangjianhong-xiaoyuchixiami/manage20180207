@@ -37,6 +37,7 @@
                 </where>
                 GROUP BY a.vendorId,a.cost
             ) a
+            WHERE a.vendorId IS NOT NULL
             GROUP BY a.vendorId
         ) a
         LEFT JOIN qyfinance.finance_ApiVendor b ON a.vendorId = b.id
@@ -73,7 +74,9 @@
             FROM qyfinance.VendorHistoryBill a
             GROUP BY a.vendorId,a.cost
         ) a
+        WHERE a.vendorId IS NOT NULL
         GROUP BY a.vendorId
+
     </select>
 
     <!--查询供应商当月实时消费（不包括当天）-->

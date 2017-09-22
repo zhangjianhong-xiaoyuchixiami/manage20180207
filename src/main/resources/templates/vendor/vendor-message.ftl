@@ -119,7 +119,7 @@
                                     <th>是否预付</th>
                                     <th>充值金额</th>
                                     <th>消费金额</th>
-                                    <th>余额</th>
+                                    <#--<th>余额</th>-->
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -133,7 +133,7 @@
                                             <td data-title="是否预付"><a href="javaScript:;" onclick="isPrepay(${vendor.vendorId})" data-toggle="tooltip" data-placement="bottom" title="点击修改是否预付">${vendor.isPrepayName!'否'}</a></td>
                                             <td data-title="充值金额"><a href="/vendor/all-vendor/charge-record?vid=${vendor.vendorId}&name=${vendor.vendorName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${vendor.balance!'0'}</a></td>
                                             <td data-title="消费金额">${vendor.totleCost!'0'}</td>
-                                            <td data-title="余额">${vendor.remaining!'0'}</td>
+                                            <#--<td data-title="余额">${vendor.remaining!'0'}</td>-->
                                             <td data-title="操作">
                                                 <a href="#form_modal" data-toggle="modal" onclick="charge(${vendor.vendorId})">正常充值</a>
                                                 |

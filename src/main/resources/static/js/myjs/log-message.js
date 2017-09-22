@@ -56,8 +56,7 @@ var LogLeftBar = function () {
 
             var oTable = $('#sample_1').dataTable({
                 "aoColumns": [
-                    {"bSortable": false
-                    },
+                    {"bSortable": false},
                     null,
                     null,
                     null,

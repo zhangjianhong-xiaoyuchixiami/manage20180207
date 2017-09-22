@@ -31,50 +31,39 @@ var Rebate = function () {
                 allowClear: true
             });
 
-            $("#rate").select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
 
-            $("#cache").select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
+            $("#agency").change(function () {
 
-            $("#cid").change(function () {
+                var param = $('#agency').val();
 
-                var param = $("#cid").val();
+                console.log(param);
 
-                $("#tid_choose ").empty();
-                $("#tid_choose").append('<select class="medium m-wrap" multiple id="tid" name="tid"><option value=""></option></select>');
+                $("#cid_chosen ").empty();
+                $("#cid_chosen").append('<select class="medium m-wrap" multiple id="cid" name="cid"><option value=""></option></select>');
 
                 if (param !=null) {
                     $.ajax({
-                        url: '/excel/find-type-by-cid',
-                        data: {"cid": param},
+                        url: '/finance/rebate/customer',
+                        data: {"agency": param},
                         type: 'post',
                         dataType: 'json',
                         success: function (data) {
                             if(data != null){
                                 for (var i=0; i<data.length; i++){
                                     var op=document.createElement("option");
-                                    op.value=data[i].id;
-                                    op.innerHTML=data[i].name;
-                                    $("#tid").append(op);
+                                    op.value=data[i].companyId;
+                                    op.innerHTML=data[i].companyName;
+                                    $("#cid").append(op);
                                 }
                             }
                         }
                     });
                 }
 
-                $("#tid").select2({
-
+                $("#cid").select2({
                     language: "zh-CN",
                     placeholder: "请选择",
                     allowClear: true
-
                 });
 
             });
@@ -88,7 +77,46 @@ var Rebate = function () {
                     null,
                     null,
                     null,
+                    null,
                     null
+                ],
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [ 0 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 1 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 2 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 3 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 4 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 5 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 6 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 7 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 8 ],
+                        "sType": "html-percent"
+                    }
                 ],
                 "aaSorting": [[0, 'asc']],
                 "bPaginate" : true,
@@ -122,20 +150,20 @@ var Rebate = function () {
                 oTable.fnSetColumnVis(iCol, (bVis ? false : true));
             });
 
-            var tid =[];//定义一个数组
-            tid.push($('#tid').val());
-
-            var href = $("#exportExcel").attr('href');
-
-            if(href) {
-                href += (href.match(/\?/) ? '&' : '?') + 'cid=' + $.getUrlParam('cid') +
-                    (href.match(/\?/) ? '&' : '?') + 'wid=' + $.getUrlParam('wid') +
-                    (href.match(/\?/) ? '&' : '?') + 'tid=' + tid +
-                    (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate') +
-                    (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate');
-
-                $("#exportExcel").attr('href', href);
-            }
+            // var tid =[];//定义一个数组
+            // tid.push($('#tid').val());
+            //
+            // var href = $("#exportExcel").attr('href');
+            //
+            // if(href) {
+            //     href += (href.match(/\?/) ? '&' : '?') + 'cid=' + $.getUrlParam('cid') +
+            //         (href.match(/\?/) ? '&' : '?') + 'wid=' + $.getUrlParam('wid') +
+            //         (href.match(/\?/) ? '&' : '?') + 'tid=' + tid +
+            //         (href.match(/\?/) ? '&' : '?') + 'beginDate=' + $.getUrlParam('beginDate') +
+            //         (href.match(/\?/) ? '&' : '?') + 'endDate=' + $.getUrlParam('endDate');
+            //
+            //     $("#exportExcel").attr('href', href);
+            // }
 
         }
 

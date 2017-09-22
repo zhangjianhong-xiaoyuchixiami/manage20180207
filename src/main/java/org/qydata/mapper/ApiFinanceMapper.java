@@ -82,7 +82,7 @@ public interface ApiFinanceMapper {
   * @return
   * @throws Exception
   */
- public List<ApiFinance> queryApiVendor(Map<String,Object> map)throws Exception;
+ public List<ApiFinance> queryApiVendor(Map<String,Object> map);
 
  /**
   * 查询APIVendor各类型消费情况

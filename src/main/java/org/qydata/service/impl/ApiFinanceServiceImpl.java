@@ -212,12 +212,9 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @DataSourceService
     public Map<String,Object> queryApiVendor(Map<String, Object> map) {
         Map<String,Object> mapParam = new HashMap<>();
-        Map<String,Object> mapTran = new HashMap<>();
-        try {
-            Set<Map.Entry<String,Object>> set = map.entrySet();
-            Iterator<Map.Entry<String,Object>> it = set.iterator();
-            while (it.hasNext()){
-                Map.Entry<String,Object> me = it.next();
+
+        if (map != null){
+            for (Map.Entry<String,Object> me : map.entrySet()) {
                 if (me.getKey().equals("vendorId")){
                     mapParam.put("vendorId",me.getValue());
                 }
@@ -240,47 +237,45 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                     mapParam.put("currMonthTime",me.getValue());
                 }
             }
-            mapParam.put("years", CalendarTools.getYearMonthCount(1));
-            mapParam.put("months",CalendarTools.getMonthCount(1));
-            mapParam.put("weeks",CalendarTools.getYearWeekCount(1));
-            List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiVendor(mapParam);
-            List<ApiFinance> apiFinanceTypeList = apiFinanceMapper.queryApiVendorType(mapParam);
-            if (apiFinanceTypeList != null && apiFinanceTypeList.size() > 0){
-                for (int i=0; i<apiFinanceTypeList.size(); i++){
-                    ApiFinance apiFinance = apiFinanceTypeList.get(i);
-                    List<ApiTypeConsume> apiTypeConsumeList = apiFinance.getApiTypeConsumeList();
-                    if (map.get("endDate") == null || new SimpleDateFormat("yyyy/MM/dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
-                        if (apiTypeConsumeList != null && apiTypeConsumeList.size() >0) {
-                            for (int j = 0; j < apiTypeConsumeList.size(); j++) {
-                                ApiTypeConsume apiTypeConsume = apiTypeConsumeList.get(j);
-                                apiTypeConsume.setApiTypeConsumeTotleAmount(apiTypeConsume.getApiTypeConsumeTotleAmount() + apiTypeConsume.getTypeCurrDayCost());
-                                apiTypeConsume.setApiTypeUsageAmount(apiTypeConsume.getApiTypeUsageAmount() + apiTypeConsume.getTypeCurrDayUsageAmount());
-                                apiTypeConsume.setApiTypefeeAmount(apiTypeConsume.getApiTypefeeAmount() + apiTypeConsume.getTypeFeeCurrDayAmount());
-                            }
-                        }
-                    }
-                }
-            }
-            if (apiFinanceList != null && apiFinanceList.size() >0) {
-                for (int i = 0; i < apiFinanceList.size(); i++) {
-                    ApiFinance apiFinance = apiFinanceList.get(i);
-                    if (map.get("endDate") == null || new SimpleDateFormat("yyyy/MM/dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
-                        apiFinance.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount() + apiFinance.getCurrDayCost());
-                    }
-                    if (apiFinanceTypeList != null && apiFinanceTypeList.size() >0) {
-                        for (int r = 0; r < apiFinanceTypeList.size(); r++) {
-                            ApiFinance apiFinanceType = apiFinanceTypeList.get(r);
-                            if (apiFinance.getVendorId() == apiFinanceType.getVendorId()) {
-                                apiFinance.setApiTypeConsumeList(apiFinanceType.getApiTypeConsumeList());
-                            }
-                        }
-                    }
-                }
-                mapTran.put("queryApiVendor", apiFinanceList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        mapParam.put("years", CalendarTools.getYearMonthCount(1));
+        mapParam.put("months",CalendarTools.getMonthCount(1));
+        mapParam.put("weeks",CalendarTools.getYearWeekCount(1));
+        List<ApiFinance> apiFinanceList = apiFinanceMapper.queryApiVendor(mapParam);
+        List<ApiFinance> apiFinanceTypeList = apiFinanceMapper.queryApiVendorType(mapParam);
+        if (apiFinanceTypeList != null && apiFinanceTypeList.size() > 0){
+            for (int i=0; i<apiFinanceTypeList.size(); i++){
+                ApiFinance apiFinance = apiFinanceTypeList.get(i);
+                List<ApiTypeConsume> apiTypeConsumeList = apiFinance.getApiTypeConsumeList();
+                if (map.get("endDate") == null || new SimpleDateFormat("yyyy/MM/dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
+                    if (apiTypeConsumeList != null && apiTypeConsumeList.size() >0) {
+                        for (int j = 0; j < apiTypeConsumeList.size(); j++) {
+                            ApiTypeConsume apiTypeConsume = apiTypeConsumeList.get(j);
+                            apiTypeConsume.setApiTypeConsumeTotleAmount(apiTypeConsume.getApiTypeConsumeTotleAmount() + apiTypeConsume.getTypeCurrDayCost());
+                            apiTypeConsume.setApiTypeUsageAmount(apiTypeConsume.getApiTypeUsageAmount() + apiTypeConsume.getTypeCurrDayUsageAmount());
+                            apiTypeConsume.setApiTypefeeAmount(apiTypeConsume.getApiTypefeeAmount() + apiTypeConsume.getTypeFeeCurrDayAmount());
+                        }
+                    }
+                }
+            }
+        }
+        if (apiFinanceList != null) {
+            for (ApiFinance apiFinance : apiFinanceList) {
+                if (map.get("endDate") == null || new SimpleDateFormat("yyyy/MM/dd 23:59:59").format(new Date()).equals(map.get("endDate"))) {
+                    apiFinance.setConsumeTotleAmount(apiFinance.getConsumeTotleAmount() + apiFinance.getCurrDayCost());
+                }
+                if (apiFinanceTypeList != null && apiFinanceTypeList.size() >0) {
+                    for (int r = 0; r < apiFinanceTypeList.size(); r++) {
+                        ApiFinance apiFinanceType = apiFinanceTypeList.get(r);
+                        if (apiFinance.getVendorId() == apiFinanceType.getVendorId()) {
+                            apiFinance.setApiTypeConsumeList(apiFinanceType.getApiTypeConsumeList());
+                        }
+                    }
+                }
+            }
+        }
+        Map<String,Object> mapTran = new HashMap<>();
+        mapTran.put("queryApiVendor", apiFinanceList);
         return mapTran;
     }
 
@@ -306,7 +301,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
             apiFinanceMapper.insertApiVendorBalance(apiVendorBalanceOne);
             apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((Long.parseLong(amount)*100)));
         }else {
-           // apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((Long.parseLong(amount)*100) + apiVendorBalance.getBalance()));
+            // apiFinanceMapper.updateApiVendorBalance(vendorIdCharge,((Long.parseLong(amount)*100) + apiVendorBalance.getBalance()));
         }
         return apiFinanceMapper.insertApiVendorBalanceLog(apiVendorBalanceLog);
 

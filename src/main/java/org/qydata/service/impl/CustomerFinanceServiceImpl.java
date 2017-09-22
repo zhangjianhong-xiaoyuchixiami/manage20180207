@@ -3,6 +3,8 @@ package org.qydata.service.impl;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.config.annotation.DataSourceService;
 import org.qydata.dst.*;
+import org.qydata.dst.customer.CustomerCurrDayConsume;
+import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.*;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
@@ -308,8 +310,38 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
-    public List<CustomerApiTypeConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
-        return customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
+    public List<CustomerCurrDayConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
+        List<CustomerCurrDayConsume> consumeList = customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
+        if (consumeList == null) {
+            return null;
+        }
+        for (CustomerCurrDayConsume consume : consumeList) {
+            if (consume != null){
+                if (consume.getSubTypeName() != null){
+                    consume.setApiTypeName(consume.getApiTypeName() + "--" + consume.getSubTypeName());
+                }
+                if (consume.getSumAmount() != null){
+                    consume.setSumAmount(consume.getSumAmount()/100.0);
+                }
+                if (consume.getPrice() != null){
+                    consume.setPrice(consume.getPrice()/100.0);
+                }
+            }
+        }
+        return consumeList;
+    }
+
+    @Override
+    public List<CustomerCurrDayConsumeDetail> queryCustomerCurrDayConsumeDetail(Map<String, Object> map) {
+        List<CustomerCurrDayConsumeDetail> detailList = customerFinanceMapper.queryCustomerCurrDayConsumeDetail(map);
+        if (detailList != null){
+            for (CustomerCurrDayConsumeDetail detail : detailList) {
+                if (detail != null){
+                    detail.setCacheCount(detail.getResultCount() - detail.getResultCostCount());
+                }
+            }
+        }
+        return detailList;
     }
 
     @Override

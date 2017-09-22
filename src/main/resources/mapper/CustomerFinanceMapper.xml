@@ -170,7 +170,7 @@
     </select>
 
     <!--查询客户当天各产品类型的消费情况-->
-    <select id="queryCustomerCurrDayApiTypeConsume" parameterType="map" resultMap="CustomerCurrDayApiTypeConsume_Map">
+    <select id="queryCustomerCurrDayApiTypeConsume" parameterType="map" resultType="org.qydata.dst.customer.CustomerCurrDayConsume">
         SELECT aa.customerId,aa.companyId,aa.apiTypeId,aa.stid,ifnull(aa.sumAmount,0) sumAmount,aa.countTotle,aa.countSuccess,
         bb.price,cc.name apiTypeName,dd.name subTypeName
         FROM
@@ -194,6 +194,31 @@
         LEFT JOIN qyfinance.bkvwApiType cc ON aa.apiTypeId=cc.id
         LEFT JOIN qyfinance.bkvwMobileOperator dd ON aa.stid=dd.id
         ORDER BY aa.countSuccess
+    </select>
+
+    <!--查询客户当天各产品类型的消费情况，显示供应商和缓存-->
+    <select id="queryCustomerCurrDayConsumeDetail" parameterType="map" resultType="org.qydata.dst.customer.CustomerCurrDayConsumeDetail">
+        SELECT a.apiTypeId,a.stid,a.apiId,a.resultCount,a.resultCostCount,CONCAT_WS('-',b.name,c.name) type_stid_name,e.name vendorName
+        FROM
+        (
+            SELECT a.apiTypeId,a.stid,a.apiId,count(a.id) resultCount,count(a.customerReqLogId) resultCostCount
+            FROM
+            (
+                SELECT a.id,a.apiTypeId,ifnull(a.stid,0) stid,ifnull(a.apiId,a.chosenApiId) apiId,c.customerReqLogId
+                FROM qyfinance.fin_cust_req_resp a
+                INNER JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+                LEFT JOIN qyfinance.finance_ApiRequestLog c ON a.id = c.customerReqLogId
+                WHERE a.createTime >= #{consuTime}
+                AND a.customerId = #{customerId}
+            ) a
+            WHERE a.apiTypeId = #{apiTypeId}
+            AND a.stid = #{stid}
+            GROUP BY a.apiTypeId,a.stid,a.apiId
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+        LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid=c.id
+        LEFT JOIN qyfinance.finance_Api d ON a.apiId = d.id
+        LEFT JOIN qyfinance.finance_ApiVendor e ON d.vendorId = e.id
     </select>
 
     <!--根据customerId查询公司名称-->

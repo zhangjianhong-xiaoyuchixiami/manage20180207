@@ -18,14 +18,14 @@ public class ApiFinance implements Serializable {
     private String vendorName;
     private String apiName;
     private Integer status;
-    private Integer balance;
-    private Integer weekTotleCost;
-    private Integer monthTotleCost;
-    private Integer consumeTotleAmount;
+    private Double balance;
+    private Double weekTotleCost;
+    private Double monthTotleCost;
+    private Double consumeTotleAmount;
     private Integer usageAmount;
     private Integer feeUsageAmount;
-    private Integer currMonthCost;
-    private Integer currDayCost;
+    private Double currMonthCost;
+    private Double currDayCost;
     private Integer currMonthUsageAmount;
     private Integer currDayUsageAmount;
     private Integer currDayFeeAmount;
@@ -34,6 +34,7 @@ public class ApiFinance implements Serializable {
     private List<MobileOperator> mobileOperatorList;
     private List<ApiType> apiTypeList;
     private List<ApiTypeConsume> apiTypeConsumeList;
+    private Double chargeAmount;
 
     public Integer getApiId() {
         return apiId;
@@ -91,35 +92,35 @@ public class ApiFinance implements Serializable {
         this.status = status;
     }
 
-    public Integer getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
-    public Integer getWeekTotleCost() {
+    public Double getWeekTotleCost() {
         return weekTotleCost;
     }
 
-    public void setWeekTotleCost(Integer weekTotleCost) {
+    public void setWeekTotleCost(Double weekTotleCost) {
         this.weekTotleCost = weekTotleCost;
     }
 
-    public Integer getMonthTotleCost() {
+    public Double getMonthTotleCost() {
         return monthTotleCost;
     }
 
-    public void setMonthTotleCost(Integer monthTotleCost) {
+    public void setMonthTotleCost(Double monthTotleCost) {
         this.monthTotleCost = monthTotleCost;
     }
 
-    public Integer getConsumeTotleAmount() {
+    public Double getConsumeTotleAmount() {
         return consumeTotleAmount;
     }
 
-    public void setConsumeTotleAmount(Integer consumeTotleAmount) {
+    public void setConsumeTotleAmount(Double consumeTotleAmount) {
         this.consumeTotleAmount = consumeTotleAmount;
     }
 
@@ -139,19 +140,19 @@ public class ApiFinance implements Serializable {
         this.feeUsageAmount = feeUsageAmount;
     }
 
-    public Integer getCurrMonthCost() {
+    public Double getCurrMonthCost() {
         return currMonthCost;
     }
 
-    public void setCurrMonthCost(Integer currMonthCost) {
+    public void setCurrMonthCost(Double currMonthCost) {
         this.currMonthCost = currMonthCost;
     }
 
-    public Integer getCurrDayCost() {
+    public Double getCurrDayCost() {
         return currDayCost;
     }
 
-    public void setCurrDayCost(Integer currDayCost) {
+    public void setCurrDayCost(Double currDayCost) {
         this.currDayCost = currDayCost;
     }
 
@@ -217,5 +218,13 @@ public class ApiFinance implements Serializable {
 
     public void setApiTypeConsumeList(List<ApiTypeConsume> apiTypeConsumeList) {
         this.apiTypeConsumeList = apiTypeConsumeList;
+    }
+
+    public Double getChargeAmount() {
+        return chargeAmount;
+    }
+
+    public void setChargeAmount(Double chargeAmount) {
+        this.chargeAmount = chargeAmount;
     }
 }

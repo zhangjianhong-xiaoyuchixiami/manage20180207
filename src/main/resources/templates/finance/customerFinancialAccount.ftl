@@ -23,6 +23,14 @@
 
                 <div class="span12">
 
+                    <div class="alert alert-success">
+
+                        <button class="close" data-dismiss="alert"></button>
+
+                        本页面与金额有关字段单位都是元<br>
+
+                    </div>
+
                 <#--搜索框-->
 
                     <div class="pull-left head-search-bottom head-search-display">
@@ -385,17 +393,17 @@
                                         <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                             <th style="display: none">合作公司</th>
                                         </@shiro.hasPermission>
-                                        <th>信用额度（单位：元）</th>
-                                        <th>可用额度（单位：元）</th>
-                                        <th>余额（单位：元）</th>
-                                        <th>充值总额（单位：元）</th>
-                                        <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
-                                        <th>${year!''}年第${week!''}周充值（单位：元）</th>
-                                        <th>${year!''}年第${week!''}周消费（单位：元）</th>
-                                        <th>${year!''}年${month!''}月充值（单位：元）</th>
-                                        <th>${year!''}年${month!''}月消费（单位：元）</th>
-                                        <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
-                                        <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
+                                        <th>信用额度</th>
+                                        <th>可用额度</th>
+                                        <th>余额</th>
+                                        <th>充值总额</th>
+                                        <th>消费总额（${beginDate!'开通后'}--${endDate!'至今'})</th>
+                                        <th>${year!''}年第${week!''}周充值</th>
+                                        <th>${year!''}年第${week!''}周消费</th>
+                                        <th>${year!''}年${month!''}月充值</th>
+                                        <th>${year!''}年${month!''}月消费</th>
+                                        <th>${currYear!''}年${currMonth!''}月消费</th>
+                                        <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费</th>
                                         <th class="table-td-none">产品类型</th>
                                         <th class="table-td-none">产品价格</th>
                                         <th class="table-td-none">总消费额</th>

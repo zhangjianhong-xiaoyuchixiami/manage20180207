@@ -1,7 +1,8 @@
 package org.qydata.service;
 
-import org.qydata.dst.CustomerApiTypeConsume;
 import org.qydata.dst.CustomerApiVendor;
+import org.qydata.dst.customer.CustomerCurrDayConsume;
+import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 
@@ -26,7 +27,15 @@ public interface CustomerFinanceService {
      * @param map
      * @return
      */
-    public List<CustomerApiTypeConsume> queryCustomerCurrDayApiTypeConsume(Map<String,Object> map);
+    public List<CustomerCurrDayConsume> queryCustomerCurrDayApiTypeConsume(Map<String,Object> map);
+
+    /**
+     * 查询客户当天各产品类型的消费情况，显示供应商和缓存
+     * @param map
+     * @return
+     */
+    public List<CustomerCurrDayConsumeDetail> queryCustomerCurrDayConsumeDetail(Map<String,Object> map);
+
 
     /**
      * 根据customerId查询公司名称

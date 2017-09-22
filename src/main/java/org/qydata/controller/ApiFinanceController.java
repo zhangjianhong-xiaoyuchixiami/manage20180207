@@ -5,8 +5,10 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.dst.ApiFinance;
+import org.qydata.dst.VendorHistoryBill;
 import org.qydata.entity.ApiVendor;
 import org.qydata.service.ApiFinanceService;
+import org.qydata.service.VendorHistoryBillService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.date.CalendarUtil;
@@ -27,7 +29,11 @@ import java.util.*;
 @RequestMapping("/api")
 public class ApiFinanceController {
 
-    @Autowired private ApiFinanceService apiFinanceService;
+    @Autowired
+    private ApiFinanceService apiFinanceService;
+
+    @Autowired
+    private VendorHistoryBillService billService;
 
     /**
      * Api消费账单
@@ -78,11 +84,11 @@ public class ApiFinanceController {
                 apiFinanceList = (List<ApiFinance>) me.getValue();
             }
         }
-        long weekTotleAmount = 0L;
-        long monthTotleAmount = 0L;
-        long consumeTotleAmount = 0L;
-        long currMonthTotleCost = 0L;
-        long currDayTotleCost = 0L;
+        double weekTotleAmount = 0.0;
+        double monthTotleAmount = 0.0;
+        double consumeTotleAmount = 0.0;
+        double currMonthTotleCost = 0.0;
+        double currDayTotleCost = 0.0;
         for (int j=0; j<apiFinanceList.size(); j++){
             ApiFinance apiFinance = apiFinanceList.get(j);
             if (apiFinance.getCurrMonthCost() != null) {
@@ -201,22 +207,59 @@ public class ApiFinanceController {
         map.put("statusList", statusList);
         map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
         map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
-        List<ApiFinance> apiFinanceList = null;
+
         Map<String,Object> mapResult = apiFinanceService.queryApiVendor(map);
-        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
-        Iterator<Map.Entry<String,Object>> it = set.iterator();
-        while(it.hasNext()){
-            Map.Entry<String,Object> me = it.next();
-            if (me.getKey().equals("queryApiVendor")){
-                apiFinanceList = (List<ApiFinance>) me.getValue();
+        Map<String,Object> resu = billService.queryVendorHistoryBill(null);
+        List<ApiFinance> apiFinanceList = null;
+        List<VendorHistoryBill> billList = null;
+        if (mapResult != null){
+            for (Map.Entry<String,Object> me : mapResult.entrySet()) {
+                if (me.getKey().equals("queryApiVendor")){
+                    apiFinanceList = (List<ApiFinance>) me.getValue();
+                }
             }
         }
-        long totleBalance = 0L;
-        long currMonthTotleCost = 0L;
-        long currDayTotleCost = 0L;
-        long weekTotleAmount = 0L;
-        long monthTotleAmount = 0L;
-        long consumeTotleAmount = 0L;
+        if (resu != null){
+            for (Map.Entry<String,Object> me : resu.entrySet()) {
+                if (me.getKey().equals("billList")){
+                    billList = (List<VendorHistoryBill>) me.getValue();
+                }
+            }
+        }
+        if (apiFinanceList != null){
+            if (billList != null){
+                for (ApiFinance finance : apiFinanceList) {
+                    if (finance.getConsumeTotleAmount() != null){
+                        finance.setConsumeTotleAmount(finance.getConsumeTotleAmount()/100.0);
+                    }
+                    if (finance.getWeekTotleCost() != null){
+                        finance.setWeekTotleCost(finance.getWeekTotleCost()/100.0);
+                    }
+                    if (finance.getMonthTotleCost() != null){
+                        finance.setMonthTotleCost(finance.getMonthTotleCost()/100.0);
+                    }
+                    if (finance.getCurrMonthCost() != null){
+                        finance.setCurrMonthCost(finance.getCurrMonthCost()/100.0);
+                    }
+                    if (finance.getCurrDayCost() != null){
+                        finance.setCurrDayCost(finance.getCurrDayCost()/100.0);
+                    }
+                    for (VendorHistoryBill bill : billList) {
+                        if (finance.getVendorId() == bill.getVendorId() || finance.getVendorId().equals(bill.getVendorId())){
+                            finance.setBalance(bill.getBalance());
+                            finance.setChargeAmount(bill.getChargeAmount());
+                        }
+                    }
+                }
+            }
+        }
+
+        double totleBalance = 0.0;
+        double currMonthTotleCost = 0.0;
+        double currDayTotleCost = 0.0;
+        double weekTotleAmount = 0.0;
+        double monthTotleAmount = 0.0;
+        double consumeTotleAmount = 0.0;
         if (apiFinanceList != null && apiFinanceList.size() >0) {
             for (int j = 0; j < apiFinanceList.size(); j++) {
                 ApiFinance apiFinance = apiFinanceList.get(j);
