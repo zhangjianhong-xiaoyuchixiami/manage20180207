@@ -314,6 +314,8 @@ public class ShiroConfig {
 		chains.put("/finance/find-all-customer/company-name", "authc");
 		chains.put("/email/preview-customer-finance-account", "authc");
 		chains.put("/email/send-customer-finance-account", "authc");
+		chains.put("/finance/find-all-customer/curr-day-api-type-consume-detail", "authc");
+
 		//远程下载Excel，不能配置
 		//chains.put("/download-consume-check", "authc");
 
@@ -453,6 +455,15 @@ public class ShiroConfig {
 		chains.put("/finance/api-turnover-bill/trend", "authc,perms");
 		chains.put("/finance/api-turnover-bill/trend-data", "authc,perms");
 
+		//CompanyBalanceMonitorController
+		chains.put("/company/balance-monitor", "authc,perms");
+		chains.put("/company/balance-monitor/update-prepay", "authc,perms");
+		chains.put("/company/balance-monitor/update-alarm", "authc,perms");
+		chains.put("/company/balance-monitor/update-remind-customer", "authc,perms");
+		chains.put("/company/balance-monitor/update-ahead", "authc,perms");
+		chains.put("/company/balance-monitor/query-email", "authc,perms");
+		chains.put("/company/balance-monitor/query-email/delete", "authc,perms");
+		chains.put("/company/balance-monitor/query-email/add", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

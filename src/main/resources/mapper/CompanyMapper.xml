@@ -45,6 +45,7 @@
         <result column="btypeName" property="btypeName"/>
         <result column="cvendorName" property="cvendorName"/>
         <result column="apiId" property="apiId"/>
+        <result column="minCost" property="minCost"/>
         <association property="apiType" javaType="org.qydata.entity.ApiType">
             <result column="apiTypeName" property="name"/>
         </association>
@@ -133,7 +134,7 @@
     <select id="queryCompanyApiByCompanyId" parameterType="map" resultMap="CompanyApi_ApiType_Map">
         SELECT a.id,a.companyId,a.apiTypeId,a.subTypeId,a.price,a.enabled,a.createTime,
         a.apiTypeName,a.subTypeName,a.type_stid_name,a.apiId,
-        b.name btypeName,c.name cvendorName
+        b.name btypeName,c.name cvendorName,d.minCost
         FROM
         (
             SELECT a.id,a.companyId,a.apiTypeId,a.subTypeId,a.price,a.enabled,a.createTime,
@@ -146,6 +147,12 @@
         ) a
         LEFT JOIN qyfinance.bkvwApiType b ON a.bapiTypeId = b.id
         LEFT JOIN qyfinance.finance_ApiVendor c ON a.bvendorId = c.id
+        LEFT JOIN
+        (
+            SELECT a.apiTypeId,ifnull(a.mobileOperatorId,0) stid,min(a.cost) minCost
+            FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+            GROUP BY a.apiTypeId,a.mobileOperatorId
+        ) d ON a.apiTypeId = d.apiTypeId AND a.subTypeId = d.stid
     </select>
 
     <!--查询全部产品权限-->

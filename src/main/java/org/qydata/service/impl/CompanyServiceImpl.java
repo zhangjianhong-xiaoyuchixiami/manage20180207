@@ -237,12 +237,21 @@ public class CompanyServiceImpl implements CompanyService {
                 if (companyApi != null){
                     if (companyApi.getBtypeName() != null){
                         if (companyApi.getCvendorName() != null){
-                            companyApi.setBtypeName(companyApi.getBtypeName() + "@" + companyApi.getCvendorName());
+                            companyApi.setBtypeName(companyApi.getBtypeName() + "@" + companyApi.getCvendorName() + "--apiId：" + companyApi.getApiId() );
                         }else {
                             companyApi.setBtypeName(companyApi.getBtypeName());
                         }
                     }else {
                         companyApi.setBtypeName("无");
+                    }
+                    if (companyApi.getMinCost() != null && companyApi.getPrice() != null){
+                        companyApi.setProfit((companyApi.getPrice() - companyApi.getMinCost())/100.0);
+                    }
+                    if (companyApi.getMinCost() != null && companyApi.getPrice() == null){
+                        companyApi.setProfit(-(companyApi.getMinCost())/100.0);
+                    }
+                    if (companyApi.getMinCost() == null && companyApi.getPrice() != null){
+                        companyApi.setProfit((companyApi.getPrice())/100.0);
                     }
                 }
             }
@@ -437,7 +446,7 @@ public class CompanyServiceImpl implements CompanyService {
                 if (api != null){
                     if (api.getTypeName() != null){
                         if (api.getVendorName() != null){
-                            api.setName(api.getTypeName() + "@" + api.getVendorName());
+                            api.setName(api.getTypeName() + "@" + api.getVendorName() + "--apiId：" + api.getId());
                         }
                     }
                 }

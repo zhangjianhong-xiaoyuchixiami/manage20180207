@@ -97,7 +97,6 @@
         <result column="vendor_partner_name" property="vendor_partner_name"/>
     </resultMap>
 
-
     <select id="queryAgencyBillDetail" parameterType="map" resultMap="AgencyBillDetail_Map">
         SELECT b.companyId,c.id,c.customerId,c.cycle,c.apiTypeId,c.stid,c.apiId,c.cost,
         c.price,c.rebateBegPrice,c.rebateEndPrice,c.resultCount,d.name companyName,
@@ -116,6 +115,52 @@
         AND c.resultCount > 0
         AND a.agencyId = #{agencyId}
     </select>
+
+    <!--修改扣费量-->
+    <update id="updateRebateBillAmount" parameterType="int">
+        UPDATE qyfinance.CustomerRebateBill
+        SET resultCount = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--修改单价-->
+    <update id="updateRebateBillCost" parameterType="int">
+        UPDATE qyfinance.CustomerRebateBill
+        SET cost = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--修改售价-->
+    <update id="updateRebateBillPrice" parameterType="int">
+        UPDATE qyfinance.CustomerRebateBill
+        SET price = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--修改返佣起始价-->
+    <update id="updateRebateBillBeginPrice" parameterType="int">
+        UPDATE qyfinance.CustomerRebateBill
+        SET rebateBegPrice = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--修改返佣结算价-->
+    <update id="updateRebateBillEndPrice" parameterType="int">
+        UPDATE qyfinance.CustomerRebateBill
+        SET rebateEndPrice = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--删除历史记录-->
+    <delete id="deleteRebateDetail" parameterType="list">
+        DELETE FROM qyfinance.CustomerRebateBill
+        WHERE id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
 
 </mapper>
 

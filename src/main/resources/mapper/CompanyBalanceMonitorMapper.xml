@@ -3,15 +3,98 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.CompanyBalanceMonitorMapper">
 
-    
-    <select id="queryCompanyBalanceMonitor">
-        SELECT a.id,a.name,a.partnerId,a.status,
-        b.isPrepay,b.isSendOpposite,b.ahead,c.name
+    <!--查询客户余额报警列表-->
+    <select id="queryCompanyBalanceMonitor" parameterType="map" resultType="org.qydata.entity.monitor.CompanyBalanceMonitor">
+        SELECT a.id companyId,a.name companyName,a.partnerId,a.status,
+        b.isPrepay,b.isAlarm,b.isRemindCustomer,b.ahead,c.name partnerName
         FROM qyfinance.bkvwCustomerCompany a
-        LEFT JOIN qyfinance.CompanyExt b ON a.id = b.companyId
+        LEFT JOIN qyfinance.CompanyBalanceMonitor b ON a.id = b.companyId
         LEFT JOIN qyfinance.bkvwPartner c ON a.partnerId = c.id
-
+        <where>
+            <if test="name!=null and name!=''">
+                and a.name like '%${name}%'
+            </if>
+            <if test="pid != null and pid != ''">
+                AND a.partnerId = #{pid}
+            </if>
+            <if test="nullPid != null and nullPid != ''">
+                AND a.partnerId IS NULL
+            </if>
+        </where>
     </select>
+
+    <!--查找是否已添加余额报警客户-->
+    <select id="queryCompanyBalanceMonitorById" parameterType="int" resultType="org.qydata.entity.monitor.CompanyBalanceMonitor">
+        SELECT a.companyId,a.isPrepay,a.isAlarm,a.isRemindCustomer,a.ahead
+        FROM qyfinance.CompanyBalanceMonitor a
+        WHERE a.companyId = #{param}
+    </select>
+
+    <!--插入余额报警客户-->
+    <insert id="insertCompanyBalanceMonitor" parameterType="org.qydata.entity.monitor.CompanyBalanceMonitor">
+        INSERT INTO qyfinance.`CompanyBalanceMonitor` (
+        `companyId`,
+        `isPrepay`,
+        `isAlarm`,
+        `isRemindCustomer`,
+        `ahead`
+        )
+        VALUES(#{companyId},#{isPrepay},#{isAlarm},#{isRemindCustomer},#{ahead})
+    </insert>
+
+    <!--修改是否预付-->
+    <update id="updatePrepay" parameterType="int">
+        UPDATE qyfinance.CompanyBalanceMonitor
+        SET isPrepay = #{param2}
+        WHERE companyId = #{param1}
+    </update>
+
+    <!--修改是否报警-->
+    <update id="updateAlarm" parameterType="int">
+        UPDATE qyfinance.CompanyBalanceMonitor
+        SET isAlarm = #{param2}
+        WHERE companyId = #{param1}
+    </update>
+
+    <!--修改是否提醒客户-->
+    <update id="updateRemindCustomer" parameterType="int">
+        UPDATE qyfinance.CompanyBalanceMonitor
+        SET isRemindCustomer = #{param2}
+        WHERE companyId = #{param1}
+    </update>
+
+    <!--修改余额可以几天提醒客户-->
+    <update id="updateAhead" parameterType="int">
+        UPDATE qyfinance.CompanyBalanceMonitor
+        SET ahead = #{param2}
+        WHERE companyId = #{param1}
+    </update>
+
+    <!--查询邮箱-->
+    <select id="queryEmailById" parameterType="map" resultType="org.qydata.entity.CustomerCompanyEmail">
+        SELECT a.id,a.email
+        FROM qyfinance.CustomerCompanyEmail a
+        WHERE a.companyId = #{cid}
+    </select>
+
+    <!--删除邮箱-->
+    <delete id="deleteEmail" parameterType="int">
+        DELETE FROM qyfinance.CustomerCompanyEmail
+        WHERE id = #{param1} AND companyId = #{param2}
+    </delete>
+
+    <!--添加邮箱-->
+    <insert id="addEmail" parameterType="org.qydata.entity.CustomerCompanyEmail">
+        INSERT INTO qyfinance.CustomerCompanyEmail(companyId,email,createTime)
+        VALUES(#{companyId},#{email},now())
+    </insert>
+
+    <!--查询合作公司-->
+    <select id="queryAllPartner" resultType="org.qydata.entity.Partner">
+        SELECT id,name
+        FROM qyfinance.bkvwPartner
+    </select>
+
 
 </mapper>
 

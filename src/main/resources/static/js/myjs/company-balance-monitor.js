@@ -11,7 +11,9 @@ var CompanyBalanceMonitor = function () {
                     null,
                     null,
                     null,
-                    null
+                    null,
+                    null,
+                    { "bSortable": false}
                 ],
                 "aoColumnDefs": [
                     {
@@ -19,17 +21,15 @@ var CompanyBalanceMonitor = function () {
                         "sType": "html-percent"
                     }
                 ],
-                "aaSorting": [[3, 'desc']],
+                "aaSorting": [[1, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
                 ],
                 "bFilter" : false, //设置全文搜索框，默认true
-
                 "iDisplayLength": 15, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
-
                 "oLanguage" : {  //设置语言
                     "sLengthMenu" : "每页显示 _MENU_ 条记录",
                     "sZeroRecords" : "对不起，没有匹配的数据",

@@ -289,7 +289,7 @@
                                         <#if apiFinanceList??>
                                             <#list apiFinanceList as apiFinance>
                                             <tr>
-                                                <td data-title="供应商" <#if apiFinance.status == 0> class="font-text-decoration" </#if> ><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName}</a></td>
+                                                <td data-title="供应商" <#if apiFinance.status != 0> class="font-text-decoration" </#if> ><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName}</a></td>
                                                 <td data-title="合作公司">
                                                     <#if apiFinance.partnerId??>
                                                         <a href="/api/find-all-api-vendor-consume?partnerId=${apiFinance.partnerId?c}">${apiFinance.partnerName!'无'}</a>

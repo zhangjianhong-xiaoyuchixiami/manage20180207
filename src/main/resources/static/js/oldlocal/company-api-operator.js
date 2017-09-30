@@ -23,7 +23,7 @@ function findCompanyApi(companyId) {
         dataType: "json",
         beforeSend:function () {
             var myContent = "<tr>" +
-                "<td rowspan='5'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "<td rowspan='7'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                 "</tr>"
             $("#simple_company_api_1 tbody").append(myContent);
         },
@@ -39,7 +39,9 @@ function findCompanyApi(companyId) {
                     if (data[i].enabled != 0) {
                         myContent = "<tr>" +
                             "<td>" + data[i].type_stid_name + "</td>" +
+                            "<td>" + data[i].minCost /100.0 + "</td>" +
                             "<td><a href='javaScript:;' onclick='updatePrice("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +")'>"+ (data[i].price / 100.0) +"</a></td>" +
+                            "<td>" + data[i].profit + "</td>" +
                             "<td><a href='javaScript:;' onclick='updateAppointApi("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +','+ data[i].apiId +")'>" + data[i].btypeName + "</a></td>" +
                             "<td>正在使用</td>" +
                             "<td><a class='warning' href='javaScript:;' onclick='banCompanyApi(" + data[i].id + ',' + companyId + ")'>禁用</a></td>" +
@@ -48,7 +50,9 @@ function findCompanyApi(companyId) {
                     }else {
                         myContent = "<tr>" +
                             "<td class='font-text-decoration'>" + data[i].type_stid_name + "</td>" +
+                            "<td>" + data[i].minCost /100.0 + "</td>" +
                             "<td><a href='javaScript:;' onclick='updatePrice("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +")'>"+ (data[i].price / 100.0) +"</a></td>" +
+                            "<td>" + data[i].profit + "</td>" +
                             "<td><a href='javaScript:;' onclick='updateAppointApi("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +','+ data[i].apiId +")'>" + data[i].btypeName + "</a></td>" +
                             "<td>已禁用</td>" +
                             "<td><a href='javaScript:;' onclick='unBanCompanyApi(" + data[i].id + ',' + companyId + ")'>启用</a></td>" +
@@ -61,6 +65,8 @@ function findCompanyApi(companyId) {
 
             oTableEdit = $('#simple_company_api_1').dataTable({
                 "aoColumns": [
+                    { "bSortable": false},
+                    { "bSortable": false},
                     { "bSortable": false},
                     { "bSortable": false},
                     { "bSortable": false},
@@ -129,7 +135,7 @@ $('#simple_company_api_1_new').on('click',function (e) {
                 return;
             }else {
                 e.preventDefault();
-                var aiNew = oTableEdit.fnAddData(['', '', '', '','']);
+                var aiNew = oTableEdit.fnAddData(['', '', '','','', '','']);
                 var nRow = oTableEdit.fnGetNodes(aiNew[0]);
                 editRow(oTableEdit, nRow);
                 nEditing = nRow;
@@ -154,11 +160,13 @@ function editRow(oTableEdit, nRow) {
 
             jqTds[0].innerHTML = '<select class="medium m-wrap" id="apiTypeId_subTypeId" name="apiTypeId_subTypeId">' +
                 '<option value=""></option></select>';
-            jqTds[1].innerHTML = '<input type="text" class="span9 m-wrap" id="apiType_price" name="apiType_price" placeholder="单位：元">';
-            jqTds[2].innerHTML = '<select class="medium m-wrap" id="tid_stid_aid" name="tid_stid_aid">' +
-                '<option value=""></option></select>';
+            jqTds[1].innerHTML = '';
+            jqTds[2].innerHTML = '<input type="text" class="span9 m-wrap" id="apiType_price" name="apiType_price" placeholder="单位：元">';
             jqTds[3].innerHTML = '';
-            jqTds[4].innerHTML = '<a class="save" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancel" href="javaScript:;">取消</a>';
+            jqTds[4].innerHTML = '<select class="medium m-wrap" id="tid_stid_aid" name="tid_stid_aid">' +
+                '<option value=""></option></select>';
+            jqTds[5].innerHTML = '';
+            jqTds[6].innerHTML = '<a class="save" href="javaScript:;">保存</a>&nbsp;|&nbsp;<a class="cancel" href="javaScript:;">取消</a>';
 
             if (data != null){
                 var myContent = null;

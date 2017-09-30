@@ -439,12 +439,7 @@
                                                 <td data-title="可用额度">${(customer.surplusFloor/100.0)!'0'}</td>
                                                 <td data-title="账号余额">${(customer.balance/100.0)!'0'}</td>
                                                 <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${(customer.chargeTotleAmount/100.0)!'0'}</a></td>
-                                                <@shiro.hasPermission name="customer:findAllCustomer">
-                                                <td data-title="消费总额"><a href="/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看消费记录">${(-customer.consumeTotleAmount/100.0)!'0'}</a></td>
-                                                </@shiro.hasPermission>
-                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                    <td data-title="消费总额">${(-customer.consumeTotleAmount/100.0)!'0'}</td>
-                                                </@shiro.hasPermission>
+                                                <td data-title="消费总额">${(-customer.consumeTotleAmount/100.0)!'0'}</td>
                                                 <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}">${(customer.chargeWeekTotleAmount/100.0)!'0'}</a></td>
                                                 <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}">${(-customer.consumeWeekTotleAmount/100.0)!'0'}</a></td>
                                                 <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}">${(customer.chargeMonthTotleAmount/100.0)!'0'}</a></td>

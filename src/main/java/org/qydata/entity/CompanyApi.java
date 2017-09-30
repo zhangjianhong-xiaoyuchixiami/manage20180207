@@ -22,6 +22,8 @@ public class CompanyApi implements Serializable {
     private String btypeName;
     private String cvendorName;
     private Integer apiId;
+    private Double minCost;
+    private Double profit;
     private ApiType apiType;
     private MobileOperator mobileOperator;
     private CompanyApiCount companyApiCount;
@@ -144,5 +146,21 @@ public class CompanyApi implements Serializable {
 
     public void setType_stid(String type_stid) {
         this.type_stid = type_stid;
+    }
+
+    public Double getMinCost() {
+        return minCost;
+    }
+
+    public void setMinCost(Double minCost) {
+        this.minCost = minCost;
+    }
+
+    public Double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(Double profit) {
+        this.profit = profit;
     }
 }

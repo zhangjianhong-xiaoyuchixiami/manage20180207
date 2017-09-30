@@ -271,7 +271,7 @@
                                         <th>${year!''}年${month!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
                                         <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
-                                        <th style="text-align: center; width: 10%;" >操作</th>
+                                        <#--<th style="text-align: center; width: 10%;" >操作</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -296,9 +296,9 @@
                                                 <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="本月消费"><#if apiFinance.currMonthCost??>${(apiFinance.currMonthCost/100.0)?c}<#else >0</#if></td>
                                                 <td data-title="当天消费"><#if apiFinance.currDayCost??>${(apiFinance.currDayCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="操作" style="text-align: center; width: 10%;">
-                                                    <a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a>
-                                                </td>
+                                                <#--<td data-title="操作" style="text-align: center; width: 10%;">-->
+                                                    <#--<a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a>-->
+                                                <#--</td>-->
                                             </tr>
                                             </#list>
                                         </#if>

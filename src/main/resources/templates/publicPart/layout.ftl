@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.9'/>
+    <#assign ver='1.0.0.13'/>
 
 <!DOCTYPE html>
 
@@ -157,11 +157,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                        <#--<li id="customerBalanceMonitorList">-->
-                        <#--<a href="/company/balance-monitor">-->
-                        <#--客户余额报警-->
-                        <#--</a>-->
-                        <#--</li>-->
+                            <@shiro.hasPermission name="company:balance-monitor">
+                                <li id="customerBalanceMonitorList">
+                                    <a href="/company/balance-monitor">
+                                        客户余额报警
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
                         </ul>
                     </li>
@@ -320,13 +322,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="api:api-monitor">
-                                <li id="apiMonitor">
-                                    <a href="/api/api-monitor">
-                                        产品监控
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="api:api-monitor">-->
+                                <#--<li id="apiMonitor">-->
+                                    <#--<a href="/api/api-monitor">-->
+                                        <#--产品监控-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
                             <@shiro.hasPermission name="api:api-price-change-log">
                                 <li id="apiPriceChangeLog">

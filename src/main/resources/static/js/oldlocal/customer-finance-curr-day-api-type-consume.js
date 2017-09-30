@@ -42,7 +42,7 @@ function currDayApiTypeConsume(customerId) {
                         if (data[i].price == null) {
                             myContent = "<tr>" +
                                 "<td>" +
-                                "<a href='javaScript:;' onclick='currDayDetail("+ data[i].apiTypeName +','+ data[i].customerId +','+ data[i].apiTypeId +','+ data[i].stid +")'>" + data[i].apiTypeName + "</a>" +
+                                "<a href='javaScript:;' onclick='currDayDetail("+ data[i].customerId +','+ data[i].apiTypeId +','+ data[i].stid +")'>" + data[i].apiTypeName + "</a>" +
                                 "</td>" +
                                 "<td>" + '未知' + "</td>" +
                                 "<td>" + -data[i].sumAmount + "</td>" +
@@ -51,7 +51,9 @@ function currDayApiTypeConsume(customerId) {
                                 "</tr>";
                         } else {
                             myContent = "<tr>" +
-                                "<td><a href='javaScript:;' onclick='currDayDetail("+ data[i].apiTypeName +','+ data[i].customerId +','+ data[i].apiTypeId +','+ data[i].stid +")'>" + data[i].apiTypeName + "</a></td>" +
+                                "<td>" +
+                                "<a href='javaScript:;' onclick='currDayDetail("+ data[i].customerId +','+ data[i].apiTypeId +','+ data[i].stid +")'>" + data[i].apiTypeName + "</a>" +
+                                "</td>" +
                                 "<td>" + data[i].price + "</td>" +
                                 "<td>" + -data[i].sumAmount + "</td>" +
                                 "<td>" + data[i].countTotle + "</td>" +
@@ -72,9 +74,28 @@ function currDayApiTypeConsume(customerId) {
     });
 }
 
-function currDayDetail(name,cid,tid,stid) {
+function currDayDetail(cid,tid,stid){
 
-    alert("nihao")
+    swal({
+        title: '详情',
+        html:
+        '<table class="table table-hover table-condensed" id="simple_1_detail">' +
+        '<thead>' +
+        '<tr>' +
+        '<th>供应商</th>' +
+        '<th>上游扣费量</th>' +
+        '<th>调用缓存量</th>' +
+        '</tr>' +
+        '</thead>'+
+        '<tbody>' +
+        '</tbody>'+
+        '</table>',
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false
+    });
+
+    $("#simple_1_detail tbody").empty();
 
     $.ajax({
         type: "post",
@@ -88,34 +109,29 @@ function currDayDetail(name,cid,tid,stid) {
             $("#simple_1_detail tbody").append(myContent);
         },
         success:function (result) {
+            $("#simple_1_detail tbody").empty();
             if (result != null && result.consumeList != null){
                 var data = result.consumeList;
-                for (var i = 0; i < data.length; i++) {
+                if (data.length > 0){
+                    for (var i = 0; i < data.length; i++) {
+                        var myContent = "<tr>" +
+                            "<td>" + data[i].vendorName + "</td>" +
+                            "<td>" + data[i].resultCostCount + "</td>" +
+                            "<td>" + data[i].cacheCount + "</td>" +
+                            "</tr>";
+                        $("#simple_1_detail tbody").append(myContent);
+                    }
+                }else {
                     var myContent = "<tr>" +
-                        "<td>" + data[i].vendorName + "</td>" +
-                        "<td>" + data[i].resultCostCount + "</td>" +
-                        "<td>" + data[i].cacheCount + "</td>" +
+                        "<td rowspan='3'>" + '无记录' + "</td>" +
                         "</tr>";
                     $("#simple_1_detail tbody").append(myContent);
                 }
-                swal({
-                    title: name,
-                    html:
-                    '<table class="table table-hover table-condensed" id="simple_1_detail">' +
-                    '<thead>' +
-                    '<tr>' +
-                    '<th>供应商</th>' +
-                    '<th>上游扣费量</th>' +
-                    '<th>调用缓存量</th>' +
-                    '</tr>' +
-                    '</thead>'+
-                    '<tbody>' +
-                    '</tbody>'+
-                    '</table>',
-                    showCloseButton: true,
-                    showCancelButton: false,
-                    showConfirmButton: false
-                })
+            }else {
+                var myContent = "<tr>" +
+                    "<td rowspan='3'>" + '无记录' + "</td>" +
+                    "</tr>";
+                $("#simple_1_detail tbody").append(myContent);
             }
         }
     });

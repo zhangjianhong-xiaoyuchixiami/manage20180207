@@ -440,7 +440,7 @@
                     </div>
 
                 <#--产品管理-->
-                    <div id="form_modal_company_api_status" class="modal hide fade myModal_2" role="dialog" aria-labelledby="myModalLabel_company_api_status" aria-hidden="true">
+                    <div id="form_modal_company_api_status" class="modal hide fade myModalWizard" role="dialog" aria-labelledby="myModalLabel_company_api_status" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                             <h3 id="myModalLabel_company_api_status">产品权限管理</h3>
@@ -467,7 +467,9 @@
                                 <thead class="cf">
                                 <tr>
                                     <th>产品名称</th>
-                                    <th>价格（单位：元）</th>
+                                    <th>主通道成本价</th>
+                                    <th>价格</th>
+                                    <th>单条利润</th>
                                     <th>指定接口</th>
                                     <th>状态</th>
                                     <th>操作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>

@@ -19,8 +19,8 @@ var Api = function () {
                     { "bVisible": false },
                     { "bVisible": false },
                     null,
-                    null,
-                    { "bSortable": false }
+                    null
+                    // { "bSortable": false }
                 ],
                 "aaSorting": [[9, 'desc']],
                 "aLengthMenu": [

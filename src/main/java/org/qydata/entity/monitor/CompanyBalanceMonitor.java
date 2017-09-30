@@ -9,7 +9,7 @@ package org.qydata.entity.monitor;
 //@Log4j //注解在类上；为类提供一个 属性名为log 的 log4j 日志对象
 //@NoArgsConstructor //注解在类上；为类提供一个无参的构造方法
 //@AllArgsConstructor //注解在类上；为类提供一个全参的构造方法
-public class CompanyExt {
+public class CompanyBalanceMonitor {
 
     private Integer companyId;
     private String companyName;
@@ -18,10 +18,11 @@ public class CompanyExt {
     private Integer status;
     private Integer isPrepay;
     private String prepayName;
-    private Integer isSendOpposite;
-    private String sendOppositeName;
+    private Integer isAlarm;
+    private String alarmName;
+    private Integer isRemindCustomer;
+    private String remindCustomerName;
     private Integer ahead;
-    private Integer surplus;
 
     public Integer getCompanyId() {
         return companyId;
@@ -71,30 +72,6 @@ public class CompanyExt {
         this.isPrepay = isPrepay;
     }
 
-    public Integer getIsSendOpposite() {
-        return isSendOpposite;
-    }
-
-    public void setIsSendOpposite(Integer isSendOpposite) {
-        this.isSendOpposite = isSendOpposite;
-    }
-
-    public Integer getAhead() {
-        return ahead;
-    }
-
-    public void setAhead(Integer ahead) {
-        this.ahead = ahead;
-    }
-
-    public Integer getSurplus() {
-        return surplus;
-    }
-
-    public void setSurplus(Integer surplus) {
-        this.surplus = surplus;
-    }
-
     public String getPrepayName() {
         return prepayName;
     }
@@ -103,11 +80,43 @@ public class CompanyExt {
         this.prepayName = prepayName;
     }
 
-    public String getSendOppositeName() {
-        return sendOppositeName;
+    public Integer getIsAlarm() {
+        return isAlarm;
     }
 
-    public void setSendOppositeName(String sendOppositeName) {
-        this.sendOppositeName = sendOppositeName;
+    public void setIsAlarm(Integer isAlarm) {
+        this.isAlarm = isAlarm;
+    }
+
+    public String getAlarmName() {
+        return alarmName;
+    }
+
+    public void setAlarmName(String alarmName) {
+        this.alarmName = alarmName;
+    }
+
+    public Integer getIsRemindCustomer() {
+        return isRemindCustomer;
+    }
+
+    public void setIsRemindCustomer(Integer isRemindCustomer) {
+        this.isRemindCustomer = isRemindCustomer;
+    }
+
+    public String getRemindCustomerName() {
+        return remindCustomerName;
+    }
+
+    public void setRemindCustomerName(String remindCustomerName) {
+        this.remindCustomerName = remindCustomerName;
+    }
+
+    public Integer getAhead() {
+        return ahead;
+    }
+
+    public void setAhead(Integer ahead) {
+        this.ahead = ahead;
     }
 }

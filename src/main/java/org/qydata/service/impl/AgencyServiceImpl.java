@@ -159,6 +159,31 @@ public class AgencyServiceImpl implements AgencyService {
 
     @Override
     public boolean updateRebateBillAmount(Integer id, Integer amount) {
-        return false;
+        return agencyMapper.updateRebateBillAmount(id,amount);
+    }
+
+    @Override
+    public boolean updateRebateBillCost(Integer id, Double cost) {
+        return agencyMapper.updateRebateBillCost(id, (int) (cost*100));
+    }
+
+    @Override
+    public boolean updateRebateBillPrice(Integer id, Double price) {
+        return agencyMapper.updateRebateBillPrice(id, (int) (price*100));
+    }
+
+    @Override
+    public boolean updateRebateBillBeginPrice(Integer id, Double price) {
+        return agencyMapper.updateRebateBillBeginPrice(id, (int) (price*100));
+    }
+
+    @Override
+    public boolean updateRebateBillEndPrice(Integer id, Double price) {
+        return agencyMapper.updateRebateBillEndPrice(id, (int) (price*100));
+    }
+
+    @Override
+    public boolean deleteRebateDetail(String[] id) {
+        return agencyMapper.deleteRebateDetail(id);
     }
 }
