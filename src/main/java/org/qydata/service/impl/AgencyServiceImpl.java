@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.agency.AgencyBill;
 import org.qydata.entity.agency.AgencyBillDetail;
 import org.qydata.entity.agency.AgencyCustomer;
@@ -9,6 +10,7 @@ import org.qydata.service.AgencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +42,11 @@ public class AgencyServiceImpl implements AgencyService {
                 if (me.getKey().equals("cid")){
                     param.put("cidList",me.getValue());
                 }
+                if (me.getKey().equals("cache")){
+                    param.put("noIncludeCache",-1);
+                }
             }
         }
-        map.put("noIncludeCache",-1);
         List<AgencyBill> billList = agencyMapper.queryAgencyBill(param);
         if (billList == null){
             return null;
@@ -119,7 +123,35 @@ public class AgencyServiceImpl implements AgencyService {
 
     @Override
     public Map<String, Object> queryAgencyBillDetail(Map<String, Object> map) {
-        List<AgencyBillDetail> detailList = agencyMapper.queryAgencyBillDetail(map);
+        Map<String,Object> param = new HashMap<>();
+        if (map != null){
+            for (Map.Entry<String,Object> me : map.entrySet()) {
+                if (me.getKey().equals("cyc")){
+                    param.put("cycList",me.getValue());
+                }
+                if (me.getKey().equals("agencyId")){
+                    param.put("agencyId",me.getValue());
+                }
+                if (me.getKey().equals("tid")){
+                    String tid_stid [] = (String[]) me.getValue();
+                    List<String> tidList = new ArrayList<>();
+                    List<String> stidList = new ArrayList<>();
+                    for (String s : tid_stid) {
+                        if (s.contains("-")){
+                            String tid_stids [] = s.split("-");
+                            tidList.add(tid_stids[0]);
+                            stidList.add(tid_stids[1]);
+                        }
+                    }
+                    param.put("tidList",tidList);
+                    param.put("stidList",stidList);
+                }
+                if (me.getKey().equals("cache")){
+                    param.put("noIncludeCache",-1);
+                }
+            }
+        }
+        List<AgencyBillDetail> detailList = agencyMapper.queryAgencyBillDetail(param);
         if (detailList == null){
             return null;
         }
@@ -127,34 +159,28 @@ public class AgencyServiceImpl implements AgencyService {
             if (detail.getCost() != null){
                 detail.setCost(detail.getCost()/100.0);
                 detail.setTypeName("上游");
-                detail.setCostMoney(detail.getCost() * detail.getResultCount());
             }else {
                 detail.setTypeName("缓存");
                 detail.setCostMoney(0.0);
             }
             if (detail.getPrice() != null){
                 detail.setPrice(detail.getPrice()/100.0);
-                detail.setPriceMoney(detail.getPrice() * detail.getResultCount());
-                detail.setGrossProfit(detail.getPriceMoney() - detail.getCostMoney());
             }
             if (detail.getRebateBegPrice() != null){
                 detail.setRebateBegPrice(detail.getRebateBegPrice()/100.0);
             }
             if (detail.getRebateEndPrice() != null){
                 detail.setRebateEndPrice(detail.getRebateEndPrice()/100.0);
-                detail.setFirstRebate(detail.getPriceMoney() - (detail.getRebateEndPrice() * detail.getResultCount()));
-            }
-            if (detail.getFirstRebate() != null){
-                detail.setTwiceRebate((detail.getGrossProfit() - detail.getFirstRebate())/2.0);
-                detail.setNetProfit((detail.getGrossProfit() - detail.getFirstRebate())/2.0);
-            }else {
-                detail.setTwiceRebate(detail.getGrossProfit()/2.0);
-                detail.setNetProfit(detail.getGrossProfit()/2.0);
             }
         }
         Map<String,Object> resu = new HashMap<>();
         resu.put("detailList",detailList);
         return resu;
+    }
+
+    @Override
+    public List<CompanyApi> queryConsumeApiType() {
+        return agencyMapper.queryConsumeApiType();
     }
 
     @Override

@@ -20,6 +20,8 @@
         <result column="type_stid_name" property="type_stid_name"/>
     </resultMap>
 
+
+
     <!--统计各产品消费上游情况（不包含当月）-->
     <select id="queryApiConsumeVendor" parameterType="map" resultMap="apiTurnoverBillMap">
         SELECT a.apiTypeId,a.stid,CONCAT_WS('-',a.apiTypeId,a.stid) typeId_stid,a.amount vendorAmount,a.consume vendorConsume,CONCAT_WS('-',b.name,c.name) type_stid_name

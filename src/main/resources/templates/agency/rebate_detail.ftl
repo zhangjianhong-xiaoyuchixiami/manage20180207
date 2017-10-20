@@ -29,25 +29,27 @@
 
                     </div>
 
-                    <form action="/finance/rebate" id="submit_form" class="form-bottom-excel form-top" method="get">
+                    <form action="/finance/rebate/detail" id="submit_form" class="form-bottom-excel form-top" method="get">
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                            <div class="pull-left head-search-bottom">
+                        <#--<div class="pull-left head-search-bottom">-->
 
-                                <label>&nbsp;</label>
+                        <#--<label>&nbsp;</label>-->
 
-                                <div class="controls">
+                        <#--<div class="controls">-->
 
-                                    <label class="checkbox">
+                        <#--<label class="checkbox">-->
 
-                                        <input type="checkbox" <#if rate??> checked="checked" </#if> id="rate" name="rate" value="1">包含税率
+                        <#--<input type="checkbox" <#if rate??> checked="checked" </#if> id="rate" name="rate" value="1">包含税率-->
 
-                                    </label>
+                        <#--</label>-->
 
-                                </div>
+                        <#--</div>-->
 
-                            </div>
+                        <#--</div>-->
+
+                            <input style="display: none" id="agencyId" name="agencyId" value="${agencyId}">
 
                             <div class="pull-left head-search-bottom">
 
@@ -73,9 +75,9 @@
 
                                     <select class="medium m-wrap" multiple id="tid" name="tid">
                                         <option value=""></option>
-                                        <#if companyList??>
-                                            <#list companyList as company>
-                                                <option <#if companyArray??><#list companyArray as array><#if array?? && array == company.companyId>selected="selected"</#if></#list></#if> value="${company.companyId}">${company.companyName}</option>
+                                        <#if typeList??>
+                                            <#list typeList as type>
+                                                <option <#if typeArray??><#list typeArray as array><#if array?? && array == type.type_stid>selected="selected"</#if></#list></#if> value="${type.type_stid}">${type.type_stid_name}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -155,37 +157,37 @@
 
                                         <div id="sample_1_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
 
-                                            <label><input type="checkbox" checked data-column="2">客户名称</label>
+                                            <label><input type="checkbox" checked data-column="1">客户名称</label>
 
-                                            <label><input type="checkbox" checked data-column="3">周期</label>
+                                            <label><input type="checkbox" checked data-column="2">周期</label>
 
-                                            <label><input type="checkbox" checked data-column="4">产品名称</label>
+                                            <label><input type="checkbox" checked data-column="3">产品名称</label>
 
-                                            <label><input type="checkbox" checked data-column="5">类别</label>
+                                            <label><input type="checkbox" checked data-column="4">类别</label>
 
-                                            <label><input type="checkbox" checked data-column="6">供应商</label>
+                                            <label><input type="checkbox" checked data-column="5">供应商</label>
 
-                                            <label><input type="checkbox" checked data-column="7">扣费量</label>
+                                            <label><input type="checkbox" checked data-column="6">扣费量</label>
 
-                                            <label><input type="checkbox" checked data-column="8">单价</label>
+                                            <label><input type="checkbox" checked data-column="7">单价</label>
 
-                                            <label><input type="checkbox" checked data-column="9">售价</label>
+                                            <label><input type="checkbox" checked data-column="8">售价</label>
 
-                                            <label><input type="checkbox" checked data-column="10">业务回扣起始价</label>
+                                            <label><input type="checkbox" checked data-column="9">回扣起始价</label>
 
-                                            <label><input type="checkbox" checked data-column="11">业务回扣结算价</label>
+                                            <label><input type="checkbox" checked data-column="10">回扣结算价</label>
 
-                                            <label><input type="checkbox" checked data-column="12">成本</label>
+                                        <#--<label><input type="checkbox" checked data-column="12">成本</label>-->
 
-                                            <label><input type="checkbox" checked data-column="13">销售额</label>
+                                        <#--<label><input type="checkbox" checked data-column="13">销售额</label>-->
 
-                                            <label><input type="checkbox" checked data-column="14">毛利润</label>
+                                        <#--<label><input type="checkbox" checked data-column="14">毛利润</label>-->
 
-                                            <label><input type="checkbox" checked data-column="15">首次业务回扣</label>
+                                        <#--<label><input type="checkbox" checked data-column="15">首次业务回扣</label>-->
 
-                                            <label><input type="checkbox" checked data-column="16">二次业务回扣</label>
+                                        <#--<label><input type="checkbox" checked data-column="16">二次业务回扣</label>-->
 
-                                            <label><input type="checkbox" checked data-column="17">净利润</label>
+                                        <#--<label><input type="checkbox" checked data-column="17">净利润</label>-->
 
                                         </div>
 
@@ -198,46 +200,46 @@
                             <table class="table table-hover table-condensed table-layout-fixed" id="sample_1">
                                 <thead>
                                 <tr>
-                                    <th style="width: 2%;"><input type="checkbox" id="allChecked" class="group-checkable" data-set="#sample_1 .checkboxes"/></th>
+                                    <th style="width: 5%"><input type="checkbox" id="allChecked" class="group-checkable" data-set="#sample_1 .checkboxes"/></th>
                                     <th>客户名称</th>
                                     <th>周期</th>
                                     <th>产品名称</th>
                                     <th>类别</th>
                                     <th>供应商</th>
                                     <th>扣费量</th>
-                                    <th>单价</th>
-                                    <th>售价</th>
-                                    <th>业务回扣起始价</th>
-                                    <th>业务回扣结算价</th>
-                                    <th>成本</th>
-                                    <th>销售额</th>
-                                    <th>毛利润</th>
-                                    <th>首次业务回扣</th>
-                                    <th>二次业务回扣</th>
-                                    <th>净利润</th>
+                                    <th style="width: 5%">单价</th>
+                                    <th style="width: 5%">售价</th>
+                                    <th>回扣起始价</th>
+                                    <th>回扣结算价</th>
+                                <#--<th>成本</th>-->
+                                <#--<th>销售额</th>-->
+                                <#--<th>毛利润</th>-->
+                                <#--<th>首次业务回扣</th>-->
+                                <#--<th>二次业务回扣</th>-->
+                                <#--<th>净利润</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#if detailList??>
                                         <#list detailList as detail>
                                         <tr>
-                                            <td data-title="多选框"><input class="checkboxes" type="checkbox" id="checkBox" name="checkBox" value="${detail.id?c}"/></td>
+                                            <td style="width: 5%" data-title="多选框"><input class="checkboxes" type="checkbox" id="checkBox" name="checkBox" value="${detail.id?c}"/></td>
                                             <td class="table-td-layout-fixed">${detail.companyName!'无'}</td>
-                                            <td class="table-td-layout-fixed">${detail.cycle!'无'}</td>
-                                            <td class="table-td-layout-fixed">${detail.type_stid_name!'无'}</td>
-                                            <td class="table-td-layout-fixed">${detail.typeName!'无'}</td>
-                                            <td class="table-td-layout-fixed">${detail.vendor_partner_name!'无'}</td>
+                                            <td>${detail.cycle!'无'}</td>
+                                            <td>${detail.type_stid_name!'无'}</td>
+                                            <td>${detail.typeName!'无'}</td>
+                                            <td>${detail.vendor_partner_name!'无'}</td>
                                             <td><a href="javaScript:;" onclick="updateAmount(${detail.id?c},${detail.resultCount?c})">${detail.resultCount!'无'}</a></td>
-                                            <td><a href="javaScript:;" onclick="updateCost(${detail.id?c},${detail.cost!'0'})">${detail.cost!'0'}</a></td>
-                                            <td><a href="javaScript:;" onclick="updatePrice(${detail.id?c},${detail.price?c})">${detail.price!'0'}</a></td>
+                                            <td style="width: 5%"><a href="javaScript:;" onclick="updateCost(${detail.id?c},${detail.cost!'0'})">${detail.cost!'0'}</a></td>
+                                            <td style="width: 5%"><a href="javaScript:;" onclick="updatePrice(${detail.id?c},${detail.price?c})">${detail.price!'0'}</a></td>
                                             <td><a href="javaScript:;" onclick="updateRebateBegPrice(${detail.id?c},${detail.rebateBegPrice!'0'})">${detail.rebateBegPrice!'--'}</a></td>
                                             <td><a href="javaScript:;" onclick="updateRebateEndPrice(${detail.id?c},${detail.rebateEndPrice!'0'})">${detail.rebateEndPrice!'--'}</a></td>
-                                            <td>${detail.costMoney!'0'}</td>
-                                            <td>${detail.priceMoney!'0'}</td>
-                                            <td>${detail.grossProfit!'0'}</td>
-                                            <td>${detail.firstRebate!'--'}</td>
-                                            <td>${detail.twiceRebate!'--'}</td>
-                                            <td>${detail.netProfit!'0'}</td>
+                                        <#--<td>${detail.costMoney!'0'}</td>-->
+                                        <#--<td>${detail.priceMoney!'0'}</td>-->
+                                        <#--<td>${detail.grossProfit!'0'}</td>-->
+                                        <#--<td>${detail.firstRebate!'--'}</td>-->
+                                        <#--<td>${detail.twiceRebate!'--'}</td>-->
+                                        <#--<td>${detail.netProfit!'0'}</td>-->
                                         </tr>
                                         </#list>
                                     </#if>
@@ -246,29 +248,29 @@
 
                         </div>
 
-                        <div class="row-fluid">
+                    <#--<div class="row-fluid">-->
 
-                            <div class="span4">
+                    <#--<div class="span4">-->
 
-                            </div>
+                    <#--</div>-->
 
-                            <div class="span8 invoice-block">
+                    <#--<div class="span8 invoice-block">-->
 
-                                <ul class="unstyled amounts">
+                    <#--<ul class="unstyled amounts">-->
 
-                                    <li><strong>净利润总计:</strong> ￥${netProfitTot!'0'}</li>
+                    <#--<li><strong>净利润总计:</strong> ￥${netProfitTot!'0'}</li>-->
 
-                                </ul>
+                    <#--</ul>-->
 
-                                </br>
+                    <#--</br>-->
 
-                                </br>
+                    <#--</br>-->
 
-                                </br>
+                    <#--</br>-->
 
-                            </div>
+                    <#--</div>-->
 
-                        </div>
+                    <#--</div>-->
 
                     </div>
 

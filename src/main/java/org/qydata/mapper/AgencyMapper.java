@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.agency.AgencyBill;
 import org.qydata.entity.agency.AgencyBillDetail;
 import org.qydata.entity.agency.AgencyCustomer;
@@ -22,6 +23,8 @@ public interface AgencyMapper {
     public List<String> queryConsumeCycle();
 
     public List<AgencyBillDetail> queryAgencyBillDetail(Map<String,Object> map);
+
+    public List<CompanyApi> queryConsumeApiType();
 
     /**
      * 修改扣费量

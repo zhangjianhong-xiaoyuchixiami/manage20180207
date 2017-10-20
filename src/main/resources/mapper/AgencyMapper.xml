@@ -24,7 +24,7 @@
                 SELECT
                 a.agencyId,
                 c.price * sum(c.resultCount) priceMoney,
-                c.cost * sum(c.resultCount) costMoney,
+                ifnull(c.rebateBegPrice,c.cost) * sum(c.resultCount) costMoney,
                 c.rebateEndPrice * sum(c.resultCount) firstRebate
                 FROM qyfinance.finance_agency_company a
                 LEFT JOIN qyfinance.finance_Customer b ON a.companyId = b.companyId
@@ -114,6 +114,34 @@
         WHERE b.typeId = 1
         AND c.resultCount > 0
         AND a.agencyId = #{agencyId}
+        <if test="cycList != null and cycList.length > 0">
+            AND c.cycle IN
+            <foreach collection="cycList" item="cyc" index="index" open="(" close=")" separator=",">
+                #{cyc}
+            </foreach>
+        </if>
+        <if test="tidList != null and tidList.size() != 0">
+            AND c.apiTypeId IN
+            <foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">
+                #{tid}
+            </foreach>
+        </if>
+        <if test="stidList != null and stidList.size() != 0">
+            AND c.stid IN
+            <foreach collection="stidList" item="stid" index="index" open="(" close=")" separator=",">
+                #{stid}
+            </foreach>
+        </if>
+        <if test="noIncludeCache != null">
+            AND c.cost IS NOT NULL
+        </if>
+    </select>
+
+    <select id="queryConsumeApiType" resultType="org.qydata.entity.CompanyApi">
+        SELECT DISTINCT CONCAT_WS('-',a.apiTypeId,a.stid) type_stid,CONCAT_WS('--',b.name,c.name) type_stid_name
+        FROM qyfinance.CustomerRebateBill a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id
     </select>
 
     <!--修改扣费量-->

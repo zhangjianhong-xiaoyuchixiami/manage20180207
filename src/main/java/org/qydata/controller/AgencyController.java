@@ -1,6 +1,7 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.agency.AgencyCustomer;
 import org.qydata.entity.agency.RebateAgency;
 import org.qydata.service.AgencyService;
@@ -81,22 +82,23 @@ public class AgencyController {
 
     //代理人返佣明细
     @RequestMapping("/rebate/detail")
-    public String rebateDetail(Integer agencyId, String [] cyc, String [] tid, Integer rate, Integer cache,Model model){
+    public String rebateDetail(Integer agencyId, String [] cyc, String [] tid, String cache,Model model){
         Map<String,Object> param = new HashMap<>();
         if (agencyId != null){
             param.put("agencyId",agencyId);
+            model.addAttribute("agencyId",agencyId);
         }
         if (cyc != null){
             param.put("cyc",cyc);
+            model.addAttribute("cycleArray",cyc);
         }
         if (tid != null){
             param.put("tid",tid);
-        }
-        if (rate != null){
-            param.put("rate",rate);
+            model.addAttribute("typeArray",tid);
         }
         if (cache != null){
             param.put("cache",cache);
+            model.addAttribute("cache",cache);
         }
         Map<String,Object> resu = agencyService.queryAgencyBillDetail(param);
         if (resu != null){
@@ -106,6 +108,10 @@ public class AgencyController {
                 }
             }
         }
+        List<String> cycleList = agencyService.queryConsumeCycle();
+        List<CompanyApi> typeList = agencyService.queryConsumeApiType();
+        model.addAttribute("cycleList",cycleList);
+        model.addAttribute("typeList",typeList);
         return "/agency/rebate_detail";
     }
 

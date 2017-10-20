@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.entity.CompanyApi;
 import org.qydata.entity.agency.AgencyCustomer;
 import org.qydata.entity.agency.RebateAgency;
 
@@ -38,6 +39,8 @@ public interface AgencyService {
 
 
     public Map<String,Object> queryAgencyBillDetail(Map<String,Object> map);
+
+    public List<CompanyApi> queryConsumeApiType();
 
     /**
      * 修改扣费量

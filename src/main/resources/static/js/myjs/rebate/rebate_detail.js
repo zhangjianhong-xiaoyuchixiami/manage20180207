@@ -26,69 +26,9 @@ var RebateDetail = function () {
                 allowClear: true
             });
 
-            function fnFormatDetails ( oTable, nTr)
-            {
-                var aData = oTable.fnGetData( nTr );
-                var sOut = '<table style="width: 100%">';
-                sOut += '<tr><th style="width: 12%">客户名称:</th><td>'+ aData[2] +'</td></tr>';
-                sOut += '<tr><th>周期:</th><td>'+ aData[3] +'</td></tr>';
-                sOut += '<tr><th>产品名称:</th><td>'+ aData[4] +'</td></tr>';
-                sOut += '<tr><th>类别:</th><td>'+ aData[5] +'</td></tr>';
-                sOut += '<tr><th>供应商:</th><td>'+ aData[6] +'</td></tr>';
-                sOut += '<tr><th>扣费量:</th><td>'+ aData[7] +'</td></tr>';
-                sOut += '<tr><th>单价:</th><td>'+ aData[8] +'</td></tr>';
-                sOut += '<tr><th>售价:</th><td>'+ aData[9] +'</td></tr>';
-                sOut += '<tr><th>业务回扣起始价:</th><td>'+ aData[10] +'</td></tr>';
-                sOut += '<tr><th>业务回扣结算价:</th><td>'+ aData[11] +'</td></tr>';
-                sOut += '<tr><th>成本:</th><td>'+ aData[12] +'</td></tr>';
-                sOut += '<tr><th>销售额:</th><td>'+ aData[13] +'</td></tr>';
-                sOut += '<tr><th>毛利润:</th><td>'+ aData[14] +'</td></tr>';
-                sOut += '<tr><th>首次业务回扣:</th><td>'+ aData[15] +'</td></tr>';
-                sOut += '<tr><th>二次业务回扣:</th><td>'+ aData[16] +'</td></tr>';
-                sOut += '<tr><th>净利润:</th><td>'+ aData[17] +'</td></tr>';
-                sOut += '</table>';
-                return sOut;
-            }
-
-            var nCloneTh = document.createElement( 'th' );
-            var nCloneTd = document.createElement( 'td' );
-            nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
-            // nCloneTh.innerHTML = '<span class="row-details row-details-close"></span>';
-            $('#sample_1 thead tr').each( function () {
-                this.insertBefore( nCloneTh, this.childNodes[0] );
-            } );
-
-            $('#sample_1 tbody tr').each( function () {
-                this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
-            } );
-
-            $('#sample_1').on('click', ' tbody td .row-details', function () {
-                var nTr = $(this).parents('tr')[0];
-                if ( oTable.fnIsOpen(nTr) )
-                {
-                    /* This row is already open - close it */
-                    $(this).addClass("row-details-close").removeClass("row-details-open");
-                    oTable.fnClose( nTr );
-                }
-                else
-                {
-                    /* Open this row */
-                    $(this).addClass("row-details-open").removeClass("row-details-close");
-                    oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr), 'details' );
-                }
-            });
-
-
             var oTable = $('#sample_1').dataTable({
                 "aoColumns": [
                     {"bSortable": false},
-                    {"bSortable": false},
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
                     null,
                     null,
                     null,
@@ -101,31 +41,6 @@ var RebateDetail = function () {
                     null
                 ],
                 "aoColumnDefs": [
-                    {
-                        "aTargets": [ 0 ],
-                        "sType": "html-percent",
-                        "sWidth": "3%"
-                    },
-                    {
-                        "aTargets": [ 1 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 2 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 3 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 4 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 5 ],
-                        "sType": "html-percent"
-                    },
                     {
                         "aTargets": [ 6 ],
                         "sType": "html-percent"
@@ -145,37 +60,9 @@ var RebateDetail = function () {
                     {
                         "aTargets": [ 10 ],
                         "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 11 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 12 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 13 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 14 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 15 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 16 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 17 ],
-                        "sType": "html-percent"
                     }
                 ],
-                "aaSorting": [[3, 'desc']],
+                "aaSorting": [[2, 'desc']],
                 "bPaginate" : true,
                 "bLengthChange" : false,
                 "iDisplayLength": 10, //每页显示多少行
@@ -201,7 +88,6 @@ var RebateDetail = function () {
 
             /*表格显示列控制*/
             $('#sample_1_column_toggler input[type="checkbox"]').change(function(){
-                /* Get the DataTables object again - this is not a recreation, just a get of the object */
                 var iCol = parseInt($(this).attr("data-column"));
                 var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
                 oTable.fnSetColumnVis(iCol, (bVis ? false : true));
