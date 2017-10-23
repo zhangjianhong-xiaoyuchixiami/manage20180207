@@ -33,22 +33,6 @@
 
                         <div class="clearfix margin-bottom-20 head-search-clearfix-top">
 
-                        <#--<div class="pull-left head-search-bottom">-->
-
-                        <#--<label>&nbsp;</label>-->
-
-                        <#--<div class="controls">-->
-
-                        <#--<label class="checkbox">-->
-
-                        <#--<input type="checkbox" <#if rate??> checked="checked" </#if> id="rate" name="rate" value="1">包含税率-->
-
-                        <#--</label>-->
-
-                        <#--</div>-->
-
-                        <#--</div>-->
-
                             <input style="display: none" id="agencyId" name="agencyId" value="${agencyId}">
 
                             <div class="pull-left head-search-bottom">

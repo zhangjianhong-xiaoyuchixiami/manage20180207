@@ -25,6 +25,22 @@ public class AgencyServiceImpl implements AgencyService {
     private AgencyMapper agencyMapper;
 
     @Override
+    public List<RebateAgency> queryAgency() {
+        List<RebateAgency> agencyList = agencyMapper.queryAgency();
+        if (agencyList == null){
+            return null;
+        }
+        for (RebateAgency agency : agencyList) {
+            if (agency.getTaxRate() != null){
+                agency.setTaxRateName(agency.getTaxRate() + "%");
+            }else {
+                agency.setTaxRateName("无");
+            }
+        }
+        return agencyList;
+    }
+
+    @Override
     public Map<String, Object> queryAgencyBill(Map<String, Object> map) {
         Map<String,Object> param = new HashMap<>();
         boolean rate = false;

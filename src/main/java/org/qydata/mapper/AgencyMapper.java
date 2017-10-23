@@ -14,6 +14,12 @@ import java.util.Map;
  */
 public interface AgencyMapper {
 
+    /**
+     * 查询代理人
+     * @return
+     */
+    public List<RebateAgency> queryAgency();
+
     public List<AgencyBill> queryAgencyBill(Map<String,Object> map);
 
     public List<RebateAgency> queryRebateAgency();

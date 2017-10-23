@@ -13,6 +13,12 @@ import java.util.Map;
 public interface AgencyService {
 
     /**
+     * 查询代理人
+     * @return
+     */
+    public List<RebateAgency> queryAgency();
+
+    /**
      *
      * @param map
      * @return

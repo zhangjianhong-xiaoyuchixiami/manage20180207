@@ -4,6 +4,11 @@
 <mapper namespace="org.qydata.mapper.AgencyMapper">
 
 
+    <select id="queryAgency" resultType="org.qydata.entity.agency.RebateAgency">
+        SELECT a.id,a.name,a.taxRate,a.rule
+        FROM qyfinance.RebateAgency a
+    </select>
+
     <resultMap id="AgencyBill_Map" type="org.qydata.entity.agency.AgencyBill">
         <result column="agencyId" property="agencyId"/>
         <result column="priceMoney" property="priceMoney"/>
@@ -28,7 +33,7 @@
                 c.rebateEndPrice * sum(c.resultCount) firstRebate
                 FROM qyfinance.finance_agency_company a
                 LEFT JOIN qyfinance.finance_Customer b ON a.companyId = b.companyId
-                LEFT JOIN qyfinance.CustomerRebateBill c ON b.id = c.customerId
+                LEFT JOIN qyfinance.RebateCustomerBill c ON b.id = c.customerId
                 WHERE a.agencyId IS NOT NULL
                 <if test="agency != null ">
                     AND a.agencyId = #{agency}
@@ -99,21 +104,19 @@
 
     <select id="queryAgencyBillDetail" parameterType="map" resultMap="AgencyBillDetail_Map">
         SELECT b.companyId,c.id,c.customerId,c.cycle,c.apiTypeId,c.stid,c.apiId,c.cost,
-        c.price,c.rebateBegPrice,c.rebateEndPrice,c.resultCount,d.name companyName,
+        c.price,c.rebateBegPrice,c.rebateEndPrice,c.costCount,d.name companyName,
         CONCAT_WS('-',e.name,f.name) type_stid_name,
         CONCAT_WS('-',h.name ,i.name) vendor_partner_name
         FROM qyfinance.finance_agency_company a
         LEFT JOIN qyfinance.finance_Customer b ON a.companyId = b.companyId
-        LEFT JOIN qyfinance.CustomerRebateBill c ON b.id = c.customerId
+        LEFT JOIN qyfinance.RebateCustomerBill c ON b.id = c.customerId
         LEFT JOIN qyfinance.bkvwCustomerCompany d ON a.companyId = d.id
         LEFT JOIN qyfinance.bkvwApiType e ON c.apiTypeId = e.id
         LEFT JOIN qyfinance.bkvwMobileOperator f ON c.stid = f.id
         LEFT JOIN qyfinance.finance_Api g ON c.apiId = g.id
         LEFT JOIN qyfinance.finance_ApiVendor h ON g.vendorId = h.id
         LEFT JOIN qyfinance.bkvwPartner i ON h.partnerId = i.id
-        WHERE b.typeId = 1
-        AND c.resultCount > 0
-        AND a.agencyId = #{agencyId}
+        WHERE a.agencyId = #{agencyId}
         <if test="cycList != null and cycList.length > 0">
             AND c.cycle IN
             <foreach collection="cycList" item="cyc" index="index" open="(" close=")" separator=",">

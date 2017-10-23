@@ -26,9 +26,16 @@ public class AgencyController {
     @Autowired
     private AgencyService agencyService;
 
-    //代理人返佣
     @RequestMapping("/rebate")
-    public String rebate(Integer rate,Integer cache,Integer agency,Integer [] cid,String [] cyc,Model model){
+    public String rebateAgency(Model model){
+       List<RebateAgency> agencyList = agencyService.queryAgency();
+       model.addAttribute("agencyList",agencyList);
+       return "/agency/rebate_agency";
+    }
+
+    //代理人返佣
+   // @RequestMapping("/rebate")
+    public String rebate(Integer rate,Integer cache,Integer agencyId,Integer [] cid,String [] cyc,Model model){
         Map<String,Object> param = new HashMap<>();
         if (rate != null){
             param.put("rate",rate);
@@ -38,9 +45,9 @@ public class AgencyController {
             param.put("cache",cache);
             model.addAttribute("cache",cache);
         }
-        if (agency != null){
-            param.put("agency",agency);
-            model.addAttribute("agencyId",agency);
+        if (agencyId != null){
+            param.put("agencyId",agencyId);
+            model.addAttribute("agencyId",agencyId);
             List<AgencyCustomer> companyList = agencyService.queryAgencyCustomer(param);
             model.addAttribute("companyList",companyList);
         }
