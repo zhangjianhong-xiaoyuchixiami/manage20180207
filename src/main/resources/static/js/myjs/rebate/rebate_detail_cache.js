@@ -1,42 +1,12 @@
-var RebateDetail = function () {
+var RebateDetailCache = function () {
 
     return {
 
         init: function () {
 
-
-            $('#rebate').addClass('active');
-
-            $('#customerBalance').addClass('active');
-
-            $('#customerBalanceSelect').addClass('selected');
-
-            $('#customerBalanceArrow').addClass('arrow open');
-
-            $("#cid").select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
-
-            $("#tid").select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
-
-            $("#cyc").select2({
-                language: "zh-CN",
-                placeholder: "请选择",
-                allowClear: true
-            });
-
-            var oTable = $('#sample_1').dataTable({
+            var oTable_3 = $('#sample_3').dataTable({
                 "aoColumns": [
                     {"bSortable": false},
-                    null,
-                    null,
-                    null,
                     null,
                     null,
                     null,
@@ -46,19 +16,15 @@ var RebateDetail = function () {
                 ],
                 "aoColumnDefs": [
                     {
+                        "aTargets": [ 4 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 5 ],
+                        "sType": "html-percent"
+                    },
+                    {
                         "aTargets": [ 6 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 7 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 8 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 9 ],
                         "sType": "html-percent"
                     }
                 ],
@@ -87,7 +53,7 @@ var RebateDetail = function () {
             });
 
             /*多选框*/
-            jQuery('#sample_1 .group-checkable').change(function () {
+            jQuery('#sample_3 .group-checkable').change(function () {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
                 jQuery(set).each(function () {

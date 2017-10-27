@@ -3,194 +3,272 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.qydata.mapper.AgencyMapper">
 
-
+    <!--查找代理人-->
     <select id="queryAgency" resultType="org.qydata.entity.agency.RebateAgency">
         SELECT a.id,a.name,a.taxRate,a.rule
         FROM qyfinance.RebateAgency a
     </select>
 
-    <resultMap id="AgencyBill_Map" type="org.qydata.entity.agency.AgencyBill">
-        <result column="agencyId" property="agencyId"/>
-        <result column="priceMoney" property="priceMoney"/>
-        <result column="costMoney" property="costMoney"/>
-        <result column="clearingMoney" property="clearingMoney"/>
-        <result column="agencyName" property="agencyName"/>
-        <result column="taxRate" property="taxRate"/>
-        <result column="rebateRate" property="rebateRate"/>
-    </resultMap>
-
-    <select id="queryAgencyBill" parameterType="map" resultMap="AgencyBill_Map">
-        SELECT a.agencyId,a.priceMoney,a.costMoney,a.clearingMoney,b.name agencyName,b.taxRate,b.rebateRate
-        FROM
-        (
-            SELECT a.agencyId,sum(a.priceMoney) priceMoney,sum(a.costMoney) costMoney,sum(a.firstRebate) clearingMoney
-            FROM
-            (
-                SELECT
-                a.agencyId,
-                c.price * sum(c.resultCount) priceMoney,
-                ifnull(c.rebateBegPrice,c.cost) * sum(c.resultCount) costMoney,
-                c.rebateEndPrice * sum(c.resultCount) firstRebate
-                FROM qyfinance.finance_agency_company a
-                LEFT JOIN qyfinance.finance_Customer b ON a.companyId = b.companyId
-                LEFT JOIN qyfinance.RebateCustomerBill c ON b.id = c.customerId
-                WHERE a.agencyId IS NOT NULL
-                <if test="agency != null ">
-                    AND a.agencyId = #{agency}
-                </if>
-                <if test="cycList != null and cycList.length > 0">
-                    AND c.cycle IN
-                    <foreach collection="cycList" item="cyc" index="index" open="(" close=")" separator=",">
-                        #{cyc}
-                    </foreach>
-                </if>
-                <if test="cidList != null and cidList.length > 0">
-                    AND c.customerId IN
-                    <foreach collection="cidList" item="cid" index="index" open="(" close=")" separator=",">
-                        #{cid}
-                    </foreach>
-                </if>
-                <if test="noIncludeCache != null">
-                    AND c.cost IS NOT NULL
-                </if>
-                GROUP BY a.agencyId,c.price,c.cost,c.rebateEndPrice
-            ) a
-            GROUP BY a.agencyId
-        ) a
-        LEFT JOIN qyfinance.RebateAgency b ON a.agencyId = b.id
-    </select>
-
-    <select id="queryRebateAgency" resultType="org.qydata.entity.agency.RebateAgency">
-        SELECT a.id,a.name
+    <!--根据代理人查询返佣规则-->
+    <select id="queryRebateRuleById" parameterType="int" resultType="String">
+        SELECT a.rule
         FROM qyfinance.RebateAgency a
-    </select>
-
-    <select id="queryAgencyCustomer" parameterType="map" resultType="org.qydata.entity.agency.AgencyCustomer">
-        SELECT b.id agencyId,b.name agencyName,d.id companyId,c.name companyName
-        FROM qyfinance.finance_agency_company a
-        LEFT JOIN qyfinance.RebateAgency b ON a.agencyId = b.id
-        LEFT JOIN qyfinance.bkvwCustomerCompany c ON a.companyId = c.id
-        LEFT JOIN qyfinance.finance_Customer d ON a.companyId = d.companyId
-        WHERE a.agencyId IS NOT NULL
-        AND d.typeId = 1
-        <if test="agency != null ">
-            AND a.agencyId = #{agency}
-        </if>
-    </select>
-
-    <select id="queryConsumeCycle" resultType="String">
-        SELECT DISTINCT a.cycle
-        FROM qyfinance.CustomerRebateBill a
-        ORDER BY a.cycle DESC
+        WHERE a.id = #{param}
     </select>
 
     <resultMap id="AgencyBillDetail_Map" type="org.qydata.entity.agency.AgencyBillDetail">
         <result column="id" property="id"/>
-        <result column="companyId" property="companyId"/>
         <result column="customerId" property="customerId"/>
         <result column="cycle" property="cycle"/>
         <result column="apiTypeId" property="apiTypeId"/>
         <result column="stid" property="stid"/>
         <result column="apiId" property="apiId"/>
+        <result column="costCount" property="costCount"/>
         <result column="cost" property="cost"/>
         <result column="price" property="price"/>
         <result column="rebateBegPrice" property="rebateBegPrice"/>
         <result column="rebateEndPrice" property="rebateEndPrice"/>
-        <result column="resultCount" property="resultCount"/>
-        <result column="companyName" property="companyName"/>
         <result column="type_stid_name" property="type_stid_name"/>
-        <result column="vendor_partner_name" property="vendor_partner_name"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="companyName" property="companyName"/>
     </resultMap>
 
-    <select id="queryAgencyBillDetail" parameterType="map" resultMap="AgencyBillDetail_Map">
-        SELECT b.companyId,c.id,c.customerId,c.cycle,c.apiTypeId,c.stid,c.apiId,c.cost,
-        c.price,c.rebateBegPrice,c.rebateEndPrice,c.costCount,d.name companyName,
-        CONCAT_WS('-',e.name,f.name) type_stid_name,
-        CONCAT_WS('-',h.name ,i.name) vendor_partner_name
-        FROM qyfinance.finance_agency_company a
-        LEFT JOIN qyfinance.finance_Customer b ON a.companyId = b.companyId
-        LEFT JOIN qyfinance.RebateCustomerBill c ON b.id = c.customerId
-        LEFT JOIN qyfinance.bkvwCustomerCompany d ON a.companyId = d.id
-        LEFT JOIN qyfinance.bkvwApiType e ON c.apiTypeId = e.id
-        LEFT JOIN qyfinance.bkvwMobileOperator f ON c.stid = f.id
-        LEFT JOIN qyfinance.finance_Api g ON c.apiId = g.id
-        LEFT JOIN qyfinance.finance_ApiVendor h ON g.vendorId = h.id
-        LEFT JOIN qyfinance.bkvwPartner i ON h.partnerId = i.id
-        WHERE a.agencyId = #{agencyId}
-        <if test="cycList != null and cycList.length > 0">
-            AND c.cycle IN
-            <foreach collection="cycList" item="cyc" index="index" open="(" close=")" separator=",">
-                #{cyc}
-            </foreach>
-        </if>
-        <if test="tidList != null and tidList.size() != 0">
-            AND c.apiTypeId IN
-            <foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">
-                #{tid}
-            </foreach>
-        </if>
-        <if test="stidList != null and stidList.size() != 0">
-            AND c.stid IN
-            <foreach collection="stidList" item="stid" index="index" open="(" close=")" separator=",">
-                #{stid}
-            </foreach>
-        </if>
-        <if test="noIncludeCache != null">
-            AND c.cost IS NOT NULL
-        </if>
+    <!--使用我方源-->
+    <select id="queryAgencyBillDetailUserOur" parameterType="map" resultMap="AgencyBillDetail_Map">
+        SELECT a.id,a.customerId,a.cycle,a.apiTypeId,a.stid,a.apiId,a.costCount,a.cost,a.price,
+        a.rebateBegPrice,a.rebateEndPrice,a.companyName,
+        CONCAT_WS('-',b.name,c.name) type_stid_name,
+        e.name vendorName
+        FROM
+        (
+            SELECT a.id,a.customerId,a.cycle,a.apiTypeId,a.stid,a.apiId,a.costCount,a.cost,a.price,
+            a.rebateBegPrice,a.rebateEndPrice,b.companyId,d.name companyName
+            FROM qyfinance.RebateCustomerBill a
+            LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
+            LEFT JOIN qyfinance.finance_agency_company c ON b.companyId = c.companyId
+            LEFT JOIN qyfinance.bkvwCustomerCompany d ON b.companyId = d.id
+            <where>
+                <if test="agencyId != null and agencyId != ''">
+                    AND c.agencyId = #{agencyId}
+                </if>
+                <if test="cycList != null and cycList.length > 0">
+                    AND a.cycle IN
+                    <foreach collection="cycList" item="cyc" index="index" open="(" close=")" separator=",">
+                        #{cyc}
+                    </foreach>
+                </if>
+                <if test="cidList != null and cidList.length > 0">
+                    AND b.companyId IN
+                    <foreach collection="cidList" item="cid" index="index" open="(" close=")" separator=",">
+                        #{cid}
+                    </foreach>
+                </if>
+                <if test="tidList != null and tidList.size() != 0">
+                    AND a.apiTypeId IN
+                    <foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">
+                        #{tid}
+                    </foreach>
+                </if>
+                <if test="stidList != null and stidList.size() != 0">
+                    AND a.stid IN
+                    <foreach collection="stidList" item="stid" index="index" open="(" close=")" separator=",">
+                        #{stid}
+                    </foreach>
+                </if>
+            </where>
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id
+        LEFT JOIN qyfinance.finance_Api d ON a.apiId = d.id
+        LEFT JOIN qyfinance.finance_ApiVendor e ON d.vendorId = e.id
+        <where>
+            <if test="agencyId != null and agencyId != ''">
+                <![CDATA[
+                AND e.partnerId <> #{agencyId}
+                OR e.partnerId IS NULL
+                ]]>
+            </if>
+        </where>
     </select>
 
+    <!--我方使用对方源-->
+    <select id="queryAgencyBillDetailUserOpposite" parameterType="map" resultMap="AgencyBillDetail_Map">
+        SELECT a.cycle,a.apiTypeId,a.stid,a.apiId,a.costCount,a.cost,
+        CONCAT_WS('-',b.name,c.name) type_stid_name,
+        e.name vendorName
+        FROM
+        (
+            SELECT a.cycle,a.apiTypeId,a.stid,a.apiId,a.cost,sum(a.costCount) costCount
+            FROM qyfinance.RebateCustomerBill a
+            LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
+            LEFT JOIN qyfinance.finance_agency_company c ON b.companyId = c.companyId
+            LEFT JOIN qyfinance.bkvwCustomerCompany d ON b.companyId = d.id
+            <where>
+                <if test="agencyId != null and agencyId != ''">
+                    <![CDATA[
+                    AND c.agencyId <> #{agencyId}
+                    OR c.agencyId IS NULL
+                    ]]>
+                </if>
+            </where>
+            GROUP BY a.cycle,a.apiTypeId,a.stid,a.apiId,a.cost
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id
+        LEFT JOIN qyfinance.finance_Api d ON a.apiId = d.id
+        LEFT JOIN qyfinance.finance_ApiVendor e ON d.vendorId = e.id
+        <where>
+            <if test="agencyId != null and agencyId != ''">
+                <![CDATA[
+                AND e.partnerId = #{agencyId}
+                ]]>
+            </if>
+            <if test="cycList != null and cycList.length > 0">
+                AND a.cycle IN
+                <foreach collection="cycList" item="cyc" index="index" open="(" close=")" separator=",">
+                    #{cyc}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--缓存调用-->
+    <select id="queryAgencyBillDetailCache" parameterType="map" resultMap="AgencyBillDetail_Map">
+        SELECT a.id,a.customerId,a.cycle,a.apiTypeId,a.stid,a.price,a.costCount,a.companyName,
+        CONCAT_WS('-',b.name,c.name) type_stid_name
+        FROM
+        (
+            SELECT a.id,a.customerId,a.cyc cycle,a.apiTypeId,a.stid,a.price,a.count costCount,b.companyId,
+            d.name companyName
+            FROM qyfinance.CustomerCacheMonthUser a
+            LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
+            LEFT JOIN qyfinance.finance_agency_company c ON b.companyId = c.companyId
+            LEFT JOIN qyfinance.bkvwCustomerCompany d ON b.companyId = d.id
+            <where>
+                <if test="agencyId != null and agencyId != ''">
+                    <![CDATA[
+                    AND c.agencyId = #{agencyId}
+                    ]]>
+                </if>
+            </where>
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
+        LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id
+        <where>
+            <if test="cycList != null and cycList.length > 0">
+                AND a.cycle IN
+                <foreach collection="cycList" item="cyc" index="index" open="(" close=")" separator=",">
+                    #{cyc}
+                </foreach>
+            </if>
+            <if test="cidList != null and cidList.length > 0">
+                AND a.companyId IN
+                <foreach collection="cidList" item="cid" index="index" open="(" close=")" separator=",">
+                    #{cid}
+                </foreach>
+            </if>
+            <if test="tidList != null and tidList.size() != 0">
+                AND a.apiTypeId IN
+                <foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">
+                    #{tid}
+                </foreach>
+            </if>
+            <if test="stidList != null and stidList.size() != 0">
+                AND a.stid IN
+                <foreach collection="stidList" item="stid" index="index" open="(" close=")" separator=",">
+                    #{stid}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--查询代理的客户列表-->
+    <select id="queryAgencyCustomer" parameterType="map" resultType="org.qydata.entity.agency.AgencyCustomer">
+        SELECT b.id agencyId,b.name agencyName,c.id companyId,c.name companyName
+        FROM qyfinance.finance_agency_company a
+        LEFT JOIN qyfinance.RebateAgency b ON a.agencyId = b.id
+        LEFT JOIN qyfinance.bkvwCustomerCompany c ON a.companyId = c.id
+        <where>
+            <if test="agencyId != null ">
+                AND a.agencyId = #{agencyId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询周期-->
+    <select id="queryConsumeCycle" resultType="String">
+        SELECT DISTINCT a.cycle
+        FROM qyfinance.RebateCustomerBill a
+        ORDER BY a.cycle DESC
+    </select>
+
+    <!--查询产品列表-->
     <select id="queryConsumeApiType" resultType="org.qydata.entity.CompanyApi">
         SELECT DISTINCT CONCAT_WS('-',a.apiTypeId,a.stid) type_stid,CONCAT_WS('--',b.name,c.name) type_stid_name
-        FROM qyfinance.CustomerRebateBill a
+        FROM qyfinance.RebateCustomerBill a
         LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
         LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id
     </select>
 
     <!--修改扣费量-->
     <update id="updateRebateBillAmount" parameterType="int">
-        UPDATE qyfinance.CustomerRebateBill
-        SET resultCount = #{param2}
+        UPDATE qyfinance.RebateCustomerBill
+        SET costCount = #{param2}
         WHERE id = #{param1}
     </update>
 
     <!--修改单价-->
     <update id="updateRebateBillCost" parameterType="int">
-        UPDATE qyfinance.CustomerRebateBill
+        UPDATE qyfinance.RebateCustomerBill
         SET cost = #{param2}
         WHERE id = #{param1}
     </update>
 
     <!--修改售价-->
     <update id="updateRebateBillPrice" parameterType="int">
-        UPDATE qyfinance.CustomerRebateBill
+        UPDATE qyfinance.RebateCustomerBill
         SET price = #{param2}
         WHERE id = #{param1}
     </update>
 
     <!--修改返佣起始价-->
     <update id="updateRebateBillBeginPrice" parameterType="int">
-        UPDATE qyfinance.CustomerRebateBill
+        UPDATE qyfinance.RebateCustomerBill
         SET rebateBegPrice = #{param2}
         WHERE id = #{param1}
     </update>
 
     <!--修改返佣结算价-->
     <update id="updateRebateBillEndPrice" parameterType="int">
-        UPDATE qyfinance.CustomerRebateBill
+        UPDATE qyfinance.RebateCustomerBill
         SET rebateEndPrice = #{param2}
         WHERE id = #{param1}
     </update>
 
     <!--删除历史记录-->
     <delete id="deleteRebateDetail" parameterType="list">
-        DELETE FROM qyfinance.CustomerRebateBill
+        DELETE FROM qyfinance.RebateCustomerBill
         WHERE id IN
         <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
     </delete>
 
+    <!--修改缓存售价-->
+    <update id="updateCachePrice" parameterType="int">
+        UPDATE qyfinance.CustomerCacheMonthUser
+        SET price = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--删除历史记录-->
+    <delete id="deleteCacheDetail" parameterType="list">
+        DELETE FROM qyfinance.CustomerCacheMonthUser
+        WHERE id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
 
 </mapper>

@@ -33,23 +33,17 @@ public class AgencyController {
        return "/agency/rebate_agency";
     }
 
-    //代理人返佣
-   // @RequestMapping("/rebate")
-    public String rebate(Integer rate,Integer cache,Integer agencyId,Integer [] cid,String [] cyc,Model model){
+    //代理人返佣明细
+    @RequestMapping("/rebate/detail")
+    public String rebateDetail(Integer agencyId,String name,Integer [] cid ,String [] cyc, String [] tid,Model model){
         Map<String,Object> param = new HashMap<>();
-        if (rate != null){
-            param.put("rate",rate);
-            model.addAttribute("rate",rate);
-        }
-        if (cache != null){
-            param.put("cache",cache);
-            model.addAttribute("cache",cache);
-        }
         if (agencyId != null){
             param.put("agencyId",agencyId);
             model.addAttribute("agencyId",agencyId);
-            List<AgencyCustomer> companyList = agencyService.queryAgencyCustomer(param);
-            model.addAttribute("companyList",companyList);
+            model.addAttribute("rule",agencyService.queryRebateRuleById(agencyId));
+        }
+        if (name != null){
+            model.addAttribute("name",name);
         }
         if (cid != null){
             param.put("cid",cid);
@@ -59,66 +53,61 @@ public class AgencyController {
             param.put("cyc",cyc);
             model.addAttribute("cycleArray",cyc);
         }
-        Map<String,Object> resu = agencyService.queryAgencyBill(param);
-        if (resu != null){
-            for (Map.Entry<String,Object> me : resu.entrySet()) {
-                if (me.getKey().equals("billList")){
-                    model.addAttribute("billList",me.getValue());
-                }
-                if (me.getKey().equals("netProfitTot")){
-                    model.addAttribute("netProfitTot",me.getValue());
-                }
-            }
-        }
-        List<RebateAgency> agencyList = agencyService.queryRebateAgency();
-        List<String> cycleList = agencyService.queryConsumeCycle();
-        model.addAttribute("agencyList",agencyList);
-        model.addAttribute("cycleList",cycleList);
-        return "/agency/rebate";
-    }
-
-    //代理的客户
-    @RequestMapping("/rebate/customer")
-    @ResponseBody
-    public String rebateCustomer(Integer agency){
-        Map<String,Object> param = new HashMap<>();
-        param.put("agency",agency);
-        List<AgencyCustomer> companyList = agencyService.queryAgencyCustomer(param);
-        return new Gson().toJson(companyList);
-    }
-
-    //代理人返佣明细
-    @RequestMapping("/rebate/detail")
-    public String rebateDetail(Integer agencyId, String [] cyc, String [] tid, String cache,Model model){
-        Map<String,Object> param = new HashMap<>();
-        if (agencyId != null){
-            param.put("agencyId",agencyId);
-            model.addAttribute("agencyId",agencyId);
-        }
-        if (cyc != null){
-            param.put("cyc",cyc);
-            model.addAttribute("cycleArray",cyc);
-        }
         if (tid != null){
             param.put("tid",tid);
             model.addAttribute("typeArray",tid);
         }
-        if (cache != null){
-            param.put("cache",cache);
-            model.addAttribute("cache",cache);
-        }
-        Map<String,Object> resu = agencyService.queryAgencyBillDetail(param);
+        Map<String,Object> resu = agencyService.queryAgencyBill(param);
         if (resu != null){
             for (Map.Entry<String,Object> me : resu.entrySet()) {
                 if (me.getKey().equals("detailList")){
                     model.addAttribute("detailList",me.getValue());
                 }
+                if (me.getKey().equals("detailListOppo")){
+                    model.addAttribute("detailListOppo",me.getValue());
+                }
+                if (me.getKey().equals("detailListCache")){
+                    model.addAttribute("detailListCache",me.getValue());
+                }
+                if (me.getKey().equals("data")){
+                    Map<String,Object> data = (Map<String, Object>) me.getValue();
+                    if (data != null){
+                        for (Map.Entry<String,Object> meData : data.entrySet()) {
+                            if (meData.getKey().equals("costRealOur")){
+                                model.addAttribute("costRealOur",meData.getValue());
+                            }
+                            if (meData.getKey().equals("costVirtualOur")){
+                                model.addAttribute("costVirtualOur",meData.getValue());
+                            }
+                            if (meData.getKey().equals("costOpposite")){
+                                model.addAttribute("costOpposite",meData.getValue());
+                            }
+                            if (meData.getKey().equals("firstRebate")){
+                                model.addAttribute("firstRebate",meData.getValue());
+                            }
+                            if (meData.getKey().equals("secondaryRebate")){
+                                model.addAttribute("secondaryRebate",meData.getValue());
+                            }
+                            if (meData.getKey().equals("cacheRebate")){
+                                model.addAttribute("cacheRebate",meData.getValue());
+                            }
+                            if (meData.getKey().equals("costCache")){
+                                model.addAttribute("costCache",meData.getValue());
+                            }
+                            if (meData.getKey().equals("netProfit")){
+                                model.addAttribute("netProfit",meData.getValue());
+                            }
+                        }
+                    }
+                }
             }
         }
+        List<AgencyCustomer> companyList = agencyService.queryAgencyCustomer(param);
         List<String> cycleList = agencyService.queryConsumeCycle();
         List<CompanyApi> typeList = agencyService.queryConsumeApiType();
         model.addAttribute("cycleList",cycleList);
         model.addAttribute("typeList",typeList);
+        model.addAttribute("companyList",companyList);
         return "/agency/rebate_detail";
     }
 
@@ -200,5 +189,33 @@ public class AgencyController {
         resu.put("fail","fail");
         return new Gson().toJson(resu);
     }
+
+    //修改缓存售价
+    @RequestMapping("/rebate/detail/update-cache-price")
+    @ResponseBody
+    public String cacheUpdatePrice(Integer id,Double price){
+        Map<String,Object> resu = new HashMap<>();
+        if (agencyService.updateCachePrice(id,price)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
+    //删除缓存记录
+    @RequestMapping("/rebate/detail/delete-cache")
+    @ResponseBody
+    public String rebateCacheDelete(HttpServletRequest request){
+        String [] id = request.getParameterValues("id[]");
+        Map<String,Object> resu = new HashMap<>();
+        if (agencyService.deleteCacheDetail(id)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
 
 }

@@ -19,33 +19,36 @@ public interface AgencyService {
     public List<RebateAgency> queryAgency();
 
     /**
-     *
+     * 根据代理人Id查找返佣规则
+     * @param id
+     * @return
+     */
+    public String queryRebateRuleById(Integer id);
+
+    /**
+     * 查询代理人详单
      * @param map
      * @return
      */
     public Map<String,Object> queryAgencyBill(Map<String,Object> map);
 
-    /**
-     *
-     * @return
-     */
-    public List<RebateAgency> queryRebateAgency();
 
     /**
-     *
+     *查询代理的客户列表
      * @return
      */
     public List<AgencyCustomer> queryAgencyCustomer(Map<String,Object> map);
 
     /**
-     *
+     *查询周期
      * @return
      */
     public List<String> queryConsumeCycle();
 
-
-    public Map<String,Object> queryAgencyBillDetail(Map<String,Object> map);
-
+    /**
+     * 查询产品列表
+     * @return
+     */
     public List<CompanyApi> queryConsumeApiType();
 
     /**
@@ -94,5 +97,20 @@ public interface AgencyService {
      * @return
      */
     public boolean deleteRebateDetail(String [] id);
+
+    /**
+     * 修改缓存售价
+     * @param id
+     * @param price
+     * @return
+     */
+    public boolean updateCachePrice(Integer id,Double price);
+
+    /**
+     * 删除缓存记录
+     * @param id
+     * @return
+     */
+    public boolean deleteCacheDetail(String [] id);
 
 }

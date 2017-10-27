@@ -8,30 +8,21 @@ import java.io.Serializable;
 public class AgencyBillDetail implements Serializable {
 
     private Integer id;
-    private Integer companyId;
     private Integer customerId;
     private String cycle;
     private Integer apiTypeId;
     private Integer stid;
     private Integer apiId;
+    private Integer costCount;
     private Double cost;
     private Double price;
     private Double rebateBegPrice;
     private Double rebateEndPrice;
-    private Integer resultCount;
-    private String companyName;
     private String type_stid_name;
-    private String vendor_partner_name;
-
-    private String typeName;
+    private String vendorName;
+    private String companyName;
     private Double priceMoney;
     private Double costMoney;
-    private Double grossProfit;
-    private Double firstRebate;
-    private Double twiceRebate;
-    private Double netProfit;
-
-
 
     public Integer getId() {
         return id;
@@ -39,14 +30,6 @@ public class AgencyBillDetail implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
     }
 
     public Integer getCustomerId() {
@@ -89,6 +72,14 @@ public class AgencyBillDetail implements Serializable {
         this.apiId = apiId;
     }
 
+    public Integer getCostCount() {
+        return costCount;
+    }
+
+    public void setCostCount(Integer costCount) {
+        this.costCount = costCount;
+    }
+
     public Double getCost() {
         return cost;
     }
@@ -121,12 +112,20 @@ public class AgencyBillDetail implements Serializable {
         this.rebateEndPrice = rebateEndPrice;
     }
 
-    public Integer getResultCount() {
-        return resultCount;
+    public String getType_stid_name() {
+        return type_stid_name;
     }
 
-    public void setResultCount(Integer resultCount) {
-        this.resultCount = resultCount;
+    public void setType_stid_name(String type_stid_name) {
+        this.type_stid_name = type_stid_name;
+    }
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
     }
 
     public String getCompanyName() {
@@ -137,22 +136,6 @@ public class AgencyBillDetail implements Serializable {
         this.companyName = companyName;
     }
 
-    public String getType_stid_name() {
-        return type_stid_name;
-    }
-
-    public void setType_stid_name(String type_stid_name) {
-        this.type_stid_name = type_stid_name;
-    }
-
-    public String getVendor_partner_name() {
-        return vendor_partner_name;
-    }
-
-    public void setVendor_partner_name(String vendor_partner_name) {
-        this.vendor_partner_name = vendor_partner_name;
-    }
-
     public Double getPriceMoney() {
         return priceMoney;
     }
@@ -161,51 +144,11 @@ public class AgencyBillDetail implements Serializable {
         this.priceMoney = priceMoney;
     }
 
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
     public Double getCostMoney() {
         return costMoney;
     }
 
     public void setCostMoney(Double costMoney) {
         this.costMoney = costMoney;
-    }
-
-    public Double getGrossProfit() {
-        return grossProfit;
-    }
-
-    public void setGrossProfit(Double grossProfit) {
-        this.grossProfit = grossProfit;
-    }
-
-    public Double getFirstRebate() {
-        return firstRebate;
-    }
-
-    public void setFirstRebate(Double firstRebate) {
-        this.firstRebate = firstRebate;
-    }
-
-    public Double getTwiceRebate() {
-        return twiceRebate;
-    }
-
-    public void setTwiceRebate(Double twiceRebate) {
-        this.twiceRebate = twiceRebate;
-    }
-
-    public Double getNetProfit() {
-        return netProfit;
-    }
-
-    public void setNetProfit(Double netProfit) {
-        this.netProfit = netProfit;
     }
 }
