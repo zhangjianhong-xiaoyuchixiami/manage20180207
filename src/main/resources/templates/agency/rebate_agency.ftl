@@ -41,7 +41,7 @@
                                         <td>${agency.name!'无'}</td>
                                         <td>${agency.taxRateName!'无'}</td>
                                         <td>${agency.rule!'无'}</td>
-                                        <td><a href="/finance/rebate/detail?agencyId=${agency.id?c}&name=${agency.name!'无'}">分成账单</a></td>
+                                        <td><a href="/finance/rebate/detail?agencyId=${agency.id?c}&name=${agency.name!'无'}">账单明细</a></td>
                                     </tr>
                                     </#list>
                                 </#if>

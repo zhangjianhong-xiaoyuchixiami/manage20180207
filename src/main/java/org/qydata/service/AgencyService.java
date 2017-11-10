@@ -107,10 +107,19 @@ public interface AgencyService {
     public boolean updateCachePrice(Integer id,Double price);
 
     /**
+     * 修改缓存扣费量
+     * @param id
+     * @param count
+     * @return
+     */
+    public boolean updateCacheCount(Integer id,Integer count);
+
+    /**
      * 删除缓存记录
      * @param id
      * @return
      */
     public boolean deleteCacheDetail(String [] id);
+
 
 }

@@ -6,6 +6,8 @@ var RebateDetailOpposite = function () {
 
             var oTable_2 = $('#sample_2').dataTable({
                 "aoColumns": [
+                    {"bSortable": false},
+                    null,
                     null,
                     null,
                     null,
@@ -15,19 +17,19 @@ var RebateDetailOpposite = function () {
                 ],
                 "aoColumnDefs": [
                     {
-                        "aTargets": [ 3 ],
-                        "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 4 ],
-                        "sType": "html-percent"
-                    },
-                    {
                         "aTargets": [ 5 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 6 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 7 ],
                         "sType": "html-percent"
                     }
                 ],
-                "aaSorting": [[0, 'desc']],
+                "aaSorting": [[2, 'desc']],
                 "bPaginate" : true,
                 "bLengthChange" : false,
                 "iDisplayLength": 10, //每页显示多少行
@@ -49,6 +51,20 @@ var RebateDetailOpposite = function () {
                     }
                 },
                 "bFilter" : false //设置全文搜索框，默认true
+            });
+
+            /*多选框*/
+            jQuery('#sample_2 .group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
             });
 
         }

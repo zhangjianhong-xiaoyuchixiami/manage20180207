@@ -122,9 +122,18 @@ public interface AgencyMapper {
     public boolean updateCachePrice(Integer id,Integer price);
 
     /**
+     * 修改缓存扣费量
+     * @param id
+     * @param count
+     * @return
+     */
+    public boolean updateCacheCount(Integer id,Integer count);
+
+    /**
      * 删除缓存记录
      * @param id
      * @return
      */
     public boolean deleteCacheDetail(List<String> id);
+
 }

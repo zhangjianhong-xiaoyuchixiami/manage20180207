@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.13'/>
+    <#assign ver='1.0.0.15'/>
 
 <!DOCTYPE html>
 
@@ -268,11 +268,13 @@
                         <#--</li>-->
                         <#--</@shiro.hasPermission>-->
 
-                            <li id="rebate">
-                                <a href="/finance/rebate">
-                                    代理人返佣账单
-                                </a>
-                            </li>
+                            <@shiro.hasPermission name="finance:rebate">
+                                <li id="rebate">
+                                    <a href="/finance/rebate">
+                                        代理人返佣账单
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
                             <@shiro.hasPermission name="partner:find-all-partner-financial-account">
                                 <li id="partnersFinancialAccount">
@@ -322,13 +324,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="api:api-monitor">-->
-                                <#--<li id="apiMonitor">-->
-                                    <#--<a href="/api/api-monitor">-->
-                                        <#--产品监控-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--</@shiro.hasPermission>-->
+                        <#--<@shiro.hasPermission name="api:api-monitor">-->
+                        <#--<li id="apiMonitor">-->
+                        <#--<a href="/api/api-monitor">-->
+                        <#--产品监控-->
+                        <#--</a>-->
+                        <#--</li>-->
+                        <#--</@shiro.hasPermission>-->
 
                             <@shiro.hasPermission name="api:api-price-change-log">
                                 <li id="apiPriceChangeLog">

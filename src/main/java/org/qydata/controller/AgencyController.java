@@ -203,6 +203,19 @@ public class AgencyController {
         return new Gson().toJson(resu);
     }
 
+    //修改缓存扣费量
+    @RequestMapping("/rebate/detail/update-cache-count")
+    @ResponseBody
+    public String cacheUpdateCount(Integer id,Integer count){
+        Map<String,Object> resu = new HashMap<>();
+        if (agencyService.updateCacheCount(id,count)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
+
     //删除缓存记录
     @RequestMapping("/rebate/detail/delete-cache")
     @ResponseBody
@@ -217,5 +230,19 @@ public class AgencyController {
         return new Gson().toJson(resu);
     }
 
+
+    //删除消费对方记录
+    @RequestMapping("/rebate/detail/delete-opposite")
+    @ResponseBody
+    public String rebateOppositeDelete(HttpServletRequest request){
+        String [] id = request.getParameterValues("id[]");
+        Map<String,Object> resu = new HashMap<>();
+        if (agencyService.deleteRebateDetail(id)){
+            resu.put("success","success");
+            return new Gson().toJson(resu);
+        }
+        resu.put("fail","fail");
+        return new Gson().toJson(resu);
+    }
 
 }

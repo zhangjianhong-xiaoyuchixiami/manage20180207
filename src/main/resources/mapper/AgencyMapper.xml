@@ -93,12 +93,12 @@
 
     <!--我方使用对方源-->
     <select id="queryAgencyBillDetailUserOpposite" parameterType="map" resultMap="AgencyBillDetail_Map">
-        SELECT a.cycle,a.apiTypeId,a.stid,a.apiId,a.costCount,a.cost,
+        SELECT a.id,a.customerId,a.cycle,a.apiTypeId,a.stid,a.apiId,a.costCount,a.cost,a.companyName,
         CONCAT_WS('-',b.name,c.name) type_stid_name,
         e.name vendorName
         FROM
         (
-            SELECT a.cycle,a.apiTypeId,a.stid,a.apiId,a.cost,sum(a.costCount) costCount
+            SELECT a.id,a.customerId,a.cycle,a.apiTypeId,a.stid,a.apiId,a.cost,a.costCount,d.name companyName
             FROM qyfinance.RebateCustomerBill a
             LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
             LEFT JOIN qyfinance.finance_agency_company c ON b.companyId = c.companyId
@@ -111,7 +111,6 @@
                     ]]>
                 </if>
             </where>
-            GROUP BY a.cycle,a.apiTypeId,a.stid,a.apiId,a.cost
         ) a
         LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId = b.id
         LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid = c.id
@@ -184,10 +183,12 @@
 
     <!--查询代理的客户列表-->
     <select id="queryAgencyCustomer" parameterType="map" resultType="org.qydata.entity.agency.AgencyCustomer">
-        SELECT b.id agencyId,b.name agencyName,c.id companyId,c.name companyName
+        SELECT DISTINCT b.id agencyId,b.name agencyName,c.id companyId,c.name companyName
         FROM qyfinance.finance_agency_company a
         LEFT JOIN qyfinance.RebateAgency b ON a.agencyId = b.id
         LEFT JOIN qyfinance.bkvwCustomerCompany c ON a.companyId = c.id
+        LEFT JOIN qyfinance.finance_Customer d ON a.companyId = d.companyId
+        INNER JOIN qyfinance.RebateCustomerBill e ON d.id = e.customerId
         <where>
             <if test="agencyId != null ">
                 AND a.agencyId = #{agencyId}
@@ -258,6 +259,13 @@
     <update id="updateCachePrice" parameterType="int">
         UPDATE qyfinance.CustomerCacheMonthUser
         SET price = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--修改缓存扣费量-->
+    <update id="updateCacheCount" parameterType="int">
+        UPDATE qyfinance.CustomerCacheMonthUser
+        SET count = #{param2}
         WHERE id = #{param1}
     </update>
 

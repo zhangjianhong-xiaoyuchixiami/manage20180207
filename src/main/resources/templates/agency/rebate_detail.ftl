@@ -128,16 +128,16 @@
                             <tr class="table table-bordered">
                                 <td rowspan="4">${name!'无'}</td>
                                 <td rowspan="4">${rule!'无'}</td>
-                                <td>对方调用我方源（不包含缓存，按真实成本价计算）：${costRealOur!'0.0'}</strong></td>
-                                <td>对方调用我方源（不包含缓存，按返佣起始价计算）：${costVirtualOur!'0.0'}</strong></td>
+                                <td>对方调用我方源（不包含缓存，按真实成本价计算）：${costRealOur!'0.0'}</td>
+                                <td>对方调用我方源（不包含缓存，按返佣起始价计算）：${costVirtualOur!'0.0'}</td>
                             </tr>
                             <tr>
-                                <td>我方调用对方源（不包含缓存）：${costOpposite!'0.0'}</strong></td>
-                                <td>首次业务回扣：${firstRebate!'0.0'}</></td>
+                                <td>我方调用对方源（不包含缓存）：${costOpposite!'0.0'}</td>
+                                <td>首次业务回扣：${firstRebate!'0.0'}</td>
                             </tr>
                             <tr>
-                                <td>二次业务回扣：${secondaryRebate!'0.0'}</strong></td>
-                                <td>调用缓存：${costCache!'0.0'}</strong></td>
+                                <td>二次业务回扣：${secondaryRebate!'0.0'}</td>
+                                <td>调用缓存：${costCache!'0.0'}</td>
                             </tr>
                             <tr>
                                 <td>缓存分成：${cacheRebate!'0.0'}</td>
@@ -192,9 +192,9 @@
                                         <th>供应商</th>
                                         <th>扣费量</th>
                                         <th>单价</th>
-                                        <th>售价</th>
                                         <th>回扣起始价</th>
                                         <th>回扣结算价</th>
+                                        <th>售价</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -208,9 +208,9 @@
                                                 <td>${detail.vendorName!'无'}</td>
                                                 <td><a href="javaScript:;" onclick="updateAmount(${detail.id?c},${detail.costCount?c})">${detail.costCount!'0'}</a></td>
                                                 <td><a href="javaScript:;" onclick="updateCost(${detail.id?c},${detail.cost!'0'})">${detail.cost!'0'}</a></td>
-                                                <td><a href="javaScript:;" onclick="updatePrice(${detail.id?c},${detail.price!'0'})">${detail.price!'0'}</a></td>
                                                 <td><a href="javaScript:;" onclick="updateRebateBegPrice(${detail.id?c},${detail.rebateBegPrice!'0'})">${detail.rebateBegPrice!'--'}</a></td>
                                                 <td><a href="javaScript:;" onclick="updateRebateEndPrice(${detail.id?c},${detail.rebateEndPrice!'0'})">${detail.rebateEndPrice!'--'}</a></td>
+                                                <td><a href="javaScript:;" onclick="updatePrice(${detail.id?c},${detail.price!'0'})">${detail.price!'0'}</a></td>
                                             </tr>
                                             </#list>
                                         </#if>
@@ -221,9 +221,27 @@
 
                             <div class="tab-pane " id="tab_2">
 
+                                <div class="portlet-title">
+
+                                    <div class="caption">
+
+                                        <div class="btn-group">
+
+                                            <button class="btn-icon_1 red" id="del_opposite">
+                                                <i class=" icon-minus-sign"></i>删除
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                                 <table class="table table-hover table-condensed" id="sample_2">
                                     <thead>
                                     <tr>
+                                        <th style="width: 5%"><input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes"/></th>
+                                        <th>公司名称</th>
                                         <th>周期</th>
                                         <th>产品名称</th>
                                         <th>供应商</th>
@@ -236,11 +254,13 @@
                                         <#if detailListOppo??>
                                             <#list detailListOppo as detail>
                                             <tr>
+                                                <td style="width: 5%" data-title="多选框"><input class="checkboxes" type="checkbox" id="checkBox_Opposite" name="checkBox_Opposite" value="${detail.id?c}"/></td>
+                                                <td>${detail.companyName!'无'}</td>
                                                 <td>${detail.cycle!'无'}</td>
                                                 <td>${detail.type_stid_name!'无'}</td>
                                                 <td>${detail.vendorName!'无'}</td>
-                                                <td>${detail.costCount!'0'}</td>
-                                                <td>${detail.cost!'0'}</td>
+                                                <td><a href="javaScript:;" onclick="updateAmount(${detail.id?c},${detail.costCount?c})">${detail.costCount!'0'}</a></td>
+                                                <td><a href="javaScript:;" onclick="updateCost(${detail.id?c},${detail.cost!'0'})">${detail.cost!'0'}</a></td>
                                                 <td>${detail.costMoney!'0'}</td>
                                             </tr>
                                             </#list>
@@ -288,7 +308,7 @@
                                                 <td>${detail.companyName!'无'}</td>
                                                 <td>${detail.cycle!'无'}</td>
                                                 <td>${detail.type_stid_name!'无'}</td>
-                                                <td>${detail.costCount!'0'}</td>
+                                                <td><a href="javaScript:;" onclick="updateCacheCount(${detail.id?c},${detail.costCount!'0'})">${detail.costCount!'0'}</a></td>
                                                 <td><a href="javaScript:;" onclick="updateCachePrice(${detail.id?c},${detail.price!'0'})">${detail.price!'0'}</a></td>
                                                 <td>${detail.priceMoney!'0'}</td>
                                             </tr>
@@ -671,6 +691,54 @@
             });
         }
 
+        //修改缓存售价
+        function updateCacheCount(id,price) {
+            swal({
+                title: '修改扣费量',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",
+                confirmButtonText: "确定",
+                allowOutsideClick: true,
+                inputValue: price,
+                inputValidator: function(value) {
+                    return new Promise(function(resolve, reject) {
+                        var re =new RegExp("^(-?\\d+)(\\.\\d+)?$");
+                        if(!re.test(value)){
+                            reject('格式输入不正确！');
+                        } else {
+                            resolve();
+                        }
+                    });
+                }
+            }).then(function (value) {
+                $.ajax({
+                    type: "post",
+                    url: "/finance/rebate/detail/update-cache-count",
+                    data: {"id": id,"count": value},
+                    dataType: "json",
+                    beforeSend: function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if (data != null) {
+                            if (data.success != null) {
+                                swal({type: 'success', title: '成功', text: "修改完成", confirmButtonText: "确定"}).then(function () {window.location.href = window.location.href ;return;});
+                            }
+                            if (data.fail != null) {
+                                swal({type: 'error', title: '失败', text: "哎呦，修改失败了", confirmButtonText: "确定"})
+                            }
+                        }
+                    }
+                });
+            },function(dismiss) {
+                if (dismiss === 'cancel') {}
+            });
+        }
+
         //删除缓存记录
         $("#del_cache").on('click',function () {
             var id =[];//定义一个数组
@@ -698,6 +766,54 @@
                     $.ajax({
                         type:'post',
                         url:"/finance/rebate/detail/delete-cache",
+                        data:{"id": id},
+                        dataType:"json",
+                        beforeSend:function () {
+                            openProgress();
+                        },
+                        success:function(data){
+                            closeProgress();
+                            if (data != null) {
+                                if (data.success != null) {
+                                    swal({type: 'success', title: '成功', text: "删除完成", confirmButtonText: "确定"}).then(function () {window.location.href = window.location.href ;return;});
+                                }
+                                if (data.fail != null) {
+                                    swal({type: 'error', title: '失败', text: "哎呦，删除失败了", confirmButtonText: "确定"})
+                                }
+                            }
+                        }
+                    });
+                },function(dismiss) {if (dismiss === 'cancel') {}});
+            }
+        });
+
+        //删除消费对方记录
+        $("#del_opposite").on('click',function () {
+            var id =[];//定义一个数组
+            $('input[name="checkBox_Opposite"]:checked').each(function(){
+                id.push($.trim($(this).val()));
+            });
+            if (id == null || id == ""){
+                swal({
+                    title: "操作提示",
+                    text: "请先选择要删除的列！",
+                    type: "info",
+                    confirmButtonText: "确定"
+                });
+            }else {
+                swal({
+                    title: "确定要删除吗？",   //弹出框的title
+                    type: "question",    //弹出框类型
+                    showCancelButton: true, //是否显示取消按钮
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: "取消",//取消按钮文本
+                    confirmButtonText: "确定"//确定按钮上面的文档
+                }).then(function () {
+                    $.ajax({
+                        type:'post',
+                        url:"/finance/rebate/detail/delete-opposite",
                         data:{"id": id},
                         dataType:"json",
                         beforeSend:function () {

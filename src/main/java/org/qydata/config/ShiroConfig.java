@@ -465,6 +465,18 @@ public class ShiroConfig {
 		chains.put("/company/balance-monitor/query-email/delete", "authc,perms");
 		chains.put("/company/balance-monitor/query-email/add", "authc,perms");
 
+		//代理人返佣
+		chains.put("/finance/rebate", "authc,perms");
+		chains.put("/finance/rebate/detail", "authc,perms");
+		chains.put("/finance/rebate/detail/update-amount", "authc,perms");
+		chains.put("/finance/rebate/detail/update-cost", "authc,perms");
+		chains.put("/finance/rebate/detail/update-price", "authc,perms");
+		chains.put("/finance/rebate/detail/update-rebate-begin-price", "authc,perms");
+		chains.put("/finance/rebate/detail/update-rebate-end-price", "authc,perms");
+		chains.put("/finance/rebate/detail/delete", "authc,perms");
+		chains.put("/finance/rebate/detail/update-cache-price", "authc,perms");
+		chains.put("/finance/rebate/detail/delete-cache", "authc,perms");
+
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}

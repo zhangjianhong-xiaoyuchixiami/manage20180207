@@ -398,12 +398,14 @@
                                         <th>余额</th>
                                         <th>充值总额</th>
                                         <th>消费总额（${beginDate!'开通后'}--${endDate!'至今'})</th>
-                                        <th>${year!''}年第${week!''}周充值</th>
-                                        <th>${year!''}年第${week!''}周消费</th>
-                                        <th>${year!''}年${month!''}月充值</th>
-                                        <th>${year!''}年${month!''}月消费</th>
-                                        <th>${currYear!''}年${currMonth!''}月消费</th>
-                                        <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费</th>
+                                        <th>上周充值</th>
+                                        <th>上周消费</th>
+                                        <th>上月充值</th>
+                                        <th>上月消费</th>
+                                        <th>当月消费</th>
+                                        <th>昨日消费</th>
+                                        <th>近一周消费走势</th>
+                                        <th>当日消费</th>
                                         <th class="table-td-none">产品类型</th>
                                         <th class="table-td-none">产品价格</th>
                                         <th class="table-td-none">总消费额</th>

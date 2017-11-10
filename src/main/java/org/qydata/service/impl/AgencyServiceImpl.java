@@ -102,7 +102,9 @@ public class AgencyServiceImpl implements AgencyService {
                 if (detail.getCost() != null){
                     detail.setCost(detail.getCost()/100.0);
                 }
-
+                if (detail.getCost() != null && detail.getCostCount() != null){
+                    detail.setCostMoney(detail.getCost() * detail.getCostCount());
+                }
             }
         }
         List<AgencyBillDetail> detailListCache = agencyMapper.queryAgencyBillDetailCache(param);
@@ -183,6 +185,11 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
+    public boolean updateCacheCount(Integer id, Integer count) {
+        return agencyMapper.updateCacheCount(id,count);
+    }
+
+    @Override
     public boolean deleteCacheDetail(String[] id) {
         List<String> list = new ArrayList<>();
         if (id != null){
@@ -192,4 +199,5 @@ public class AgencyServiceImpl implements AgencyService {
         }
         return agencyMapper.deleteCacheDetail(list);
     }
+
 }
