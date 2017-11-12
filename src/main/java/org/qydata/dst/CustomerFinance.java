@@ -31,6 +31,11 @@ public class CustomerFinance implements Serializable {
     private Integer currDayChargeAmount;
     private String email;
     private String consuTime;  //上月excel账单
+    private Double lastWeekCharge;
+    private Double lastWeekConsume;
+    private Double lastMonthCharge;
+    private Double yesterdayConsume;
+    private Double lastMonthConsume;
     private List<CompanyApi> companyApiList;
 
     public Integer getPartnerId() {
@@ -207,5 +212,45 @@ public class CustomerFinance implements Serializable {
 
     public void setCurrDayChargeAmount(Integer currDayChargeAmount) {
         this.currDayChargeAmount = currDayChargeAmount;
+    }
+
+    public Double getLastWeekCharge() {
+        return lastWeekCharge;
+    }
+
+    public void setLastWeekCharge(Double lastWeekCharge) {
+        this.lastWeekCharge = lastWeekCharge;
+    }
+
+    public Double getLastWeekConsume() {
+        return lastWeekConsume;
+    }
+
+    public void setLastWeekConsume(Double lastWeekConsume) {
+        this.lastWeekConsume = lastWeekConsume;
+    }
+
+    public Double getLastMonthCharge() {
+        return lastMonthCharge;
+    }
+
+    public void setLastMonthCharge(Double lastMonthCharge) {
+        this.lastMonthCharge = lastMonthCharge;
+    }
+
+    public Double getYesterdayConsume() {
+        return yesterdayConsume;
+    }
+
+    public void setYesterdayConsume(Double yesterdayConsume) {
+        this.yesterdayConsume = yesterdayConsume;
+    }
+
+    public Double getLastMonthConsume() {
+        return lastMonthConsume;
+    }
+
+    public void setLastMonthConsume(Double lastMonthConsume) {
+        this.lastMonthConsume = lastMonthConsume;
     }
 }

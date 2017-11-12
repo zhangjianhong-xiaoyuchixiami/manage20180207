@@ -3,6 +3,7 @@ package org.qydata.service.impl;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.config.annotation.DataSourceService;
 import org.qydata.dst.*;
+import org.qydata.dst.customer.CustomerConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.*;
@@ -94,6 +95,32 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         //查询客户上月账单
         List<CustomerConsumeExcel> customerConsumeExcelList = customerFinanceMapper.queryCustomerAccountExcel(mapExcelParam);
 
+        List<CustomerConsume> lastWeekChargeList = customerFinanceMapper.queryCustomerLastWeekCharge();
+
+        List<CustomerConsume> lastWeekConsumeList = customerFinanceMapper.queryCustomerLastWeekConsume();
+        if (lastWeekConsumeList != null){
+            for (CustomerConsume consume : lastWeekConsumeList) {
+                consume.setLastWeekConsume(-consume.getLastWeekConsume()/100.0);
+            }
+        }
+        List<CustomerConsume> lastMonthChargeList = customerFinanceMapper.queryCustomerLastMonthCharge();
+        if (lastMonthChargeList != null){
+            for (CustomerConsume consume : lastMonthChargeList) {
+                consume.setLastMonthCharge(consume.getLastMonthCharge()/100.0);
+            }
+        }
+        List<CustomerConsume> lastMonthConsumeList = customerFinanceMapper.queryCustomerLastMonthConsume("2");
+        if (lastMonthConsumeList != null){
+            for (CustomerConsume consume : lastMonthConsumeList) {
+                consume.setLastMonthConsume((consume.getCost() * consume.getAmount())/100.0);
+            }
+        }
+        List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume();
+        if (yesterdayConsumeList != null){
+            for (CustomerConsume consume : yesterdayConsumeList) {
+                consume.setYesterdayConsume(-consume.getYesterdayConsume()/100.0);
+            }
+        }
         if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate"))) {
             if (customerFinanceApiTypeConsumeList != null){
                 for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
@@ -135,6 +162,14 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                         List<CompanyApi> companyApiList = customerFinanceApiTypeConsume.getCompanyApiList();
                         if (customerFinance.getId() == customerFinanceApiTypeConsume.getId() || customerFinance.getId().equals(customerFinanceApiTypeConsume.getId())) {
                             customerFinance.setCompanyApiList(companyApiList);
+                        }
+                    }
+                }
+                if (lastWeekChargeList != null){
+                    for (CustomerConsume consume : lastWeekChargeList) {
+                        if (customerFinance.getId() == consume.getCustomerId()
+                                || customerFinance.getId().equals(consume.getCustomerId())){
+                            customerFinance.setLastWeekCharge(consume.getLastWeekCharge()/100.0);
                         }
                     }
                 }

@@ -3,6 +3,7 @@ package org.qydata.mapper;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.dst.CustomerWeekMonthConsume;
+import org.qydata.dst.customer.CustomerConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.*;
@@ -114,6 +115,37 @@ public interface CustomerFinanceMapper {
      * @return
      */
     public int queryCompanyIdByCustomerId(int customerId);
+
+    /**
+     * 查询客户上周充值金额
+     * @return
+     */
+    public List<CustomerConsume> queryCustomerLastWeekCharge();
+
+    /**
+     * 查询客户上周消费金额
+     * @return
+     */
+    public List<CustomerConsume> queryCustomerLastWeekConsume();
+
+    /**
+     * 查询客户上月充值金额
+     * @return
+     */
+    public List<CustomerConsume> queryCustomerLastMonthCharge();
+
+    /**
+     * 查询客户上月消费金额
+     * @param yestTime
+     * @return
+     */
+    public List<CustomerConsume> queryCustomerLastMonthConsume(String yestTime);
+
+    /**
+     * 查询客户昨日消费金额
+     * @return
+     */
+    public List<CustomerConsume> queryCustomerYesterdayConsume();
 
 
 
