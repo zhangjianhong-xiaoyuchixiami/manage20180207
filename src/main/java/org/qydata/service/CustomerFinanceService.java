@@ -36,6 +36,13 @@ public interface CustomerFinanceService {
      */
     public List<CustomerCurrDayConsumeDetail> queryCustomerCurrDayConsumeDetail(Map<String,Object> map);
 
+    /**
+     * 查询客户近一周消费走势
+     * @param cid
+     * @return
+     */
+    public Map<String,Object> queryNearlyWeekTrend(Integer cid);
+
 
     /**
      * 根据customerId查询公司名称

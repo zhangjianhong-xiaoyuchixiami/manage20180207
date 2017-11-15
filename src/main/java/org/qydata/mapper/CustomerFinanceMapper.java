@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
 import org.qydata.dst.CustomerWeekMonthConsume;
@@ -136,16 +137,24 @@ public interface CustomerFinanceMapper {
 
     /**
      * 查询客户上月消费金额
-     * @param yestTime
+     * @param lastMonthTime
      * @return
      */
-    public List<CustomerConsume> queryCustomerLastMonthConsume(String yestTime);
+    public List<CustomerConsume> queryCustomerLastMonthConsume(@Param("lastMonthTime")String lastMonthTime);
 
     /**
      * 查询客户昨日消费金额
      * @return
      */
-    public List<CustomerConsume> queryCustomerYesterdayConsume();
+    public List<CustomerConsume> queryCustomerYesterdayConsume(@Param("yestTime")String yestTime);
+
+    /**
+     * 查询近一周消费走势
+     * @param cid
+     * @return
+     */
+    public List<CustomerConsume> queryNearlyWeekTrend(Integer cid);
+
 
 
 

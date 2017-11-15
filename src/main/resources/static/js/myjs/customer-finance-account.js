@@ -7,6 +7,13 @@ var CustomerFinanceAccount = function () {
             if (!jQuery().dataTable) {
                 return;
             }
+
+            $('#pid').select2({
+                language: "zh-CN",
+                placeholder: "请选择",
+                allowClear: true
+            });
+
             var beginDate=null;
             var endDate=null;
             if ($('#beginDate').val() != null && $('#beginDate').val() != ''){
@@ -28,16 +35,16 @@ var CustomerFinanceAccount = function () {
                 sOut += '<tr>' +
                     '<th>购买产品</th>' +
                     '<th>当前价格</th>' +
-                    '<th>总消费额（单位：元）</th>' +
+                    '<th>总消费额</th>' +
                     '<th>请求次数</th>' +
                     '<th>扣费次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
-                    '<td>'+aData[15]+'</td>' +
-                    '<td>'+aData[16]+'</td>' +
                     '<td>'+aData[17]+'</td>' +
                     '<td>'+aData[18]+'</td>' +
                     '<td>'+aData[19]+'</td>' +
+                    '<td>'+aData[20]+'</td>' +
+                    '<td>'+aData[21]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -74,26 +81,28 @@ var CustomerFinanceAccount = function () {
             //customerFinancialAccount表格配置
             var oTable = $('#sample_2').dataTable({
                 "aoColumns": [
-                    {"bSortable": false},  //0
-                    {"bSortable": false},  //1
-                    null,  //2
-                    null,  //3
-                    null,  //4
-                    null,  //5 可用额度
-                    null,  //6 余额
-                    null,  //7 充值
-                    null,  //8
-                    { "bVisible": false},  //9
-                    { "bVisible": false},  //10
-                    { "bVisible": false},  //11
-                    { "bVisible": false},  //12
-                    null,  //13
-                    null,  //14
-                    { "bVisible": false },  //15
-                    { "bVisible": false },  //16
+                    {"bSortable": false},  //展开符号 0
+                    {"bSortable": false},  //多选框 1
+                    null,  //公司名称 2
+                    null,  //合作公司 3
+                    null,  //信用额度 4
+                    null,  //可用额度 5
+                    null,  //余额 6
+                    null,  //充值总额 7
+                    null,  //消费总额 8
+                    { "bVisible": false},  //上周充值 9
+                    { "bVisible": false},  //上周消费 10
+                    { "bVisible": false},  //上月充值 11
+                    { "bVisible": false},  //上月消费 12
+                    null,  //当月消费 13
+                    null,  //昨日消费 14
+                    null,  //当日消费 15
+                    {"bSortable": false},  //近一周消费走势 16
                     { "bVisible": false },  //17
                     { "bVisible": false },  //18
-                    { "bVisible": false }   //19
+                    { "bVisible": false },  //19
+                    { "bVisible": false },  //20
+                    { "bVisible": false }   //21
                 ],
                 "aoColumnDefs": [
                     {
@@ -109,48 +118,44 @@ var CustomerFinanceAccount = function () {
                         "sType": "html-percent"
                     },
                     {
-                        //充值总额
                         "aTargets": [ 7 ],
                         "sType": "html-percent"
                     },
                     {
-                        //消费总额
                         "aTargets": [ 8 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上周充值
                         "aTargets": [ 9 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上周消费
                         "aTargets": [ 10 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上月充值
                         "aTargets": [ 11 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上月消费
                         "aTargets": [ 12 ],
                         "sType": "html-percent"
                     },
                     {
-                        //上月消费
                         "aTargets": [ 13 ],
                         "sType": "html-percent"
                     },
                     {
-                        //当天消费
                         "aTargets": [ 14 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 15 ],
                         "sType": "html-percent"
                     }
 
                 ],
-                "aaSorting": [[14, 'desc']],
+                "aaSorting": [[15, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

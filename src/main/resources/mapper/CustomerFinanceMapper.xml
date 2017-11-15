@@ -167,6 +167,12 @@
         <if test="content!=null and content!=''">
             and a.companyName like '%${content}%'
         </if>
+        <if test="pid != null and pid != ''">
+            AND a.partnerId = #{pid}
+        </if>
+        <if test="nullPid != null and nullPid != ''">
+            AND a.partnerId IS NULL
+        </if>
     </select>
 
     <!--查询客户当天各产品类型的消费情况-->
@@ -292,41 +298,6 @@
         ORDER BY ee.name ASC,dd.enabled DESC
     </select>
 
-    <!--查询客户周月消费总额-->
-    <select id="queryCustomerWeekMonthConsume" parameterType="map" resultMap="CustomerWeekMonthConsume_Map">
-        SELECT
-        base.id customerId,
-        aa.chargeWeekTotleAmount,
-        bb.chargeMonthTotleAmount,
-        cc.consumeWeekTotleAmount,
-        dd.consumeMonthTotleAmount
-        FROM qyfinance.bkvwCustomer base
-        LEFT JOIN
-        (
-            SELECT customerId,totleAmount chargeWeekTotleAmount
-            FROM qyfinance.finance_WeekMonthAmount
-            WHERE weekMonthTypeId=1 AND tableId=1 AND years=#{years} AND weeks=#{weeks}
-        ) aa ON base.id = aa.customerId
-        LEFT JOIN
-        (
-            SELECT customerId,totleAmount chargeMonthTotleAmount
-            FROM qyfinance.finance_WeekMonthAmount
-            WHERE weekMonthTypeId=2 AND tableId=1 AND years=#{years} AND months=#{months}
-        ) bb ON base.id = bb.customerId
-        LEFT JOIN
-        (
-            SELECT customerId,totleAmount consumeWeekTotleAmount
-            FROM qyfinance.finance_WeekMonthAmount
-            WHERE weekMonthTypeId=1 AND tableId=2 AND years=#{years} AND weeks=#{weeks}
-        ) cc ON base.id = cc.customerId
-        LEFT JOIN
-        (
-            SELECT customerId,totleAmount consumeMonthTotleAmount
-            FROM qyfinance.finance_WeekMonthAmount
-            WHERE weekMonthTypeId=2 AND tableId=2 AND years=#{years} AND months=#{months}
-        ) dd ON base.id = dd.customerId
-        WHERE base.typeId = 1
-    </select>
 
     <!--查询充值总额（至昨天）-->
     <select id="queryCustomerChargeTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
@@ -440,7 +411,7 @@
     </select>
 
     <!--查询客户上月消费金额-->
-    <select id="queryCustomerLastMonthConsume" parameterType="map" resultMap="customerConsume_Map">
+    <select id="queryCustomerLastMonthConsume" parameterType="String" resultMap="customerConsume_Map">
         SELECT a.customerId,a.cost,sum(a.amount) amount
         FROM qyfinance.CustomerHistoryBill a
         <where>
@@ -463,6 +434,20 @@
         GROUP BY a.customerId
     </select>
 
+    <!--查询近一周消费走势-->
+    <select id="queryNearlyWeekTrend" parameterType="int" resultMap="customerConsume_Map">
+        SELECT a.consuTime,a.consume
+        FROM(
+            SELECT a.consuTime,sum(sumAmount) consume
+            FROM qyfinance.CompanyApiTypeConsumeDayCount a
+            WHERE a.customerId = 81
+            GROUP BY a.consuTime
+            ORDER BY a.consuTime DESC
+            LIMIT 7
+        ) a
+        ORDER BY a.consume ASC
+    </select>
+    
     <!--查询客户的财务结束-->
 
 

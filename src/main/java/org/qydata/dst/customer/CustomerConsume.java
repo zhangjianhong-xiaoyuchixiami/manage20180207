@@ -13,6 +13,8 @@ public class CustomerConsume {
     private Double lastMonthConsume;
     private Double cost;
     private Double amount;
+    private String consuTime;
+    private Double consume;
 
     public Integer getCustomerId() {
         return customerId;
@@ -76,5 +78,21 @@ public class CustomerConsume {
 
     public void setYesterdayConsume(Double yesterdayConsume) {
         this.yesterdayConsume = yesterdayConsume;
+    }
+
+    public String getConsuTime() {
+        return consuTime;
+    }
+
+    public void setConsuTime(String consuTime) {
+        this.consuTime = consuTime;
+    }
+
+    public Double getConsume() {
+        return consume;
+    }
+
+    public void setConsume(Double consume) {
+        this.consume = consume;
     }
 }

@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
 import org.qydata.config.annotation.DataSourceService;
 import org.qydata.dst.*;
@@ -10,10 +11,15 @@ import org.qydata.entity.*;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.chartdate.ChartCalendarUtil;
 import org.qydata.tools.date.CalendarUtil;
+import org.qydata.tools.date.CalendarUtil_2;
+import org.qydata.tools.date.CalendarUtil_3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -31,7 +37,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
         Map<String,Object> mapOverAllParam = new HashMap<>();
         Map<String,Object> mapApiTypeParam = new HashMap<>();
-        Map<String,Object> mapWeekMonthParam = new HashMap<>();
+
         Map<String,Object> mapTotleParam = new HashMap<>();
         Map<String,Object> mapEmailParam = new HashMap<>();
         Map<String,Object> mapExcelParam = new HashMap<>();
@@ -45,6 +51,13 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             if("partnerId".equals(me.getKey())){
                 mapOverAllParam.put("partnerId",me.getValue());
             }
+            if("pid".equals(me.getKey())){
+                if ((Integer)me.getValue() == -100 || "-100".equals(me.getValue())){
+                    mapOverAllParam.put("nullPid",me.getValue());
+                }else {
+                    mapOverAllParam.put("pid", me.getValue());
+                }
+            }
             if("beginDate".equals(me.getKey())){
                 mapApiTypeParam.put("beginDate",me.getValue());
                 mapTotleParam.put("beginDate",me.getValue());
@@ -56,30 +69,24 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             if("statusList".equals(me.getKey())){
                 mapOverAllParam.put("statusList",me.getValue());
             }
-            if("currDayTime".equals(me.getKey())){
-                mapApiTypeParam.put("currDayTime",me.getValue());
-                mapTotleParam.put("currDayTime",me.getValue());
-            }
-            if("currMonthTime".equals(me.getKey())){
-                mapTotleParam.put("currMonthTime",me.getValue());
-            }
             if("deptIdList".equals(me.getKey())){
                 mapOverAllParam.put("deptIdList",me.getValue());
             }
         }
-
-        mapWeekMonthParam.put("years",CalendarTools.getYearMonthCount(1));
-        mapWeekMonthParam.put("months",CalendarTools.getMonthCount(1));
-        mapWeekMonthParam.put("weeks",CalendarTools.getYearWeekCount(1));
         mapExcelParam.put("years",CalendarTools.getYearMonthCount(1));
         mapExcelParam.put("months",CalendarTools.getMonthCount(1));
+        mapApiTypeParam.put("currDayTime",CalendarTools.getCurrentDate()+ " " + "00:00:00");
+        mapTotleParam.put("currDayTime",CalendarTools.getCurrentDate()+ " " + "00:00:00");
+        mapTotleParam.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
 
         //财务账单客户列表
         List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomerOverAllFinance(mapOverAllParam);
+        if (list == null){
+            return null;
+        }
         //各类型
         List<CustomerFinance> customerFinanceApiTypeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(mapApiTypeParam);
-        //周月消费
-        List<CustomerWeekMonthConsume> customerWeekMonthConsumeList = customerFinanceMapper.queryCustomerWeekMonthConsume(mapWeekMonthParam);
+
         //客户充值（至昨天）
         List<CustomerFinance> customerFinanceChargeList = customerFinanceMapper.queryCustomerChargeTotle(mapTotleParam);
         //客户充值（当天）
@@ -94,33 +101,16 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapEmailParam);
         //查询客户上月账单
         List<CustomerConsumeExcel> customerConsumeExcelList = customerFinanceMapper.queryCustomerAccountExcel(mapExcelParam);
-
+        //上周充值
         List<CustomerConsume> lastWeekChargeList = customerFinanceMapper.queryCustomerLastWeekCharge();
-
+        //上周消费
         List<CustomerConsume> lastWeekConsumeList = customerFinanceMapper.queryCustomerLastWeekConsume();
-        if (lastWeekConsumeList != null){
-            for (CustomerConsume consume : lastWeekConsumeList) {
-                consume.setLastWeekConsume(-consume.getLastWeekConsume()/100.0);
-            }
-        }
+        //上月充值
         List<CustomerConsume> lastMonthChargeList = customerFinanceMapper.queryCustomerLastMonthCharge();
-        if (lastMonthChargeList != null){
-            for (CustomerConsume consume : lastMonthChargeList) {
-                consume.setLastMonthCharge(consume.getLastMonthCharge()/100.0);
-            }
-        }
-        List<CustomerConsume> lastMonthConsumeList = customerFinanceMapper.queryCustomerLastMonthConsume("2");
-        if (lastMonthConsumeList != null){
-            for (CustomerConsume consume : lastMonthConsumeList) {
-                consume.setLastMonthConsume((consume.getCost() * consume.getAmount())/100.0);
-            }
-        }
-        List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume();
-        if (yesterdayConsumeList != null){
-            for (CustomerConsume consume : yesterdayConsumeList) {
-                consume.setYesterdayConsume(-consume.getYesterdayConsume()/100.0);
-            }
-        }
+        //上月消费
+        List<CustomerConsume> lastMonthConsumeList = customerFinanceMapper.queryCustomerLastMonthConsume(CalendarUtil_2.getCurrentLastMonth());
+        //昨日消费
+        List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
         if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate"))) {
             if (customerFinanceApiTypeConsumeList != null){
                 for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
@@ -139,203 +129,227 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }
         }
 
-        long weekChargeAmount = 0L;
-        long weekConsumeAmount = 0L;
-        long monthChargeAmount = 0L;
-        long monthConsumeAmount = 0L;
-        long totleChargeAmount = 0L;
-        long totleConsumeAmount = 0L;
-        long currMonthTotleConsumeAmount = 0L;
-        long currDayTotleConsumeAmount = 0L;
+        double lastWeekChargeTot = 0.0;
+        double lastWeekConsumeTot = 0.0;
+        double lastMonthChargeTot = 0.0;
+        double lastMonthConsumeTot = 0.0;
+        double totleChargeAmount = 0.0;
+        double totleConsumeAmount = 0.0;
+        double currMonthTotleConsumeAmount = 0.0;
+        double currDayTotleConsumeAmount = 0.0;
         List<CustomerFinance> customerFinanceList = new ArrayList<>();
-        if (list != null) {
-            Iterator<CustomerFinance> it = list.iterator();
-            while (it.hasNext()) {
-                CustomerFinance customerFinance = it.next();
+        Iterator<CustomerFinance> it = list.iterator();
+        while (it.hasNext()) {
+            CustomerFinance customerFinance = it.next();
+            customerFinance.setBalance(customerFinance.getBalance()/100.0);
+            customerFinance.setFloor(-customerFinance.getFloor()/100.0);
+            customerFinance.setSurplusFloor(((-customerFinance.getFloor()) + customerFinance.getBalance())/100.0);
 
-                customerFinance.setSurplusFloor((-customerFinance.getFloor()) + customerFinance.getBalance());
-
-                /*封装各类型消费*/
-                if (customerFinanceApiTypeConsumeList != null) {
-                    for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
-                        CustomerFinance customerFinanceApiTypeConsume = customerFinanceApiTypeConsumeList.get(i);
-                        List<CompanyApi> companyApiList = customerFinanceApiTypeConsume.getCompanyApiList();
-                        if (customerFinance.getId() == customerFinanceApiTypeConsume.getId() || customerFinance.getId().equals(customerFinanceApiTypeConsume.getId())) {
-                            customerFinance.setCompanyApiList(companyApiList);
-                        }
+            /*封装各类型消费*/
+            if (customerFinanceApiTypeConsumeList != null) {
+                for (int i = 0; i < customerFinanceApiTypeConsumeList.size(); i++) {
+                    CustomerFinance customerFinanceApiTypeConsume = customerFinanceApiTypeConsumeList.get(i);
+                    List<CompanyApi> companyApiList = customerFinanceApiTypeConsume.getCompanyApiList();
+                    if (customerFinance.getId() == customerFinanceApiTypeConsume.getId() || customerFinance.getId().equals(customerFinanceApiTypeConsume.getId())) {
+                        customerFinance.setCompanyApiList(companyApiList);
                     }
                 }
-                if (lastWeekChargeList != null){
-                    for (CustomerConsume consume : lastWeekChargeList) {
-                        if (customerFinance.getId() == consume.getCustomerId()
-                                || customerFinance.getId().equals(consume.getCustomerId())){
-                            customerFinance.setLastWeekCharge(consume.getLastWeekCharge()/100.0);
-                        }
+            }
+            //上周充值
+            if (lastWeekChargeList != null){
+                for (CustomerConsume consume : lastWeekChargeList) {
+                    if (customerFinance.getId() == consume.getCustomerId()
+                            || customerFinance.getId().equals(consume.getCustomerId())){
+                        customerFinance.setLastWeekCharge(consume.getLastWeekCharge()/100.0);
                     }
                 }
+            }
+            //上周消费
+            if (lastWeekConsumeList != null){
+                for (CustomerConsume consume : lastWeekConsumeList) {
+                    if (customerFinance.getId() == consume.getCustomerId()
+                            || customerFinance.getId().equals(consume.getCustomerId())){
+                        customerFinance.setLastWeekConsume(-consume.getLastWeekConsume()/100.0);
+                    }
+                }
+            }
+            //上月充值
+            if (lastMonthChargeList != null){
+                for (CustomerConsume consume : lastMonthChargeList) {
+                    if (customerFinance.getId() == consume.getCustomerId()
+                            || customerFinance.getId().equals(consume.getCustomerId())){
+                        customerFinance.setLastMonthCharge(consume.getLastMonthCharge()/100.0);
+                    }
+                }
+            }
+            //上月消费
+            if (lastMonthConsumeList != null){
+                for (CustomerConsume consume : lastMonthConsumeList) {
+                    if (customerFinance.getId() == consume.getCustomerId()
+                            || customerFinance.getId().equals(consume.getCustomerId())){
+                        customerFinance.setLastMonthConsume((consume.getCost() * consume.getAmount())/100.0);
+                    }
+                }
+            }
 
-                /*封装周月消费*/
-                if (customerWeekMonthConsumeList != null) {
-                    for (int i = 0; i < customerWeekMonthConsumeList.size(); i++) {
-                        CustomerWeekMonthConsume customerWeekMonthConsume = customerWeekMonthConsumeList.get(i);
-                        if (customerFinance.getId() == customerWeekMonthConsume.getCustomerId() || customerFinance.getId().equals(customerWeekMonthConsume.getCustomerId())) {
-                            customerFinance.setChargeWeekTotleAmount(customerWeekMonthConsume.getChargeWeekTotleAmount());
-                            customerFinance.setChargeMonthTotleAmount(customerWeekMonthConsume.getChargeMonthTotleAmount());
-                            customerFinance.setConsumeWeekTotleAmount(customerWeekMonthConsume.getConsumeWeekTotleAmount());
-                            customerFinance.setConsumeMonthTotleAmount(customerWeekMonthConsume.getConsumeMonthTotleAmount());
-                        }
+            //昨天消费
+            if (yesterdayConsumeList != null){
+                for (CustomerConsume consume : yesterdayConsumeList) {
+                    if (customerFinance.getId() == consume.getCustomerId()
+                            || customerFinance.getId().equals(consume.getCustomerId())){
+                        customerFinance.setYesterdayConsume(-consume.getYesterdayConsume()/100.0);
                     }
                 }
+            }
 
                 /*封装当天消费总额*/
-                if (customerFinanceCurrDayList != null){
-                    for (int i = 0; i < customerFinanceCurrDayList.size(); i++) {
-                        CustomerFinance customerFinanceCurrDay = customerFinanceCurrDayList.get(i);
-                        if (customerFinance.getId() == customerFinanceCurrDay.getId() || customerFinance.getId().equals(customerFinanceCurrDay.getId())){
-                            customerFinance.setCurrDayAmount(customerFinanceCurrDay.getCurrDayAmount());
-                        }
+            if (customerFinanceCurrDayList != null){
+                for (int i = 0; i < customerFinanceCurrDayList.size(); i++) {
+                    CustomerFinance customerFinanceCurrDay = customerFinanceCurrDayList.get(i);
+                    if (customerFinance.getId() == customerFinanceCurrDay.getId() || customerFinance.getId().equals(customerFinanceCurrDay.getId())){
+                        customerFinance.setCurrDayAmount(-customerFinanceCurrDay.getCurrDayAmount()/100.0);
                     }
                 }
+            }
 
                 /*封装当月消费总额（至昨天）*/
-                if (customerFinanceCurrMonthList != null){
-                    for (int i = 0; i < customerFinanceCurrMonthList.size(); i++) {
-                        CustomerFinance customerFinanceCurrMonth = customerFinanceCurrMonthList.get(i);
-                        if (customerFinance.getId() == customerFinanceCurrMonth.getId() ||customerFinance.getId().equals(customerFinanceCurrMonth.getId())){
-                            customerFinance.setCurrMonthAmount(customerFinanceCurrMonth.getCurrMonthAmount());
-                        }
+            if (customerFinanceCurrMonthList != null){
+                for (int i = 0; i < customerFinanceCurrMonthList.size(); i++) {
+                    CustomerFinance customerFinanceCurrMonth = customerFinanceCurrMonthList.get(i);
+                    if (customerFinance.getId() == customerFinanceCurrMonth.getId() ||customerFinance.getId().equals(customerFinanceCurrMonth.getId())){
+                        customerFinance.setCurrMonthAmount(-customerFinanceCurrMonth.getCurrMonthAmount()/100.0);
                     }
                 }
+            }
 
                  /*封装当月消费总额（昨天 + 今天）*/
-                if (customerFinance.getCurrMonthAmount() != null){
-                    if (customerFinance.getCurrDayAmount() != null) {
-                        customerFinance.setCurrMonthAmount(customerFinance.getCurrMonthAmount() + customerFinance.getCurrDayAmount());
-                    }
-                }else {
-                    if (customerFinance.getCurrDayAmount() != null) {
-                        customerFinance.setCurrMonthAmount(customerFinance.getCurrDayAmount());
-                    }
+            if (customerFinance.getCurrMonthAmount() != null){
+                if (customerFinance.getCurrDayAmount() != null) {
+                    customerFinance.setCurrMonthAmount(customerFinance.getCurrMonthAmount() + customerFinance.getCurrDayAmount());
                 }
+            }else {
+                if (customerFinance.getCurrDayAmount() != null) {
+                    customerFinance.setCurrMonthAmount(customerFinance.getCurrDayAmount());
+                }
+            }
 
                 /*封装充值总额（至昨天）*/
-                if (customerFinanceChargeList != null){
-                    for (int i = 0; i < customerFinanceChargeList.size() ; i++) {
-                        CustomerFinance customerFinanceCharge = customerFinanceChargeList.get(i);
-                        if (customerFinance.getId() == customerFinanceCharge.getId() ||customerFinance.getId().equals(customerFinanceCharge.getId())){
-                            customerFinance.setChargeTotleAmount(customerFinanceCharge.getChargeTotleAmount());
-                        }
+            if (customerFinanceChargeList != null){
+                for (int i = 0; i < customerFinanceChargeList.size() ; i++) {
+                    CustomerFinance customerFinanceCharge = customerFinanceChargeList.get(i);
+                    if (customerFinance.getId() == customerFinanceCharge.getId() ||customerFinance.getId().equals(customerFinanceCharge.getId())){
+                        customerFinance.setChargeTotleAmount(customerFinanceCharge.getChargeTotleAmount()/100.0);
                     }
                 }
+            }
 
                  /*封装充值总额（今天）*/
-                if (customerFinanceCurrDayChargeList != null){
-                    for (int i = 0; i < customerFinanceCurrDayChargeList.size(); i++) {
-                        CustomerFinance currDayFinance = customerFinanceCurrDayChargeList.get(i);
-                        if (customerFinance.getId() == currDayFinance.getId() || customerFinance.getId().equals(currDayFinance.getId())){
-                            customerFinance.setCurrDayChargeAmount(currDayFinance.getCurrDayChargeAmount());
-                        }
+            if (customerFinanceCurrDayChargeList != null){
+                for (int i = 0; i < customerFinanceCurrDayChargeList.size(); i++) {
+                    CustomerFinance currDayFinance = customerFinanceCurrDayChargeList.get(i);
+                    if (customerFinance.getId() == currDayFinance.getId() || customerFinance.getId().equals(currDayFinance.getId())){
+                        customerFinance.setCurrDayChargeAmount(currDayFinance.getCurrDayChargeAmount()/100.0);
                     }
                 }
+            }
 
                  /*封装充值总额（昨天 + 今天）*/
-                if (customerFinance.getChargeTotleAmount() != null){
-                    if (customerFinance.getCurrDayChargeAmount() != null) {
-                        customerFinance.setChargeTotleAmount(customerFinance.getChargeTotleAmount() + customerFinance.getCurrDayChargeAmount());
-                    }
-                }else {
-                    if (customerFinance.getCurrDayChargeAmount() != null) {
-                        customerFinance.setChargeTotleAmount(customerFinance.getCurrDayChargeAmount());
-                    }
+            if (customerFinance.getChargeTotleAmount() != null){
+                if (customerFinance.getCurrDayChargeAmount() != null) {
+                    customerFinance.setChargeTotleAmount(customerFinance.getChargeTotleAmount() + customerFinance.getCurrDayChargeAmount());
                 }
+            }else {
+                if (customerFinance.getCurrDayChargeAmount() != null) {
+                    customerFinance.setChargeTotleAmount(customerFinance.getCurrDayChargeAmount());
+                }
+            }
 
                 /*封装消费总额（至昨天）*/
-                if (customerFinanceConsumeList != null){
-                    for (int i = 0; i < customerFinanceConsumeList.size(); i++) {
-                        CustomerFinance customerFinanceConsume = customerFinanceConsumeList.get(i);
-                        if (customerFinance.getId() == customerFinanceConsume.getId() || customerFinance.getId().equals(customerFinanceConsume.getId())){
-                            customerFinance.setConsumeTotleAmount(customerFinanceConsume.getConsumeTotleAmount());
-                        }
+            if (customerFinanceConsumeList != null){
+                for (int i = 0; i < customerFinanceConsumeList.size(); i++) {
+                    CustomerFinance customerFinanceConsume = customerFinanceConsumeList.get(i);
+                    if (customerFinance.getId() == customerFinanceConsume.getId() || customerFinance.getId().equals(customerFinanceConsume.getId())){
+                        customerFinance.setConsumeTotleAmount(-customerFinanceConsume.getConsumeTotleAmount()/100.0);
                     }
                 }
+            }
 
                  /*封装消费总额（至昨天 + 今天）*/
-                if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate")))
-                {
-                    if (customerFinance.getConsumeTotleAmount() != null){
-                        if (customerFinance.getCurrDayAmount() != null){
-                            customerFinance.setConsumeTotleAmount(customerFinance.getConsumeTotleAmount() + customerFinance.getCurrDayAmount());
-                        }
-                    }else {
-                        if (customerFinance.getCurrDayAmount() != null){
-                            customerFinance.setConsumeTotleAmount(customerFinance.getCurrDayAmount());
-                        }
+            if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate")))
+            {
+                if (customerFinance.getConsumeTotleAmount() != null){
+                    if (customerFinance.getCurrDayAmount() != null){
+                        customerFinance.setConsumeTotleAmount(customerFinance.getConsumeTotleAmount() + customerFinance.getCurrDayAmount()/100.0);
+                    }
+                }else {
+                    if (customerFinance.getCurrDayAmount() != null){
+                        customerFinance.setConsumeTotleAmount(-customerFinance.getCurrDayAmount()/100.0);
                     }
                 }
-
+            }
 
                 /*封装邮箱*/
-                if (customerCompanyEmailList != null){
-                    for (int i = 0; i < customerCompanyEmailList.size() ; i++) {
-                        CustomerCompanyEmail customerCompanyEmail = customerCompanyEmailList.get(i);
-                        if (customerCompanyEmail.getEmail() != null && customerCompanyEmail.getEmail().length() > 0){
-                            if (customerFinance.getCompanyId() == customerCompanyEmail.getCompanyId() || customerFinance.getCompanyId().equals(customerCompanyEmail.getCompanyId())){
-                                customerFinance.setEmail(customerCompanyEmail.getEmail());
-                            }
+            if (customerCompanyEmailList != null){
+                for (int i = 0; i < customerCompanyEmailList.size() ; i++) {
+                    CustomerCompanyEmail customerCompanyEmail = customerCompanyEmailList.get(i);
+                    if (customerCompanyEmail.getEmail() != null && customerCompanyEmail.getEmail().length() > 0){
+                        if (customerFinance.getCompanyId() == customerCompanyEmail.getCompanyId() || customerFinance.getCompanyId().equals(customerCompanyEmail.getCompanyId())){
+                            customerFinance.setEmail(customerCompanyEmail.getEmail());
                         }
                     }
                 }
+            }
 
                 /*封装账单*/
-                if(customerConsumeExcelList != null){
-                    for (int i = 0; i < customerConsumeExcelList.size(); i++) {
-                        CustomerConsumeExcel customerConsumeExcel = customerConsumeExcelList.get(i);
-                        if (customerFinance.getId() == customerConsumeExcel.getCustomerId() || customerFinance.getId().equals(customerConsumeExcel.getCustomerId())){
-                            customerFinance.setConsuTime(customerConsumeExcel.getConsuTime());
-                        }
+            if(customerConsumeExcelList != null){
+                for (int i = 0; i < customerConsumeExcelList.size(); i++) {
+                    CustomerConsumeExcel customerConsumeExcel = customerConsumeExcelList.get(i);
+                    if (customerFinance.getId() == customerConsumeExcel.getCustomerId() || customerFinance.getId().equals(customerConsumeExcel.getCustomerId())){
+                        customerFinance.setConsuTime(customerConsumeExcel.getConsuTime());
                     }
                 }
-
-
-
-                if (customerFinance.getChargeWeekTotleAmount() != null) {
-                    weekChargeAmount += customerFinance.getChargeWeekTotleAmount();
-                }
-                if (customerFinance.getConsumeWeekTotleAmount() != null) {
-                    weekConsumeAmount += customerFinance.getConsumeWeekTotleAmount();
-                }
-                if (customerFinance.getChargeMonthTotleAmount() != null) {
-                    monthChargeAmount += customerFinance.getChargeMonthTotleAmount();
-                }
-                if (customerFinance.getConsumeMonthTotleAmount() != null) {
-                    monthConsumeAmount += customerFinance.getConsumeMonthTotleAmount();
-                }
-                if (customerFinance.getChargeTotleAmount() != null) {
-                    totleChargeAmount += customerFinance.getChargeTotleAmount();
-                }
-                if (customerFinance.getConsumeTotleAmount() != null) {
-                    totleConsumeAmount += customerFinance.getConsumeTotleAmount();
-                }
-                if (customerFinance.getCurrMonthAmount() != null) {
-                    currMonthTotleConsumeAmount += customerFinance.getCurrMonthAmount();
-                }
-                if (customerFinance.getCurrDayAmount() != null) {
-                    currDayTotleConsumeAmount += customerFinance.getCurrDayAmount();
-                }
-                if (customerFinance.getBalance() >= 0) {
-                    customerFinance.setUsableFloor(customerFinance.getFloor());
-                } else {
-                    customerFinance.setUsableFloor(customerFinance.getFloor() - customerFinance.getBalance());
-                }
-                customerFinanceList.add(customerFinance);
             }
+
+
+
+            if (customerFinance.getLastWeekCharge() != null) {
+                lastWeekChargeTot += customerFinance.getLastWeekCharge();
+            }
+            if (customerFinance.getLastWeekConsume() != null) {
+                lastWeekConsumeTot += customerFinance.getLastWeekConsume();
+            }
+            if (customerFinance.getLastMonthCharge() != null) {
+                lastMonthChargeTot += customerFinance.getLastMonthCharge();
+            }
+            if (customerFinance.getLastMonthConsume() != null) {
+                lastMonthConsumeTot += customerFinance.getLastMonthConsume();
+            }
+            if (customerFinance.getChargeTotleAmount() != null) {
+                totleChargeAmount += customerFinance.getChargeTotleAmount()/100.0;
+            }
+            if (customerFinance.getConsumeTotleAmount() != null) {
+                totleConsumeAmount += -customerFinance.getConsumeTotleAmount()/100.0;
+            }
+            if (customerFinance.getCurrMonthAmount() != null) {
+                currMonthTotleConsumeAmount += -customerFinance.getCurrMonthAmount()/100.0;
+            }
+            if (customerFinance.getCurrDayAmount() != null) {
+                currDayTotleConsumeAmount += -customerFinance.getCurrDayAmount()/100.0;
+            }
+            if (customerFinance.getBalance() >= 0) {
+                customerFinance.setUsableFloor(customerFinance.getFloor());
+            } else {
+                customerFinance.setUsableFloor(customerFinance.getFloor() - customerFinance.getBalance());
+            }
+            customerFinanceList.add(customerFinance);
         }
 
+
         Map<String,Object> mapTran = new HashMap<>();
-        mapTran.put("weekChargeAmount",weekChargeAmount);
-        mapTran.put("weekConsumeAmount",weekConsumeAmount);
-        mapTran.put("monthChargeAmount",monthChargeAmount);
-        mapTran.put("monthConsumeAmount",monthConsumeAmount);
+        mapTran.put("lastWeekChargeTot",lastWeekChargeTot);
+        mapTran.put("lastWeekConsumeTot",lastWeekConsumeTot);
+        mapTran.put("lastMonthChargeTot",lastMonthChargeTot);
+        mapTran.put("lastMonthConsumeTot",lastMonthConsumeTot);
         mapTran.put("totleChargeAmount",totleChargeAmount);
         mapTran.put("totleConsumeAmount",totleConsumeAmount);
         mapTran.put("currMonthTotleConsumeAmount",currMonthTotleConsumeAmount);
@@ -377,6 +391,48 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }
         }
         return detailList;
+    }
+
+    @Override
+    public Map<String, Object> queryNearlyWeekTrend(Integer cid) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<CustomerConsume> consumeList = customerFinanceMapper.queryNearlyWeekTrend(cid);
+        List<String> xList = new ArrayList<>();
+        List<Double> yList = new ArrayList<>();
+        Map<Date,Object> proMap = new TreeMap<>();
+        for (int i = 0; i < 7 ; i++) {
+            try {
+                String yearMonth = ChartCalendarUtil.getCurrentDateAssignYearMonthDay(-(7-i));
+                proMap.put(sdf.parse(yearMonth),0.0);
+                if (consumeList != null && consumeList.size() > 0){
+                    for (CustomerConsume consume : consumeList) {
+                        if (yearMonth.equals(consume.getConsuTime())){
+                            proMap.put(sdf.parse(yearMonth),-consume.getConsume()/100.0);
+                            break;
+                        }
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (proMap != null){
+            for (Map.Entry<Date,Object> me : proMap.entrySet()) {
+                xList.add(sdf.format(me.getKey()));
+                yList.add((Double) me.getValue());
+            }
+        }
+
+        Map mapSeries = new HashedMap();
+        mapSeries.put("name","近一周消费");
+        mapSeries.put("data",yList);
+        JSONArray jsonArrayX = JSONArray.fromObject(xList);
+        JSONArray jsonArrayS = JSONArray.fromObject(mapSeries);
+        Map<String,Object> resu = new HashMap();
+        resu.put("jsonArrayX",jsonArrayX);
+        resu.put("jsonArrayS",jsonArrayS);
+        return resu;
     }
 
     @Override

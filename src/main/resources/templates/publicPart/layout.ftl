@@ -298,6 +298,70 @@
 
                 </@shiro.hasAnyRoles>
 
+            <#--产品核验-->
+                <@shiro.hasAnyRoles name="backAdmin">
+
+                    <li class="" id="customerBalance">
+                        <a href="javascript:;">
+
+                            <i class="icon-bar-chart"></i>
+
+                            <span class="title">产品核验</span>
+
+                            <span class="" id="customerBalanceSelect"></span>
+
+                            <span class="arrow " id="customerBalanceArrow"></span>
+
+                        </a>
+
+                        <ul class="sub-menu">
+
+                            <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
+                                <li id="extra-account-partner">
+                                    <a href="/excel/extra-account-partner">
+                                        合作公司财务对账
+                                    </a>
+                                </li>
+                            <#--</@shiro.hasPermission>-->
+
+                        </ul>
+
+                    </li>
+
+                </@shiro.hasAnyRoles>
+
+            <#--日志查询-->
+                <@shiro.hasAnyRoles name="backAdmin">
+
+                    <li class="" id="customerBalance">
+                        <a href="javascript:;">
+
+                            <i class="icon-bar-chart"></i>
+
+                            <span class="title">日志查询</span>
+
+                            <span class="" id="customerBalanceSelect"></span>
+
+                            <span class="arrow " id="customerBalanceArrow"></span>
+
+                        </a>
+
+                        <ul class="sub-menu">
+
+                        <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
+                            <li id="extra-account-partner">
+                                <a href="/search/customer-log">
+                                    客户请求日志查询
+                                </a>
+                            </li>
+                        <#--</@shiro.hasPermission>-->
+
+                        </ul>
+
+                    </li>
+
+                </@shiro.hasAnyRoles>
+
             <#--产品管理-->
                 <@shiro.hasAnyRoles name="backAdmin,finance">
 

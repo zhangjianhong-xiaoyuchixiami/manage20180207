@@ -17,6 +17,8 @@ import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -405,6 +407,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
 
     @Override
     public Map<String, Object> queryCustomerHistoryBillTrendData(Map<String, Object> map) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         List<String> yearMonthList = new ArrayList<>();
         for (int i = 0; i < 6 ; i++) {
             String yearMonth = ChartCalendarUtil.getCurrentDateAssignYearMonth(-(5 - i));
@@ -415,27 +418,32 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         List<CustomerHistoryBillDetail> consumeList = billMapper.queryCustomerHistoryBillTrendDataConsume(map);
         List<String> xList = new ArrayList<>();
         List<Integer> proList = new ArrayList<>();
-        Map<String,Object> proMap = new TreeMap<>();
+        Map<Date,Object> proMap = new TreeMap<>();
         for (int i = 0; i < 6 ; i++) {
-            String yearMonth = ChartCalendarUtil.getCurrentDateAssignYearMonth(-(5-i));
-            proMap.put(yearMonth,0);
-            if (consumeList != null && consumeList.size() > 0){
-                for (int j = 0; j < consumeList.size(); j++) {
-                    CustomerHistoryBillDetail consume = consumeList.get(j);
-                    if (consume != null){
-                        if (yearMonth.equals(consume.getYearMonth())){
-                            proMap.put(yearMonth,consume.getAmount());
-                            break;
+            try {
+                String yearMonth = ChartCalendarUtil.getCurrentDateAssignYearMonth(-(5-i));
+                proMap.put(sdf.parse(yearMonth),0);
+                if (consumeList != null && consumeList.size() > 0){
+                    for (int j = 0; j < consumeList.size(); j++) {
+                        CustomerHistoryBillDetail consume = consumeList.get(j);
+                        if (consume != null){
+                            if (yearMonth.equals(consume.getYearMonth())){
+                                proMap.put(sdf.parse(yearMonth),consume.getAmount());
+                                break;
+                            }
                         }
                     }
                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+
         }
-        Set<Map.Entry<String, Object>> set = proMap.entrySet();
-        Iterator<Map.Entry<String, Object>> it = set.iterator();
+        Set<Map.Entry<Date, Object>> set = proMap.entrySet();
+        Iterator<Map.Entry<Date, Object>> it = set.iterator();
         while (it.hasNext()) {
-            Map.Entry<String, Object> me = it.next();
-            xList.add(me.getKey());
+            Map.Entry<Date, Object> me = it.next();
+            xList.add(sdf.format(me.getKey()));
             proList.add((Integer) me.getValue());
         }
         Map mapSeries = new HashedMap();

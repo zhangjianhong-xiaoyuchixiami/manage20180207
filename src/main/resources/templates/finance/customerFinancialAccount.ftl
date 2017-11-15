@@ -161,7 +161,7 @@
 
                                 <div class="pull-left head-search-bottom">
 
-                                    <label class="control-label">公司状态</label>
+                                    <label>公司状态</label>
 
                                     <div class="controls">
 
@@ -183,7 +183,7 @@
 
                                 <div class="pull-left head-search-bottom">
 
-                                    <label class="control-label">请输入公司名称</label>
+                                    <label>请输入公司名称</label>
 
                                     <div class="controls">
 
@@ -197,9 +197,29 @@
 
                                 </div>
 
+                                <div class="pull-left head-search-bottom">
+
+                                    <label>请选择合作公司</label>
+
+                                    <div class="controls">
+
+                                        <select class="medium m-wrap" id="pid" name="pid">
+                                            <option value=""></option>
+                                            <option <#if pid?? && pid == -100> selected="selected"</#if> value="-100">无</option>
+                                            <#if partnerList??>
+                                                <#list partnerList as partner>
+                                                    <option <#if pid?? && pid==partner.id>selected="selected"</#if> value="${partner.id}">${partner.name}</option>
+                                                </#list>
+                                            </#if>
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
                                 <div class="pull-left margin-right-20 head-search-bottom">
 
-                                    <label class="control-label">起始日期</label>
+                                    <label>起始日期</label>
 
                                     <div class="controls">
 
@@ -215,7 +235,7 @@
 
                                 <div class="pull-left head-search-bottom">
 
-                                    <label class="control-label">结束日期</label>
+                                    <label>结束日期</label>
 
                                     <div class="controls">
 
@@ -231,7 +251,7 @@
 
                                 <div class="pull-left head-search-bottom">
 
-                                    <label class="control-label">&nbsp;&nbsp;</label>
+                                    <label>&nbsp;&nbsp;</label>
 
                                     <div class="controls" >
 
@@ -330,53 +350,22 @@
 
                             <div class="clearfix margin-bottom-5">
 
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">上周消费总额&yen;：${-weekConsumeAmount/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">上周充值总额&yen;：${weekChargeAmount/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">上月消费总额&yen;：${-monthConsumeAmount/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">上月充值总额&yen;：${monthChargeAmount/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">本月消费总额&yen;：${-currMonthTotleConsumeAmount/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">当天消费总额&yen;：${-currDayTotleConsumeAmount/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：${-totleConsumeAmount/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">充值总额&yen;：${totleChargeAmount/100.0}元</label>
-
-                                </div>
+                                <table class="table-striped table-condensed flip-content" style="width: 100%">
+                                    <tbody>
+                                    <tr>
+                                        <td>上周消费总额：${lastWeekConsumeTot!'0.0'}</td>
+                                        <td>上周充值总额：${lastWeekChargeTot!'0.0'}</td>
+                                        <td>上月消费总额：${lastMonthConsumeTot!'0.0'}</td>
+                                        <td>上月充值总额：${lastMonthChargeTot!'0.0'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>本月消费总额：${currMonthTotleConsumeAmount!'0.0'}</td>
+                                        <td>当天消费总额：${currDayTotleConsumeAmount!'0.0'}</td>
+                                        <td>消费总额：${totleConsumeAmount!'0.0'}</td>
+                                        <td>充值总额：${totleChargeAmount!'0.0'}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
                             </div>
 
@@ -404,8 +393,8 @@
                                         <th>上月消费</th>
                                         <th>当月消费</th>
                                         <th>昨日消费</th>
-                                        <th>近一周消费走势</th>
                                         <th>当日消费</th>
+                                        <th>操作</th>
                                         <th class="table-td-none">产品类型</th>
                                         <th class="table-td-none">产品价格</th>
                                         <th class="table-td-none">总消费额</th>
@@ -418,13 +407,7 @@
                                             <#list customerFinanceList as customer>
                                             <tr>
                                                 <td><input <#if customer.email?? && customer.consuTime??><#else >disabled="disabled"</#if> class="checkboxes" type="checkbox" id="checkBoxCustomerFinanceCustomerId" name="checkBoxCustomerFinanceCustomerId" value="${customer.id}"/></td>
-                                                <#if customer.companyStatus == 0>
-                                                <td data-title="公司名称">
-                                                <#else >
-                                                <td data-title="公司名称" class="font-text-decoration">
-                                                </#if>
-                                            ${customer.companyName}
-                                            </td>
+                                                <td data-title="公司名称" <#if customer.companyStatus == 0> class="font-text-decoration"  </#if>>${customer.companyName}</td>
                                                 <@shiro.hasPermission name="customer:findAllCustomer">
                                                     <td data-title="合作公司">
                                                         <#if customer.partnerId??>
@@ -437,17 +420,19 @@
                                                 <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                     <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
                                                 </@shiro.hasPermission>
-                                                <td data-title="信用额度">${(-customer.floor/100.0)!'0'}</td>
-                                                <td data-title="可用额度">${(customer.surplusFloor/100.0)!'0'}</td>
-                                                <td data-title="账号余额">${(customer.balance/100.0)!'0'}</td>
-                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${(customer.chargeTotleAmount/100.0)!'0'}</a></td>
+                                                <td data-title="信用额度">${customer.floor!'0.0'}</td>
+                                                <td data-title="可用额度">${customer.surplusFloor!'0.0'}</td>
+                                                <td data-title="账号余额">${customer.balance!'0.0'}</td>
+                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${customer.chargeTotleAmount!'0.0'}</a></td>
                                                 <td data-title="消费总额">${(-customer.consumeTotleAmount/100.0)!'0'}</td>
-                                                <td data-title="上周充值"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}">${(customer.chargeWeekTotleAmount/100.0)!'0'}</a></td>
-                                                <td data-title="上周消费"><a href="/finance/find-all-customer/find-week-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}">${(-customer.consumeWeekTotleAmount/100.0)!'0'}</a></td>
-                                                <td data-title="上月充值"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=1&companyName=${customer.companyName}">${(customer.chargeMonthTotleAmount/100.0)!'0'}</a></td>
-                                                <td data-title="上月消费"><a href="/finance/find-all-customer/find-month-record-by-customer-id?customerId=${customer.id}&typeId=2&companyName=${customer.companyName}">${(-customer.consumeMonthTotleAmount/100.0)!'0'}</a></td>
-                                                <td data-title="本月消费">${(-customer.currMonthAmount/100.0)!'0'}</td>
-                                                <td data-title="当天消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${(-customer.currDayAmount/100.0)!'0'}</a></td>
+                                                <td data-title="上周充值">${customer.lastWeekCharge!'0.0'}</td>
+                                                <td data-title="上周消费">${customer.lastWeekConsume!'0.0'}</td>
+                                                <td data-title="上月充值">${customer.lastMonthCharge!'0.0'}</td>
+                                                <td data-title="上月消费">${customer.lastMonthConsume!'0.0'}</td>
+                                                <td data-title="本月消费">${customer.currMonthAmount!'0.0'}</td>
+                                                <td data-title="昨日消费">${customer.yesterdayConsume!'0.0'}</td>
+                                                <td data-title="当日消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${customer.currDayAmount!'0.0'}</a></td>
+                                                <td data-title="操作"><a href="/finance/customer-nearly-week-thread?cid=${customer.id}&name=${customer.companyName}">近一周消费走势</a></td>
                                                 <td data-title="产品类型" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
                                                         <#list customer.companyApiList as companyApi>

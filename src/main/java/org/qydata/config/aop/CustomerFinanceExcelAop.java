@@ -7,17 +7,13 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.qydata.dst.CustomerApiType;
 import org.qydata.dst.CustomerApiVendor;
-import org.qydata.dst.CustomerFinance;
 import org.qydata.entity.CustomerBalanceLog;
-import org.qydata.entity.User;
 import org.qydata.entity.WeekMonthAmount;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.PowerUserService;
 import org.qydata.service.RoleService;
-import org.qydata.tools.CalendarTools;
 import org.qydata.tools.ExportDataHander;
 import org.qydata.tools.ExportIoOperate;
-import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,168 +41,168 @@ public class CustomerFinanceExcelAop {
     @Autowired private RoleService roleService;
 
     @Autowired private PowerUserService powerUserService;
-    /**
-     * 公司财务账单导出Excel
-     * @param point
-     */
-    @Around("execution(* org.qydata.controller.FinanceController.queryAllCustomer(..))")
-    public Object queryAllCustomerExportExcel(ProceedingJoinPoint point) throws Throwable {
-        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Object args [] = point.getArgs();
-        System.out.println("************* 判断是否是执行导出操作 *************");
-        if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
-            System.out.println("************* 执行导出操作 *************");
-            Map<String,Object> map = new HashMap<>();
-
-            if(args[1] != null && args[1] != ""){
-                map.put("content",args[1]);
-            }
-            if(args[2] != null){
-                map.put("partnerId",args[2]);
-            }
-            if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
-            }
-            if(args[4] != null && args[4] != ""){
-                map.put("endDate", CalendarUtil.getAfterDayByInputTime((String) args[4]));
-            }
-            List statusList = new ArrayList();
-            String status [] = (String[]) args[5];
-            if (status != null && status.length >0) {
-                for(int i=0;i<status.length;i++){
-                    statusList.add(status[i]);
-                }
-            }else {
-                statusList.add(0);
-                statusList.add(-1);
-            }
-            map.put("statusList", statusList);
-            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
-            map.put("currMonthTime", CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
-            List<CustomerFinance> customerFinanceList = null;
-            Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
-            Set<Map.Entry<String,Object>> set = mapResult.entrySet();
-            Iterator<Map.Entry<String,Object>> it = set.iterator();
-            while(it.hasNext()){
-                Map.Entry<String,Object> me = it.next();
-                if (me.getKey().equals("customerFinanceList")){
-                    customerFinanceList = (List<CustomerFinance>) me.getValue();
-                }
-            }
-            List<Map<String,Object>> listExport = new ArrayList<>();
-            Map<String, Object> mapExport = new HashMap<>();
-            mapExport.put("sheetName", "sheet1");
-            listExport.add(mapExport);
-            for ( int i = 0; i < customerFinanceList.size(); i++ ){
-                CustomerFinance customerFinance = customerFinanceList.get(i);
-                Map<String, Object> mapValue = new HashMap<>();
-                mapValue.put("companyName", customerFinance.getCompanyName());
-                mapValue.put("partnerName", customerFinance.getPartnerName());
-                mapValue.put("chargeWeekTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeWeekTotleAmount()));
-                mapValue.put("consumeWeekTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeWeekTotleAmount()));
-                mapValue.put("chargeMonthTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeMonthTotleAmount()));
-                mapValue.put("consumeMonthTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeMonthTotleAmount()));
-                mapValue.put("chargeTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeTotleAmount()));
-                mapValue.put("consumeTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeTotleAmount()));
-                mapValue.put("balance", ExportDataHander.pointsIntoRMB(customerFinance.getBalance()));
-                mapValue.put("currMonthAmount", ExportDataHander.pointsIntoRMB(customerFinance.getCurrMonthAmount()));
-                mapValue.put("currDayAmount", ExportDataHander.pointsIntoRMB(customerFinance.getCurrDayAmount()));
-                listExport.add(mapValue);
-            }
-            String fileName = "客户财务报表文件";
-            String columnNames[]= {"公司名称","合作公司","上周充值（单位：元）","上周消费（单位：元）","上月充值（单位：元）","上月消费（单位：元）","本月消费（单位：元）","当天消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
-            String keys[] = {"companyName","partnerName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","currMonthAmount","currDayAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
-            ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
-            return null;
-        }
-        System.out.println("************* 未执行导出操作 *************");
-        return point.proceed(args);
-    }
-
-    /**
-     * 公司财务账单导出Excel（根据部门编号）
-     * @param point
-     */
-    @Around("execution(* org.qydata.controller.FinanceController.queryAllCustomerByDeptId(..))")
-    public Object queryAllCustomerByDeptIdExportExcel(ProceedingJoinPoint point) throws Throwable {
-        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Object args [] = point.getArgs();
-        System.out.println("************* 判断是否是执行导出操作 *************");
-        if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
-            System.out.println("************* 执行导出操作 *************");
-            Map<String,Object> map = new HashMap<>();
-            User user = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
-            List deptList = new ArrayList();
-            for (int i = 0; i < user.getDept().size(); i++) {
-                deptList.add(user.getDept().get(i).getId());
-            }
-            map.put("deptIdList", deptList);
-            if(args[1] != null && args[1] != ""){
-                map.put("content",args[1]);
-            }
-            if(args[2] != null){
-                map.put("partnerId",args[2]);
-            }
-            if (args[3] != null && args[3] != "" ) {
-                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
-            }
-            if(args[4] != null && args[4] != ""){
-                map.put("endDate", CalendarUtil.getAfterDayByInputTime((String) args[4]));
-            }
-            List statusList = new ArrayList();
-            String status [] = (String[]) args[5];
-            if (status != null && status.length >0) {
-                for(int i=0;i<status.length;i++){
-                    statusList.add(status[i]);
-                }
-            }else {
-                statusList.add(0);
-                statusList.add(-1);
-            }
-            map.put("statusList", statusList);
-            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
-            map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
-            List<CustomerFinance> customerFinanceList = null;
-            Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
-            Set<Map.Entry<String,Object>> set = mapResult.entrySet();
-            Iterator<Map.Entry<String,Object>> it = set.iterator();
-            while(it.hasNext()){
-                Map.Entry<String,Object> me = it.next();
-                if (me.getKey().equals("customerFinanceList")){
-                    customerFinanceList = (List<CustomerFinance>) me.getValue();
-                }
-            }
-            List<Map<String,Object>> listExport = new ArrayList<>();
-            Map<String, Object> mapExport = new HashMap<>();
-            mapExport.put("sheetName", "sheet1");
-            listExport.add(mapExport);
-            for ( int i = 0; i < customerFinanceList.size(); i++ ){
-                CustomerFinance customerFinance = customerFinanceList.get(i);
-                Map<String, Object> mapValue = new HashMap<>();
-                mapValue.put("companyName", customerFinance.getCompanyName());
-                mapValue.put("chargeWeekTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeWeekTotleAmount()));
-                mapValue.put("consumeWeekTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeWeekTotleAmount()));
-                mapValue.put("chargeMonthTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeMonthTotleAmount()));
-                mapValue.put("consumeMonthTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeMonthTotleAmount()));
-                mapValue.put("chargeTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeTotleAmount()));
-                mapValue.put("consumeTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeTotleAmount()));
-                mapValue.put("balance", ExportDataHander.pointsIntoRMB(customerFinance.getBalance()));
-                mapValue.put("currMonthAmount", ExportDataHander.pointsIntoRMB(customerFinance.getCurrMonthAmount()));
-                mapValue.put("currDayAmount", ExportDataHander.pointsIntoRMB(customerFinance.getCurrDayAmount()));
-                listExport.add(mapValue);
-            }
-            String fileName = "客户财务报表文件";
-            String columnNames[]= {"公司名称","合作公司","上周充值（单位：元）","上周消费（单位：元）","上月充值（单位：元）","上月消费（单位：元）","本月消费（单位：元）","当天消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
-            String keys[] = {"companyName","partnerName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","currMonthAmount","currDayAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
-            ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
-            return null;
-        }
-        System.out.println("************* 未执行导出操作 *************");
-        return point.proceed(args);
-    }
-
+//    /**
+//     * 公司财务账单导出Excel
+//     * @param point
+//     */
+//    @Around("execution(* org.qydata.controller.FinanceController.queryAllCustomer(..))")
+//    public Object queryAllCustomerExportExcel(ProceedingJoinPoint point) throws Throwable {
+//        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Object args [] = point.getArgs();
+//        System.out.println("************* 判断是否是执行导出操作 *************");
+//        if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
+//            System.out.println("************* 执行导出操作 *************");
+//            Map<String,Object> map = new HashMap<>();
+//
+//            if(args[1] != null && args[1] != ""){
+//                map.put("content",args[1]);
+//            }
+//            if(args[2] != null){
+//                map.put("partnerId",args[2]);
+//            }
+//            if (args[3] != null && args[3] != "" ) {
+//                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
+//            }
+//            if(args[4] != null && args[4] != ""){
+//                map.put("endDate", CalendarUtil.getAfterDayByInputTime((String) args[4]));
+//            }
+//            List statusList = new ArrayList();
+//            String status [] = (String[]) args[5];
+//            if (status != null && status.length >0) {
+//                for(int i=0;i<status.length;i++){
+//                    statusList.add(status[i]);
+//                }
+//            }else {
+//                statusList.add(0);
+//                statusList.add(-1);
+//            }
+//            map.put("statusList", statusList);
+//            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+//            map.put("currMonthTime", CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
+//            List<CustomerFinance> customerFinanceList = null;
+//            Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
+//            Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+//            Iterator<Map.Entry<String,Object>> it = set.iterator();
+//            while(it.hasNext()){
+//                Map.Entry<String,Object> me = it.next();
+//                if (me.getKey().equals("customerFinanceList")){
+//                    customerFinanceList = (List<CustomerFinance>) me.getValue();
+//                }
+//            }
+//            List<Map<String,Object>> listExport = new ArrayList<>();
+//            Map<String, Object> mapExport = new HashMap<>();
+//            mapExport.put("sheetName", "sheet1");
+//            listExport.add(mapExport);
+//            for ( int i = 0; i < customerFinanceList.size(); i++ ){
+//                CustomerFinance customerFinance = customerFinanceList.get(i);
+//                Map<String, Object> mapValue = new HashMap<>();
+//                mapValue.put("companyName", customerFinance.getCompanyName());
+//                mapValue.put("partnerName", customerFinance.getPartnerName());
+//                mapValue.put("chargeWeekTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeWeekTotleAmount()));
+//                mapValue.put("consumeWeekTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeWeekTotleAmount()));
+//                mapValue.put("chargeMonthTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeMonthTotleAmount()));
+//                mapValue.put("consumeMonthTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeMonthTotleAmount()));
+//                mapValue.put("chargeTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeTotleAmount()));
+//                mapValue.put("consumeTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeTotleAmount()));
+//                mapValue.put("balance", ExportDataHander.pointsIntoRMB(customerFinance.getBalance()));
+//                mapValue.put("currMonthAmount", ExportDataHander.pointsIntoRMB(customerFinance.getCurrMonthAmount()));
+//                mapValue.put("currDayAmount", ExportDataHander.pointsIntoRMB(customerFinance.getCurrDayAmount()));
+//                listExport.add(mapValue);
+//            }
+//            String fileName = "客户财务报表文件";
+//            String columnNames[]= {"公司名称","合作公司","上周充值（单位：元）","上周消费（单位：元）","上月充值（单位：元）","上月消费（单位：元）","本月消费（单位：元）","当天消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
+//            String keys[] = {"companyName","partnerName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","currMonthAmount","currDayAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
+//            ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
+//            return null;
+//        }
+//        System.out.println("************* 未执行导出操作 *************");
+//        return point.proceed(args);
+//    }
+//
+//    /**
+//     * 公司财务账单导出Excel（根据部门编号）
+//     * @param point
+//     */
+//    @Around("execution(* org.qydata.controller.FinanceController.queryAllCustomerByDeptId(..))")
+//    public Object queryAllCustomerByDeptIdExportExcel(ProceedingJoinPoint point) throws Throwable {
+//        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Object args [] = point.getArgs();
+//        System.out.println("************* 判断是否是执行导出操作 *************");
+//        if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
+//            System.out.println("************* 执行导出操作 *************");
+//            Map<String,Object> map = new HashMap<>();
+//            User user = powerUserService.findUserByEmail((String) SecurityUtils.getSubject().getPrincipal());
+//            List deptList = new ArrayList();
+//            for (int i = 0; i < user.getDept().size(); i++) {
+//                deptList.add(user.getDept().get(i).getId());
+//            }
+//            map.put("deptIdList", deptList);
+//            if(args[1] != null && args[1] != ""){
+//                map.put("content",args[1]);
+//            }
+//            if(args[2] != null){
+//                map.put("partnerId",args[2]);
+//            }
+//            if (args[3] != null && args[3] != "" ) {
+//                map.put("beginDate", sdf.format(sdfInput.parse((String) args[3]))+" "+"00:00:00");
+//            }
+//            if(args[4] != null && args[4] != ""){
+//                map.put("endDate", CalendarUtil.getAfterDayByInputTime((String) args[4]));
+//            }
+//            List statusList = new ArrayList();
+//            String status [] = (String[]) args[5];
+//            if (status != null && status.length >0) {
+//                for(int i=0;i<status.length;i++){
+//                    statusList.add(status[i]);
+//                }
+//            }else {
+//                statusList.add(0);
+//                statusList.add(-1);
+//            }
+//            map.put("statusList", statusList);
+//            map.put("currDayTime",sdf.format(new Date()) + " " + "00:00:00");
+//            map.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
+//            List<CustomerFinance> customerFinanceList = null;
+//            Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
+//            Set<Map.Entry<String,Object>> set = mapResult.entrySet();
+//            Iterator<Map.Entry<String,Object>> it = set.iterator();
+//            while(it.hasNext()){
+//                Map.Entry<String,Object> me = it.next();
+//                if (me.getKey().equals("customerFinanceList")){
+//                    customerFinanceList = (List<CustomerFinance>) me.getValue();
+//                }
+//            }
+//            List<Map<String,Object>> listExport = new ArrayList<>();
+//            Map<String, Object> mapExport = new HashMap<>();
+//            mapExport.put("sheetName", "sheet1");
+//            listExport.add(mapExport);
+//            for ( int i = 0; i < customerFinanceList.size(); i++ ){
+//                CustomerFinance customerFinance = customerFinanceList.get(i);
+//                Map<String, Object> mapValue = new HashMap<>();
+//                mapValue.put("companyName", customerFinance.getCompanyName());
+//                mapValue.put("chargeWeekTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeWeekTotleAmount()));
+//                mapValue.put("consumeWeekTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeWeekTotleAmount()));
+//                mapValue.put("chargeMonthTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeMonthTotleAmount()));
+//                mapValue.put("consumeMonthTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeMonthTotleAmount()));
+//                mapValue.put("chargeTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getChargeTotleAmount()));
+//                mapValue.put("consumeTotleAmount", ExportDataHander.pointsIntoRMB(customerFinance.getConsumeTotleAmount()));
+//                mapValue.put("balance", ExportDataHander.pointsIntoRMB(customerFinance.getBalance()));
+//                mapValue.put("currMonthAmount", ExportDataHander.pointsIntoRMB(customerFinance.getCurrMonthAmount()));
+//                mapValue.put("currDayAmount", ExportDataHander.pointsIntoRMB(customerFinance.getCurrDayAmount()));
+//                listExport.add(mapValue);
+//            }
+//            String fileName = "客户财务报表文件";
+//            String columnNames[]= {"公司名称","合作公司","上周充值（单位：元）","上周消费（单位：元）","上月充值（单位：元）","上月消费（单位：元）","本月消费（单位：元）","当天消费（单位：元）","充值总额（单位：元）","消费总额（单位：元）","余额（单位：元）"};//列名
+//            String keys[] = {"companyName","partnerName","chargeWeekTotleAmount","consumeWeekTotleAmount","chargeMonthTotleAmount","consumeMonthTotleAmount","currMonthAmount","currDayAmount","chargeTotleAmount","consumeTotleAmount","balance"};//map中的key
+//            ExportIoOperate.excelEndOperator(listExport,keys,columnNames,fileName,response);
+//            return null;
+//        }
+//        System.out.println("************* 未执行导出操作 *************");
+//        return point.proceed(args);
+//    }
+//
 
     /**
      * 指定账号充值记录导出Excel
