@@ -333,23 +333,23 @@
             <#--日志查询-->
                 <@shiro.hasAnyRoles name="backAdmin">
 
-                    <li class="" id="customerBalance">
+                    <li class="" id="search_log">
                         <a href="javascript:;">
 
                             <i class="icon-bar-chart"></i>
 
                             <span class="title">日志查询</span>
 
-                            <span class="" id="customerBalanceSelect"></span>
+                            <span class="" id="search_log_select"></span>
 
-                            <span class="arrow " id="customerBalanceArrow"></span>
+                            <span class="arrow " id="search_log_select_arrow"></span>
 
                         </a>
 
                         <ul class="sub-menu">
 
                         <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
-                            <li id="extra-account-partner">
+                            <li id="search_customer_log">
                                 <a href="/search/customer-log">
                                     客户请求日志查询
                                 </a>

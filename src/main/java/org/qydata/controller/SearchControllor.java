@@ -15,4 +15,10 @@ public class SearchControllor {
         return "/search/search_customer_log_index";
     }
 
+    @RequestMapping("/customer-log/result")
+    public String searchCustomerLogResult(){
+        return "/search/search_customer_log_result";
+    }
+
+
 }

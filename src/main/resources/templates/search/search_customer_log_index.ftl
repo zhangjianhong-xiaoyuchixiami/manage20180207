@@ -21,97 +21,33 @@
 
                 <div class="span12">
 
-
-
-                <#--<form action="/finance/rebate" id="submit_form" class="form-bottom-excel form-top" method="get">-->
-
-                <#--<div class="clearfix margin-bottom-20 head-search-clearfix-top">-->
-
-                <#--<div class="pull-left head-search-bottom">-->
-
-                <#--<label class="">请选择代理人</label>-->
-
-                <#--<div class="controls">-->
-
-                <#--<select class="medium m-wrap" id="agency" name="agency">-->
-                <#--<option value=""></option>-->
-                <#--<#if agencyList??>-->
-                <#--<#list agencyList as agency>-->
-                <#--<option <#if agencyId?? && agencyId == agency.id>selected="selected"</#if> value="${agency.id}">${agency.name}</option>-->
-                <#--</#list>-->
-                <#--</#if>-->
-                <#--</select>-->
-
-                <#--</div>-->
-
-                <#--</div>-->
-                <#---->
-                <#--<div class="pull-left head-search-bottom">-->
-
-                <#--<label>&nbsp;&nbsp;</label>-->
-
-                <#--<div class="controls" >-->
-
-                <#--<div class="input-append">-->
-
-                <#--<button class="btn black" id="submit" type="submit">确定</button>-->
-
-                <#--</div>-->
-
-                <#--</div>-->
-
-                <#--</div>-->
-
-                <#--</div>-->
-
-                <#--</form>-->
-
-                    <div class="">
-
-                        <form class="form-search" action="#">
-
-                            <div class="chat-form">
-
-
-
-                                <div class="input-cont">
-                                    <div class="pull-left head-search-bottom">
-
-                                        <select class="medium m-wrap" id="pid" name="pid">
-                                            <option value=""></option>
-                                            <option value="">k</option>
-                                            <option value="">reqId</option>
-                                        </select>
-
+                    <div style="margin-top: 10px;">
+                        <form id="submit_form" class="form-search" action="/search/customer-log/result" method="get">
+                                <div class="chat-form">
+                                    <div class="input-cont">
+                                        <div class="pull-left head-search-bottom">
+                                            <select class="small m-wrap" id="tid" name="tid">
+                                                <option value=""></option>
+                                                <option value="">k</option>
+                                                <option value="">reqId</option>
+                                            </select>
+                                        </div>
+                                        <div class="pull-left head-search-bottom">
+                                            <select class="medium m-wrap" id="cid" name="cid">
+                                                <option value=""></option>
+                                                <option value="">1</option>
+                                                <option value="">1</option>
+                                                <option value="">1</option>
+                                            </select>
+                                        </div>
+                                        <div class="pull-left head-search-bottom">
+                                            <input type="text" placeholder="请输入搜索内容" id="content" name="content" class="large m-wrap" />
+                                        </div>
                                     </div>
-                                    <div class="pull-left head-search-bottom">
-
-                                        <select class="medium m-wrap" id="pid" name="pid">
-                                            <option value=""></option>
-                                            <option <#if pid?? && pid == -100> selected="selected"</#if> value="-100">无</option>
-                                            <#if partnerList??>
-                                                <#list partnerList as partner>
-                                                    <option <#if pid?? && pid==partner.id>selected="selected"</#if> value="${partner.id}">${partner.name}</option>
-                                                </#list>
-                                            </#if>
-                                        </select>
-
-                                    </div>
-
-                                    <div class="pull-left head-search-bottom">
-                                    <input type="text" placeholder="Search..." class="m-wrap" />
-                                    </div>
-
+                                    <button type="submit" id="search_submit" class="btn black">查找 &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>
                                 </div>
-
-                                <button type="button" class="btn black">Search &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>
-
-                            </div>
-
                         </form>
-
                     </div>
-
 
                 </div>
 
@@ -129,16 +65,11 @@
 
         <@puj.publicJs></@puj.publicJs>
 
-    <script src="/js/myjs/rebate/rebate.js?v=${ver}"></script>
-
+    <script src="/js/myjs/search/search_customer_log_index.js?v=${ver}"></script>
     <script>
-
         jQuery(document).ready(function() {
-
-            Rebate.init();
-
+            SearchCustomerLogIndex.init();
         });
-
     </script>
 
     </#if>
