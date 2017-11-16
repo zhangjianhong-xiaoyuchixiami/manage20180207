@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.SearchMapper">
+
+    <resultMap id="customerReqLog_map" type="org.qydata.dst.customer.CustomerReqLog">
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="stid" property="stid"/>
+        <result column="customerId" property="customerId"/>
+        <result column="reqId" property="reqId"/>
+        <result column="k" property="k"/>
+        <result column="reqContent" property="reqContent"/>
+        <result column="createTime" property="createTime"/>
+        <result column="respContent" property="respContent"/>
+        <result column="apiId" property="apiId"/>
+        <result column="dataSourceId" property="dataSourceId"/>
+        <result column="c0cacheId" property="c0cacheId"/>
+        <result column="dur" property="dur"/>
+        <result column="amount" property="amount"/>
+        <result column="type_stid_name" property="type_stid_name"/>
+        <result column="cname_pname_authId" property="cname_pname_authId"/>
+        <result column="vname_pname_aname" property="vname_pname_aname"/>
+    </resultMap>
+
+    <select id="queryCustomerReqLog" parameterType="map" resultMap="customerReqLog_map">
+        SELECT a.apiTypeId,a.stid,a.customerId,a.reqId,a.k,a.content reqContent,a.createTime,
+        b.content respContent,b.apiId,b.dataSourceId,b.c0cacheId,b.dur,c.amount,
+        CONCAT_WS('--',d.name,e.name) type_stid_name,
+        CONCAT_WS('--',g.name,h.name,f.authId) cname_pname_authId,
+        CONCAT_WS('--',i.vendorName,i.partnerName,i.apiName) vname_pname_aname
+        FROM qydata.CustomerRequestLog a
+        LEFT JOIN qydata.CustomerResponseLog b ON a.id = b.reqId
+        LEFT JOIN qydata.CustomerBalanceLog c ON a.id = c.reqId
+        LEFT JOIN qyfinance.bkvwApiType d ON a.apiTypeId = d.id
+        LEFT JOIN qyfinance.bkvwMobileOperator e ON a.stid = e.id
+        LEFT JOIN qyfinance.finance_Customer f ON a.customerId = f.id
+        LEFT JOIN qyfinance.bkvwCustomerCompany g ON f.companyId = g.id
+        LEFT JOIN qyfinance.bkvwPartner h ON g.partnerId = h.id
+        LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner i ON b.apiId = i.apiId
+        <where>
+            <if test="k_reqId != null and k_reqId != '' and content != null and content != ''">
+                AND a.${k_reqId} = #{content}
+            </if>
+            <if test="cid != null and cid != ''">
+                AND a.customerId = #{cid}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
+

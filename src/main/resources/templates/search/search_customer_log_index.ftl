@@ -26,25 +26,27 @@
                                 <div class="chat-form">
                                     <div class="input-cont">
                                         <div class="pull-left head-search-bottom">
-                                            <select class="small m-wrap" id="tid" name="tid">
+                                            <select class="small m-wrap" id="k_reqId" name="k_reqId">
                                                 <option value=""></option>
-                                                <option value="">k</option>
-                                                <option value="">reqId</option>
+                                                <option value="k">k</option>
+                                                <option value="reqId">reqId</option>
                                             </select>
                                         </div>
                                         <div class="pull-left head-search-bottom">
                                             <select class="medium m-wrap" id="cid" name="cid">
                                                 <option value=""></option>
-                                                <option value="">1</option>
-                                                <option value="">1</option>
-                                                <option value="">1</option>
+                                                <#if companyList??>
+                                                    <#list companyList as company>
+                                                        <option value="${company.id}">${company.name}</option>
+                                                    </#list>
+                                                </#if>
                                             </select>
                                         </div>
                                         <div class="pull-left head-search-bottom">
                                             <input type="text" placeholder="请输入搜索内容" id="content" name="content" class="large m-wrap" />
                                         </div>
                                     </div>
-                                    <button type="submit" id="search_submit" class="btn black">查找 &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>
+                                    <button type="button" id="search_submit" class="btn black">查找 &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>
                                 </div>
                         </form>
                     </div>
@@ -66,10 +68,13 @@
         <@puj.publicJs></@puj.publicJs>
 
     <script src="/js/myjs/search/search_customer_log_index.js?v=${ver}"></script>
+
     <script>
         jQuery(document).ready(function() {
             SearchCustomerLogIndex.init();
         });
+
+
     </script>
 
     </#if>

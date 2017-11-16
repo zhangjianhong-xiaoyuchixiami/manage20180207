@@ -22,29 +22,31 @@
                 <div class="span12">
 
                     <div style="margin-top: 10px;">
-                        <form class="form-search" action="/search/customer-log/result" method="get">
+                        <form id="submit_form" class="form-search" action="/search/customer-log/result" method="get">
                             <div class="chat-form">
                                 <div class="input-cont">
                                     <div class="pull-left head-search-bottom">
-                                        <select class="small m-wrap" id="tid" name="tid">
+                                        <select class="small m-wrap" id="k_reqId" name="k_reqId">
                                             <option value=""></option>
-                                            <option value="">k</option>
-                                            <option value="">reqId</option>
+                                            <option <#if k_reqId?? && k_reqId == "k">selected="selected"</#if> value="k">k</option>
+                                            <option <#if k_reqId?? && k_reqId == "reqId">selected="selected"</#if> value="reqId">reqId</option>
                                         </select>
                                     </div>
                                     <div class="pull-left head-search-bottom">
                                         <select class="medium m-wrap" id="cid" name="cid">
                                             <option value=""></option>
-                                            <option value="">1</option>
-                                            <option value="">1</option>
-                                            <option value="">1</option>
+                                            <#if companyList??>
+                                                <#list companyList as company>
+                                                    <option <#if cid?? && cid == company.id>selected="selected"</#if> value="${company.id}">${company.name}</option>
+                                                </#list>
+                                            </#if>
                                         </select>
                                     </div>
                                     <div class="pull-left head-search-bottom">
-                                        <input type="text" placeholder="请输入搜索内容" id="content" name="content" class="large m-wrap" />
+                                        <input type="text" placeholder="请输入搜索内容" <#if content??> value="${content}" </#if> id="content" name="content" class="large m-wrap" />
                                     </div>
                                 </div>
-                                <button type="submit" id="search_submit" class="btn black">查找 &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>
+                                <button type="button" id="search_submit" class="btn black">查找 &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>
                             </div>
                         </form>
                     </div>
@@ -54,25 +56,31 @@
                         <table class="table table-striped table-hover" id="sample_1">
                             <thead>
                             <tr>
-                                <th>Photo</th>
-                                <th>Fullname</th>
-                                <th>Username</th>
-                                <th>Joined</th>
-                                <th>Points</th>
-                                <th>Status</th>
-                                <th></th>
+                                <th>客户名称</th>
+                                <th>产品类型</th>
+                                <th>reqId</th>
+                                <th>k</th>
+                                <th>响应时长</th>
+                                <th>是否走缓存</th>
+                                <th>调用上游</th>
+                                <th>请求时间</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td></td>
-                                <td>Mark Nilson</td>
-                                <td>makr124</td>
-                                <td>19 Jan 2012</td>
-                                <td>1245</td>
-                                <td>Approved</td>
-                                <td>View</td>
-                            </tr>
+                            <#if logList??>
+                                <#list logList as log>
+                                <tr>
+                                    <td>${log.cname_pname_authId}</td>
+                                    <td>${log.type_stid_name}</td>
+                                    <td>${log.reqId}</td>
+                                    <td>${log.k}</td>
+                                    <td>${log.dur}</td>
+                                    <td>${log.isCache}</td>
+                                    <td>${log.vname_pname_aname}</td>
+                                    <td>${log.createTime}</td>
+                                </tr>
+                                </#list>
+                            </#if>
                             </tbody>
                         </table>
 
