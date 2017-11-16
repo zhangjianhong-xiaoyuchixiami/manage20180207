@@ -58,9 +58,13 @@
                             <tr>
                                 <th>客户名称</th>
                                 <th>产品类型</th>
-                                <th>reqId</th>
+                                <th class="table-td-none">reqId</th>
                                 <th>k</th>
+                                <th class="table-td-none">请求数据</th>
+                                <th>核验结果</th>
+                                <th class="table-td-none">响应结果</th>
                                 <th>响应时长</th>
+                                <th class="table-td-none">是否扣费</th>
                                 <th>是否走缓存</th>
                                 <th>调用上游</th>
                                 <th>请求时间</th>
@@ -70,14 +74,18 @@
                             <#if logList??>
                                 <#list logList as log>
                                 <tr>
-                                    <td>${log.cname_pname_authId}</td>
-                                    <td>${log.type_stid_name}</td>
-                                    <td>${log.reqId}</td>
-                                    <td>${log.k}</td>
-                                    <td>${log.dur}</td>
-                                    <td>${log.isCache}</td>
-                                    <td>${log.vname_pname_aname}</td>
-                                    <td>${log.createTime}</td>
+                                    <td>${log.cname_pname_authId!"NULL"}</td>
+                                    <td>${log.type_stid_name!"NULL"}</td>
+                                    <td>${log.reqId!"NULL"}</td>
+                                    <td>${log.k!"NULL"}</td>
+                                    <td class="table-td-none">${log.reqContent!"NULL"}</td>
+                                    <td>${log.result!""}</td>
+                                    <td class="table-td-none">${log.respContent!"NULL"}</td>
+                                    <td>${log.dur!"NULL"}</td>
+                                    <td class="table-td-none">${log.isCost!"NULL"}</td>
+                                    <td>${log.isCache!"NULL"}</td>
+                                    <td>${log.vname_pname_aname!"NULL"}</td>
+                                    <td>${log.createTime!"NULL"}</td>
                                 </tr>
                                 </#list>
                             </#if>

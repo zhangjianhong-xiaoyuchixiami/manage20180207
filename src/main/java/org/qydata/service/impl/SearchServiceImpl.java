@@ -1,7 +1,6 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.customer.CustomerReqLog;
-import org.qydata.entity.Company;
 import org.qydata.mapper.SearchMapper;
 import org.qydata.service.SearchService;
 import org.qydata.tools.customer.CustomerDataParamUtil;
@@ -30,6 +29,9 @@ public class SearchServiceImpl implements SearchService {
             if (log == null){
                 continue;
             }
+            if (log.getVname_pname_aname() == "" || "".equals(log.getVname_pname_aname())){
+                log.setVname_pname_aname(null);
+            }
             if (log.getAmount() != null){
                 log.setIsCost("是");
             }else {
@@ -40,8 +42,14 @@ public class SearchServiceImpl implements SearchService {
             }else {
                 log.setIsCache("否");
             }
+            if (log.getDur() != null){
+                log.setSDur(log.getDur() + "ms");
+            }
             if (log.getReqContent() != null){
                 log.setReqContent(CustomerDataParamUtil.reqParam(log.getReqContent()));
+            }
+            if (log.getRespContent() != null){
+                log.setResult(CustomerDataParamUtil.respParam(log.getRespContent()));
             }
         }
         return logList;

@@ -12,13 +12,18 @@ var SearchCustomerLogResult = function () {
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table style="width: 100%">';
-                sOut += '<tr><th>标题:</th><td>'+ aData[1] +'</td></tr>';
-                sOut += '<tr><th>类型:</th><td>'+ aData[2] +'</td></tr>';
-                sOut += '<tr><th>请求地址:</th><td>'+ aData[3] +'</td></tr>';
-                sOut += '<tr><th>URI:</th><td>'+ aData[4] +'</td></tr>';
-                sOut += '<tr><th>请求方式:</th><td>'+ aData[5] +'</td></tr>';
-                sOut += '<tr><th>提交参数:</th><td>'+ aData[6] +'</td></tr>';
-                sOut += '<tr><th>异常:</th><td>'+ aData[7] +'</td></tr>';
+                sOut += '<tr><th>客户名称:</th><td>'+ aData[1] +'</td></tr>';
+                sOut += '<tr><th>产品类型:</th><td>'+ aData[2] +'</td></tr>';
+                sOut += '<tr><th>reqId:</th><td>'+ aData[3] +'</td></tr>';
+                sOut += '<tr><th>k:</th><td>'+ aData[4] +'</td></tr>';
+                sOut += '<tr><th>请求数据:</th><td>'+ aData[5] +'</td></tr>';
+                sOut += '<tr><th>核验结果:</th><td>'+ aData[6] +'</td></tr>';
+                sOut += '<tr><th>响应结果:</th><td>'+ aData[7] +'</td></tr>';
+                sOut += '<tr><th>响应时长:</th><td>'+ aData[8] +'</td></tr>';
+                sOut += '<tr><th>是否扣费:</th><td>'+ aData[9] +'</td></tr>';
+                sOut += '<tr><th>是否走缓存:</th><td>'+ aData[10] +'</td></tr>';
+                sOut += '<tr><th>调用上游:</th><td>'+ aData[11] +'</td></tr>';
+                sOut += '<tr><th>请求时间:</th><td>'+ aData[12] +'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -57,13 +62,18 @@ var SearchCustomerLogResult = function () {
                     {"bSortable": false},
                     null,
                     null,
+                    {"bVisible": false},
                     null,
+                    {"bVisible": false},
                     null,
+                    {"bVisible": false},
+                    null,
+                    {"bVisible": false},
                     null,
                     null,
                     null
                 ],
-                "aaSorting": [[1, 'desc']],
+                "aaSorting": [[12, 'desc']],
                 "bPaginate" : false,
                 "bLengthChange" : false,
                 "iDisplayLength": 15, //每页显示多少行

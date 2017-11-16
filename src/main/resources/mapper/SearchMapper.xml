@@ -23,7 +23,7 @@
     </resultMap>
 
     <select id="queryCustomerReqLog" parameterType="map" resultMap="customerReqLog_map">
-        SELECT a.apiTypeId,a.stid,a.customerId,a.reqId,a.k,a.content reqContent,a.createTime,
+        SELECT DISTINCT a.id,a.apiTypeId,a.stid,a.customerId,a.reqId,a.k,a.content reqContent,a.createTime,
         b.content respContent,b.apiId,b.dataSourceId,b.c0cacheId,b.dur,c.amount,
         CONCAT_WS('--',d.name,e.name) type_stid_name,
         CONCAT_WS('--',g.name,h.name,f.authId) cname_pname_authId,
@@ -42,9 +42,10 @@
                 AND a.${k_reqId} = #{content}
             </if>
             <if test="cid != null and cid != ''">
-                AND a.customerId = #{cid}
+                AND f.companyId = #{cid}
             </if>
         </where>
+        ORDER BY a.id DESC
     </select>
 
 

@@ -26,5 +26,7 @@ public class CustomerReqLog {
     private String vname_pname_aname;
     private String isCache;
     private String isCost;
+    private String sDur;
+    private String result;
 
 }
