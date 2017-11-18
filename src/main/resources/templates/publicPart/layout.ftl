@@ -301,25 +301,25 @@
             <#--产品核验-->
                 <@shiro.hasAnyRoles name="backAdmin">
 
-                    <li class="" id="customerBalance">
+                    <li class="" id="pro_valid">
                         <a href="javascript:;">
 
                             <i class="icon-bar-chart"></i>
 
                             <span class="title">产品核验</span>
 
-                            <span class="" id="customerBalanceSelect"></span>
+                            <span class="" id="pro_valid_select"></span>
 
-                            <span class="arrow " id="customerBalanceArrow"></span>
+                            <span class="arrow " id="pro_valid_arrow"></span>
 
                         </a>
 
                         <ul class="sub-menu">
 
                             <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
-                                <li id="extra-account-partner">
-                                    <a href="/excel/extra-account-partner">
-                                        合作公司财务对账
+                                <li id="data_mobile_valid">
+                                    <a href="/data/mobile/valid">
+                                        运营商核验
                                     </a>
                                 </li>
                             <#--</@shiro.hasPermission>-->

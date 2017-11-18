@@ -61,7 +61,7 @@ var SearchCustomerLogResult = function () {
                 "aoColumns": [
                     {"bSortable": false},
                     null,
-                    null,
+                    {"bVisible": false},
                     {"bVisible": false},
                     null,
                     {"bVisible": false},

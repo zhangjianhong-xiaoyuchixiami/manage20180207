@@ -59,7 +59,7 @@
                                 <th>客户名称</th>
                                 <th>产品类型</th>
                                 <th class="table-td-none">reqId</th>
-                                <th>k</th>
+                                <th class="table-td-none">k</th>
                                 <th class="table-td-none">请求数据</th>
                                 <th>核验结果</th>
                                 <th class="table-td-none">响应结果</th>
@@ -76,8 +76,8 @@
                                 <tr>
                                     <td>${log.cname_pname_authId!"NULL"}</td>
                                     <td>${log.type_stid_name!"NULL"}</td>
-                                    <td>${log.reqId!"NULL"}</td>
-                                    <td>${log.k!"NULL"}</td>
+                                    <td class="table-td-none">${log.reqId!"NULL"}</td>
+                                    <td class="table-td-none">${log.k!"NULL"}</td>
                                     <td class="table-td-none">${log.reqContent!"NULL"}</td>
                                     <td>${log.result!""}</td>
                                     <td class="table-td-none">${log.respContent!"NULL"}</td>

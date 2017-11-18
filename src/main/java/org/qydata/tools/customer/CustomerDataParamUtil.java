@@ -223,17 +223,19 @@ public class CustomerDataParamUtil {
             return null;
         }
         try{
-            if (jsonObject.getJSONObject("result") == null){
+            if (jsonObject.getJSONObject("result") == null || jsonObject.get("result") instanceof net.sf.json.JSONNull){
                 return null;
             }
             JSONObject result = jsonObject.getJSONObject("result");
-            if (result.getString("resultCode") != null){
+            if (result.getString("resultCode") != null || !(jsonObject.get("resultCode") instanceof net.sf.json.JSONNull)){
                 return resultCodeParam(result);
             }
-            if (result.getString("rangeStart") != null && result.getString("rangeEnd") != null){
-                return rangeParam(result);
+            if (result.getString("rangeStart") != null || !(jsonObject.get("rangeStart") instanceof net.sf.json.JSONNull)){
+                 if (result.getString("rangeEnd") != null || !(jsonObject.get("rangeEnd") instanceof net.sf.json.JSONNull)) {
+                     return rangeParam(result);
+                 }
             }
-            if (result.getString("status") != null){
+            if (result.getString("status") != null || !(jsonObject.get("status") instanceof net.sf.json.JSONNull)){
                 return statusParam(result);
             }
             return null;
@@ -245,6 +247,9 @@ public class CustomerDataParamUtil {
 
     public static String resultCodeParam(JSONObject jsonObject){
         try {
+            if (jsonObject.getString("resultCode") == null || jsonObject.get("resultCode") instanceof net.sf.json.JSONNull || "".equals(jsonObject.getString("resultCode"))){
+                return null;
+            }
             String resultCode = jsonObject.getString("resultCode");
             if ("-1".equals(resultCode)) return "无记录";
             if ("1".equals(resultCode)) return "匹配";
@@ -260,6 +265,12 @@ public class CustomerDataParamUtil {
 
     public static String rangeParam(JSONObject jsonObject){
         try {
+            if (jsonObject.getString("rangeStart") == null || jsonObject.get("rangeStart") instanceof net.sf.json.JSONNull || "".equals(jsonObject.getString("rangeStart"))){
+                return null;
+            }
+            if (jsonObject.getString("rangeEnd") == null || jsonObject.get("rangeEnd") instanceof net.sf.json.JSONNull || "".equals(jsonObject.getString("rangeEnd"))){
+                return null;
+            }
             String rangeStart = jsonObject.getString("rangeStart");
             String rangeEnd = jsonObject.getString("rangeEnd");
             return "起始值：" + rangeStart + ",结束值：" + rangeEnd;
@@ -270,6 +281,9 @@ public class CustomerDataParamUtil {
 
     public static String statusParam(JSONObject jsonObject){
         try {
+            if (jsonObject.getString("status") == null || jsonObject.get("status") instanceof net.sf.json.JSONNull || "".equals(jsonObject.getString("status"))){
+                return null;
+            }
             String status = jsonObject.getString("status");
             if ("-2".equals(status)) return "异常（号码状态非正常）";
             if ("-1".equals(status)) return "不在网";
