@@ -91,10 +91,6 @@
 
                                                             <option value=""></option>
 
-                                                            <option value="">Male</option>
-
-                                                            <option value="">Female</option>
-
                                                         </select>
 
                                                     </div>
@@ -161,6 +157,8 @@
 
                                                         <input type="text" id="idNo" name="idNo" class="medium m-wrap" placeholder="请输入身份证号">
 
+                                                        <span id="idNo_msg" class="help-block"></span>
+
                                                     </div>
 
                                                 </div>
@@ -177,9 +175,9 @@
 
                                                         <select  class="medium m-wrap" id="skip" name="skip">
 
-                                                            <option value="false">否</option>
+                                                            <option value="true">否</option>
 
-                                                            <option value="true">是</option>
+                                                            <option value="false">是</option>
 
                                                         </select>
 

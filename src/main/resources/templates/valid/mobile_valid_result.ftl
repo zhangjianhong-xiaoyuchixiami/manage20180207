@@ -43,11 +43,11 @@
 
                                                     <select  class="m-wrap span6" id="tid" name="tid">
                                                         <option value=""></option>
-                                                        <option value="/mobile/verify/3f">手机三要素</option>
-                                                        <option value="/mobile/query/duration">手机在网时长</option>
-                                                        <option value="/mobile/query/status">手机在网状态</option>
-                                                        <option value="/mobile/verify/2f-name">手机姓名二要素</option>
-                                                        <option value="/id/verify/2f">身份证姓名二要素</option>
+                                                        <option <#if tid ?? && tid == "/mobile/verify/3f">selected = "selected"</#if> value="/mobile/verify/3f">手机三要素</option>
+                                                        <option <#if tid ?? && tid == "/mobile/query/duration">selected = "selected"</#if> value="/mobile/query/duration">手机在网时长</option>
+                                                        <option <#if tid ?? && tid == "/mobile/query/status">selected = "selected"</#if> value="/mobile/query/status">手机在网状态</option>
+                                                        <option <#if tid ?? && tid == "/mobile/verify/2f-name">selected = "selected"</#if> value="/mobile/verify/2f-name">手机姓名二要素</option>
+                                                        <option <#if tid ?? && tid == "/id/verify/2f">selected = "selected"</#if> value="/id/verify/2f">身份证姓名二要素</option>
                                                     </select>
 
                                                 </div>
@@ -69,7 +69,7 @@
 
                                                     <div class="controls">
 
-                                                        <input type="text" id="mobile" name="mobile" class="medium m-wrap" placeholder="请输入手机号">
+                                                        <input type="text" id="mobile" name="mobile" <#if mobile??>value="${mobile}" </#if> class="medium m-wrap" placeholder="请输入手机号">
 
                                                         <span id="mobile_msg" class="help-block"></span>
 
@@ -91,9 +91,11 @@
 
                                                             <option value=""></option>
 
-                                                            <option value="">Male</option>
-
-                                                            <option value="">Female</option>
+                                                            <#if aidList??>
+                                                                <#list aidList as type>
+                                                                    <option <#if aid?? && aid == type.aid>selected = "selected</#if> value="${type.aid!''}">${type.name!''}</option>
+                                                                </#list>
+                                                            </#if>
 
                                                         </select>
 
@@ -125,7 +127,7 @@
 
                                                     <div class="controls">
 
-                                                        <input type="text" id="realName" name="realName" class="medium m-wrap" placeholder="请输入姓名">
+                                                        <input type="text" id="realName" name="realName" <#if realName??>value="${realName}" </#if> class="medium m-wrap" placeholder="请输入姓名">
 
                                                     </div>
 
@@ -177,7 +179,7 @@
 
                                                     <div class="controls">
 
-                                                        <input type="text" id="idNo" name="idNo" class="medium m-wrap" placeholder="请输入身份证号">
+                                                        <input type="text" id="idNo" name="idNo" <#if idNo??>value="${idNo}" </#if> class="medium m-wrap" placeholder="请输入身份证号">
 
                                                     </div>
 
@@ -195,9 +197,9 @@
 
                                                         <select  class="medium m-wrap" id="skip" name="skip">
 
-                                                            <option value="false">否</option>
+                                                            <option value="true">否</option>
 
-                                                            <option value="true">是</option>
+                                                            <option value="false">是</option>
 
                                                         </select>
 

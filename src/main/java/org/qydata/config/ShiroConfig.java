@@ -306,15 +306,17 @@ public class ShiroConfig {
 		chains.put("/finance/find-all-customer", "authc,perms");
 		chains.put("/finance/find-all-customer-by-dept-id", "authc,perms");
 		chains.put("/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id", "authc,perms");
-		chains.put("/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id", "authc,perms");
-		chains.put("/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail", "authc,perms");
-		chains.put("/finance/find-all-customer/find-week-record-by-customer-id", "authc,perms");
-		chains.put("/finance/find-all-customer/find-month-record-by-customer-id", "authc,perms");
+		//chains.put("/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id", "authc,perms");
+		//chains.put("/finance/find-all-customer/find-all-customer-api-consume-record-by-customer-id/detail", "authc,perms");
+		//chains.put("/finance/find-all-customer/find-week-record-by-customer-id", "authc,perms");
+		//chains.put("/finance/find-all-customer/find-month-record-by-customer-id", "authc,perms");
 		chains.put("/finance/find-all-customer/curr-day-api-type-consume", "authc");
+		chains.put("/finance/find-all-customer/curr-day-api-type-consume-detail", "authc");
 		chains.put("/finance/find-all-customer/company-name", "authc");
+		chains.put("/finance/customer-nearly-week-thread", "authc");
+		chains.put("/finance/customer-nearly-week-thread/data", "authc");
 		chains.put("/email/preview-customer-finance-account", "authc");
 		chains.put("/email/send-customer-finance-account", "authc");
-		chains.put("/finance/find-all-customer/curr-day-api-type-consume-detail", "authc");
 
 		//远程下载Excel，不能配置
 		//chains.put("/download-consume-check", "authc");
@@ -476,6 +478,15 @@ public class ShiroConfig {
 		chains.put("/finance/rebate/detail/delete", "authc,perms");
 		chains.put("/finance/rebate/detail/update-cache-price", "authc,perms");
 		chains.put("/finance/rebate/detail/delete-cache", "authc,perms");
+
+		//日志查询
+		chains.put("/search/customer-log", "authc,perms");
+		chains.put("/search/customer-log/result", "authc,perms");
+
+		//产品核验
+		chains.put("/data/mobile/valid", "authc,perms");
+		chains.put("/data/mobile/valid/result", "authc,perms");
+		chains.put("/data/mobile/operator", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

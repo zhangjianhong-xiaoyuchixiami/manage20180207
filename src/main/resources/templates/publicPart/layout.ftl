@@ -299,7 +299,7 @@
                 </@shiro.hasAnyRoles>
 
             <#--产品核验-->
-                <@shiro.hasAnyRoles name="backAdmin">
+                <@shiro.hasAnyRoles name="backAdmin,service">
 
                     <li class="" id="pro_valid">
                         <a href="javascript:;">
@@ -316,13 +316,13 @@
 
                         <ul class="sub-menu">
 
-                            <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
+                            <@shiro.hasPermission name="data:mobile:valid">
                                 <li id="data_mobile_valid">
                                     <a href="/data/mobile/valid">
                                         运营商核验
                                     </a>
                                 </li>
-                            <#--</@shiro.hasPermission>-->
+                            </@shiro.hasPermission>
 
                         </ul>
 
@@ -331,7 +331,7 @@
                 </@shiro.hasAnyRoles>
 
             <#--日志查询-->
-                <@shiro.hasAnyRoles name="backAdmin">
+                <@shiro.hasAnyRoles name="backAdmin,service">
 
                     <li class="" id="search_log">
                         <a href="javascript:;">
@@ -348,13 +348,13 @@
 
                         <ul class="sub-menu">
 
-                        <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
+                        <@shiro.hasPermission name="search:customer-log">
                             <li id="search_customer_log">
                                 <a href="/search/customer-log">
                                     客户请求日志查询
                                 </a>
                             </li>
-                        <#--</@shiro.hasPermission>-->
+                        </@shiro.hasPermission>
 
                         </ul>
 

@@ -223,20 +223,17 @@ public class CustomerDataParamUtil {
             return null;
         }
         try{
-            if (jsonObject.getJSONObject("result") == null || jsonObject.get("result") instanceof net.sf.json.JSONNull){
-                return null;
-            }
-            JSONObject result = jsonObject.getJSONObject("result");
-            if (result.getString("resultCode") != null || !(jsonObject.get("resultCode") instanceof net.sf.json.JSONNull)){
-                return resultCodeParam(result);
-            }
-            if (result.getString("rangeStart") != null || !(jsonObject.get("rangeStart") instanceof net.sf.json.JSONNull)){
-                 if (result.getString("rangeEnd") != null || !(jsonObject.get("rangeEnd") instanceof net.sf.json.JSONNull)) {
-                     return rangeParam(result);
-                 }
-            }
-            if (result.getString("status") != null || !(jsonObject.get("status") instanceof net.sf.json.JSONNull)){
-                return statusParam(result);
+            if (jsonObject.containsKey("result")){
+                JSONObject result = jsonObject.getJSONObject("result");
+                if (result.containsKey("resultCode")){
+                    return resultCodeParam(result);
+                }
+                if (result.containsKey("rangeStart") &&  result.containsKey("rangeEnd")){
+                    return rangeParam(result);
+                }
+                if (result.containsKey("status")){
+                    return statusParam(result);
+                }
             }
             return null;
         }catch (Exception e){

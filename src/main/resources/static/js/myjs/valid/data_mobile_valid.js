@@ -71,6 +71,45 @@ var DataMobileValid = function () {
                         }
                     }
                 });
+            });
+
+            $('#idNo').on('blur',function () {
+                var idNo = $("input[name='idNo']").val();
+                $.ajax({
+                    type: "post",
+                    url: "/data/mobile/idCard",
+                    data: {"idCard" : idNo},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != null){
+                            if (data.flag != null) {
+                                $('#idNo_msg').text(data.flag)
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('#tid').on('change',function () {
+                $("#aid").empty();
+                $("#aid").append('<option value=""></option>');
+                var tid = $("#tid").val();
+                $.ajax({
+                    type: "post",
+                    url: "/data/mobile/aid",
+                    data: {"tid" : tid},
+                    dataType: "json",
+                    success: function (data) {
+                        if(data != null){
+                            for (var i=0; i<data.length; i++){
+                                var op=document.createElement("option");
+                                op.value=data[i].aid;
+                                op.innerHTML=data[i].name;
+                                $("#aid").append(op);
+                            }
+                        }
+                    }
+                });
             })
 
         }
