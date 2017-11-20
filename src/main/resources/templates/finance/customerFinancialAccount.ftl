@@ -301,7 +301,7 @@
 
                                         <label><input type="checkbox" checked data-column="2">公司名称</label>
 
-                                        <#--<label><input type="checkbox" checked data-column="3">合作公司</label>-->
+                                    <#--<label><input type="checkbox" checked data-column="3">合作公司</label>-->
 
                                         <label><input type="checkbox" checked data-column="4">信用额度</label>
 
@@ -435,7 +435,12 @@
                                                 <td data-title="上月消费">${customer.lastMonthConsume!'0.0'}</td>
                                                 <td data-title="本月消费">${customer.currMonthAmount!'0.0'}</td>
                                                 <td data-title="昨日消费">${customer.yesterdayConsume!'0.0'}</td>
-                                                <td data-title="当日消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${customer.currDayAmount!'0.0'}</a></td>
+                                                <@shiro.hasPermission name="customer:findAllCustomer">
+                                                    <td data-title="当日消费"><a href="#form_modal_customer_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${customer.id})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${customer.currDayAmount!'0.0'}</a></td>
+                                                </@shiro.hasPermission>
+                                                <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
+                                                    <td data-title="当日消费">${customer.currDayAmount!'0.0'}</td>
+                                                </@shiro.hasPermission>
                                                 <td data-title="近一周消费走势"><a href="/finance/customer-nearly-week-thread?cid=${customer.id}&name=${customer.companyName}">查看</a></td>
                                                 <td data-title="产品类型" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>

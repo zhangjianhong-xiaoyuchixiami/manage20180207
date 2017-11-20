@@ -81,7 +81,7 @@
                                     <td class="table-td-none">${log.reqContent!"NULL"}</td>
                                     <td>${log.result!""}</td>
                                     <td class="table-td-none">${log.respContent!"NULL"}</td>
-                                    <td>${log.dur!"NULL"}</td>
+                                    <td>${log.sDur!"NULL"}</td>
                                     <td class="table-td-none">${log.isCost!"NULL"}</td>
                                     <td>${log.isCache!"NULL"}</td>
                                     <td>${log.vname_pname_aname!"NULL"}</td>
