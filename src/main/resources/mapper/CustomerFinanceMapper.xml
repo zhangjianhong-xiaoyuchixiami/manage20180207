@@ -143,7 +143,7 @@
     <!--查询客户的财务开始-->
 
     <!--查询客户的财务-->
-    <select id="queryCompanyCustomerOverAllFinance" parameterType="map" resultMap="CustomerFinance_Map">
+    <select id="queryCompanyCustomer" parameterType="map" resultMap="CustomerFinance_Map">
         SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,b.name partnerName,a.floor,a.companyStatus
         FROM qyfinance.bkvwCustomer a
         LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
@@ -318,7 +318,7 @@
     <!--查询消费总额（至昨天）-->
     <select id="queryCustomerConsumeTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
         SELECT customerId id,sum(sumAmount) consumeTotleAmount
-        FROM qyfinance.bkvwCompanyApiTypeConsumeDayCount
+        FROM qyfinance.CompanyApiTypeConsumeDayCount
         <where>
             <if test="beginDate != null and beginDate != ''">
                   consuTime >= #{beginDate}
@@ -381,9 +381,12 @@
         <result column="lastWeekCharge" property="lastWeekCharge"/>
         <result column="lastWeekConsume" property="lastWeekConsume"/>
         <result column="lastMonthCharge" property="lastMonthCharge"/>
+        <result column="lastMonthConsume" property="lastMonthConsume"/>
         <result column="yesterdayConsume" property="yesterdayConsume"/>
         <result column="cost" property="cost"/>
         <result column="amount" property="amount"/>
+        <result column="consuTime" property="consuTime"/>
+        <result column="consume" property="consume"/>
     </resultMap>
 
     <!--查询客户上周充值金额-->
@@ -412,14 +415,14 @@
 
     <!--查询客户上月消费金额-->
     <select id="queryCustomerLastMonthConsume" parameterType="String" resultMap="customerConsume_Map">
-        SELECT a.customerId,a.cost,sum(a.amount) amount
+        SELECT a.customerId,sum(a.cost * a.amount) lastMonthConsume
         FROM qyfinance.CustomerHistoryBill a
         <where>
             <if test="lastMonthTime != null and lastMonthTime != ''">
                 a.yearMonth = #{lastMonthTime}
             </if>
         </where>
-        GROUP BY a.customerId,a.cost
+        GROUP BY a.customerId
     </select>
 
     <!--查询客户昨日消费金额-->
@@ -436,16 +439,12 @@
 
     <!--查询近一周消费走势-->
     <select id="queryNearlyWeekTrend" parameterType="int" resultMap="customerConsume_Map">
-        SELECT a.consuTime,a.consume
-        FROM(
-            SELECT a.consuTime,sum(sumAmount) consume
-            FROM qyfinance.CompanyApiTypeConsumeDayCount a
-            WHERE a.customerId = 81
-            GROUP BY a.consuTime
-            ORDER BY a.consuTime DESC
-            LIMIT 7
-        ) a
-        ORDER BY a.consume ASC
+        SELECT a.consuTime,sum(sumAmount) consume
+        FROM qyfinance.CompanyApiTypeConsumeDayCount a
+        WHERE a.customerId = #{param}
+        GROUP BY a.consuTime
+        ORDER BY a.consuTime DESC
+        LIMIT 7
     </select>
     
     <!--查询客户的财务结束-->

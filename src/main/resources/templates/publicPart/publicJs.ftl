@@ -1,7 +1,7 @@
 
 <#macro publicJs>
 
-    <#assign ver='1.0.0.15'/>
+    <#assign ver='1.0.0.16'/>
 
 <script src="/assect/jquery-1.10.1.min.js?v=${ver}" type="text/javascript"></script>
 

@@ -11,6 +11,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.qydata.constants.ApiStaticConstants;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,8 +22,8 @@ import java.util.Map;
  */
 public class RequestData {
 
-    private static String authId = "qydata03_test";
-    private static String authPass = "1c4ced7a3e5b4b8fabaff268306729a0";
+    private static String authId = ApiStaticConstants.AUTHID_03;
+    private static String authPass = ApiStaticConstants.PASSWORD_03;
 
     private static class Req{
         public String authId;
@@ -40,6 +41,13 @@ public class RequestData {
     }
 
     public static Map<String,Object> result(String tid,String mob,String name,String idCard,Integer apiId,String omit,String skip){
+        System.out.println(tid);
+        System.out.println(mob);
+        System.out.println(name);
+        System.out.println(idCard);
+        System.out.println(apiId);
+        System.out.println(omit);
+        System.out.println(skip);
         try {
             String url = null;
             String mobile = null;
@@ -85,11 +93,11 @@ public class RequestData {
                 if (apiId != null){
                     aid = apiId;
                 }
-                if (omit != null && omit != ""){
-                    omitLocal = Boolean.getBoolean(omit);
+                if (omit.trim().equals("true")){
+                    omitLocal = true;
                 }
-                if (skip != null && skip != ""){
-                    skipSaveLd = Boolean.getBoolean(skip);
+                if (skip.trim().equals("true")){
+                    skipSaveLd = true;
                 }
             }
             String jsonObject = mobileProductApi(url,mobile,realName,idNo,aid,omitLocal,skipSaveLd);
@@ -115,15 +123,15 @@ public class RequestData {
      */
     public static String mobileProductApi(String url, String mobile, String realName, String idNo, Integer aid,boolean omitLocal,boolean skipSaveLd) {
         try {
-//            System.out.println(url);
-//            System.out.println(mobile);
-//            System.out.println(realName);
-//            System.out.println(idNo);
-//            System.out.println(aid);
-//            System.out.println(omitLocal);
-//            System.out.println(skipSaveLd);
+            System.out.println(url);
+            System.out.println(mobile);
+            System.out.println(realName);
+            System.out.println(idNo);
+            System.out.println(aid);
+            System.out.println(omitLocal);
+            System.out.println(skipSaveLd);
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpPost request = new HttpPost("https://api.qydata.org:9000" + url);
+            HttpPost request = new HttpPost(ApiStaticConstants.REQUEST_PREFIX_API + url);
             request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
             Req req = new Req();
             req.authId = authId;

@@ -139,15 +139,15 @@
 
                                                 <div class="control-group">
 
-                                                    <label class="control-label" for="firstName">调缓存</label>
+                                                    <label class="control-label" for="firstName">是否允许调缓存</label>
 
                                                     <div class="controls">
 
                                                         <select  class="medium m-wrap" id="omit" name="omit">
 
-                                                            <option value="false">否</option>
+                                                            <option <#if omit?? && omit == "true">selected = "selected"</#if> value="true">否</option>
 
-                                                            <option value="true">是</option>
+                                                            <option <#if omit?? && omit == "false">selected = "selected"</#if> value="false">是</option>
 
                                                         </select>
 
@@ -191,15 +191,15 @@
 
                                                 <div class="control-group">
 
-                                                    <label class="control-label" for="firstName">存缓存</label>
+                                                    <label class="control-label" for="firstName">是否允许存缓存</label>
 
                                                     <div class="controls">
 
                                                         <select  class="medium m-wrap" id="skip" name="skip">
 
-                                                            <option value="true">否</option>
+                                                            <option <#if skip?? && skip == "true">selected = "selected"</#if> value="true">否</option>
 
-                                                            <option value="false">是</option>
+                                                            <option <#if skip?? && skip == "false">selected = "selected"</#if> value="false">是</option>
 
                                                         </select>
 

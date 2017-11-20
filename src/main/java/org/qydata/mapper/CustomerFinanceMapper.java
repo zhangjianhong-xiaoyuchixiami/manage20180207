@@ -23,7 +23,7 @@ public interface CustomerFinanceMapper {
      * @return
      * @throws Exception
      */
-    public List<CustomerFinance> queryCompanyCustomerOverAllFinance(Map<String,Object> map)throws Exception;
+    public List<CustomerFinance> queryCompanyCustomer(Map<String,Object> map)throws Exception;
 
     /**
      * 查询客户当天各产品类型的消费情况

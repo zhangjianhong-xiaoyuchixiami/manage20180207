@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.15'/>
+    <#assign ver='1.0.0.16'/>
 
 <!DOCTYPE html>
 
@@ -284,13 +284,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="excel:extra-account-partner">
-                                <li id="extra-account-partner">
-                                    <a href="/excel/extra-account-partner">
-                                        合作公司财务对账
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
+                                <#--<li id="extra-account-partner">-->
+                                    <#--<a href="/excel/extra-account-partner">-->
+                                        <#--合作公司财务对账-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
                         </ul>
 

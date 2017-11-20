@@ -36,6 +36,13 @@ public class ValidController {
     /*运营商核验结果页*/
     @RequestMapping("/mobile/valid/result")
     public String validResult(String tid, String mobile, String realName, String idNo, Integer aid, String omit, String skip, Model model){
+        System.out.println(tid);
+        System.out.println(mobile);
+        System.out.println(realName);
+        System.out.println(idNo);
+        System.out.println(aid);
+        System.out.println(omit);
+        System.out.println(skip);
         if (RegexUtil.isNull(tid)){
             return "/valid/mobile_valid_result";
         }

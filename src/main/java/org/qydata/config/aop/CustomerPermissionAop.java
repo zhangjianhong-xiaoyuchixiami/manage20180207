@@ -43,7 +43,7 @@ public class CustomerPermissionAop {
             Subject subject = SecurityUtils.getSubject();
             if (subject.hasRole("sell")){
                 User user = (User)request.getSession().getAttribute("userInfo");
-                List deptIdList = new ArrayList();
+                List<Integer> deptIdList = new ArrayList();
                 for(int i =0;i<user.getDept().size();i++){
                     deptIdList.add(user.getDept().get(i).getId());
                 }
