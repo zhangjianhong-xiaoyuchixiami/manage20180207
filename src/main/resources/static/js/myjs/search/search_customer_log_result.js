@@ -71,7 +71,8 @@ var SearchCustomerLogResult = function () {
                     {"bVisible": false},
                     null,
                     null,
-                    null
+                    null,
+                    {"bSortable": false}
                 ],
                 "aaSorting": [[12, 'desc']],
                 "bPaginate" : false,

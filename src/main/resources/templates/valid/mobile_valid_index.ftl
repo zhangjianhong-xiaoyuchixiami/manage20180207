@@ -27,7 +27,7 @@
 
                             <form id="submit_form" action="/data/mobile/valid/result" class="horizontal-form" method="get">
 
-                                <h4 class="form-section"><strong>此页面可核验：手机三要素、手机在网时长、手机在网状态、手机姓名二要素、身份证姓名二要素</strong></h4>
+                                <h4 class="form-section"><strong>此页面可核验：手机三要素、手机在网时长、手机在网状态、手机姓名二要素、身份证姓名二要素、个人电子图像信息查询</strong></h4>
 
                                 <div class="row-fluid">
 
@@ -48,6 +48,7 @@
                                                         <option value="/mobile/query/status">手机在网状态</option>
                                                         <option value="/mobile/verify/2f-name">手机姓名二要素</option>
                                                         <option value="/id/verify/2f">身份证姓名二要素</option>
+                                                        <option value="/id/query/photo">个人电子图像信息查询</option>
                                                     </select>
 
                                                 </div>
@@ -124,15 +125,15 @@
 
                                                 <div class="control-group">
 
-                                                    <label class="control-label" for="firstName">调缓存</label>
+                                                    <label class="control-label" for="firstName">是否允许调缓存</label>
 
                                                     <div class="controls">
 
                                                         <select  class="medium m-wrap" id="omit" name="omit">
 
-                                                            <option value="false">否</option>
+                                                            <option value="true">不允许</option>
 
-                                                            <option value="true">是</option>
+                                                            <option value="false">允许</option>
 
                                                         </select>
 
@@ -169,15 +170,15 @@
 
                                                 <div class="control-group">
 
-                                                    <label class="control-label" for="firstName">存缓存</label>
+                                                    <label class="control-label" for="firstName">是否允许存缓存</label>
 
                                                     <div class="controls">
 
                                                         <select  class="medium m-wrap" id="skip" name="skip">
 
-                                                            <option value="true">否</option>
+                                                            <option value="true">不允许</option>
 
-                                                            <option value="false">是</option>
+                                                            <option value="false">允许</option>
 
                                                         </select>
 

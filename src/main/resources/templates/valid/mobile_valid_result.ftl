@@ -27,7 +27,7 @@
 
                             <form id="submit_form" action="/data/mobile/valid/result" class="horizontal-form" method="get">
 
-                                <h4 class="form-section"><strong>此页面可核验：手机三要素、手机在网时长、手机在网状态、手机姓名二要素、身份证姓名二要素</strong></h4>
+                                <h4 class="form-section"><strong>此页面可核验：手机三要素、手机在网时长、手机在网状态、手机姓名二要素、身份证姓名二要素、个人电子图像信息查询</strong></h4>
 
                                 <div class="row-fluid">
 
@@ -48,6 +48,7 @@
                                                         <option <#if tid ?? && tid == "/mobile/query/status">selected = "selected"</#if> value="/mobile/query/status">手机在网状态</option>
                                                         <option <#if tid ?? && tid == "/mobile/verify/2f-name">selected = "selected"</#if> value="/mobile/verify/2f-name">手机姓名二要素</option>
                                                         <option <#if tid ?? && tid == "/id/verify/2f">selected = "selected"</#if> value="/id/verify/2f">身份证姓名二要素</option>
+                                                        <option <#if tid ?? && tid == "/id/query/photo">selected = "selected"</#if> value="/id/query/photo">个人电子图像信息查询</option>
                                                     </select>
 
                                                 </div>
@@ -93,7 +94,7 @@
 
                                                             <#if aidList??>
                                                                 <#list aidList as type>
-                                                                    <option <#if aid?? && aid == type.aid>selected = "selected</#if> value="${type.aid!''}">${type.name!''}</option>
+                                                                    <option <#if aid?? && aid == type.aid>selected = "selected" </#if> value="${type.aid!''}" >${type.name!''}</option>
                                                                 </#list>
                                                             </#if>
 
@@ -105,7 +106,7 @@
 
                                             </div>
 
-                                            <div class="span6">
+                                            <div class="span3">
                                                 <div class="control-group">
                                                     <label class="control-label" >核验结果：</label>
                                                     <div class="controls">
@@ -113,6 +114,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <#if photo??>
+                                                <div class="span3">
+                                                    <div class="control-group">
+                                                        <label class="control-label" ></label>
+                                                        <div class="controls">
+                                                            <img style="width: 78px; height: 92px" src= "data:image/jpeg;base64,${photo!''}" alt="无照片" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#if>
 
                                         </div>
 
@@ -145,9 +157,9 @@
 
                                                         <select  class="medium m-wrap" id="omit" name="omit">
 
-                                                            <option <#if omit?? && omit == "true">selected = "selected"</#if> value="true">否</option>
+                                                            <option <#if omit?? && omit == "true">selected = "selected"</#if> value="true">不允许</option>
 
-                                                            <option <#if omit?? && omit == "false">selected = "selected"</#if> value="false">是</option>
+                                                            <option <#if omit?? && omit == "false">selected = "selected"</#if> value="false">允许</option>
 
                                                         </select>
 
@@ -197,9 +209,9 @@
 
                                                         <select  class="medium m-wrap" id="skip" name="skip">
 
-                                                            <option <#if skip?? && skip == "true">selected = "selected"</#if> value="true">否</option>
+                                                            <option <#if skip?? && skip == "true">selected = "selected"</#if> value="true">不允许</option>
 
-                                                            <option <#if skip?? && skip == "false">selected = "selected"</#if> value="false">是</option>
+                                                            <option <#if skip?? && skip == "false">selected = "selected"</#if> value="false">允许</option>
 
                                                         </select>
 

@@ -27,7 +27,6 @@
                                 <div class="input-cont">
                                     <div class="pull-left head-search-bottom">
                                         <select class="small m-wrap" id="k_reqId" name="k_reqId">
-                                            <option value=""></option>
                                             <option <#if k_reqId?? && k_reqId == "k">selected="selected"</#if> value="k">k</option>
                                             <option <#if k_reqId?? && k_reqId == "reqId">selected="selected"</#if> value="reqId">reqId</option>
                                         </select>
@@ -43,7 +42,7 @@
                                         </select>
                                     </div>
                                     <div class="pull-left head-search-bottom">
-                                        <input type="text" placeholder="请输入搜索内容" <#if content??> value="${content}" </#if> id="content" name="content" class="large m-wrap" />
+                                        <input type="text" placeholder="请输入k或reqId" <#if content??> value="${content}" </#if> id="content" name="content" class="large m-wrap" />
                                     </div>
                                 </div>
                                 <button type="button" id="search_submit" class="btn black">查找 &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>
@@ -68,6 +67,7 @@
                                 <th>是否走缓存</th>
                                 <th>调用上游</th>
                                 <th>请求时间</th>
+                                <th>照片</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -81,11 +81,12 @@
                                     <td class="table-td-none">${log.reqContent!"NULL"}</td>
                                     <td>${log.result!""}</td>
                                     <td class="table-td-none">${log.respContent!"NULL"}</td>
-                                    <td>${log.sDur!"NULL"}</td>
+                                    <td>${log.durName!'NULL'}</td>
                                     <td class="table-td-none">${log.isCost!"NULL"}</td>
                                     <td>${log.isCache!"NULL"}</td>
                                     <td>${log.vname_pname_aname!"NULL"}</td>
                                     <td>${log.createTime!"NULL"}</td>
+                                    <td><img style="width: 78px; height: 92px" src= "data:image/jpeg;base64,${log.photo!''}" alt="无照片" ></td>
                                 </tr>
                                 </#list>
                             </#if>

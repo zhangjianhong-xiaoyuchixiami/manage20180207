@@ -59,8 +59,8 @@ public class SearchControllor {
             model.addAttribute("cid",cid);
         }
         if (content != null){
-            param.put("content",content);
-            model.addAttribute("content",content);
+            param.put("content",content.trim());
+            model.addAttribute("content",content.trim());
         }
         model.addAttribute("logList",service.queryCustomerReqLog(param));
         model.addAttribute("companyList",billService.queryAllCompany());

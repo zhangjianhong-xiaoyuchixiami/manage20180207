@@ -186,21 +186,21 @@ public class CustomerDataParamUtil {
         }
     }
 
-    private static class Resp{
-        public String code;
-        public String message;
-        public Result result;
-    }
-
-    private static class Result{
-        public String resultCode;
-        public String rangeStart;
-        public String rangeEnd;
-        public String status;
-        public String balance;
-        public String photo;
-        public String star;
-    }
+//    private static class Resp{
+//        public String code;
+//        public String message;
+//        public Result result;
+//    }
+//
+//    private static class Result{
+//        public String resultCode;
+//        public String rangeStart;
+//        public String rangeEnd;
+//        public String status;
+//        public String balance;
+//        public String photo;
+//        public String star;
+//    }
 
     //解析响应数据
     public static String respParam(String str){
@@ -296,6 +296,54 @@ public class CustomerDataParamUtil {
         }catch (Exception e){
             return null;
         }
+    }
+
+    /*解析photo字段*/
+    public static String photoParam(String str){
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.fromObject(str);
+        }catch (Exception e){
+            return null;
+        }
+        if (jsonObject == null){
+            return null;
+        }
+        if (jsonObject.containsKey("result")){
+            JSONObject result = jsonObject.getJSONObject("result");
+            if (result.containsKey("photo")){
+                if (result.getString("photo") == null || result.get("photo") instanceof net.sf.json.JSONNull || "".equals(result.getString("photo"))){
+                    return null;
+                }
+                return result.getString("photo");
+            }
+        }
+        return null;
+    }
+
+    //返回体去除“photo”字段
+    public static String deleteRespPhoto(String str){
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.fromObject(str);
+        }catch (Exception e){
+            return null;
+        }
+        if (jsonObject == null){
+            return null;
+        }
+        if (jsonObject.containsKey("result")){
+            JSONObject result = jsonObject.getJSONObject("result");
+            if (result.containsKey("photo")){
+                if (!(result.getString("photo") == null || result.get("photo") instanceof net.sf.json.JSONNull || "".equals(result.getString("photo")))){
+                    if (Base64Util.isImageFromBase64(result.getString("photo"))){
+                        result.remove("photo");
+                    }
+                }
+                return jsonObject.toString();
+            }
+        }
+        return str;
     }
 
 }

@@ -43,13 +43,19 @@ public class SearchServiceImpl implements SearchService {
                 log.setIsCache("否");
             }
             if (log.getDur() != null){
-                log.setSDur(log.getDur() + "ms");
+                log.setDurName(log.getDur() + "ms");
             }
             if (log.getReqContent() != null){
                 log.setReqContent(CustomerDataParamUtil.reqParam(log.getReqContent()));
             }
             if (log.getRespContent() != null){
                 log.setResult(CustomerDataParamUtil.respParam(log.getRespContent()));
+            }
+            if (log.getRespContent() != null){
+                log.setPhoto(CustomerDataParamUtil.photoParam(log.getRespContent()));
+            }
+            if (log.getRespContent() != null){
+                log.setRespContent(CustomerDataParamUtil.deleteRespPhoto(log.getRespContent()));
             }
         }
         return logList;

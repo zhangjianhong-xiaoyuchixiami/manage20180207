@@ -39,6 +39,9 @@ public class ValidServiceImpl implements ValidService {
                 typeList.add(2);
                 typeList.add(15);
             }
+            if (url.trim().equals("/id/query/photo")){
+                typeList.add(18);
+            }
         }
         Map<String,Object> map = new HashMap<>();
         map.put("typeList",typeList);

@@ -41,13 +41,6 @@ public class RequestData {
     }
 
     public static Map<String,Object> result(String tid,String mob,String name,String idCard,Integer apiId,String omit,String skip){
-        System.out.println(tid);
-        System.out.println(mob);
-        System.out.println(name);
-        System.out.println(idCard);
-        System.out.println(apiId);
-        System.out.println(omit);
-        System.out.println(skip);
         try {
             String url = null;
             String mobile = null;
@@ -82,7 +75,7 @@ public class RequestData {
                         realName = name.trim();
                     }
                 }
-                if (tid.equals("/id/verify/2f")){
+                if (tid.equals("/id/verify/2f") || tid.equals("/id/query/photo")){
                     if (name != null && name != ""){
                         realName = name.trim();
                     }
@@ -104,7 +97,8 @@ public class RequestData {
             String result = CustomerDataParamUtil.respParam(jsonObject);
             Map<String,Object> map = new HashMap();
             map.put("result",result);
-            map.put("respResult",jsonObject);
+            map.put("photo",CustomerDataParamUtil.photoParam(jsonObject));
+            map.put("respResult",CustomerDataParamUtil.deleteRespPhoto(jsonObject));
             return map;
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,13 +117,6 @@ public class RequestData {
      */
     public static String mobileProductApi(String url, String mobile, String realName, String idNo, Integer aid,boolean omitLocal,boolean skipSaveLd) {
         try {
-            System.out.println(url);
-            System.out.println(mobile);
-            System.out.println(realName);
-            System.out.println(idNo);
-            System.out.println(aid);
-            System.out.println(omitLocal);
-            System.out.println(skipSaveLd);
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpPost request = new HttpPost(ApiStaticConstants.REQUEST_PREFIX_API + url);
             request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
@@ -155,7 +142,6 @@ public class RequestData {
             request.setEntity(new StringEntity(new Gson().toJson(req), Charsets.UTF_8));
             CloseableHttpResponse execute = httpClient.execute(request);
             String result = EntityUtils.toString(execute.getEntity());
-            //  System.out.println(result);
             JSONObject resultJo = JSONObject.fromObject(result);
             return resultJo.toString();
         }catch (Exception e){

@@ -27,7 +27,6 @@
                                     <div class="input-cont">
                                         <div class="pull-left head-search-bottom">
                                             <select class="small m-wrap" id="k_reqId" name="k_reqId">
-                                                <option value=""></option>
                                                 <option value="k">k</option>
                                                 <option value="reqId">reqId</option>
                                             </select>
@@ -43,7 +42,7 @@
                                             </select>
                                         </div>
                                         <div class="pull-left head-search-bottom">
-                                            <input type="text" placeholder="请输入搜索内容" id="content" name="content" class="large m-wrap" />
+                                            <input type="text" placeholder="请输入k或reqId" id="content" name="content" class="large m-wrap" />
                                         </div>
                                     </div>
                                     <button type="button" id="search_submit" class="btn black">查找 &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>

@@ -78,6 +78,9 @@ public class ValidController {
                 if (me.getKey().equals("respResult")){
                     model.addAttribute("respResult",me.getValue());
                 }
+                if (me.getKey().equals("photo")){
+                    model.addAttribute("photo",me.getValue());
+                }
             }
         }
         return "/valid/mobile_valid_result";
