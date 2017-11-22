@@ -71,25 +71,25 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <#if logList??>
-                                <#list logList as log>
-                                <tr>
-                                    <td>${log.cname_pname_authId!"NULL"}</td>
-                                    <td>${log.type_stid_name!"NULL"}</td>
-                                    <td class="table-td-none">${log.reqId!"NULL"}</td>
-                                    <td class="table-td-none">${log.k!"NULL"}</td>
-                                    <td class="table-td-none">${log.reqContent!"NULL"}</td>
-                                    <td>${log.result!""}</td>
-                                    <td class="table-td-none">${log.respContent!"NULL"}</td>
-                                    <td>${log.durName!'NULL'}</td>
-                                    <td class="table-td-none">${log.isCost!"NULL"}</td>
-                                    <td>${log.isCache!"NULL"}</td>
-                                    <td>${log.vname_pname_aname!"NULL"}</td>
-                                    <td>${log.createTime!"NULL"}</td>
-                                    <td><img style="width: 78px; height: 92px" src= "data:image/jpeg;base64,${log.photo!''}" alt="无照片" ></td>
-                                </tr>
-                                </#list>
-                            </#if>
+                                <#if logList??>
+                                    <#list logList as log>
+                                    <tr>
+                                        <td>${log.cname_pname_authId!"NULL"}</td>
+                                        <td>${log.type_stid_name!"NULL"}</td>
+                                        <td class="table-td-none">${log.reqId!"NULL"}</td>
+                                        <td class="table-td-none">${log.k!"NULL"}</td>
+                                        <td class="table-td-none">${log.reqContent!"NULL"}</td>
+                                        <td>${log.result!""}</td>
+                                        <td class="table-td-none">${log.respContent!"NULL"}</td>
+                                        <td>${log.durName!'NULL'}</td>
+                                        <td class="table-td-none">${log.isCost!"NULL"}</td>
+                                        <td>${log.isCache!"NULL"}</td>
+                                        <td>${log.vname_pname_aname!"NULL"}</td>
+                                        <td>${log.createTime!"NULL"}</td>
+                                        <td><img style="width: 78px; height: 92px" src= "data:image/jpeg;base64,${log.photo!''}" alt="无照片" ></td>
+                                    </tr>
+                                    </#list>
+                                </#if>
                             </tbody>
                         </table>
 
@@ -111,12 +111,15 @@
 
         <@puj.publicJs></@puj.publicJs>
 
+
     <script src="/js/myjs/search/search_customer_log_index.js?v=${ver}"></script>
     <script src="/js/myjs/search/search_customer_log_result.js?v=${ver}"></script>
+
     <script>
         jQuery(document).ready(function() {
             SearchCustomerLogIndex.init();
             SearchCustomerLogResult.init();
+
         });
     </script>
 

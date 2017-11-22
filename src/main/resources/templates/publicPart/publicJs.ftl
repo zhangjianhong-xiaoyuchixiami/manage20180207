@@ -39,6 +39,8 @@
 
 <#--yyyy/MM/dd日期插件结束-->
 
+<#--<script type="text/javascript" src="/assect/jquery.fancybox.pack.js"></script>-->
+
 <#--bootstrap-chosen下拉框插件开始-->
 
 <script type="text/javascript" src="/assect/chosen.jquery.min.js"></script>

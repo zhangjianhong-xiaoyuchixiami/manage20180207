@@ -8,6 +8,8 @@ var SearchCustomerLogResult = function () {
         //main function to initiate the module
         init: function () {
 
+            //App.initFancybox();
+
             function fnFormatDetails ( oTable, nTr)
             {
                 var aData = oTable.fnGetData( nTr );

@@ -304,7 +304,7 @@
                     <li class="" id="pro_valid">
                         <a href="javascript:;">
 
-                            <i class="icon-bar-chart"></i>
+                            <i class="icon-cloud"></i>
 
                             <span class="title">产品核验</span>
 
@@ -336,7 +336,7 @@
                     <li class="" id="search_log">
                         <a href="javascript:;">
 
-                            <i class="icon-bar-chart"></i>
+                            <i class="icon-search"></i>
 
                             <span class="title">日志查询</span>
 
@@ -432,7 +432,7 @@
                     <li id="vendor">
                         <a href="javascript:;">
 
-                            <i class="icon-barcode"></i>
+                            <i class="icon-globe"></i>
 
                             <span class="title">供应商管理</span>
 
@@ -476,7 +476,7 @@
                     <li id="logManage">
                         <a href="javascript:;">
 
-                            <i class="icon-barcode"></i>
+                            <i class="icon-money "></i>
 
                             <span class="title">日志管理</span>
 
