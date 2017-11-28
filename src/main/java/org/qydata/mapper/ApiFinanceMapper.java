@@ -16,7 +16,7 @@ public interface ApiFinanceMapper {
   * @param map
   * @return
   */
- public List<ApiFinance> queryApiOverAllFinance(Map<String,Object> map);
+ public List<ApiFinance> queryApiFinance(Map<String,Object> map);
 
  /**
   *查询当月消费（至昨天）
@@ -59,86 +59,6 @@ public interface ApiFinanceMapper {
   * @return
   */
  public List<ApiFinance> queryApiLastMonthConsume(Map<String,Object> map);
-
-
- /**
-  *查询Api消费详情
-  * @param map
-  * @return
-  * @throws Exception
-  */
- public List<ApiRequestLog> queryApiDetailById(Map<String,Object> map) throws Exception;
-
- /**
-  * 统计Api消费详情记录金额总计
-  * @param map
-  * @return
-  * @throws Exception
-  */
- public Integer getCountApiDetailById(Map<String,Object> map) throws Exception;
-
- /**
-  * 以APIVendor统计消费信息
-  * @return
-  * @throws Exception
-  */
- public List<ApiFinance> queryApiVendor(Map<String,Object> map);
-
- /**
-  * 查询APIVendor各类型消费情况
-  * @param map
-  * @return
-  */
- public List<ApiFinance> queryApiVendorType(Map<String,Object> map);
-
-
- /**
-  * 以APIVendor统计消费信息--周消费总额
-  * @param map
-  * @return
-  * @throws Exception
-  */
- public Integer getCountWeekApiVendor(Map<String,Object> map) throws Exception;
-
- /**
-  * 以APIVendor统计消费信息--月消费总额
-  * @param map
-  * @return
-  * @throws Exception
-  */
- public Integer getCountMonthApiVendor(Map<String,Object> map) throws Exception;
-
-
- /**
-  * ApiVendor充值
-
-  * @return
-  * @throws Exception
-  */
- public boolean updateApiVendorBalance(Integer vendorId,Long balance ) throws Exception;
-
- /**
-  * ApiVendor充值充值记录
-  * @return
-  * @throws Exception
-  */
- public boolean insertApiVendorBalanceLog(ApiVendorBalanceLog apiVendorBalanceLog) throws Exception;
-
- /**
-  * 查询ApiVendor余额
-  * @param vendorId
-  * @return
-  * @throws Exception
-  */
- public ApiVendorBalance queryApiVendorBalance(Integer vendorId)throws Exception;
-
- /**
-  * 插入ApiVendorBalance
-  * @param apiVendorBalance
-  * @return
-  * @throws Exception
-  */
- public boolean insertApiVendorBalance(ApiVendorBalance apiVendorBalance)throws Exception;
 
 
  /**

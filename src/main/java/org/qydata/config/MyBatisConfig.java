@@ -3,6 +3,8 @@ package org.qydata.config;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.qydata.config.dataSource.DatabaseType;
+import org.qydata.config.dataSource.DynamicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -58,12 +60,16 @@ public class MyBatisConfig {
         return DruidDataSourceFactory.createDataSource(props);
     }
 
+    /**
+     * @Primary 该注解表示在同一个接口有多个实现类可以注入的时候，默认选择哪一个，而不是让@autowire注解报错
+     * @Qualifier 根据名称进行注入，通常是在具有相同的多个类型的实例的一个注入（例如有多个DataSource类型的实例）
+     */
     @Bean
     @Primary
     public DynamicDataSource dataSource(@Qualifier("masterDataSource") DataSource masterDataSource, @Qualifier("slaveDataSource") DataSource slaveDataSource) {
         Map<Object, Object> targetDataSources = new HashMap<>();
-        targetDataSources.put("master", masterDataSource);
-        targetDataSources.put("slave", masterDataSource);
+        targetDataSources.put(DatabaseType.master, masterDataSource);
+        targetDataSources.put(DatabaseType.slave, slaveDataSource);
         DynamicDataSource dataSource = new DynamicDataSource();
         dataSource.setTargetDataSources(targetDataSources);// 该方法是AbstractRoutingDataSource的方法
         dataSource.setDefaultTargetDataSource(masterDataSource);// 默认的datasource设置为masterDataSource

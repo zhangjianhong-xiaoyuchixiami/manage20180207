@@ -108,7 +108,7 @@ public class RecoverProb {
         try {
             RecoverProbLog recoverProbLog = new RecoverProbLog();
             recoverProbLog.setId(id);
-            recoverProbLog.settApiId(tApiId);
+            recoverProbLog.setTApiId(tApiId);
             recoverProbLog.setPhaseOneBeginTime(phaseOneBeginTime);
             recoverProbLog.setPhaseOneEndTime(phaseOneEndTime);
             recoverProbLog.setPhaseTwoBeginTime(phaseTwoBeginTime);
@@ -124,7 +124,7 @@ public class RecoverProb {
     public int addRunLog(Integer aid,Integer ok){
         try {
             RecoverProbLog recoverProbLog = new RecoverProbLog();
-            recoverProbLog.setrApiId(aid);
+            recoverProbLog.setRApiId(aid);
             recoverProbLog.setOk(ok);
             apiMapper.addRecoverProbLog(recoverProbLog);
             return recoverProbLog.getId();

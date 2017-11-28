@@ -5,8 +5,8 @@ package org.qydata.constants;
  */
 public class ApiStaticConstants {
 
-    public static final String AUTHID_03 = "qydatab";
-    public static final String PASSWORD_03 = "f2e118646df847339cdc7968a74f88d3";
+    public static final String AUTHID_03 = "qydata03_test";
+    public static final String PASSWORD_03 = "1c4ced7a3e5b4b8fabaff268306729a0";
     public static final String REQUEST_PREFIX_API = "https://api.qydata.org:9000";
 
 }

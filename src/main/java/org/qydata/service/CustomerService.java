@@ -20,25 +20,12 @@ public interface CustomerService {
      */
     public Customer findCustomerByAuthId(String authId);
 
-    /**
-     * 添加账户
-     * @return 插入成功返回true,否则返回false;
-     */
-    @Transactional
-    public boolean insertCustomer(String companyId, String authId, String deptId)throws Exception ;
-    /**
+  /**
      * 查询当前登录着可见的客户信息并分页显示
      * @map 包含了要使用的数据
      * @return 如果有数据，则以List集合的形式返回，如果没有返回空（size==0）
      */
     public PageModel<Customer> findAllCustomer(Map<String,Object> map)throws Exception;
-
-    /**
-     * 添加账户
-     * @return 插入成功返回true,否则返回false;
-     */
-    @Transactional
-    public boolean insertCustomerAccount(String companyId, String authId)throws Exception ;
 
     /**
      * 根据部门编号查找对应的customerId

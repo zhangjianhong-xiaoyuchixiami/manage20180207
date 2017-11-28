@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.Dept;
 import org.qydata.mapper.DeptMapper;
 import org.qydata.service.DeptService;
@@ -23,13 +22,11 @@ public class DeptServiceImpl implements DeptService {
     private DeptMapper deptMapper;
 
     @Override
-    @DataSourceService
     public boolean addDept(Dept dept) throws Exception {
         return deptMapper.insertDept(dept);
     }
 
     @Override
-    @DataSourceService
     public List<Dept> findAllDept(){
         try {
             return deptMapper.findAllDept();
@@ -40,7 +37,6 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    @DataSourceService
     public boolean insertUserDept(Integer userId, String [] deptId) throws Exception {
         if (deptId != null && deptId.length>0) {
             Integer[] temp = IpTool.intArray(deptId);
@@ -55,7 +51,6 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    @DataSourceService
     public PageModel<Dept> findAll(Map<String, Object> map) throws Exception {
         PageModel<Dept> pageModel = new PageModel<>();
         pageModel.setList(deptMapper.findAll(map));
@@ -64,7 +59,6 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    @DataSourceService
     public List<Dept> findDeptByUserId(Integer userId) {
         try {
             return deptMapper.findDeptByUserId(userId);

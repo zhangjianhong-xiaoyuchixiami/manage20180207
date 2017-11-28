@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.Partner;
 import org.qydata.entity.PartnerIncomeExpenditureLog;
 import org.qydata.mapper.PartnerFinanceMapper;
@@ -23,7 +22,6 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     @Autowired private PartnerFinanceMapper partnerFinanceMapper;
 
     @Override
-    @DataSourceService
     public Map<String,Object> queryPartnerOverFinance(Map<String, Object> map) {
         Map<String,Object> mapTran = new HashMap<>();
         try {
@@ -42,7 +40,6 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     }
 
     @Override
-    @DataSourceService
     public boolean addPartnerIncomeExpenditureLog(Integer partnerId,String amount,String remark,String date,Integer reasonId) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -66,7 +63,6 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     }
 
     @Override
-    @DataSourceService
     public boolean addPartner(String partnerName) {
         try {
             return partnerFinanceMapper.addPartner(partnerName);
@@ -77,7 +73,6 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     }
 
     @Override
-    @DataSourceService
     public Map<String,Object> queryPartnerDetailLog(Map<String, Object> map) {
         Map<String,Object> mapTran = new HashMap<>();
         try {
@@ -90,7 +85,6 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     }
 
     @Override
-    @DataSourceService
     public List<Partner> queryPartnerBarChart(Map<String, Object> map) {
         try {
             return partnerFinanceMapper.queryPartnerBarChart(map);

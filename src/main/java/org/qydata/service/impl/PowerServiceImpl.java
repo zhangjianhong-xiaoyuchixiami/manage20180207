@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.User;
 import org.qydata.mapper.DeptMapper;
 import org.qydata.mapper.RoleMapper;
@@ -24,7 +23,6 @@ public class PowerServiceImpl implements PowerUserService {
 
 
     @Override
-    @DataSourceService
     public PageModel<User> queryAllUser(Map<String, Object> map) throws Exception {
         PageModel<User> pageModel = new PageModel<User>();
         pageModel.setCount(userMapper.queryAllCount(map));
@@ -33,13 +31,11 @@ public class PowerServiceImpl implements PowerUserService {
     }
 
     @Override
-    @DataSourceService
     public User findUserByUsername(Integer userId) throws Exception {
         return userMapper.findUserByUsername(userId);
     }
 
     @Override
-    @DataSourceService
     public User findUserByEmail(String email) {
         try {
             return userMapper.findUserByEmail(email);

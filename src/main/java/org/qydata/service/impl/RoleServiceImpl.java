@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.Role;
 import org.qydata.entity.User;
 import org.qydata.entity.UserDept;
@@ -27,21 +26,19 @@ public class RoleServiceImpl implements RoleService {
     @Autowired private UserMapper userMapper;
     @Autowired private RoleMapper roleMapper;
     @Autowired private DeptMapper deptMapper;
+
     @Override
-    @DataSourceService
     public List<Role> findAllRole() throws Exception {
         return roleMapper.findAllRole();
     }
 
     @Override
-    @DataSourceService
+
     public List<UserRole> findAllRoleByUsername(Integer userId) throws Exception {
         return roleMapper.findAllRoleByUsername(userId);
     }
 
-
     @Override
-    @DataSourceService
     public boolean addRoleUser(Integer userId,String [] roleId) throws Exception {
         if (roleId != null && roleId.length>0) {
             Integer[] temp = IpTool.intArray(roleId);
@@ -56,7 +53,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @DataSourceService
     public boolean addUser(User user) throws Exception {
         User userA = new User();
         userA.setEmail(user.getEmail());
@@ -76,7 +72,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @DataSourceService
     public boolean addUserCommon(User user,String deptId) throws Exception {
         User userA = new User();
         userA.setPassword(Md5Tools.md5(user.getEmail().trim()+"123456"));
@@ -89,7 +84,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @DataSourceService
     public boolean updatePassword(Integer userId,String newPassword) throws Exception {
         Map<String,Object> map = new HashMap<>();
         map.put("userId",userId);
@@ -98,20 +92,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @DataSourceService
     public boolean resetPassword(Integer userId) throws Exception {
         String password = Md5Tools.md5(userMapper.findUserByUsername(userId).getEmail()+"123456");
         return userMapper.resetPassword(userId,password);
     }
 
     @Override
-    @DataSourceService
     public boolean updateStatusStart(Integer userId) throws Exception {
         return userMapper.updateStatusStart(userId);
     }
 
     @Override
-    @DataSourceService
     public boolean updateStatusForbid(Integer userId) throws Exception {
         return userMapper.updateStatusforbid(userId);
     }

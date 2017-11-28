@@ -18,28 +18,7 @@ public interface ApiFinanceService {
      * @return
      * @throws Exception
      */
-    public Map<String,Object> queryApiOverAllFinance(Map<String,Object> map);
-
-    /**
-     *查询Api消费详情
-     * @param map
-     * @return
-     * @throws Exception
-     */
-    public Map<String,Object> queryApiDetailById(Map<String,Object> map);
-
-    /**
-     * 以APIVendor统计消费信息
-     * @return
-     */
-    public Map<String,Object> queryApiVendor(Map<String,Object> map);
-
-    /**
-     * Api充值
-     * @return
-     */
-    @Transactional
-    public boolean updateApiVendorChargeLog(Integer vendorIdCharge, String amount, String remark, String chargeDate)throws Exception;
+    public Map<String,Object> queryApiFinance(Map<String,Object> map);
 
     /**
      * 查询Api类型

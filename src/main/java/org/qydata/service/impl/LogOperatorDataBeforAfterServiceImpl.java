@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.ApiVendorBalance;
 import org.qydata.mapper.LogOperatorDataBeforAfterMapper;
 import org.qydata.service.LogOperatorDataBeforAfterService;
@@ -16,7 +15,6 @@ public class LogOperatorDataBeforAfterServiceImpl implements LogOperatorDataBefo
     @Autowired private LogOperatorDataBeforAfterMapper logOperatorDataBeforAfterMapper;
 
     @Override
-    @DataSourceService
     public ApiVendorBalance queryApiVendorBalanceById(Integer id) {
         return logOperatorDataBeforAfterMapper.queryApiVendorBalanceById(id);
     }

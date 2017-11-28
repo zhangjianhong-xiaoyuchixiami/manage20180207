@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.User;
 import org.qydata.entity.log.Log;
 import org.qydata.mapper.LogMapper;
@@ -22,7 +21,6 @@ public class LogServiceImpl implements LogService {
     @Autowired private LogMapper logMapper;
 
     @Override
-    @DataSourceService
     @Transactional
     public boolean createLog(Log log) {
         int result = logMapper.createLog(log);
@@ -33,7 +31,6 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    @DataSourceService
     @Transactional
     public boolean updateLog(Log log) {
        int result = logMapper.updateLog(log);
@@ -45,7 +42,6 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    @DataSourceService
     public List<Log> queryLog(Map<String, Object> map) {
         return logMapper.queryLog(map);
     }

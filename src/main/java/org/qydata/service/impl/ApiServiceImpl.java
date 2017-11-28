@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.annotation.DataSourceService;
 import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.constants.GlobalStaticConstants;
 import org.qydata.dst.ApiTypeInfo;
@@ -36,7 +35,6 @@ public class ApiServiceImpl implements ApiService {
     private CompanyMapper companyMapper;
 
     @Override
-    @DataSourceService
     public List<Api> queryApi(Map<String, Object> map) {
         List<Api> apiList = apiMapper.queryApi(map);
         if (apiList != null) {
@@ -55,7 +53,6 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    @DataSourceService
     public List<ApiType> queryApiType() {
         try {
             return apiMapper.queryApiType();
@@ -66,7 +63,6 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    @DataSourceService
     public List<ApiVendor> queryApiVendor() {
         try {
             return apiMapper.queryApiVendor();
@@ -77,7 +73,6 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    @DataSourceService
     public List<ApiVendor> queryApiVendorByApiTypeId(Integer id) {
         try {
             return apiMapper.queryApiVendorByApiTypeId(id);
@@ -93,14 +88,12 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    @DataSourceService
     public List<CustomerApiPartner> queryApiByCompanyId(Map<String, Object> map) {
         List<CustomerApiPartner> customerApiPartnerList = apiMapper.queryApiByCompanyId(map);
         return customerApiPartnerList;
     }
 
     @Override
-    @DataSourceService
     public List<Company> queryCompany() {
         try {
             return apiMapper.queryCompany();

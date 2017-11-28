@@ -31,8 +31,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     private CustomerHistoryBillMapper billMapper;
 
     @Override
-    public Map<String, Object>
-    queryCustomerHistoryBill(Map<String, Object> map) {
+    public Map<String, Object> queryCustomerHistoryBill(Map<String, Object> map) {
         Integer [] status = null;
         Integer [] cid = null;
         Integer pid = null;

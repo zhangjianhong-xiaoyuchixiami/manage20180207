@@ -1,8 +1,11 @@
 package org.qydata.entity.agency;
 
+import lombok.Data;
+
 /**
  * Created by jonhn on 2017/9/18.
  */
+@Data
 public class AgencyCustomer {
 
     private Integer companyId;
@@ -10,35 +13,4 @@ public class AgencyCustomer {
     private Integer agencyId;
     private String agencyName;
 
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public Integer getAgencyId() {
-        return agencyId;
-    }
-
-    public void setAgencyId(Integer agencyId) {
-        this.agencyId = agencyId;
-    }
-
-    public String getAgencyName() {
-        return agencyName;
-    }
-
-    public void setAgencyName(String agencyName) {
-        this.agencyName = agencyName;
-    }
 }

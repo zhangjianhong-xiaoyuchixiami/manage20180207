@@ -1,6 +1,5 @@
 package org.qydata.service.impl;
 
-import org.qydata.config.annotation.DataSourceService;
 import org.qydata.entity.User;
 import org.qydata.mapper.UserMapper;
 import org.qydata.service.UserService;
@@ -20,7 +19,6 @@ public class UserServiceImpl implements UserService {
     @Autowired private UserMapper userMapper;
 
     @Override
-    @DataSourceService
     public User get(String email) {
         try {
             return this.userMapper.findById(email);
@@ -31,7 +29,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @DataSourceService
     public Map<String, Object> listAuthByUser(Integer userId)  {
         Map<String,Object> map = new HashMap<String,Object>() ;
         try {

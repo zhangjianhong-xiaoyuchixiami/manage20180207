@@ -63,57 +63,6 @@ var Api = function () {
 
             $('#customerBalanceArrow').addClass('arrow open');
 
-            $("#columnHistogram").on("click",function () {
-                $.ajax({
-                    type: 'post',
-                    url: '/api/find-all-api-record/bar-chart',
-                    dataType: 'json',
-                    success: function (result) {
-                        var json = result;
-                        var chart = new Highcharts.Chart({
-                            chart: {
-                                renderTo: 'columnHistogramContainer',
-                                type: 'column',
-                                reflow: true
-                            },
-                            title: {
-                                text: ''
-                            },
-                            exporting: {
-                                enabled: false
-                            },
-                            credits: {
-                                enabled: false
-                            },
-                            xAxis: {
-                                categories: json.xList
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: '消费总额（单位：元）'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: json.yList
-                        });
-                    }
-                });
-            });
-
             $("#apiTypeId").change(function () {
 
                 var param = $("#apiTypeId").val();

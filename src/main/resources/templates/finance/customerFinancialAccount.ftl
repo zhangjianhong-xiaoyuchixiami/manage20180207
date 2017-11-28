@@ -354,7 +354,7 @@
 
                             <div class="clearfix margin-bottom-5">
 
-                                <table class="table-striped table-condensed flip-content" style="width: 100%">
+                                <table class="table-condensed flip-content" style="width: 100%">
                                     <tbody>
                                     <tr>
                                         <td>上周消费总额：${lastWeekConsumeTot!'0.0'}</td>

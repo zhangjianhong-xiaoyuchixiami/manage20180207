@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.16'/>
+    <#assign ver='1.0.0.17'/>
 
 <!DOCTYPE html>
 
@@ -276,13 +276,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="partner:find-all-partner-financial-account">
-                                <li id="partnersFinancialAccount">
-                                    <a href="/partner/find-all-partner-financial-account">
-                                        合作公司来往账目
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="partner:find-all-partner-financial-account">-->
+                                <#--<li id="partnersFinancialAccount">-->
+                                    <#--<a href="/partner/find-all-partner-financial-account">-->
+                                        <#--合作公司来往账目-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
                             <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
                                 <#--<li id="extra-account-partner">-->
@@ -458,17 +458,17 @@
 
                 </@shiro.hasAnyRoles>
 
-            <#--客户请求日志-->
-                <@shiro.hasAnyRoles name="backAdmin">
+            <#--&lt;#&ndash;客户请求日志&ndash;&gt;-->
+                <#--<@shiro.hasAnyRoles name="backAdmin">-->
 
-                    <li id="CustomerRequestLog">
-                        <a href="/customer/find-all-customer-request-log">
-                            <i class="icon-cloud"></i
-                            <span class="title">客户请求日志</span>
-                        </a>
-                    </li>
+                    <#--<li id="CustomerRequestLog">-->
+                        <#--<a href="/customer/find-all-customer-request-log">-->
+                            <#--<i class="icon-cloud"></i-->
+                            <#--<span class="title">客户请求日志</span>-->
+                        <#--</a>-->
+                    <#--</li>-->
 
-                </@shiro.hasAnyRoles>
+                <#--</@shiro.hasAnyRoles>-->
 
             <#--日志管理-->
                 <@shiro.hasAnyRoles name="backAdmin">

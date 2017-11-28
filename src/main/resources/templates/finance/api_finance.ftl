@@ -191,69 +191,20 @@
 
                             <div class="clearfix margin-bottom-5">
 
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">上周消费总额&yen;：${(weekTotleAmount!0)/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">上月消费总额&yen;：${(monthTotleAmount!0)/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">本月消费总额&yen;：${(currMonthTotleCost!0)/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">当天消费总额&yen;：${(currDayTotleCost!0)/100.0}元</label>
-
-                                </div>
-
-                                <div class="pull-left label-margin-bottom label-margin-right">
-
-                                    <label class="control-label">消费总额(${beginDate!'开通后'}--${endDate!'至今'})&yen;：${(consumeTotleAmount!0)/100.0}元</label>
-
-                                </div>
-
-                            <#--总消费-->
-                            <#--  <div class="pull-left table-top-bottom">
-
-                                  <label class="control-label">
-
-                                      <a id="columnHistogram" href="#form_modal7" data-toggle="modal">
-
-                                          <i class="icon-bar-chart"></i>总消费
-
-                                      </a>
-
-                                  </label>
-
-                                  <div id="form_modal7" class="modal hide fade myModalChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
-
-                                      <div class="modal-header">
-
-                                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-                                          <h3 id="myModalLabel7">&nbsp;</h3>
-
-                                      </div>
-
-                                      <div class="modal-body">
-                                          <div id="columnHistogramContainer">
-
-                                          </div>
-
-                                      </div>
-
-                                  </div>
-
-                              </div>-->
+                                <table class="table-condensed flip-content" style="width: 100%">
+                                    <tbody>
+                                    <tr>
+                                        <td>上周消费总额：${lastWeekConsume!'0.0'}</td>
+                                        <td>上月消费总额：${lastMonthConsume!'0.0'}</td>
+                                        <td>当月消费总额：${currMonthConsume!'0.0'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>当天消费总额：${currDayConsume!'0.0'}</td>
+                                        <td>消费总额：${totleConsume!'0.0'}</td>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
                             </div>
 
@@ -264,41 +215,31 @@
                                         <th>产品类型</th>
                                         <th>产品供应商</th>
                                         <th>产品名称</th>
-                                        <th>消费总额（单位：元，${beginDate!'开通后'}--${endDate!'至今'})</th>
+                                        <th>消费总额（${beginDate!'开通后'}--${endDate!'至今'})</th>
                                         <th>调用成功次数</th>
                                         <th>扣费次数</th>
-                                        <th>${year!''}年第${week!''}周消费（单位：元）</th>
-                                        <th>${year!''}年${month!''}月消费（单位：元）</th>
-                                        <th>${currYear!''}年${currMonth!''}月消费（单位：元）</th>
-                                        <th>${currYear!''}年${currMonth!''}月${currDay!''}日消费（单位：元）</th>
-                                        <#--<th style="text-align: center; width: 10%;" >操作</th>-->
+                                        <th>上周消费</th>
+                                        <th>上月消费</th>
+                                        <th>当月消费</th>
+                                        <th>当天消费</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <#if apiFinanceList??>
-                                            <#list apiFinanceList as apiFinance>
+                                        <#if financeList??>
+                                            <#list financeList as finance>
                                             <tr>
-                                                <#if apiFinance.status == 0>
-                                                <td data-title="产品类型">
-                                                <#else >
-                                                <td data-title="产品类型" class="font-text-decoration">
-                                                </#if>
-                                                <a href="/api/find-all-api-record<#if apiFinance.apiTypeId??>?apiTypeId=${apiFinance.apiTypeId}</#if>">
-                                                ${(apiFinance.apiTypeName)!'无'}
-                                                </a>
-                                            </td>
-                                                <td data-title="产品供应商"><a href="/api/find-all-api-record<#if apiFinance.vendorId??>?vendorId=${apiFinance.vendorId}</#if>">${apiFinance.vendorName!'无'}</a></td>
-                                                <td data-title="产品名称">${apiFinance.apiName}</td>
-                                                <td data-title="消费总额"><#if apiFinance.consumeTotleAmount??>${(apiFinance.consumeTotleAmount/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="调用成功次数"><#if apiFinance.usageAmount??>${(apiFinance.usageAmount)?c}<#else >0</#if></td>
-                                                <td data-title="扣费次数"><#if apiFinance.feeUsageAmount??>${(apiFinance.feeUsageAmount)?c}<#else >0</#if></td>
-                                                <td data-title="上周消费"><#if apiFinance.weekTotleCost??>${(apiFinance.weekTotleCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="上月消费"><#if apiFinance.monthTotleCost??>${(apiFinance.monthTotleCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="本月消费"><#if apiFinance.currMonthCost??>${(apiFinance.currMonthCost/100.0)?c}<#else >0</#if></td>
-                                                <td data-title="当天消费"><#if apiFinance.currDayCost??>${(apiFinance.currDayCost/100.0)?c}<#else >0</#if></td>
-                                                <#--<td data-title="操作" style="text-align: center; width: 10%;">-->
-                                                    <#--<a href="/api/find-all-api-record/detail?apiId=${apiFinance.apiId?c}&apiTypeName=${apiFinance.apiTypeName}&vendorName=${apiFinance.vendorName}">消费明细</a>-->
-                                                <#--</td>-->
+                                                <td data-title="产品类型"  <#if finance.status == 0> class="font-text-decoration" </#if> >
+                                                    <a href="/api/find-all-api-record<#if finance.apiTypeId??>?apiTypeId=${finance.apiTypeId}</#if>">${(finance.apiTypeName)!'无'}</a>
+                                                </td>
+                                                <td data-title="产品供应商"><a href="/api/find-all-api-record<#if finance.vendorId??>?vendorId=${finance.vendorId}</#if>">${finance.vendorName!'无'}</a></td>
+                                                <td data-title="产品名称">${finance.apiName}</td>
+                                                <td data-title="消费总额">${finance.consume!'0'}</td>
+                                                <td data-title="调用成功次数">${finance.userCount!'0'}</td>
+                                                <td data-title="扣费次数">${finance.feeCount!'0'}</td>
+                                                <td data-title="上周消费">${finance.lastWeekConsume!'0'}</td>
+                                                <td data-title="上月消费">${finance.lastMonthConsume!'0'}</td>
+                                                <td data-title="本月消费">${finance.currMonthConsume!'0'}</td>
+                                                <td data-title="当天消费">${finance.currDayConsume!'0'}</td>
                                             </tr>
                                             </#list>
                                         </#if>
@@ -325,10 +266,6 @@
     <#elseif section = "privateJs">
 
         <@puj.publicJs></@puj.publicJs>
-
-    <#--<script src="https://code.highcharts.com/highcharts.js"></script>
-
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 
     <script src="/js/myjs/api.js?v=${ver}"></script>
 

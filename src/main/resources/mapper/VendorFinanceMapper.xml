@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.VendorFinanceMapper">
+
+    <!--统计供应商消费信息-->
+    <select id="queryVendor" parameterType="map" resultType="org.qydata.dst.vendor.VendorFinance">
+        SELECT a.vendorId,a.vendorName,a.partnerId,a.partnerName,a.status,b.balance charge
+        FROM qyfinance.bkvwApiVendor a
+        LEFT JOIN qyfinance.ApiVendorBalance b ON a.vendorId = b.vendorId
+        <where>
+            <if test="statusList!=null and statusList.size()!=0">
+               a.status in
+                <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
+                    #{status}
+                </foreach>
+            </if>
+            <if test="vendorId != null and vendorId != ''">
+                AND a.vendorId=#{vendorId}
+            </if>
+            <if test="partnerId != null and partnerId != ''">
+                AND a.partnerId=#{partnerId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询供应商消费总额（至昨天）-->
+    <select id="queryVendorConsume" parameterType="map" resultType="org.qydata.dst.vendor.VendorFinance">
+        SELECT b.vendorId,sum(a.consume) consume
+        FROM
+        (
+            SELECT apiId,sum(totleCost) consume
+            FROM qyfinance.bkvwApiCostDayCount
+            <where>
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND consuTime >= #{beginDate}
+                    ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND consuTime < #{endDate}
+                    ]]>
+                </if>
+            </where>
+            GROUP BY apiId
+        ) a
+        LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
+        GROUP BY b.vendorId
+    </select>
+
+    <!--查询供应商上周消费总额-->
+    <select id="queryVendorLastWeekConsume" parameterType="map" resultType="org.qydata.dst.vendor.VendorFinance">
+        SELECT b.vendorId,sum(a.lastWeekConsume) lastWeekConsume
+        FROM
+        (
+            SELECT a.apiId,sum(a.totleCost) lastWeekConsume
+            FROM qyfinance.ApiCostDayCount a
+            WHERE DATE_FORMAT(a.consuTime,'%x-%v')=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x-%v')
+            GROUP BY a.apiId
+        ) a
+        LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
+        GROUP BY b.vendorId
+    </select>
+
+    <!--查询供应商上月消费总额-->
+    <select id="queryVendorLastMonthConsume" parameterType="map" resultType="org.qydata.dst.vendor.VendorFinance">
+        SELECT b.vendorId,sum(a.lastMonthConsume) lastMonthConsume
+        FROM
+        (
+            SELECT a.apiId,sum(a.totleCost) lastMonthConsume
+            FROM qyfinance.ApiCostDayCount a
+            WHERE DATE_FORMAT(a.consuTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y-%m')
+            GROUP BY a.apiId
+        ) a
+        LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
+        GROUP BY b.vendorId
+    </select>
+
+    <!--查询供应商本月消费金额（至昨天）-->
+    <select id="queryVendorCurrMonthConsume" parameterType="map" resultType="org.qydata.dst.vendor.VendorFinance">
+        SELECT b.vendorId,sum(a.currMonthConsume) currMonthConsume
+        FROM
+        (
+            SELECT apiId,sum(totleCost) currMonthConsume
+            FROM qyfinance.bkvwApiCostDayCount
+            WHERE consuTime >= #{currMonthTime}
+            GROUP BY apiId
+        ) a
+        LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
+        GROUP BY b.vendorId
+    </select>
+
+    <select id="queryVendorCurrDayConsume" parameterType="map" resultType="org.qydata.dst.vendor.VendorFinance">
+        SELECT b.vendorId,sum(a.currDayConsume) currDayConsume
+        FROM
+        (
+            SELECT apiId,sum(b.cost) currDayConsume
+            FROM qydata.ApiRequestLog a
+            INNER JOIN qydata.ApiResponseLog b ON a.id = b.requestLogId
+            WHERE b.ok=1
+            AND b.isMock=0
+            AND b.createTime >= #{currDayTime}
+            GROUP BY a.apiId
+        ) a
+        LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
+        GROUP BY b.vendorId
+    </select>
+
+
+    <resultMap id="vendor_finance_type_map" type="org.qydata.dst.vendor.VendorFinance" >
+        <result column="vendorId" property="vendorId"/>
+        <collection property="typeConsumeList" ofType="org.qydata.dst.vendor.VendorTypeConsume">
+            <result column="apiTypeId" property="apiTypeId"/>
+            <result column="apiTypeName" property="apiTypeName"/>
+            <result column="status" property="status"/>
+            <result column="cost" property="cost"/>
+            <result column="consume" property="consume"/>
+            <result column="userCount" property="userCount"/>
+            <result column="feeCount" property="feeCount"/>
+            <collection property="mobileList" ofType="org.qydata.entity.MobileOperator">
+                <result column="mobileOperatorName" property="name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!--查询APIVendor各类型消费情况-->
+    <select id="queryVendorTypeConsume" parameterType="map" resultMap="vendor_finance_type_map">
+        SELECT a.vendorId,a.apiTypeId,a.apiTypeName,a.status,a.cost,a.mobileOperatorName, b.consume,b.userCount,
+        b.feeCount
+        FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+        LEFT JOIN
+        (
+            SELECT a.apiId,sum(a.totleCost) consume,sum(a.usageAmount) userCount,sum(a.feeAmount) feeCount
+            FROM qyfinance.ApiCostDayCount a
+            <where>
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND a.consuTime >= #{beginDate}
+                     ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND a.consuTime < #{endDate}
+                    ]]>
+                </if>
+            </where>
+            GROUP BY a.apiId
+        ) b ON a.apiId=b.apiId
+        ORDER BY a.apiTypeName ASC,a.status DESC
+    </select>
+
+    <!--查询供应商-->
+    <select id="queryApiVendorName" resultType="org.qydata.entity.ApiVendor">
+        SELECT distinct(vendorId) id,vendorName name
+        FROM qyfinance.bkvwApi
+    </select>
+
+</mapper>
+

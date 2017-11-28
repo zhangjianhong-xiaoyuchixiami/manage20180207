@@ -8,23 +8,10 @@ var ApiVendorRecord = function () {
                 return;
             }
 
-            var beginDate=null;
-            var endDate=null;
-            if ($('#beginDate').val() != null && $('#beginDate').val() != ''){
-                beginDate = $('#beginDate').val();
-            }else {
-                beginDate = '开通后'
-            }
-            if ($('#endDate').val() != null && $('#endDate').val() != ''){
-                endDate = $('#endDate').val();
-            }else {
-                endDate = '至今'
-            }
-
             function fnFormatDetailsVendor ( oTable, nTr ) {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table style="width: 100%">';
-                sOut += '<tr><th colspan="4">时间范围：'+beginDate+'--'+endDate+'</th></tr>';
+                sOut += '<tr><th colspan="4">时间范围：开通后--至昨天</th></tr>';
                 sOut += '<tr>' +
                     '<th>供应类型</th>' +
                     '<th>当前价格</th>' +
@@ -43,9 +30,7 @@ var ApiVendorRecord = function () {
                 return sOut;
             }
 
-            /*
-             * Insert a 'details' column to the table
-             */
+
             var nCloneThV = document.createElement( 'th' );
             var nCloneTdV = document.createElement( 'td' );
             nCloneTdV.innerHTML = '<span class="row-details row-details-close"></span>';
@@ -161,74 +146,6 @@ var ApiVendorRecord = function () {
                 var iCol = parseInt($(this).attr("data-column"));
                 var bVis = oTable2.fnSettings().aoColumns[iCol].bVisible;
                 oTable2.fnSetColumnVis(iCol, (bVis ? false : true));
-            });
-
-            /*状态正常全选操作*/
-            jQuery('#sample_11 .group-checkable').change(function () {
-                var set = jQuery(this).attr("data-set");
-                var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function () {
-                    if (checked) {
-                        $(this).attr("checked", true);
-                    } else {
-                        $(this).attr("checked", false);
-                    }
-                });
-                jQuery.uniform.update(set);
-            });
-
-            jQuery('#sample_11_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
-            jQuery('#sample_11_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
-
-
-            $("#columnVendorHistogram").on("click",function () {
-                $.ajax({
-                    type: 'post',
-                    url: '/api/find-all-api-vendor-consume/bar-chart',
-                    dataType: 'json',
-                    success: function (result) {
-                        var json = result;
-                        var chart = new Highcharts.Chart({
-                            chart: {
-                                renderTo: 'columnVendorHistogramContainer',
-                                type: 'column'
-                            },
-                            title: {
-                                text: ''
-                            },
-                            exporting: {
-                                enabled: false
-                            },
-                            credits: {
-                                enabled: false
-                            },
-                            xAxis: {
-                                categories: json.xList
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: '消费总额（单位：元）'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: json.yList
-                        });
-                    }
-                });
             });
 
             $('#customerBalance').addClass('active');
