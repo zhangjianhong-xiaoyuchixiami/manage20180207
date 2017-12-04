@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.ApiWeb;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.Partner;
@@ -19,24 +20,28 @@ public interface VendorHistoryBillService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询供应商历史财务账单")
     public Map<String,Object> queryVendorHistoryBill(Map<String,Object> map);
 
     /**
      * 查询所有供应商
      * @return
      */
+    @SystemServiceLog(description = "查询所有供应商")
     public List<ApiVendor> queryAllVendor();
 
     /**
      * 查询所有合作伙伴
      * @return
      */
+    @SystemServiceLog(description = "查询所有合作伙伴")
     public List<Partner> queryAllPartner();
 
     /**
      * 查询消费的月份
      * @return
      */
+    @SystemServiceLog(description = "查询消费的月份")
     public List<String> queryAllConsumeTime();
 
 
@@ -45,6 +50,7 @@ public interface VendorHistoryBillService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询供应商历史财务账单明细")
     public Map<String,Object> queryVendorHistoryBillDetail(Map<String,Object> map);
 
     /**
@@ -52,6 +58,7 @@ public interface VendorHistoryBillService {
      * @param vid
      * @return
      */
+    @SystemServiceLog(description = "查询供应商的产品")
     public List<ApiWeb> queryApiByVendorId(Integer vid);
 
     /**
@@ -61,6 +68,7 @@ public interface VendorHistoryBillService {
      * @return
      */
     @Transactional
+    @SystemServiceLog(description = "修改单价")
     public boolean updateVendorHistoryBillCost(Integer id,Double oldCost,Double newCost,String content);
 
     /**
@@ -70,6 +78,7 @@ public interface VendorHistoryBillService {
      * @return
      */
     @Transactional
+    @SystemServiceLog(description = "修改扣费量")
     public boolean updateVendorHistoryBillAmount(Integer id,Integer oldAmount,Integer newAmount,String content);
 
     /**
@@ -78,6 +87,7 @@ public interface VendorHistoryBillService {
      * @param isLock
      * @return
      */
+    @SystemServiceLog(description = "修改锁定状态")
     public boolean updateVendorHistoryBillIsLock(String [] id,Integer isLock);
 
     /**
@@ -85,6 +95,7 @@ public interface VendorHistoryBillService {
      * @param vid
      * @return
      */
+    @SystemServiceLog(description = "新增历史纪录")
     public boolean addVendorHistoryBill(Integer vid,Integer aid,Double cost,Integer amount,String yearMonth);
 
     /**
@@ -92,6 +103,7 @@ public interface VendorHistoryBillService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "删除历史纪录")
     public boolean deleteVendorHistoryBill(String [] id);
 
     /**
@@ -99,6 +111,7 @@ public interface VendorHistoryBillService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "查看锁定状态")
     public Integer queryVendorHistoryBillLockById(Integer id);
 
     /**
@@ -106,6 +119,7 @@ public interface VendorHistoryBillService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询修改日志")
     public List<VendorHistoryBillUpdateLog> queryVendorHistoryBillDetailUpdateLog(Map<String,Object> map);
 
 }

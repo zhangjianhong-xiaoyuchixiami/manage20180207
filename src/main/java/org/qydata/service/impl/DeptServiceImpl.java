@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.Dept;
 import org.qydata.mapper.DeptMapper;
 import org.qydata.service.DeptService;
@@ -22,11 +23,13 @@ public class DeptServiceImpl implements DeptService {
     private DeptMapper deptMapper;
 
     @Override
+    @SystemServiceLog(description = "新增部门")
     public boolean addDept(Dept dept) throws Exception {
         return deptMapper.insertDept(dept);
     }
 
     @Override
+    @SystemServiceLog(description = "查找所有部门")
     public List<Dept> findAllDept(){
         try {
             return deptMapper.findAllDept();
@@ -37,6 +40,7 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
+    @SystemServiceLog(description = "批量插入用户和部门应设")
     public boolean insertUserDept(Integer userId, String [] deptId) throws Exception {
         if (deptId != null && deptId.length>0) {
             Integer[] temp = IpTool.intArray(deptId);
@@ -59,6 +63,7 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
+    @SystemServiceLog(description = "查看所属部门")
     public List<Dept> findDeptByUserId(Integer userId) {
         try {
             return deptMapper.findDeptByUserId(userId);

@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.Dept;
 import org.qydata.tools.PageModel;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public interface DeptService {
      * @throws Exception
      */
     @Transactional
+    @SystemServiceLog(description = "新增部门")
     public boolean addDept(Dept dept)throws Exception;
 
     /**
@@ -25,6 +27,7 @@ public interface DeptService {
      * @return
      * @throws Exception
      */
+    @SystemServiceLog(description = "查找所有部门")
     public List<Dept> findAllDept();
     /**
      * 批量插入用户和部门映射
@@ -32,6 +35,7 @@ public interface DeptService {
      * @return
      * @throws Exception
      */
+    @SystemServiceLog(description = "批量插入用户和部门应设")
     @Transactional
     public boolean insertUserDept(Integer userId,String [] deptId )throws Exception;
 
@@ -42,6 +46,7 @@ public interface DeptService {
      * @param userId
      * @return
      */
+    @SystemServiceLog(description = "根据用户id查找所属部门")
     public List<Dept> findDeptByUserId(Integer userId);
 
 }

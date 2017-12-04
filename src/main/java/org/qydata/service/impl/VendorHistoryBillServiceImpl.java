@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.ApiWeb;
 import org.qydata.dst.VendorHistoryBill;
 import org.qydata.dst.VendorHistoryBillDetail;
@@ -29,6 +30,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     private VendorHistoryBillMapper billMapper;
 
     @Override
+    @SystemServiceLog(description = "查询供应商历史财务账单")
     public Map<String, Object> queryVendorHistoryBill(Map<String, Object> map) {
         Map<String,Object> param = new HashMap<>();
         if (map != null){
@@ -134,21 +136,25 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询所有供应商")
     public List<ApiVendor> queryAllVendor() {
         return billMapper.queryAllVendor();
     }
 
     @Override
+    @SystemServiceLog(description = "查询所有合作伙伴")
     public List<Partner> queryAllPartner() {
         return billMapper.queryAllPartner();
     }
 
     @Override
+    @SystemServiceLog(description = "查询消费的月份")
     public List<String> queryAllConsumeTime() {
         return billMapper.queryAllConsumeTime();
     }
 
     @Override
+    @SystemServiceLog(description = "查询供应商历史财务账单明细")
     public Map<String, Object> queryVendorHistoryBillDetail(Map<String, Object> map) {
 
         Map<String,Object> param = new HashMap<>();
@@ -202,6 +208,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询供应商的产品")
     public List<ApiWeb> queryApiByVendorId(Integer vid) {
         List<ApiWeb> apiWebList = billMapper.queryApiByVendorId(vid);
         if (apiWebList == null){
@@ -217,6 +224,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "修改单价")
     public boolean updateVendorHistoryBillCost(Integer id, Double oldCost, Double newCost, String content) {
         boolean flag_1 = billMapper.updateVendorHistoryBillCost(id, (int) (newCost*100));
         VendorHistoryBillUpdateLog log = new VendorHistoryBillUpdateLog();
@@ -233,6 +241,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "修改扣费量")
     public boolean updateVendorHistoryBillAmount(Integer id, Integer oldAmount, Integer newAmount, String content) {
         boolean flag_1 = billMapper.updateVendorHistoryBillAmount(id, newAmount);
         VendorHistoryBillUpdateLog log = new VendorHistoryBillUpdateLog();
@@ -249,6 +258,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "修改锁定状态")
     public boolean updateVendorHistoryBillIsLock(String[] id, Integer isLock) {
         Map<String,Object> map = new HashMap<>();
         List<Integer> list = new ArrayList<>();
@@ -261,6 +271,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "新增历史纪录")
     public boolean addVendorHistoryBill(Integer vid, Integer aid, Double cost, Integer amount, String yearMonth) {
         VendorHistoryBillDetail bill = new VendorHistoryBillDetail();
         bill.setVendorId(vid);
@@ -276,6 +287,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "删除历史纪录")
     public boolean deleteVendorHistoryBill(String[] id) {
         List<Integer> list = new ArrayList<>();
         for (String s : id) {
@@ -285,11 +297,13 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "查看锁定状态")
     public Integer queryVendorHistoryBillLockById(Integer id) {
         return billMapper.queryVendorHistoryBillLockById(id);
     }
 
     @Override
+    @SystemServiceLog(description = "查询修改日志")
     public List<VendorHistoryBillUpdateLog> queryVendorHistoryBillDetailUpdateLog(Map<String,Object> map) {
         List<VendorHistoryBillUpdateLog> logList = billMapper.queryVendorHistoryBillDetailUpdateLog(map);
         if (logList == null){

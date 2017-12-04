@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.ApiTurnoverBill;
 import org.qydata.dst.ApiTurnoverBillTrend;
 import org.qydata.mapper.ApiTurnoverBillMapper;
@@ -21,6 +22,7 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
     private ApiTurnoverBillMapper billMapper;
 
     @Override
+    @SystemServiceLog(description = "查询各产品进出帐单")
     public Map<String, Object> queryApiTurnoverBill(Map<String, Object> map) {
 
         Map<String,Object> param = new HashMap<>();
@@ -77,11 +79,13 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询消费月份")
     public List<String> queryAllConsumeTime() {
         return billMapper.queryAllConsumeTime();
     }
 
     @Override
+    @SystemServiceLog(description = "查询消费类型")
     public List<ApiTurnoverBill> queryConsumeType() {
         List<ApiTurnoverBill> vendorTypeList = billMapper.queryVendorConsumeType();
         List<ApiTurnoverBill> customerTypeList = billMapper.queryCustomerConsumeType();
@@ -90,6 +94,7 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询各产品进出帐单走势")
     public Map<String, Object> queryApiTurnoverBillTrend(Map<String, Object> map) {
         Map<String,Object> param = new HashMap<>();
         if (map != null){
@@ -136,6 +141,7 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询各产品进出帐单走势")
     public Map<String, Object> queryApiTurnoverBillTrendData(Map<String, Object> map) {
         Map<String,Object> param = new HashMap<>();
         if (map != null){

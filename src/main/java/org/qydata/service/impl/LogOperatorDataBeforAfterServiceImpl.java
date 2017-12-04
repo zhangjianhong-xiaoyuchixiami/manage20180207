@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.ApiVendorBalance;
 import org.qydata.mapper.LogOperatorDataBeforAfterMapper;
 import org.qydata.service.LogOperatorDataBeforAfterService;
@@ -15,6 +16,7 @@ public class LogOperatorDataBeforAfterServiceImpl implements LogOperatorDataBefo
     @Autowired private LogOperatorDataBeforAfterMapper logOperatorDataBeforAfterMapper;
 
     @Override
+    @SystemServiceLog(description = "查询供应商余额记录")
     public ApiVendorBalance queryApiVendorBalanceById(Integer id) {
         return logOperatorDataBeforAfterMapper.queryApiVendorBalanceById(id);
     }

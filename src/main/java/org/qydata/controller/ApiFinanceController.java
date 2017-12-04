@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
+import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.dst.ApiFinance;
 import org.qydata.dst.VendorHistoryBill;
 import org.qydata.entity.ApiVendor;
@@ -36,6 +37,7 @@ public class ApiFinanceController {
      * Api消费账单
      */
     @RequestMapping("/find-all-api-record")
+    @SystemControllerLog(description = "Api消费账单")
     public ModelAndView findAllApiRecord(String export,Integer vendorId, Integer apiTypeId, String beginDate,String endDate,String [] status,Model model) throws Exception {
         Map<String,Object> map = new HashedMap();
         if (vendorId !=null){

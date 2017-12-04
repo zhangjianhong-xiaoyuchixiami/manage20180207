@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.User;
 import org.qydata.entity.log.Log;
 
@@ -16,6 +17,7 @@ public interface LogService {
      * @param log
      * @return
      */
+    @SystemServiceLog(description = "新增日志")
     public boolean createLog(Log log);
 
     /**
@@ -23,7 +25,7 @@ public interface LogService {
      * @param log
      * @return
      */
-
+    @SystemServiceLog(description = "修改日志")
     public boolean updateLog(Log log);
 
     /**
@@ -31,12 +33,14 @@ public interface LogService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询日志")
     public List<Log> queryLog(Map<String,Object> map);
 
     /**
      * 查询用户，用于日志界面搜索操作人
      * @return
      */
+    @SystemServiceLog(description = "日志里搜索操作人")
     public List<User> queryUser();
 
 }

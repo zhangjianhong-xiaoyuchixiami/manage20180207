@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.dst.vendor.VendorTypeConsume;
 import org.qydata.entity.ApiVendor;
@@ -21,6 +22,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
     private VendorFinanceMapper mapper;
 
     @Override
+    @SystemServiceLog(description = "统计供应商消费信息")
     public Map<String, Object> queryVendor(Map<String, Object> map) {
         Map<String,Object> param = new HashMap<>();
         if (map != null){
@@ -174,6 +176,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询供应商类型")
     public List<ApiVendor> queryApiVendorName() {
             return mapper.queryApiVendorName();
     }

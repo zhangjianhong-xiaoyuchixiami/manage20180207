@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
@@ -20,6 +21,7 @@ public interface CustomerFinanceService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户的财务总览")
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String,Object> map)throws Exception;
 
     /**
@@ -27,6 +29,7 @@ public interface CustomerFinanceService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户当天个产品类型的消费情况")
     public List<CustomerCurrDayConsume> queryCustomerCurrDayApiTypeConsume(Map<String,Object> map);
 
     /**
@@ -34,6 +37,7 @@ public interface CustomerFinanceService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户当天个产品类型的消费情况,显示供应商和缓存")
     public List<CustomerCurrDayConsumeDetail> queryCustomerCurrDayConsumeDetail(Map<String,Object> map);
 
     /**
@@ -41,6 +45,7 @@ public interface CustomerFinanceService {
      * @param cid
      * @return
      */
+    @SystemServiceLog(description = "查询客户近一周的消费走势")
     public Map<String,Object> queryNearlyWeekTrend(Integer cid);
 
 
@@ -49,6 +54,7 @@ public interface CustomerFinanceService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "根据customerId查询公司名称")
     public String queryCustomerCompanyNameById(Integer id);
 
     /**
@@ -56,6 +62,7 @@ public interface CustomerFinanceService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "指定账号余额变动记录")
     public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
 
 

@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.api.Aid;
 import org.qydata.mapper.ValidMapper;
 import org.qydata.service.ValidService;
@@ -19,6 +20,7 @@ public class ValidServiceImpl implements ValidService {
     @Autowired
     private ValidMapper mapper;
     @Override
+    @SystemServiceLog(description = "根据请求地址查询上游")
     public List<Aid> queryAidByUrl(String url) {
         List<Integer> typeList = new ArrayList<>();
         if (url != null && url != ""){

@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.CustomerCompanyEmail;
 import org.qydata.entity.Partner;
 import org.qydata.entity.monitor.CompanyBalanceMonitor;
@@ -17,6 +18,7 @@ public interface CompanyBalanceMonitorService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户余额报警列表")
     public List<CompanyBalanceMonitor> queryCompanyBalanceMonitor(Map<String,Object> map);
 
     /**
@@ -25,6 +27,7 @@ public interface CompanyBalanceMonitorService {
      * @param value
      * @return
      */
+    @SystemServiceLog(description = "修改是否预付")
     public boolean updatePrepay(Integer cid,Integer value);
 
     /**
@@ -33,6 +36,7 @@ public interface CompanyBalanceMonitorService {
      * @param value
      * @return
      */
+    @SystemServiceLog(description = "修改是否报警")
     public boolean updateAlarm(Integer cid,Integer value);
 
     /**
@@ -41,6 +45,7 @@ public interface CompanyBalanceMonitorService {
      * @param value
      * @return
      */
+    @SystemServiceLog(description = "修改是否提醒客户")
     public boolean updateRemindCustomer(Integer cid,Integer value);
 
     /**
@@ -49,6 +54,7 @@ public interface CompanyBalanceMonitorService {
      * @param value
      * @return
      */
+
     public boolean updateAhead(Integer cid,Integer value);
 
     /**
@@ -56,6 +62,7 @@ public interface CompanyBalanceMonitorService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户邮箱")
     public List<CustomerCompanyEmail> queryEmailById(Map<String,Object> map);
 
     /**
@@ -64,6 +71,7 @@ public interface CompanyBalanceMonitorService {
      * @param cid
      * @return
      */
+    @SystemServiceLog(description = "删除客户邮箱")
     public boolean deleteEmail(Integer id,Integer cid);
 
     /**
@@ -72,12 +80,14 @@ public interface CompanyBalanceMonitorService {
      * @param email
      * @return
      */
+    @SystemServiceLog(description = "添加客户邮箱")
     public boolean addEmail(Integer cid,String email);
 
     /**
      * 查询所有合作伙伴
      * @return
      */
+    @SystemServiceLog(description = "查询所有合作伙伴")
     public List<Partner> queryAllPartner();
 
 }

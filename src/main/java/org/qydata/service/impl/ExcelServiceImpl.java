@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.Company;
 import org.qydata.entity.Partner;
@@ -22,6 +23,7 @@ public class ExcelServiceImpl implements ExcelService {
     private ExcelMapper excelMapper;
 
     @Override
+    @SystemServiceLog(description = "合作伙伴财务对账")
     public Map<String, Object> queryExtraAccount(Map<String, Object> map) {
 
         Integer pid = null;
@@ -314,11 +316,13 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询公司")
     public List<Company> queryCompanyByPid(Integer pid) {
         return excelMapper.queryCompanyByPid(pid);
     }
 
     @Override
+    @SystemServiceLog(description = "客户临时对账")
     public Map<String, Object> queryExtraAccountCustomer(Map<String, Object> map) {
         Integer cid = null;
         Integer wid = null;
@@ -454,6 +458,7 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询公司产品类型")
     public List<ApiType> queryApiTypeByCid(Integer cid) {
         return excelMapper.queryApiTypeByCid(cid);
     }

@@ -1,5 +1,6 @@
 package org.qydata.controller;
 
+import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.service.ApiVendorExcelService;
 import org.qydata.tools.excel.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class ApiVendorExcelController {
     private ApiVendorExcelService apiVendorExcelService ;
 
     @RequestMapping("/file-upload")
+    @SystemControllerLog(description = "文件上传")
     public String fileUpload(){
 
         return "/excel/api_vendor_excel";
@@ -27,7 +29,7 @@ public class ApiVendorExcelController {
     }
 
     @RequestMapping("/file-upload-service")
-
+    @SystemControllerLog(description = "excel文件上传")
     public void readExcelFile(@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) {
         String filePath =  FileUploadUtils.uploadExcelFile(request,file);
         System.out.println("你好");

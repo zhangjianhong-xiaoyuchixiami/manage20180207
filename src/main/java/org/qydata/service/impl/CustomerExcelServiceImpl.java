@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.CustomerCompanyEmail;
 import org.qydata.entity.CustomerConsumeExcel;
 import org.qydata.mapper.CustomerExcelMapper;
@@ -25,6 +26,7 @@ public class CustomerExcelServiceImpl implements CustomerExcelService {
     private CustomerFinanceMapper customerFinanceMapper;
 
     @Override
+    @SystemServiceLog(description = "查询客户财务账单excel并且发送邮件")
     public Map<String, Object> queryCustomerFinanceAccountExcel(Map<String, Object> map) {
         Map<String,Object> mapResu = new HashMap<>();
         StringBuffer sb = new StringBuffer();
@@ -80,6 +82,7 @@ public class CustomerExcelServiceImpl implements CustomerExcelService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询上月消费账单")
     public CustomerConsumeExcel queryCustomerConsumeExcelByCustomerId(Map<String, Object> map) {
         return customerExcelMapper.queryCustomerConsumeExcelByCustomerId(map);
     }

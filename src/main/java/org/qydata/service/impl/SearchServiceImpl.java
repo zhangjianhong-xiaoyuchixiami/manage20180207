@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.customer.CustomerReqLog;
 import org.qydata.mapper.SearchMapper;
 import org.qydata.service.SearchService;
@@ -20,6 +21,7 @@ public class SearchServiceImpl implements SearchService {
     private SearchMapper mapper;
 
     @Override
+    @SystemServiceLog(description = "查询客户请求log")
     public List<CustomerReqLog> queryCustomerReqLog(Map<String, Object> map) {
         List<CustomerReqLog> logList = mapper.queryCustomerReqLog(map);
         if (logList == null || logList.size() <= 0){

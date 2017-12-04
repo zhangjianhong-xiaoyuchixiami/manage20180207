@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.Company;
 import org.qydata.entity.CompanyApi;
 import org.qydata.entity.CustomerHistoryBillUpdateLog;
@@ -18,24 +19,28 @@ public interface CustomerHistoryBillService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户历史消费账单")
     public Map<String,Object> queryCustomerHistoryBill(Map<String,Object> map);
 
     /**
      * 查询所有客户
      * @return
      */
+    @SystemServiceLog(description = "查询所有客户")
     public List<Company> queryAllCompany();
 
     /**
      * 查询所有合作伙伴
      * @return
      */
+    @SystemServiceLog(description = "查询所有合作伙伴")
     public List<Partner> queryAllPartner();
 
     /**
      * 查询消费的月份
      * @return
      */
+    @SystemServiceLog(description = "查询消费月份")
     public List<String> queryAllConsumeTime();
 
     /**
@@ -43,6 +48,7 @@ public interface CustomerHistoryBillService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户历史消费账单明细")
     public Map<String,Object> queryCustomerHistoryBillDetail(Map<String,Object> map);
 
     /**
@@ -50,6 +56,7 @@ public interface CustomerHistoryBillService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "修改单价")
     public boolean updateCustomerHistoryBillCost(Integer id,Double oldCost,Double newCost,String content);
 
     /**
@@ -57,6 +64,7 @@ public interface CustomerHistoryBillService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "修改扣费量")
     public boolean updateCustomerHistoryBillAmount(Integer id,Integer oldAmount,Integer newAmount,String content);
 
     /**
@@ -64,6 +72,7 @@ public interface CustomerHistoryBillService {
      * @param cid
      * @return
      */
+    @SystemServiceLog(description = "新增历史纪录")
     public boolean addCustomerHistoryBill(Integer cid,String tid,Double cost,Integer amount,String yearMonth);
 
     /**
@@ -71,6 +80,7 @@ public interface CustomerHistoryBillService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "删除历史纪录")
     public boolean deleteCustomerHistoryBill(String [] id);
 
     /**
@@ -78,6 +88,7 @@ public interface CustomerHistoryBillService {
      * @param cid
      * @return
      */
+    @SystemServiceLog(description = "查询客户产品权限")
     public List<CompanyApi> queryCompanyApiByCompanyId(Integer cid);
 
     /**
@@ -85,6 +96,7 @@ public interface CustomerHistoryBillService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "客户历史账单消费走势加载数据")
     public Map<String,Object> queryCustomerHistoryBillTrendData(Map<String,Object> map);
 
     /**
@@ -93,6 +105,7 @@ public interface CustomerHistoryBillService {
      * @param isLock
      * @return
      */
+    @SystemServiceLog(description = "修改锁定/解锁状态")
     public boolean updateCustomerHistoryBillIsLock(String [] id,Integer isLock);
 
     /**
@@ -100,6 +113,7 @@ public interface CustomerHistoryBillService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "根据Id查看锁定状态")
     public Integer queryCustomerHistoryBillLockById(Integer id);
 
     /**
@@ -107,6 +121,7 @@ public interface CustomerHistoryBillService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查看修改日志")
     public List<CustomerHistoryBillUpdateLog> queryCustomerHistoryBillDetailUpdateLog(Map<String,Object> map);
 
 }

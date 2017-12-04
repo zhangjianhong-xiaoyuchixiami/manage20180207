@@ -1,6 +1,7 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
+import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.entity.CompanyApi;
 import org.qydata.entity.agency.AgencyCustomer;
 import org.qydata.entity.agency.RebateAgency;
@@ -35,6 +36,7 @@ public class AgencyController {
 
     //代理人返佣明细
     @RequestMapping("/rebate/detail")
+    @SystemControllerLog(description="代理人返佣明细")
     public String rebateDetail(Integer agencyId,String name,Integer [] cid ,String [] cyc, String [] tid,Model model){
         Map<String,Object> param = new HashMap<>();
         if (agencyId != null){

@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.ApiVendorBalance;
 
 /**
@@ -12,6 +13,7 @@ public interface LogOperatorDataBeforAfterService {
      * @param id
      * @return
      */
+    @SystemServiceLog(description = "根据Id查询供应商余额记录")
     public ApiVendorBalance queryApiVendorBalanceById(Integer id);
 
 

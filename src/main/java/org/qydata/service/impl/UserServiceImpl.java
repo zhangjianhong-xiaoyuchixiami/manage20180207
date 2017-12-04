@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.User;
 import org.qydata.mapper.UserMapper;
 import org.qydata.service.UserService;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     @Autowired private UserMapper userMapper;
 
     @Override
+    @SystemServiceLog(description = "根据邮箱验证用户是否存在")
     public User get(String email) {
         try {
             return this.userMapper.findById(email);
@@ -29,6 +31,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @SystemServiceLog(description = "查看用户的角色以及权限")
     public Map<String, Object> listAuthByUser(Integer userId)  {
         Map<String,Object> map = new HashMap<String,Object>() ;
         try {

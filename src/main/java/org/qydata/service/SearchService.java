@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.customer.CustomerReqLog;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface SearchService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户请求log")
     public List<CustomerReqLog> queryCustomerReqLog(Map<String,Object> map);
 
 

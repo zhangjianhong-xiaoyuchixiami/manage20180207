@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.User;
 import org.qydata.mapper.DeptMapper;
 import org.qydata.mapper.RoleMapper;
@@ -23,6 +24,7 @@ public class PowerServiceImpl implements PowerUserService {
 
 
     @Override
+    @SystemServiceLog(description = "查找全部用户")
     public PageModel<User> queryAllUser(Map<String, Object> map) throws Exception {
         PageModel<User> pageModel = new PageModel<User>();
         pageModel.setCount(userMapper.queryAllCount(map));
@@ -31,11 +33,13 @@ public class PowerServiceImpl implements PowerUserService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询用户信息")
     public User findUserByUsername(Integer userId) throws Exception {
         return userMapper.findUserByUsername(userId);
     }
 
     @Override
+    @SystemServiceLog(description = "通过邮箱查询用户信息")
     public User findUserByEmail(String email) {
         try {
             return userMapper.findUserByEmail(email);

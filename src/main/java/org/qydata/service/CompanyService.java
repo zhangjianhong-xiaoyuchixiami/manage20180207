@@ -19,6 +19,7 @@ public interface CompanyService {
      * @return
      * @throws Exception
      */
+    @SystemServiceLog(description = "查询全部客户")
     public List<CustomerCompanyPartner> findAllCompany(Map<String,Object> map);
 
 
@@ -40,6 +41,7 @@ public interface CompanyService {
      * 查找全部的合作公司
      * @return
      */
+    @SystemServiceLog(description = "查找全部合作公司")
     public List<Partner> findAllPartner();
 
     /**
@@ -47,6 +49,7 @@ public interface CompanyService {
      * @return
      * @throws Exception
      */
+    @SystemServiceLog(description = "通过邮箱查找全部合作公司")
     public List<Partner> findPartnerByEmail(String email);
 
 
@@ -55,6 +58,7 @@ public interface CompanyService {
      * @param list
      * @return
      */
+    @SystemServiceLog(description = "查询充值或扣费的理由")
     public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list);
 
     /**
@@ -113,6 +117,7 @@ public interface CompanyService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "根据公司Id查找公司已拥有权限的Api")
     public List<CompanyApi> queryCompanyApiByCompanyId(Map<String,Object> map);
 
     /**
@@ -133,10 +138,11 @@ public interface CompanyService {
 
 
     /**
-     * 查询可会未拥有的产品权限列表,用于给可会分配新的权限
+     * 查询客户未拥有的产品权限列表,用于给客户分配新的权限
      * @param companyId
      * @return
      */
+    @SystemServiceLog(description = "查询客户未拥有的产品权限列表")
     public List<ApiTypeSubType> queryNotHaveApi(Integer companyId);
 
     /**
@@ -161,6 +167,7 @@ public interface CompanyService {
      * @param companyId
      * @return
      */
+    @SystemServiceLog(description = "根据账号Id查找Ip")
     public List<CustomerIp> queryCustomerIpById(Integer companyId);
 
     /**
@@ -168,7 +175,7 @@ public interface CompanyService {
      * @param id
      * @return
      */
-    @SystemServiceLog(description = "正式账号删除Ip")
+    @SystemServiceLog(description = "根据账号删除Ip")
     public int deleteIpById(Integer companyId,Integer id) throws Exception;
 
 
@@ -176,6 +183,7 @@ public interface CompanyService {
      * 查询全部产品权限
      * @return
      */
+    @SystemServiceLog(description = "查询全部产品权限")
     public List<ApiTypeSubType> queryAllApi();
 
     /**
@@ -193,6 +201,7 @@ public interface CompanyService {
      * @param tid_stid
      * @return
      */
+    @SystemServiceLog(description = "根据产品类型查找统一产品类型的产品列表")
     public List<Api> queryApiByTypeId(String tid_stid);
 
     /**

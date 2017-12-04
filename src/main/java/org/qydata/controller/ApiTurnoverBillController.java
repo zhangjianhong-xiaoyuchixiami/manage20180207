@@ -1,6 +1,7 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
+import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.dst.ApiTurnoverBill;
 import org.qydata.service.ApiTurnoverBillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class ApiTurnoverBillController {
      * @return
      */
     @RequestMapping("/api-turnover-bill")
+    @SystemControllerLog(description = "产品进出帐单")
     public String apiTurnoverBill(String [] tid,String cyc,Model model){
         Map<String,Object> param = new HashMap<>();
         if (cyc != null){
@@ -74,6 +76,7 @@ public class ApiTurnoverBillController {
      * @return
      */
     @RequestMapping("/api-turnover-bill/trend")
+    @SystemControllerLog(description = "产品进出账单明细")
     public String apiTurnoverBillTrend(String tid,String name,String cyc,Model model){
         Map<String,Object> param = new HashMap<>();
         if (tid != null){
@@ -110,6 +113,7 @@ public class ApiTurnoverBillController {
      */
     @RequestMapping("/api-turnover-bill/trend-data")
     @ResponseBody
+    @SystemControllerLog(description = "产品进出帐单明细数据")
     public String apiTurnoverBillTrendData(String tid,String cyc,Model model){
         Map<String,Object> param = new HashMap<>();
         if (tid != null){

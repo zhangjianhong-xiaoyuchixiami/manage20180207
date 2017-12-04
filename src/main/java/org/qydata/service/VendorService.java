@@ -18,12 +18,14 @@ public interface VendorService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查找全部供应商")
     public List<VendorExt> queryAllVendor(Map<String,Object> map);
 
     /**
      * 查找全部合作伙伴
      * @return
      */
+    @SystemServiceLog(description = "查找全部合作伙伴")
     public List<Partner> queryAllPartner();
 
     /**
@@ -32,6 +34,7 @@ public interface VendorService {
      * @param preId
      * @return
      */
+    @SystemServiceLog(description = "修改供应商预付状态")
     public boolean updateVendorPrepay(Integer vid,Integer preId);
 
     /**
@@ -63,6 +66,7 @@ public interface VendorService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询充值记录")
     public Map<String,Object> queryVendorBalanceLog(Map<String,Object> map);
 
 }

@@ -2,6 +2,7 @@ package org.qydata.service.impl;
 
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.*;
 import org.qydata.dst.customer.CustomerConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
@@ -31,6 +32,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     private CustomerFinanceMapper customerFinanceMapper;
 
     @Override
+    @SystemServiceLog(description = "查询客户的财务总览")
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
 
         Map<String,Object> param = new HashMap<>();
@@ -369,6 +371,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询客户当天个产品类型的消费情况")
     public List<CustomerCurrDayConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
         List<CustomerCurrDayConsume> consumeList = customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
         if (consumeList == null) {
@@ -391,6 +394,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询客户当天个产品类型的消费情况")
     public List<CustomerCurrDayConsumeDetail> queryCustomerCurrDayConsumeDetail(Map<String, Object> map) {
         List<CustomerCurrDayConsumeDetail> detailList = customerFinanceMapper.queryCustomerCurrDayConsumeDetail(map);
         if (detailList != null){
@@ -404,6 +408,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询客户近一周的消费走势")
     public Map<String, Object> queryNearlyWeekTrend(Integer cid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<CustomerConsume> consumeList = customerFinanceMapper.queryNearlyWeekTrend(cid);
@@ -448,11 +453,13 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询公司名称")
     public String queryCustomerCompanyNameById(Integer id) {
         return customerFinanceMapper.queryCustomerCompanyNameById(id);
     }
 
     @Override
+    @SystemServiceLog(description = "指定账号余额变动记录")
     public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String, Object> map){
         Map<String,Object> mapResult = new HashMap<>();
         try {

@@ -3,6 +3,7 @@ package org.qydata.controller;
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import org.qydata.config.annotation.RolePermission;
+import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.entity.*;
 import org.qydata.service.CompanyService;
@@ -38,6 +39,7 @@ public class CompanyController {
      */
     @RequestMapping(value = "/findCustomerByAuthId")
     @ResponseBody
+    @SystemControllerLog(description = "验证新客户用户名是否可用")
     public String findCustomerByAuthIdAdd(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -60,6 +62,7 @@ public class CompanyController {
      * @return
      */
     @RequestMapping(value = "/find-all-company-customer")
+    @SystemControllerLog(description = "查看所有客户信息")
     public String findAllCompanyCustomer(Integer partnerId,String content,Model model){
         Map<String,Object> map = new HashMap<>();
         if(content!=null){
@@ -81,6 +84,7 @@ public class CompanyController {
      * @return
      */
     @RequestMapping(value = "/find-all-company-customer-by-dept-id")
+    @SystemControllerLog(description = "通过部门编号查找客户")
     public String findAllCompanyCustomerByDeptId(HttpServletRequest request,Integer partnerId,String content,Model model){
         User user = (User) request.getSession().getAttribute("userInfo");
         List deptIdList = new ArrayList();
@@ -111,6 +115,7 @@ public class CompanyController {
     @RequestMapping(value = "/add-company-customer")
     @ResponseBody
     @RolePermission
+    @SystemControllerLog(description = "新增客户")
     public String addCompanyCustomer(HttpServletRequest request ) {
         String companyName = request.getParameter("companyName").trim();
         String authId = request.getParameter("authId").trim();
@@ -155,6 +160,7 @@ public class CompanyController {
      */
     @RequestMapping("/charge-customer-balance")
     @ResponseBody
+    @SystemControllerLog(description = "充值窗口")
     public String chargeCustomerBalance(){
         List<Integer> list = new ArrayList<>();
         list.add(1);
@@ -172,6 +178,7 @@ public class CompanyController {
      */
     @RequestMapping("/consume-customer-balance")
     @ResponseBody
+    @SystemControllerLog(description = "扣费窗口")
     public String consumeCustomerBalance(){
         List<Integer> list = new ArrayList<>();
         list.add(-1);
@@ -191,6 +198,7 @@ public class CompanyController {
      */
     @RequestMapping("/update-customer-balance")
     @ResponseBody
+    @SystemControllerLog(description = "充值")
     public String updateCustomerBalance(Integer companyId,Integer reason,String amount){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
@@ -233,6 +241,7 @@ public class CompanyController {
     @RequestMapping("/customer/ban")
     @ResponseBody
     @RolePermission
+    @SystemControllerLog(description = "禁用账号")
     public String customerBan(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -258,6 +267,7 @@ public class CompanyController {
     @RequestMapping("/customer/unban")
     @ResponseBody
     @RolePermission
+    @SystemControllerLog(description = "解禁账号")
     public String customerUnBan(String authId){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();
@@ -282,6 +292,7 @@ public class CompanyController {
     @RequestMapping("/ban")
     @ResponseBody
     @RolePermission
+    @SystemControllerLog(description = "禁用公司")
     public String companyBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] companyId = request.getParameterValues("companyId[]");
@@ -302,6 +313,7 @@ public class CompanyController {
     @RequestMapping("/unban")
     @ResponseBody
     @RolePermission
+    @SystemControllerLog(description = "解禁公司")
     public String companyUnBan(HttpServletRequest request){
         Gson gson = new Gson();
         String [] companyId = request.getParameterValues("companyId[]");
@@ -321,6 +333,7 @@ public class CompanyController {
      */
     @RequestMapping("/find-company-api")
     @ResponseBody
+    @SystemControllerLog(description = "管理产品权限")
     public String queryCompanyApiByCompanyId(Integer companyId) {
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap<>();

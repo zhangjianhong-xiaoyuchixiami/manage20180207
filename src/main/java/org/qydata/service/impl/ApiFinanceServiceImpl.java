@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.ApiFinance;
 import org.qydata.dst.ApiTypeConsume;
 import org.qydata.entity.ApiType;
@@ -26,6 +27,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @Autowired private ApiFinanceMapper mapper;
 
     @Override
+    @SystemServiceLog(description = "Api财务总览")
     public Map<String,Object> queryApiFinance(Map<String, Object> map){
         Map<String,Object> param = new HashMap<>();
         if (map != null){
@@ -231,6 +233,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询Api类型")
     public List<ApiType> queryApiType() {
         try {
             return mapper.queryApiType();
@@ -241,6 +244,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询供应商类型")
     public List<ApiVendor> queryApiVendorName(Map<String, Object> map) {
         try {
             return mapper.queryApiVendorName(map);

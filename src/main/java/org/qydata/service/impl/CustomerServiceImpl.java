@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.Customer;
 import org.qydata.mapper.CustomerDeptMapper;
 import org.qydata.mapper.CustomerMapper;
@@ -25,11 +26,13 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerDeptMapper customerDeptMapper;
 
     @Override
+    @SystemServiceLog(description = "查找客户信息")
     public Customer findCustomerByAuthId(String authId) {
         return customerMapper.findCustomerByAuthId(authId);
     }
 
     @Override
+    @SystemServiceLog(description = "查询当前登陆者可见的客户信息")
     public PageModel<Customer> findAllCustomer(Map<String,Object> map) throws Exception{
         PageModel<Customer> pageModel = new PageModel<Customer>();
         pageModel.setCount(customerMapper.getAllCount(map));
@@ -39,6 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
+    @SystemServiceLog(description = "查找部门对应的customerId")
     public List<Integer> findAllCustomerIdByDeptId(List<Integer> deptIdList){
         try {
             return customerMapper.findAllCustomerIdByDeptId(deptIdList);
@@ -49,11 +53,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询所有客户的账号id")
     public List<Integer> findAllCustomerId() {
         return customerMapper.findAllCustomerId();
     }
 
     @Override
+    @SystemServiceLog(description = "查询客户请求的日志")
     public Map<String,Object> findAllCustomerRequestLog(Map<String, Object> map) {
         Map<String,Object> mapResult = new HashMap<>();
         try {
@@ -67,6 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询日志")
     public String findCustomerRequestLogById(Integer id){
         try {
             return customerMapper.findCustomerRequestLogById(id);

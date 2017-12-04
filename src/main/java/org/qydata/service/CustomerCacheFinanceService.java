@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.CustomerCacheApiTypeConsume;
 import org.qydata.dst.CustomerCacheConsume;
 
@@ -16,6 +17,7 @@ public interface CustomerCacheFinanceService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户缓存调用情况")
     public List<CustomerCacheConsume> queryCustomerCacheConsume(Map<String,Object> map);
 
     /**
@@ -23,6 +25,7 @@ public interface CustomerCacheFinanceService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户当天个产品类型的缓存数据")
     public List<CustomerCacheApiTypeConsume> queryCustomerCurrDayApiTypeCacheConsume(Map<String,Object> map);
 
 }

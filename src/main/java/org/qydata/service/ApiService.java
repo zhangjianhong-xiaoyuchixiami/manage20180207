@@ -18,33 +18,35 @@ public interface ApiService {
      * 查询产品
      * @return
      */
-
+    @SystemServiceLog(description = "查询产品")
     public List<Api> queryApi(Map<String,Object> map);
 
     /**
      * 查询产品类型
      * @return
      */
-
+    @SystemServiceLog(description = "查询产品类型")
     public List<ApiType> queryApiType();
 
     /**
      * 根据产品类型查询产品供应商
      * @return
      */
-
+    @SystemServiceLog(description = "根据产品类型查询产品供应商")
     public List<ApiVendor> queryApiVendor();
 
     /**
      * 根据产品类型查询产品供应商
      * @return
      */
+    @SystemServiceLog(description = "根据产品类型查询产品供应商")
     public List<ApiVendor> queryApiVendorByApiTypeId(Integer id);
 
     /**
      * 查询合作公司
      * @return
      */
+    @SystemServiceLog(description = "查询合作公司")
     public List<Partner> queryPartner();
 
     /**
@@ -52,18 +54,21 @@ public interface ApiService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "根据客户纬度查询产品")
     public List<CustomerApiPartner> queryApiByCompanyId(Map<String,Object> map);
 
     /**
      * 查询所有公司
      * @return
      */
+    @SystemServiceLog(description = "查询所有公司")
     public List<Company> queryCompany();
 
     /**
      * 查询api最近请求的失败次数
      * @return
      */
+    @SystemServiceLog(description = "请求失败次数")
     public List<ApiBan> queryApiMonitor();
 
     /**
@@ -97,6 +102,7 @@ public interface ApiService {
      * 查看上游产品改价记录
      * @return
      */
+    @SystemServiceLog(description = "查询上游产品改价记录")
     public List<ApiPriceChanceLog> queryApiPriceChangeLog(Map<String,Object> map);
 
     /**
@@ -115,12 +121,14 @@ public interface ApiService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询所有用于新增产品价格的API记录")
     public List<Api> queryAllApi(Map<String,Object> map);
 
     /**
      * 查看客户改价记录
      * @return
      */
+    @SystemServiceLog(description = "查看客户改价记录")
     public List<CompanyApiPriceChangeLog> queryCompanyApiPriceChangeLog(Map<String,Object> map);
 
     /**
@@ -128,6 +136,7 @@ public interface ApiService {
      * @param cid
      * @return
      */
+    @SystemServiceLog(description = "根据公司Id查询所拥有的产品 ")
     public List<ApiTypeInfo> queryCompanyApiByCompanyId(Integer cid);
 
     /**
@@ -207,6 +216,7 @@ public interface ApiService {
      * @param aid
      * @return
      */
+    @SystemServiceLog(description = "根据ApiId查询Api类型 ")
     public Integer queryApiTypeByApiId(Integer aid);
 
     /**
@@ -214,12 +224,14 @@ public interface ApiService {
      * @param aid
      * @return
      */
+    @SystemServiceLog(description = "查看产品恢复日志 ")
     public RecoverProbLog queryDetailLogByApiId(Integer aid);
 
     /**
      * 检查当前是否在进行恢复配额操作
      * @return
      */
+    @SystemServiceLog(description = "检查当前是否在进行回复配额操作 ")
     public List<RecoverProbCheck> queryAllRecoverProbCheck(Map<String,Object> map);
 
 

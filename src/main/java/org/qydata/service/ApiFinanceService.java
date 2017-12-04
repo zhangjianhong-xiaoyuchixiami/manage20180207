@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +19,14 @@ public interface ApiFinanceService {
      * @return
      * @throws Exception
      */
+    @SystemServiceLog(description = "Api财务总览")
     public Map<String,Object> queryApiFinance(Map<String,Object> map);
 
     /**
      * 查询Api类型
      * @return
      */
+    @SystemServiceLog(description = "查询Api类型")
     public List<ApiType> queryApiType();
 
     /**
@@ -31,5 +34,6 @@ public interface ApiFinanceService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "通过apiTypeId查询供应商类型")
     public List<ApiVendor> queryApiVendorName(Map<String,Object> map);
 }

@@ -27,6 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
+    @SystemServiceLog(description = "查询全部客户")
     public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {
         try {
             return companyMapper.findAllCompany(map);
@@ -116,6 +117,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @SystemServiceLog(description = "查找全部合作公司")
     public List<Partner> findAllPartner() {
         try {
             return companyMapper.findAllPartner();
@@ -126,12 +128,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @SystemServiceLog(description = "通过邮箱查找全部合作公司")
     public List<Partner> findPartnerByEmail(String email) {
         return companyMapper.findPartnerByEmail(email);
     }
 
 
     @Override
+    @SystemServiceLog(description = "查询充值或扣费的理由")
     public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list) {
         try {
             return companyMapper.findBalanceReason(list);
@@ -229,6 +233,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @SystemServiceLog(description = "查看公司拥有的权限")
     public List<CompanyApi> queryCompanyApiByCompanyId(Map<String, Object> map) {
         List<CompanyApi> resu = companyMapper.queryCompanyApiByCompanyId(map);
         if (resu != null){
@@ -290,6 +295,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询客户未拥有的产品权限列表")
     public List<ApiTypeSubType> queryNotHaveApi(Integer companyId) {
         Map<String,Object> map = new HashMap<>();
         map.put("companyId",companyId);
@@ -325,7 +331,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @SystemServiceLog(description = "新增产品权限")
+    @SystemServiceLog(description = "添加产品权限")
     public int addCompanyApi(Integer companyId, String apiTypeId, String price,String aid)throws Exception {
         String uri = GlobalStaticConstants.COMPANY_API_PUT;
         Map<String,Object> map = new HashMap<>();
@@ -374,12 +380,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @SystemServiceLog(description = "根据账号Id查找Ip")
     public List<CustomerIp> queryCustomerIpById(Integer companyId) {
         return companyMapper.queryCustomerIpById(companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
     }
 
     @Override
-    @SystemServiceLog(description = "正式账号添加IP")
+    @SystemServiceLog(description = "根据账号添加IP")
     public int addCustomerIp(Integer companyId,String begIp, String endIp) throws Exception{
         String uri = GlobalStaticConstants.CUSTOMER_ADD_IP;
         Map<String,Object> map = new HashMap<>();
@@ -395,7 +402,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @SystemServiceLog(description = "正式账号删除Ip")
+    @SystemServiceLog(description = "根据账号删除Ip")
     public int deleteIpById(Integer companyId,Integer id) throws Exception {
         String uri = GlobalStaticConstants.CUSTOMER_DEL_IP;
         Map<String,Object> map = new HashMap<>();
@@ -410,6 +417,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询全部产品")
     public List<ApiTypeSubType> queryAllApi() {
         return companyMapper.queryAllApi();
     }
@@ -430,6 +438,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @SystemServiceLog(description = "查看同一产品类型的产品")
     public List<Api> queryApiByTypeId(String tid_stid) {
         System.out.println(tid_stid);
         Integer tid = null;

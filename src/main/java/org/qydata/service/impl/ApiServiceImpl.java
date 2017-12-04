@@ -35,6 +35,7 @@ public class ApiServiceImpl implements ApiService {
     private CompanyMapper companyMapper;
 
     @Override
+    @SystemServiceLog(description = "查询产品")
     public List<Api> queryApi(Map<String, Object> map) {
         List<Api> apiList = apiMapper.queryApi(map);
         if (apiList != null) {
@@ -53,6 +54,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询产品类型")
     public List<ApiType> queryApiType() {
         try {
             return apiMapper.queryApiType();
@@ -63,6 +65,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询产品供应商")
     public List<ApiVendor> queryApiVendor() {
         try {
             return apiMapper.queryApiVendor();
@@ -73,6 +76,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询产品供应商")
     public List<ApiVendor> queryApiVendorByApiTypeId(Integer id) {
         try {
             return apiMapper.queryApiVendorByApiTypeId(id);
@@ -83,17 +87,20 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询合作公司")
     public List<Partner> queryPartner() {
         return apiMapper.queryPartner();
     }
 
     @Override
+    @SystemServiceLog(description = "根据客户纬度查询产品")
     public List<CustomerApiPartner> queryApiByCompanyId(Map<String, Object> map) {
         List<CustomerApiPartner> customerApiPartnerList = apiMapper.queryApiByCompanyId(map);
         return customerApiPartnerList;
     }
 
     @Override
+    @SystemServiceLog(description = "查询所有公司")
     public List<Company> queryCompany() {
         try {
             return apiMapper.queryCompany();
@@ -104,6 +111,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "请求失败次数")
     public List<ApiBan> queryApiMonitor() {
         Map<String, Object> mapParam = new HashMap<>();
         mapParam.put("time", CalendarUtil.getCurrentLastHour());
@@ -211,6 +219,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询产品改价记录")
     public List<ApiPriceChanceLog> queryApiPriceChangeLog(Map<String, Object> map) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<ApiPriceChanceLog> apclList = apiMapper.queryApiPriceChangeLog(map);
@@ -253,6 +262,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询所有用于新增产品价格的API记录")
     public List<Api> queryAllApi(Map<String, Object> map) {
         List<Api> apiList = apiMapper.queryAllApi(map);
         if (apiList != null) {
@@ -277,6 +287,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查看客户改价记录")
     public List<CompanyApiPriceChangeLog> queryCompanyApiPriceChangeLog(Map<String, Object> map) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -297,6 +308,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "根据公司Id查询所拥有的产品 ")
     public List<ApiTypeInfo> queryCompanyApiByCompanyId(Integer cid) {
         return apiMapper.queryCompanyApiByCompanyId(cid);
     }
@@ -463,6 +475,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询Api类型 ")
     public Integer queryApiTypeByApiId(Integer aid) {
         try {
             return apiMapper.queryApiTypeByApiId(aid);
@@ -473,11 +486,13 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    @SystemServiceLog(description = "查看产品恢复日志 ")
     public RecoverProbLog queryDetailLogByApiId(Integer aid) {
         return apiMapper.queryDetailLogByApiId(aid);
     }
 
     @Override
+    @SystemServiceLog(description = "检查当前是否在进行回复配额操作 ")
     public List<RecoverProbCheck> queryAllRecoverProbCheck(Map<String, Object> map) {
         return apiMapper.queryAllRecoverProbCheck(map);
     }

@@ -27,6 +27,4 @@ public class Log implements Serializable {
     private Timestamp createTime;
     private User user;
     private LogType logType;
-
-
 }

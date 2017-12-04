@@ -2,6 +2,7 @@ package org.qydata.service.impl;
 
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.CustomerHistoryBill;
 import org.qydata.dst.CustomerHistoryBillDetail;
 import org.qydata.entity.Company;
@@ -31,6 +32,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     private CustomerHistoryBillMapper billMapper;
 
     @Override
+    @SystemServiceLog(description = "查询客户历史消费账单")
     public Map<String, Object> queryCustomerHistoryBill(Map<String, Object> map) {
         Integer [] status = null;
         Integer [] cid = null;
@@ -213,6 +215,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "查询所有客户")
     public List<Company> queryAllCompany() {
         List<Company> companyList = billMapper.queryAllCompany();
         if (companyList != null){
@@ -231,16 +234,19 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "查询所有合作伙伴")
     public List<Partner> queryAllPartner() {
         return billMapper.queryAllPartner();
     }
 
     @Override
+    @SystemServiceLog(description = "查询消费月份")
     public List<String> queryAllConsumeTime() {
         return billMapper.queryAllConsumeTime();
     }
 
     @Override
+    @SystemServiceLog(description = "查询客户历史消费账单明细")
     public Map<String, Object> queryCustomerHistoryBillDetail(Map<String, Object> map) {
         Integer cid = null;
         String [] cyc = null;
@@ -322,6 +328,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "修改单价")
     public boolean updateCustomerHistoryBillCost(Integer id, Double oldCost, Double newCost, String content) {
         boolean flag_1 = billMapper.updateCustomerHistoryBillCost(id, (int) (newCost*100));
         CustomerHistoryBillUpdateLog log = new CustomerHistoryBillUpdateLog();
@@ -338,6 +345,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "修改扣费量")
     public boolean updateCustomerHistoryBillAmount(Integer id, Integer oldAmount, Integer newAmount, String content) {
         boolean flag_1 = billMapper.updateCustomerHistoryBillAmount(id, newAmount);
         CustomerHistoryBillUpdateLog log = new CustomerHistoryBillUpdateLog();
@@ -354,6 +362,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "新增历史纪录")
     public boolean addCustomerHistoryBill(Integer cid, String tid, Double cost, Integer amount, String yearMonth) {
         CustomerHistoryBillDetail bill = new CustomerHistoryBillDetail();
         bill.setCustomerId(cid);
@@ -374,6 +383,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "删除历史纪录")
     public boolean deleteCustomerHistoryBill(String[] id) {
         List<String> list = new ArrayList<>();
         if (id != null && id.length > 0){
@@ -385,6 +395,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "查询客户产品权限")
     public List<CompanyApi> queryCompanyApiByCompanyId(Integer cid) {
         Map<String,Object> param = new HashMap<>();
         param.put("cid",cid);
@@ -405,6 +416,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "客户历史账单消费走势加载数据")
     public Map<String, Object> queryCustomerHistoryBillTrendData(Map<String, Object> map) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         List<String> yearMonthList = new ArrayList<>();
@@ -494,6 +506,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "修改锁定/解锁状态")
     public boolean updateCustomerHistoryBillIsLock(String[] id, Integer isLock) {
         Map<String,Object> map = new HashMap<>();
         List<Integer> list = new ArrayList<>();
@@ -506,11 +519,13 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     }
 
     @Override
+    @SystemServiceLog(description = "查看锁定状态")
     public Integer queryCustomerHistoryBillLockById(Integer id) {
         return billMapper.queryCustomerHistoryBillLockById(id);
     }
 
     @Override
+    @SystemServiceLog(description = "查看修改日志")
     public List<CustomerHistoryBillUpdateLog> queryCustomerHistoryBillDetailUpdateLog(Map<String, Object> map) {
         List<CustomerHistoryBillUpdateLog> logList = billMapper.queryCustomerHistoryBillDetailUpdateLog(map);
         if (logList == null){

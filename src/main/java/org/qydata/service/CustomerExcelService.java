@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.CustomerConsumeExcel;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ public interface CustomerExcelService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "查询客户财务账单excel并且发送邮件")
     public Map<String,Object> queryCustomerFinanceAccountExcel(Map<String,Object> map);
 
     /**
@@ -21,6 +23,7 @@ public interface CustomerExcelService {
      * @param map
      * @return
      */
+    @SystemServiceLog(description = "根据customerId查询上月消费账单")
     public CustomerConsumeExcel queryCustomerConsumeExcelByCustomerId(Map<String,Object> map);
 
 

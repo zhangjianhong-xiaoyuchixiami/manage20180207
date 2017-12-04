@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.CompanyApi;
 import org.qydata.entity.agency.AgencyBillDetail;
 import org.qydata.entity.agency.AgencyCustomer;
@@ -25,6 +26,7 @@ public class AgencyServiceImpl implements AgencyService {
     private AgencyMapper agencyMapper;
 
     @Override
+    @SystemServiceLog(description = "查询代理人")
     public List<RebateAgency> queryAgency() {
         List<RebateAgency> agencyList = agencyMapper.queryAgency();
         if (agencyList == null){
@@ -41,11 +43,13 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询返佣规则")
     public String queryRebateRuleById(Integer id) {
         return agencyMapper.queryRebateRuleById(id);
     }
 
     @Override
+    @SystemServiceLog(description = "查询代理人详单")
     public Map<String, Object> queryAgencyBill(Map<String, Object> map) {
         Map<String,Object> param = new HashMap<>();
         Integer agencyId = null;
@@ -128,47 +132,56 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询代理人客户列表")
     public List<AgencyCustomer> queryAgencyCustomer(Map<String,Object> map) {
         List<AgencyCustomer> list = agencyMapper.queryAgencyCustomer(map);
         return list;
     }
 
     @Override
+    @SystemServiceLog(description = "查询周期")
     public List<String> queryConsumeCycle() {
         return agencyMapper.queryConsumeCycle();
     }
 
     @Override
+    @SystemServiceLog(description = "查询产品列表")
     public List<CompanyApi> queryConsumeApiType() {
         return agencyMapper.queryConsumeApiType();
     }
 
     @Override
+    @SystemServiceLog(description = "修改扣费量")
     public boolean updateRebateBillAmount(Integer id, Integer amount) {
         return agencyMapper.updateRebateBillAmount(id,amount);
     }
 
     @Override
+    @SystemServiceLog(description = "修改单价")
     public boolean updateRebateBillCost(Integer id, Double cost) {
         return agencyMapper.updateRebateBillCost(id, (int) (cost*100));
     }
 
     @Override
+    @SystemServiceLog(description = "修改售价")
     public boolean updateRebateBillPrice(Integer id, Double price) {
         return agencyMapper.updateRebateBillPrice(id, (int) (price*100));
     }
 
     @Override
+    @SystemServiceLog(description = "修改返佣起始价")
     public boolean updateRebateBillBeginPrice(Integer id, Double price) {
         return agencyMapper.updateRebateBillBeginPrice(id, (int) (price*100));
     }
 
     @Override
+    @SystemServiceLog(description = "修改返佣结算价")
     public boolean updateRebateBillEndPrice(Integer id, Double price) {
         return agencyMapper.updateRebateBillEndPrice(id, (int) (price*100));
     }
 
     @Override
+    @SystemServiceLog(description = "删除记录")
     public boolean deleteRebateDetail(String[] id) {
         List<String> list = new ArrayList<>();
         if (id != null){
@@ -180,16 +193,19 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
+    @SystemServiceLog(description = "修改缓存售价")
     public boolean updateCachePrice(Integer id, Double price) {
         return agencyMapper.updateCachePrice(id, (int) (price * 100));
     }
 
     @Override
+    @SystemServiceLog(description = "修改缓存扣费量")
     public boolean updateCacheCount(Integer id, Integer count) {
         return agencyMapper.updateCacheCount(id,count);
     }
 
     @Override
+    @SystemServiceLog(description = "删除缓存记录")
     public boolean deleteCacheDetail(String[] id) {
         List<String> list = new ArrayList<>();
         if (id != null){

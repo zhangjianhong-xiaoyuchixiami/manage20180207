@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.User;
 import org.qydata.entity.log.Log;
 import org.qydata.mapper.LogMapper;
@@ -22,6 +23,7 @@ public class LogServiceImpl implements LogService {
 
     @Override
     @Transactional
+    @SystemServiceLog(description = "新增日志")
     public boolean createLog(Log log) {
         int result = logMapper.createLog(log);
         if (result != 1){
@@ -32,6 +34,7 @@ public class LogServiceImpl implements LogService {
 
     @Override
     @Transactional
+    @SystemServiceLog(description = "修改日志")
     public boolean updateLog(Log log) {
        int result = logMapper.updateLog(log);
        if (result != 1){
@@ -42,11 +45,13 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
+    @SystemServiceLog(description = "查询日志")
     public List<Log> queryLog(Map<String, Object> map) {
         return logMapper.queryLog(map);
     }
 
     @Override
+    @SystemServiceLog(description = "日志里搜索操作人")
     public List<User> queryUser() {
         return logMapper.queryUser();
     }

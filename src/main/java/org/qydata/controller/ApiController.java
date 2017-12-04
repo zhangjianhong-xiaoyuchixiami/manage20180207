@@ -3,6 +3,7 @@ package org.qydata.controller;
 import com.google.gson.Gson;
 import org.qydata.config.annotation.RecoverProbController;
 import org.qydata.config.annotation.RolePermission;
+import org.qydata.config.annotation.SystemControllerLog;
 import org.qydata.dst.ApiTypeInfo;
 import org.qydata.dst.CustomerApiPartner;
 import org.qydata.entity.*;
@@ -38,6 +39,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping(value = "/api-message")
+    @SystemControllerLog(description = "查询产品信息")
     public String queryApi(Integer tid,Integer vid,Integer pid,Double LPic, Double HPic,Integer statId, Model model){
         Map<String,Object> map = new HashMap<>();
         if (tid != null){
@@ -166,6 +168,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/api-price-change-log")
+    @SystemControllerLog(description = "查看上游产品改价记录")
     public String queryApiPriceChangeLog(Integer tid, Integer vid, Integer pid, Double LPic, Double HPic, String beginDate, String endDate, Model model){
         Map<String,Object> mapParam = new HashMap<>();
         Map<String,Object> map = new HashMap<>();
@@ -246,6 +249,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/api-message-by-company")
+    @SystemControllerLog(description = "查询客户详情")
     public String queryApiByCompanyId(Integer cid,Integer pid,Integer tid,Double LPic, Double HPic,Model model){
         Map<String,Object> map = new HashMap<>();
         if (cid != null){
@@ -332,6 +336,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/company/apiType-price-change-log")
+    @SystemControllerLog(description = "查看下游客户产品改价记录")
     public String queryCompanyApiPriceChangeLog(Integer cid, Integer pid, Integer tid, Double LPic, Double HPic, String beginDate, String endDate, Model model){
         Map<String,Object> mapParam = new HashMap<>();
         if (cid != null){
@@ -501,6 +506,7 @@ public class ApiController {
     @ResponseBody
     @RecoverProbController
     @RolePermission
+    @SystemControllerLog(description = "恢复上游产品配额")
     public String recoverApiProb(HttpServletRequest request){
         String [] aid = request.getParameterValues("aid[]");
         Map<String,Object> map = new HashMap<>();

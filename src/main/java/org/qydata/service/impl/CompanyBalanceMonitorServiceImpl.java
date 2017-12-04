@@ -1,5 +1,6 @@
 package org.qydata.service.impl;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.CustomerCompanyEmail;
 import org.qydata.entity.Partner;
 import org.qydata.entity.monitor.CompanyBalanceMonitor;
@@ -22,6 +23,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
     private CompanyBalanceMonitorMapper monitorMapper;
 
     @Override
+    @SystemServiceLog(description = "查询客户余额报警列表")
     public List<CompanyBalanceMonitor> queryCompanyBalanceMonitor(Map<String, Object> map) {
 
         Map<String,Object> param = new HashMap<>();
@@ -68,6 +70,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
     }
 
     @Override
+    @SystemServiceLog(description = "修改是否预付")
     public boolean updatePrepay(Integer cid, Integer value) {
         CompanyBalanceMonitor monitor = monitorMapper.queryCompanyBalanceMonitorById(cid);
         if (monitor == null){
@@ -83,6 +86,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
     }
 
     @Override
+    @SystemServiceLog(description = "修改是否报警")
     public boolean updateAlarm(Integer cid, Integer value) {
         CompanyBalanceMonitor monitor = monitorMapper.queryCompanyBalanceMonitorById(cid);
         if (monitor == null){
@@ -98,6 +102,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
     }
 
     @Override
+    @SystemServiceLog(description = "修改是否提醒客户")
     public boolean updateRemindCustomer(Integer cid, Integer value) {
         CompanyBalanceMonitor monitor = monitorMapper.queryCompanyBalanceMonitorById(cid);
         if (monitor == null){
@@ -113,6 +118,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
     }
 
     @Override
+    @SystemServiceLog(description = "修改提前提醒客户的时间")
     public boolean updateAhead(Integer cid, Integer value) {
         CompanyBalanceMonitor monitor = monitorMapper.queryCompanyBalanceMonitorById(cid);
         if (monitor == null){
@@ -128,16 +134,19 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
     }
 
     @Override
+    @SystemServiceLog(description = "查询客户邮箱")
     public List<CustomerCompanyEmail> queryEmailById(Map<String, Object> map) {
         return monitorMapper.queryEmailById(map);
     }
 
     @Override
+    @SystemServiceLog(description = "删除客户邮箱")
     public boolean deleteEmail(Integer id, Integer cid) {
         return monitorMapper.deleteEmail(id,cid);
     }
 
     @Override
+    @SystemServiceLog(description = "添加客户邮箱")
     public boolean addEmail(Integer cid, String email) {
         CustomerCompanyEmail companyEmail = new CustomerCompanyEmail();
         companyEmail.setCompanyId(cid);
@@ -146,6 +155,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
     }
 
     @Override
+    @SystemServiceLog(description = "查询所有合作伙伴")
     public List<Partner> queryAllPartner() {
         return monitorMapper.queryAllPartner();
     }

@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.entity.Partner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ public interface PartnerFinanceService {
      * @return
      * @throws Exception
      */
+    @SystemServiceLog(description = "查询合作公司的财务总览")
     public Map<String,Object> queryPartnerOverFinance(Map<String,Object> map);
 
     /**
@@ -29,6 +31,7 @@ public interface PartnerFinanceService {
      * @return
      */
     @Transactional
+    @SystemServiceLog(description = "收付款")
     public boolean addPartnerIncomeExpenditureLog(Integer partnerId,String amount,String remark,String date,Integer reasonId);
 
     /**
@@ -36,6 +39,7 @@ public interface PartnerFinanceService {
      * @param partnerName
      * @return
      */
+    @SystemServiceLog(description = "新增合作公司")
     public boolean addPartner(String partnerName);
 
     /**
@@ -44,6 +48,7 @@ public interface PartnerFinanceService {
      * @return
      * @throws Exception
      */
+    @SystemServiceLog(description = "合作公司明细")
     public Map<String,Object> queryPartnerDetailLog(Map<String,Object> map);
 
     /**
@@ -52,5 +57,6 @@ public interface PartnerFinanceService {
      * @return
      * @throws Exception
      */
+    @SystemServiceLog(description = "收入支出走势")
     public List<Partner> queryPartnerBarChart(Map<String,Object> map);
 }
