@@ -155,13 +155,7 @@ public interface CustomerFinanceMapper {
      */
     public List<CustomerConsume> queryNearlyWeekTrend(Integer cid);
 
-    /**
-     *
-     * @param map
-     * @return
-     */
 
-    public CompanyApi getPriceByType(Map<String, Integer>map);
 
 
     /**

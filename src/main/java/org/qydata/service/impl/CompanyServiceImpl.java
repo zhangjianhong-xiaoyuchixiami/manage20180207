@@ -29,9 +29,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {
         try {
-            List<CustomerCompanyPartner> allCompany = companyMapper.findAllCompany(map);
-            return allCompany;
-
+            return companyMapper.findAllCompany(map);
         } catch (Exception e) {
             e.printStackTrace();
         }
