@@ -103,7 +103,6 @@
             LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
             WHERE b.ok = 1
             AND b.isMock = 0
-            AND b.cost > 0
             AND b.createTime >= #{currDayTime}
             GROUP BY a.apiId
         ) a

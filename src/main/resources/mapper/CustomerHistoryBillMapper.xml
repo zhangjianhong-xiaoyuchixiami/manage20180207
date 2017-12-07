@@ -132,11 +132,11 @@
 
     <!--查询客户当天实时消费-->
     <select id="queryCustomerCurrDayRealTimeConsume" parameterType="map" resultMap="customerHistoryBillMap">
-        SELECT a.customerId,sum(-b.amount) currDayRealTimeConsume
-        FROM qyfinance.finance_CustomerRequestLog a
-        INNER JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
-        WHERE b.createTime >= #{currDayTime}
-        GROUP BY a.customerId
+        SELECT customerId,sum(-amount) currDayRealTimeConsume
+        FROM qyfinance.finance_CustomerBalanceLog
+        WHERE reasonId = -1
+        AND createTime >= #{currDayTime}
+        GROUP BY customerId
     </select>
 
     <!--根据公司companyId查询正式账号id-->

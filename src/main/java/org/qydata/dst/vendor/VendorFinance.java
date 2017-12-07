@@ -16,6 +16,7 @@ public class VendorFinance {
     private Double balance;
     private Double charge;
     private Double consume;
+    private Double staticConsume;
     private Double lastWeekConsume;
     private Double lastMonthConsume;
     private Double currMonthConsume;

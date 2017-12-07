@@ -5,9 +5,10 @@
 
     <!--统计供应商消费信息-->
     <select id="queryVendor" parameterType="map" resultType="org.qydata.dst.vendor.VendorFinance">
-        SELECT a.vendorId,a.vendorName,a.partnerId,a.partnerName,a.status,b.balance charge
+        SELECT a.vendorId,c.name vendorName,a.partnerId,a.partnerName,a.status,b.balance charge
         FROM qyfinance.bkvwApiVendor a
         LEFT JOIN qyfinance.ApiVendorBalance b ON a.vendorId = b.vendorId
+        LEFT JOIN qyfinance.finance_ApiVendor c ON a.vendorId = c.id
         <where>
             <if test="statusList!=null and statusList.size()!=0">
                a.status in
@@ -91,6 +92,7 @@
         GROUP BY b.vendorId
     </select>
 
+    <!--查询供应商当天消费金额-->
     <select id="queryVendorCurrDayConsume" parameterType="map" resultType="org.qydata.dst.vendor.VendorFinance">
         SELECT b.vendorId,sum(a.currDayConsume) currDayConsume
         FROM
@@ -98,9 +100,9 @@
             SELECT apiId,sum(b.cost) currDayConsume
             FROM qydata.ApiRequestLog a
             INNER JOIN qydata.ApiResponseLog b ON a.id = b.requestLogId
-            WHERE b.ok=1
+            WHERE  b.createTime >= #{currDayTime}
+            AND b.ok=1
             AND b.isMock=0
-            AND b.createTime >= #{currDayTime}
             GROUP BY a.apiId
         ) a
         LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id

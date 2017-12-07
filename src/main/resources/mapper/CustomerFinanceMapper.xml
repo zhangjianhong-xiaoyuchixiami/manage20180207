@@ -236,30 +236,11 @@
 
     <!--查询客户各产品的消费情况-->
     <select id="queryCustomerApiTypeConsume" parameterType="map" resultMap="CustomerFinance_CompanyApiType_Map">
-        SELECT
-        base.id customerId,
-        aa.apiTypeId,
-        aa.stid subTypeId,
-        ifnull(aa.sumAmount,0) sumAmount,
-        ifnull(aa.countTotle,0) countTotle,
-        ifnull(aa.countSuccess,0) countSuccess,
-        ifnull(bb.sumAmount,0) currDaySumAmount,
-        ifnull(bb.countTotle,0) currDayCountTotle,
-        ifnull(bb.countSuccess,0) currDayCountSuccess,
-        cc.companyId,
-        dd.price,
-        dd.enabled,
-        ee.name apiTypeName,
-        ff.name subTypeName
-        FROM qyfinance.bkvwCustomer base
-        LEFT JOIN
+        SELECT a.customerId,a.apiTypeId,a.stid subTypeId,a.sumAmount,a.countTotle,a.countSuccess,
+        b.companyId,c.price,c.enabled,d.name apiTypeName,e.name subTypeName
+        FROM
         (
-            SELECT
-            customerId,
-            apiTypeId,
-            ifnull(stid,0) stid,
-            sum(sumAmount) sumAmount,
-            sum(countTotle) countTotle,
+            SELECT customerId,apiTypeId,ifnull(stid,0) stid,sum(sumAmount) sumAmount,sum(countTotle) countTotle,
             sum(countSuccess) countSuccess
             FROM qyfinance.bkvwCompanyApiTypeConsumeDayCount
             <where>
@@ -275,27 +256,13 @@
                 </if>
             </where>
             GROUP BY customerId,apiTypeId,stid
-        ) aa ON  base.id = aa.customerId
-        LEFT JOIN
-        (
-            SELECT
-            a.customerId,
-            a.apiTypeId,
-            ifnull(a.stid,0) stid,
-            sum(b.amount) sumAmount,
-            count(a.id) countTotle,
-            count(b.id) countSuccess
-            FROM qyfinance.finance_CustomerRequestLog a
-            LEFT JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
-            WHERE a.createTime >= #{currDayTime}
-            GROUP BY a.customerId,a.apiTypeId,a.stid
-        ) bb ON aa.customerId = bb.customerId AND aa.apiTypeId = bb.apiTypeId AND aa.stid = bb.stid
-        LEFT JOIN qyfinance.finance_Customer cc ON aa.customerId = cc.id
-        LEFT JOIN qyfinance.bkvwCompanyApi dd ON cc.companyId=dd.companyId AND aa.apiTypeId=dd.apiTypeId AND aa.stid=dd.subTypeId
-        LEFT JOIN qyfinance.bkvwApiType ee ON aa.apiTypeId=ee.id
-        LEFT JOIN qyfinance.bkvwMobileOperator ff ON aa.stid=ff.id
-        WHERE base.typeId = 1
-        ORDER BY ee.name ASC,dd.enabled DESC
+        ) a
+        LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
+        LEFT JOIN qyfinance.bkvwCompanyApi c ON b.companyId=c.companyId AND a.apiTypeId=c.apiTypeId AND a.stid=c.subTypeId
+        LEFT JOIN qyfinance.bkvwApiType d ON a.apiTypeId=d.id
+        LEFT JOIN qyfinance.bkvwMobileOperator e ON a.stid=e.id
+        WHERE b.typeId = 1
+        ORDER BY d.name ASC,c.enabled DESC
     </select>
 
 
@@ -310,7 +277,9 @@
     <select id="queryCustomerChargeCurrDay" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
         SELECT customerId id,sum(amount) currDayChargeAmount
         FROM qyfinance.finance_CustomerBalanceLog
-        WHERE reasonId in(1,3)
+        WHERE reasonId = 1
+        OR  reasonId = 3
+        OR reasonId = -4
         AND createTime >= #{currDayTime}
         GROUP BY customerId
     </select>
@@ -344,7 +313,7 @@
     <select id="queryCustomerCurrDayTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
         SELECT customerId id,sum(amount) currDayAmount
         FROM qyfinance.finance_CustomerBalanceLog
-        WHERE reasonId in (-1)
+        WHERE reasonId = -1
         AND createTime >= #{currDayTime}
         GROUP BY customerId
     </select>

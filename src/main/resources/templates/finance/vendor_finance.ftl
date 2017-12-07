@@ -217,11 +217,11 @@
                                         <th>合作公司</th>
                                         <th>充值总额</th>
                                         <th>消费总额（开通后--至昨天)</th>
-                                        <th>余额</th>
+                                        <th>余额（至昨天）</th>
                                         <th>上周消费</th>
                                         <th>上月消费</th>
-                                        <th>当月消费</th>
-                                        <th>当天消费</th>
+                                        <th>当月消费（不包括昨天）</th>
+                                        <th class="table-td-none">当天消费</th>
                                         <th class="table-td-none">类型</th>
                                         <th class="table-td-none">当前价格</th>
                                         <th class="table-td-none">消费总额</th>
@@ -242,12 +242,12 @@
                                                     </#if>
                                                 </td>
                                                 <td data-title="充值总额">${finance.charge!'0'}</td>
-                                                <td data-title="消费总额">${finance.charge!'0'}</td>
+                                                <td data-title="消费总额">${finance.consume!'0'}</td>
                                                 <td data-title="余额">${finance.balance!'0'}</td>
                                                 <td data-title="上周消费">${finance.lastWeekConsume!'0'}</td>
                                                 <td data-title="上月消费">${finance.lastMonthConsume!'0'}</td>
                                                 <td data-title="本月消费">${finance.currMonthConsume!'0'}</td>
-                                                <td data-title="当天消费">${finance.currDayConsume!'0'}</td>
+                                                <td data-title="当天消费" class="table-td-none">${finance.currDayConsume!'0'}</td>
                                                 <td data-title="类型" class="table-td-none">
                                                     <#if finance.typeConsumeList??>
                                                         <#list finance.typeConsumeList as type>

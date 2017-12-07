@@ -87,10 +87,10 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         param.put("currMonthTime", CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         List<CustomerHistoryBill> billList = billMapper.queryCustomerHistoryBill(param);
         List<CustomerHistoryBill> billChargeList = billMapper.queryCustomerChargeTotle(param);
-        List<CustomerHistoryBill> billChargeCurrDayList = billMapper.queryCustomerChargeCurrDay(param);
+       // List<CustomerHistoryBill> billChargeCurrDayList = billMapper.queryCustomerChargeCurrDay(param);
         List<CustomerHistoryBill> billStaticConsume = billMapper.queryCustomerStaticConsumeAmount();
         List<CustomerHistoryBill> billCurrMonthConsumeList = billMapper.queryCustomerCurrMonthRealTimeConsume(param);
-        List<CustomerHistoryBill> billCurrDayConsumeList = billMapper.queryCustomerCurrDayRealTimeConsume(param);
+//        List<CustomerHistoryBill> billCurrDayConsumeList = billMapper.queryCustomerCurrDayRealTimeConsume(param);
         Double chargeTot = 0.0;
         Double consumeTot = 0.0;
         if (billList != null){
@@ -117,15 +117,15 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                         }
                     }
 
-                    /*封装充值总额（今天）*/
-                    if (billChargeCurrDayList != null){
-                        for (int j = 0; j < billChargeCurrDayList.size() ; j++) {
-                            CustomerHistoryBill billChargeCurrDay = billChargeCurrDayList.get(j);
-                            if (bill.getCustomerId() == billChargeCurrDay.getCustomerId() || bill.getCustomerId().equals(billChargeCurrDay.getCustomerId())){
-                                bill.setChargeCurrDayAmount(billChargeCurrDay.getChargeCurrDayAmount()/100.0);
-                            }
-                        }
-                    }
+//                    /*封装充值总额（今天）*/
+//                    if (billChargeCurrDayList != null){
+//                        for (int j = 0; j < billChargeCurrDayList.size() ; j++) {
+//                            CustomerHistoryBill billChargeCurrDay = billChargeCurrDayList.get(j);
+//                            if (bill.getCustomerId() == billChargeCurrDay.getCustomerId() || bill.getCustomerId().equals(billChargeCurrDay.getCustomerId())){
+//                                bill.setChargeCurrDayAmount(billChargeCurrDay.getChargeCurrDayAmount()/100.0);
+//                            }
+//                        }
+//                    }
 
                  /*封装充值总额（昨天 + 今天）*/
                     if (bill.getChargeAmount() != null){
@@ -173,21 +173,21 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                             }
                         }
                     }
-                    if (billCurrDayConsumeList != null){
-                        for (CustomerHistoryBill currDayBill : billCurrDayConsumeList) {
-                            if (bill.getCustomerId() == currDayBill.getCustomerId() || bill.getCustomerId().equals(currDayBill.getCustomerId())){
-                                if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() != null){
-                                    bill.setBalance(bill.getBalance() - (currDayBill.getCurrDayRealTimeConsume()/100.0));
-                                }
-                                if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() == null){
-                                    bill.setBalance(bill.getBalance());
-                                }
-                                if (bill.getBalance() == null && currDayBill.getCurrDayRealTimeConsume() != null){
-                                    bill.setBalance(-(currDayBill.getCurrDayRealTimeConsume()/100.0));
-                                }
-                            }
-                        }
-                    }
+//                    if (billCurrDayConsumeList != null){
+//                        for (CustomerHistoryBill currDayBill : billCurrDayConsumeList) {
+//                            if (bill.getCustomerId() == currDayBill.getCustomerId() || bill.getCustomerId().equals(currDayBill.getCustomerId())){
+//                                if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() != null){
+//                                    bill.setBalance(bill.getBalance() - (currDayBill.getCurrDayRealTimeConsume()/100.0));
+//                                }
+//                                if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() == null){
+//                                    bill.setBalance(bill.getBalance());
+//                                }
+//                                if (bill.getBalance() == null && currDayBill.getCurrDayRealTimeConsume() != null){
+//                                    bill.setBalance(-(currDayBill.getCurrDayRealTimeConsume()/100.0));
+//                                }
+//                            }
+//                        }
+//                    }
 
                     if (bill.getFloor() != null && bill.getBalance() != null){
                         bill.setUserFloor(bill.getFloor() + bill.getBalance());

@@ -57,7 +57,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
         List<VendorHistoryBill> billList = billMapper.queryVendorHistoryBill(param);
         List<VendorHistoryBill> staticBillList = billMapper.queryVendorStaticConsumeAmount();
         List<VendorHistoryBill> currMonthBillList = billMapper.queryVendorCurrMonthRealTimeConsume(param);
-        List<VendorHistoryBill> currDayBillList = billMapper.queryVendorCurrDayRealTimeConsume(param);
+       // List<VendorHistoryBill> currDayBillList = billMapper.queryVendorCurrDayRealTimeConsume(param);
         Double chargeTot = 0.0;
         Double consumeTot = 0.0;
         if (billList == null){
@@ -110,21 +110,21 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
                     }
                 }
             }
-            if (currDayBillList != null){
-                for (VendorHistoryBill currDayBill : currDayBillList) {
-                    if (bill.getVendorId() == currDayBill.getVendorId() || bill.getVendorId().equals(currDayBill.getVendorId())){
-                        if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() != null){
-                            bill.setBalance(bill.getBalance() - (currDayBill.getCurrDayRealTimeConsume()/100.0));
-                        }
-                        if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() == null){
-                            bill.setBalance(bill.getBalance());
-                        }
-                        if (bill.getBalance() == null && currDayBill.getCurrDayRealTimeConsume() != null){
-                            bill.setBalance(-(currDayBill.getCurrDayRealTimeConsume()/100.0));
-                        }
-                    }
-                }
-            }
+//            if (currDayBillList != null){
+//                for (VendorHistoryBill currDayBill : currDayBillList) {
+//                    if (bill.getVendorId() == currDayBill.getVendorId() || bill.getVendorId().equals(currDayBill.getVendorId())){
+//                        if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() != null){
+//                            bill.setBalance(bill.getBalance() - (currDayBill.getCurrDayRealTimeConsume()/100.0));
+//                        }
+//                        if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() == null){
+//                            bill.setBalance(bill.getBalance());
+//                        }
+//                        if (bill.getBalance() == null && currDayBill.getCurrDayRealTimeConsume() != null){
+//                            bill.setBalance(-(currDayBill.getCurrDayRealTimeConsume()/100.0));
+//                        }
+//                    }
+//                }
+//            }
         }
         Map<String,Object> resu = new HashMap<>();
         resu.put("chargeTot",chargeTot);

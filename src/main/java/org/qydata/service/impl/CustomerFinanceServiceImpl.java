@@ -87,7 +87,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         //客户充值（至昨天）
         List<CustomerFinance> chargeList = customerFinanceMapper.queryCustomerChargeTotle(mapTotleParam);
         //客户充值（当天）
-        List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
+       // List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
         //客户消费（至昨天）
         List<CustomerFinance> consumeList = customerFinanceMapper.queryCustomerConsumeTotle(mapTotleParam);
         //客户本月消费（至昨天）
@@ -109,22 +109,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<CustomerConsume> lastMonthConsumeList = customerFinanceMapper.queryCustomerLastMonthConsume(CalendarUtil_2.getCurrentLastMonth());
         //昨日消费
         List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
-
-        if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate"))) {
-            if (typeConsumeList != null){
-                for (CustomerFinance finance : typeConsumeList) {
-                    List<CompanyApi> apiList = finance.getCompanyApiList();
-                    if (apiList != null){
-                        for (CompanyApi api : apiList) {
-                            CompanyApiCount count = api.getCompanyApiCount();
-                            count.setSumAmount(count.getSumAmount() + count.getCurrDaySumAmount());
-                            count.setCountTotle(count.getCountTotle() + count.getCurrDayCountTotle());
-                            count.setCountSuccess(count.getCountSuccess() + count.getCurrDayCountSuccess());
-                        }
-                    }
-                }
-            }
-        }
 
         double lastWeekChargeTot = 0.0;
         double lastWeekConsumeTot = 0.0;
@@ -258,15 +242,15 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }
 
                  /*封装充值总额（今天）*/
-            if (currDayChargeList != null){
-                for (CustomerFinance finance : currDayChargeList) {
-                    if (customerFinance.getId() == finance.getId() || customerFinance.getId().equals(finance.getId())){
-                      if (finance.getCurrDayChargeAmount() != null){
-                          customerFinance.setCurrDayChargeAmount(finance.getCurrDayChargeAmount()/100.0);
-                      }
-                    }
-                }
-            }
+//            if (currDayChargeList != null){
+//                for (CustomerFinance finance : currDayChargeList) {
+//                    if (customerFinance.getId() == finance.getId() || customerFinance.getId().equals(finance.getId())){
+//                      if (finance.getCurrDayChargeAmount() != null){
+//                          customerFinance.setCurrDayChargeAmount(finance.getCurrDayChargeAmount()/100.0);
+//                      }
+//                    }
+//                }
+//            }
 
                  /*封装充值总额（昨天 + 今天）*/
             if (customerFinance.getChargeTotleAmount() != null){

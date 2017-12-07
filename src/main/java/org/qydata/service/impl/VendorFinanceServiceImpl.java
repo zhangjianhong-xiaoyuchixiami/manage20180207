@@ -1,12 +1,15 @@
 package org.qydata.service.impl;
 
+import org.qydata.dst.VendorHistoryBill;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.dst.vendor.VendorTypeConsume;
 import org.qydata.entity.ApiVendor;
 import org.qydata.mapper.VendorFinanceMapper;
+import org.qydata.mapper.VendorHistoryBillMapper;
 import org.qydata.service.SearchService;
 import org.qydata.service.VendorFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
 
     @Autowired
     private VendorFinanceMapper mapper;
+    @Autowired
+    private VendorHistoryBillMapper billMapper;
 
     @Override
     public Map<String, Object> queryVendor(Map<String, Object> map) {
@@ -49,8 +54,9 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
         List<VendorFinance> weekList = mapper.queryVendorLastWeekConsume(param);
         List<VendorFinance> monthList = mapper.queryVendorLastMonthConsume(param);
         List<VendorFinance> currMonthList = mapper.queryVendorCurrMonthConsume(param);
-        List<VendorFinance> currDayList = mapper.queryVendorCurrDayConsume(param);
+     //   List<VendorFinance> currDayList = mapper.queryVendorCurrDayConsume(param);
         List<VendorFinance> typeList = mapper.queryVendorTypeConsume(param);
+        List<VendorHistoryBill> billList = billMapper.queryVendorStaticConsumeAmount();
         if (financeList == null){
             return null;
         }
@@ -65,7 +71,12 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
             }
             if (finance.getCharge() != null){
                 finance.setCharge(finance.getCharge()/100.0);
+            }else {
+                finance.setCharge(0.0);
             }
+            finance.setStaticConsume(0.0);
+            finance.setCurrMonthConsume(0.0);
+            finance.setCurrDayConsume(0.0);
             if (consumeList != null){
                 for (VendorFinance consume : consumeList) {
                     if (finance.getVendorId() == consume.getVendorId()
@@ -106,21 +117,25 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
                     {
                         if (consume.getCurrMonthConsume() != null){
                             finance.setCurrMonthConsume(consume.getCurrMonthConsume()/100.0);
+                        }else {
+                            finance.setCurrMonthConsume(0.0);
                         }
                     }
                 }
             }
-            if (monthList != null){
-                for (VendorFinance consume : currDayList) {
-                    if (finance.getVendorId() == consume.getVendorId()
-                            || finance.getVendorId().equals(consume.getVendorId()))
-                    {
-                        if (consume.getCurrDayConsume() != null){
-                            finance.setCurrDayConsume(consume.getCurrDayConsume()/100.0);
-                        }
-                    }
-                }
-            }
+//            if (currDayList != null){
+//                for (VendorFinance consume : currDayList) {
+//                    if (finance.getVendorId() == consume.getVendorId()
+//                            || finance.getVendorId().equals(consume.getVendorId()))
+//                    {
+//                        if (consume.getCurrDayConsume() != null){
+//                            finance.setCurrDayConsume(consume.getCurrDayConsume()/100.0);
+//                        }else {
+//                            finance.setCurrDayConsume(0.0);
+//                        }
+//                    }
+//                }
+//            }
             if (typeList != null){
                 for (VendorFinance type : typeList) {
                     if (finance.getVendorId() == type.getVendorId()
@@ -147,6 +162,34 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
                     }
                 }
             }
+
+            if (billList != null){
+                for (VendorHistoryBill bill : billList) {
+                    if (finance.getVendorId() == bill.getVendorId()
+                            || finance.getVendorId().equals(bill.getVendorId()))
+                    {
+                        if (bill.getStaticConsumeAmount() != null){
+                            finance.setStaticConsume(bill.getStaticConsumeAmount()/100.0);
+                        }else {
+                            finance.setStaticConsume(0.0);
+                        }
+                    }
+                }
+            }
+            /*封装消费总额（至昨天 + 今天）*/
+            if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate")))
+            {
+                if (finance.getConsume() != null){
+                    if (finance.getCurrDayConsume() != null){
+                        finance.setConsume(finance.getConsume() + finance.getCurrDayConsume());
+                    }
+                }else {
+                    if (finance.getCurrDayConsume() != null){
+                        finance.setConsume(finance.getCurrDayConsume());
+                    }
+                }
+            }
+            finance.setBalance(finance.getCharge() - (finance.getStaticConsume() + finance.getCurrMonthConsume() + finance.getCurrDayConsume()));
             if (finance.getLastWeekConsume() != null){
                 lastWeekConsume += finance.getLastWeekConsume();
             }
@@ -175,7 +218,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
 
     @Override
     public List<ApiVendor> queryApiVendorName() {
-            return mapper.queryApiVendorName();
+        return mapper.queryApiVendorName();
     }
 
 }
