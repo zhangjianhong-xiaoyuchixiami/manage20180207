@@ -8,10 +8,13 @@ public class CustomerCurrDayConsume {
     private Integer customerId;
     private Integer companyId;
     private String companyName;
+    private Integer countTotle;
+
+
     private Integer apiTypeId;
     private Integer stid;
+    //客户单个产品消费总额
     private Double sumAmount;
-    private Integer countTotle;
     private Integer countSuccess;
     private Double price;
     private String apiTypeName;

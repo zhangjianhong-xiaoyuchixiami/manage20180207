@@ -58,6 +58,14 @@ public interface CustomerFinanceService {
      */
     public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
 
+    /**
+     *
+     * @param customerId
+     * @param apiTypeId
+     * @param subTypeId
+     * @return
+     */
+    public CustomerCurrDayConsume getPriceByType(Integer customerId, Integer apiTypeId, Integer subTypeId);
 
 //    /**
 //     * 查询客户的Api消费记录

@@ -317,6 +317,22 @@
         AND createTime >= #{currDayTime}
         GROUP BY customerId
     </select>
+<!--  查询客户不同产品的单价 -->
+    <select id="getApiPriceByType" parameterType="map" resultType="Double">
+        SELECT
+        b.price
+        FROM
+        qydata.Customer a,
+        qydata.CompanyApi b
+        WHERE
+        a.companyId = b.companyId
+        AND
+        a.id = #{customerId}
+        AND
+        b.apiTypeId = #{apiTypeId}
+        AND
+        b.subTypeId = #{subTypeId}
+    </select>
 
     <!--查询客户邮箱，1、用于判断是否存在邮箱，2、发送账单是填写收件人-->
     <select id="queryCustomerEmail" parameterType="map" resultType="org.qydata.entity.CustomerCompanyEmail">
@@ -466,6 +482,35 @@
         </if>
     </select>
 
+    <!--查询不同客户不同产品的价格和产品名字-->
+    <select id="getPriceByType" parameterType="map" resultType="org.qydata.dst.customer.CustomerCurrDayConsume">
+        SELECT
+            c.price,
+            d.name apiTypeName,
+            e.`name` subTypeName
+        FROM
+        (	SELECT
+                b.subTypeId ,
+                b.apiTypeId ,
+                b.price
+            FROM
+                qydata.Customer a,
+                qydata.CompanyApi b
+            WHERE
+                a.companyId = b.companyId
+            AND
+                a.id = #{customerId}
+            AND
+                b.apiTypeId = #{apiTypeId}
+            AND
+                b.subTypeId = #{subTypeId}
+         )  c
+        LEFT JOIN qyfinance.bkvwApiType d
+        ON c.apiTypeId = d.id
+        LEFT JOIN qyfinance.bkvwMobileOperator e
+        ON e.id =c.subTypeId
+
+    </select>
 
 
 </mapper>
