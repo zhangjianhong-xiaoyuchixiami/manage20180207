@@ -10,7 +10,10 @@ import org.qydata.entity.User;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.PowerUserService;
 import org.qydata.service.VendorHistoryBillService;
+import org.qydata.tools.DateUtils;
+import org.qydata.tools.JsonUtils;
 import org.qydata.tools.date.CalendarUtil;
+import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -205,6 +208,9 @@ public class FinanceController {
         map.put("customerId",customerId);
         map.put("consuTime",sdf.format(new Date()));
         List<CustomerCurrDayConsume> consumeList = customerFinanceService.queryCustomerCurrDayApiTypeConsume(map);
+
+
+
         Map<String,Object> mapJson = new HashMap<>();
         mapJson.put("consumeList",consumeList);
         return new Gson().toJson(mapJson);

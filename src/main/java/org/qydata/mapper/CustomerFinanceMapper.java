@@ -155,8 +155,14 @@ public interface CustomerFinanceMapper {
      */
     public List<CustomerConsume> queryNearlyWeekTrend(Integer cid);
 
+    /**
+     *查询不同客户的产品类型及单价
+     * @param map
+     * @return
+     */
+    public CustomerCurrDayConsume getPriceByType(Map<String, Integer>map);
 
-
+//    public Double getApiPriceByType(Map<String, Integer>map);
 
     /**
      * 查询客户的充值记录

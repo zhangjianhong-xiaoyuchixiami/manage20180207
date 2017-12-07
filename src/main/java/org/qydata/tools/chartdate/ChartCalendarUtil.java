@@ -1,11 +1,23 @@
 package org.qydata.tools.chartdate;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by jonhn on 2017/3/8.
  */
 public class ChartCalendarUtil {
+
+    public static void main(String[] args) {
+        try {
+            for (int i = 7; i > 0 ; i--) {
+                System.out.println(getStatetime(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -35,6 +47,16 @@ public class ChartCalendarUtil {
         return year +"-"+ month + "-" + day ;
     }
 
+    public static String getStatetime(int i) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, - i);
+        Date monday = c.getTime();
+        String preMonday = sdf.format(monday);
+        return preMonday;
+    }
 
 
 }

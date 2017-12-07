@@ -45,8 +45,8 @@ function currDayApiTypeConsume(customerId) {
                                 "<a href='javaScript:;' onclick='currDayDetail("+ data[i].customerId +','+ data[i].apiTypeId +','+ data[i].stid +")'>" + data[i].apiTypeName + "</a>" +
                                 "</td>" +
                                 "<td>" + '未知' + "</td>" +
-                                "<td>" + -data[i].sumAmount + "</td>" +
-                                "<td>" + data[i].countTotle + "</td>" +
+                                "<td>" + data[i].sumAmount + "</td>" +
+                                /*"<td>" + data[i].countTotle + "</td>" +*/
                                 "<td>" + data[i].countSuccess + "</td>" +
                                 "</tr>";
                         } else {
@@ -55,8 +55,8 @@ function currDayApiTypeConsume(customerId) {
                                 "<a href='javaScript:;' onclick='currDayDetail("+ data[i].customerId +','+ data[i].apiTypeId +','+ data[i].stid +")'>" + data[i].apiTypeName + "</a>" +
                                 "</td>" +
                                 "<td>" + data[i].price + "</td>" +
-                                "<td>" + -data[i].sumAmount + "</td>" +
-                                "<td>" + data[i].countTotle + "</td>" +
+                                "<td>" + data[i].sumAmount + "</td>" +
+                                /*"<td>" + data[i].countTotle + "</td>" +*/
                                 "<td>" + data[i].countSuccess + "</td>" +
                                 "</tr>";
                         }
@@ -64,10 +64,15 @@ function currDayApiTypeConsume(customerId) {
                     }
                 }else {
                     var myContent = "<tr>" +
-                        "<td rowspan='5'>" + '无消费记录' + "</td>" +
+                        "<td rowspan='4'>" + '无消费记录' + "</td>" +
                         "</tr>";
                     $("#simple_customer_curr_day_api_type_consume tbody").append(myContent);
                 }
+            }else {
+                var myContent = "<tr>" +
+                    "<td rowspan='4'colspan=\"4\">" + '无消费记录' + "</td>" +
+                    "</tr>";
+                $("#simple_customer_curr_day_api_type_consume tbody").append(myContent);
             }
 
         }
