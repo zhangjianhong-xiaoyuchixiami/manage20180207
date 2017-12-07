@@ -1,5 +1,8 @@
 package org.qydata.tools;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by jonhn on 2017/3/28.
  */
@@ -17,5 +20,25 @@ public class DateUtils {
         long s = (between  / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
         long ms = (between  - day * 24 * 60 * 60 * 1000 - hour * 60 * 60 * 1000 - min * 60 * 1000 - s * 1000);
         return  hour+":"+min+":"+s+"."+ms;
+    }
+
+    /**
+     * 将日期格式转换为字符串
+     *
+     * @return
+     */
+    public static Integer formatCurrentDate(){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String dateTime = sdf.format(date);
+        return Integer.valueOf(dateTime);
+    }
+
+    public static Integer formatEndDate(String str){
+        String date = str.replace("-","");
+        String [] dateTime = date.split(" ");
+        int dateNum = Integer.parseInt(dateTime[0]);
+        dateNum = dateNum - 1;
+        return dateNum;
     }
 }

@@ -34,6 +34,11 @@
         </collection>
     </resultMap>
 
+    <!--<resultMap id="" type="">-->
+
+        <!---->
+    <!--</resultMap>-->
+
     <resultMap type="org.qydata.entity.CustomerBalanceLog" id="CustomerBalanceLog_Map">
         <id column="id" property="id"/>
         <result column="reasonId" property="reasonId"/>
@@ -105,6 +110,10 @@
         <result column="apiTypeName" property="apiTypeName"/>
         <result column="subTypeName" property="subTypeName"/>
     </resultMap>
+
+
+
+
 
     <resultMap id="CustomerFinance_CompanyApiType_Map" type="org.qydata.dst.CustomerFinance">
         <result column="customerId" property="id"/>
@@ -263,6 +272,27 @@
         LEFT JOIN qyfinance.bkvwMobileOperator e ON a.stid=e.id
         WHERE b.typeId = 1
         ORDER BY d.name ASC,c.enabled DESC
+    </select>
+
+    <select id="getPriceByType" parameterType="map" resultType="org.qydata.entity.CompanyApi">
+        SELECT
+          a.companyId,
+	      a.`name`,
+	      b.Id ,
+          b.enabled,
+          b.createTime,
+          b.price
+        FROM
+          qydata.Customer a,
+          qydata.CompanyApi b
+        WHERE
+          a.companyId = b.companyId
+        AND
+          a.id = #{customerId}
+        AND
+          b.apiTypeId = #{apiTypeId}
+        AND
+          b.subTypeId = #{subTypeId}
     </select>
 
 

@@ -5,7 +5,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
+import org.apache.poi.ss.formula.functions.T;
+import org.qydata.constants.CustomerFinanceContants;
+import org.qydata.dst.CustomerFinance;
+import org.qydata.tools.JsonUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,6 +63,27 @@ public class HttpClientUtil {
             e.printStackTrace();
         }
         return statusCode;
+    }
+
+    /**
+     * 客户消费量查询接口
+     * @param customerId
+     * @param date
+     * @return
+     */
+    public static String httpRequest(String customerId, String date) {
+        String s = null;
+        try {
+            HttpClient httpClient = new SSLClient();
+            HttpGet httpGet = new HttpGet(CustomerFinanceContants.REQUEST_PREFIX_API+"/"+customerId+"/"+date+CustomerFinanceContants.REQUEST_KEY);
+            HttpResponse response = httpClient.execute(httpGet);
+            HttpEntity entity = response.getEntity();
+            s = EntityUtils.toString(entity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
     }
 
 }

@@ -1,10 +1,13 @@
 package org.qydata.service;
 
+<<<<<<< Updated upstream
 import org.qydata.dst.CustomerApiVendor;
+=======
+import org.qydata.config.annotation.SystemServiceLog;
+>>>>>>> Stashed changes
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
-import org.qydata.entity.ApiType;
-import org.qydata.entity.ApiVendor;
+import org.qydata.entity.CompanyApi;
 
 import java.util.List;
 import java.util.Map;
@@ -58,7 +61,14 @@ public interface CustomerFinanceService {
      */
     public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
 
-
+    /**
+     *
+     * @param customerId
+     * @param apiTypeId
+     * @param subTypeId
+     * @return
+     */
+    public CompanyApi getPriceByType(Integer customerId, Integer apiTypeId, Integer subTypeId);
 //    /**
 //     * 查询客户的Api消费记录
 //     * @param map

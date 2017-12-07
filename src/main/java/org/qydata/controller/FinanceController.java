@@ -75,6 +75,7 @@ public class FinanceController {
         }
         model.addAttribute("statusArray",statusList);
         map.put("statusList", statusList);
+
         Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerOverAllFinance(map);
         if (mapResult != null){
             for (Map.Entry<String,Object> me : mapResult.entrySet()) {

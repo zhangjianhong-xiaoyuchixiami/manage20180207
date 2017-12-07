@@ -23,4 +23,5 @@ public class CustomerApi implements Serializable {
     private Api api;
     private Customer customer;
 
+
 }

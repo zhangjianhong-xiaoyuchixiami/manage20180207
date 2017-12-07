@@ -10,10 +10,13 @@ import org.qydata.entity.*;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.DateUtils;
+import org.qydata.tools.JsonUtils;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.date.CalendarUtil_2;
 import org.qydata.tools.date.CalendarUtil_3;
+import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +63,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 mapTotleParam.put("beginDate",me.getValue());
             }
             if("endDate".equals(me.getKey())){
+
                 typeParam.put("endDate",me.getValue());
+
                 mapTotleParam.put("endDate",me.getValue());
             }
             if("statusList".equals(me.getKey())){
@@ -78,6 +83,14 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
         //财务账单客户列表
         List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomer(param);
+        List<String> customerIdList = new ArrayList<String>();
+        if (list != null){
+            for (CustomerFinance customerFinances : list) {
+                Integer id = customerFinances.getId();
+
+                customerIdList.add(id + "");
+            }
+        }
         if (list == null){
             return null;
         }
@@ -87,13 +100,116 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         //客户充值（至昨天）
         List<CustomerFinance> chargeList = customerFinanceMapper.queryCustomerChargeTotle(mapTotleParam);
         //客户充值（当天）
+<<<<<<< Updated upstream
        // List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
+=======
+        List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
+
+
+>>>>>>> Stashed changes
         //客户消费（至昨天）
         List<CustomerFinance> consumeList = customerFinanceMapper.queryCustomerConsumeTotle(mapTotleParam);
+
+
         //客户本月消费（至昨天）
         List<CustomerFinance> currMonthConsList = customerFinanceMapper.queryCustomerCurrMonthTotle(mapTotleParam);
+
+
+
         //客户当天消费
         List<CustomerFinance> currDayConsList = customerFinanceMapper.queryCustomerCurrDayTotle(mapTotleParam);
+
+
+
+
+        //获取当前日期
+        String currentDate = DateUtils.formatCurrentDate() + "";
+        System.out.println(currentDate);
+        //定义记录当天的金额
+        double currDayAmount = 0.0;
+//        List<CustomerFinance>typeConsumeList = new ArrayList<CustomerFinance>();
+        //遍历财务账单客户列表获取所有客户id
+        for (String id : customerIdList) {
+
+            String customerId = id + "";
+            CompanyApi companyApi = new CompanyApi();
+            CustomerFinance customerFinance = new CustomerFinance();
+            //获取对应的companyApiList
+            List<CompanyApi>companyApiList = new ArrayList<CompanyApi>();
+            System.out.println(customerId);
+
+            //调用接口获得客户请求的服务和对应的次数
+            String s = HttpClientUtil.httpRequest(customerId, currentDate);
+            System.out.println(s);
+            int length = s.length();
+            if(length == 2){
+                continue;
+            }
+            //定义记录该客户的消费金额
+             int totalAmount = 0;
+            //将json转换成map
+            Map<String, String> jsonMap = JsonUtils.jsonToMap(s);
+            Set<Map.Entry<String, String>> entries = jsonMap.entrySet();
+            for (Map.Entry<String, String> entry : entries) {
+                //定义记录单项服务的消费金额
+                int amount = 0;
+                //获取键值即为对应的服务及消费次数
+                CompanyApiCount companyApiCount = new CompanyApiCount();
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+//              System.out.println(key);
+                System.out.println(value);
+
+                String[] split = key.split("-");
+                Integer apiTypeId = Integer.valueOf(split[0]);
+                Integer subTypeId = Integer.valueOf(split[1]);
+                Integer custId = Integer.valueOf(customerId);
+                System.out.println(apiTypeId);
+                System.out.println(subTypeId);
+
+                //根据customerId、apiTypeId、subTypeId查询请求服务的compnyApi对象
+                companyApi = getPriceByType(custId, apiTypeId, subTypeId);
+                if(companyApi == null){
+                    return null;
+                }
+                //封装服务id
+                companyApi.setSubTypeId(apiTypeId);
+                companyApi.setSubTypeId(subTypeId);
+                companyApi.setEnabled(1);
+                Integer price = companyApi.getPrice();
+                //计算此服务总消费金额
+                int count = Integer.valueOf(value);
+                amount = count * price;
+                System.out.println("单项服务费用"+amount);
+                //封装客户此服务当天消费金额
+                companyApiCount.setCurrDaySumAmount(amount);
+                //计算客户所有服务消费金额
+                totalAmount = totalAmount + amount;
+                System.out.println("所有服务费用"+totalAmount);
+                //封装客户当天所有服务消费金额?????????
+                companyApiCount.setSumAmount(totalAmount);
+
+
+
+
+                companyApi.setCompanyApiCount(companyApiCount);
+
+                companyApiList.add(companyApi);
+//                companyApiList.size();
+
+                currDayAmount = amount + currDayAmount;
+                System.out.println("当天总费用"+currDayAmount);
+            }
+            customerFinance.setCurrDayAmount(currDayAmount);
+//            typeConsumeList.add(customerFinance);
+        }
+
+
+
+
+
+
         //查询客户邮箱
         List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapEmailParam);
         //查询客户上月账单
@@ -110,6 +226,27 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         //昨日消费
         List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
 
+<<<<<<< Updated upstream
+=======
+
+
+        if (map.get("endDate") == null || CalendarUtil.getCurrTimeAfterDay().equals(map.get("endDate"))) {
+            if (typeConsumeList != null){
+                for (CustomerFinance finance : typeConsumeList) {
+                    List<CompanyApi> apiList = finance.getCompanyApiList();
+                    if (apiList != null){
+                        for (CompanyApi api : apiList) {
+                            CompanyApiCount count = api.getCompanyApiCount();
+                            count.setSumAmount(count.getSumAmount() + count.getCurrDaySumAmount());
+                            count.setCountTotle(count.getCountTotle() + count.getCurrDayCountTotle());
+                            count.setCountSuccess(count.getCountSuccess() + count.getCurrDayCountSuccess());
+                        }
+                    }
+                }
+            }
+        }
+
+>>>>>>> Stashed changes
         double lastWeekChargeTot = 0.0;
         double lastWeekConsumeTot = 0.0;
         double lastMonthChargeTot = 0.0;
@@ -127,7 +264,11 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 customerFinance.setFloor(-customerFinance.getFloor()/100.0);
             }
             customerFinance.setSurplusFloor(((customerFinance.getFloor()) + customerFinance.getBalance()));
-            
+
+
+
+
+
             /*封装各类型消费*/
             if (typeConsumeList != null) {
                 for (CustomerFinance finance : typeConsumeList) {
@@ -148,6 +289,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     }
                 }
             }
+
+
+
             //上周消费
             if (lastWeekConsumeList != null){
                 for (CustomerConsume consume : lastWeekConsumeList) {
@@ -348,9 +492,13 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapTran.put("totleConsumeAmount",totleConsumeAmount);
         mapTran.put("currMonthTotleConsumeAmount",currMonthTotleConsumeAmount);
         mapTran.put("currDayTotleConsumeAmount",currDayTotleConsumeAmount);
-        mapTran.put("customerFinanceList",customerFinanceList);
+        mapTran.put("u",customerFinanceList);
         return mapTran;
     }
+
+
+
+
 
     @Override
     public List<CustomerCurrDayConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
@@ -372,7 +520,96 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }
         }
         return consumeList;
+
+
+
+
+        //获取当前日期
+        String currentDate = DateUtils.formatCurrentDate() + "";
+        System.out.println(currentDate);
+        //定义记录当天的金额
+        double currDayAmount = 0.0;
+//        List<CustomerFinance>typeConsumeList = new ArrayList<CustomerFinance>();
+        //遍历财务账单客户列表获取所有客户id
+        for (String id : customerIdList) {
+
+            String customerId = id + "";
+            CompanyApi companyApi = new CompanyApi();
+            CustomerFinance customerFinance = new CustomerFinance();
+            //获取对应的companyApiList
+            List<CompanyApi>companyApiList = new ArrayList<CompanyApi>();
+            System.out.println(customerId);
+
+            //调用接口获得客户请求的服务和对应的次数
+            String s = HttpClientUtil.httpRequest(customerId, currentDate);
+            System.out.println(s);
+            int length = s.length();
+            if(length == 2){
+                continue;
+            }
+            //定义记录该客户的消费金额
+            int totalAmount = 0;
+            //将json转换成map
+            Map<String, String> jsonMap = JsonUtils.jsonToMap(s);
+            Set<Map.Entry<String, String>> entries = jsonMap.entrySet();
+            for (Map.Entry<String, String> entry : entries) {
+                //定义记录单项服务的消费金额
+                int amount = 0;
+                //获取键值即为对应的服务及消费次数
+                CompanyApiCount companyApiCount = new CompanyApiCount();
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+//              System.out.println(key);
+                System.out.println(value);
+
+                String[] split = key.split("-");
+                Integer apiTypeId = Integer.valueOf(split[0]);
+                Integer subTypeId = Integer.valueOf(split[1]);
+                Integer custId = Integer.valueOf(customerId);
+                System.out.println(apiTypeId);
+                System.out.println(subTypeId);
+
+                //根据customerId、apiTypeId、subTypeId查询请求服务的compnyApi对象
+                companyApi = getPriceByType(custId, apiTypeId, subTypeId);
+                if(companyApi == null){
+                    return null;
+                }
+                //封装服务id
+                companyApi.setSubTypeId(apiTypeId);
+                companyApi.setSubTypeId(subTypeId);
+                companyApi.setEnabled(1);
+                Integer price = companyApi.getPrice();
+                //计算此服务总消费金额
+                int count = Integer.valueOf(value);
+                amount = count * price;
+                System.out.println("单项服务费用"+amount);
+                //封装客户此服务当天消费金额
+                companyApiCount.setCurrDaySumAmount(amount);
+                //计算客户所有服务消费金额
+                totalAmount = totalAmount + amount;
+                System.out.println("所有服务费用"+totalAmount);
+                //封装客户当天所有服务消费金额?????????
+                companyApiCount.setSumAmount(totalAmount);
+
+
+
+
+                companyApi.setCompanyApiCount(companyApiCount);
+
+                companyApiList.add(companyApi);
+//                companyApiList.size();
+
+                currDayAmount = amount + currDayAmount;
+                System.out.println("当天总费用"+currDayAmount);
+            }
+            customerFinance.setCurrDayAmount(currDayAmount);
+//            typeConsumeList.add(customerFinance);
+        }
     }
+
+
+
 
     @Override
     public List<CustomerCurrDayConsumeDetail> queryCustomerCurrDayConsumeDetail(Map<String, Object> map) {
@@ -446,6 +683,16 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             e.printStackTrace();
         }
         return mapResult;
+    }
+
+    @Override
+    public CompanyApi getPriceByType(Integer customerId, Integer apiTypeId, Integer subTypeId) {
+        Map<String,Integer>typeMap = new HashMap<String,Integer>();
+        typeMap.put("customerId", customerId);
+        typeMap.put("apiTypeId", apiTypeId);
+        typeMap.put("subTypeId", subTypeId);
+        CompanyApi companyApi = customerFinanceMapper.getPriceByType(typeMap);
+        return companyApi;
     }
 
 //    @Override
