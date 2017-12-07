@@ -489,7 +489,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             System.out.println("所有服务费用"+totalAmount);
             //封装客户当天服务消费次数
             customerCurrDayConsume.setCountSuccess(count);
-
+            customerCurrDayConsume.setApiTypeId(apiTypeId);
+            customerCurrDayConsume.setStid(subTypeId);
+            customerCurrDayConsume.setCustomerId(custId);
             consumeList.add(customerCurrDayConsume);
         }
 
