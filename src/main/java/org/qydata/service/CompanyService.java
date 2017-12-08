@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.config.annotation.BackGroundCustomerBalanceLogServiceLog;
 import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.dst.CustomerCompanyPartner;
@@ -65,6 +66,7 @@ public interface CompanyService {
      * @return
      */
     @SystemServiceLog(description = "账号充值/扣费")
+    @BackGroundCustomerBalanceLogServiceLog()
     public int updateCustomerBalance(Integer companyId,Integer reason,String amount)throws Exception;
 
     /**

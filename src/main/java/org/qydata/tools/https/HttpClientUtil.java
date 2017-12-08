@@ -75,11 +75,14 @@ public class HttpClientUtil {
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             s = EntityUtils.toString(entity);
-
+            int statusCode = response.getStatusLine().getStatusCode();
+            if(statusCode == 200){
+                return s;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return s;
+        return null;
     }
 
 }

@@ -1,7 +1,10 @@
 package org.qydata.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import net.sf.json.JSONArray;
+
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.StringUtils;
 import org.qydata.dst.*;
 import org.qydata.dst.customer.CustomerConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
@@ -103,7 +106,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         //客户充值（至昨天）
         List<CustomerFinance> chargeList = customerFinanceMapper.queryCustomerChargeTotle(mapTotleParam);
         //客户充值（当天）
-       // List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
+        List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
         //客户消费（至昨天）
         List<CustomerFinance> consumeList = customerFinanceMapper.queryCustomerConsumeTotle(mapTotleParam);
         //客户本月消费（至昨天）
@@ -322,15 +325,15 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }
 
                  /*封装充值总额（今天）*/
-//            if (currDayChargeList != null){
-//                for (CustomerFinance finance : currDayChargeList) {
-//                    if (customerFinance.getId() == finance.getId() || customerFinance.getId().equals(finance.getId())){
-//                      if (finance.getCurrDayChargeAmount() != null){
-//                          customerFinance.setCurrDayChargeAmount(finance.getCurrDayChargeAmount()/100.0);
-//                      }
-//                    }
-//                }
-//            }
+            if (currDayChargeList != null){
+                for (CustomerFinance finance : currDayChargeList) {
+                    if (customerFinance.getId() == finance.getId() || customerFinance.getId().equals(finance.getId())){
+                      if (finance.getCurrDayChargeAmount() != null){
+                          customerFinance.setCurrDayChargeAmount(finance.getCurrDayChargeAmount()/100.0);
+                      }
+                    }
+                }
+            }
 
                  /*封装充值总额（昨天 + 今天）*/
             if (customerFinance.getChargeTotleAmount() != null){
@@ -447,10 +450,17 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         String customerId = String.valueOf (map.get("customerId"));
         //调用接口获得客户请求的服务和对应的次数
         String s = HttpClientUtil.httpRequest(customerId, currentDate);
-        System.out.println(s);
-        if (s.length() == 2){
+        //去掉接口返回值为null,""," ","{}","null","NULL"
+        if (StringUtils.isBlank(s) || s.replace(" ","").length() == 2 || s.equalsIgnoreCase("null")){
             return null;
         }
+        try {
+            //非json格式字符串会报错
+            JSONObject jsonObject = JSONObject.parseObject(s);
+        } catch (Exception e) {
+            return null;
+        }
+        System.out.println(s);
         List<CustomerCurrDayConsume> consumeList = new ArrayList<CustomerCurrDayConsume>();
         //将json转换成map
         Map<String, String> jsonMap = JsonUtils.jsonToMap(s);

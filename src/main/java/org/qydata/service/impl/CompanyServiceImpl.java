@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 
+import org.qydata.config.annotation.BackGroundCustomerBalanceLogServiceLog;
 import org.qydata.config.annotation.SystemServiceLog;
 import org.qydata.constants.GlobalStaticConstants;
 import org.qydata.dst.ApiTypeSubType;
@@ -143,6 +144,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @SystemServiceLog(description = "账号充值/扣费")
+    @BackGroundCustomerBalanceLogServiceLog()
     public int updateCustomerBalance(Integer companyId, Integer reason, String amount) throws Exception{
         String uri = GlobalStaticConstants.CUSTOMER_BALANCE_CHARGE;
         Map<String,Object> map = new HashMap<>();
@@ -418,6 +420,7 @@ public class CompanyServiceImpl implements CompanyService {
     @SystemServiceLog(description = "修改信用额度")
     public int updateCredit(Integer companyId, Integer credit) throws Exception {
         String uri = GlobalStaticConstants.CUSTOMER_CREDIT_PUT;
+        System.out.println("*********"+ uri + "***********");
         Map<String,Object> map = new HashMap<>();
         map.put("k",companyMapper.queryAuthKey("admin.k"));
         map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());

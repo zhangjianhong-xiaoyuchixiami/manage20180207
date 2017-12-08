@@ -24,7 +24,7 @@ var CustomerFinanceAccount = function () {
             if ($('#endDate').val() != null && $('#endDate').val() != ''){
                 endDate = $('#endDate').val();
             }else {
-                endDate = '至今'
+                endDate = '至昨天'
             }
 
             function fnFormatDetails ( oTable, nTr ,beginDate,endDate)
