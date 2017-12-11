@@ -1,12 +1,16 @@
 package org.qydata.constants;
 
+import org.qydata.config.properties.UrlProperties;
+
+
 /**
  * Created by jonhn on 2017/7/28.
  */
 public class GlobalStaticConstants {
 
- public static final String REQUEST_URL = "http://testapi.qydata.org:8989/admin/";
- //public static final String REQUEST_URL = "https://api.qydata.org:9000/admin/";
+
+ public static final String REQUEST_URL = UrlProperties.getUrl();
+
  //新增客户
  public static final String ADD_COMPANY = REQUEST_URL + "customer/add-package";
  //客户账号禁用
@@ -23,6 +27,8 @@ public class GlobalStaticConstants {
  public static final String CUSTOMER_DEL_IP = REQUEST_URL + "customer/ip/del";
  //客户余额充值
  public static final String CUSTOMER_BALANCE_CHARGE = REQUEST_URL + "customer/balance/charge";
+ //客户余额扣费
+ public static final String CUSTOMER_BALANCE_DEDUCT = REQUEST_URL + "customer/balance/deduct";
  //客户产品权限管理
  public static final String COMPANY_API_PUT = REQUEST_URL + "company/api/put";
  //客户产品权限禁用
@@ -37,6 +43,5 @@ public class GlobalStaticConstants {
  public static final String API_MODIFY_PROB = REQUEST_URL + "api/modify-prob";
  //产品价格修改
  public static final String API_MODIFY_COST = REQUEST_URL + "api/modify-cost";
-
 
 }

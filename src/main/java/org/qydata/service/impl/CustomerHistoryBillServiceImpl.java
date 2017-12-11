@@ -1,19 +1,27 @@
 package org.qydata.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.StringUtils;
 import org.qydata.dst.CustomerHistoryBill;
 import org.qydata.dst.CustomerHistoryBillDetail;
+import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.entity.Company;
 import org.qydata.entity.CompanyApi;
 import org.qydata.entity.CustomerHistoryBillUpdateLog;
 import org.qydata.entity.Partner;
 import org.qydata.mapper.CustomerHistoryBillMapper;
+import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerHistoryBillService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.DateUtils;
+import org.qydata.tools.JsonUtils;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
+
 import org.qydata.tools.date.CalendarUtil;
+import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +37,8 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
 
     @Autowired
     private CustomerHistoryBillMapper billMapper;
+    @Autowired
+    private CustomerFinanceService financeService;
 
     @Override
     public Map<String, Object> queryCustomerHistoryBill(Map<String, Object> map) {
@@ -173,21 +183,18 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                             }
                         }
                     }
-//                    if (billCurrDayConsumeList != null){
-//                        for (CustomerHistoryBill currDayBill : billCurrDayConsumeList) {
-//                            if (bill.getCustomerId() == currDayBill.getCustomerId() || bill.getCustomerId().equals(currDayBill.getCustomerId())){
-//                                if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() != null){
-//                                    bill.setBalance(bill.getBalance() - (currDayBill.getCurrDayRealTimeConsume()/100.0));
-//                                }
-//                                if (bill.getBalance() != null && currDayBill.getCurrDayRealTimeConsume() == null){
-//                                    bill.setBalance(bill.getBalance());
-//                                }
-//                                if (bill.getBalance() == null && currDayBill.getCurrDayRealTimeConsume() != null){
-//                                    bill.setBalance(-(currDayBill.getCurrDayRealTimeConsume()/100.0));
-//                                }
-//                            }
-//                        }
-//                    }
+                    Double currDayConsume = queryCustomerCurrDayConsume(bill.getCustomerId());
+                    if (currDayConsume != null){
+                        if (bill.getBalance() != null && currDayConsume != null){
+                            bill.setBalance(bill.getBalance() - (currDayConsume/100.0));
+                        }
+                        if (bill.getBalance() != null && currDayConsume == null){
+                            bill.setBalance(bill.getBalance());
+                        }
+                        if (bill.getBalance() == null && currDayConsume != null){
+                            bill.setBalance(-(currDayConsume/100.0));
+                        }
+                    }
 
                     if (bill.getFloor() != null && bill.getBalance() != null){
                         bill.setUserFloor(bill.getFloor() + bill.getBalance());
@@ -528,6 +535,37 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
             }
         }
         return logList;
+    }
+
+    @Override
+    public Double queryCustomerCurrDayConsume(Integer cid) {
+        //调用接口获得客户请求的服务和对应的次数
+        String result = HttpClientUtil.httpRequest(String.valueOf(cid), String.valueOf(DateUtils.formatCurrentDate()));
+        //去掉接口返回值为null,""," ","{}","null","NULL"
+        if (StringUtils.isBlank(result) || result.replace(" ","").length() == 2 || result.equalsIgnoreCase("null")){
+            return null;
+        }
+        try {
+            //非json格式字符串会报错
+            JSONObject.parseObject(result);
+        } catch (Exception e) {
+            return null;
+        }
+        //将json转换成map
+        Map<String, String> jsonMap = JsonUtils.jsonToMap(result);
+        Double totalAmount = 0.0;
+        if (jsonMap != null){
+            for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
+                String[] split = entry.getKey().split("-");
+                CustomerCurrDayConsume consume = financeService.getPriceByType(cid, Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+                if(consume == null){
+                    return null;
+                }
+                totalAmount += Integer.valueOf(entry.getValue()) * consume.getPrice();
+
+            }
+        }
+        return totalAmount;
     }
 
 

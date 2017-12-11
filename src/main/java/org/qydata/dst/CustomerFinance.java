@@ -16,11 +16,6 @@ public class CustomerFinance implements Serializable {
     private Integer companyId;
     private String companyName;
     private Double balance;
-    private Integer cost;
-    private Integer amount;
-    //历史总消费(至上月)
-    private Double historyTotalAmount;
-    private Double systemBalance;
     private Integer partnerId;
     private String partnerName;
     private Double floor;

@@ -5,7 +5,6 @@ import net.sf.json.JSONArray;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
 import org.qydata.dst.*;
 import org.qydata.dst.customer.CustomerConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
@@ -24,7 +23,6 @@ import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -87,20 +85,33 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         //财务账单客户列表
         List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomer(param);
 
+        List<String> customerIdList = new ArrayList<String>();
+        if (list != null){
+            for (CustomerFinance customerFinances : list) {
+                Integer id = customerFinances.getId();
+
+                customerIdList.add(id + "");
+            }
+        }
+
         if (list == null){
             return null;
         }
 
         //各类型
         List<CustomerFinance> typeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(typeParam);
+
         //客户当天消费
         List<CustomerFinance> currDayConsList = customerFinanceMapper.queryCustomerCurrDayTotle(mapTotleParam);
         //客户充值（至昨天）
         List<CustomerFinance> chargeList = customerFinanceMapper.queryCustomerChargeTotle(mapTotleParam);
         //客户充值（当天）
         List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
-        //客户消费（至昨天)
+        //客户消费（至昨天）
         List<CustomerFinance> consumeList = customerFinanceMapper.queryCustomerConsumeTotle(mapTotleParam);
+        //客户本月消费（至昨天）
+        List<CustomerFinance> currMonthConsList = customerFinanceMapper.queryCustomerCurrMonthTotle(mapTotleParam);
+
         //查询客户邮箱
         List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapEmailParam);
         //查询客户上月账单
@@ -115,11 +126,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<CustomerConsume> lastMonthConsumeList = customerFinanceMapper.queryCustomerLastMonthConsume(CalendarUtil_2.getCurrentLastMonth());
         //昨日消费
         List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
-        // 历史总消费金额(至上月)
-         String firstDayOfCurrentMonth = DateUtils.firstDayOfMonth(DateUtils.currentDate());
-        List<CustomerFinance> historyTotalAmountList = customerFinanceMapper.queryHistoryTotalAmount(firstDayOfCurrentMonth);
-        //客户本月消费（至昨天）
-        List<CustomerFinance> currMonthConsList = customerFinanceMapper.queryCustomerCurrMonthTotle(mapTotleParam);
 
         double lastWeekChargeTot = 0.0;
         double lastWeekConsumeTot = 0.0;
@@ -130,8 +136,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         double currMonthTotleConsumeAmount = 0.0;
         double currDayTotleConsumeAmount = 0.0;
         List<CustomerFinance> customerFinanceList = new ArrayList<>();
-        //定义记录当天的金额
-//        double currDayAmount = 0.0;
         Iterator<CustomerFinance> it = list.iterator();
         while (it.hasNext()) {
             CustomerFinance customerFinance = it.next();
@@ -195,18 +199,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 }
             }
 
-            //当日消费
-            if(currDayConsList != null){
-                for (CustomerFinance finance : currDayConsList) {
-                    if (customerFinance.getId() == finance.getId()
-                            || customerFinance.getId().equals(finance.getId())){
-                        if (finance.getCurrDayAmount() != null){
-                            customerFinance.setCurrDayAmount(-finance.getCurrDayAmount()/100);
-                        }
-                    }
-                }
-            }
-
             //昨天消费
             if (yesterdayConsumeList != null){
                 for (CustomerConsume consume : yesterdayConsumeList) {
@@ -218,20 +210,16 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     }
                 }
             }
-            //历史消费金额至上月
-            if(historyTotalAmountList != null){
-                for (CustomerFinance finance : historyTotalAmountList) {
-                    Double historyTotalAmount = 0.0;
-                    if (customerFinance.getId() == finance.getId()) {
-                        Integer cost = finance.getCost();
-                        Integer amount = finance.getAmount();
-                        Integer totalAmount = cost * amount;
-                        historyTotalAmount = historyTotalAmount + totalAmount;
-                        customerFinance.setCost(cost);
-                        customerFinance.setAmount(amount);
-                        customerFinance.setHistoryTotalAmount(-historyTotalAmount/100);
-                    }
 
+                /*封装当天消费总额*/
+            if (currDayConsList != null){
+                for (CustomerFinance finance : currDayConsList) {
+                    if (customerFinance.getId() == finance.getId()
+                            || customerFinance.getId().equals(finance.getId())){
+                        if (finance.getCurrDayAmount() != null){
+                            customerFinance.setCurrDayAmount(-finance.getCurrDayAmount()/100.0);
+                        }
+                    }
                 }
             }
 
@@ -258,7 +246,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     customerFinance.setCurrMonthAmount(customerFinance.getCurrDayAmount());
                 }
             }
-
 
                 /*封装充值总额（至昨天）*/
             if (chargeList != null){
@@ -290,47 +277,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }else {
                 if (customerFinance.getCurrDayChargeAmount() != null) {
                     customerFinance.setChargeTotleAmount(customerFinance.getCurrDayChargeAmount());
-                }
-            }
-
-            //封装系统余额(充值总额 - 消费总额)
-            //历史总充值
-            if (customerFinance.getChargeTotleAmount() != null){
-                if (customerFinance.getHistoryTotalAmount() != null){
-                    if (customerFinance.getCurrMonthAmount() != null){
-                        if (customerFinance.getCurrDayAmount() != null){
-                            System.out.println(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount() - customerFinance.getCurrDayAmount()));
-                            customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount() - customerFinance.getCurrDayAmount()));
-                        }else{
-                            System.out.println(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount() + customerFinance.getCurrMonthAmount()));
-                            customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount()));
-                        }
-                    }else{
-                        System.out.println(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount()));
-                        customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount()));
-                    }
-                }else{
-                    System.out.println(customerFinance.getChargeTotleAmount());
-                    customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount());
-
-                }
-            }else{
-                if (customerFinance.getHistoryTotalAmount() != null){
-                    if (customerFinance.getCurrMonthAmount() != null){
-                        if (customerFinance.getCurrDayAmount() != null){
-                            System.out.println(customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount() - customerFinance.getCurrDayAmount());
-                            customerFinance.setSystemBalance(customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount() - customerFinance.getCurrDayAmount());
-                        }else{
-                            System.out.println(customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount());
-                            customerFinance.setSystemBalance(customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount());
-                        }
-                    }else{
-                        System.out.println(customerFinance.getHistoryTotalAmount());
-                        customerFinance.setSystemBalance(customerFinance.getHistoryTotalAmount());
-                    }
-                }else{
-                    customerFinance.setSystemBalance(0.0);
-
                 }
             }
 
@@ -430,7 +376,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
      */
     @Override
     public List<CustomerCurrDayConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
+//        List<CustomerCurrDayConsumeUtil> consumeList = customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
 
+        //获取当前日期
         String currentDate = DateUtils.formatCurrentDate() + "";
         //获取客户id
         String customerId = String.valueOf (map.get("customerId"));
@@ -527,67 +475,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         return customerCurrDayConsume;
     }
 
-    /**
-     *查询客户当天消费金额
-     * @param customerId
-     * @param currentDate
-     * @return
-     */
-    public Double getCurrentDayTotalAmount(String customerId, String currentDate){
-
-        //调用接口获得客户请求的服务和对应的扣费次数
-        String s = HttpClientUtil.httpRequest(customerId, currentDate);
-        System.out.println(s);
-        //去掉接口返回值为null,""," ","{}","null","NULL"
-        if (StringUtils.isNotBlank(s) && s.replace(" ","").length() != 2 && !s.equalsIgnoreCase("null")){
-
-            try {
-                //非json格式字符串会报错
-                JSONObject jsonObject = JSONObject.parseObject(s);
-            } catch (Exception e) {
-                return null;
-            }
-            System.out.println(s);
-            //定义记录该客户的消费金额
-            Double totalAmount = 0.0;
-            //将json转换成map
-            Map<String, String> jsonMap = JsonUtils.jsonToMap(s);
-            Set<Map.Entry<String, String>> entries = jsonMap.entrySet();
-            for (Map.Entry<String, String> entry : entries) {
-                //定义记录单项服务的消费金额
-                Double amount = 0.0;
-                //获取键值即为对应的服务及消费次数
-                String key = entry.getKey();
-                String value = entry.getValue();
-
-                System.out.println(key);
-                System.out.println(value);
-
-                String[] split = key.split("-");
-                Integer apiTypeId = Integer.valueOf(split[0]);
-                Integer subTypeId = Integer.valueOf(split[1]);
-                Integer custId = Integer.valueOf(customerId);
-                System.out.println(apiTypeId);
-                System.out.println(subTypeId);
-
-                //根据customerId、apiTypeId、subTypeId查询请求服务的customerCurrDayConsume对象
-                CustomerCurrDayConsume customerCurrDayConsume = getPriceByType(custId, apiTypeId, subTypeId);
-                if(customerCurrDayConsume == null){
-                    return null;
-                }
-                Double price = customerCurrDayConsume.getPrice();
-                //计算此服务总消费金额
-                int count = Integer.valueOf(value);
-                amount = count * price;
-                System.out.println("单项服务费用"+amount);
-                //计算客户所有服务消费金额
-                totalAmount = totalAmount + amount;
-                System.out.println("所有服务费用"+totalAmount);
-                return -totalAmount/100;
-            }
-        }
-        return 0.0;
-    }
 
     @Override
     public List<CustomerCurrDayConsumeDetail> queryCustomerCurrDayConsumeDetail(Map<String, Object> map) {

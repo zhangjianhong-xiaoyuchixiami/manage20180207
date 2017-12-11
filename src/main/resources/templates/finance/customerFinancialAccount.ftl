@@ -309,27 +309,25 @@
 
                                         <label><input type="checkbox" checked data-column="6">余额</label>
 
-                                        <label><input type="checkbox" checked data-column="7">系统余额</label>
+                                        <label><input type="checkbox" checked data-column="7">充值总额</label>
 
-                                        <label><input type="checkbox" checked data-column="8">充值总额</label>
+                                        <label><input type="checkbox" checked data-column="8">消费总额</label>
 
-                                        <label><input type="checkbox" checked data-column="9">消费总额</label>
+                                        <label><input type="checkbox" data-column="9">上周充值</label>
 
-                                        <label><input type="checkbox" data-column="10">上周充值</label>
+                                        <label><input type="checkbox" data-column="10">上周消费</label>
 
-                                        <label><input type="checkbox" data-column="11">上周消费</label>
+                                        <label><input type="checkbox" data-column="11">上月充值</label>
 
-                                        <label><input type="checkbox" data-column="12">上月充值</label>
+                                        <label><input type="checkbox" data-column="12">上月消费</label>
 
-                                        <label><input type="checkbox" data-column="13">上月消费</label>
+                                        <label><input type="checkbox" checked data-column="13">当月消费</label>
 
-                                        <label><input type="checkbox" checked data-column="14">当月消费</label>
+                                        <label><input type="checkbox" checked data-column="14">昨日消费</label>
 
-                                        <label><input type="checkbox" checked data-column="15">昨日消费</label>
+                                        <label><input type="checkbox" checked data-column="15">当天消费</label>
 
-                                        <label><input type="checkbox" checked data-column="16">当天消费</label>
-
-                                        <label><input type="checkbox" checked data-column="17">操作</label>
+                                        <label><input type="checkbox" checked data-column="16">操作</label>
 
                                     </div>
 
@@ -391,8 +389,7 @@
                                         <th>信用额度</th>
                                         <th>可用额度</th>
                                         <th>余额</th>
-                                        <th>系统余额</th>
-                                        <th>充值总额(不包括今天)</th>
+                                        <th>充值总额</th>
                                         <th>消费总额(${beginDate!'开通后'}--${endDate!'至今'})</th>
                                         <th>上周充值</th>
                                         <th>上周消费</th>
@@ -405,7 +402,7 @@
                                         <th class="table-td-none">产品类型</th>
                                         <th class="table-td-none">产品价格</th>
                                         <th class="table-td-none">总消费额</th>
-                                        <#--<th class="table-td-none">请求次数</th>-->
+                                        <th class="table-td-none">请求次数</th>
                                         <th class="table-td-none">扣费次数</th>
                                     </tr>
                                     </thead>
@@ -430,7 +427,6 @@
                                                 <td data-title="信用额度">${customer.floor!'0.0'}</td>
                                                 <td data-title="可用额度">${customer.surplusFloor!'0.0'}</td>
                                                 <td data-title="账号余额">${customer.balance!'0.0'}</td>
-                                                <td data-title="系统余额">${customer.systemBalance!'0.0'}</td>
                                                 <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${customer.chargeTotleAmount!'0.0'}</a></td>
                                                 <td data-title="消费总额">${customer.consumeTotleAmount!'0.0'}</td>
                                                 <td data-title="上周充值">${customer.lastWeekCharge!'0.0'}</td>
@@ -500,7 +496,7 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <#--<td data-title="请求次数" class="table-td-none">
+                                                <td data-title="请求次数" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
                                                         <#list customer.companyApiList as companyApi>
                                                             <#if companyApi.apiTypeId??>
@@ -514,7 +510,7 @@
                                                             </#if>
                                                         </#list>
                                                     </#if>
-                                                </td>-->
+                                                </td>
                                                 <td data-title="扣费次数" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
                                                         <#list customer.companyApiList as companyApi>

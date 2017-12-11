@@ -51,7 +51,11 @@ public class CustomerBalanceLogAop {
                 BackGroundCustomerBalanceLog log=new BackGroundCustomerBalanceLog();
                 log.setCustomerId(logService.queryCustomerIdByCompanyId(companyId));
                 log.setTypeId(reasonId);
-                log.setAmount( (int) Double.parseDouble(amount) * 100 );
+                if (reasonId == -4){
+                    log.setAmount(-(int) Double.parseDouble(amount) * 100 );
+                }else {
+                    log.setAmount( (int) Double.parseDouble(amount) * 100 );
+                }
                 log.setUserId(user.getId());
                // new CustomerBalanceLogAop.SaveLogThread(log, logService).start();
                 logService.insertBackGroundCustomerBalanceLog(log);
