@@ -24,27 +24,27 @@ var CustomerFinanceAccount = function () {
             if ($('#endDate').val() != null && $('#endDate').val() != ''){
                 endDate = $('#endDate').val();
             }else {
-                endDate = '至昨天'
+                endDate = '至今'
             }
 
             function fnFormatDetails ( oTable, nTr ,beginDate,endDate)
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table style="width: 100%">';
-                sOut += '<tr><th colspan="5">时间范围：'+beginDate+'--'+endDate+'</th></tr>';
+                sOut += '<tr><th colspan="4">时间范围：'+beginDate+'--'+endDate+'</th></tr>';
                 sOut += '<tr>' +
                     '<th>购买产品</th>' +
                     '<th>当前价格</th>' +
                     '<th>总消费额</th>' +
-                    '<th>请求次数</th>' +
+                    /*'<th>请求次数</th>' +*/
                     '<th>扣费次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
-                    '<td>'+aData[17]+'</td>' +
                     '<td>'+aData[18]+'</td>' +
                     '<td>'+aData[19]+'</td>' +
                     '<td>'+aData[20]+'</td>' +
-                    '<td>'+aData[21]+'</td>' +
+                    /*'<td>'+aData[21]+'</td>' +*/
+                    '<td>'+aData[22]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
                 return sOut;
@@ -88,6 +88,7 @@ var CustomerFinanceAccount = function () {
                     null,  //信用额度 4
                     null,  //可用额度 5
                     null,  //余额 6
+                    null,  //系统余额 22
                     null,  //充值总额 7
                     null,  //消费总额 8
                     { "bVisible": false},  //上周充值 9
@@ -101,7 +102,7 @@ var CustomerFinanceAccount = function () {
                     { "bVisible": false },  //17
                     { "bVisible": false },  //18
                     { "bVisible": false },  //19
-                    { "bVisible": false },  //20
+                    // { "bVisible": false },  //20
                     { "bVisible": false }   //21
                 ],
                 "aoColumnDefs": [
@@ -152,10 +153,14 @@ var CustomerFinanceAccount = function () {
                     {
                         "aTargets": [ 15 ],
                         "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 16 ],
+                        "sType": "html-percent"
                     }
 
                 ],
-                "aaSorting": [[15, 'desc']],
+                "aaSorting": [[16, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

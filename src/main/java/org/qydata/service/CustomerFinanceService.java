@@ -1,6 +1,7 @@
 package org.qydata.service;
 
 import org.qydata.dst.CustomerApiVendor;
+import org.qydata.dst.CustomerFinance;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.ApiType;
@@ -59,13 +60,14 @@ public interface CustomerFinanceService {
     public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
 
     /**
-     *
+     *不同客户不同产品类型的单价
      * @param customerId
      * @param apiTypeId
      * @param subTypeId
      * @return
      */
     public CustomerCurrDayConsume getPriceByType(Integer customerId, Integer apiTypeId, Integer subTypeId);
+
 
 //    /**
 //     * 查询客户的Api消费记录

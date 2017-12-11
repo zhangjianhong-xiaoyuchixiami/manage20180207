@@ -276,11 +276,11 @@
     <!--查询当天充值总额-->
     <select id="queryCustomerChargeCurrDay" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
         SELECT customerId id,sum(amount) currDayChargeAmount
-        FROM qyfinance.BackGroundCustomerBalanceLog a
-        WHERE a.typeId = 1
-        OR  a.typeId = 3
-        OR a.typeId = -4
-        AND a.createTime >= #{currDayTime}
+        FROM qyfinance.finance_CustomerBalanceLog
+        WHERE reasonId = 1
+        OR  reasonId = 3
+        OR reasonId = -4
+        AND createTime >= #{currDayTime}
         GROUP BY customerId
     </select>
 
@@ -388,6 +388,21 @@
         FROM qyfinance.CompanyApiTypeConsumeDayCount a
         WHERE DATE_FORMAT(a.consuTime,'%x-%v')=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x-%v')
         GROUP BY a.customerId
+    </select>
+
+
+    <!--历史消费(至上月)-->
+    <select id="queryHistoryTotalAmount" parameterType="String" resultType="org.qydata.dst.CustomerFinance">
+        SELECT
+            id,
+            cost,
+            amount
+        from
+            qyfinance.CustomerHistoryBill
+        where
+            <![CDATA[
+                  createTime < #{firstDayOfCurrentMonth}
+                    ]]>
     </select>
 
     <!--查询客户上月充值金额-->

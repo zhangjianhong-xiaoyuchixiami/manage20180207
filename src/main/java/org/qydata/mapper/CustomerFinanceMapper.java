@@ -1,5 +1,6 @@
 package org.qydata.mapper;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.qydata.dst.CustomerApiVendor;
 import org.qydata.dst.CustomerFinance;
@@ -8,6 +9,7 @@ import org.qydata.dst.customer.CustomerConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.*;
+import org.qydata.tools.DateUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -180,6 +182,12 @@ public interface CustomerFinanceMapper {
      */
     public Integer getCountCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
+    /**
+     * 历史消费总额(至上月)
+     * @return
+     */
+
+    public List<CustomerFinance> queryHistoryTotalAmount(String firstDayOfCurrentMonth);
 //    /**
 //     * 查询客户的Api消费记录
 //     * @param map
