@@ -55,6 +55,14 @@ var CustomerHistoryBill = function () {
                 ],
                 "aoColumnDefs": [
                     {
+                        "aTargets": [ 0 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 1 ],
+                        "sType": "html-percent"
+                    },
+                    {
                         "aTargets": [ 2 ],
                         "sType": "html-percent"
                     },

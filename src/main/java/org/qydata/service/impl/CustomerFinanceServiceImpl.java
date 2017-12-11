@@ -38,7 +38,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
     @Override
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
-
         Map<String,Object> param = new HashMap<>();
         Map<String,Object> typeParam = new HashMap<>();
         Map<String,Object> mapTotleParam = new HashMap<>();
@@ -81,23 +80,11 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         typeParam.put("currDayTime",CalendarTools.getCurrentDate()+ " " + "00:00:00");
         mapTotleParam.put("currDayTime",CalendarTools.getCurrentDate()+ " " + "00:00:00");
         mapTotleParam.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
-
         //财务账单客户列表
         List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomer(param);
-
-        List<String> customerIdList = new ArrayList<String>();
-        if (list != null){
-            for (CustomerFinance customerFinances : list) {
-                Integer id = customerFinances.getId();
-
-                customerIdList.add(id + "");
-            }
-        }
-
         if (list == null){
             return null;
         }
-
         //各类型
         List<CustomerFinance> typeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(typeParam);
 
@@ -144,7 +131,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 customerFinance.setFloor(-customerFinance.getFloor()/100.0);
             }
             customerFinance.setSurplusFloor(((customerFinance.getFloor()) + customerFinance.getBalance()));
-
             /*封装各类型消费*/
             if (typeConsumeList != null) {
                 for (CustomerFinance finance : typeConsumeList) {

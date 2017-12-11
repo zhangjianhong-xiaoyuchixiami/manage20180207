@@ -46,7 +46,6 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         Integer [] cid = null;
         Integer pid = null;
         String [] beg_month = null;
-
         Set<Map.Entry<String, Object>> set = map.entrySet();
         Iterator<Map.Entry<String, Object>> it = set.iterator();
         while (it.hasNext()) {
@@ -127,7 +126,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                         }
                     }
 
-//                    /*封装充值总额（今天）*/
+                   /*封装充值总额（今天）*/
                     if (billChargeCurrDayList != null){
                         for (int j = 0; j < billChargeCurrDayList.size() ; j++) {
                             CustomerHistoryBill billChargeCurrDay = billChargeCurrDayList.get(j);
@@ -183,18 +182,18 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                             }
                         }
                     }
-                    Double currDayConsume = queryCustomerCurrDayConsume(bill.getCustomerId());
-                    if (currDayConsume != null){
-                        if (bill.getBalance() != null && currDayConsume != null){
-                            bill.setBalance(bill.getBalance() - (currDayConsume/100.0));
-                        }
-                        if (bill.getBalance() != null && currDayConsume == null){
-                            bill.setBalance(bill.getBalance());
-                        }
-                        if (bill.getBalance() == null && currDayConsume != null){
-                            bill.setBalance(-(currDayConsume/100.0));
-                        }
-                    }
+//                    Double currDayConsume = queryCustomerCurrDayConsume(bill.getCustomerId());
+//                    if (currDayConsume != null){
+//                        if (bill.getBalance() != null && currDayConsume != null){
+//                            bill.setBalance(bill.getBalance() - (currDayConsume/100.0));
+//                        }
+//                        if (bill.getBalance() != null && currDayConsume == null){
+//                            bill.setBalance(bill.getBalance());
+//                        }
+//                        if (bill.getBalance() == null && currDayConsume != null){
+//                            bill.setBalance(-(currDayConsume/100.0));
+//                        }
+//                    }
 
                     if (bill.getFloor() != null && bill.getBalance() != null){
                         bill.setUserFloor(bill.getFloor() + bill.getBalance());
