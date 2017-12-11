@@ -257,7 +257,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //                    System.out.println(subTypeId);
 //
 //                    //根据customerId、apiTypeId、subTypeId查询请求服务的compnyApi对象
-//                    CustomerCurrDayConsume customerCurrDayConsume = getPriceByType(custId, apiTypeId, subTypeId);
+//                    CustomerCurrDayConsumeUtil customerCurrDayConsume = getPriceByType(custId, apiTypeId, subTypeId);
 //                    if(customerCurrDayConsume == null){
 //                        return null;
 //                    }
@@ -442,7 +442,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
      */
     @Override
     public List<CustomerCurrDayConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
-//        List<CustomerCurrDayConsume> consumeList = customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
+//        List<CustomerCurrDayConsumeUtil> consumeList = customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
 
         //获取当前日期
         String currentDate = DateUtils.formatCurrentDate() + "";

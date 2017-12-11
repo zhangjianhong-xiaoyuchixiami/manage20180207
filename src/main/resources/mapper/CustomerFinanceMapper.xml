@@ -509,7 +509,6 @@
         ON c.apiTypeId = d.id
         LEFT JOIN qyfinance.bkvwMobileOperator e
         ON e.id =c.subTypeId
-
     </select>
 
 
