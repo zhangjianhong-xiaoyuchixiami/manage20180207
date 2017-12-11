@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.17'/>
+    <#assign ver='1.0.0.18'/>
 
 <!DOCTYPE html>
 

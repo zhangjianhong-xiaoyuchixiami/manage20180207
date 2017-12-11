@@ -104,9 +104,11 @@
     <!--查询当天充值总额-->
     <select id="queryCustomerChargeCurrDay" parameterType="map" resultMap="customerHistoryBillChargeMap">
         SELECT customerId,sum(amount) chargeCurrDayAmount
-        FROM qyfinance.finance_CustomerBalanceLog
-        WHERE reasonId in(1,2,3)
-        AND createTime >= #{currDayTime}
+        FROM qyfinance.BackGroundCustomerBalanceLog a
+        WHERE a.typeId = 1
+        OR  a.typeId = 3
+        OR a.typeId = -4
+        AND a.createTime >= #{currDayTime}
         GROUP BY customerId
     </select>
 

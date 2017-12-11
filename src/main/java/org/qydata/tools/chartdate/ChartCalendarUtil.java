@@ -9,18 +9,6 @@ import java.util.Date;
  */
 public class ChartCalendarUtil {
 
-    public static void main(String[] args) {
-        try {
-            for (int i = 7; i > 0 ; i--) {
-                System.out.println(getStatetime(i));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
     /**
      * 取得当前时间的指定月的时间，格式“yyyy-MM”
      * @return
