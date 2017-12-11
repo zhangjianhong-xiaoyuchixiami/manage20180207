@@ -93,7 +93,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
         //各类型
         List<CustomerFinance> typeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(typeParam);
-
         //客户当天消费
         List<CustomerFinance> currDayConsList = customerFinanceMapper.queryCustomerCurrDayTotle(mapTotleParam);
         //客户充值（至昨天）
@@ -102,12 +101,10 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
         //客户消费（至昨天)
         List<CustomerFinance> consumeList = customerFinanceMapper.queryCustomerConsumeTotle(mapTotleParam);
-
         //查询客户邮箱
         List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapEmailParam);
         //查询客户上月账单
         List<CustomerConsumeExcel> customerConsumeExcelList = customerFinanceMapper.queryCustomerAccountExcel(mapExcelParam);
-
         //上周充值
         List<CustomerConsume> lastWeekChargeList = customerFinanceMapper.queryCustomerLastWeekCharge();
         //上周消费
@@ -118,50 +115,11 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<CustomerConsume> lastMonthConsumeList = customerFinanceMapper.queryCustomerLastMonthConsume(CalendarUtil_2.getCurrentLastMonth());
         //昨日消费
         List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
-
         // 历史总消费金额(至上月)
          String firstDayOfCurrentMonth = DateUtils.firstDayOfMonth(DateUtils.currentDate());
         List<CustomerFinance> historyTotalAmountList = customerFinanceMapper.queryHistoryTotalAmount(firstDayOfCurrentMonth);
         //客户本月消费（至昨天）
         List<CustomerFinance> currMonthConsList = customerFinanceMapper.queryCustomerCurrMonthTotle(mapTotleParam);
-//客户当天消费
-//        List<CustomerFinance>currDayConsList = new ArrayList<CustomerFinance>();
-//        for (CustomerFinance customerFinance : list) {
-//            Integer id = customerFinance.getId();
-//            String customerId = id + "";
-//            System.out.println(customerId);
-            //获取当前日期
-//            Object endDate = typeParam.get("endDate");
-//            String lastDate = null;
-//            String currentDate = null;
-//            if (endDate != null){
-//                 //判断结束日期和当前日期大小
-//                int ed = Integer.valueOf(String.valueOf(endDate));
-//                int cd = DateUtils.formatCurrentDate();
-//
-//                if (ed >= cd){
-//                    currentDate = cd + "";
-//
-//
-//                    Double currentDayAmount = getCurrentDayAmount(customerId, currentDate);
-//                    customerFinance.setCurrDayAmount(currentDayAmount);
-////
-//                    currDayConsList.add(customerFinance);
-//
-//                }else{
-//                    currDayConsList = customerFinanceMapper.queryCustomerCurrDayTotle(mapTotleParam);
-//
-//                }
-//            }else{
-//                currentDate = DateUtils.formatCurrentDate() + "";
-//                System.out.println(currentDate);
-//                调用方法
-//                Double currentDayAmount = getCurrentDayTotalAmount(customerId, currentDate);
-//                customerFinance.setCurrDayAmount(currentDayAmount);
-//                currDayConsList.add(customerFinance);
-//            }
-//        }
-
 
         double lastWeekChargeTot = 0.0;
         double lastWeekConsumeTot = 0.0;
@@ -276,18 +234,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
                 }
             }
-
-            /*  *//*封装当天消费总额*//*
-            if (currDayConsList != null){
-                for (CustomerFinance finance : currDayConsList) {
-                    if (customerFinance.getId() == finance.getId()
-                            || customerFinance.getId().equals(finance.getId())){
-                        if (finance.getCurrDayAmount() != null){
-                            customerFinance.setCurrDayAmount(-finance.getCurrDayAmount()/100.0);
-                        }
-                    }
-                }
-            }*/
 
                 /*封装当月消费总额（至昨天）*/
             if (currMonthConsList != null){
@@ -412,9 +358,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     }
                 }
             }
-
-
-
 
                 /*封装邮箱*/
             if (customerCompanyEmailList != null){
@@ -584,10 +527,15 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         return customerCurrDayConsume;
     }
 
-
+    /**
+     *查询客户当天消费金额
+     * @param customerId
+     * @param currentDate
+     * @return
+     */
     public Double getCurrentDayTotalAmount(String customerId, String currentDate){
 
-        //调用接口获得客户请求的服务和对应的次数
+        //调用接口获得客户请求的服务和对应的扣费次数
         String s = HttpClientUtil.httpRequest(customerId, currentDate);
         System.out.println(s);
         //去掉接口返回值为null,""," ","{}","null","NULL"
@@ -609,7 +557,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 //定义记录单项服务的消费金额
                 Double amount = 0.0;
                 //获取键值即为对应的服务及消费次数
-//                CompanyApiCount companyApiCount = new CompanyApiCount();
                 String key = entry.getKey();
                 String value = entry.getValue();
 
