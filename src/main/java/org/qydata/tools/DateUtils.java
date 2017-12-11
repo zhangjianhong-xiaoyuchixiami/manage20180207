@@ -38,7 +38,7 @@ public class DateUtils {
     }
 
     /**
-     * 获取当前月的第一天
+     * 获取当月的第一天
      * @return
      */
 
@@ -53,26 +53,18 @@ public class DateUtils {
         return firstDayOfMonth;
     }
 
-    public static void main(String[] args) throws ParseException {
-        String s = DateUtils.firstDayOfMonth("2016-07-05 14:35:56");
-        System.out.println(s);
-    }
-
     /**
-     * 当月第一天 yyyy-MM-01 00:00:00
+     * 任一月的的第一天 yyyy-MM-01 00:00:00
      * @param date
      * @return
      * @throws ParseException
      */
     public static String firstDayOfMonth(String date) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        SimpleDateFormat sdfy = new SimpleDateFormat("yyyy");
-        SimpleDateFormat sdfm = new SimpleDateFormat("MM");
+        SimpleDateFormat sdfy = new SimpleDateFormat("yyyy-MM-01 00:00:00");
         Date parse = sdf.parse(date);
         String parsey = sdfy.format(parse);
-        String parsem = sdfm.format(parse);
-        String firstDate = parsey + "-" + parsem + "-" + "01" + " 00:00:00";
-        return firstDate;
+        return parsey;
     }
 
     public static String currentDate(){
