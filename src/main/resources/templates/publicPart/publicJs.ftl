@@ -61,7 +61,7 @@
 
 <script type="text/javascript" src="/js/former/DT_bootstrap.js?v=${ver}"></script>
 
-<script src="/js/locales/dataTables-sort-plungin.js?v=${ver}"></script>
+<script src="/js/locales/dataTables-sort-plungin.js"></script>
 
 <#--dataTable插件结束-->
 

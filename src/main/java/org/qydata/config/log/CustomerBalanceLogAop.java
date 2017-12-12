@@ -52,9 +52,9 @@ public class CustomerBalanceLogAop {
                 log.setCustomerId(logService.queryCustomerIdByCompanyId(companyId));
                 log.setTypeId(reasonId);
                 if (reasonId == -4){
-                    log.setAmount(-(int) Double.parseDouble(amount) * 100 );
+                    log.setAmount(-(int) (Double.parseDouble(amount) * 100) );
                 }else {
-                    log.setAmount( (int) Double.parseDouble(amount) * 100 );
+                    log.setAmount( (int) (Double.parseDouble(amount) * 100) );
                 }
                 log.setUserId(user.getId());
                // new CustomerBalanceLogAop.SaveLogThread(log, logService).start();

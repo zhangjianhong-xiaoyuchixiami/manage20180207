@@ -277,9 +277,7 @@
     <select id="queryCustomerChargeCurrDay" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
         SELECT customerId id,sum(amount) currDayChargeAmount
         FROM qyfinance.BackGroundCustomerBalanceLog a
-        WHERE a.typeId = 1
-        OR  a.typeId = 3
-        OR a.typeId = -4
+        WHERE a.typeId in(1,3,-4)
         AND a.createTime >= #{currDayTime}
         GROUP BY customerId
     </select>
