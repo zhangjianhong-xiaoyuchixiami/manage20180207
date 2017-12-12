@@ -31,7 +31,7 @@ var CustomerFinanceAccount = function () {
             {
                 var aData = oTable.fnGetData( nTr );
                 var sOut = '<table style="width: 100%">';
-                sOut += '<tr><th colspan="5">时间范围：'+beginDate+'--'+endDate+'</th></tr>';
+                sOut += '<tr><th colspan="4">时间范围：'+beginDate+'--'+endDate+'</th></tr>';
                 sOut += '<tr>' +
                     '<th>购买产品</th>' +
                     '<th>当前价格</th>' +
@@ -40,10 +40,10 @@ var CustomerFinanceAccount = function () {
                     '<th>扣费次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
-                    '<td>'+aData[17]+'</td>' +
                     '<td>'+aData[18]+'</td>' +
                     '<td>'+aData[19]+'</td>' +
-                   /* '<td>'+aData[20]+'</td>' +*/
+                    '<td>'+aData[20]+'</td>' +
+                   /* '<td>'+aData[21]+'</td>' +*/
                     '<td>'+aData[21]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
@@ -87,21 +87,21 @@ var CustomerFinanceAccount = function () {
                     null,  //合作公司 3
                     null,  //信用额度 4
                     null,  //可用额度 5
-                    null,  //余额 6
-                    null,  //余额 6
-                    null,  //充值总额 7
-                    null,  //消费总额 8
-                    { "bVisible": false},  //上周充值 9
-                    { "bVisible": false},  //上周消费 10
-                    { "bVisible": false},  //上月充值 11
-                    { "bVisible": false},  //上月消费 12
-                    null,  //当月消费 13
-                    null,  //昨日消费 14
-                    null,  //当日消费 15
-                    {"bSortable": false},  //近一周消费走势 16
-                    { "bVisible": false },  //17
+                    null,  //账户余额 6
+                    null,  //理论余额 7
+                    null,  //充值总额 8
+                    null,  //消费总额 9
+                    { "bVisible": false},  //上周充值 10
+                    { "bVisible": false},  //上周消费 11
+                    { "bVisible": false},  //上月充值 12
+                    { "bVisible": false},  //上月消费 13
+                    null,  //当月消费 14
+                    null,  //昨日消费 15
+                    null,  //当日消费 16
+                    {"bSortable": false},  //近一周消费走势 17
                     { "bVisible": false },  //18
-                    // { "bVisible": false },  //19
+                    { "bVisible": false },  //19
+                    // { "bVisible": false },  //20
                     { "bVisible": false },  //20
                     { "bVisible": false }   //21
                 ],
@@ -160,7 +160,7 @@ var CustomerFinanceAccount = function () {
                     }
 
                 ],
-                "aaSorting": [[15, 'desc']],
+                "aaSorting": [[16, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

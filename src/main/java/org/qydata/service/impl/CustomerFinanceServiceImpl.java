@@ -113,8 +113,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         //昨日消费
         List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
         // 历史总消费金额(至上月)
-        String firstDayOfCurrentMonth = DateUtils.firstDayOfMonth(DateUtils.currentDate());
-        List<CustomerFinance> historyTotalAmountList = customerFinanceMapper.queryHistoryTotalAmount(firstDayOfCurrentMonth);
+        List<CustomerConsume> historyConsumeList = customerFinanceMapper.queryHistoryTotalAmount();
 
         double lastWeekChargeTot = 0.0;
         double lastWeekConsumeTot = 0.0;
@@ -127,7 +126,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<CustomerFinance> customerFinanceList = new ArrayList<>();
         Iterator<CustomerFinance> it = list.iterator();
         while (it.hasNext()) {
+
             CustomerFinance customerFinance = it.next();
+
             customerFinance.setBalance(customerFinance.getBalance()/100.0);
             if (customerFinance.getFloor() != null && customerFinance.getFloor() != 0){
                 customerFinance.setFloor(-customerFinance.getFloor()/100.0);
@@ -200,19 +201,14 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }
 
             //历史消费金额至上月
-            if(historyTotalAmountList != null){
-                for (CustomerFinance finance : historyTotalAmountList) {
-                    Double historyTotalAmount = 0.0;
-                    if (customerFinance.getId() == finance.getId()) {
-                        Integer cost = finance.getCost();
-                        Integer amount = finance.getAmount();
-                        Integer totalAmount = cost * amount;
-                        historyTotalAmount = historyTotalAmount + totalAmount;
-                        customerFinance.setCost(cost);
-                        customerFinance.setAmount(amount);
-                        customerFinance.setHistoryTotalAmount(-historyTotalAmount/100);
+            if(historyConsumeList != null){
+                for (CustomerConsume consume : historyConsumeList) {
+                    if (customerFinance.getId() == consume.getCustomerId()
+                            || customerFinance.getId().equals(consume.getCustomerId())) {
+                        if (consume.getHistoryConsume() != null) {
+                            customerFinance.setHistoryTotalAmount(consume.getHistoryConsume() / 100.0);
+                        }
                     }
-
                 }
             }
 
@@ -238,7 +234,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                         }
                     }
                 }
-
             }
 
                  /*封装当月消费总额（昨天 + 今天）*/
@@ -267,9 +262,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             if (currDayChargeList != null){
                 for (CustomerFinance finance : currDayChargeList) {
                     if (customerFinance.getId() == finance.getId() || customerFinance.getId().equals(finance.getId())){
-                      if (finance.getCurrDayChargeAmount() != null){
-                          customerFinance.setCurrDayChargeAmount(finance.getCurrDayChargeAmount()/100.0);
-                      }
+                        if (finance.getCurrDayChargeAmount() != null){
+                            customerFinance.setCurrDayChargeAmount(finance.getCurrDayChargeAmount()/100.0);
+                        }
                     }
                 }
             }
@@ -278,6 +273,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             if (customerFinance.getChargeTotleAmount() != null){
                 if (customerFinance.getCurrDayChargeAmount() != null) {
                     customerFinance.setChargeTotleAmount(customerFinance.getChargeTotleAmount() + customerFinance.getCurrDayChargeAmount());
+                }else {
+                    customerFinance.setChargeTotleAmount(customerFinance.getChargeTotleAmount());
                 }
             }else {
                 if (customerFinance.getCurrDayChargeAmount() != null) {
@@ -290,39 +287,38 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             if (customerFinance.getChargeTotleAmount() != null){
                 if (customerFinance.getHistoryTotalAmount() != null){
                     if (customerFinance.getCurrMonthAmount() != null){
-                        if (customerFinance.getCurrDayAmount() != null){
-                            System.out.println(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount() - customerFinance.getCurrDayAmount()));
-                            customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount() - customerFinance.getCurrDayAmount()));
-                        }else{
-                            System.out.println(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount() + customerFinance.getCurrMonthAmount()));
-                            customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount()));
-                        }
+                        customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() - (customerFinance.getHistoryTotalAmount() + customerFinance.getCurrMonthAmount()));
                     }else{
-                        System.out.println(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount()));
-                        customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() + (customerFinance.getHistoryTotalAmount()));
+                        customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() - (customerFinance.getHistoryTotalAmount()));
                     }
                 }else{
-                    System.out.println(customerFinance.getChargeTotleAmount());
-                    customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount());
-
+                    //本月之前为空 判断当月是否为空
+                    if (customerFinance.getCurrMonthAmount() != null){
+                        //当月不为空
+                        customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount() - ( customerFinance.getCurrMonthAmount()));
+                    }else{
+                        //当月消费为空
+                        customerFinance.setSystemBalance(customerFinance.getChargeTotleAmount());
+                    }
                 }
             }else{
+                //历史总充值为空
                 if (customerFinance.getHistoryTotalAmount() != null){
                     if (customerFinance.getCurrMonthAmount() != null){
-                        if (customerFinance.getCurrDayAmount() != null){
-                            System.out.println(customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount() - customerFinance.getCurrDayAmount());
-                            customerFinance.setSystemBalance(customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount() - customerFinance.getCurrDayAmount());
-                        }else{
-                            System.out.println(customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount());
-                            customerFinance.setSystemBalance(customerFinance.getHistoryTotalAmount() - customerFinance.getCurrMonthAmount());
-                        }
+                        customerFinance.setSystemBalance( - (customerFinance.getHistoryTotalAmount() + customerFinance.getCurrMonthAmount()));
                     }else{
-                        System.out.println(customerFinance.getHistoryTotalAmount());
-                        customerFinance.setSystemBalance(customerFinance.getHistoryTotalAmount());
+                        //当月消费为空
+                        customerFinance.setSystemBalance( - (customerFinance.getHistoryTotalAmount()));
                     }
                 }else{
-                    customerFinance.setSystemBalance(0.0);
-
+                    //本月之前为空 判断当月是否为空
+                    if (customerFinance.getCurrMonthAmount() != null){
+                        //当月不为空
+                        customerFinance.setSystemBalance( - (customerFinance.getCurrMonthAmount()));
+                    }else{
+                        //当月消费为空
+                        customerFinance.setSystemBalance(0.0);
+                    }
                 }
             }
 
@@ -330,9 +326,9 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             if (consumeList != null){
                 for (CustomerFinance finance : consumeList) {
                     if (customerFinance.getId() == finance.getId() || customerFinance.getId().equals(finance.getId())){
-                       if (finance.getConsumeTotleAmount() != null){
-                           customerFinance.setConsumeTotleAmount(-finance.getConsumeTotleAmount()/100.0);
-                       }
+                        if (finance.getConsumeTotleAmount() != null){
+                            customerFinance.setConsumeTotleAmount(-finance.getConsumeTotleAmount()/100.0);
+                        }
                     }
                 }
             }

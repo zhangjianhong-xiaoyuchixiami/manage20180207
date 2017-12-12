@@ -185,7 +185,7 @@ public interface CustomerFinanceMapper {
      * @return
      */
 
-    public List<CustomerFinance> queryHistoryTotalAmount(String firstDayOfCurrentMonth);
+    public List<CustomerConsume> queryHistoryTotalAmount();
 
 
 //    /**

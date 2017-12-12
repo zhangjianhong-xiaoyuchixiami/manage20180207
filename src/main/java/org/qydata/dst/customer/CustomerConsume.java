@@ -14,6 +14,7 @@ public class CustomerConsume {
     private Double lastMonthCharge;
     private Double yesterdayConsume;
     private Double lastMonthConsume;
+    private Double historyConsume;
     private Double cost;
     private Double amount;
     private String consuTime;

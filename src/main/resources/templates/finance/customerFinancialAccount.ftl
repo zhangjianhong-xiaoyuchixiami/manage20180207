@@ -307,9 +307,9 @@
 
                                         <label><input type="checkbox" checked data-column="5">可用额度</label>
 
-                                        <label><input type="checkbox" checked data-column="6">余额</label>
+                                        <label><input type="checkbox" checked data-column="6">账号余额</label>
 
-                                        <label><input type="checkbox" checked data-column="7">系统余额</label>
+                                        <label><input type="checkbox" checked data-column="7">理论余额</label>
 
                                         <label><input type="checkbox" checked data-column="8">充值总额</label>
 
@@ -390,8 +390,8 @@
                                         </@shiro.hasPermission>
                                         <th>信用额度</th>
                                         <th>可用额度</th>
-                                        <th>余额</th>
-                                        <th>系统余额</th>
+                                        <th>账号余额</th>
+                                        <th>理论余额</th>
                                         <th>充值总额</th>
                                         <th>消费总额(${beginDate!'开通后'}--${endDate!'至今'})</th>
                                         <th>上周充值</th>
@@ -430,7 +430,7 @@
                                                 <td data-title="信用额度">${customer.floor!'0.0'}</td>
                                                 <td data-title="可用额度">${customer.surplusFloor!'0.0'}</td>
                                                 <td data-title="账号余额">${customer.balance!'0.0'}</td>
-                                                <td data-title="系统余额">${customer.systemBalance!'0.0'}</td>
+                                                <td data-title="理论余额">${customer.systemBalance!'0.0'}</td>
                                                 <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${customer.chargeTotleAmount!'0.0'}</a></td>
                                                 <td data-title="消费总额">${customer.consumeTotleAmount!'0.0'}</td>
                                                 <td data-title="上周充值">${customer.lastWeekCharge!'0.0'}</td>
