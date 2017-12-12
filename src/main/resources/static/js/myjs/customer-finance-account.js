@@ -36,14 +36,14 @@ var CustomerFinanceAccount = function () {
                     '<th>购买产品</th>' +
                     '<th>当前价格</th>' +
                     '<th>总消费额</th>' +
-                    '<th>请求次数</th>' +
+                   /* '<th>请求次数</th>' +*/
                     '<th>扣费次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
                     '<td>'+aData[17]+'</td>' +
                     '<td>'+aData[18]+'</td>' +
                     '<td>'+aData[19]+'</td>' +
-                    '<td>'+aData[20]+'</td>' +
+                   /* '<td>'+aData[20]+'</td>' +*/
                     '<td>'+aData[21]+'</td>' +
                     '</tr>';
                 sOut += '</table>';
@@ -88,6 +88,7 @@ var CustomerFinanceAccount = function () {
                     null,  //信用额度 4
                     null,  //可用额度 5
                     null,  //余额 6
+                    null,  //余额 6
                     null,  //充值总额 7
                     null,  //消费总额 8
                     { "bVisible": false},  //上周充值 9
@@ -100,7 +101,7 @@ var CustomerFinanceAccount = function () {
                     {"bSortable": false},  //近一周消费走势 16
                     { "bVisible": false },  //17
                     { "bVisible": false },  //18
-                    { "bVisible": false },  //19
+                    // { "bVisible": false },  //19
                     { "bVisible": false },  //20
                     { "bVisible": false }   //21
                 ],
@@ -151,6 +152,10 @@ var CustomerFinanceAccount = function () {
                     },
                     {
                         "aTargets": [ 15 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 16 ],
                         "sType": "html-percent"
                     }
 

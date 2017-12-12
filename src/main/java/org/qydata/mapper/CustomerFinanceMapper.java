@@ -180,6 +180,14 @@ public interface CustomerFinanceMapper {
      */
     public Integer getCountCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map)throws Exception;
 
+    /**
+     * 历史消费总额(至上月)
+     * @return
+     */
+
+    public List<CustomerFinance> queryHistoryTotalAmount(String firstDayOfCurrentMonth);
+
+
 //    /**
 //     * 查询客户的Api消费记录
 //     * @param map

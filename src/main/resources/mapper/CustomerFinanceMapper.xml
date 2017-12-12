@@ -317,6 +317,21 @@
         AND createTime >= #{currDayTime}
         GROUP BY customerId
     </select>
+
+    <!--历史消费(至上月)-->
+    <select id="queryHistoryTotalAmount" parameterType="String" resultType="org.qydata.dst.CustomerFinance">
+        SELECT
+        id,
+        cost,
+        amount
+        from
+        qyfinance.CustomerHistoryBill
+        where
+        <![CDATA[
+                  createTime < #{firstDayOfCurrentMonth}
+                    ]]>
+    </select>
+
 <!--  查询客户不同产品的单价 -->
     <select id="getApiPriceByType" parameterType="map" resultType="Double">
         SELECT
