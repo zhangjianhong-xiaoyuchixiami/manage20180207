@@ -453,7 +453,7 @@
     <select id="queryCompanyCustomerRechargeRecordByCustomerId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
         SELECT id,reasonId,amount,customerId,createTime,reasonName
         FROM qyfinance.bkvwCustomerBalanceLog
-        WHERE customerId=#{customerId}
+        WHERE customerId = #{customerId}
         <if test="reasonIdList != null and reasonIdList.size() != 0">
             AND reasonId IN
             <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
@@ -462,35 +462,12 @@
         </if>
         <if test="beginDate != null and beginDate != ''">
             <![CDATA[
-            AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
+            AND createTime >= #{beginDate}
             ]]>
         </if>
         <if test="endDate != null and endDate != ''">
             <![CDATA[
-            AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
-             ]]>
-        </if>
-    </select>
-
-    <!--统计客户的充值记录金额总计-->
-    <select id="getCountCompanyCustomerRechargeRecordByCustomerId" parameterType="map" resultType="Integer">
-        SELECT sum(amount)
-        FROM qyfinance.bkvwCustomerBalanceLog
-        WHERE customerId=#{customerId}
-        <if test="reasonIdList != null and reasonIdList.size() != 0">
-            AND reasonId IN
-            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
-                #{reasonId}
-            </foreach>
-        </if>
-        <if test="beginDate != null and beginDate != ''">
-            <![CDATA[
-            AND createTime>=str_to_date(#{beginDate},'%Y/%m/%d %H:%i:%s')
-            ]]>
-        </if>
-        <if test="endDate != null and endDate != ''">
-            <![CDATA[
-            AND createTime<=str_to_date(#{endDate},'%Y/%m/%d %H:%i:%s')
+            AND createTime < #{endDate}
              ]]>
         </if>
     </select>

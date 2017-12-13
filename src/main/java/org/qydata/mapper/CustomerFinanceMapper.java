@@ -170,7 +170,7 @@ public interface CustomerFinanceMapper {
      * @return
      * @throws Exception
      */
-    public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map)throws Exception;
+    public List<CustomerBalanceLog> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
 
     /**
      * 统计客户的充值记录金额总计

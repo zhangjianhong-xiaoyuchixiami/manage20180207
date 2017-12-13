@@ -123,7 +123,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         double totleConsumeAmount = 0.0;
         double currMonthTotleConsumeAmount = 0.0;
         double currDayTotleConsumeAmount = 0.0;
-        List<CustomerFinance> customerFinanceList = new ArrayList<>();
+        double kaolaTheoryBalance = 0.0;
+     //   List<CustomerFinance> customerFinanceList = new ArrayList<>();
         Iterator<CustomerFinance> it = list.iterator();
         while (it.hasNext()) {
 
@@ -368,6 +369,10 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     }
                 }
             }
+            if (customerFinance.getId() == 81 || "81".equals(customerFinance.getId())
+                    || customerFinance.getId() == 154 || "154".equals(customerFinance.getId())){
+                kaolaTheoryBalance += customerFinance.getSystemBalance();
+            }
 
             if (customerFinance.getLastWeekCharge() != null) {
                 lastWeekChargeTot += customerFinance.getLastWeekCharge();
@@ -394,9 +399,16 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 currDayTotleConsumeAmount += customerFinance.getCurrDayAmount();
             }
 
-            customerFinanceList.add(customerFinance);
+         //   customerFinanceList.add(customerFinance);
         }
-
+        if(list != null){
+            for (CustomerFinance finance : list) {
+                if (finance.getId() == 81 || "81".equals(finance.getId())
+                        || finance.getId() == 154 || "154".equals(finance.getId())){
+                    finance.setSystemBalance(kaolaTheoryBalance);
+                }
+            }
+        }
 
         Map<String,Object> mapTran = new HashMap<>();
         mapTran.put("lastWeekChargeTot",lastWeekChargeTot);
@@ -407,7 +419,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapTran.put("totleConsumeAmount",totleConsumeAmount);
         mapTran.put("currMonthTotleConsumeAmount",currMonthTotleConsumeAmount);
         mapTran.put("currDayTotleConsumeAmount",currDayTotleConsumeAmount);
-        mapTran.put("customerFinanceList",customerFinanceList);
+        mapTran.put("customerFinanceList",list);
         return mapTran;
     }
 
@@ -649,13 +661,35 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
     @Override
     public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String, Object> map){
-        Map<String,Object> mapResult = new HashMap<>();
-        try {
-            mapResult.put("queryCompanyCustomerRechargeRecordByCustomerId",customerFinanceMapper.queryCompanyCustomerRechargeRecordByCustomerId(map));
-            mapResult.put("getCountCompanyCustomerRechargeRecordByCustomerId",customerFinanceMapper.getCountCompanyCustomerRechargeRecordByCustomerId(map)) ;
-        } catch (Exception e) {
-            e.printStackTrace();
+        Map<String,Object> param = new HashMap<>();
+        if (map != null){
+            for (Map.Entry<String,Object> me : map.entrySet()) {
+                if("beginDate".equals(me.getKey())){
+                    param.put("beginDate",me.getValue());
+                }
+                if("endDate".equals(me.getKey())){
+                    param.put("beginDate",me.getValue());
+                }
+                if("reasonIdList".equals(me.getKey())){
+                    param.put("reasonIdList",me.getValue());
+                }
+                if("customerId".equals(me.getKey())){
+                    param.put("customerId",me.getValue());
+                }
+            }
         }
+        List<CustomerBalanceLog> logList = customerFinanceMapper.queryCompanyCustomerRechargeRecordByCustomerId(map);
+        Double chargeTot = 0.0;
+        if (logList != null){
+            for (CustomerBalanceLog log : logList) {
+                if (log.getAmount() != null){
+                    chargeTot += log.getAmount();
+                }
+            }
+        }
+        Map<String,Object> mapResult = new HashMap<>();
+        mapResult.put("logList",logList);
+        mapResult.put("chargeTot",chargeTot);
         return mapResult;
     }
 

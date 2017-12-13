@@ -312,30 +312,30 @@ public class FinanceController {
             reasonIdList.add(1);
             reasonIdList.add(2);
             reasonIdList.add(3);
+            reasonIdList.add(-4);
         }
         map.put("reasonIdList", reasonIdList);
-        if (beginDate != null && beginDate != "" ) {
-            map.put("beginDate", beginDate+" "+"00:00:00");
+        if(beginDate != null && beginDate != ""){
+            map.put("beginDate", CalendarUtil.getTranByInputTime(beginDate));
+            model.addAttribute("beginDate",beginDate);
         }
         if(endDate != null && endDate != ""){
-            map.put("endDate", endDate+" "+"23:59:59");
+            map.put("endDate", CalendarUtil.getAfterDayByInputTime(endDate));
+            model.addAttribute("endDate",endDate);
         }
         Map<String,Object> mapResult = customerFinanceService.queryCompanyCustomerRechargeRecordByCustomerId(map);
-        Set<Map.Entry<String,Object>> set = mapResult.entrySet();
-        Iterator<Map.Entry<String,Object>> it = set.iterator();
-        while(it.hasNext()){
-            Map.Entry<String,Object> me = it.next();
-            if(me.getKey().equals("getCountCompanyCustomerRechargeRecordByCustomerId")){
-                model.addAttribute("totleAmount", me.getValue());
-            }
-            if(me.getKey().equals("queryCompanyCustomerRechargeRecordByCustomerId") ){
-                model.addAttribute("customerBalanceLogList",me.getValue());
+        if (mapResult != null){
+            for (Map.Entry<String,Object> me : mapResult.entrySet()) {
+                if(me.getKey().equals("chargeTot")){
+                    model.addAttribute("totleAmount", me.getValue());
+                }
+                if(me.getKey().equals("logList") ){
+                    model.addAttribute("customerBalanceLogList",me.getValue());
+                }
             }
         }
         model.addAttribute("customerId",customerId);
-        model.addAttribute("reasonIdArray",reasonId);
-        model.addAttribute("beginDate",beginDate);
-        model.addAttribute("endDate",endDate);
+        model.addAttribute("reasonIdArray",reasonIdList);
         model.addAttribute("companyName",companyName);
         return new ModelAndView("/finance/customerBalanceLogRecord");
     }

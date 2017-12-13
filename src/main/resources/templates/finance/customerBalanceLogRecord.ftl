@@ -58,19 +58,25 @@
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="1">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="1">正常充值
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId==1>checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="1">正常充值
 
                                     </label>
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="2">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="2">弥补充值
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId==2>checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="2">弥补充值
 
                                     </label>
 
                                     <label class="checkbox">
 
-                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId=="3">checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="3">测试充值
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId==3>checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="3">测试充值
+
+                                    </label>
+
+                                    <label class="checkbox">
+
+                                        <input type="checkbox" <#if reasonIdArray??><#list reasonIdArray as reasonId><#if reasonId==-4>checked="checked"</#if></#list></#if> id="reasonId" name="reasonId" value="-4">错充削减
 
                                     </label>
 

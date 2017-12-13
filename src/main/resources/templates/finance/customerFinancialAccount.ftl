@@ -431,7 +431,7 @@
                                                 <td data-title="可用额度">${customer.surplusFloor!'0.0'}</td>
                                                 <td data-title="账号余额">${customer.balance!'0.0'}</td>
                                                 <td data-title="理论余额">${customer.systemBalance!'0.0'}</td>
-                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&reasonId=1&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${customer.chargeTotleAmount!'0.0'}</a></td>
+                                                <td data-title="充值总额"><a href="/finance/find-all-customer/find-all-customer-recharge-log-by-customer-id?customerId=${customer.id}&companyName=${customer.companyName}" data-toggle="tooltip" data-placement="bottom" title="点击查看充值记录">${customer.chargeTotleAmount!'0.0'}</a></td>
                                                 <td data-title="消费总额">${customer.consumeTotleAmount!'0.0'}</td>
                                                 <td data-title="上周充值">${customer.lastWeekCharge!'0.0'}</td>
                                                 <td data-title="上周消费">${customer.lastWeekConsume!'0.0'}</td>
