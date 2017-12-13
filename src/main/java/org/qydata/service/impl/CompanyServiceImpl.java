@@ -11,6 +11,7 @@ import org.qydata.mapper.CompanyMapper;
 import org.qydata.service.CompanyService;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.https.HttpClientUtil;
+import org.qydata.tools.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,10 @@ import java.util.Map;
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
-    @Autowired private CompanyMapper companyMapper;
-
+    @Autowired
+    private CompanyMapper companyMapper;
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Override
     public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {
@@ -351,6 +354,10 @@ public class CompanyServiceImpl implements CompanyService {
         }
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
+            Customer customer = companyMapper.queryOfficAuthIdByCompanyId(companyId);
+            if (customer != null){
+                redisUtils.addApiPrice(customer.getId() + "", apiTypeId, price);
+            }
             return code;
         }
         throw new Exception("http请求异常，请求状态码statusCode="+code);
@@ -375,6 +382,10 @@ public class CompanyServiceImpl implements CompanyService {
         }
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
+            Customer customer = companyMapper.queryOfficAuthIdByCompanyId(companyId);
+            if (customer != null){
+                redisUtils.addApiPrice(customer.getId() + "", tid + "-" + stid, pic);
+            }
             return code;
         }
         throw new Exception("http请求异常，请求状态码statusCode="+code);

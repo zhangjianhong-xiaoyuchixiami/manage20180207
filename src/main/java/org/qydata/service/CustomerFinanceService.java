@@ -65,7 +65,7 @@ public interface CustomerFinanceService {
      * @param subTypeId
      * @return
      */
-    public CustomerCurrDayConsume getPriceByType(Integer customerId, Integer apiTypeId, Integer subTypeId);
+//    public CustomerCurrDayConsume getPriceByType(Integer customerId, Integer apiTypeId, Integer subTypeId);
 
 //    /**
 //     * 查询客户的Api消费记录

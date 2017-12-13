@@ -13,6 +13,7 @@ import org.qydata.entity.*;
 import org.qydata.mapper.CustomerFinanceMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.CustomerCurrendDayTotalAmountUtils;
 import org.qydata.tools.DateUtils;
 import org.qydata.tools.JsonUtils;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
@@ -20,6 +21,7 @@ import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.date.CalendarUtil_2;
 import org.qydata.tools.date.CalendarUtil_3;
 import org.qydata.tools.https.HttpClientUtil;
+import org.qydata.tools.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,10 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
     @Autowired
     private CustomerFinanceMapper customerFinanceMapper;
-
+    @Autowired
+    private RedisUtils redisUtils;
+    @Autowired
+    private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
     @Override
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
         Map<String,Object> param = new HashMap<>();
@@ -471,7 +476,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             System.out.println(subTypeId);
 
             //根据customerId、apiTypeId、subTypeId查询请求服务的compnyApi对象
-            CustomerCurrDayConsume customerCurrDayConsume = getPriceByType(custId, apiTypeId, subTypeId);
+            CustomerCurrDayConsume customerCurrDayConsume = customerCurrendDayTotalAmountUtils.getPriceByType(custId, apiTypeId, subTypeId);
             if(customerCurrDayConsume == null){
                 return null;
             }
@@ -519,7 +524,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
      * @param subTypeId
      * @return
      */
-    @Override
+   /* @Override
     public CustomerCurrDayConsume getPriceByType(Integer customerId, Integer apiTypeId, Integer subTypeId) {
         Map<String,Integer>typeMap = new HashMap<String,Integer>();
         typeMap.put("customerId", customerId);
@@ -527,15 +532,15 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         typeMap.put("subTypeId", subTypeId);
         CustomerCurrDayConsume customerCurrDayConsume = customerFinanceMapper.getPriceByType(typeMap);
         return customerCurrDayConsume;
-    }
+    }*/
 
     /**
      *查询客户当天消费金额
-     * @param customerId
-     * @param currentDate
+     * @param //customerId
+     * @param //currentDate
      * @return
      */
-    public Double getCurrentDayTotalAmount(String customerId, String currentDate){
+   /* public Double getCurrentDayTotalAmount(String customerId, String currentDate){
 
         //调用接口获得客户请求的服务和对应的扣费次数
         String s = HttpClientUtil.httpRequest(customerId, currentDate);
@@ -558,29 +563,32 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             for (Map.Entry<String, String> entry : entries) {
                 //定义记录单项服务的消费金额
                 Double amount = 0.0;
-                //获取键值即为对应的服务及消费次数
+                //获取键即为对应的服务类型
                 String key = entry.getKey();
+                //值对应的是消费次数
                 String value = entry.getValue();
 
-                System.out.println(key);
-                System.out.println(value);
+                String apiPrice = redisUtils.getApiPrice(customerId, key);
+                if (apiPrice != null){
+                    amount = Double.valueOf(apiPrice) * Integer.valueOf(value);
+                }else{
+                    String[] split = key.split("-");
+                    Integer apiTypeId = Integer.valueOf(split[0]);
+                    Integer subTypeId = Integer.valueOf(split[1]);
+                    Integer custId = Integer.valueOf(customerId);
+                    System.out.println(apiTypeId);
+                    System.out.println(subTypeId);
 
-                String[] split = key.split("-");
-                Integer apiTypeId = Integer.valueOf(split[0]);
-                Integer subTypeId = Integer.valueOf(split[1]);
-                Integer custId = Integer.valueOf(customerId);
-                System.out.println(apiTypeId);
-                System.out.println(subTypeId);
-
-                //根据customerId、apiTypeId、subTypeId查询请求服务的customerCurrDayConsume对象
-                CustomerCurrDayConsume customerCurrDayConsume = getPriceByType(custId, apiTypeId, subTypeId);
-                if(customerCurrDayConsume == null){
-                    return null;
+                    //根据customerId、apiTypeId、subTypeId查询请求服务的customerCurrDayConsume对象
+                    CustomerCurrDayConsume customerCurrDayConsume = getPriceByType(custId, apiTypeId, subTypeId);
+                    if(customerCurrDayConsume == null){
+                        return null;
+                    }
+                    Double price = customerCurrDayConsume.getPrice();
+                    //计算此服务总消费金额
+                    int count = Integer.valueOf(value);
+                    amount = count * price;
                 }
-                Double price = customerCurrDayConsume.getPrice();
-                //计算此服务总消费金额
-                int count = Integer.valueOf(value);
-                amount = count * price;
                 System.out.println("单项服务费用"+amount);
                 //计算客户所有服务消费金额
                 totalAmount = totalAmount + amount;
@@ -589,7 +597,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             }
         }
         return 0.0;
-    }
+    }*/
 
 
     @Override

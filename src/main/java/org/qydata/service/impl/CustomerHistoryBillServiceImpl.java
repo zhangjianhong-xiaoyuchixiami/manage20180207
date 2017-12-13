@@ -14,10 +14,7 @@ import org.qydata.entity.Partner;
 import org.qydata.mapper.CustomerHistoryBillMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerHistoryBillService;
-import org.qydata.tools.CalendarTools;
-import org.qydata.tools.DateUtils;
-import org.qydata.tools.JsonUtils;
-import org.qydata.tools.RegexUtil;
+import org.qydata.tools.*;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
 
 import org.qydata.tools.date.CalendarUtil;
@@ -39,6 +36,8 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     private CustomerHistoryBillMapper billMapper;
     @Autowired
     private CustomerFinanceService financeService;
+    @Autowired
+    private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
 
     @Override
     public Map<String, Object> queryCustomerHistoryBill(Map<String, Object> map) {
@@ -556,7 +555,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         if (jsonMap != null){
             for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
                 String[] split = entry.getKey().split("-");
-                CustomerCurrDayConsume consume = financeService.getPriceByType(cid, Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+                CustomerCurrDayConsume consume = customerCurrendDayTotalAmountUtils.getPriceByType(cid, Integer.valueOf(split[0]), Integer.valueOf(split[1]));
                 if(consume == null){
                     return null;
                 }

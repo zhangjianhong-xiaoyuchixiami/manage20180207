@@ -12,6 +12,7 @@ import org.qydata.tools.RegexUtil;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.qydata.tools.https.HttpClientUtil;
+import org.qydata.tools.redis.RedisUtils;
 import org.qydata.tools.thread.RecoverApiProbThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,8 @@ public class ApiServiceImpl implements ApiService {
 
     @Autowired
     private ApiMapper apiMapper;
-
+    @Autowired
+    private RedisUtils redisUtils;
     @Autowired
     private CompanyMapper companyMapper;
 
@@ -341,6 +343,10 @@ public class ApiServiceImpl implements ApiService {
         map.put("stid", stid);
         int code = HttpClientUtil.doGet(uri, map, null);
         if (200 == code) {
+            Customer customer = companyMapper.queryOfficAuthIdByCompanyId(cid);
+            if (customer != null){
+                redisUtils.addApiPrice(customer.getId()+"", tid + "-" + stid, pic+"");
+            }
             return code;
         }
         throw new Exception("http请求异常，请求状态码statusCode=" + code);
