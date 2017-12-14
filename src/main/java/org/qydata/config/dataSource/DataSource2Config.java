@@ -9,14 +9,13 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
 /**
- *
+ *3306从库配置文件
  */
 @Configuration
 @MapperScan(basePackages = "org.qydata.mapper.mapper2", sqlSessionTemplateRef  = "slaveSqlSessionTemplate")
@@ -24,12 +23,12 @@ public class DataSource2Config {
 
     @Bean(name = "slaveDataSource")
     @ConfigurationProperties(prefix = "slave.datasource")
-    public DataSource testDataSource() {
+    public DataSource slaveDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean(name = "slaveSqlSessionFactory")
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier("slaveDataSource") DataSource dataSource) throws Exception {
+    public SqlSessionFactory slaveSqlSessionFactory(@Qualifier("slaveDataSource") DataSource dataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/mapper2/*.xml"));
@@ -37,12 +36,12 @@ public class DataSource2Config {
     }
 
     @Bean(name = "slaveTransactionManager")
-    public DataSourceTransactionManager testTransactionManager(@Qualifier("slaveDataSource") DataSource dataSource) {
+    public DataSourceTransactionManager slaveTransactionManager(@Qualifier("slaveDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean(name = "slaveSqlSessionTemplate")
-    public SqlSessionTemplate testSqlSessionTemplate(@Qualifier("slaveSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
+    public SqlSessionTemplate slaveSqlSessionTemplate(@Qualifier("slaveSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 

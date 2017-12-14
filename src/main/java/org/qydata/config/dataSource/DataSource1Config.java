@@ -16,7 +16,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 /**
- *
+ *3306主库配置文件
  */
 @Configuration
 @MapperScan(basePackages = "org.qydata.mapper.mapper1", sqlSessionTemplateRef  = "masterSqlSessionTemplate")
@@ -25,13 +25,13 @@ public class DataSource1Config {
     @Bean(name = "masterDataSource")
     @ConfigurationProperties(prefix = "master.datasource")
     @Primary
-    public DataSource testDataSource() {
+    public DataSource masterDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean(name = "masterSqlSessionFactory")
     @Primary
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier("masterDataSource") DataSource dataSource) throws Exception {
+    public SqlSessionFactory masterSqlSessionFactory(@Qualifier("masterDataSource") DataSource dataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/mapper1/*.xml"));
@@ -40,13 +40,13 @@ public class DataSource1Config {
 
     @Bean(name = "masterTransactionManager")
     @Primary
-    public DataSourceTransactionManager testTransactionManager(@Qualifier("masterDataSource") DataSource dataSource) {
+    public DataSourceTransactionManager masterTransactionManager(@Qualifier("masterDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean(name = "masterSqlSessionTemplate")
     @Primary
-    public SqlSessionTemplate testSqlSessionTemplate(@Qualifier("masterSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
+    public SqlSessionTemplate masterSqlSessionTemplate(@Qualifier("masterSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
