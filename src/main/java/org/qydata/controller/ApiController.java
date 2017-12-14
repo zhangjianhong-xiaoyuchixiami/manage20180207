@@ -308,6 +308,9 @@ public class ApiController {
         return gson.toJson(map);
     }
 
+//    @RequestMapping("/form_modal_vendor_curr_day_api_type_consume")
+//    @ResponseBody
+
     /**
      * 禁用客户产品权限
      * @return

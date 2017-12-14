@@ -221,7 +221,7 @@
                                         <th>上周消费</th>
                                         <th>上月消费</th>
                                         <th>当月消费（不包括昨天）</th>
-                                        <th class="table-td-none">当天消费</th>
+                                        <th >当天消费</th>
                                         <th class="table-td-none">类型</th>
                                         <th class="table-td-none">当前价格</th>
                                         <th class="table-td-none">消费总额</th>
@@ -237,7 +237,7 @@
                                                 <td data-title="合作公司">
                                                     <#if finance.partnerId??>
                                                         <a href="/api/find-all-api-vendor-consume?partnerId=${finance.partnerId?c}">${finance.partnerName!'无'}</a>
-                                                    <#else >
+                                                    <#else>
                                                         无
                                                     </#if>
                                                 </td>
@@ -247,7 +247,7 @@
                                                 <td data-title="上周消费">${finance.lastWeekConsume!'0'}</td>
                                                 <td data-title="上月消费">${finance.lastMonthConsume!'0'}</td>
                                                 <td data-title="本月消费">${finance.currMonthConsume!'0'}</td>
-                                                <td data-title="当天消费" class="table-td-none">${finance.currDayConsume!'0'}</td>
+                                                <td data-title="当天消费"><td data-title="当日消费"><a href="#form_modal_vendor_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${vendor.id})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${finance.currDayConsume!'0'}</a></td>
                                                 <td data-title="类型" class="table-td-none">
                                                     <#if finance.typeConsumeList??>
                                                         <#list finance.typeConsumeList as type>
@@ -269,13 +269,13 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
-                                                <td data-title="调用成功次数" class="table-td-none">
+                                                <#--<td data-title="调用成功次数" class="table-td-none">
                                                     <#if finance.typeConsumeList??>
                                                         <#list finance.typeConsumeList as type>
                                                             <span>${type.userCount!'0'}</span><br/>
                                                         </#list>
                                                     </#if>
-                                                </td>
+                                                </td>-->
                                                 <td data-title="扣费次数" class="table-td-none">
                                                     <#if finance.typeConsumeList??>
                                                         <#list finance.typeConsumeList as type>
@@ -288,6 +288,31 @@
                                         </#if>
                                     </tbody>
                                 </table>
+                            </div>
+
+                        <#--供应商当天产品类型消费弹框-->
+                            <div id="form_modal_vendor_curr_day_api_type_consume" class="modal hide fade myModalCurrDayApiTypeConsume" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_vendor_curr_day_api_type_consume" aria-hidden="true">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    <h4 id="myModalLabel_vendor_curr_day_api_type_consume"><span id="vendor_company_name"></span>当天各产品类型消费情况</h4>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <table class="table table-striped table-hover table-bordered table-condensed" id="simple__curr_day_api_type_consume">
+                                        <thead>
+                                        <tr>
+                                            <th>产品类型</th>
+                                            <th>当前价格</th>
+                                            <th>总消费额（单位：元）</th>
+                                        <#--<th>请求次数</th>-->
+                                            <th>扣费次数</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                         </div>
@@ -315,6 +340,8 @@
     <script src="/js/myjs/api-vendor-two.js?v=${ver}"></script>
 
     <script src="/js/oldlocal/api-vendor-Record.js?v=${ver}"></script>
+
+    <script src="/js/oldlocal/vendor-finance-curr-day-api-type-consume.js?v=${ver}"></script>
 
     <script type="text/javascript">
 
