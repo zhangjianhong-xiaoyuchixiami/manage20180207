@@ -14,6 +14,7 @@ import org.qydata.mapper.mapper1.CustomerFinanceMapper;
 import org.qydata.mapper.mapper2.CustomerFinanceSelectMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.CustomerCurrendDayTotalAmountUtils;
 import org.qydata.tools.DateUtils;
 import org.qydata.tools.JsonUtils;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
@@ -41,8 +42,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     private CustomerFinanceSelectMapper customerFinanceSelectMapper;
     @Autowired
     private RedisUtils redisUtils;
-   // @Autowired
-   // private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
+    @Autowired
+    private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
     @Override
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
         Map<String,Object> param = new HashMap<>();
@@ -478,26 +479,26 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             System.out.println(subTypeId);
 
             //根据customerId、apiTypeId、subTypeId查询请求服务的compnyApi对象
-           // CustomerCurrDayConsume customerCurrDayConsume = customerCurrendDayTotalAmountUtils.getPriceByType(custId, apiTypeId, subTypeId);
-//            if(customerCurrDayConsume == null){
-//                return null;
-//            }
-//            Double price = customerCurrDayConsume.getPrice();
-//            //计算此服务总消费金额
-//            int count = Integer.valueOf(value);
-//            amount = count * price;
-//            System.out.println("单项服务费用"+amount);
-//            //封装客户此服务当天消费金额
-//            customerCurrDayConsume.setSumAmount(amount);
-//            //计算客户所有服务消费金额
-//            totalAmount = totalAmount + amount;
-//            System.out.println("所有服务费用"+totalAmount);
-//            //封装客户当天服务消费次数
-//            customerCurrDayConsume.setCountSuccess(count);
-//            customerCurrDayConsume.setApiTypeId(apiTypeId);
-//            customerCurrDayConsume.setStid(subTypeId);
-//            customerCurrDayConsume.setCustomerId(custId);
-//            consumeList.add(customerCurrDayConsume);
+            CustomerCurrDayConsume customerCurrDayConsume = customerCurrendDayTotalAmountUtils.getPriceByType(custId, apiTypeId, subTypeId);
+            if(customerCurrDayConsume == null){
+                return null;
+            }
+            Double price = customerCurrDayConsume.getPrice();
+            //计算此服务总消费金额
+            int count = Integer.valueOf(value);
+            amount = count * price;
+            System.out.println("单项服务费用"+amount);
+            //封装客户此服务当天消费金额
+            customerCurrDayConsume.setSumAmount(amount);
+            //计算客户所有服务消费金额
+            totalAmount = totalAmount + amount;
+            System.out.println("所有服务费用"+totalAmount);
+            //封装客户当天服务消费次数
+            customerCurrDayConsume.setCountSuccess(count);
+            customerCurrDayConsume.setApiTypeId(apiTypeId);
+            customerCurrDayConsume.setStid(subTypeId);
+            customerCurrDayConsume.setCustomerId(custId);
+            consumeList.add(customerCurrDayConsume);
         }
 
         if (consumeList == null) {

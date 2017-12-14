@@ -357,10 +357,6 @@ public class CompanyServiceImpl implements CompanyService {
         }
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
-            Customer customer = companySelectMapper.queryOfficAuthIdByCompanyId(companyId);
-            if (customer != null){
-                redisUtils.addApiPrice(customer.getId() + "", apiTypeId, price);
-            }
             return code;
         }
         throw new Exception("http请求异常，请求状态码statusCode="+code);
@@ -385,10 +381,6 @@ public class CompanyServiceImpl implements CompanyService {
         }
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
-            Customer customer = companySelectMapper.queryOfficAuthIdByCompanyId(companyId);
-            if (customer != null){
-                redisUtils.addApiPrice(customer.getId() + "", tid + "-" + stid, pic);
-            }
             return code;
         }
         throw new Exception("http请求异常，请求状态码statusCode="+code);
