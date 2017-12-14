@@ -2,7 +2,8 @@ package org.qydata.service.impl;
 
 import org.qydata.entity.Partner;
 import org.qydata.entity.PartnerIncomeExpenditureLog;
-import org.qydata.mapper.PartnerFinanceMapper;
+import org.qydata.mapper.mapper1.PartnerFinanceMapper;
+import org.qydata.mapper.mapper2.PartnerFinanceSelectMapper;
 import org.qydata.service.PartnerFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,19 +20,22 @@ import java.util.Map;
 @Service
 public class PartnerFinanceServiceImpl implements PartnerFinanceService {
 
-    @Autowired private PartnerFinanceMapper partnerFinanceMapper;
+    @Autowired 
+    private PartnerFinanceMapper partnerFinanceMapper;
+    @Autowired
+    private PartnerFinanceSelectMapper partnerFinanceSelectMapper;
 
     @Override
     public Map<String,Object> queryPartnerOverFinance(Map<String, Object> map) {
         Map<String,Object> mapTran = new HashMap<>();
         try {
-            mapTran.put("queryPartnerOverFinance",partnerFinanceMapper.queryPartnerOverFinance(map));
-            mapTran.put("getCountWeekIncomePartnerOverFinance",partnerFinanceMapper.getCountWeekIncomePartnerOverFinance(map));
-            mapTran.put("getCountWeekExpenditurePartnerOverFinance",partnerFinanceMapper.getCountWeekExpenditurePartnerOverFinance(map));
-            mapTran.put("getCountMonthIncomePartnerOverFinance",partnerFinanceMapper.getCountMonthIncomePartnerOverFinance(map));
-            mapTran.put("getCountMonthExpenditurePartnerOverFinance",partnerFinanceMapper.getCountMonthExpenditurePartnerOverFinance(map));
-            mapTran.put("getCountTotleIncomePartnerOverFinance",partnerFinanceMapper.getCountTotleIncomePartnerOverFinance(map));
-            mapTran.put("getCountTotleExpenditurePartnerOverFinance",partnerFinanceMapper.getCountTotleExpenditurePartnerOverFinance(map));
+            mapTran.put("queryPartnerOverFinance",partnerFinanceSelectMapper.queryPartnerOverFinance(map));
+            mapTran.put("getCountWeekIncomePartnerOverFinance",partnerFinanceSelectMapper.getCountWeekIncomePartnerOverFinance(map));
+            mapTran.put("getCountWeekExpenditurePartnerOverFinance",partnerFinanceSelectMapper.getCountWeekExpenditurePartnerOverFinance(map));
+            mapTran.put("getCountMonthIncomePartnerOverFinance",partnerFinanceSelectMapper.getCountMonthIncomePartnerOverFinance(map));
+            mapTran.put("getCountMonthExpenditurePartnerOverFinance",partnerFinanceSelectMapper.getCountMonthExpenditurePartnerOverFinance(map));
+            mapTran.put("getCountTotleIncomePartnerOverFinance",partnerFinanceSelectMapper.getCountTotleIncomePartnerOverFinance(map));
+            mapTran.put("getCountTotleExpenditurePartnerOverFinance",partnerFinanceSelectMapper.getCountTotleExpenditurePartnerOverFinance(map));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,8 +80,8 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     public Map<String,Object> queryPartnerDetailLog(Map<String, Object> map) {
         Map<String,Object> mapTran = new HashMap<>();
         try {
-            mapTran.put("queryPartnerDetailLog",partnerFinanceMapper.queryPartnerDetailLog(map));
-            mapTran.put("getCountPartnerDetailLog",partnerFinanceMapper.getCountPartnerDetailLog(map));
+            mapTran.put("queryPartnerDetailLog",partnerFinanceSelectMapper.queryPartnerDetailLog(map));
+            mapTran.put("getCountPartnerDetailLog",partnerFinanceSelectMapper.getCountPartnerDetailLog(map));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,7 +91,7 @@ public class PartnerFinanceServiceImpl implements PartnerFinanceService {
     @Override
     public List<Partner> queryPartnerBarChart(Map<String, Object> map) {
         try {
-            return partnerFinanceMapper.queryPartnerBarChart(map);
+            return partnerFinanceSelectMapper.queryPartnerBarChart(map);
         } catch (Exception e) {
             e.printStackTrace();
         }

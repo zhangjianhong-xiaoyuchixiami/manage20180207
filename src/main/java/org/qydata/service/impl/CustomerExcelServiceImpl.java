@@ -2,8 +2,10 @@ package org.qydata.service.impl;
 
 import org.qydata.entity.CustomerCompanyEmail;
 import org.qydata.entity.CustomerConsumeExcel;
-import org.qydata.mapper.CustomerExcelMapper;
-import org.qydata.mapper.CustomerFinanceMapper;
+import org.qydata.mapper.mapper1.CustomerExcelMapper;
+import org.qydata.mapper.mapper1.CustomerFinanceMapper;
+import org.qydata.mapper.mapper2.CustomerExcelSelectMapper;
+import org.qydata.mapper.mapper2.CustomerFinanceSelectMapper;
 import org.qydata.service.CustomerExcelService;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.email.SendEmail;
@@ -22,7 +24,11 @@ public class CustomerExcelServiceImpl implements CustomerExcelService {
     @Autowired
     private CustomerExcelMapper customerExcelMapper;
     @Autowired
+    private CustomerExcelSelectMapper customerExcelSelectMapper;
+    @Autowired
     private CustomerFinanceMapper customerFinanceMapper;
+    @Autowired
+    private CustomerFinanceSelectMapper customerFinanceSelectMapper;
 
     @Override
     public Map<String, Object> queryCustomerFinanceAccountExcel(Map<String, Object> map) {
@@ -43,7 +49,7 @@ public class CustomerExcelServiceImpl implements CustomerExcelService {
         }
         if (customerId != null){
             for (int i = 0; i < customerId.length ; i++) {
-                String companyName = customerFinanceMapper.queryCustomerCompanyNameById(Integer.parseInt(customerId[i]));
+                String companyName = customerFinanceSelectMapper.queryCustomerCompanyNameById(Integer.parseInt(customerId[i]));
 
                 String [] copyTo = null;
                 String [] to = null;
@@ -52,8 +58,8 @@ public class CustomerExcelServiceImpl implements CustomerExcelService {
                 }else {
                     copyTo = new String[]{"ld@qianyandata.com","it@qianyandata.com","accounting@qianyandata.com"};
                     Map<String,Object> mapParam = new HashMap<>();
-                    mapParam.put("companyId",customerFinanceMapper.queryCompanyIdByCustomerId(Integer.parseInt(customerId[i])));
-                    List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapParam);
+                    mapParam.put("companyId",customerFinanceSelectMapper.queryCompanyIdByCustomerId(Integer.parseInt(customerId[i])));
+                    List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceSelectMapper.queryCustomerEmail(mapParam);
                     if (customerCompanyEmailList != null){
                         to = new String[customerCompanyEmailList.size()];
                         for (int j = 0; j < customerCompanyEmailList.size() ; j++) {
@@ -81,6 +87,6 @@ public class CustomerExcelServiceImpl implements CustomerExcelService {
 
     @Override
     public CustomerConsumeExcel queryCustomerConsumeExcelByCustomerId(Map<String, Object> map) {
-        return customerExcelMapper.queryCustomerConsumeExcelByCustomerId(map);
+        return customerExcelSelectMapper.queryCustomerConsumeExcelByCustomerId(map);
     }
 }

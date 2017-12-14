@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.ApiMapper">
+
+    <!--修改产品失效时间-->
+    <update id="updateApiDeadTimeByApiId" parameterType="Object">
+        UPDATE qyfinance.ApiPriceChanceLog SET timeDead = #{param2} WHERE apiId = #{param1} AND timeDead IS NULL
+    </update>
+
+    <!--新增产品价格记录-->
+    <insert id="addApiPriceChangeLog" parameterType="org.qydata.entity.ApiPriceChanceLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiPriceChanceLog(apiId,price,timeForce,createTime)
+        VALUES(#{apiId},#{price},#{timeForce},now())
+    </insert>
+
+    <!--修改客户同一产品失效时间-->
+    <update id="updateCompanyApiDeadTimeByCidTidStid" parameterType="Object">
+        UPDATE qyfinance.CompanyApiPriceChanceLog
+        SET timeDead = #{param4}
+        WHERE companyId = #{param1}
+        AND apiTypeId = #{param2}
+        AND stid = #{param3}
+        AND timeDead IS NULL
+    </update>
+
+    <!--新增产品价格记录-->
+    <insert id="addCompanyApiPriceChangeLog" parameterType="org.qydata.entity.CompanyApiPriceChangeLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.CompanyApiPriceChanceLog(companyId,apiTypeId,stid,price,timeForce,createTime)
+        VALUES(#{companyId},#{apiTypeId},#{stid},#{price},#{timeForce},now())
+    </insert>
+
+    <!--添加api已改价记录-->
+    <insert id="addApiFake" parameterType="org.qydata.entity.ApiFake" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiFake(apiId,fakeV,createTime)
+        VALUES(#{apiId},#{fakeV},now())
+    </insert>
+
+    <!--插入Api预设配额-->
+    <insert id="addApiDefProb" parameterType="org.qydata.entity.ApiExt" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiExt(apiId,defProb,createTime)
+        VALUES(#{apiId},#{defProb},now())
+    </insert>
+
+    <!--修改上游产品预设配额-->
+    <update id="updateApiDefProb" parameterType="org.qydata.entity.ApiExt">
+        UPDATE qyfinance.ApiExt SET defProb = #{defProb} WHERE apiId = #{apiId}
+    </update>
+
+    <!--插入Api预设比例-->
+    <insert id="addApiDefProp" parameterType="org.qydata.entity.ApiExt" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiExt(apiId,defProp,createTime)
+        VALUES(#{apiId},#{defProp},now())
+    </insert>
+
+    <!--修改上游产品预设比例-->
+    <update id="updateApiDefProp" parameterType="org.qydata.entity.ApiExt">
+        UPDATE qyfinance.ApiExt SET defProp = #{defProp} WHERE apiId = #{apiId}
+    </update>
+
+    <!--插入恢复配额日志-->
+    <insert id="addRecoverProbLog" parameterType="org.qydata.entity.RecoverProbLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.RecoverProbLog(rApiId,ok,createTime)
+        VALUES(#{rApiId},#{ok},now())
+    </insert>
+
+    <!--修改恢复配额日志-->
+    <update id="updateRecoverProbLog" parameterType="org.qydata.entity.RecoverProbLog">
+        UPDATE qyfinance.RecoverProbLog
+        SET tApiId = #{tApiId},
+        phaseOneBeginTime = #{phaseOneBeginTime},
+        phaseOneEndTime = #{phaseOneEndTime},
+        phaseTwoBeginTime = #{phaseTwoBeginTime},
+        phaseTwoEndTime = #{phaseTwoEndTime},
+        ok = #{ok},
+        statusCode = #{statusCode}
+        WHERE id = #{id}
+    </update>
+
+    <!--进行恢复配额操作时插入执行标记-->
+    <insert id="insertRecoverProbCheck" parameterType="org.qydata.entity.RecoverProbCheck" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.RecoverProbCheck(tid,value)
+        VALUES(#{tid},#{value})
+    </insert>
+
+    <!--进行恢复配额操作时修改执行标记-->
+    <update id="updateRecoverProbCheck" parameterType="org.qydata.entity.RecoverProbCheck">
+        UPDATE qyfinance.RecoverProbCheck SET value = #{value}
+        WHERE tid = #{tid}
+    </update>
+    
+</mapper>
+

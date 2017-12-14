@@ -11,7 +11,8 @@ import org.qydata.entity.Company;
 import org.qydata.entity.CompanyApi;
 import org.qydata.entity.CustomerHistoryBillUpdateLog;
 import org.qydata.entity.Partner;
-import org.qydata.mapper.CustomerHistoryBillMapper;
+import org.qydata.mapper.mapper1.CustomerHistoryBillMapper;
+import org.qydata.mapper.mapper2.CustomerHistoryBillSelectMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerHistoryBillService;
 import org.qydata.tools.*;
@@ -35,9 +36,11 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     @Autowired
     private CustomerHistoryBillMapper billMapper;
     @Autowired
-    private CustomerFinanceService financeService;
+    private CustomerHistoryBillSelectMapper billSelectMapper;
     @Autowired
-    private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
+    private CustomerFinanceService financeService;
+  //  @Autowired
+  //  private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
 
     @Override
     public Map<String, Object> queryCustomerHistoryBill(Map<String, Object> map) {
@@ -73,7 +76,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         if (cid != null && cid.length > 0){
             List<Integer> cidList = new ArrayList<>();
             for (int i = 0; i < cid.length ; i++) {
-                cidList.add(billMapper.queryCustomerIdByCompanyId(cid[i]));
+                cidList.add(billSelectMapper.queryCustomerIdByCompanyId(cid[i]));
             }
             param.put("cidList",cidList);
         }
@@ -93,11 +96,11 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         }
         param.put("currDayTime", CalendarUtil.formatCurrTime());
         param.put("currMonthTime", CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
-        List<CustomerHistoryBill> billList = billMapper.queryCustomerHistoryBill(param);
-        List<CustomerHistoryBill> billChargeList = billMapper.queryCustomerChargeTotle(param);
-        List<CustomerHistoryBill> billChargeCurrDayList = billMapper.queryCustomerChargeCurrDay(param);
-        List<CustomerHistoryBill> billStaticConsume = billMapper.queryCustomerStaticConsumeAmount();
-        List<CustomerHistoryBill> billCurrMonthConsumeList = billMapper.queryCustomerCurrMonthRealTimeConsume(param);
+        List<CustomerHistoryBill> billList = billSelectMapper.queryCustomerHistoryBill(param);
+        List<CustomerHistoryBill> billChargeList = billSelectMapper.queryCustomerChargeTotle(param);
+        List<CustomerHistoryBill> billChargeCurrDayList = billSelectMapper.queryCustomerChargeCurrDay(param);
+        List<CustomerHistoryBill> billStaticConsume = billSelectMapper.queryCustomerStaticConsumeAmount();
+        List<CustomerHistoryBill> billCurrMonthConsumeList = billSelectMapper.queryCustomerCurrMonthRealTimeConsume(param);
 //        List<CustomerHistoryBill> billCurrDayConsumeList = billMapper.queryCustomerCurrDayRealTimeConsume(param);
         Double chargeTot = 0.0;
         Double consumeTot = 0.0;
@@ -219,7 +222,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
 
     @Override
     public List<Company> queryAllCompany() {
-        List<Company> companyList = billMapper.queryAllCompany();
+        List<Company> companyList = billSelectMapper.queryAllCompany();
         if (companyList != null){
             for (int i = 0; i < companyList.size() ; i++) {
                 Company company = companyList.get(i);
@@ -237,12 +240,12 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
 
     @Override
     public List<Partner> queryAllPartner() {
-        return billMapper.queryAllPartner();
+        return billSelectMapper.queryAllPartner();
     }
 
     @Override
     public List<String> queryAllConsumeTime() {
-        return billMapper.queryAllConsumeTime();
+        return billSelectMapper.queryAllConsumeTime();
     }
 
     @Override
@@ -291,7 +294,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
             param.put("stidList",stidList);
         }
         Double conTot = 0.0;
-        List<CustomerHistoryBillDetail> billDetailList = billMapper.queryCustomerHistoryBillDetail(param);
+        List<CustomerHistoryBillDetail> billDetailList = billSelectMapper.queryCustomerHistoryBillDetail(param);
         if (billDetailList != null){
             for (int i = 0; i < billDetailList.size() ; i++) {
                 CustomerHistoryBillDetail billDetail = billDetailList.get(i);
@@ -393,7 +396,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
     public List<CompanyApi> queryCompanyApiByCompanyId(Integer cid) {
         Map<String,Object> param = new HashMap<>();
         param.put("cid",cid);
-        List<CompanyApi> apiList = billMapper.queryCompanyApiByCompanyId(billMapper.queryCompanyIdByCustomerId(param));
+        List<CompanyApi> apiList = billSelectMapper.queryCompanyApiByCompanyId(billSelectMapper.queryCompanyIdByCustomerId(param));
         if (apiList != null && apiList.size() > 0){
             for (int i = 0; i < apiList.size() ; i++) {
                 CompanyApi api = apiList.get(i);
@@ -419,7 +422,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         }
         map.put("yearMonthList",yearMonthList);
         map.put("yearMonth",ChartCalendarUtil.getCurrentDateAssignYearMonth(0));
-        List<CustomerHistoryBillDetail> consumeList = billMapper.queryCustomerHistoryBillTrendDataConsume(map);
+        List<CustomerHistoryBillDetail> consumeList = billSelectMapper.queryCustomerHistoryBillTrendDataConsume(map);
         List<String> xList = new ArrayList<>();
         List<Integer> proList = new ArrayList<>();
         Map<Date,Object> proMap = new TreeMap<>();
@@ -460,8 +463,8 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         resu.put("jsonArrayS",jsonArrayS);
 
         //上月各产品扣费量
-        List<CustomerHistoryBillDetail> amountList = billMapper.queryCustomerHistoryBillTrendDataAmount(map);
-        List<CompanyApi> apiList = billMapper.queryCompanyApiByCompanyId(billMapper.queryCompanyIdByCustomerId(map));
+        List<CustomerHistoryBillDetail> amountList = billSelectMapper.queryCustomerHistoryBillTrendDataAmount(map);
+        List<CompanyApi> apiList = billSelectMapper.queryCompanyApiByCompanyId(billSelectMapper.queryCompanyIdByCustomerId(map));
         Map<String,Object> proMap_2 = new TreeMap<>();
         if (apiList != null && apiList.size() > 0){
             for (int i = 0; i < apiList.size() ; i++) {
@@ -512,12 +515,12 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
 
     @Override
     public Integer queryCustomerHistoryBillLockById(Integer id) {
-        return billMapper.queryCustomerHistoryBillLockById(id);
+        return billSelectMapper.queryCustomerHistoryBillLockById(id);
     }
 
     @Override
     public List<CustomerHistoryBillUpdateLog> queryCustomerHistoryBillDetailUpdateLog(Map<String, Object> map) {
-        List<CustomerHistoryBillUpdateLog> logList = billMapper.queryCustomerHistoryBillDetailUpdateLog(map);
+        List<CustomerHistoryBillUpdateLog> logList = billSelectMapper.queryCustomerHistoryBillDetailUpdateLog(map);
         if (logList == null){
             return null;
         }
@@ -535,36 +538,36 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         return logList;
     }
 
-    @Override
-    public Double queryCustomerCurrDayConsume(Integer cid) {
-        //调用接口获得客户请求的服务和对应的次数
-        String result = HttpClientUtil.httpRequest(String.valueOf(cid), String.valueOf(DateUtils.formatCurrentDate()));
-        //去掉接口返回值为null,""," ","{}","null","NULL"
-        if (StringUtils.isBlank(result) || result.replace(" ","").length() == 2 || result.equalsIgnoreCase("null")){
-            return null;
-        }
-        try {
-            //非json格式字符串会报错
-            JSONObject.parseObject(result);
-        } catch (Exception e) {
-            return null;
-        }
-        //将json转换成map
-        Map<String, String> jsonMap = JsonUtils.jsonToMap(result);
-        Double totalAmount = 0.0;
-        if (jsonMap != null){
-            for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
-                String[] split = entry.getKey().split("-");
-                CustomerCurrDayConsume consume = customerCurrendDayTotalAmountUtils.getPriceByType(cid, Integer.valueOf(split[0]), Integer.valueOf(split[1]));
-                if(consume == null){
-                    return null;
-                }
-                totalAmount += Integer.valueOf(entry.getValue()) * consume.getPrice();
-
-            }
-        }
-        return totalAmount;
-    }
+//    @Override
+//    public Double queryCustomerCurrDayConsume(Integer cid) {
+//        //调用接口获得客户请求的服务和对应的次数
+//        String result = HttpClientUtil.httpRequest(String.valueOf(cid), String.valueOf(DateUtils.formatCurrentDate()));
+//        //去掉接口返回值为null,""," ","{}","null","NULL"
+//        if (StringUtils.isBlank(result) || result.replace(" ","").length() == 2 || result.equalsIgnoreCase("null")){
+//            return null;
+//        }
+//        try {
+//            //非json格式字符串会报错
+//            JSONObject.parseObject(result);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//        //将json转换成map
+//        Map<String, String> jsonMap = JsonUtils.jsonToMap(result);
+//        Double totalAmount = 0.0;
+//        if (jsonMap != null){
+//            for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
+//                String[] split = entry.getKey().split("-");
+//                CustomerCurrDayConsume consume = CustomerCurrendDayTotalAmountUtils.getPriceByType(cid, Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+//                if(consume == null){
+//                    return null;
+//                }
+//                totalAmount += Integer.valueOf(entry.getValue()) * consume.getPrice();
+//
+//            }
+//        }
+//        return totalAmount;
+//    }
 
 
 }

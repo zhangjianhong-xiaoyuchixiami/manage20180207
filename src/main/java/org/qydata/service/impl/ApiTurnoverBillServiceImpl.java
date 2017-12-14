@@ -2,7 +2,8 @@ package org.qydata.service.impl;
 
 import org.qydata.dst.ApiTurnoverBill;
 import org.qydata.dst.ApiTurnoverBillTrend;
-import org.qydata.mapper.ApiTurnoverBillMapper;
+import org.qydata.mapper.mapper1.ApiTurnoverBillMapper;
+import org.qydata.mapper.mapper2.ApiTurnoverBillSelectMapper;
 import org.qydata.service.ApiTurnoverBillService;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.finance.ApiTurnoverBillUtils;
@@ -19,6 +20,8 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
 
     @Autowired
     private ApiTurnoverBillMapper billMapper;
+    @Autowired
+    private ApiTurnoverBillSelectMapper billSelectMapper;
 
     @Override
     public Map<String, Object> queryApiTurnoverBill(Map<String, Object> map) {
@@ -49,8 +52,8 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
                 }
             }
         }
-        List<ApiTurnoverBill> vendorBillList = billMapper.queryApiConsumeVendor(param);
-        List<ApiTurnoverBill> customerBillList =  billMapper.queryApiCustomerConsume(param);
+        List<ApiTurnoverBill> vendorBillList = billSelectMapper.queryApiConsumeVendor(param);
+        List<ApiTurnoverBill> customerBillList =  billSelectMapper.queryApiCustomerConsume(param);
         List <ApiTurnoverBill> billList = ApiTurnoverBillUtils.packageBill(customerBillList,vendorBillList);
         Double vendorTot = 0.0;
         Double customerTot = 0.0;
@@ -78,13 +81,13 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
 
     @Override
     public List<String> queryAllConsumeTime() {
-        return billMapper.queryAllConsumeTime();
+        return billSelectMapper.queryAllConsumeTime();
     }
 
     @Override
     public List<ApiTurnoverBill> queryConsumeType() {
-        List<ApiTurnoverBill> vendorTypeList = billMapper.queryVendorConsumeType();
-        List<ApiTurnoverBill> customerTypeList = billMapper.queryCustomerConsumeType();
+        List<ApiTurnoverBill> vendorTypeList = billSelectMapper.queryVendorConsumeType();
+        List<ApiTurnoverBill> customerTypeList = billSelectMapper.queryCustomerConsumeType();
         List<ApiTurnoverBill> billTypeList = ApiTurnoverBillUtils.packageBillType(customerTypeList,vendorTypeList);
         return billTypeList;
     }
@@ -107,8 +110,8 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
                 }
             }
         }
-        List<ApiTurnoverBillTrend> vendorTrendList =  billMapper.queryVendorConsumeByTypeId(param);
-        List<ApiTurnoverBillTrend> customerTrendList =  billMapper.queryCustomerConsumeByTypeId(param);
+        List<ApiTurnoverBillTrend> vendorTrendList =  billSelectMapper.queryVendorConsumeByTypeId(param);
+        List<ApiTurnoverBillTrend> customerTrendList =  billSelectMapper.queryCustomerConsumeByTypeId(param);
         if (vendorTrendList != null){
             for (ApiTurnoverBillTrend trend : vendorTrendList) {
                 if (trend.getCost() !=null){
@@ -153,8 +156,8 @@ public class ApiTurnoverBillServiceImpl implements ApiTurnoverBillService {
                 }
             }
         }
-        List<ApiTurnoverBillTrend> vendorTrendList =  billMapper.queryVendorConsumeByTypeIdData(param);
-        List<ApiTurnoverBillTrend> customerTrendList =  billMapper.queryCustomerConsumeByTypeIdData(param);
+        List<ApiTurnoverBillTrend> vendorTrendList =  billSelectMapper.queryVendorConsumeByTypeIdData(param);
+        List<ApiTurnoverBillTrend> customerTrendList =  billSelectMapper.queryCustomerConsumeByTypeIdData(param);
         Map<String,Integer> vendorMap = new HashMap<>();
         if (vendorTrendList != null){
             for (ApiTurnoverBillTrend trend : vendorTrendList) {

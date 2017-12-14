@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper2.RoleSelectMapper">
+
+    <!--查询所有的角色-->
+    <select id="findAllRole" resultType="org.qydata.entity.Role">
+        select id,name,flag from qyauth.Role where id not in(3)
+    </select>
+    <!--根据用户名匹配所有角色-->
+    <select id="findAllRoleByUsername" resultType="org.qydata.entity.UserRole">
+        select roleId,userId from qyauth.UserRole where userId=#{userId}
+    </select>
+
+</mapper>

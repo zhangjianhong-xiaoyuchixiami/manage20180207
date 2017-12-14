@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.VendorHistoryBillMapper">
+
+
+    <!--修改单价-->
+    <update id="updateVendorHistoryBillCost" parameterType="int">
+        UPDATE qyfinance.VendorHistoryBill
+        SET cost = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--修改扣费量-->
+    <update id="updateVendorHistoryBillAmount" parameterType="int">
+        UPDATE qyfinance.VendorHistoryBill
+        SET amount = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--改锁定/解锁状态-->
+    <update id="updateVendorHistoryBillIsLock" parameterType="map">
+        UPDATE qyfinance.VendorHistoryBill
+        SET isLock = #{isLock}
+        WHERE id IN
+            <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+    </update>
+
+    <!--添加修改日志-->
+    <insert id="insertVendorHistoryBillUpdateLog" parameterType="org.qydata.entity.VendorHistoryBillUpdateLog" >
+        INSERT INTO qyfinance.VendorHistroyBillUpdateLog (vendorHistoryBillId, beforData, afterData, content, type,createTime)
+        VALUES(#{vendorHistoryBillId},#{beforData},#{afterData},#{content},#{type},now())
+    </insert>
+
+    <!--删除历史记录-->
+    <delete id="deleteVendorHistoryBill" parameterType="list">
+        DELETE FROM qyfinance.VendorHistoryBill
+        WHERE id IN
+            <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+            </foreach>
+    </delete>
+
+
+    <!--新增历史记录-->
+    <insert id="addVendorHistoryBill" parameterType="org.qydata.dst.VendorHistoryBillDetail">
+        INSERT INTO qyfinance.VendorHistoryBill(year,month,yearMonth,vendorId,apiId,cost,amount,isLock,createTime)
+        VALUE(#{year},#{month},#{yearMonth},#{vendorId},#{apiId},#{cost},#{amount},#{isLock},now())
+    </insert>
+
+</mapper>
+
+

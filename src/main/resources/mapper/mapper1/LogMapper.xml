@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.LogMapper">
+
+    <!--新增日志-->
+    <insert id="createLog" parameterType="org.qydata.entity.log.Log" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO qyfinance.Log(typeId,title,remoteAddr,requestUri,method,params,operationBeforData,operationAfterData,error,beginTime,timeOut,userId,createTime)
+        VALUES(#{typeId},#{title},#{remoteAddr},#{requestUri},#{method},#{params},#{operationBeforData},#{operationAfterData},#{error},#{beginTime},#{timeOut},#{userId},now())
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+
+    <update id="updateLog" parameterType="org.qydata.entity.log.Log" >
+        UPDATE qyfinance.Log SET error=#{error},typeId=#{typeId} WHERE id=#{id}
+    </update>
+
+</mapper>
+

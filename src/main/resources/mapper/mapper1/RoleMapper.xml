@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.RoleMapper">
+
+    <!--分配角色-->
+    <insert id="addRoleUser" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.UserRole(userId,roleId,createTime)
+        values
+        <foreach collection="roleId" index="index" item="item" separator=",">
+            ( #{userId},#{item},sysdate() )
+        </foreach>
+    </insert>
+    <!--根据用户Id删除用户和角色映射-->
+    <delete id="deleteUserRoleByUserId" parameterType="Integer">
+        delete from qyauth.UserRole where userId=#{param}
+    </delete>
+    <!--给super默认添加角色-->
+    <insert id="addRoleSuperUser" parameterType="Integer" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO qyauth.UserRole(roleId,userId,createTime)
+      VALUES (3,#{param},sysdate())
+    </insert>
+
+</mapper>

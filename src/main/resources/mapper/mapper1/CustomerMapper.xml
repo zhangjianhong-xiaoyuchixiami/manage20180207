@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.CustomerMapper">
+
+    <!--插入新客户真是账号-->
+    <insert id="insertCustomer" parameterType="org.qydata.entity.Customer" useGeneratedKeys="true" keyProperty="id">
+        insert into qydata.Customer(typeId,authId,authPass,balance,createTime,status,companyId,floor)
+        values(1,#{authId},uuid(),0.0,sysdate(),0,#{companyId},0)
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!--插入新客户测试账号-->
+    <insert id="insertCustomerTest" parameterType="org.qydata.entity.Customer" useGeneratedKeys="true" keyProperty="id">
+        insert into qydata.Customer(typeId,authId,authPass,balance,createTime,status,companyId,floor)
+        values(2,#{authId},uuid(),100000000,sysdate(),0,#{companyId},0)
+
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+</mapper>

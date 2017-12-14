@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.VendorMapper">
+
+
+    <!--修改供应商预付状态-->
+    <update id="updateVendorPrepay" parameterType="int" >
+        UPDATE qyfinance.ApiVendorExt SET isPrepay = #{param2}
+        WHERE vendorId = #{param1}
+    </update>
+
+
+    <!--修改供应商预付状态-->
+    <insert id="insertVendorPrepay" parameterType="org.qydata.entity.VendorExt">
+       INSERT INTO qyfinance.ApiVendorExt(vendorId,isPrepay)
+       VALUES(#{vendorId},#{isPrepay})
+    </insert>
+
+    <!--插入余额记录-->
+    <insert id="insertVendorBalance" parameterType="org.qydata.entity.ApiVendorBalance" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiVendorBalance(vendorId,balance,createTime)
+        VALUES(#{vendorId},#{balance},sysdate())
+    </insert>
+
+    <!--修改余额记录-->
+    <update id="updateVendorBalance" parameterType="org.qydata.entity.ApiVendorBalance">
+        UPDATE qyfinance.ApiVendorBalance
+        SET balance = balance + #{balance}
+        WHERE vendorId=#{vendorId}
+    </update>
+
+    <!--插入余额日志-->
+    <insert id="insertVendorBalanceLog" parameterType="org.qydata.entity.ApiVendorBalanceLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.ApiVendorBalanceLog(vendorId,amount,reasonId,remark,createTime)
+        VALUES(#{vendorId},#{amount},#{reasonId},#{remark},#{createTime})
+    </insert>
+
+</mapper>
+

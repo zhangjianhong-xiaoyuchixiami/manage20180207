@@ -2,7 +2,8 @@ package org.qydata.service.impl;
 
 import org.qydata.dst.CustomerCacheApiTypeConsume;
 import org.qydata.dst.CustomerCacheConsume;
-import org.qydata.mapper.CustomerCacheFinanceMapper;
+import org.qydata.mapper.mapper1.CustomerCacheFinanceMapper;
+import org.qydata.mapper.mapper2.CustomerCacheFinanceSelectMapper;
 import org.qydata.service.CustomerCacheFinanceService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.date.CalendarUtil;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class CustomerCacheFinanceServiceImpl implements CustomerCacheFinanceService {
 
     @Autowired
-    private CustomerCacheFinanceMapper customerCacheFinanceMapper;
+    private CustomerCacheFinanceSelectMapper customerCacheFinanceSelectMapper;
 
     @Override
     public List<CustomerCacheConsume> queryCustomerCacheConsume(Map<String, Object> map) {
@@ -32,17 +33,17 @@ public class CustomerCacheFinanceServiceImpl implements CustomerCacheFinanceServ
         mapCurrMonth.put("time",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         mapCurrDay.put("time",sdf.format(new Date()) + " " + "00:00:00");
         //查询客户使用缓存列表
-        List<CustomerCacheConsume> customerCacheConsumeList = customerCacheFinanceMapper.queryCustomerCacheConsume(map);
+        List<CustomerCacheConsume> customerCacheConsumeList = customerCacheFinanceSelectMapper.queryCustomerCacheConsume(map);
         //查询客户各产品类型缓存调用情况（开通后至昨天）
-        List<CustomerCacheConsume> customerCacheApiTypeConsumeList = customerCacheFinanceMapper.queryCustomerApiTypeCacheConsume(map);
+        List<CustomerCacheConsume> customerCacheApiTypeConsumeList = customerCacheFinanceSelectMapper.queryCustomerApiTypeCacheConsume(map);
         //查询客户各产品类型缓存调用情况（今天）
-        //List<CustomerCacheConsume> customerCacheApiTypeConsumeListCurrDay = customerCacheFinanceMapper.queryCustomerApiTypeCacheConsumeCurrDay(map);
+        //List<CustomerCacheConsume> customerCacheApiTypeConsumeListCurrDay = customerCacheFinanceSelectMapper.queryCustomerApiTypeCacheConsumeCurrDay(map);
         //统计客户缓存调用总数（开通后至昨天）
-        List<CustomerCacheConsume> customerTotleCacheConsumeList = customerCacheFinanceMapper.queryCustomerTotleCacheConsume(map);
+        List<CustomerCacheConsume> customerTotleCacheConsumeList = customerCacheFinanceSelectMapper.queryCustomerTotleCacheConsume(map);
         //查询客户当月缓存调用情况
-        List<CustomerCacheConsume> customerCacheConsumeListCurrMonth = customerCacheFinanceMapper.queryCustomerCacheConsumeByCurrMonth(mapCurrMonth);
+        List<CustomerCacheConsume> customerCacheConsumeListCurrMonth = customerCacheFinanceSelectMapper.queryCustomerCacheConsumeByCurrMonth(mapCurrMonth);
         //查询客户当天缓存调用情况
-        List<CustomerCacheConsume> customerCacheConsumeListCurrDay = customerCacheFinanceMapper.queryCustomerCacheConsumeByCurrDay(mapCurrDay);
+        List<CustomerCacheConsume> customerCacheConsumeListCurrDay = customerCacheFinanceSelectMapper.queryCustomerCacheConsumeByCurrDay(mapCurrDay);
 
         if (customerCacheConsumeList != null){
             for (int i = 0; i < customerCacheConsumeList.size() ; i++) {
@@ -119,6 +120,6 @@ public class CustomerCacheFinanceServiceImpl implements CustomerCacheFinanceServ
 
     @Override
     public List<CustomerCacheApiTypeConsume> queryCustomerCurrDayApiTypeCacheConsume(Map<String, Object> map) {
-        return customerCacheFinanceMapper.queryCustomerCurrDayApiTypeCacheConsume(map);
+        return customerCacheFinanceSelectMapper.queryCustomerCurrDayApiTypeCacheConsume(map);
     }
 }

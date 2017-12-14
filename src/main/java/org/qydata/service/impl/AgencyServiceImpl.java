@@ -4,7 +4,8 @@ import org.qydata.entity.CompanyApi;
 import org.qydata.entity.agency.AgencyBillDetail;
 import org.qydata.entity.agency.AgencyCustomer;
 import org.qydata.entity.agency.RebateAgency;
-import org.qydata.mapper.AgencyMapper;
+import org.qydata.mapper.mapper1.AgencyMapper;
+import org.qydata.mapper.mapper2.AgencySelectMapper;
 import org.qydata.service.AgencyService;
 import org.qydata.tools.finance.AgencyBillUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,13 @@ import java.util.Map;
 public class AgencyServiceImpl implements AgencyService {
 
     @Autowired
-    private AgencyMapper agencyMapper;
+    private AgencyMapper insertMapper;
+    @Autowired
+    private AgencySelectMapper selectMapper;
 
     @Override
     public List<RebateAgency> queryAgency() {
-        List<RebateAgency> agencyList = agencyMapper.queryAgency();
+        List<RebateAgency> agencyList = selectMapper.queryAgency();
         if (agencyList == null){
             return null;
         }
@@ -42,7 +45,7 @@ public class AgencyServiceImpl implements AgencyService {
 
     @Override
     public String queryRebateRuleById(Integer id) {
-        return agencyMapper.queryRebateRuleById(id);
+        return selectMapper.queryRebateRuleById(id);
     }
 
     @Override
@@ -78,7 +81,7 @@ public class AgencyServiceImpl implements AgencyService {
             }
         }
 
-        List<AgencyBillDetail> detailList = agencyMapper.queryAgencyBillDetailUserOur(param);
+        List<AgencyBillDetail> detailList = selectMapper.queryAgencyBillDetailUserOur(param);
         if (detailList != null){
             for (AgencyBillDetail detail : detailList) {
                 if (detail.getCost() != null){
@@ -96,7 +99,7 @@ public class AgencyServiceImpl implements AgencyService {
 
             }
         }
-        List<AgencyBillDetail> detailListOppo = agencyMapper.queryAgencyBillDetailUserOpposite(param);
+        List<AgencyBillDetail> detailListOppo = selectMapper.queryAgencyBillDetailUserOpposite(param);
         if (detailListOppo != null){
             for (AgencyBillDetail detail : detailListOppo) {
                 if (detail.getCost() != null){
@@ -107,7 +110,7 @@ public class AgencyServiceImpl implements AgencyService {
                 }
             }
         }
-        List<AgencyBillDetail> detailListCache = agencyMapper.queryAgencyBillDetailCache(param);
+        List<AgencyBillDetail> detailListCache = selectMapper.queryAgencyBillDetailCache(param);
         if (detailListCache != null){
             for (AgencyBillDetail detail : detailListCache) {
                 if (detail.getPrice() != null){
@@ -129,43 +132,43 @@ public class AgencyServiceImpl implements AgencyService {
 
     @Override
     public List<AgencyCustomer> queryAgencyCustomer(Map<String,Object> map) {
-        List<AgencyCustomer> list = agencyMapper.queryAgencyCustomer(map);
+        List<AgencyCustomer> list = selectMapper.queryAgencyCustomer(map);
         return list;
     }
 
     @Override
     public List<String> queryConsumeCycle() {
-        return agencyMapper.queryConsumeCycle();
+        return selectMapper.queryConsumeCycle();
     }
 
     @Override
     public List<CompanyApi> queryConsumeApiType() {
-        return agencyMapper.queryConsumeApiType();
+        return selectMapper.queryConsumeApiType();
     }
 
     @Override
     public boolean updateRebateBillAmount(Integer id, Integer amount) {
-        return agencyMapper.updateRebateBillAmount(id,amount);
+        return insertMapper.updateRebateBillAmount(id,amount);
     }
 
     @Override
     public boolean updateRebateBillCost(Integer id, Double cost) {
-        return agencyMapper.updateRebateBillCost(id, (int) (cost*100));
+        return insertMapper.updateRebateBillCost(id, (int) (cost*100));
     }
 
     @Override
     public boolean updateRebateBillPrice(Integer id, Double price) {
-        return agencyMapper.updateRebateBillPrice(id, (int) (price*100));
+        return insertMapper.updateRebateBillPrice(id, (int) (price*100));
     }
 
     @Override
     public boolean updateRebateBillBeginPrice(Integer id, Double price) {
-        return agencyMapper.updateRebateBillBeginPrice(id, (int) (price*100));
+        return insertMapper.updateRebateBillBeginPrice(id, (int) (price*100));
     }
 
     @Override
     public boolean updateRebateBillEndPrice(Integer id, Double price) {
-        return agencyMapper.updateRebateBillEndPrice(id, (int) (price*100));
+        return insertMapper.updateRebateBillEndPrice(id, (int) (price*100));
     }
 
     @Override
@@ -176,17 +179,17 @@ public class AgencyServiceImpl implements AgencyService {
                 list.add(s);
             }
         }
-        return agencyMapper.deleteRebateDetail(list);
+        return insertMapper.deleteRebateDetail(list);
     }
 
     @Override
     public boolean updateCachePrice(Integer id, Double price) {
-        return agencyMapper.updateCachePrice(id, (int) (price * 100));
+        return insertMapper.updateCachePrice(id, (int) (price * 100));
     }
 
     @Override
     public boolean updateCacheCount(Integer id, Integer count) {
-        return agencyMapper.updateCacheCount(id,count);
+        return insertMapper.updateCacheCount(id,count);
     }
 
     @Override
@@ -197,7 +200,7 @@ public class AgencyServiceImpl implements AgencyService {
                 list.add(s);
             }
         }
-        return agencyMapper.deleteCacheDetail(list);
+        return insertMapper.deleteCacheDetail(list);
     }
 
 }

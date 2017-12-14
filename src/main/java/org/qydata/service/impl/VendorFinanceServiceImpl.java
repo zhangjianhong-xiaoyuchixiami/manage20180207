@@ -4,9 +4,10 @@ import org.qydata.dst.VendorHistoryBill;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.dst.vendor.VendorTypeConsume;
 import org.qydata.entity.ApiVendor;
-import org.qydata.mapper.VendorFinanceMapper;
-import org.qydata.mapper.VendorHistoryBillMapper;
-import org.qydata.service.SearchService;
+import org.qydata.mapper.mapper1.VendorFinanceMapper;
+import org.qydata.mapper.mapper1.VendorHistoryBillMapper;
+import org.qydata.mapper.mapper2.VendorFinanceSelectMapper;
+import org.qydata.mapper.mapper2.VendorHistoryBillSelectMapper;
 import org.qydata.service.VendorFinanceService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.date.CalendarUtil;
@@ -23,7 +24,11 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
     @Autowired
     private VendorFinanceMapper mapper;
     @Autowired
+    private VendorFinanceSelectMapper selectMapper;
+    @Autowired
     private VendorHistoryBillMapper billMapper;
+    @Autowired
+    private VendorHistoryBillSelectMapper billSelectMapper;
 
     @Override
     public Map<String, Object> queryVendor(Map<String, Object> map) {
@@ -49,14 +54,14 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
         }
         param.put("currDayTime", CalendarTools.getCurrentDate()+ " " + "00:00:00");
         param.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
-        List<VendorFinance> financeList = mapper.queryVendor(param);
-        List<VendorFinance> consumeList = mapper.queryVendorConsume(param);
-        List<VendorFinance> weekList = mapper.queryVendorLastWeekConsume(param);
-        List<VendorFinance> monthList = mapper.queryVendorLastMonthConsume(param);
-        List<VendorFinance> currMonthList = mapper.queryVendorCurrMonthConsume(param);
+        List<VendorFinance> financeList = selectMapper.queryVendor(param);
+        List<VendorFinance> consumeList = selectMapper.queryVendorConsume(param);
+        List<VendorFinance> weekList = selectMapper.queryVendorLastWeekConsume(param);
+        List<VendorFinance> monthList = selectMapper.queryVendorLastMonthConsume(param);
+        List<VendorFinance> currMonthList = selectMapper.queryVendorCurrMonthConsume(param);
      //   List<VendorFinance> currDayList = mapper.queryVendorCurrDayConsume(param);
-        List<VendorFinance> typeList = mapper.queryVendorTypeConsume(param);
-        List<VendorHistoryBill> billList = billMapper.queryVendorStaticConsumeAmount();
+        List<VendorFinance> typeList = selectMapper.queryVendorTypeConsume(param);
+        List<VendorHistoryBill> billList = billSelectMapper.queryVendorStaticConsumeAmount();
         if (financeList == null){
             return null;
         }
@@ -218,7 +223,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
 
     @Override
     public List<ApiVendor> queryApiVendorName() {
-        return mapper.queryApiVendorName();
+        return selectMapper.queryApiVendorName();
     }
 
 }

@@ -2,7 +2,8 @@ package org.qydata.service.impl;
 
 import org.qydata.entity.User;
 import org.qydata.entity.log.Log;
-import org.qydata.mapper.LogMapper;
+import org.qydata.mapper.mapper1.LogMapper;
+import org.qydata.mapper.mapper2.LogSelectMapper;
 import org.qydata.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,10 @@ import java.util.Map;
 @Service
 public class LogServiceImpl implements LogService {
 
-    @Autowired private LogMapper logMapper;
+    @Autowired
+    private LogMapper logMapper;
+    @Autowired
+    private LogSelectMapper logSelectMapper;
 
     @Override
     @Transactional
@@ -43,11 +47,11 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public List<Log> queryLog(Map<String, Object> map) {
-        return logMapper.queryLog(map);
+        return logSelectMapper.queryLog(map);
     }
 
     @Override
     public List<User> queryUser() {
-        return logMapper.queryUser();
+        return logSelectMapper.queryUser();
     }
 }

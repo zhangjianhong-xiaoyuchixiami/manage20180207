@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper2.UserSelectMapper">
+
+
+    <resultMap type="org.qydata.entity.User" id="userMap">
+        <id column="id" property="id"/>
+        <result column="email" property="email"/>
+        <result column="createTime" property="createTime"/>
+        <result column="status" property="status"/>
+        <result column="typeId" property="typeId"/>
+    </resultMap>
+
+    <resultMap type="org.qydata.entity.User" id="userDeptMap" extends="userMap">
+        <collection property="dept" ofType="org.qydata.entity.Dept">
+            <result column="deptId" property="id"/>
+            <result column="deptName" property="deptName"/>
+        </collection>
+    </resultMap>
+
+    <!-- 是进行登录认证使用的，即，根据身份信息取得密码进行认证 -->
+    <select id="findById" parameterType="String" resultType="org.qydata.entity.User">
+        SELECT email,password
+        FROM qyauth.User
+        WHERE email=#{email} and status=0
+    </select>
+    <!-- 根据用户名查询出该用户对用的所有角色的标记名称（千万不要用中文） -->
+    <select id="findAllRoleByUser" parameterType="int" resultType="String">
+        SELECT flag
+        FROM qyauth.Role
+        WHERE id IN (
+                      SELECT roleId
+                      FROM qyauth.UserRole
+                      WHERE userId=#{userId})
+    </select>
+    <!-- 查询出一个用户对应的所有权限数据 -->
+    <select id="findAllActionByUser" parameterType="int" resultType="String">
+        SELECT flag
+        FROM qyauth.Action
+        WHERE id IN (
+                        SELECT actionId
+                        FROM qyauth.RoleAction
+                        WHERE roleId IN (
+                                      SELECT roleId
+                                      FROM qyauth.UserRole
+                                      WHERE userId=#{userId}))
+    </select>
+
+    <!--查找全部用户-->
+    <select id="queryAllUser" parameterType="Map" resultMap="userDeptMap">
+        select id,email,deptId,deptName,status,createTime
+        from qyfinance.bkvw_user_UserDept
+        <where>
+            <if test="deptIdList!=null and deptIdList.size()!=0">
+                and deptId in
+                <foreach collection="deptIdList" item="deptId"
+                         index="index" open="(" close=")" separator=",">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="content!=null and content!=''">
+                and email like '%${content}%'
+            </if>
+        </where>
+        order by createTime desc
+        limit #{beginIndex},#{lineSize}
+    </select>
+    <!--统计数据量-->
+    <select id="queryAllCount" parameterType="Map" resultType="Integer">
+        select count(id)
+        from qyfinance.bkvw_user_UserDept
+        <where>
+            <if test="deptIdList!=null and deptIdList.size()!=0">
+                and deptId in
+                <foreach collection="deptIdList" item="deptId"
+                         index="index" open="(" close=")" separator=",">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="content!=null and content!=''">
+                and email like '%${content}%'
+            </if>
+        </where>
+    </select>
+    <!--根据用户名查找指定用户信息-->
+    <select id="findUserByUsername" parameterType="Integer" resultMap="userDeptMap">
+        select id,email,deptId,deptName,status,createTime
+        from qyfinance.bkvw_user_UserDept
+        where id=#{param}
+    </select>
+
+
+    <select id="findUserByEmail" parameterType="String" resultMap="userDeptMap">
+        select id,email,deptId,deptName,status,createTime
+        from qyfinance.bkvw_user_UserDept
+        where email=#{param}
+    </select>
+
+    <!--dataTable后端分页测试-->
+    <select id="findAllUserTest" parameterType="map" resultType="org.qydata.entity.User">
+        SELECT id,name,username,tel
+        FROM qyauth.User
+        <if test="id != null and id != ''">
+            ORDER BY id ${id}
+        </if>
+        <if test="name != null and name != ''">
+            ORDER BY name ${name}
+        </if>
+        <if test="username != null and username != ''">
+            ORDER BY username ${username}
+        </if>
+        <if test="tel != null and tel != ''">
+            ORDER BY tel ${tel}
+        </if>
+        limit #{pageSize},#{lineSize}
+    </select>
+
+    <!--dataTable后端分页测试-->
+    <select id="getAllCountTest" resultType="int">
+        SELECT count(id) FROM qyauth.User
+    </select>
+
+</mapper>

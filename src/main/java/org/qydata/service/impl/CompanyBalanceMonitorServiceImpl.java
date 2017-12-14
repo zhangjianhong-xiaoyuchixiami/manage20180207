@@ -3,7 +3,8 @@ package org.qydata.service.impl;
 import org.qydata.entity.CustomerCompanyEmail;
 import org.qydata.entity.Partner;
 import org.qydata.entity.monitor.CompanyBalanceMonitor;
-import org.qydata.mapper.CompanyBalanceMonitorMapper;
+import org.qydata.mapper.mapper1.CompanyBalanceMonitorMapper;
+import org.qydata.mapper.mapper2.CompanyBalanceMonitorSelectMapper;
 import org.qydata.service.CompanyBalanceMonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
 
     @Autowired
     private CompanyBalanceMonitorMapper monitorMapper;
+    @Autowired
+    private CompanyBalanceMonitorSelectMapper monitorSelectMapper;
 
     @Override
     public List<CompanyBalanceMonitor> queryCompanyBalanceMonitor(Map<String, Object> map) {
@@ -40,7 +43,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
             }
         }
 
-        List<CompanyBalanceMonitor> extList = monitorMapper.queryCompanyBalanceMonitor(param);
+        List<CompanyBalanceMonitor> extList = monitorSelectMapper.queryCompanyBalanceMonitor(param);
         if (extList == null){
             return null;
         }
@@ -69,7 +72,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
 
     @Override
     public boolean updatePrepay(Integer cid, Integer value) {
-        CompanyBalanceMonitor monitor = monitorMapper.queryCompanyBalanceMonitorById(cid);
+        CompanyBalanceMonitor monitor = monitorSelectMapper.queryCompanyBalanceMonitorById(cid);
         if (monitor == null){
             CompanyBalanceMonitor param = new CompanyBalanceMonitor();
             param.setCompanyId(cid);
@@ -84,7 +87,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
 
     @Override
     public boolean updateAlarm(Integer cid, Integer value) {
-        CompanyBalanceMonitor monitor = monitorMapper.queryCompanyBalanceMonitorById(cid);
+        CompanyBalanceMonitor monitor = monitorSelectMapper.queryCompanyBalanceMonitorById(cid);
         if (monitor == null){
             CompanyBalanceMonitor param = new CompanyBalanceMonitor();
             param.setCompanyId(cid);
@@ -99,7 +102,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
 
     @Override
     public boolean updateRemindCustomer(Integer cid, Integer value) {
-        CompanyBalanceMonitor monitor = monitorMapper.queryCompanyBalanceMonitorById(cid);
+        CompanyBalanceMonitor monitor = monitorSelectMapper.queryCompanyBalanceMonitorById(cid);
         if (monitor == null){
             CompanyBalanceMonitor param = new CompanyBalanceMonitor();
             param.setCompanyId(cid);
@@ -114,7 +117,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
 
     @Override
     public boolean updateAhead(Integer cid, Integer value) {
-        CompanyBalanceMonitor monitor = monitorMapper.queryCompanyBalanceMonitorById(cid);
+        CompanyBalanceMonitor monitor = monitorSelectMapper.queryCompanyBalanceMonitorById(cid);
         if (monitor == null){
             CompanyBalanceMonitor param = new CompanyBalanceMonitor();
             param.setCompanyId(cid);
@@ -129,7 +132,7 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
 
     @Override
     public List<CustomerCompanyEmail> queryEmailById(Map<String, Object> map) {
-        return monitorMapper.queryEmailById(map);
+        return monitorSelectMapper.queryEmailById(map);
     }
 
     @Override
@@ -147,6 +150,6 @@ public class CompanyBalanceMonitorServiceImpl implements CompanyBalanceMonitorSe
 
     @Override
     public List<Partner> queryAllPartner() {
-        return monitorMapper.queryAllPartner();
+        return monitorSelectMapper.queryAllPartner();
     }
 }

@@ -110,5 +110,5 @@ public interface CustomerHistoryBillService {
     public List<CustomerHistoryBillUpdateLog> queryCustomerHistoryBillDetailUpdateLog(Map<String,Object> map);
 
 
-    public  Double queryCustomerCurrDayConsume(Integer cid);
+  //  public  Double queryCustomerCurrDayConsume(Integer cid);
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper2.CustomerSelectMapper">
+
+    <resultMap id="CustomerRequestLog_Map" type="org.qydata.entity.CustomerRequestLog">
+        <result column="id" property="id"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="stid" property="stid"/>
+        <result column="customerId" property="customerId"/>
+        <result column="content" property="content"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <resultMap id="CustomerRequestLog_ApiType_Map" type="org.qydata.entity.CustomerRequestLog" extends="CustomerRequestLog_Map">
+        <association property="apiType" javaType="org.qydata.entity.ApiType">
+            <result column="apiTypeName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="CustomerRequestLog_ApiType_MobileOperator_Map" type="org.qydata.entity.CustomerRequestLog" extends="CustomerRequestLog_ApiType_Map">
+        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="CustomerRequestLog_ApiType_MobileOperator_Company_Map" type="org.qydata.entity.CustomerRequestLog" extends="CustomerRequestLog_ApiType_MobileOperator_Map">
+        <association property="company" javaType="org.qydata.entity.Company">
+            <result column="companyName" property="name"/>
+        </association>
+    </resultMap>
+
+    <!--查询指定客户信息-->
+    <select id="findCustomerByAuthId" parameterType="java.lang.String" resultType="org.qydata.entity.Customer">
+        SELECT authId
+        FROM qyfinance.bkvwCustomer
+        WHERE authId=#{param}
+    </select>
+
+    <!--根据客户Id查找对应的部门Id-->
+    <select id="findDeptIdByCompanyId" parameterType="Integer" resultType="Integer">
+        SELECT DISTINCT(deptId)
+        FROM qyauth.CustomerDept
+        WHERE customerId
+        IN (
+                SELECT id
+                FROM qydata.Customer
+                WHERE companyId=#{companyId}
+           )
+    </select>
+
+    <!--根据部门编号查找对应的customerId-->
+    <select id="findAllCustomerIdByDeptId" parameterType="list" resultType="Integer">
+        SELECT customerId
+        FROM qyfinance.bkvwCustomerDept
+        WHERE deptId
+        IN
+        <foreach collection="list" item="deptId" index="index" open="(" close=")" separator=",">
+            #{deptId}
+        </foreach>
+    </select>
+
+    <select id="findAllCustomerRequestLog" parameterType="map" resultMap="CustomerRequestLog_ApiType_MobileOperator_Company_Map">
+        SELECT a.id,a.apiTypeId,a.stid,a.customerId,a.content,a.createTime,b.name apiTypeName,c.name mobileOperatorName,
+        d.companyName
+        FROM qyfinance.bkvw_customer_CustomerRequestLog a
+        LEFT JOIN  qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+        LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid=c.id
+        LEFT JOIN qyfinance.bkvwCustomer d ON a.customerId=d.id
+        <if test="createTime != null and createTime != ''">
+            ORDER BY a.createTime ${createTime}
+        </if>
+        limit #{pageSize},#{lineSize}
+    </select>
+
+    <select id="getCountAllCustomerRequestLog" parameterType="map" resultType="Integer">
+        SELECT count(id)
+        FROM qyfinance.bkvw_customer_CustomerRequestLog
+    </select>
+
+    <select id="findCustomerRequestLogById" parameterType="int" resultType="String">
+        SELECT content
+        FROM qyfinance.bkvw_customer_CustomerRequestLog
+        WHERE id=#{param}
+    </select>
+
+</mapper>

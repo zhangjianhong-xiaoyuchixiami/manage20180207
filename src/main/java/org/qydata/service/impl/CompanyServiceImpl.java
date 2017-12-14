@@ -7,7 +7,8 @@ import org.qydata.constants.GlobalStaticConstants;
 import org.qydata.dst.ApiTypeSubType;
 import org.qydata.dst.CustomerCompanyPartner;
 import org.qydata.entity.*;
-import org.qydata.mapper.CompanyMapper;
+import org.qydata.mapper.mapper1.CompanyMapper;
+import org.qydata.mapper.mapper2.CompanySelectMapper;
 import org.qydata.service.CompanyService;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.https.HttpClientUtil;
@@ -28,12 +29,14 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private CompanyMapper companyMapper;
     @Autowired
+    private CompanySelectMapper companySelectMapper;
+    @Autowired
     private RedisUtils redisUtils;
 
     @Override
     public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {
         try {
-            return companyMapper.findAllCompany(map);
+            return companySelectMapper.findAllCompany(map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,7 +48,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int addCompanyCustomer(String companyName,String authId,String partnerId,String apiTypeId_subId [],String price [],String begIp [],String endIp [])throws Exception {
         String uri = GlobalStaticConstants.ADD_COMPANY;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("name",companyName);
         map.put("key",authId);
         if (partnerId != null){
@@ -122,7 +125,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Partner> findAllPartner() {
         try {
-            return companyMapper.findAllPartner();
+            return companySelectMapper.findAllPartner();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,14 +134,14 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Partner> findPartnerByEmail(String email) {
-        return companyMapper.findPartnerByEmail(email);
+        return companySelectMapper.findPartnerByEmail(email);
     }
 
 
     @Override
     public List<CustomerBalanceModifyReason> findBalanceReason(List<Integer> list) {
         try {
-            return companyMapper.findBalanceReason(list);
+            return companySelectMapper.findBalanceReason(list);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -156,8 +159,8 @@ public class CompanyServiceImpl implements CompanyService {
             uri = GlobalStaticConstants.CUSTOMER_BALANCE_CHARGE;
         }
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
+        map.put("cid",companySelectMapper.queryOfficAuthIdByCompanyId(companyId).getId());
         map.put("rid",reason);
         map.put("amount",(int)(Double.parseDouble(amount)*100));
 
@@ -173,7 +176,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int updateCustomerBan(String authId) throws Exception{
         String uri = GlobalStaticConstants.CUSTOMER_BAN;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("authid",authId);
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
@@ -187,7 +190,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int updateCustomerUnBan(String authId) throws Exception{
         String uri = GlobalStaticConstants.CUSTOMER_UNBAN;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("authid",authId);
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
@@ -204,11 +207,11 @@ public class CompanyServiceImpl implements CompanyService {
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<companyId.length; i++){
             Map<String,Object> map = new HashMap<>();
-            map.put("k",companyMapper.queryAuthKey("admin.k"));
+            map.put("k",companySelectMapper.queryAuthKey("admin.k"));
             map.put("cid",companyId[i]);
             int code = HttpClientUtil.doGet(uri,map,null);
             if (code != 200){
-                sb.append(companyMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
+                sb.append(companySelectMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
                 mapResu.put("fail","公司名称是："+sb+"禁用失败其余禁用正常");
             }else {
                 mapResu.put("success","禁用成功");
@@ -225,11 +228,11 @@ public class CompanyServiceImpl implements CompanyService {
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<companyId.length; i++){
             Map<String,Object> map = new HashMap<>();
-            map.put("k",companyMapper.queryAuthKey("admin.k"));
+            map.put("k",companySelectMapper.queryAuthKey("admin.k"));
             map.put("cid",companyId[i]);
             int code = HttpClientUtil.doGet(uri,map,null);
             if (code != 200){
-                sb.append(companyMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
+                sb.append(companySelectMapper.queryCompanyNameByCompanyId(Integer.parseInt(companyId[i]))+"，");
                 mapResu.put("fail","公司名称是："+sb+"启用失败其余启用正常");
             }else {
                 mapResu.put("success","启用成功");
@@ -240,7 +243,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyApi> queryCompanyApiByCompanyId(Map<String, Object> map) {
-        List<CompanyApi> resu = companyMapper.queryCompanyApiByCompanyId(map);
+        List<CompanyApi> resu = companySelectMapper.queryCompanyApiByCompanyId(map);
         if (resu != null){
             for (int i = 0; i < resu.size() ; i++) {
                 CompanyApi companyApi = resu.get(i);
@@ -274,7 +277,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int banCompanyApi(Integer companyId,Integer id)throws Exception {
         String uri = GlobalStaticConstants.COMPANY_API_DEL;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("id",id);
         int  code = HttpClientUtil.doGet(uri,map,null);
@@ -289,7 +292,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int unBanCompanyApi(Integer companyId,Integer id) throws Exception {
         String uri = GlobalStaticConstants.COMPANY_API_ENABLE;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("id",id);
         int  code = HttpClientUtil.doGet(uri,map,null);
@@ -304,9 +307,9 @@ public class CompanyServiceImpl implements CompanyService {
         Map<String,Object> map = new HashMap<>();
         map.put("companyId",companyId);
         //全部产品权限列表
-        List<ApiTypeSubType> apiTypeSubTypeList = companyMapper.queryAllApi();
+        List<ApiTypeSubType> apiTypeSubTypeList = companySelectMapper.queryAllApi();
         //客户已拥有的权限列表
-        List<CompanyApi> companyApiList =  companyMapper.queryCompanyApiByCompanyId(map);
+        List<CompanyApi> companyApiList =  companySelectMapper.queryCompanyApiByCompanyId(map);
         //去重
         if (apiTypeSubTypeList != null && apiTypeSubTypeList.size() > 0){
             if (companyApiList != null && companyApiList.size() > 0){
@@ -339,7 +342,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int addCompanyApi(Integer companyId, String apiTypeId, String price,String aid)throws Exception {
         String uri = GlobalStaticConstants.COMPANY_API_PUT;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("price",(int)(Double.parseDouble(price)*100));
         if (RegexUtil.isPoint(apiTypeId)){
@@ -354,7 +357,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
-            Customer customer = companyMapper.queryOfficAuthIdByCompanyId(companyId);
+            Customer customer = companySelectMapper.queryOfficAuthIdByCompanyId(companyId);
             if (customer != null){
                 redisUtils.addApiPrice(customer.getId() + "", apiTypeId, price);
             }
@@ -373,7 +376,7 @@ public class CompanyServiceImpl implements CompanyService {
         System.out.println(pic);
         String uri = GlobalStaticConstants.COMPANY_API_PUT;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("price",(int)(Double.parseDouble(pic)*100));
         map.put("tid",tid);
@@ -382,7 +385,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
-            Customer customer = companyMapper.queryOfficAuthIdByCompanyId(companyId);
+            Customer customer = companySelectMapper.queryOfficAuthIdByCompanyId(companyId);
             if (customer != null){
                 redisUtils.addApiPrice(customer.getId() + "", tid + "-" + stid, pic);
             }
@@ -393,7 +396,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CustomerIp> queryCustomerIpById(Integer companyId) {
-        return companyMapper.queryCustomerIpById(companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
+        return companySelectMapper.queryCustomerIpById(companySelectMapper.queryOfficAuthIdByCompanyId(companyId).getId());
     }
 
     @Override
@@ -401,8 +404,8 @@ public class CompanyServiceImpl implements CompanyService {
     public int addCustomerIp(Integer companyId,String begIp, String endIp) throws Exception{
         String uri = GlobalStaticConstants.CUSTOMER_ADD_IP;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
+        map.put("cid",companySelectMapper.queryOfficAuthIdByCompanyId(companyId).getId());
         map.put("bip",begIp);
         map.put("eip",endIp);
         int  code = HttpClientUtil.doGet(uri,map,null);
@@ -417,8 +420,8 @@ public class CompanyServiceImpl implements CompanyService {
     public int deleteIpById(Integer companyId,Integer id) throws Exception {
         String uri = GlobalStaticConstants.CUSTOMER_DEL_IP;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
+        map.put("cid",companySelectMapper.queryOfficAuthIdByCompanyId(companyId).getId());
         map.put("id",id);
         int code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
@@ -429,7 +432,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<ApiTypeSubType> queryAllApi() {
-        return companyMapper.queryAllApi();
+        return companySelectMapper.queryAllApi();
     }
 
     @Override
@@ -438,8 +441,8 @@ public class CompanyServiceImpl implements CompanyService {
         String uri = GlobalStaticConstants.CUSTOMER_CREDIT_PUT;
         System.out.println("*********"+ uri + "***********");
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
-        map.put("cid",companyMapper.queryOfficAuthIdByCompanyId(companyId).getId());
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
+        map.put("cid",companySelectMapper.queryOfficAuthIdByCompanyId(companyId).getId());
         map.put("amount",credit*100);
         int  code = HttpClientUtil.doGet(uri,map,null);
         if (200 == code){
@@ -458,7 +461,7 @@ public class CompanyServiceImpl implements CompanyService {
             String tid_stids [] = tid_stid.split("-");
             tid = Integer.parseInt(tid_stids[0]);
         }
-        List<Api> apiList = companyMapper.queryApiByTypeId(tid);
+        List<Api> apiList = companySelectMapper.queryApiByTypeId(tid);
         if (apiList != null){
             for (int i = 0; i < apiList.size() ; i++) {
                 Api api = apiList.get(i);
@@ -479,7 +482,7 @@ public class CompanyServiceImpl implements CompanyService {
     public int updateCompanyApiAppointApi(Integer companyId, Integer tid, Integer stid, String pic, Integer aid) throws Exception {
         String uri = GlobalStaticConstants.COMPANY_API_PUT;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("tid",tid);
         if (stid != null){

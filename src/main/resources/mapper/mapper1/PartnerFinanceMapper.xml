@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.PartnerFinanceMapper">
+
+    <!--付款和收款-->
+    <insert id="addPartnerIncomeExpenditureLog" parameterType="org.qydata.entity.PartnerIncomeExpenditureLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyfinance.PartnerIncomeExpenditureLog(partnerId,amount,reasonId,remark,createTime)
+        VALUES(#{partnerId},#{amount},#{reasonId},#{remark},#{createTime})
+    </insert>
+
+    <!--新增合作公司-->
+    <insert id="addPartner" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qydata.Partner(name) VALUES(#{param})
+    </insert>
+
+</mapper>

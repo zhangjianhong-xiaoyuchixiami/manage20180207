@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.UserMapper">
+
+    <!--添加管理员-->
+    <insert id="addUser" parameterType="org.qydata.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.User(email,password,status,typeId,createTime)
+        values(#{email},#{password},#{status},#{typeId},sysdate())
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <!--Common添加管理员-->
+    <insert id="addUserCommon" parameterType="org.qydata.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.User(email,password,status,typeId,createTime)
+        values(#{email},#{password},#{status},2,sysdate())
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <!--根据用户名和旧密码修改密码-->
+    <update id="updatePassword" parameterType="Map">
+        update qyauth.User set password=#{newPassword}
+        where id=#{userId}
+    </update>
+    <!--重置密码-->
+   <update id="resetPassword" parameterType="Object">
+       update qyauth.User set password=#{param2}
+       where id=#{param1}
+   </update>
+
+    <!--启动账号-->
+    <update id="updateStatusStart" parameterType="int">
+        update qyauth.User set status=0 where id=#{value}
+    </update>
+    <!--禁用账号-->
+    <update id="updateStatusforbid" parameterType="int">
+        update qyauth.User set status=1 where id=#{value}
+    </update>
+
+    <delete id="deleteTest" parameterType="int">
+        DELETE FROM qyauth.User WHERE id=#{param}
+    </delete>
+</mapper>

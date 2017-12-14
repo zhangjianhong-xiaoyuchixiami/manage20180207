@@ -6,7 +6,8 @@ import org.qydata.dst.VendorHistoryBillDetail;
 import org.qydata.entity.ApiVendor;
 import org.qydata.entity.Partner;
 import org.qydata.entity.VendorHistoryBillUpdateLog;
-import org.qydata.mapper.VendorHistoryBillMapper;
+import org.qydata.mapper.mapper1.VendorHistoryBillMapper;
+import org.qydata.mapper.mapper2.VendorHistoryBillSelectMapper;
 import org.qydata.service.VendorHistoryBillService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.date.CalendarUtil;
@@ -27,6 +28,8 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
 
     @Autowired
     private VendorHistoryBillMapper billMapper;
+    @Autowired
+    private VendorHistoryBillSelectMapper selectMapper;
 
     @Override
     public Map<String, Object> queryVendorHistoryBill(Map<String, Object> map) {
@@ -54,9 +57,9 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
 
         param.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         param.put("currDayTime",CalendarUtil.formatCurrTime());
-        List<VendorHistoryBill> billList = billMapper.queryVendorHistoryBill(param);
-        List<VendorHistoryBill> staticBillList = billMapper.queryVendorStaticConsumeAmount();
-        List<VendorHistoryBill> currMonthBillList = billMapper.queryVendorCurrMonthRealTimeConsume(param);
+        List<VendorHistoryBill> billList = selectMapper.queryVendorHistoryBill(param);
+        List<VendorHistoryBill> staticBillList = selectMapper.queryVendorStaticConsumeAmount();
+        List<VendorHistoryBill> currMonthBillList = selectMapper.queryVendorCurrMonthRealTimeConsume(param);
        // List<VendorHistoryBill> currDayBillList = billMapper.queryVendorCurrDayRealTimeConsume(param);
         Double chargeTot = 0.0;
         Double consumeTot = 0.0;
@@ -135,17 +138,17 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
 
     @Override
     public List<ApiVendor> queryAllVendor() {
-        return billMapper.queryAllVendor();
+        return selectMapper.queryAllVendor();
     }
 
     @Override
     public List<Partner> queryAllPartner() {
-        return billMapper.queryAllPartner();
+        return selectMapper.queryAllPartner();
     }
 
     @Override
     public List<String> queryAllConsumeTime() {
-        return billMapper.queryAllConsumeTime();
+        return selectMapper.queryAllConsumeTime();
     }
 
     @Override
@@ -168,7 +171,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
                 }
             }
         }
-        List<VendorHistoryBillDetail> billDetailList = billMapper.queryVendorHistoryBillDetail(param);
+        List<VendorHistoryBillDetail> billDetailList = selectMapper.queryVendorHistoryBillDetail(param);
         if (billDetailList == null){
             return null;
         }
@@ -203,7 +206,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
 
     @Override
     public List<ApiWeb> queryApiByVendorId(Integer vid) {
-        List<ApiWeb> apiWebList = billMapper.queryApiByVendorId(vid);
+        List<ApiWeb> apiWebList = selectMapper.queryApiByVendorId(vid);
         if (apiWebList == null){
             return null;
         }
@@ -286,12 +289,12 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
 
     @Override
     public Integer queryVendorHistoryBillLockById(Integer id) {
-        return billMapper.queryVendorHistoryBillLockById(id);
+        return selectMapper.queryVendorHistoryBillLockById(id);
     }
 
     @Override
     public List<VendorHistoryBillUpdateLog> queryVendorHistoryBillDetailUpdateLog(Map<String,Object> map) {
-        List<VendorHistoryBillUpdateLog> logList = billMapper.queryVendorHistoryBillDetailUpdateLog(map);
+        List<VendorHistoryBillUpdateLog> logList = selectMapper.queryVendorHistoryBillDetailUpdateLog(map);
         if (logList == null){
             return null;
         }

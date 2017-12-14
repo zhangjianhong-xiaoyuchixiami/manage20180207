@@ -1,7 +1,8 @@
 package org.qydata.service.impl;
 
 import org.qydata.entity.User;
-import org.qydata.mapper.UserMapper;
+import org.qydata.mapper.mapper1.UserMapper;
+import org.qydata.mapper.mapper2.UserSelectMapper;
 import org.qydata.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,15 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
 
-    @Autowired private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserSelectMapper userSelectMapper;
 
     @Override
     public User get(String email) {
         try {
-            return this.userMapper.findById(email);
+            return this.userSelectMapper.findById(email);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,8 +36,8 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> listAuthByUser(Integer userId)  {
         Map<String,Object> map = new HashMap<String,Object>() ;
         try {
-            map.put("allRoles", this.userMapper.findAllRoleByUser(userId)) ;
-            map.put("allActions", this.userMapper.findAllActionByUser(userId)) ;
+            map.put("allRoles", this.userSelectMapper.findAllRoleByUser(userId)) ;
+            map.put("allActions", this.userSelectMapper.findAllActionByUser(userId)) ;
         } catch (Exception e) {
             e.printStackTrace();
         }

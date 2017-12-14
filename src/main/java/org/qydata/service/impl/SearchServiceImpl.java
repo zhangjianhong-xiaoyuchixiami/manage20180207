@@ -1,7 +1,8 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.customer.CustomerReqLog;
-import org.qydata.mapper.SearchMapper;
+import org.qydata.mapper.mapper1.SearchMapper;
+import org.qydata.mapper.mapper2.SearchSelectMapper;
 import org.qydata.service.SearchService;
 import org.qydata.tools.customer.CustomerDataParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,12 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private SearchMapper mapper;
+    @Autowired
+    private SearchSelectMapper selectMapper;
 
     @Override
     public List<CustomerReqLog> queryCustomerReqLog(Map<String, Object> map) {
-        List<CustomerReqLog> logList = mapper.queryCustomerReqLog(map);
+        List<CustomerReqLog> logList = selectMapper.queryCustomerReqLog(map);
         if (logList == null || logList.size() <= 0){
             return null;
         }

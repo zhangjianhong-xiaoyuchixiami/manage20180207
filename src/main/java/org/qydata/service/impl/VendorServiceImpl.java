@@ -5,8 +5,9 @@ import org.qydata.entity.ApiVendorBalance;
 import org.qydata.entity.ApiVendorBalanceLog;
 import org.qydata.entity.Partner;
 import org.qydata.entity.VendorExt;
-import org.qydata.mapper.ApiFinanceMapper;
-import org.qydata.mapper.VendorMapper;
+import org.qydata.mapper.mapper1.ApiFinanceMapper;
+import org.qydata.mapper.mapper1.VendorMapper;
+import org.qydata.mapper.mapper2.VendorSelectMapper;
 import org.qydata.service.VendorService;
 import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class VendorServiceImpl implements VendorService {
 
     @Autowired
     private VendorMapper vendorMapper;
+    @Autowired
+    private VendorSelectMapper vendorSelectMapper;
     @Autowired
     private ApiFinanceMapper apiFinanceMapper;
 
@@ -71,9 +74,9 @@ public class VendorServiceImpl implements VendorService {
             param.put("preIdList",preIdList);
         }
         param.put("currDayTime", CalendarUtil.formatCurrTime());
-        List<VendorExt> vendorExtList = vendorMapper.queryAllVendor(param);
-        List<VendorExt> consumeExtList = vendorMapper.queryVendorConsume(param);
-        List<VendorExt> currDayList = vendorMapper.queryVendorConsumeCurrDay(param);
+        List<VendorExt> vendorExtList = vendorSelectMapper.queryAllVendor(param);
+        List<VendorExt> consumeExtList = vendorSelectMapper.queryVendorConsume(param);
+        List<VendorExt> currDayList = vendorSelectMapper.queryVendorConsumeCurrDay(param);
         if (vendorExtList != null && vendorExtList.size() > 0){
             for (int i = 0; i < vendorExtList.size() ; i++) {
                 VendorExt vendorExt = vendorExtList.get(i);
@@ -141,12 +144,12 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public List<Partner> queryAllPartner() {
-        return vendorMapper.queryAllPartner();
+        return vendorSelectMapper.queryAllPartner();
     }
 
     @Override
     public boolean updateVendorPrepay(Integer vid, Integer preId) {
-        VendorExt vendorExt =  vendorMapper.queryVendorPrepay(vid);
+        VendorExt vendorExt =  vendorSelectMapper.queryVendorPrepay(vid);
         if (vendorExt != null){
             return vendorMapper.updateVendorPrepay(vid,preId);
         }else {
@@ -162,7 +165,7 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public boolean updateVendorBalance(Integer vid, Double amount, String date, String remark) throws Exception {
         try{
-            ApiVendorBalance balance = vendorMapper.queryVendorBalance(vid);
+            ApiVendorBalance balance = vendorSelectMapper.queryVendorBalance(vid);
             ApiVendorBalance balanceParam = new ApiVendorBalance();
             balanceParam.setVendorId(vid);
             balanceParam.setBalance((amount * 100.0));
@@ -194,7 +197,7 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public boolean updateVendorBalanceFee(Integer vid, Double amount, String date, String remark) throws Exception {
         try {
-            ApiVendorBalance balance = vendorMapper.queryVendorBalance(vid);
+            ApiVendorBalance balance = vendorSelectMapper.queryVendorBalance(vid);
             ApiVendorBalance balanceParam = new ApiVendorBalance();
             balanceParam.setVendorId(vid);
             balanceParam.setBalance(-(amount * 100.0));
@@ -224,7 +227,7 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public Map<String,Object> queryVendorBalanceLog(Map<String, Object> map) {
-        List<ApiVendorBalanceLog> logList = vendorMapper.queryVendorBalanceLog(map);
+        List<ApiVendorBalanceLog> logList = vendorSelectMapper.queryVendorBalanceLog(map);
         Double chargeTot = 0.0;
         if (logList != null && logList.size() > 0){
             for (int i = 0; i < logList.size() ; i++) {

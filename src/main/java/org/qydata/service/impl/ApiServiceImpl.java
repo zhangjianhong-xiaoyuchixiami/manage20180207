@@ -5,15 +5,16 @@ import org.qydata.constants.GlobalStaticConstants;
 import org.qydata.dst.ApiTypeInfo;
 import org.qydata.dst.CustomerApiPartner;
 import org.qydata.entity.*;
-import org.qydata.mapper.ApiMapper;
-import org.qydata.mapper.CompanyMapper;
+import org.qydata.mapper.mapper1.ApiMapper;
+import org.qydata.mapper.mapper1.CompanyMapper;
+import org.qydata.mapper.mapper2.ApiSelectMapper;
+import org.qydata.mapper.mapper2.CompanySelectMapper;
 import org.qydata.service.ApiService;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.qydata.tools.https.HttpClientUtil;
 import org.qydata.tools.redis.RedisUtils;
-import org.qydata.tools.thread.RecoverApiProbThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -32,13 +33,17 @@ public class ApiServiceImpl implements ApiService {
     @Autowired
     private ApiMapper apiMapper;
     @Autowired
+    private ApiSelectMapper apiSelectMapper;
+    @Autowired
     private RedisUtils redisUtils;
     @Autowired
     private CompanyMapper companyMapper;
+    @Autowired
+    private CompanySelectMapper companySelectMapper;
 
     @Override
     public List<Api> queryApi(Map<String, Object> map) {
-        List<Api> apiList = apiMapper.queryApi(map);
+        List<Api> apiList = apiSelectMapper.queryApi(map);
         if (apiList != null) {
             for (int i = 0; i < apiList.size(); i++) {
                 Api api = apiList.get(i);
@@ -57,7 +62,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public List<ApiType> queryApiType() {
         try {
-            return apiMapper.queryApiType();
+            return apiSelectMapper.queryApiType();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +72,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public List<ApiVendor> queryApiVendor() {
         try {
-            return apiMapper.queryApiVendor();
+            return apiSelectMapper.queryApiVendor();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,7 +82,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public List<ApiVendor> queryApiVendorByApiTypeId(Integer id) {
         try {
-            return apiMapper.queryApiVendorByApiTypeId(id);
+            return apiSelectMapper.queryApiVendorByApiTypeId(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,19 +91,19 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public List<Partner> queryPartner() {
-        return apiMapper.queryPartner();
+        return apiSelectMapper.queryPartner();
     }
 
     @Override
     public List<CustomerApiPartner> queryApiByCompanyId(Map<String, Object> map) {
-        List<CustomerApiPartner> customerApiPartnerList = apiMapper.queryApiByCompanyId(map);
+        List<CustomerApiPartner> customerApiPartnerList = apiSelectMapper.queryApiByCompanyId(map);
         return customerApiPartnerList;
     }
 
     @Override
     public List<Company> queryCompany() {
         try {
-            return apiMapper.queryCompany();
+            return apiSelectMapper.queryCompany();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,7 +114,7 @@ public class ApiServiceImpl implements ApiService {
     public List<ApiBan> queryApiMonitor() {
         Map<String, Object> mapParam = new HashMap<>();
         mapParam.put("time", CalendarUtil.getCurrentLastHour());
-        List<ApiBan> apiBanList = apiMapper.queryApiMonitor(mapParam);
+        List<ApiBan> apiBanList = apiSelectMapper.queryApiMonitor(mapParam);
         if (apiBanList != null) {
             for (int i = 0; i < apiBanList.size(); i++) {
                 ApiBan apiBan = apiBanList.get(i);
@@ -128,14 +133,14 @@ public class ApiServiceImpl implements ApiService {
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<apiId.length; i++){
             Map<String,Object> map = new HashMap<>();
-            map.put("k",companyMapper.queryAuthKey("admin.k"));
+            map.put("k",companySelectMapper.queryAuthKey("admin.k"));
             map.put("aid",apiId[i]);
             map.put("s",-1);
             int code = HttpClientUtil.doGet(uri,map,null);
             if (code != 200){
                 String apiName = null;
                 String vendorName = null;
-                Api api = apiMapper.queryApiTypeNameStidNameVendorNameByApiId(Integer.parseInt(apiId[i]));
+                Api api = apiSelectMapper.queryApiTypeNameStidNameVendorNameByApiId(Integer.parseInt(apiId[i]));
                 if (api != null){
                     ApiType apiType = api.getApiType();
                     ApiVendor apiVendor = api.getApiVendor();
@@ -163,14 +168,14 @@ public class ApiServiceImpl implements ApiService {
         StringBuffer sb = new StringBuffer();
         for (int i=0; i<apiId.length; i++){
             Map<String,Object> map = new HashMap<>();
-            map.put("k",companyMapper.queryAuthKey("admin.k"));
+            map.put("k",companySelectMapper.queryAuthKey("admin.k"));
             map.put("aid",apiId[i]);
             map.put("s",0);
             int code = HttpClientUtil.doGet(uri,map,null);
             if (code != 200){
                 String apiName = null;
                 String vendorName = null;
-                Api api = apiMapper.queryApiTypeNameStidNameVendorNameByApiId(Integer.parseInt(apiId[i]));
+                Api api = apiSelectMapper.queryApiTypeNameStidNameVendorNameByApiId(Integer.parseInt(apiId[i]));
                 if (api != null){
                     ApiType apiType = api.getApiType();
                     ApiVendor apiVendor = api.getApiVendor();
@@ -193,7 +198,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     @SystemServiceLog(description = "修改上游产品价格")
     public int updatePrice(Integer aid, Double pic) throws Exception {
-        ApiFake apiFake = apiMapper.queryApiFakeByApiId(aid);
+        ApiFake apiFake = apiSelectMapper.queryApiFakeByApiId(aid);
         if (apiFake == null) {
             ApiFake apiFakeParam = new ApiFake();
             apiFakeParam.setApiId(aid);
@@ -202,7 +207,7 @@ public class ApiServiceImpl implements ApiService {
         }
         String uri = GlobalStaticConstants.API_MODIFY_COST;
         Map<String, Object> map = new HashMap<>();
-        map.put("k", companyMapper.queryAuthKey("admin.k"));
+        map.put("k", companySelectMapper.queryAuthKey("admin.k"));
         map.put("aid", aid);
         map.put("v", (int)(pic * 100));
         int code = HttpClientUtil.doGet(uri, map, null);
@@ -215,7 +220,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public List<ApiPriceChanceLog> queryApiPriceChangeLog(Map<String, Object> map) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<ApiPriceChanceLog> apclList = apiMapper.queryApiPriceChangeLog(map);
+        List<ApiPriceChanceLog> apclList = apiSelectMapper.queryApiPriceChangeLog(map);
         if (apclList != null) {
             for (int i = 0; i < apclList.size(); i++) {
                 ApiPriceChanceLog apcl = apclList.get(i);
@@ -242,7 +247,7 @@ public class ApiServiceImpl implements ApiService {
     public boolean addApiPriceChangeLog(Integer aid, Double pic, String date) throws Exception {
         String dateFormat = date + ":00";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        ApiPriceChanceLog apiPriceChanceLog = apiMapper.queryApiChangeLogByApiId(aid);
+        ApiPriceChanceLog apiPriceChanceLog = apiSelectMapper.queryApiChangeLogByApiId(aid);
         if (apiPriceChanceLog != null) {
             apiMapper.updateApiDeadTimeByApiId(aid, sdf.parse(dateFormat));
         }
@@ -256,7 +261,7 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public List<Api> queryAllApi(Map<String, Object> map) {
-        List<Api> apiList = apiMapper.queryAllApi(map);
+        List<Api> apiList = apiSelectMapper.queryAllApi(map);
         if (apiList != null) {
             for (int i = 0; i < apiList.size(); i++) {
                 Api api = apiList.get(i);
@@ -282,7 +287,7 @@ public class ApiServiceImpl implements ApiService {
     public List<CompanyApiPriceChangeLog> queryCompanyApiPriceChangeLog(Map<String, Object> map) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<CompanyApiPriceChangeLog> capclList = apiMapper.queryCompanyApiPriceChangeLog(map);
+        List<CompanyApiPriceChangeLog> capclList = apiSelectMapper.queryCompanyApiPriceChangeLog(map);
         if (capclList != null) {
             for (int i = 0; i < capclList.size(); i++) {
                 CompanyApiPriceChangeLog capcl = capclList.get(i);
@@ -300,7 +305,7 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public List<ApiTypeInfo> queryCompanyApiByCompanyId(Integer cid) {
-        return apiMapper.queryCompanyApiByCompanyId(cid);
+        return apiSelectMapper.queryCompanyApiByCompanyId(cid);
     }
 
     @Override
@@ -317,7 +322,7 @@ public class ApiServiceImpl implements ApiService {
             tid = Integer.parseInt(tid_stids[0]);
             stid = Integer.parseInt(tid_stids[1]);
         }
-        CompanyApiPriceChangeLog companyApiPriceChangeLog = apiMapper.queryCompanyApiChangeLogByCidTidStid(cid, tid, stid);
+        CompanyApiPriceChangeLog companyApiPriceChangeLog = apiSelectMapper.queryCompanyApiChangeLogByCidTidStid(cid, tid, stid);
         if (companyApiPriceChangeLog != null) {
             apiMapper.updateCompanyApiDeadTimeByCidTidStid(cid, tid, stid, sdf.parse(dateFormat));
         }
@@ -336,17 +341,13 @@ public class ApiServiceImpl implements ApiService {
     public int updateCompanyApiPrice(Integer cid, Integer tid, Integer stid, Double pic) throws Exception {
         String uri = GlobalStaticConstants.COMPANY_API_PUT;
         Map<String, Object> map = new HashMap<>();
-        map.put("k", companyMapper.queryAuthKey("admin.k"));
+        map.put("k", companySelectMapper.queryAuthKey("admin.k"));
         map.put("cid", cid);
         map.put("price", (int) (pic * 100));
         map.put("tid", tid);
         map.put("stid", stid);
         int code = HttpClientUtil.doGet(uri, map, null);
         if (200 == code) {
-            Customer customer = companyMapper.queryOfficAuthIdByCompanyId(cid);
-            if (customer != null){
-                redisUtils.addApiPrice(customer.getId()+"", tid + "-" + stid, pic+"");
-            }
             return code;
         }
         throw new Exception("http请求异常，请求状态码statusCode=" + code);
@@ -364,7 +365,7 @@ public class ApiServiceImpl implements ApiService {
                 String[] cid_ids = cid_id[i].split("-");
                 Integer cid = Integer.parseInt(cid_ids[0]);
                 Integer id = Integer.parseInt(cid_ids[1]);
-                map.put("k", companyMapper.queryAuthKey("admin.k"));
+                map.put("k", companySelectMapper.queryAuthKey("admin.k"));
                 map.put("cid", cid);
                 map.put("id", id);
                 int code = HttpClientUtil.doGet(uri, map, null);
@@ -384,7 +385,7 @@ public class ApiServiceImpl implements ApiService {
     public int updateApiCurrProb(Integer aid, Integer prob) throws Exception {
         String uri = GlobalStaticConstants.API_MODIFY_PROB;
         Map<String,Object> map = new HashMap<>();
-        map.put("k",companyMapper.queryAuthKey("admin.k"));
+        map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("aid",aid);
         map.put("v",prob);
         int  code = HttpClientUtil.doGet(uri,map,null);
@@ -398,7 +399,7 @@ public class ApiServiceImpl implements ApiService {
     @SystemServiceLog(description = "修改上游产品预设配额")
     public boolean updateApiDefProb(Integer aid, Integer prob) throws Exception {
         try {
-            ApiExt apiExt = apiMapper.queryApiDefProb(aid);
+            ApiExt apiExt = apiSelectMapper.queryApiDefProb(aid);
             ApiExt apiExtParam = new ApiExt();
             apiExtParam.setApiId(aid);
             apiExtParam.setDefProb(prob);
@@ -422,7 +423,7 @@ public class ApiServiceImpl implements ApiService {
     @SystemServiceLog(description = "修改上游产品预设比例")
     public boolean updateApiDefProp(Integer aid, Double prop) throws Exception {
         try {
-            ApiExt apiExt = apiMapper.queryApiDefProp(aid);
+            ApiExt apiExt = apiSelectMapper.queryApiDefProp(aid);
             ApiExt apiExtParam = new ApiExt();
             apiExtParam.setApiId(aid);
             apiExtParam.setDefProp((int) (prop * 100));
@@ -442,36 +443,36 @@ public class ApiServiceImpl implements ApiService {
         }
     }
 
-    @Override
-    @SystemServiceLog(description = "恢复上游产品配额")
-    public void updateRecoverApiProb(String[] aid) throws Exception {
-        if (aid != null && aid.length > 0) {
-            for (int i = 0; i < aid.length; i++) {
-                RecoverApiProbThread runnable = new RecoverApiProbThread(Integer.parseInt(aid[i]), apiMapper, companyMapper);
-                new Thread(runnable).start();
-                Integer tid = apiMapper.queryApiTypeByApiId(Integer.parseInt(aid[i]));
-                RecoverProbCheck resu = apiMapper.queryRecoverProbCheck(tid);
-                if (resu != null){
-                    if (resu.getValue() != 0){
-                        RecoverProbCheck param = new RecoverProbCheck();
-                        param.setTid(tid);
-                        param.setValue(1);
-                        apiMapper.updateRecoverProbCheck(param);
-                    }
-                }else {
-                    RecoverProbCheck param = new RecoverProbCheck();
-                    param.setTid(tid);
-                    param.setValue(1);
-                    apiMapper.insertRecoverProbCheck(param);
-                }
-            }
-        }
-    }
+//    @Override
+//    @SystemServiceLog(description = "恢复上游产品配额")
+//    public void updateRecoverApiProb(String[] aid) throws Exception {
+//        if (aid != null && aid.length > 0) {
+//            for (int i = 0; i < aid.length; i++) {
+//                RecoverApiProbThread runnable = new RecoverApiProbThread(Integer.parseInt(aid[i]), apiMapper, companyMapper);
+//                new Thread(runnable).start();
+//                Integer tid = apiSelectMapper.queryApiTypeByApiId(Integer.parseInt(aid[i]));
+//                RecoverProbCheck resu = apiSelectMapper.queryRecoverProbCheck(tid);
+//                if (resu != null){
+//                    if (resu.getValue() != 0){
+//                        RecoverProbCheck param = new RecoverProbCheck();
+//                        param.setTid(tid);
+//                        param.setValue(1);
+//                        apiMapper.updateRecoverProbCheck(param);
+//                    }
+//                }else {
+//                    RecoverProbCheck param = new RecoverProbCheck();
+//                    param.setTid(tid);
+//                    param.setValue(1);
+//                    apiMapper.insertRecoverProbCheck(param);
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public Integer queryApiTypeByApiId(Integer aid) {
         try {
-            return apiMapper.queryApiTypeByApiId(aid);
+            return apiSelectMapper.queryApiTypeByApiId(aid);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -480,12 +481,12 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public RecoverProbLog queryDetailLogByApiId(Integer aid) {
-        return apiMapper.queryDetailLogByApiId(aid);
+        return apiSelectMapper.queryDetailLogByApiId(aid);
     }
 
     @Override
     public List<RecoverProbCheck> queryAllRecoverProbCheck(Map<String, Object> map) {
-        return apiMapper.queryAllRecoverProbCheck(map);
+        return apiSelectMapper.queryAllRecoverProbCheck(map);
     }
 
 

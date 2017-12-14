@@ -3,7 +3,9 @@ package org.qydata.tools;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
-import org.qydata.mapper.CustomerFinanceMapper;
+import org.qydata.mapper.mapper1.CustomerFinanceMapper;
+import org.qydata.mapper.mapper2.CustomerCacheFinanceSelectMapper;
+import org.qydata.mapper.mapper2.CustomerFinanceSelectMapper;
 import org.qydata.tools.https.HttpClientUtil;
 import org.qydata.tools.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class CustomerCurrendDayTotalAmountUtils {
     private RedisUtils redisUtils;
     @Autowired
     private CustomerFinanceMapper customerFinanceMapper;
+    @Autowired
+    private CustomerFinanceSelectMapper customerFinanceSelectMapper;
+
     public Double getCurrentDayTotalAmount(String customerId, String currentDate){
 
         //调用接口获得客户请求的服务和对应的扣费次数
@@ -90,7 +95,7 @@ public class CustomerCurrendDayTotalAmountUtils {
         typeMap.put("customerId", customerId);
         typeMap.put("apiTypeId", apiTypeId);
         typeMap.put("subTypeId", subTypeId);
-        CustomerCurrDayConsume customerCurrDayConsume = customerFinanceMapper.getPriceByType(typeMap);
+        CustomerCurrDayConsume customerCurrDayConsume = customerFinanceSelectMapper.getPriceByType(typeMap);
         return customerCurrDayConsume;
     }
 

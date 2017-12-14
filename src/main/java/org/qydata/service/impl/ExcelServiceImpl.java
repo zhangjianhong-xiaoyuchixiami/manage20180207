@@ -4,7 +4,8 @@ import org.qydata.entity.ApiType;
 import org.qydata.entity.Company;
 import org.qydata.entity.Partner;
 import org.qydata.entity.excel.ExportExcel;
-import org.qydata.mapper.ExcelMapper;
+import org.qydata.mapper.mapper1.ExcelMapper;
+import org.qydata.mapper.mapper2.ExcelSelectMapper;
 import org.qydata.service.ExcelService;
 import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
     private ExcelMapper excelMapper;
+    @Autowired
+    private ExcelSelectMapper excelSelectMapper;
 
     @Override
     public Map<String, Object> queryExtraAccount(Map<String, Object> map) {
@@ -56,8 +59,8 @@ public class ExcelServiceImpl implements ExcelService {
         if (cid != null && cid.length > 0) {
             List<Integer> cidList = new ArrayList<>();
             for (int i = 0; i < cid.length; i++) {
-                cidList.add(excelMapper.queryCustomerIdByCompanyId(cid[i]));
-                System.out.println("正式账号Id" + excelMapper.queryCustomerIdByCompanyId(cid[i]));
+                cidList.add(excelSelectMapper.queryCustomerIdByCompanyId(cid[i]));
+                System.out.println("正式账号Id" + excelSelectMapper.queryCustomerIdByCompanyId(cid[i]));
             }
             mapParam.put("cidList", cidList);
         }
@@ -77,11 +80,11 @@ public class ExcelServiceImpl implements ExcelService {
         double sum = 0.0;
         Partner partner = null;
         if (wid != null) {
-            partner = excelMapper.queryPartnerById(pid);
+            partner = excelSelectMapper.queryPartnerById(pid);
             if (wid == 1) {
-                exportExcelListPartnerUserOur = excelMapper.queryPartnerUserOurBySum(mapParam);
-                exportExcelListOurUserPartner = excelMapper.queryOurUserPartnerBySum(mapParam);
-                exportExcelListPartnerUserOurSell = excelMapper.queryPartnerUserOurSellBySum(mapParam);
+                exportExcelListPartnerUserOur = excelSelectMapper.queryPartnerUserOurBySum(mapParam);
+                exportExcelListOurUserPartner = excelSelectMapper.queryOurUserPartnerBySum(mapParam);
+                exportExcelListPartnerUserOurSell = excelSelectMapper.queryPartnerUserOurSellBySum(mapParam);
                 if (exportExcelListPartnerUserOur != null) {
                     for (int i = 0; i < exportExcelListPartnerUserOur.size(); i++) {
                         ExportExcel exportExcel = exportExcelListPartnerUserOur.get(i);
@@ -187,9 +190,9 @@ public class ExcelServiceImpl implements ExcelService {
                 sum = ((partnerUserOurTotle - ourUserPartnerTotle) + ((partnerUserOurSellTotle - partnerUserOurTotle) / 2));
             }
             if (wid == 2) {
-                exportExcelListPartnerUserOur = excelMapper.queryPartnerUserOurByMonth(mapParam);
-                exportExcelListOurUserPartner = excelMapper.queryOurUserPartnerByMonth(mapParam);
-                exportExcelListPartnerUserOurSell = excelMapper.queryPartnerUserOurSellByMonth(mapParam);
+                exportExcelListPartnerUserOur = excelSelectMapper.queryPartnerUserOurByMonth(mapParam);
+                exportExcelListOurUserPartner = excelSelectMapper.queryOurUserPartnerByMonth(mapParam);
+                exportExcelListPartnerUserOurSell = excelSelectMapper.queryPartnerUserOurSellByMonth(mapParam);
                 if (exportExcelListPartnerUserOur != null) {
                     for (int i = 0; i < exportExcelListPartnerUserOur.size(); i++) {
                         ExportExcel exportExcel = exportExcelListPartnerUserOur.get(i);
@@ -244,9 +247,9 @@ public class ExcelServiceImpl implements ExcelService {
                 sum = ((partnerUserOurTotle - ourUserPartnerTotle) + ((partnerUserOurSellTotle - partnerUserOurTotle) / 2));
             }
             if (wid == 3) {
-                exportExcelListPartnerUserOur = excelMapper.queryPartnerUserOurByDay(mapParam);
-                exportExcelListOurUserPartner = excelMapper.queryOurUserPartnerByDay(mapParam);
-                exportExcelListPartnerUserOurSell = excelMapper.queryPartnerUserOurSellByDay(mapParam);
+                exportExcelListPartnerUserOur = excelSelectMapper.queryPartnerUserOurByDay(mapParam);
+                exportExcelListOurUserPartner = excelSelectMapper.queryOurUserPartnerByDay(mapParam);
+                exportExcelListPartnerUserOurSell = excelSelectMapper.queryPartnerUserOurSellByDay(mapParam);
                 if (exportExcelListPartnerUserOur != null) {
                     for (int i = 0; i < exportExcelListPartnerUserOur.size(); i++) {
                         ExportExcel exportExcel = exportExcelListPartnerUserOur.get(i);
@@ -315,7 +318,7 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Override
     public List<Company> queryCompanyByPid(Integer pid) {
-        return excelMapper.queryCompanyByPid(pid);
+        return excelSelectMapper.queryCompanyByPid(pid);
     }
 
     @Override
@@ -347,8 +350,8 @@ public class ExcelServiceImpl implements ExcelService {
         }
         Map<String, Object> mapParam = new HashMap<>();
         if (cid != null) {
-            mapParam.put("cid", excelMapper.queryCustomerIdByCompanyId(cid));
-            System.out.println("正式账号Id" + excelMapper.queryCustomerIdByCompanyId(cid));
+            mapParam.put("cid", excelSelectMapper.queryCustomerIdByCompanyId(cid));
+            System.out.println("正式账号Id" + excelSelectMapper.queryCustomerIdByCompanyId(cid));
         }
         if (tid != null && tid.length > 0) {
             List<Integer> tidList = new ArrayList<>();
@@ -367,9 +370,9 @@ public class ExcelServiceImpl implements ExcelService {
         double sumCost = 0.0;
         String companyName = null;
         if (wid != null) {
-            companyName = excelMapper.queryCompanyNameByCompanyId(cid);
+            companyName = excelSelectMapper.queryCompanyNameByCompanyId(cid);
             if (wid == 1) {
-                exportExcelList = excelMapper.queryCustomerConsumeStatusBySum(mapParam);
+                exportExcelList = excelSelectMapper.queryCustomerConsumeStatusBySum(mapParam);
                 if (exportExcelList != null) {
                     for (int i = 0; i < exportExcelList.size(); i++) {
                         ExportExcel exportExcel = exportExcelList.get(i);
@@ -406,7 +409,7 @@ public class ExcelServiceImpl implements ExcelService {
                 }
             }
             if (wid == 2) {
-                exportExcelList = excelMapper.queryCustomerConsumeStatusByMonth(mapParam);
+                exportExcelList = excelSelectMapper.queryCustomerConsumeStatusByMonth(mapParam);
                 if (exportExcelList != null) {
                     for (int i = 0; i < exportExcelList.size(); i++) {
                         ExportExcel exportExcel = exportExcelList.get(i);
@@ -426,7 +429,7 @@ public class ExcelServiceImpl implements ExcelService {
                 }
             }
             if (wid == 3) {
-                exportExcelList = excelMapper.queryCustomerConsumeStatusByDay(mapParam);
+                exportExcelList = excelSelectMapper.queryCustomerConsumeStatusByDay(mapParam);
                 if (exportExcelList != null) {
                     for (int i = 0; i < exportExcelList.size(); i++) {
                         ExportExcel exportExcel = exportExcelList.get(i);
@@ -455,6 +458,6 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Override
     public List<ApiType> queryApiTypeByCid(Integer cid) {
-        return excelMapper.queryApiTypeByCid(cid);
+        return excelSelectMapper.queryApiTypeByCid(cid);
     }
 }

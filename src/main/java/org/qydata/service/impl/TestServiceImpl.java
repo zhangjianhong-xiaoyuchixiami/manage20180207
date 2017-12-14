@@ -1,7 +1,8 @@
 package org.qydata.service.impl;
 
 import org.qydata.entity.User;
-import org.qydata.mapper.TestMapper;
+import org.qydata.mapper.mapper1.TestMapper;
+import org.qydata.mapper.mapper2.TestSelectMapper;
 import org.qydata.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +19,20 @@ import java.util.Map;
 public class TestServiceImpl implements TestService {
 
     @Autowired private TestMapper testMapper;
+    @Autowired
+    private TestSelectMapper testSelectMapper;
 
     @Override
     public Map<String, Object> queryAllUserTest(Map<String, Object> map) {
         Map<String,Object> mapResu = new HashMap<>();
-        mapResu.put("queryUserTest",testMapper.queryUserTest(map));
-        mapResu.put("getAllUserCount",testMapper.getAllUserCount(map));
+        mapResu.put("queryUserTest",testSelectMapper.queryUserTest(map));
+        mapResu.put("getAllUserCount",testSelectMapper.getAllUserCount(map));
         return mapResu;
     }
 
     @Override
     public List<Map<Object, Object>> testMap() {
-        List<Map<Object,Object>> mapList = testMapper.testMap();
+        List<Map<Object,Object>> mapList = testSelectMapper.testMap();
         List<Map<Object,Object>> listResu = new ArrayList<>();
         for (int i=0; i<mapList.size(); i++){
             Map<Object,Object> mapTran = mapList.get(i);

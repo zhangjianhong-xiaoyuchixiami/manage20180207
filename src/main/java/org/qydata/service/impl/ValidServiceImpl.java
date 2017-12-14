@@ -1,7 +1,8 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.api.Aid;
-import org.qydata.mapper.ValidMapper;
+import org.qydata.mapper.mapper1.ValidMapper;
+import org.qydata.mapper.mapper2.ValidSelectMapper;
 import org.qydata.service.ValidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.Map;
 public class ValidServiceImpl implements ValidService {
     @Autowired
     private ValidMapper mapper;
+    @Autowired
+    private ValidSelectMapper selectMapper;
     @Override
     public List<Aid> queryAidByUrl(String url) {
         List<Integer> typeList = new ArrayList<>();
@@ -45,7 +48,7 @@ public class ValidServiceImpl implements ValidService {
         }
         Map<String,Object> map = new HashMap<>();
         map.put("typeList",typeList);
-        List<Aid> aidList = mapper.queryAidByUrl(map);
+        List<Aid> aidList = selectMapper.queryAidByUrl(map);
         return aidList;
     }
 }

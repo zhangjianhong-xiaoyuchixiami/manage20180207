@@ -1,12 +1,10 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.ApiFinance;
-import org.qydata.dst.ApiTypeConsume;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
-import org.qydata.entity.ApiVendorBalance;
-import org.qydata.entity.ApiVendorBalanceLog;
-import org.qydata.mapper.ApiFinanceMapper;
+import org.qydata.mapper.mapper1.ApiFinanceMapper;
+import org.qydata.mapper.mapper2.ApiFinanceSelectMapper;
 import org.qydata.service.ApiFinanceService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.date.CalendarUtil;
@@ -14,7 +12,6 @@ import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -24,6 +21,7 @@ import java.util.*;
 public class ApiFinanceServiceImpl implements ApiFinanceService {
 
     @Autowired private ApiFinanceMapper mapper;
+    @Autowired private ApiFinanceSelectMapper selectMapper;
 
     @Override
     public Map<String,Object> queryApiFinance(Map<String, Object> map){
@@ -50,19 +48,19 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
         param.put("currDayTime", CalendarTools.getCurrentDate()+ " " + "00:00:00");
         param.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         /*Api财务总览*/
-        List<ApiFinance> financeList = mapper.queryApiFinance(param);
+        List<ApiFinance> financeList = selectMapper.queryApiFinance(param);
         /*查询当月消费（至昨天）*/
-        List<ApiFinance> currMonthList = mapper.queryApiCurrMonthConsume(param);
+        List<ApiFinance> currMonthList = selectMapper.queryApiCurrMonthConsume(param);
         /*查询当天使用量*/
-        List<ApiFinance> currDayUuserList = mapper.queryApiCurrDayUsage(param);
+        List<ApiFinance> currDayUuserList = selectMapper.queryApiCurrDayUsage(param);
         /*查询当天扣费量*/
-        List<ApiFinance> currDayFeeList = mapper.queryApiCurrDayFee(param);
+        List<ApiFinance> currDayFeeList = selectMapper.queryApiCurrDayFee(param);
         /*查询消费总额（至昨天）*/
-        List<ApiFinance> consumeList = mapper.queryApiConsumeTotle(param);
+        List<ApiFinance> consumeList = selectMapper.queryApiConsumeTotle(param);
         /*查询上周消费总额*/
-        List<ApiFinance> lastWeekList = mapper.queryApiLastWeekConsume(param);
+        List<ApiFinance> lastWeekList = selectMapper.queryApiLastWeekConsume(param);
         /*查询上月消费总额*/
-        List<ApiFinance> lastMonthList = mapper.queryApiLastMonthConsume(param);
+        List<ApiFinance> lastMonthList = selectMapper.queryApiLastMonthConsume(param);
 
         if (financeList == null){
             return null;
@@ -233,7 +231,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @Override
     public List<ApiType> queryApiType() {
         try {
-            return mapper.queryApiType();
+            return selectMapper.queryApiType();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -243,7 +241,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
     @Override
     public List<ApiVendor> queryApiVendorName(Map<String, Object> map) {
         try {
-            return mapper.queryApiVendorName(map);
+            return selectMapper.queryApiVendorName(map);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

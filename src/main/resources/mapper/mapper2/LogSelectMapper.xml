@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper2.LogSelectMapper">
+
+
+    <resultMap id="Log_Map" type="org.qydata.entity.log.Log">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="typeId" property="typeId"/>
+        <result column="remoteAddr" property="remoteAddr"/>
+        <result column="requestUri" property="requestUri"/>
+        <result column="method" property="method"/>
+        <result column="params" property="params"/>
+        <result column="operationBeforData" property="operationBeforData"/>
+        <result column="operationAfterData" property="operationAfterData"/>
+        <result column="error" property="error"/>
+        <result column="beginTime" property="beginTime"/>
+        <result column="timeOut" property="timeOut"/>
+        <result column="userId" property="userId"/>
+        <result column="createTime" property="createTime"/>
+        <association property="logType" javaType="org.qydata.entity.log.LogType">
+            <result column="typeName" property="name"/>
+        </association>
+        <association property="user" javaType="org.qydata.entity.User">
+            <result column="email" property="email"/>
+        </association>
+    </resultMap>
+
+    <!--查询日志-->
+    <select id="queryLog" parameterType="map" resultMap="Log_Map">
+        SELECT a.id,a.title,a.typeId,a.remoteAddr,a.requestUri,a.method,a.params,a.operationBeforData,a.operationAfterData,
+        a.error,a.beginTime,a.timeOut,a.userId,a.typeName,a.email,a.createTime
+        FROM qyfinance.bkvwLog a
+        <where>
+            <if test="typeList!=null and typeList.size()!=0">
+                and a.typeId in
+                <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
+                    #{typeId}
+                </foreach>
+            </if>
+            <if test="title!=null and title!=''">
+                and a.title like '%${title}%'
+            </if>
+            <if test="address!=null and address!=''">
+                and a.remoteAddr like '%${address}%'
+            </if>
+            <if test="uri!=null and uri!=''">
+                and a.requestUri like '%${uri}%'
+            </if>
+            <if test="reqWay!=null and reqWay!=''">
+                and a.method=#{reqWay}
+            </if>
+            <if test="operator!=null and operator!=''">
+                and a.userId=#{operator}
+            </if>
+            <if test="operBeginDate!=null and operBeginDate!=''">
+                <![CDATA[
+                and a.createTime >= #{operBeginDate}
+                 ]]>
+            </if>
+            <if test="operEndDate!=null and operEndDate!=''">
+             <![CDATA[
+                and a.createTime <= #{operEndDate}
+                 ]]>
+            </if>
+        </where>
+    </select>
+
+    <!--查询用户邮箱，用于日志界面搜索操作人-->
+    <select id="queryUser" resultType="org.qydata.entity.User">
+        SELECT id,email
+        FROM qyauth.User
+    </select>
+
+</mapper>
+

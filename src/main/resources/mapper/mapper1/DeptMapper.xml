@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.DeptMapper">
+
+    <!--新增部门-->
+    <insert id="insertDept" parameterType="org.qydata.entity.Dept" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.Dept(deptName,createTime)
+        values(#{deptName},sysdate())
+    </insert>
+
+    <!--批量插入用户和部门映射-->
+    <insert id="insertUserDept" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into qyauth.UserDept(userId,deptId,createTime)
+        values
+        <foreach collection="deptId" index="index" item="item" separator=",">
+            ( #{userId},#{item},sysdate() )
+        </foreach>
+    </insert>
+
+    <!--根据用户Id删除用户和部门映射-->
+    <delete id="deleteUserDeptByUserId" parameterType="Integer">
+        delete from qyauth.UserDept where userId=#{param}
+    </delete>
+
+    <insert id="addUserDeptById" parameterType="org.qydata.entity.UserDept" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qyauth.UserDept(userId,deptId,createTime)
+        VALUES (#{userId},#{deptId},sysdate())
+    </insert>
+
+</mapper>

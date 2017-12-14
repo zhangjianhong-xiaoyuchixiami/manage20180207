@@ -515,7 +515,7 @@ public class ApiController {
             }
             if (tidSet.size() == aid.length){
                 try {
-                    apiService.updateRecoverApiProb(aid);
+                //    apiService.updateRecoverApiProb(aid);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

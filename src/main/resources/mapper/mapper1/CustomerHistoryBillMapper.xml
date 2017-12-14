@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.CustomerHistoryBillMapper">
+
+
+    <update id="updateCustomerHistoryBillCost" parameterType="int">
+        UPDATE qyfinance.CustomerHistoryBill
+        SET cost = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--修改扣费量-->
+    <update id="updateCustomerHistoryBillAmount" parameterType="int">
+        UPDATE qyfinance.CustomerHistoryBill
+        SET amount = #{param2}
+        WHERE id = #{param1}
+    </update>
+
+    <!--新增历史记录-->
+    <insert id="addCustomerHistoryBill" parameterType="org.qydata.dst.CustomerHistoryBillDetail">
+        INSERT INTO qyfinance.CustomerHistoryBill(year,month,yearMonth,customerId,apiTypeId,stid,cost,amount,isLock,createTime)
+        VALUE(#{year},#{month},#{yearMonth},#{customerId},#{apiTypeId},#{stid},#{cost},#{amount},0,now())
+    </insert>
+
+    <!--删除历史记录-->
+    <delete id="deleteCustomerHistoryBill" parameterType="list">
+        DELETE FROM qyfinance.CustomerHistoryBill
+        WHERE id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--改锁定/解锁状态-->
+    <update id="updateCustomerHistoryBillIsLock" parameterType="map">
+        UPDATE qyfinance.CustomerHistoryBill
+        SET isLock = #{isLock}
+        WHERE id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--添加修改日志-->
+    <insert id="insertCustomerHistoryBillUpdateLog" parameterType="org.qydata.entity.CustomerHistoryBillUpdateLog" >
+        INSERT INTO qyfinance.CustomerHistoryBillUpdateLog (customerHistoryBillId, beforData, afterData, content, typeId,createTime)
+        VALUES(#{customerHistoryBillId},#{beforData},#{afterData},#{content},#{typeId},now())
+    </insert>
+
+</mapper>
+
+

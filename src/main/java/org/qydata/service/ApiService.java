@@ -193,14 +193,14 @@ public interface ApiService {
     @SystemServiceLog(description = "修改上游产品预设比例")
     public boolean updateApiDefProp(Integer aid,Double prop)throws Exception;
 
-    /**
-     * 恢复上游产品配额
-     * @param aid
-     * @return
-     * @throws Exception
-     */
-    @SystemServiceLog(description = "恢复上游产品配额")
-    public void updateRecoverApiProb(String [] aid)throws Exception;
+//    /**
+//     * 恢复上游产品配额
+//     * @param aid
+//     * @return
+//     * @throws Exception
+//     */
+//    @SystemServiceLog(description = "恢复上游产品配额")
+//    public void updateRecoverApiProb(String [] aid)throws Exception;
 
     /**
      * 根据ApiId查询Api类型

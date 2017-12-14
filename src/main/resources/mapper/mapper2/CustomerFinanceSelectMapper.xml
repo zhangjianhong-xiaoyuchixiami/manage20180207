@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper2.CustomerFinanceSelectMapper">
+
+    <resultMap id="CustomerFinance_Map" type="org.qydata.dst.CustomerFinance">
+        <result column="id" property="id"/>
+        <result column="companyId" property="companyId"/>
+        <result column="companyName" property="companyName"/>
+        <result column="companyStatus" property="companyStatus"/>
+        <result column="balance" property="balance"/>
+        <result column="partnerId" property="partnerId"/>
+        <result column="partnerName" property="partnerName"/>
+        <result column="floor" property="floor"/>
+    </resultMap>
+
+    <resultMap id="CustomerFinance_CompanyApi_Map" type="org.qydata.dst.CustomerFinance" extends="CustomerFinance_Map">
+        <collection property="companyApiList" ofType="org.qydata.entity.CompanyApi">
+            <result column="apiTypeId" property="apiTypeId"/>
+            <result column="subTypeId" property="subTypeId"/>
+            <result column="price" property="price"/>
+            <result column="enabled" property="enabled"/>
+            <association property="apiType" javaType="org.qydata.entity.ApiType">
+                <result column="apiTypeName" property="name"/>
+            </association>
+            <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+                <result column="subTypeName" property="name"/>
+            </association>
+            <association property="companyApiCount" javaType="org.qydata.dst.CompanyApiCount">
+                <result column="sumAmount" property="sumAmount"/>
+                <result column="countTotle" property="countTotle"/>
+                <result column="countSuccess" property="countSuccess"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <resultMap type="org.qydata.entity.CustomerBalanceLog" id="CustomerBalanceLog_Map">
+        <id column="id" property="id"/>
+        <result column="reasonId" property="reasonId"/>
+        <result column="amount" property="amount"/>
+        <result column="customerId" property="customerId"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <resultMap type="org.qydata.entity.CustomerBalanceLog" id="CustomerBalanceLog_CustomerBalanceModifyReason_Map" extends="CustomerBalanceLog_Map">
+        <association property="customerBalanceModifyReason" javaType="org.qydata.entity.CustomerBalanceModifyReason">
+            <result column="reasonName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="ApiType_Map" type="org.qydata.entity.ApiType">
+        <result column="apiTypeId" property="id"/>
+        <result column="typeName" property="name"/>
+    </resultMap>
+
+    <resultMap id="ApiType_CustomerApiVendor_Map" type="org.qydata.entity.ApiType" extends="ApiType_Map">
+        <collection property="customerApiVendorList" ofType="org.qydata.dst.CustomerApiVendor">
+            <result column="apiId" property="apiId"/>
+            <result column="totlePrice" property="totlePrice"/>
+            <result column="vendorName" property="vendorName"/>
+            <result column="vendorId" property="vendorId"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="CustomerApiVendor_Map" type="org.qydata.dst.CustomerApiVendor" >
+        <result column="apiId" property="apiId"/>
+        <result column="apiName" property="apiName"/>
+        <result column="totlePrice" property="totlePrice"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="vendorId" property="vendorId"/>
+        <result column="reasonId" property="reasonId"/>
+        <result column="reasonName" property="reasonName"/>
+    </resultMap>
+
+    <resultMap id="CustomerBalanceDetailConsume_Map" type="org.qydata.entity.CustomerBalanceLog" >
+        <result column="id" property="id"/>
+        <result column="reasonId" property="reasonId"/>
+        <result column="amount" property="amount"/>
+        <result column="customerId" property="customerId"/>
+        <result column="createTime" property="createTime"/>
+        <association property="customerBalanceModifyReason" javaType="org.qydata.entity.CustomerBalanceModifyReason">
+            <result column="reasonName" property="name"/>
+        </association>
+        <association property="apiType" javaType="org.qydata.entity.ApiType">
+            <result column="apiTypeId" property="id"/>
+            <result column="apiTypeName" property="name"/>
+        </association>
+        <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorName" property="name"/>
+        </association>
+        <association property="apiVendor" javaType="org.qydata.entity.ApiVendor">
+            <result column="vendorName" property="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="CustomerCurrDayApiTypeConsume_Map" type="org.qydata.dst.CustomerApiTypeConsume" >
+        <result column="customerId" property="customerId"/>
+        <result column="companyId" property="companyId"/>
+        <result column="apiTypeId" property="apiTypeId"/>
+        <result column="stid" property="stid"/>
+        <result column="sumAmount" property="sumAmount"/>
+        <result column="countTotle" property="countTotle"/>
+        <result column="countSuccess" property="countSuccess"/>
+        <result column="price" property="price"/>
+        <result column="apiTypeName" property="apiTypeName"/>
+        <result column="subTypeName" property="subTypeName"/>
+    </resultMap>
+
+    <resultMap id="CustomerFinance_CompanyApiType_Map" type="org.qydata.dst.CustomerFinance">
+        <result column="customerId" property="id"/>
+        <collection property="companyApiList" ofType="org.qydata.entity.CompanyApi">
+            <result column="apiTypeId" property="apiTypeId"/>
+            <result column="subTypeId" property="subTypeId"/>
+            <result column="price" property="price"/>
+            <result column="enabled" property="enabled"/>
+            <association property="apiType" javaType="org.qydata.entity.ApiType">
+                <result column="apiTypeName" property="name"/>
+            </association>
+            <association property="mobileOperator" javaType="org.qydata.entity.MobileOperator">
+                <result column="subTypeName" property="name"/>
+            </association>
+            <association property="companyApiCount" javaType="org.qydata.dst.CompanyApiCount">
+                <result column="sumAmount" property="sumAmount"/>
+                <result column="countTotle" property="countTotle"/>
+                <result column="countSuccess" property="countSuccess"/>
+                <result column="currDaySumAmount" property="currDaySumAmount"/>
+                <result column="currDayCountTotle" property="currDayCountTotle"/>
+                <result column="currDayCountSuccess" property="currDayCountSuccess"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <resultMap id="CustomerWeekMonthConsume_Map" type="org.qydata.dst.CustomerWeekMonthConsume">
+        <result column="customerId" property="customerId"/>
+        <result column="chargeWeekTotleAmount" property="chargeWeekTotleAmount"/>
+        <result column="chargeMonthTotleAmount" property="chargeMonthTotleAmount"/>
+        <result column="consumeWeekTotleAmount" property="consumeWeekTotleAmount"/>
+        <result column="consumeMonthTotleAmount" property="consumeMonthTotleAmount"/>
+    </resultMap>
+
+
+
+    <!--查询客户的财务开始-->
+
+    <!--查询客户的财务-->
+    <select id="queryCompanyCustomer" parameterType="map" resultMap="CustomerFinance_Map">
+        SELECT a.id,a.balance,a.companyId,a.companyName,a.partnerId,b.name partnerName,a.floor,a.companyStatus
+        FROM qyfinance.bkvwCustomer a
+        LEFT JOIN qyfinance.bkvwPartner b ON a.partnerId=b.id
+        LEFT JOIN qyfinance.bkvwCustomerDept c ON a.id=c.customerId
+        WHERE a.typeId = 1 AND a.companyId IS NOT NULL
+        <if test="deptIdList!=null and deptIdList.size()!=0">
+            and c.deptId in
+            <foreach collection="deptIdList" item="deptId" index="index" open="(" close=")" separator=",">
+                #{deptId}
+            </foreach>
+        </if>
+        <if test="statusList!=null and statusList.size()!=0">
+            and a.companyStatus in
+            <foreach collection="statusList" item="status" index="index" open="(" close=")" separator=",">
+                #{status}
+            </foreach>
+        </if>
+        <if test="partnerId!=null and partnerId!=''">
+            and a.partnerId=#{partnerId}
+        </if>
+        <if test="content!=null and content!=''">
+            and a.companyName like '%${content}%'
+        </if>
+        <if test="pid != null and pid != ''">
+            AND a.partnerId = #{pid}
+        </if>
+        <if test="nullPid != null and nullPid != ''">
+            AND a.partnerId IS NULL
+        </if>
+    </select>
+
+    <!--查询客户当天各产品类型的消费情况-->
+    <select id="queryCustomerCurrDayApiTypeConsume" parameterType="map" resultType="org.qydata.dst.customer.CustomerCurrDayConsume">
+        SELECT aa.customerId,aa.companyId,aa.apiTypeId,aa.stid,ifnull(aa.sumAmount,0) sumAmount,aa.countTotle,aa.countSuccess,
+        bb.price,cc.name apiTypeName,dd.name subTypeName
+        FROM
+        (
+            SELECT
+            a.customerId,
+            a.apiTypeId,
+            ifnull(a.stid, 0) stid,
+            sum(b.amount) sumAmount,
+            count(a.id) countTotle,
+            count(b.id) countSuccess,
+            c.companyId
+            FROM qyfinance.finance_CustomerRequestLog a
+            LEFT JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+            LEFT JOIN qyfinance.finance_Customer c ON a.customerId = c.id
+            WHERE a.createTime >= #{consuTime}
+            AND a.customerId = #{customerId}
+            GROUP BY a.apiTypeId,a.stid
+        ) aa
+        LEFT JOIN qyfinance.bkvw_api_CompanyApi bb ON aa.companyId=bb.companyId AND aa.apiTypeId=bb.apiTypeId AND aa.stid=bb.subTypeId
+        LEFT JOIN qyfinance.bkvwApiType cc ON aa.apiTypeId=cc.id
+        LEFT JOIN qyfinance.bkvwMobileOperator dd ON aa.stid=dd.id
+        ORDER BY aa.countSuccess
+    </select>
+
+    <!--查询客户当天各产品类型的消费情况，显示供应商和缓存-->
+    <select id="queryCustomerCurrDayConsumeDetail" parameterType="map" resultType="org.qydata.dst.customer.CustomerCurrDayConsumeDetail">
+        SELECT a.apiTypeId,a.stid,a.apiId,a.resultCount,a.resultCostCount,CONCAT_WS('-',b.name,c.name) type_stid_name,e.name vendorName
+        FROM
+        (
+            SELECT a.apiTypeId,a.stid,a.apiId,count(a.id) resultCount,count(a.customerReqLogId) resultCostCount
+            FROM
+            (
+                SELECT a.id,a.apiTypeId,ifnull(a.stid,0) stid,ifnull(a.apiId,a.chosenApiId) apiId,c.customerReqLogId
+                FROM qyfinance.fin_cust_req_resp a
+                INNER JOIN qyfinance.finance_CustomerBalanceLog b ON a.id = b.reqId
+                LEFT JOIN qyfinance.finance_ApiRequestLog c ON a.id = c.customerReqLogId
+                WHERE a.createTime >= #{consuTime}
+                AND a.customerId = #{customerId}
+            ) a
+            WHERE a.apiTypeId = #{apiTypeId}
+            AND a.stid = #{stid}
+            GROUP BY a.apiTypeId,a.stid,a.apiId
+        ) a
+        LEFT JOIN qyfinance.bkvwApiType b ON a.apiTypeId=b.id
+        LEFT JOIN qyfinance.bkvwMobileOperator c ON a.stid=c.id
+        LEFT JOIN qyfinance.finance_Api d ON a.apiId = d.id
+        LEFT JOIN qyfinance.finance_ApiVendor e ON d.vendorId = e.id
+    </select>
+
+    <!--根据customerId查询公司名称-->
+    <select id="queryCustomerCompanyNameById" parameterType="int" resultType="String">
+        SELECT companyName
+        FROM qyfinance.bkvwCustomer
+        WHERE id=#{param}
+    </select>
+
+    <!--查询客户各产品的消费情况-->
+    <select id="queryCustomerApiTypeConsume" parameterType="map" resultMap="CustomerFinance_CompanyApiType_Map">
+        SELECT a.customerId,a.apiTypeId,a.stid subTypeId,a.sumAmount,a.countTotle,a.countSuccess,
+        b.companyId,c.price,c.enabled,d.name apiTypeName,e.name subTypeName
+        FROM
+        (
+            SELECT customerId,apiTypeId,ifnull(stid,0) stid,sum(sumAmount) sumAmount,sum(countTotle) countTotle,
+            sum(countSuccess) countSuccess
+            FROM qyfinance.bkvwCompanyApiTypeConsumeDayCount
+            <where>
+                <if test="beginDate != null and beginDate != ''">
+                    <![CDATA[
+                        AND consuTime >= #{beginDate}
+                    ]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[
+                        AND consuTime < #{endDate}
+                    ]]>
+                </if>
+            </where>
+            GROUP BY customerId,apiTypeId,stid
+        ) a
+        LEFT JOIN qyfinance.finance_Customer b ON a.customerId = b.id
+        LEFT JOIN qyfinance.bkvwCompanyApi c ON b.companyId=c.companyId AND a.apiTypeId=c.apiTypeId AND a.stid=c.subTypeId
+        LEFT JOIN qyfinance.bkvwApiType d ON a.apiTypeId=d.id
+        LEFT JOIN qyfinance.bkvwMobileOperator e ON a.stid=e.id
+        WHERE b.typeId = 1
+        ORDER BY d.name ASC,c.enabled DESC
+    </select>
+
+
+    <!--查询充值总额（至昨天）-->
+    <select id="queryCustomerChargeTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
+        SELECT customerId id,sum(chargeAmount) chargeTotleAmount
+        FROM qyfinance.CustomerChargeDayCount
+        GROUP BY customerId
+    </select>
+
+    <!--查询当天充值总额-->
+    <select id="queryCustomerChargeCurrDay" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
+        SELECT customerId id,sum(amount) currDayChargeAmount
+        FROM qyfinance.BackGroundCustomerBalanceLog a
+        WHERE a.typeId in(1,3,-4)
+        AND a.createTime >= #{currDayTime}
+        GROUP BY customerId
+    </select>
+
+    <!--查询消费总额（至昨天）-->
+    <select id="queryCustomerConsumeTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
+        SELECT customerId id,sum(sumAmount) consumeTotleAmount
+        FROM qyfinance.CompanyApiTypeConsumeDayCount
+        <where>
+            <if test="beginDate != null and beginDate != ''">
+                  consuTime >= #{beginDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                    AND consuTime < #{endDate}
+                ]]>
+            </if>
+        </where>
+        GROUP BY customerId
+    </select>
+
+    <!--查询本月消费总额（至昨天）-->
+    <select id="queryCustomerCurrMonthTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
+        SELECT customerId id,sum(sumAmount) currMonthAmount
+        FROM qyfinance.bkvwCompanyApiTypeConsumeDayCount
+        WHERE consuTime >= #{currMonthTime}
+        GROUP BY customerId
+    </select>
+
+    <!--查询当天消费总额-->
+    <select id="queryCustomerCurrDayTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
+        SELECT customerId id,sum(amount) currDayAmount
+        FROM qyfinance.finance_CustomerBalanceLog
+        WHERE reasonId = -1
+        AND createTime >= #{currDayTime}
+        GROUP BY customerId
+    </select>
+
+<!--  查询客户不同产品的单价 -->
+    <select id="getApiPriceByType" parameterType="map" resultType="Double">
+        SELECT
+        b.price
+        FROM
+        qydata.Customer a,
+        qydata.CompanyApi b
+        WHERE
+        a.companyId = b.companyId
+        AND
+        a.id = #{customerId}
+        AND
+        b.apiTypeId = #{apiTypeId}
+        AND
+        b.subTypeId = #{subTypeId}
+    </select>
+
+    <!--查询客户邮箱，1、用于判断是否存在邮箱，2、发送账单是填写收件人-->
+    <select id="queryCustomerEmail" parameterType="map" resultType="org.qydata.entity.CustomerCompanyEmail">
+        SELECT id companyId,email
+        FROM qyfinance.excel_CustomerCompanyEmail
+        <where>
+            <if test="companyId != null and companyId != ''">
+                id = #{companyId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询客户账单，1、用于判断是否存在上月账单-->
+    <select id="queryCustomerAccountExcel" parameterType="map" resultType="org.qydata.entity.CustomerConsumeExcel">
+        SELECT year,month,customerId,excelCode,consuTime
+        FROM qyfinance.excel_CustomerConsumeExcel
+        WHERE year = #{years} AND month = #{months}
+    </select>
+
+    <!--根据customerId查询companyId-->
+    <select id="queryCompanyIdByCustomerId" parameterType="int" resultType="int">
+        SELECT companyId
+        FROM qyfinance.bkvwCustomer
+        WHERE id = #{param}
+    </select>
+
+
+
+    <resultMap id="customerConsume_Map" type="org.qydata.dst.customer.CustomerConsume">
+        <result column="customerId" property="customerId"/>
+        <result column="lastWeekCharge" property="lastWeekCharge"/>
+        <result column="lastWeekConsume" property="lastWeekConsume"/>
+        <result column="lastMonthCharge" property="lastMonthCharge"/>
+        <result column="lastMonthConsume" property="lastMonthConsume"/>
+        <result column="yesterdayConsume" property="yesterdayConsume"/>
+        <result column="historyConsume" property="historyConsume"/>
+        <result column="cost" property="cost"/>
+        <result column="amount" property="amount"/>
+        <result column="consuTime" property="consuTime"/>
+        <result column="consume" property="consume"/>
+    </resultMap>
+
+    <!--历史消费(至上月)-->
+    <select id="queryHistoryTotalAmount" resultMap="customerConsume_Map">
+        SELECT a.customerId,sum(a.consumeAmount) historyConsume
+        FROM
+        (
+            SELECT a.customerId,a.cost * sum(a.amount) consumeAmount
+            FROM qyfinance.CustomerHistoryBill a
+            GROUP BY a.customerId,a.cost
+        ) a
+        GROUP BY a.customerId
+    </select>
+
+
+    <!--查询客户上周充值金额-->
+    <select id="queryCustomerLastWeekCharge" resultMap="customerConsume_Map">
+        SELECT a.customerId,sum(a.chargeAmount) lastWeekCharge
+        FROM qyfinance.CustomerChargeDayCount a
+        WHERE DATE_FORMAT(a.chargeTime,'%x-%v')=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x-%v')
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询客户上周消费金额-->
+    <select id="queryCustomerLastWeekConsume" resultMap="customerConsume_Map">
+        SELECT a.customerId,sum(a.sumAmount) lastWeekConsume
+        FROM qyfinance.CompanyApiTypeConsumeDayCount a
+        WHERE DATE_FORMAT(a.consuTime,'%x-%v')=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%x-%v')
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询客户上月充值金额-->
+    <select id="queryCustomerLastMonthCharge" resultMap="customerConsume_Map">
+        SELECT a.customerId,sum(a.chargeAmount) lastMonthCharge
+        FROM qyfinance.CustomerChargeDayCount a
+        WHERE DATE_FORMAT(a.chargeTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y-%m')
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询客户上月消费金额-->
+    <select id="queryCustomerLastMonthConsume" parameterType="String" resultMap="customerConsume_Map">
+        SELECT a.customerId,sum(a.cost * a.amount) lastMonthConsume
+        FROM qyfinance.CustomerHistoryBill a
+        <where>
+            <if test="lastMonthTime != null and lastMonthTime != ''">
+                a.yearMonth = #{lastMonthTime}
+            </if>
+        </where>
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询客户昨日消费金额-->
+    <select id="queryCustomerYesterdayConsume" parameterType="String" resultMap="customerConsume_Map">
+        SELECT a.customerId,sum(a.sumAmount) yesterdayConsume
+        FROM qyfinance.CompanyApiTypeConsumeDayCount a
+        <where>
+            <if test="yestTime != null and yestTime != ''">
+              a.consuTime = #{yestTime}
+            </if>
+        </where>
+        GROUP BY a.customerId
+    </select>
+
+    <!--查询近一周消费走势-->
+    <select id="queryNearlyWeekTrend" parameterType="int" resultMap="customerConsume_Map">
+        SELECT a.consuTime,sum(sumAmount) consume
+        FROM qyfinance.CompanyApiTypeConsumeDayCount a
+        WHERE a.customerId = #{param}
+        GROUP BY a.consuTime
+        ORDER BY a.consuTime DESC
+        LIMIT 7
+    </select>
+    
+    <!--查询客户的财务结束-->
+
+
+
+    <!--查询客户的充值记录-->
+    <select id="queryCompanyCustomerRechargeRecordByCustomerId" parameterType="map" resultMap="CustomerBalanceLog_CustomerBalanceModifyReason_Map">
+        SELECT id,reasonId,amount,customerId,createTime,reasonName
+        FROM qyfinance.bkvwCustomerBalanceLog
+        WHERE customerId = #{customerId}
+        <if test="reasonIdList != null and reasonIdList.size() != 0">
+            AND reasonId IN
+            <foreach collection="reasonIdList" item="reasonId" index="index" open="(" close=")" separator=",">
+                #{reasonId}
+            </foreach>
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            <![CDATA[
+            AND createTime >= #{beginDate}
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND createTime < #{endDate}
+             ]]>
+        </if>
+    </select>
+
+    <!--查询不同客户不同产品的价格和产品名字-->
+    <select id="getPriceByType" parameterType="map" resultType="org.qydata.dst.customer.CustomerCurrDayConsume">
+        SELECT
+            c.price,
+            d.name apiTypeName,
+            e.`name` subTypeName
+        FROM
+        (	SELECT
+                b.subTypeId ,
+                b.apiTypeId ,
+                b.price
+            FROM
+                qydata.Customer a,
+                qydata.CompanyApi b
+            WHERE
+                a.companyId = b.companyId
+            AND
+                a.id = #{customerId}
+            AND
+                b.apiTypeId = #{apiTypeId}
+            AND
+                b.subTypeId = #{subTypeId}
+         )  c
+        LEFT JOIN qyfinance.bkvwApiType d
+        ON c.apiTypeId = d.id
+        LEFT JOIN qyfinance.bkvwMobileOperator e
+        ON e.id =c.subTypeId
+    </select>
+
+
+</mapper>
+

@@ -4,9 +4,12 @@ import org.qydata.entity.Role;
 import org.qydata.entity.User;
 import org.qydata.entity.UserDept;
 import org.qydata.entity.UserRole;
-import org.qydata.mapper.DeptMapper;
-import org.qydata.mapper.RoleMapper;
-import org.qydata.mapper.UserMapper;
+import org.qydata.mapper.mapper1.DeptMapper;
+import org.qydata.mapper.mapper1.RoleMapper;
+import org.qydata.mapper.mapper1.UserMapper;
+import org.qydata.mapper.mapper2.DeptSelectMapper;
+import org.qydata.mapper.mapper2.RoleSelectMapper;
+import org.qydata.mapper.mapper2.UserSelectMapper;
 import org.qydata.service.RoleService;
 import org.qydata.tools.IpTool;
 import org.qydata.tools.Md5Tools;
@@ -24,18 +27,21 @@ import java.util.Map;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired private UserMapper userMapper;
+    @Autowired private UserSelectMapper userSelectMapper;
     @Autowired private RoleMapper roleMapper;
+    @Autowired private RoleSelectMapper roleSelectMapper;
     @Autowired private DeptMapper deptMapper;
+    @Autowired protected DeptSelectMapper deptSelectMapper;
 
     @Override
     public List<Role> findAllRole() throws Exception {
-        return roleMapper.findAllRole();
+        return roleSelectMapper.findAllRole();
     }
 
     @Override
 
     public List<UserRole> findAllRoleByUsername(Integer userId) throws Exception {
-        return roleMapper.findAllRoleByUsername(userId);
+        return roleSelectMapper.findAllRoleByUsername(userId);
     }
 
     @Override
@@ -93,7 +99,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean resetPassword(Integer userId) throws Exception {
-        String password = Md5Tools.md5(userMapper.findUserByUsername(userId).getEmail()+"123456");
+        String password = Md5Tools.md5(userSelectMapper.findUserByUsername(userId).getEmail()+"123456");
         return userMapper.resetPassword(userId,password);
     }
 

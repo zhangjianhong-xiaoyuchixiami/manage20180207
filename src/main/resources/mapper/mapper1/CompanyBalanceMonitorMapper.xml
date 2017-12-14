@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.CompanyBalanceMonitorMapper">
+
+    <!--插入余额报警客户-->
+    <insert id="insertCompanyBalanceMonitor" parameterType="org.qydata.entity.monitor.CompanyBalanceMonitor">
+        INSERT INTO qyfinance.`CompanyBalanceMonitor` (
+        `companyId`,
+        `isPrepay`,
+        `isAlarm`,
+        `isRemindCustomer`,
+        `ahead`
+        )
+        VALUES(#{companyId},#{isPrepay},#{isAlarm},#{isRemindCustomer},#{ahead})
+    </insert>
+
+    <!--修改是否预付-->
+    <update id="updatePrepay" parameterType="int">
+        UPDATE qyfinance.CompanyBalanceMonitor
+        SET isPrepay = #{param2}
+        WHERE companyId = #{param1}
+    </update>
+
+    <!--修改是否报警-->
+    <update id="updateAlarm" parameterType="int">
+        UPDATE qyfinance.CompanyBalanceMonitor
+        SET isAlarm = #{param2}
+        WHERE companyId = #{param1}
+    </update>
+
+    <!--修改是否提醒客户-->
+    <update id="updateRemindCustomer" parameterType="int">
+        UPDATE qyfinance.CompanyBalanceMonitor
+        SET isRemindCustomer = #{param2}
+        WHERE companyId = #{param1}
+    </update>
+
+    <!--修改余额可以几天提醒客户-->
+    <update id="updateAhead" parameterType="int">
+        UPDATE qyfinance.CompanyBalanceMonitor
+        SET ahead = #{param2}
+        WHERE companyId = #{param1}
+    </update>
+
+    <!--删除邮箱-->
+    <delete id="deleteEmail" parameterType="int">
+        DELETE FROM qyfinance.CustomerCompanyEmail
+        WHERE id = #{param1} AND companyId = #{param2}
+    </delete>
+
+    <!--添加邮箱-->
+    <insert id="addEmail" parameterType="org.qydata.entity.CustomerCompanyEmail">
+        INSERT INTO qyfinance.CustomerCompanyEmail(companyId,email,createTime)
+        VALUES(#{companyId},#{email},now())
+    </insert>
+
+</mapper>
+

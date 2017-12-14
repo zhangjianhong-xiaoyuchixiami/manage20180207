@@ -10,10 +10,10 @@ import org.qydata.dst.customer.CustomerConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.*;
-import org.qydata.mapper.CustomerFinanceMapper;
+import org.qydata.mapper.mapper1.CustomerFinanceMapper;
+import org.qydata.mapper.mapper2.CustomerFinanceSelectMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.tools.CalendarTools;
-import org.qydata.tools.CustomerCurrendDayTotalAmountUtils;
 import org.qydata.tools.DateUtils;
 import org.qydata.tools.JsonUtils;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
@@ -38,9 +38,11 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     @Autowired
     private CustomerFinanceMapper customerFinanceMapper;
     @Autowired
-    private RedisUtils redisUtils;
+    private CustomerFinanceSelectMapper customerFinanceSelectMapper;
     @Autowired
-    private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
+    private RedisUtils redisUtils;
+   // @Autowired
+   // private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
     @Override
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
         Map<String,Object> param = new HashMap<>();
@@ -86,39 +88,39 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapTotleParam.put("currDayTime",CalendarTools.getCurrentDate()+ " " + "00:00:00");
         mapTotleParam.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         //财务账单客户列表
-        List<CustomerFinance> list = customerFinanceMapper.queryCompanyCustomer(param);
+        List<CustomerFinance> list = customerFinanceSelectMapper.queryCompanyCustomer(param);
 
         if (list == null){
             return null;
         }
         //各类型
-        List<CustomerFinance> typeConsumeList = customerFinanceMapper.queryCustomerApiTypeConsume(typeParam);
+        List<CustomerFinance> typeConsumeList = customerFinanceSelectMapper.queryCustomerApiTypeConsume(typeParam);
         //客户当天消费
-        List<CustomerFinance> currDayConsList = customerFinanceMapper.queryCustomerCurrDayTotle(mapTotleParam);
+        List<CustomerFinance> currDayConsList = customerFinanceSelectMapper.queryCustomerCurrDayTotle(mapTotleParam);
         //客户充值（至昨天）
-        List<CustomerFinance> chargeList = customerFinanceMapper.queryCustomerChargeTotle(mapTotleParam);
+        List<CustomerFinance> chargeList = customerFinanceSelectMapper.queryCustomerChargeTotle(mapTotleParam);
         //客户充值（当天）
-        List<CustomerFinance> currDayChargeList = customerFinanceMapper.queryCustomerChargeCurrDay(mapTotleParam);
+        List<CustomerFinance> currDayChargeList = customerFinanceSelectMapper.queryCustomerChargeCurrDay(mapTotleParam);
         //客户消费（至昨天）
-        List<CustomerFinance> consumeList = customerFinanceMapper.queryCustomerConsumeTotle(mapTotleParam);
+        List<CustomerFinance> consumeList = customerFinanceSelectMapper.queryCustomerConsumeTotle(mapTotleParam);
         //客户本月消费（至昨天）
-        List<CustomerFinance> currMonthConsList = customerFinanceMapper.queryCustomerCurrMonthTotle(mapTotleParam);
+        List<CustomerFinance> currMonthConsList = customerFinanceSelectMapper.queryCustomerCurrMonthTotle(mapTotleParam);
         //查询客户邮箱
-        List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceMapper.queryCustomerEmail(mapEmailParam);
+        List<CustomerCompanyEmail> customerCompanyEmailList = customerFinanceSelectMapper.queryCustomerEmail(mapEmailParam);
         //查询客户上月账单
-        List<CustomerConsumeExcel> customerConsumeExcelList = customerFinanceMapper.queryCustomerAccountExcel(mapExcelParam);
+        List<CustomerConsumeExcel> customerConsumeExcelList = customerFinanceSelectMapper.queryCustomerAccountExcel(mapExcelParam);
         //上周充值
-        List<CustomerConsume> lastWeekChargeList = customerFinanceMapper.queryCustomerLastWeekCharge();
+        List<CustomerConsume> lastWeekChargeList = customerFinanceSelectMapper.queryCustomerLastWeekCharge();
         //上周消费
-        List<CustomerConsume> lastWeekConsumeList = customerFinanceMapper.queryCustomerLastWeekConsume();
+        List<CustomerConsume> lastWeekConsumeList = customerFinanceSelectMapper.queryCustomerLastWeekConsume();
         //上月充值
-        List<CustomerConsume> lastMonthChargeList = customerFinanceMapper.queryCustomerLastMonthCharge();
+        List<CustomerConsume> lastMonthChargeList = customerFinanceSelectMapper.queryCustomerLastMonthCharge();
         //上月消费
-        List<CustomerConsume> lastMonthConsumeList = customerFinanceMapper.queryCustomerLastMonthConsume(CalendarUtil_2.getCurrentLastMonth());
+        List<CustomerConsume> lastMonthConsumeList = customerFinanceSelectMapper.queryCustomerLastMonthConsume(CalendarUtil_2.getCurrentLastMonth());
         //昨日消费
-        List<CustomerConsume> yesterdayConsumeList = customerFinanceMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
+        List<CustomerConsume> yesterdayConsumeList = customerFinanceSelectMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
         // 历史总消费金额(至上月)
-        List<CustomerConsume> historyConsumeList = customerFinanceMapper.queryHistoryTotalAmount();
+        List<CustomerConsume> historyConsumeList = customerFinanceSelectMapper.queryHistoryTotalAmount();
 
         double lastWeekChargeTot = 0.0;
         double lastWeekConsumeTot = 0.0;
@@ -129,7 +131,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         double currMonthTotleConsumeAmount = 0.0;
         double currDayTotleConsumeAmount = 0.0;
         double kaolaTheoryBalance = 0.0;
-     //   List<CustomerFinance> customerFinanceList = new ArrayList<>();
+        //   List<CustomerFinance> customerFinanceList = new ArrayList<>();
         Iterator<CustomerFinance> it = list.iterator();
         while (it.hasNext()) {
 
@@ -404,7 +406,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 currDayTotleConsumeAmount += customerFinance.getCurrDayAmount();
             }
 
-         //   customerFinanceList.add(customerFinance);
+            //   customerFinanceList.add(customerFinance);
         }
         if(list != null){
             for (CustomerFinance finance : list) {
@@ -435,7 +437,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
      */
     @Override
     public List<CustomerCurrDayConsume> queryCustomerCurrDayApiTypeConsume(Map<String, Object> map) {
-//        List<CustomerCurrDayConsumeUtil> consumeList = customerFinanceMapper.queryCustomerCurrDayApiTypeConsume(map);
+//        List<CustomerCurrDayConsumeUtil> consumeList = customerFinanceSelectMapper.queryCustomerCurrDayApiTypeConsume(map);
 
         //获取当前日期
         String currentDate = DateUtils.formatCurrentDate() + "";
@@ -476,26 +478,26 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             System.out.println(subTypeId);
 
             //根据customerId、apiTypeId、subTypeId查询请求服务的compnyApi对象
-            CustomerCurrDayConsume customerCurrDayConsume = customerCurrendDayTotalAmountUtils.getPriceByType(custId, apiTypeId, subTypeId);
-            if(customerCurrDayConsume == null){
-                return null;
-            }
-            Double price = customerCurrDayConsume.getPrice();
-            //计算此服务总消费金额
-            int count = Integer.valueOf(value);
-            amount = count * price;
-            System.out.println("单项服务费用"+amount);
-            //封装客户此服务当天消费金额
-            customerCurrDayConsume.setSumAmount(amount);
-            //计算客户所有服务消费金额
-            totalAmount = totalAmount + amount;
-            System.out.println("所有服务费用"+totalAmount);
-            //封装客户当天服务消费次数
-            customerCurrDayConsume.setCountSuccess(count);
-            customerCurrDayConsume.setApiTypeId(apiTypeId);
-            customerCurrDayConsume.setStid(subTypeId);
-            customerCurrDayConsume.setCustomerId(custId);
-            consumeList.add(customerCurrDayConsume);
+           // CustomerCurrDayConsume customerCurrDayConsume = customerCurrendDayTotalAmountUtils.getPriceByType(custId, apiTypeId, subTypeId);
+//            if(customerCurrDayConsume == null){
+//                return null;
+//            }
+//            Double price = customerCurrDayConsume.getPrice();
+//            //计算此服务总消费金额
+//            int count = Integer.valueOf(value);
+//            amount = count * price;
+//            System.out.println("单项服务费用"+amount);
+//            //封装客户此服务当天消费金额
+//            customerCurrDayConsume.setSumAmount(amount);
+//            //计算客户所有服务消费金额
+//            totalAmount = totalAmount + amount;
+//            System.out.println("所有服务费用"+totalAmount);
+//            //封装客户当天服务消费次数
+//            customerCurrDayConsume.setCountSuccess(count);
+//            customerCurrDayConsume.setApiTypeId(apiTypeId);
+//            customerCurrDayConsume.setStid(subTypeId);
+//            customerCurrDayConsume.setCustomerId(custId);
+//            consumeList.add(customerCurrDayConsume);
         }
 
         if (consumeList == null) {
@@ -530,7 +532,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         typeMap.put("customerId", customerId);
         typeMap.put("apiTypeId", apiTypeId);
         typeMap.put("subTypeId", subTypeId);
-        CustomerCurrDayConsume customerCurrDayConsume = customerFinanceMapper.getPriceByType(typeMap);
+        CustomerCurrDayConsume customerCurrDayConsume = customerFinanceSelectMapper.getPriceByType(typeMap);
         return customerCurrDayConsume;
     }*/
 
@@ -602,7 +604,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
     @Override
     public List<CustomerCurrDayConsumeDetail> queryCustomerCurrDayConsumeDetail(Map<String, Object> map) {
-        List<CustomerCurrDayConsumeDetail> detailList = customerFinanceMapper.queryCustomerCurrDayConsumeDetail(map);
+        List<CustomerCurrDayConsumeDetail> detailList = customerFinanceSelectMapper.queryCustomerCurrDayConsumeDetail(map);
         if (detailList != null){
             for (CustomerCurrDayConsumeDetail detail : detailList) {
                 if (detail != null){
@@ -621,7 +623,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     @Override
     public Map<String, Object> queryNearlyWeekTrend(Integer cid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        List<CustomerConsume> consumeList = customerFinanceMapper.queryNearlyWeekTrend(cid);
+        List<CustomerConsume> consumeList = customerFinanceSelectMapper.queryNearlyWeekTrend(cid);
         List<String> xList = new ArrayList<>();
         List<Double> yList = new ArrayList<>();
         Map<Date,Object> proMap = new TreeMap<>();
@@ -664,7 +666,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
     @Override
     public String queryCustomerCompanyNameById(Integer id) {
-        return customerFinanceMapper.queryCustomerCompanyNameById(id);
+        return customerFinanceSelectMapper.queryCustomerCompanyNameById(id);
     }
 
     @Override
@@ -686,7 +688,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                 }
             }
         }
-        List<CustomerBalanceLog> logList = customerFinanceMapper.queryCompanyCustomerRechargeRecordByCustomerId(map);
+        List<CustomerBalanceLog> logList = customerFinanceSelectMapper.queryCompanyCustomerRechargeRecordByCustomerId(map);
         Double chargeTot = 0.0;
         if (logList != null){
             for (CustomerBalanceLog log : logList) {
@@ -705,7 +707,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //    public Map<String,Object> queryCompanyCustomerApiConsumeRecordByCustomerId(Map<String, Object> map){
 //        Map<String,Object> mapResult = new HashMap<>();
 //        try {
-//            List<ApiType> apiTypeList = customerFinanceMapper.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
+//            List<ApiType> apiTypeList = customerFinanceSelectMapper.queryCompanyCustomerApiConsumeRecordByCustomerId(map);
 //            List<CustomerApiType> customerApiTypeList = new ArrayList<>();
 //            if (apiTypeList != null) {
 //                for (int i = 0; i < apiTypeList.size(); i++) {
@@ -725,7 +727,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //                }
 //            }
 //            mapResult.put("queryCompanyCustomerApiConsumeRecordByCustomerId",customerApiTypeList);
-//            mapResult.put("getCountCompanyCustomerApiConsumeRecordByCustomerId",customerFinanceMapper.getCountCompanyCustomerApiConsumeRecordByCustomerId(map));
+//            mapResult.put("getCountCompanyCustomerApiConsumeRecordByCustomerId",customerFinanceSelectMapper.getCountCompanyCustomerApiConsumeRecordByCustomerId(map));
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }
@@ -737,8 +739,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //        Map<String,Object> mapTran = new HashMap<>();
 //
 //        try {
-//            mapTran.put("queryCompanyCustomerApiDetailConsumeRecordByCustomerId",customerFinanceMapper.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map));
-//            mapTran.put("getCountCompanyCustomerApiDetailConsumeRecordByCustomerId",customerFinanceMapper.getCountCompanyCustomerApiDetailConsumeRecordByCustomerId(map));
+//            mapTran.put("queryCompanyCustomerApiDetailConsumeRecordByCustomerId",customerFinanceSelectMapper.queryCompanyCustomerApiDetailConsumeRecordByCustomerId(map));
+//            mapTran.put("getCountCompanyCustomerApiDetailConsumeRecordByCustomerId",customerFinanceSelectMapper.getCountCompanyCustomerApiDetailConsumeRecordByCustomerId(map));
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -749,8 +751,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //    public Map<String,Object> queryCompanyCustomerWeekMonthRecordByCustomerId(Map<String, Object> map){
 //        Map<String,Object> mapTran = new HashMap<>();
 //        try {
-//            mapTran.put("queryCompanyCustomerWeekMonthRecordByCustomerId",customerFinanceMapper.queryCompanyCustomerWeekMonthRecordByCustomerId(map));
-//            mapTran.put("getCountCompanyCustomerWeekMonthRecordByCustomerId",customerFinanceMapper.getCountCompanyCustomerWeekMonthRecordByCustomerId(map));
+//            mapTran.put("queryCompanyCustomerWeekMonthRecordByCustomerId",customerFinanceSelectMapper.queryCompanyCustomerWeekMonthRecordByCustomerId(map));
+//            mapTran.put("getCountCompanyCustomerWeekMonthRecordByCustomerId",customerFinanceSelectMapper.getCountCompanyCustomerWeekMonthRecordByCustomerId(map));
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -760,7 +762,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //    @Override
 //    public List<Integer> queryCompanyCustomerYearsByCustomerId(Map<String, Object> map){
 //        try {
-//            return customerFinanceMapper.queryCompanyCustomerYearsByCustomerId(map);
+//            return customerFinanceSelectMapper.queryCompanyCustomerYearsByCustomerId(map);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -770,7 +772,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //    @Override
 //    public List<Integer> queryCompanyCustomerMonthsByCustomerId(Map<String, Object> map){
 //        try {
-//            return customerFinanceMapper.queryCompanyCustomerMonthsByCustomerId(map);
+//            return customerFinanceSelectMapper.queryCompanyCustomerMonthsByCustomerId(map);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -780,7 +782,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //    @Override
 //    public List<Integer> queryCompanyCustomerWeeksByCustomerId(Map<String, Object> map){
 //        try {
-//            return customerFinanceMapper.queryCompanyCustomerWeeksByCustomerId(map);
+//            return customerFinanceSelectMapper.queryCompanyCustomerWeeksByCustomerId(map);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -811,7 +813,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //        Map<String, List> stringListMap = new HashedMap();
 //
 //        for (int i = 12; i >0; i--) {
-//            WeekMonthAmount weekMonthAmount = customerFinanceMapper.queryMonthChargeConsumeToward(customerId, tableId, (result+i));
+//            WeekMonthAmount weekMonthAmount = customerFinanceSelectMapper.queryMonthChargeConsumeToward(customerId, tableId, (result+i));
 //
 //            if (weekMonthAmount != null) {
 //                if (weekMonthAmount.getTotleAmount()>0){
@@ -833,7 +835,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //    @Override
 //    public List<CustomerApiVendor> queryCustomerConsumeByVendor(Map<String, Object> map) {
 //        try {
-//            return customerFinanceMapper.queryCustomerConsumeByVendor(map);
+//            return customerFinanceSelectMapper.queryCustomerConsumeByVendor(map);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //            return null;
@@ -843,7 +845,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //    @Override
 //    public List<ApiType> queryApiTypeByCustomerId(Map<String, Object> map) {
 //        try {
-//            return customerFinanceMapper.queryApiTypeByCustomerId(map);
+//            return customerFinanceSelectMapper.queryApiTypeByCustomerId(map);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -854,7 +856,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 //    @DataSourceService
 //    public List<ApiVendor> queryApiVendorByCustomerId(Map<String, Object> map) {
 //        try {
-//            return customerFinanceMapper.queryApiVendorByCustomerId(map);
+//            return customerFinanceSelectMapper.queryApiVendorByCustomerId(map);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }

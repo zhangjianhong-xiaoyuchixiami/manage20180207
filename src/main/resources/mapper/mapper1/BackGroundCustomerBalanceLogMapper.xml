@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper1.BackGroundCustomerBalanceLogMapper">
+
+    <!--新增日志-->
+    <insert id="insertBackGroundCustomerBalanceLog" parameterType="org.qydata.dst.customer.BackGroundCustomerBalanceLog" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO qyfinance.BackGroundCustomerBalanceLog(customerId,typeId,amount,userId,createTime)
+        VALUES(#{customerId},#{typeId},#{amount},#{userId},now())
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteBackGroundCustomerBalanceLog" parameterType="org.qydata.dst.customer.BackGroundCustomerBalanceLog" >
+        DELETE FROM qyfinance.BackGroundCustomerBalanceLog
+        WHERE id=#{id}
+    </delete>
+
+</mapper>
+
+
+

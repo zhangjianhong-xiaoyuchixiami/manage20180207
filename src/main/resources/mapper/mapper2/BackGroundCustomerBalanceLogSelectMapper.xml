@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper2.BackGroundCustomerBalanceLogSelectMapper">
+
+
+    <!--根据公司Id查找正式账号Id，用于修改信用额度，添加ip，删除ip，查找ip，充值-->
+    <select id="queryCustomerIdByCompanyId" parameterType="int" resultType="int">
+        SELECT id
+        FROM qyfinance.bkvwCustomer
+        WHERE companyId = #{param}
+        AND typeId = 1
+    </select>
+
+</mapper>
+

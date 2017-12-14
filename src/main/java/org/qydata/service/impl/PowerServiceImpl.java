@@ -1,9 +1,10 @@
 package org.qydata.service.impl;
 
 import org.qydata.entity.User;
-import org.qydata.mapper.DeptMapper;
-import org.qydata.mapper.RoleMapper;
-import org.qydata.mapper.UserMapper;
+import org.qydata.mapper.mapper1.DeptMapper;
+import org.qydata.mapper.mapper1.RoleMapper;
+import org.qydata.mapper.mapper1.UserMapper;
+import org.qydata.mapper.mapper2.UserSelectMapper;
 import org.qydata.service.PowerUserService;
 import org.qydata.tools.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.Map;
 public class PowerServiceImpl implements PowerUserService {
 
     @Autowired private UserMapper userMapper;
+    @Autowired private UserSelectMapper userSelectMapper;
     @Autowired private RoleMapper roleMapper;
     @Autowired private DeptMapper deptMapper;
 
@@ -25,20 +27,20 @@ public class PowerServiceImpl implements PowerUserService {
     @Override
     public PageModel<User> queryAllUser(Map<String, Object> map) throws Exception {
         PageModel<User> pageModel = new PageModel<User>();
-        pageModel.setCount(userMapper.queryAllCount(map));
-        pageModel.setList(userMapper.queryAllUser(map));
+        pageModel.setCount(userSelectMapper.queryAllCount(map));
+        pageModel.setList(userSelectMapper.queryAllUser(map));
         return pageModel;
     }
 
     @Override
     public User findUserByUsername(Integer userId) throws Exception {
-        return userMapper.findUserByUsername(userId);
+        return userSelectMapper.findUserByUsername(userId);
     }
 
     @Override
     public User findUserByEmail(String email) {
         try {
-            return userMapper.findUserByEmail(email);
+            return userSelectMapper.findUserByEmail(email);
         } catch (Exception e) {
             e.printStackTrace();
         }
