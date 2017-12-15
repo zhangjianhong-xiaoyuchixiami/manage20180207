@@ -70,7 +70,7 @@
                                         <option value=""></option>
                                         <#if apiTypeList??>
                                             <#list apiTypeList as apiType>
-                                                <option <#if tid??><#list tid as tid><#if tid?? && tid == apiType.id>selected="selected"</#if></#list></#if> value="${apiType.id}">${apiType.name}</option>
+                                                <option <#if tid??><#list tid as tid><#if tid?? && tid == apiType.id>selected="selected"</#if></#list></#if> value="${apiType.id}">${apiType.name!''}</option>
                                             </#list>
                                         </#if>
                                     </select>

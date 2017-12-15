@@ -38,12 +38,17 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
     @Autowired
     private CustomerFinanceMapper customerFinanceMapper;
+
     @Autowired
     private CustomerFinanceSelectMapper customerFinanceSelectMapper;
-    @Autowired
-    private RedisUtils redisUtils;
+
+//    @Autowired
+//    private RedisUtils redisUtils;
+
     @Autowired
     private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
+
+
     @Override
     public Map<String,Object> queryCompanyCustomerOverAllFinance(Map<String, Object> map)throws Exception{
         Map<String,Object> param = new HashMap<>();

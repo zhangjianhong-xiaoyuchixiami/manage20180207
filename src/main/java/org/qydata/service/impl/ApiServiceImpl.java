@@ -32,12 +32,16 @@ public class ApiServiceImpl implements ApiService {
 
     @Autowired
     private ApiMapper apiMapper;
+
     @Autowired
     private ApiSelectMapper apiSelectMapper;
-    @Autowired
-    private RedisUtils redisUtils;
+
+//    @Autowired
+//    private RedisUtils redisUtils;
+
     @Autowired
     private CompanyMapper companyMapper;
+
     @Autowired
     private CompanySelectMapper companySelectMapper;
 

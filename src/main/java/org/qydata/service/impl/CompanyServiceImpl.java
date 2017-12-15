@@ -30,8 +30,9 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyMapper companyMapper;
     @Autowired
     private CompanySelectMapper companySelectMapper;
-    @Autowired
-    private RedisUtils redisUtils;
+
+//    @Autowired
+//    private RedisUtils redisUtils;
 
     @Override
     public List<CustomerCompanyPartner> findAllCompany(Map<String, Object> map) {

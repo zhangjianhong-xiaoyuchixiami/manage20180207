@@ -174,7 +174,7 @@
                                                                     无
                                                                 </#if>
                                                             </td>
-                                                            <td data-title="产品类型">${company.apiTypeName}<#if company.subTypeName??>--${company.subTypeName!''}</#if></td>
+                                                            <td data-title="产品类型">${company.apiTypeName!''}<#if company.subTypeName??>--${company.subTypeName!''}</#if></td>
                                                             <td data-title="价格（单位：元）"><a href="javaScript:;" onclick="updateCompanyApiPrice(${company.companyId},${company.apiTypeId},${company.subTypeId},${(company.price)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改产品价格">${(company.price/100.0)?c}</a></td>
                                                         </tr>
                                                         </#if>
