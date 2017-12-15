@@ -14,7 +14,6 @@ import org.qydata.tools.RegexUtil;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.qydata.tools.https.HttpClientUtil;
-import org.qydata.tools.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;

@@ -22,7 +22,6 @@ import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.date.CalendarUtil_2;
 import org.qydata.tools.date.CalendarUtil_3;
 import org.qydata.tools.https.HttpClientUtil;
-import org.qydata.tools.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

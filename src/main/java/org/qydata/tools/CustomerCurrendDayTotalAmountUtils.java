@@ -7,7 +7,6 @@ import org.qydata.mapper.mapper1.CustomerFinanceMapper;
 import org.qydata.mapper.mapper2.CustomerCacheFinanceSelectMapper;
 import org.qydata.mapper.mapper2.CustomerFinanceSelectMapper;
 import org.qydata.tools.https.HttpClientUtil;
-import org.qydata.tools.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
