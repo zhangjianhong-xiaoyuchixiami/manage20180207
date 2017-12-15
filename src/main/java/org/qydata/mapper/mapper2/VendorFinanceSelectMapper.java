@@ -1,5 +1,6 @@
 package org.qydata.mapper.mapper2;
 
+import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.entity.ApiVendor;
 
@@ -65,5 +66,21 @@ public interface VendorFinanceSelectMapper {
   * 通过apiTypeId查询供应商类型
   */
  public List<ApiVendor> queryApiVendorName();
+
+ /**
+  * 供应商当天消费
+  * @param map
+  * @return
+  */
+ public List<VendorCurrDayConsume> queryVendorCurrDayAmount(Map<String, Object> map);
+
+ /**
+  * 供应商当天消费详情
+  * @param map
+  * @return
+  */
+ public List<VendorCurrDayConsume> queryVendorCurrDayConsumeCondition(Map<String, Object> map);
+
+ public String queryVendorName(Integer vendorId);
 
 }

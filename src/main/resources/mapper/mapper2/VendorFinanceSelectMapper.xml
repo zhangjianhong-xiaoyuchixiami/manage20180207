@@ -158,5 +158,86 @@
         FROM qyfinance.bkvwApi
     </select>
 
+    <resultMap id="VendorCurrDayConsume_Map" type="org.qydata.dst.vendor.VendorCurrDayConsume" >
+        <result column="vendorId" property="vendorId"/>
+        <result column="apiId" property="apiId"/>
+        <result column="typeId" property="typeId"/>
+        <result column="subTypeId" property="subTypeId"/>
+        <result column="consumeAccount" property="consumeAccount"/>
+        <result column="cost" property="cost"/>
+        <result column="total" property="total"/>
+        <result column="apiTypeName" property="apiTypeName"/>
+        <result column="subTypeName" property="subTypeName"/>
+        <result column="apiTypeConsume" property="apiTypeConsume"/>
+    </resultMap>
+
+    <select id="queryVendorCurrDayAmount" parameterType="map" resultMap="VendorCurrDayConsume_Map">
+        SELECT
+            a.vendorId,
+            sum(a.consumeAccount * b.cost) consumeAccount
+        from
+            qyfinance.ApiConsumeHourCount a
+        LEFT JOIN
+            qyfinance.finance_Api b
+        ON
+            a.apiId = b.id
+        WHERE
+            a.cycle >=  #{currDawn}
+        AND
+        <![CDATA[
+            a.cycle < #{currentDate}
+        ]]>
+        GROUP BY a.vendorId
+    </select>
+
+
+    <select id="queryVendorCurrDayConsumeCondition" parameterType="map" resultMap="VendorCurrDayConsume_Map">
+        SELECT
+            d.name apiTypeName,
+            e.`name` subTypeName,
+            c.cost,
+            c.consumeAccount,
+            c.apiTypeConsume
+        FROM
+            (
+            SELECT
+                a.typeId,
+                a.subTypeId,
+                b.cost,
+                sum(a.consumeAccount) consumeAccount,
+                sum(a.consumeAccount*b.cost) apiTypeConsume,
+                a.cycle
+            from
+                qyfinance.ApiConsumeHourCount a
+            INNER JOIN
+                qydata.Api b
+            ON
+                a.apiId = b.id
+            WHERE
+                a.cycle >= #{currDawn}
+            AND
+                <![CDATA[
+                    a.cycle < #{currentDate}
+                ]]>
+            AND
+                a.vendorId = #{vendorId}
+            GROUP BY
+                a.apiId
+            )c
+        LEFT JOIN qyfinance.bkvwApiType d
+        ON c.typeId = d.id
+        LEFT JOIN qyfinance.bkvwMobileOperator e
+        ON e.id =c.subTypeId
+    </select>
+
+    <select id="queryVendorName" parameterType="int" resultType="String">
+        SELECT
+            name
+        FROM
+            qyfinance.finance_ApiVendor
+        WHERE
+            id = #{vendorId}
+    </select>
+
 </mapper>
 

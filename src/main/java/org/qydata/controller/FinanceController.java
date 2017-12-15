@@ -208,9 +208,6 @@ public class FinanceController {
         map.put("customerId",customerId);
         map.put("consuTime",sdf.format(new Date()));
         List<CustomerCurrDayConsume> consumeList = customerFinanceService.queryCustomerCurrDayApiTypeConsume(map);
-
-
-
         Map<String,Object> mapJson = new HashMap<>();
         mapJson.put("consumeList",consumeList);
         return new Gson().toJson(mapJson);

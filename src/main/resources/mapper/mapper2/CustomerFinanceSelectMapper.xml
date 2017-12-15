@@ -479,7 +479,7 @@
             d.name apiTypeName,
             e.`name` subTypeName
         FROM
-        (	SELECT
+            (SELECT
                 b.subTypeId ,
                 b.apiTypeId ,
                 b.price
@@ -494,7 +494,7 @@
                 b.apiTypeId = #{apiTypeId}
             AND
                 b.subTypeId = #{subTypeId}
-         )  c
+            )  c
         LEFT JOIN qyfinance.bkvwApiType d
         ON c.apiTypeId = d.id
         LEFT JOIN qyfinance.bkvwMobileOperator e

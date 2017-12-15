@@ -1,16 +1,21 @@
 package org.qydata.controller;
 
+import com.google.gson.Gson;
 import org.qydata.dst.ApiFinance;
 import org.qydata.dst.VendorHistoryBill;
+import org.qydata.dst.customer.CustomerCurrDayConsume;
+import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.service.VendorFinanceService;
 import org.qydata.service.VendorHistoryBillService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.DateUtils;
 import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
@@ -87,4 +92,39 @@ public class VendorFinanceContoller {
         model.addAttribute("apiVendorList",service.queryApiVendorName());
         return new ModelAndView("/finance/vendor_finance");
     }
+
+    /**
+     * 供应商当天消费详情
+     * @param vendorId
+     * @return
+     * @throws InterruptedException
+     */
+    @RequestMapping("/find-all-vendor/curr-day-api-type-consume")
+    @ResponseBody
+    public String queryCustomerCurrDayApiTypeConsume(Integer vendorId) throws InterruptedException {
+        //获取当前时间
+        String currentDate = DateUtils.currentDate();
+        //获取当天凌晨
+        String currDawn = DateUtils.currDawn();
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("currentDate", currentDate);
+        map.put("currDawn", currDawn);
+        map.put("vendorId",vendorId);
+
+        List<VendorCurrDayConsume> list = service.queryVendorCurrdayConsume(map);
+        Map<String,Object> mapJson = new HashMap<>();
+        mapJson.put("consumeList",list);
+        return new Gson().toJson(mapJson);
+    }
+
+    @RequestMapping("/find-all-vendor/vendor-name")
+    public String queryVendorName(Integer vendorId){
+        String vendorName = service.queryVendorName(vendorId);
+        Map<String,Object> mapJson = new HashMap<>();
+        mapJson.put("vendorName",vendorName);
+        System.out.println(mapJson.get("vendorName"));
+        return new Gson().toJson(mapJson);
+    }
+
 }

@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,4 +33,6 @@ public interface ApiFinanceService {
      * @return
      */
     public List<ApiVendor> queryApiVendorName(Map<String,Object> map);
+
+
 }

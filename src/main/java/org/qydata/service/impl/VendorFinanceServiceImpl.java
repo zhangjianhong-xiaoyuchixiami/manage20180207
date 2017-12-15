@@ -1,6 +1,7 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.VendorHistoryBill;
+import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.dst.vendor.VendorTypeConsume;
 import org.qydata.entity.ApiVendor;
@@ -10,6 +11,7 @@ import org.qydata.mapper.mapper2.VendorFinanceSelectMapper;
 import org.qydata.mapper.mapper2.VendorHistoryBillSelectMapper;
 import org.qydata.service.VendorFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.DateUtils;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,14 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
         }
         param.put("currDayTime", CalendarTools.getCurrentDate()+ " " + "00:00:00");
         param.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
+
+        //获取当前时间
+        String currentDate = DateUtils.currentDate();
+        param.put("currentDate", currentDate);
+        //获取当天凌晨
+        String currDawn = DateUtils.currDawn();
+        param.put("currDawn", currDawn);
+
         List<VendorFinance> financeList = selectMapper.queryVendor(param);
         List<VendorFinance> consumeList = selectMapper.queryVendorConsume(param);
         List<VendorFinance> weekList = selectMapper.queryVendorLastWeekConsume(param);
@@ -62,6 +72,9 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
      //   List<VendorFinance> currDayList = mapper.queryVendorCurrDayConsume(param);
         List<VendorFinance> typeList = selectMapper.queryVendorTypeConsume(param);
         List<VendorHistoryBill> billList = billSelectMapper.queryVendorStaticConsumeAmount();
+         /*查询客户当天消费总额*/
+        List<VendorCurrDayConsume> vendorCurrDayConsumeList = selectMapper.queryVendorCurrDayAmount(param);
+
         if (financeList == null){
             return null;
         }
@@ -141,6 +154,19 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
 //                    }
 //                }
 //            }
+
+            //封装当天消费
+            if (vendorCurrDayConsumeList != null){
+                for (VendorCurrDayConsume vendorCurrDayConsume : vendorCurrDayConsumeList) {
+                    if (finance.getVendorId() == vendorCurrDayConsume.getVendorId()
+                            ||finance.getVendorId().equals(vendorCurrDayConsume.getVendorId())){
+                        if (vendorCurrDayConsume.getTotal() != null){
+                            finance.setCurrDayConsume(vendorCurrDayConsume.getTotal()/100.0);
+                        }
+                    }
+                }
+            }
+
             if (typeList != null){
                 for (VendorFinance type : typeList) {
                     if (finance.getVendorId() == type.getVendorId()
@@ -194,6 +220,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
                     }
                 }
             }
+
             finance.setBalance(finance.getCharge() - (finance.getStaticConsume() + finance.getCurrMonthConsume() + finance.getCurrDayConsume()));
             if (finance.getLastWeekConsume() != null){
                 lastWeekConsume += finance.getLastWeekConsume();
@@ -223,7 +250,29 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
 
     @Override
     public List<ApiVendor> queryApiVendorName() {
+
         return selectMapper.queryApiVendorName();
     }
 
+    /**
+     * 查询共供应商当天消费详情
+     * @param map
+     * @return
+     */
+    @Override
+    public List<VendorCurrDayConsume> queryVendorCurrdayConsume(Map<String, Object>map){
+
+        List<VendorCurrDayConsume> vendorCurrDayConsumes = selectMapper.queryVendorCurrDayConsumeCondition(map);
+        for (VendorCurrDayConsume vendorCurrDayConsume : vendorCurrDayConsumes) {
+            Double apiTypeConsume = vendorCurrDayConsume.getApiTypeConsume();
+            System.out.println(apiTypeConsume);
+        }
+        return vendorCurrDayConsumes;
+    }
+
+    @Override
+    public String queryVendorName(Integer vendorId) {
+        String vendorName = selectMapper.queryVendorName(vendorId);
+        return vendorName;
+    }
 }

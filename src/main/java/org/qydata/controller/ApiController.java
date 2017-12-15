@@ -5,8 +5,10 @@ import org.qydata.config.annotation.RecoverProbController;
 import org.qydata.config.annotation.RolePermission;
 import org.qydata.dst.ApiTypeInfo;
 import org.qydata.dst.CustomerApiPartner;
+import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.entity.*;
 import org.qydata.service.ApiService;
+import org.qydata.tools.DateUtils;
 import org.qydata.tools.checkNumber.CheckNumberUtil;
 import org.qydata.tools.date.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -307,9 +310,6 @@ public class ApiController {
         map.put("fail","哎呦，修改失败了");
         return gson.toJson(map);
     }
-
-//    @RequestMapping("/form_modal_vendor_curr_day_api_type_consume")
-//    @ResponseBody
 
     /**
      * 禁用客户产品权限

@@ -1,5 +1,6 @@
 package org.qydata.service;
 
+import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.entity.ApiVendor;
 
@@ -21,4 +22,13 @@ public interface VendorFinanceService {
      */
     public List<ApiVendor> queryApiVendorName();
 
+    /**
+     * 查询供应商当天消费情况
+     * @param map
+     * @return
+     */
+    public List<VendorCurrDayConsume> queryVendorCurrdayConsume(Map<String, Object>map);
+
+
+    public String queryVendorName(Integer vendorId);
 }

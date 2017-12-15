@@ -72,10 +72,20 @@ public class DateUtils {
      */
     public static String currentDate(){
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDate = sdf.format(date);
         return currentDate;
     }
 
+    /**
+     * 获取当天凌晨
+     * @return
+     */
+    public static String currDawn(){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        String currDawn = sdf.format(date);
+        return currDawn;
+    }
 
 }

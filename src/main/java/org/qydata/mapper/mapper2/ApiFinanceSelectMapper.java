@@ -1,6 +1,7 @@
 package org.qydata.mapper.mapper2;
 
 import org.qydata.dst.ApiFinance;
+import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 
@@ -76,5 +77,6 @@ public interface ApiFinanceSelectMapper {
   * @throws Exception
   */
  public List<ApiVendor> queryApiVendorName(Map<String, Object> map)throws Exception;
+
 
 }

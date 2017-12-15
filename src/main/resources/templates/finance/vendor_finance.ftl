@@ -247,7 +247,7 @@
                                                 <td data-title="上周消费">${finance.lastWeekConsume!'0'}</td>
                                                 <td data-title="上月消费">${finance.lastMonthConsume!'0'}</td>
                                                 <td data-title="本月消费">${finance.currMonthConsume!'0'}</td>
-                                                <td data-title="当天消费"><td data-title="当日消费"><a href="#form_modal_vendor_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${vendor.id!'0'})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${finance.currDayConsume!'0'}</a></td>
+                                                <td data-title="当天消费"><a href="#form_modal_vendor_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${finance.vendorId!'0'})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${finance.currDayConsume!'0'}</a></td>
                                                 <td data-title="类型" class="table-td-none">
                                                     <#if finance.typeConsumeList??>
                                                         <#list finance.typeConsumeList as type>
@@ -294,7 +294,7 @@
                             <div id="form_modal_vendor_curr_day_api_type_consume" class="modal hide fade myModalCurrDayApiTypeConsume" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_vendor_curr_day_api_type_consume" aria-hidden="true">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                    <h4 id="myModalLabel_vendor_curr_day_api_type_consume"><span id="vendor_company_name"></span>当天各产品类型消费情况</h4>
+                                    <h4 id="myModalLabel_vendor_curr_day_api_type_consume"><span id="vendor_name"></span>当天各产品类型消费情况</h4>
                                 </div>
 
                                 <div class="modal-body">

@@ -1,12 +1,14 @@
 package org.qydata.service.impl;
 
 import org.qydata.dst.ApiFinance;
+import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.ApiVendor;
 import org.qydata.mapper.mapper1.ApiFinanceMapper;
 import org.qydata.mapper.mapper2.ApiFinanceSelectMapper;
 import org.qydata.service.ApiFinanceService;
 import org.qydata.tools.CalendarTools;
+import org.qydata.tools.DateUtils;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,8 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
         }
         param.put("currDayTime", CalendarTools.getCurrentDate()+ " " + "00:00:00");
         param.put("currMonthTime",CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
+
+
         /*Api财务总览*/
         List<ApiFinance> financeList = selectMapper.queryApiFinance(param);
         /*查询当月消费（至昨天）*/
@@ -61,6 +65,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
         List<ApiFinance> lastWeekList = selectMapper.queryApiLastWeekConsume(param);
         /*查询上月消费总额*/
         List<ApiFinance> lastMonthList = selectMapper.queryApiLastMonthConsume(param);
+
 
         if (financeList == null){
             return null;
@@ -216,6 +221,9 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                 if (finance.getCurrDayConsume() != null){
                     totleConsume += finance.getConsume();
                 }
+
+
+
             }
         }
         Map<String,Object> resu = new HashMap<>();
@@ -247,6 +255,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
             return null;
         }
     }
+
 
 
 }
