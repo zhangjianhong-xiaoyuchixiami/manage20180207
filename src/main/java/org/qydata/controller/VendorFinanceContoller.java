@@ -119,6 +119,7 @@ public class VendorFinanceContoller {
     }
 
     @RequestMapping("/find-all-vendor/vendor-name")
+    @ResponseBody
     public String queryVendorName(Integer vendorId){
         String vendorName = service.queryVendorName(vendorId);
         Map<String,Object> mapJson = new HashMap<>();

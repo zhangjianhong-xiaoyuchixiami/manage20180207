@@ -69,7 +69,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
         List<VendorFinance> weekList = selectMapper.queryVendorLastWeekConsume(param);
         List<VendorFinance> monthList = selectMapper.queryVendorLastMonthConsume(param);
         List<VendorFinance> currMonthList = selectMapper.queryVendorCurrMonthConsume(param);
-     //   List<VendorFinance> currDayList = mapper.queryVendorCurrDayConsume(param);
+        //   List<VendorFinance> currDayList = mapper.queryVendorCurrDayConsume(param);
         List<VendorFinance> typeList = selectMapper.queryVendorTypeConsume(param);
         List<VendorHistoryBill> billList = billSelectMapper.queryVendorStaticConsumeAmount();
          /*查询客户当天消费总额*/
@@ -234,7 +234,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
             if (finance.getCurrDayConsume() != null){
                 currDayConsume += finance.getCurrDayConsume();
             }
-            if (finance.getCurrDayConsume() != null){
+            if (finance.getConsume() != null){
                 totleConsume += finance.getConsume();
             }
         }
@@ -263,9 +263,17 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
     public List<VendorCurrDayConsume> queryVendorCurrdayConsume(Map<String, Object>map){
 
         List<VendorCurrDayConsume> vendorCurrDayConsumes = selectMapper.queryVendorCurrDayConsumeCondition(map);
-        for (VendorCurrDayConsume vendorCurrDayConsume : vendorCurrDayConsumes) {
-            Double apiTypeConsume = vendorCurrDayConsume.getApiTypeConsume();
-            System.out.println(apiTypeConsume);
+        if (vendorCurrDayConsumes != null){
+            for (VendorCurrDayConsume vendorCurrDayConsume : vendorCurrDayConsumes) {
+                if (vendorCurrDayConsume != null){
+                    if (vendorCurrDayConsume.getApiTypeConsume() != null){
+                        vendorCurrDayConsume.setApiTypeConsume(vendorCurrDayConsume.getApiTypeConsume()/100.0);
+                    }
+                    if (vendorCurrDayConsume.getCost() != null){
+                        vendorCurrDayConsume.setCost(vendorCurrDayConsume.getCost()/100.0);
+                    }
+                }
+            }
         }
         return vendorCurrDayConsumes;
     }

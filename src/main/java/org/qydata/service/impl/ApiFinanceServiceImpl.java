@@ -132,7 +132,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                                 || finance.getApiId().equals(consume.getApiId()))
                         {
                             if (consume.getLastWeekConsume() != null){
-                                finance.setLastWeekConsume(consume.getCurrMonthConsume()/100.0);
+                                finance.setLastWeekConsume(consume.getLastWeekConsume()/100.0);
                             }
                         }
                     }
@@ -218,7 +218,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                 if (finance.getCurrDayConsume() != null){
                     currDayConsume += finance.getCurrDayConsume();
                 }
-                if (finance.getCurrDayConsume() != null){
+                if (finance.getConsume() != null){
                     totleConsume += finance.getConsume();
                 }
 

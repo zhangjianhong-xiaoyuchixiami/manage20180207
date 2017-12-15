@@ -174,7 +174,7 @@
     <select id="queryVendorCurrDayAmount" parameterType="map" resultMap="VendorCurrDayConsume_Map">
         SELECT
             a.vendorId,
-            sum(a.consumeAccount * b.cost) consumeAccount
+            sum(a.consumeAccount * b.cost) total
         from
             qyfinance.ApiConsumeHourCount a
         LEFT JOIN
@@ -193,8 +193,7 @@
 
     <select id="queryVendorCurrDayConsumeCondition" parameterType="map" resultMap="VendorCurrDayConsume_Map">
         SELECT
-            d.name apiTypeName,
-            e.`name` subTypeName,
+            CONCAT_WS('-',d.name,e.name) apiTypeName,
             c.cost,
             c.consumeAccount,
             c.apiTypeConsume
@@ -205,7 +204,7 @@
                 a.subTypeId,
                 b.cost,
                 sum(a.consumeAccount) consumeAccount,
-                sum(a.consumeAccount*b.cost) apiTypeConsume,
+                sum(a.consumeAccount * b.cost) apiTypeConsume,
                 a.cycle
             from
                 qyfinance.ApiConsumeHourCount a

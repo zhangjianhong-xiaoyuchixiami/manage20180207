@@ -94,10 +94,13 @@
         </if>
     </select>
 
-    <!--查询充值总额（至昨天）-->
+    <!--查询充值总额（至上月末）-->
     <select id="queryCustomerChargeTotle" parameterType="map" resultMap="customerHistoryBillChargeMap">
         SELECT customerId,sum(chargeAmount) chargeAmount
         FROM qyfinance.CustomerChargeDayCount
+        <![CDATA[
+        WHERE chargeTime < #{currMonthTime}
+        ]]>
         GROUP BY customerId
     </select>
 

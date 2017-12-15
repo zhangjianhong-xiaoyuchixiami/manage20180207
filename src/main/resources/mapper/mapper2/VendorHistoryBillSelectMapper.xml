@@ -19,7 +19,7 @@
 
     <!--查询供应商历史财务账单-->
     <select id="queryVendorHistoryBill" parameterType="map" resultMap="vendorHistoryBillMap">
-        SELECT a.vendorId,a.consumeAmount,b.name vendorName,c.balance chargeAmount,d.partnerId,d.partnerName,d.status
+        SELECT a.vendorId,a.consumeAmount,b.name vendorName,d.partnerId,d.partnerName,d.status
         FROM
         (
             SELECT a.vendorId,sum(a.consumeAmount) consumeAmount
@@ -63,6 +63,16 @@
                AND d.partnerId IS NULL
            </if>
        </where>
+    </select>
+
+    <!--查询供应商截至上月末充值总额-->
+    <select id="queryVendorChargeTot" parameterType="map" resultMap="vendorHistoryBillMap">
+        SELECT a.vendorId,SUM(a.amount) chargeAmount
+        FROM qyfinance.ApiVendorBalanceLog a
+        <![CDATA[
+        WHERE a.createTime < #{currMonthTime}
+        ]]>
+        GROUP BY a.vendorId
     </select>
 
     <!--查询供应商截止上月静态消费-->

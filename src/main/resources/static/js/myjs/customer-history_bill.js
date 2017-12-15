@@ -48,7 +48,7 @@ var CustomerHistoryBill = function () {
                     null,
                     null,
                     null,
-                    null,
+                    // null,
                     null,
                     null,
                     {"bSortable": false}
@@ -77,13 +77,13 @@ var CustomerHistoryBill = function () {
                     {
                         "aTargets": [ 5 ],
                         "sType": "html-percent"
-                    },
-                    {
-                        "aTargets": [ 6 ],
-                        "sType": "html-percent"
                     }
+                    // {
+                    //     "aTargets": [ 6 ],
+                    //     "sType": "html-percent"
+                    // }
                 ],
-                "aaSorting": [[5, 'desc']],
+                "aaSorting": [[4, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

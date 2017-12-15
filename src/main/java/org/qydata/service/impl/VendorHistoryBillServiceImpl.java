@@ -59,7 +59,8 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
         param.put("currDayTime",CalendarUtil.formatCurrTime());
         List<VendorHistoryBill> billList = selectMapper.queryVendorHistoryBill(param);
         List<VendorHistoryBill> staticBillList = selectMapper.queryVendorStaticConsumeAmount();
-        List<VendorHistoryBill> currMonthBillList = selectMapper.queryVendorCurrMonthRealTimeConsume(param);
+        List<VendorHistoryBill> chargeList = selectMapper.queryVendorChargeTot(param);
+       // List<VendorHistoryBill> currMonthBillList = selectMapper.queryVendorCurrMonthRealTimeConsume(param);
        // List<VendorHistoryBill> currDayBillList = billMapper.queryVendorCurrDayRealTimeConsume(param);
         Double chargeTot = 0.0;
         Double consumeTot = 0.0;
@@ -67,6 +68,19 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
             return null;
         }
         for (VendorHistoryBill bill : billList) {
+
+            if (chargeList != null){
+                for (VendorHistoryBill charge : chargeList) {
+                    if (bill.getVendorId() == charge.getVendorId()
+                            || bill.getVendorId().equals(charge.getVendorId()))
+                    {
+                        if (charge.getChargeAmount() != null){
+                            bill.setChargeAmount(charge.getChargeAmount()/100.0);
+                        }
+                    }
+                }
+            }
+
             if (bill.getChargeAmount() != null){
                 bill.setChargeAmount(bill.getChargeAmount()/100.0);
                 chargeTot += bill.getChargeAmount();
@@ -78,8 +92,6 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
 
             if (staticBillList != null){
                 for (VendorHistoryBill staticConsume : staticBillList) {
-                    System.out.println(staticConsume.getVendorId());
-                    System.out.println(bill.getVendorId());
                     if (bill.getVendorId() == staticConsume.getVendorId() || bill.getVendorId().equals(staticConsume.getVendorId())){
                         if (staticConsume.getStaticConsumeAmount() != null){
                             bill.setStaticConsumeAmount(staticConsume.getStaticConsumeAmount()/100.0);
@@ -98,21 +110,21 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
                 bill.setBalance(-(bill.getStaticConsumeAmount()));
             }
 
-            if (currMonthBillList != null){
-                for (VendorHistoryBill currMonthBill : currMonthBillList) {
-                    if (bill.getVendorId() == currMonthBill.getVendorId() || bill.getVendorId().equals(currMonthBill.getVendorId())){
-                        if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() != null){
-                            bill.setBalance(bill.getBalance() - (currMonthBill.getCurrMonthRealTimeConsume()/100.0));
-                        }
-                        if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() == null){
-                            bill.setBalance(bill.getBalance());
-                        }
-                        if (bill.getBalance() == null && currMonthBill.getCurrMonthRealTimeConsume() != null){
-                            bill.setBalance(-(currMonthBill.getCurrMonthRealTimeConsume()/100.0));
-                        }
-                    }
-                }
-            }
+//            if (currMonthBillList != null){
+//                for (VendorHistoryBill currMonthBill : currMonthBillList) {
+//                    if (bill.getVendorId() == currMonthBill.getVendorId() || bill.getVendorId().equals(currMonthBill.getVendorId())){
+//                        if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() != null){
+//                            bill.setBalance(bill.getBalance() - (currMonthBill.getCurrMonthRealTimeConsume()/100.0));
+//                        }
+//                        if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() == null){
+//                            bill.setBalance(bill.getBalance());
+//                        }
+//                        if (bill.getBalance() == null && currMonthBill.getCurrMonthRealTimeConsume() != null){
+//                            bill.setBalance(-(currMonthBill.getCurrMonthRealTimeConsume()/100.0));
+//                        }
+//                    }
+//                }
+//            }
 //            if (currDayBillList != null){
 //                for (VendorHistoryBill currDayBill : currDayBillList) {
 //                    if (bill.getVendorId() == currDayBill.getVendorId() || bill.getVendorId().equals(currDayBill.getVendorId())){

@@ -40,9 +40,9 @@ var CustomerFinanceAccount = function () {
                     '<th>扣费次数</th>' +
                     '</tr>';
                 sOut += '<tr>' +
-                    '<td>'+aData[17]+'</td>' +
                     '<td>'+aData[18]+'</td>' +
                     '<td>'+aData[19]+'</td>' +
+                    '<td>'+aData[20]+'</td>' +
                    /* '<td>'+aData[20]+'</td>' +*/
                     '<td>'+aData[21]+'</td>' +
                     '</tr>';
@@ -160,7 +160,7 @@ var CustomerFinanceAccount = function () {
                     }
 
                 ],
-                "aaSorting": [[15, 'desc']],
+                "aaSorting": [[16, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

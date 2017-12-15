@@ -43,6 +43,13 @@ public interface VendorHistoryBillSelectMapper {
     public List<VendorHistoryBill> queryVendorCurrDayRealTimeConsume(Map<String, Object> map);
 
     /**
+     * 查询供应商截至上月末充值总额
+     * @param map
+     * @return
+     */
+    public List<VendorHistoryBill> queryVendorChargeTot(Map<String,Object> map);
+
+    /**
      * 查询所有供应商
      * @return
      */

@@ -1,7 +1,7 @@
 
 
 function currDayApiTypeConsume(vendorId) {
-    $("#simple_vendor_curr_day_api_type_consume tbody").empty();
+    $("#simple_curr_day_api_type_consume tbody").empty();
 
     /*加载供应商的名称*/
     $.ajax({
@@ -26,11 +26,11 @@ function currDayApiTypeConsume(vendorId) {
             var myContent = "<tr>" +
                 "<td rowspan='4'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                 "</tr>";
-            $("#simple_vendor_curr_day_api_type_consume tbody").append(myContent);
+            $("#simple_curr_day_api_type_consume tbody").append(myContent);
         },
         success:function (result) {
 
-            $("#simple_vendor_curr_day_api_type_consume tbody").empty();
+            $("#simple_curr_day_api_type_consume tbody").empty();
 
             if (result != null && result.consumeList != null){
                 var data = result.consumeList;
@@ -38,36 +38,36 @@ function currDayApiTypeConsume(vendorId) {
                     for (var i = 0; i < data.length; i++) {
                         var myContent;
 
-                        if (data[i].price == null) {
+                        if (data[i].cost == null) {
                             myContent = "<tr>" +
                                 "<td>" + data[i].apiTypeName + "</td>" +
                                 "<td>" + '未知' + "</td>" +
-                                "<td>" + data[i].sumAmount + "</td>" +
+                                "<td>" + data[i].consumeAccount + "</td>" +
                                 /*"<td>" + data[i].countTotle + "</td>" +*/
-                                "<td>" + data[i].countSuccess + "</td>" +
+                                "<td>" + data[i].apiTypeConsume + "</td>" +
                                 "</tr>";
                         } else {
                             myContent = "<tr>" +
                                 "<td>" + data[i].apiTypeName + "</td>" +
-                                "<td>" + data[i].price + "</td>" +
-                                "<td>" + data[i].sumAmount + "</td>" +
+                                "<td>" + data[i].cost + "</td>" +
+                                "<td>" + data[i].consumeAccount + "</td>" +
                                 /*"<td>" + data[i].countTotle + "</td>" +*/
-                                "<td>" + data[i].countSuccess + "</td>" +
+                                "<td>" + data[i].apiTypeConsume + "</td>" +
                                 "</tr>";
                         }
-                        $("#simple_vendor_curr_day_api_type_consume tbody").append(myContent);
+                        $("#simple_curr_day_api_type_consume tbody").append(myContent);
                     }
                 }else {
                     var myContent = "<tr>" +
                         "<td rowspan='4'>" + '无消费记录' + "</td>" +
                         "</tr>";
-                    $("#simple_vendor_curr_day_api_type_consume tbody").append(myContent);
+                    $("#simple_curr_day_api_type_consume tbody").append(myContent);
                 }
             }else {
                 var myContent = "<tr>" +
                     "<td rowspan='4'colspan=\"4\">" + '无消费记录' + "</td>" +
                     "</tr>";
-                $("#simple_vendor_curr_day_api_type_consume tbody").append(myContent);
+                $("#simple_curr_day_api_type_consume tbody").append(myContent);
             }
 
         }

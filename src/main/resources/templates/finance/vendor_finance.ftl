@@ -299,14 +299,14 @@
 
                                 <div class="modal-body">
 
-                                    <table class="table table-striped table-hover table-bordered table-condensed" id="simple__curr_day_api_type_consume">
+                                    <table class="table table-striped table-hover table-bordered table-condensed" id="simple_curr_day_api_type_consume">
                                         <thead>
                                         <tr>
                                             <th>产品类型</th>
                                             <th>当前价格</th>
+                                            <th>扣费次数</th>
                                             <th>总消费额（单位：元）</th>
                                         <#--<th>请求次数</th>-->
-                                            <th>扣费次数</th>
                                         </tr>
                                         </thead>
                                         <tbody>

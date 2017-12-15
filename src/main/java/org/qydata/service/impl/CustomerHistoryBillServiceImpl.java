@@ -16,6 +16,7 @@ import org.qydata.mapper.mapper2.CustomerHistoryBillSelectMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.CustomerHistoryBillService;
 import org.qydata.tools.*;
+import org.qydata.tools.cache.CacheUtils;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
 
 import org.qydata.tools.date.CalendarUtil;
@@ -35,12 +36,15 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
 
     @Autowired
     private CustomerHistoryBillMapper billMapper;
+
     @Autowired
     private CustomerHistoryBillSelectMapper billSelectMapper;
+
     @Autowired
     private CustomerFinanceService financeService;
-  //  @Autowired
-  //  private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
+
+    @Autowired
+    private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
 
     @Override
     public Map<String, Object> queryCustomerHistoryBill(Map<String, Object> map) {
@@ -98,10 +102,10 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         param.put("currMonthTime", CalendarTools.getCurrentMonthFirstDay() + " " + "00:00:00");
         List<CustomerHistoryBill> billList = billSelectMapper.queryCustomerHistoryBill(param);
         List<CustomerHistoryBill> billChargeList = billSelectMapper.queryCustomerChargeTotle(param);
-        List<CustomerHistoryBill> billChargeCurrDayList = billSelectMapper.queryCustomerChargeCurrDay(param);
+      //  List<CustomerHistoryBill> billChargeCurrDayList = billSelectMapper.queryCustomerChargeCurrDay(param);
         List<CustomerHistoryBill> billStaticConsume = billSelectMapper.queryCustomerStaticConsumeAmount();
-        List<CustomerHistoryBill> billCurrMonthConsumeList = billSelectMapper.queryCustomerCurrMonthRealTimeConsume(param);
-//        List<CustomerHistoryBill> billCurrDayConsumeList = billMapper.queryCustomerCurrDayRealTimeConsume(param);
+        //List<CustomerHistoryBill> billCurrMonthConsumeList = billSelectMapper.queryCustomerCurrMonthRealTimeConsume(param);
+//      List<CustomerHistoryBill> billCurrDayConsumeList = billMapper.queryCustomerCurrDayRealTimeConsume(param);
         Double chargeTot = 0.0;
         Double consumeTot = 0.0;
         if (billList != null){
@@ -128,26 +132,26 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                         }
                     }
 
-                   /*封装充值总额（今天）*/
-                    if (billChargeCurrDayList != null){
-                        for (int j = 0; j < billChargeCurrDayList.size() ; j++) {
-                            CustomerHistoryBill billChargeCurrDay = billChargeCurrDayList.get(j);
-                            if (bill.getCustomerId() == billChargeCurrDay.getCustomerId() || bill.getCustomerId().equals(billChargeCurrDay.getCustomerId())){
-                                bill.setChargeCurrDayAmount(billChargeCurrDay.getChargeCurrDayAmount()/100.0);
-                            }
-                        }
-                    }
+//                   /*封装充值总额（今天）*/
+//                    if (billChargeCurrDayList != null){
+//                        for (int j = 0; j < billChargeCurrDayList.size() ; j++) {
+//                            CustomerHistoryBill billChargeCurrDay = billChargeCurrDayList.get(j);
+//                            if (bill.getCustomerId() == billChargeCurrDay.getCustomerId() || bill.getCustomerId().equals(billChargeCurrDay.getCustomerId())){
+//                                bill.setChargeCurrDayAmount(billChargeCurrDay.getChargeCurrDayAmount()/100.0);
+//                            }
+//                        }
+//                    }
 
-                 /*封装充值总额（昨天 + 今天）*/
-                    if (bill.getChargeAmount() != null){
-                        if (bill.getChargeCurrDayAmount() != null) {
-                            bill.setChargeAmount(bill.getChargeAmount() + bill.getChargeCurrDayAmount());
-                        }
-                    }else {
-                        if (bill.getChargeCurrDayAmount() != null) {
-                            bill.setChargeAmount(bill.getChargeCurrDayAmount());
-                        }
-                    }
+//                 /*封装充值总额（昨天 + 今天）*/
+//                    if (bill.getChargeAmount() != null){
+//                        if (bill.getChargeCurrDayAmount() != null) {
+//                            bill.setChargeAmount(bill.getChargeAmount() + bill.getChargeCurrDayAmount());
+//                        }
+//                    }else {
+//                        if (bill.getChargeCurrDayAmount() != null) {
+//                            bill.setChargeAmount(bill.getChargeCurrDayAmount());
+//                        }
+//                    }
 
                     if (billStaticConsume != null){
                         for (CustomerHistoryBill staticBill : billStaticConsume) {
@@ -169,21 +173,21 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
                         bill.setBalance(-(bill.getStaticConsumeAmount()));
                     }
 
-                    if (billCurrMonthConsumeList != null){
-                        for (CustomerHistoryBill currMonthBill : billCurrMonthConsumeList) {
-                            if (bill.getCustomerId() == currMonthBill.getCustomerId() || bill.getCustomerId().equals(currMonthBill.getCustomerId())){
-                                if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() != null){
-                                    bill.setBalance(bill.getBalance() - (currMonthBill.getCurrMonthRealTimeConsume()/100.0));
-                                }
-                                if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() == null){
-                                    bill.setBalance(bill.getBalance());
-                                }
-                                if (bill.getBalance() == null && currMonthBill.getCurrMonthRealTimeConsume() != null){
-                                    bill.setBalance(-(currMonthBill.getCurrMonthRealTimeConsume()/100.0));
-                                }
-                            }
-                        }
-                    }
+//                    if (billCurrMonthConsumeList != null){
+//                        for (CustomerHistoryBill currMonthBill : billCurrMonthConsumeList) {
+//                            if (bill.getCustomerId() == currMonthBill.getCustomerId() || bill.getCustomerId().equals(currMonthBill.getCustomerId())){
+//                                if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() != null){
+//                                    bill.setBalance(bill.getBalance() - (currMonthBill.getCurrMonthRealTimeConsume()/100.0));
+//                                }
+//                                if (bill.getBalance() != null && currMonthBill.getCurrMonthRealTimeConsume() == null){
+//                                    bill.setBalance(bill.getBalance());
+//                                }
+//                                if (bill.getBalance() == null && currMonthBill.getCurrMonthRealTimeConsume() != null){
+//                                    bill.setBalance(-(currMonthBill.getCurrMonthRealTimeConsume()/100.0));
+//                                }
+//                            }
+//                        }
+//                    }
 //                    Double currDayConsume = queryCustomerCurrDayConsume(bill.getCustomerId());
 //                    if (currDayConsume != null){
 //                        if (bill.getBalance() != null && currDayConsume != null){
@@ -557,13 +561,20 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
 //        Double totalAmount = 0.0;
 //        if (jsonMap != null){
 //            for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
-//                String[] split = entry.getKey().split("-");
-//                CustomerCurrDayConsume consume = CustomerCurrendDayTotalAmountUtils.getPriceByType(cid, Integer.valueOf(split[0]), Integer.valueOf(split[1]));
-//                if(consume == null){
-//                    return null;
+//                Double price =  CacheUtils.getCache().getIfPresent(cid + "-" + entry.getKey());
+//                if (price == null){
+//                    String[] split = entry.getKey().split("-");
+//                    CustomerCurrDayConsume consume = customerCurrendDayTotalAmountUtils.getPriceByType(cid, Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+//                    if(consume == null){
+//                        return null;
+//                    }
+//                    totalAmount += Integer.valueOf(entry.getValue()) * consume.getPrice();
+//                    CacheUtils.getCache().put(cid + "-" + entry.getKey(),consume.getPrice());
+//                }else {
+//                    System.out.println("缓存被使用" +  CacheUtils.getCache().size());
+//                    System.out.println(price);
+//                    totalAmount += Integer.valueOf(entry.getValue()) * price;
 //                }
-//                totalAmount += Integer.valueOf(entry.getValue()) * consume.getPrice();
-//
 //            }
 //        }
 //        return totalAmount;

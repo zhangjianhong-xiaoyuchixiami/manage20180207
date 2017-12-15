@@ -134,20 +134,20 @@
                             <div class="clearfix margin-bottom-5">
                                 <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">充值总额&yen;：${chargeTot!'0.0'}元</label>
+                                    <label class="control-label">充值总额（不包含当月）&yen;：${chargeTot!'0.0'}元</label>
 
                                 </div>
 
                                 <div class="pull-left label-margin-bottom label-margin-right">
 
-                                    <label class="control-label">消费总额&yen;：${consumeTot!'0.0'}元</label>
+                                    <label class="control-label">消费总额（不包含当月）&yen;：${consumeTot!'0.0'}元</label>
 
                                 </div>
 
                                 <div class="pull-right tip-remark">
                                     <span class="pull-right">注：1、本页面与金额相关数字单位都为：元</span>
-                                    </br>
-                                    <span class="pull-right">2、供应商余额 = 实际充值总额 -（截止上月末实际对账消费金额 + 当月实时消费金额）</span>
+                                    <#--</br>-->
+                                    <#--<span class="pull-right">2、供应商余额 = 实际充值总额 -（截止上月末实际对账消费金额 + 当月实时消费金额）</span>-->
                                 </div>
                             </div>
 
@@ -156,9 +156,9 @@
                                 <tr>
                                     <th>供应商</th>
                                     <th>合作公司</th>
-                                    <th>充值总额</th>
+                                    <th>充值总额（不包含当月）</th>
                                     <th>消费总额(不包含当月)</th>
-                                    <th>余额（至昨天）</th>
+                                    <th>余额（截至上月末）</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -167,9 +167,9 @@
                                     <tr>
                                         <td data-title="供应商" <#if bill.status == -1> class="font-text-decoration" </#if>>${bill.vendorName!'无'}</td>
                                         <td data-title="合作公司">${bill.partnerName!'无'}</td>
-                                        <td data-title="充值总额">${bill.chargeAmount!'0'}</td>
+                                        <td data-title="充值总额（不包含当月）">${bill.chargeAmount!'0'}</td>
                                         <td data-title="消费总额(不包含当月)"><a href="/finance/vendor-history-bill/detail?vid=${bill.vendorId}&name=${bill.vendorName}" data-toggle="tooltip" data-placement="bottom" title="点击查看消费记录">${bill.consumeAmount!'0'}</a></td>
-                                        <td data-title="余额">${bill.balance!'0'}</td>
+                                        <td data-title="余额（截至上月末）">${bill.balance!'0'}</td>
                                     </tr>
                                     </#list>
                                 </#if>

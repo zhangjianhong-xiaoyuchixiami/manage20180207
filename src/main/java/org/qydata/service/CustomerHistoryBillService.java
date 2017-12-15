@@ -109,6 +109,10 @@ public interface CustomerHistoryBillService {
      */
     public List<CustomerHistoryBillUpdateLog> queryCustomerHistoryBillDetailUpdateLog(Map<String,Object> map);
 
-
-  //  public  Double queryCustomerCurrDayConsume(Integer cid);
+    /**
+     * 查询当天的扣费条数
+     * @param cid
+     * @return
+     */
+    //public  Double queryCustomerCurrDayConsume(Integer cid);
 }
