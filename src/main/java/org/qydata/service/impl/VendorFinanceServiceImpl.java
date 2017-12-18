@@ -63,17 +63,24 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
         //获取当天凌晨
         String currDawn = DateUtils.currDawn();
         param.put("currDawn", currDawn);
-
+        //供应商列表
         List<VendorFinance> financeList = selectMapper.queryVendor(param);
+        //查询供应商消费总额（至昨天）
         List<VendorFinance> consumeList = selectMapper.queryVendorConsume(param);
+        //查询供应商上周消费总额
         List<VendorFinance> weekList = selectMapper.queryVendorLastWeekConsume(param);
+        //查询供应商上月消费总额
         List<VendorFinance> monthList = selectMapper.queryVendorLastMonthConsume(param);
+        //查询供应商本月消费金额（至昨天）
         List<VendorFinance> currMonthList = selectMapper.queryVendorCurrMonthConsume(param);
-        //   List<VendorFinance> currDayList = mapper.queryVendorCurrDayConsume(param);
+        //当天消费
+        List<VendorFinance> currDayList = selectMapper.queryVendorCurrDayConsume(param);
+        //各类型消费
         List<VendorFinance> typeList = selectMapper.queryVendorTypeConsume(param);
+        //查询供应商截至上月末消费总额
         List<VendorHistoryBill> billList = billSelectMapper.queryVendorStaticConsumeAmount();
          /*查询客户当天消费总额*/
-        List<VendorCurrDayConsume> vendorCurrDayConsumeList = selectMapper.queryVendorCurrDayAmount(param);
+     //   List<VendorCurrDayConsume> vendorCurrDayConsumeList = selectMapper.queryVendorCurrDayAmount(param);
 
         if (financeList == null){
             return null;
@@ -141,29 +148,40 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
                     }
                 }
             }
-//            if (currDayList != null){
-//                for (VendorFinance consume : currDayList) {
-//                    if (finance.getVendorId() == consume.getVendorId()
-//                            || finance.getVendorId().equals(consume.getVendorId()))
-//                    {
-//                        if (consume.getCurrDayConsume() != null){
-//                            finance.setCurrDayConsume(consume.getCurrDayConsume()/100.0);
-//                        }else {
-//                            finance.setCurrDayConsume(0.0);
+            if (currDayList != null){
+                for (VendorFinance consume : currDayList) {
+                    if (finance.getVendorId() == consume.getVendorId()
+                            || finance.getVendorId().equals(consume.getVendorId()))
+                    {
+                        if (consume.getCurrDayConsume() != null){
+                            finance.setCurrDayConsume(consume.getCurrDayConsume()/100.0);
+                        }else {
+                            finance.setCurrDayConsume(0.0);
+                        }
+                    }
+                }
+            }
+
+//            //封装当天消费
+//            if (vendorCurrDayConsumeList != null){
+//                for (VendorCurrDayConsume vendorCurrDayConsume : vendorCurrDayConsumeList) {
+//                    if (finance.getVendorId() == vendorCurrDayConsume.getVendorId()
+//                            ||finance.getVendorId().equals(vendorCurrDayConsume.getVendorId())){
+//                        if (vendorCurrDayConsume.getTotal() != null){
+//                            finance.setCurrDayConsume(vendorCurrDayConsume.getTotal()/100.0);
 //                        }
 //                    }
 //                }
 //            }
 
-            //封装当天消费
-            if (vendorCurrDayConsumeList != null){
-                for (VendorCurrDayConsume vendorCurrDayConsume : vendorCurrDayConsumeList) {
-                    if (finance.getVendorId() == vendorCurrDayConsume.getVendorId()
-                            ||finance.getVendorId().equals(vendorCurrDayConsume.getVendorId())){
-                        if (vendorCurrDayConsume.getTotal() != null){
-                            finance.setCurrDayConsume(vendorCurrDayConsume.getTotal()/100.0);
-                        }
-                    }
+            /*封装当月消费总额（昨天 + 今天）*/
+            if (finance.getCurrMonthConsume() != null){
+                if (finance.getCurrDayConsume() != null) {
+                    finance.setCurrMonthConsume(finance.getCurrMonthConsume() + finance.getCurrDayConsume());
+                }
+            }else {
+                if (finance.getCurrDayConsume() != null) {
+                    finance.setCurrMonthConsume(finance.getCurrDayConsume());
                 }
             }
 

@@ -216,16 +216,16 @@
                                         <th>供应商</th>
                                         <th>合作公司</th>
                                         <th>充值总额</th>
-                                        <th>消费总额（开通后--至昨天)</th>
-                                        <th>余额（至昨天）</th>
+                                        <th>消费总额（${beginDate!'开通后'}--${endDate!'至今'})</th>
+                                        <th>余额</th>
                                         <th>上周消费</th>
                                         <th>上月消费</th>
-                                        <th>当月消费（不包括昨天）</th>
-                                        <th >当天消费</th>
+                                        <th>当月消费</th>
+                                        <th>当天消费</th>
                                         <th class="table-td-none">类型</th>
                                         <th class="table-td-none">当前价格</th>
                                         <th class="table-td-none">消费总额</th>
-                                        <th class="table-td-none">调用成功次数</th>
+                                        <#--<th class="table-td-none">调用成功次数</th>-->
                                         <th class="table-td-none">扣费次数</th>
                                     </tr>
                                     </thead>

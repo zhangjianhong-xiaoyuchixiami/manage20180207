@@ -190,7 +190,6 @@
         GROUP BY a.vendorId
     </select>
 
-
     <select id="queryVendorCurrDayConsumeCondition" parameterType="map" resultMap="VendorCurrDayConsume_Map">
         SELECT
             CONCAT_WS('-',d.name,e.name) apiTypeName,

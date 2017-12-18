@@ -228,7 +228,7 @@
                                         <#if financeList??>
                                             <#list financeList as finance>
                                             <tr>
-                                                <td data-title="产品类型"  <#if finance.status == 0> class="font-text-decoration" </#if> >
+                                                <td data-title="产品类型"  <#if finance.status == -1> class="font-text-decoration" </#if> >
                                                     <a href="/api/find-all-api-record<#if finance.apiTypeId??>?apiTypeId=${finance.apiTypeId}</#if>">${(finance.apiTypeName)!'无'}</a>
                                                 </td>
                                                 <td data-title="产品供应商"><a href="/api/find-all-api-record<#if finance.vendorId??>?vendorId=${finance.vendorId}</#if>">${finance.vendorName!'无'}</a></td>

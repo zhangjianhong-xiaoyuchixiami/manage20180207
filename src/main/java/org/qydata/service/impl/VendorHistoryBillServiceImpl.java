@@ -82,7 +82,7 @@ public class VendorHistoryBillServiceImpl implements VendorHistoryBillService {
             }
 
             if (bill.getChargeAmount() != null){
-                bill.setChargeAmount(bill.getChargeAmount()/100.0);
+                bill.setChargeAmount(bill.getChargeAmount());
                 chargeTot += bill.getChargeAmount();
             }
             if (bill.getConsumeAmount() != null){

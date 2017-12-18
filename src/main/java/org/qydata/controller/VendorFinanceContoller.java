@@ -64,12 +64,10 @@ public class VendorFinanceContoller {
         map.put("statusList", statusList);
         model.addAttribute("statusArray",statusList);
         Map<String,Object> mapResult = service.queryVendor(map);
-        List<VendorFinance> financeList = null;
-        List<VendorHistoryBill> billList = null;
         if (mapResult != null){
             for (Map.Entry<String,Object> me : mapResult.entrySet()) {
                 if (me.getKey().equals("financeList")){
-                    financeList = (List<VendorFinance>) me.getValue();
+                    model.addAttribute("financeList",me.getValue());
                 }
                 if (me.getKey().equals("lastWeekConsume")){
                     model.addAttribute("lastWeekConsume",me.getValue());
@@ -88,7 +86,6 @@ public class VendorFinanceContoller {
                 }
             }
         }
-        model.addAttribute("financeList",financeList);
         model.addAttribute("apiVendorList",service.queryApiVendorName());
         return new ModelAndView("/finance/vendor_finance");
     }
