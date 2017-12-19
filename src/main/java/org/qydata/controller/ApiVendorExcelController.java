@@ -21,13 +21,11 @@ public class ApiVendorExcelController {
 
     @RequestMapping("/file-upload")
     public String fileUpload(){
-
         return "/excel/api_vendor_excel";
 
     }
 
     @RequestMapping("/file-upload-service")
-
     public void readExcelFile(@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) {
         String filePath =  FileUploadUtils.uploadExcelFile(request,file);
         System.out.println("你好");
