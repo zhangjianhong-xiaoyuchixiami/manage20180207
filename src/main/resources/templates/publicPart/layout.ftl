@@ -298,6 +298,38 @@
 
                 </@shiro.hasAnyRoles>
 
+            <#--运营管理-->
+                <@shiro.hasAnyRoles name="backAdmin">
+
+                    <li class="" id="operation_manage">
+                        <a href="javascript:;">
+
+                            <i class="icon-bar-chart"></i>
+
+                            <span class="title">运营管理</span>
+
+                            <span class="" id="operation_manage_select"></span>
+
+                            <span class="arrow " id="operation_manage_arrow"></span>
+
+                        </a>
+
+                        <ul class="sub-menu">
+
+                            <#--<@shiro.hasPermission name="finance:find-all-customer">-->
+                                <li id="product_condition">
+                                    <a href="/operation/api-consume-condition">
+                                        产品消费状况
+                                    </a>
+                                </li>
+                            <#--</@shiro.hasPermission>-->
+
+                        </ul>
+
+                    </li>
+
+                </@shiro.hasAnyRoles>
+
             <#--产品核验-->
                 <@shiro.hasAnyRoles name="backAdmin,service">
 

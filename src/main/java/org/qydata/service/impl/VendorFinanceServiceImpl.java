@@ -148,6 +148,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
                     }
                 }
             }
+            //封装当天消费
             if (currDayList != null){
                 for (VendorFinance consume : currDayList) {
                     if (finance.getVendorId() == consume.getVendorId()
