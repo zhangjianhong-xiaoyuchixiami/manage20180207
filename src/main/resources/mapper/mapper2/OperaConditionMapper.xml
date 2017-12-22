@@ -62,27 +62,11 @@
         a.customerId,a.apiTypeId,a.subTypeId
     </select>
 
-
+<!--查询总成本-->
     <select id="getCostAccount" parameterType="map" resultMap="countMap">
-
-        SELECT
-        a.vendorId,
-        a.apiId,
-        a.consumeAccount,
-        b.cost,
-        IFNULL(a.consumeAccount*b.cost, 0) costAccount
-        FROM
-        qyfinance.ApiConsumeHourCount a
-        LEFT JOIN
-        (
-        SELECT
-        id,
-        cost
-        FROM
-        qydata.Api
-        ) b
-        ON
-        b.id = a.apiId
+        SELECT IFNULL(a.consumeAccount * b.cost, 0) costAccount
+        FROM qyfinance.ApiConsumeHourCount a
+        LEFT JOIN qydata.Api b ON a.apiId = b.id
         WHERE
         <if test="Dawn != null and Dawn != ''" >
             a.cycle >= #{Dawn}
@@ -92,8 +76,7 @@
                 AND  a.cycle < #{currTime}
             ]]>
         </if>
-        GROUP BY
-        a.vendorId,a.apiId
+
 
     </select>
 
