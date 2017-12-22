@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.mapper2.OperaConditionMapper">
+
+    <resultMap id="countMap" type="org.qydata.dst.OperaCondition">
+        <result property="customerId" column="customerId"/>
+        <result property="vendorId" column="vendorId"/>
+        <result property="apiId" column="apiId"/>
+        <result property="apiTypeId" column="apiTypeId"/>
+        <result property="subTypeId" column="subTypeId"/>
+        <result property="incomeAccount" column="incomeAccount"/>
+        <result property="costAccount" column="costAccount"/>
+
+    </resultMap>
+
+    <select id="getIncomeAccount" parameterType="map" resultMap="countMap">
+        select
+        a.customerId,
+        a.apiTypeId,
+        a.subTypeId,
+        IFNULL(sum(a.consumeCount * b.price),0) IncomeAccount
+        FROM
+        qyfinance.CustomerConsumeHourCount a
+        LEFT JOIN
+        (
+        select
+        a.id customerId,
+        b.apiTypeId,
+        b.subTypeId,
+        b.price
+
+        FROM
+        qydata.Customer a
+        INNER JOIN
+        qydata.CompanyApi b
+        ON
+        a.companyId = b.companyId
+        where a.typeId = 1
+        GROUP BY
+        a.Id,
+        b.apiTypeId,
+        b.subTypeId
+        )b
+        ON
+        a.customerId = b.customerId
+        AND
+        a.apiTypeId = b.apiTypeId
+        AND
+        a.subTypeId = b.subTypeId
+        WHERE
+
+        <if test="Dawn != null and Dawn != ''" >
+            a.cycle >= #{Dawn}
+        </if>
+        <if test="currTime != null and currTime != ''" >
+            <![CDATA[
+                AND  a.cycle < #{currTime}
+            ]]>
+        </if>
+        GROUP BY
+        a.customerId,a.apiTypeId,a.subTypeId
+    </select>
+
+
+    <select id="getCostAccount" parameterType="map" resultMap="countMap">
+
+        SELECT
+        a.vendorId,
+        a.apiId,
+        a.consumeAccount,
+        b.cost,
+        IFNULL(a.consumeAccount*b.cost, 0) costAccount
+        FROM
+        qyfinance.ApiConsumeHourCount a
+        LEFT JOIN
+        (
+        SELECT
+        id,
+        cost
+        FROM
+        qydata.Api
+        ) b
+        ON
+        b.id = a.apiId
+        WHERE
+        <if test="Dawn != null and Dawn != ''" >
+            a.cycle >= #{Dawn}
+        </if>
+        <if test="currTime != null and currTime != ''" >
+            <![CDATA[
+                AND  a.cycle < #{currTime}
+            ]]>
+        </if>
+        GROUP BY
+        a.vendorId,a.apiId
+
+    </select>
+
+
+
+
+
+</mapper>

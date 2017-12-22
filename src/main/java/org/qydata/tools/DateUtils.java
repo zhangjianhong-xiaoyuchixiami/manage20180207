@@ -88,4 +88,47 @@ public class DateUtils {
         return currDawn;
     }
 
+    /**
+     * 获取当前小时
+     * @return
+     */
+    public static String currHour(){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:00:00");
+        String currTime = sdf.format(date);
+        return  currTime;
+    }
+
+    /**
+     * 获取昨天相同小时
+     * @return
+     */
+    public static String yesterHour(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:00:00");
+        Calendar cal = Calendar. getInstance ();
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
+        Date time = cal.getTime();
+        String yesterHour = sdf.format(time);
+        return yesterHour;
+    }
+
+    /**
+     * 获取昨天凌晨
+     * @return
+     */
+    public static String yesterDawn(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        Calendar cal = Calendar. getInstance ();
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
+        Date time = cal.getTime();
+        String yesterDawn = sdf.format(time);
+        return yesterDawn;
+    }
+
+    public static void main(String[] args) {
+        String s = yesterDawn();
+        String s1 = yesterHour();
+        System.out.println(s);
+        System.out.println(s1);
+    }
 }

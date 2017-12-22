@@ -28,9 +28,9 @@
 
                                         <div class="details">
 
-                                            <div class="desc">当天总消费金额</div>
+                                            <div class="desc">当天总收入金额</div>
 
-                                            <div class="number">1000</div>
+                                            <div class="number" id="currIncome">1000</div>
 
                                         </div>
 
@@ -46,7 +46,7 @@
 
                                             <div class="desc">当天总成本</div>
 
-                                            <div class="number">100</div>
+                                            <div class="number" id="currCost">100</div>
 
                                         </div>
 
@@ -61,7 +61,7 @@
                                         <div class="details">
                                             <div class="desc">当天毛利润</div>
 
-                                            <div class="number">900</div>
+                                            <div class="number" id="currProfit">900</div>
 
                                         </div>
 
@@ -83,9 +83,9 @@
 
                                         <div class="details">
 
-                                            <div class="desc">昨天总消费金额</div>
+                                            <div class="desc">昨天总收入金额</div>
 
-                                            <div class="number">900</div>
+                                            <div class="number" id="yesterIncome">900</div>
 
                                         </div>
 
@@ -101,7 +101,7 @@
 
                                             <div class="desc">昨天总成本</div>
 
-                                            <div class="number">200</div>
+                                            <div class="number" id="yesterCost">200</div>
 
                                         </div>
 
@@ -116,7 +116,7 @@
                                         <div class="details">
                                             <div class="desc">昨天毛利润</div>
 
-                                            <div class="number">700</div>
+                                            <div class="number" id="yesterProfit">700</div>
 
                                         </div>
 
@@ -148,9 +148,9 @@
 
                                                 <div class="easy-pie-chart">
 
-                                                    <div>总消费</div>
+                                                    <div>总收入</div>
 
-                                                    <div class="number transactions" data-percent="55"><span>+11.11</span>%
+                                                    <div class="number transactions" data-percent="55"><span id="totalIncomePercent">+11.11</span>
                                                     </div>
 
                                                 </div>
@@ -165,7 +165,7 @@
 
                                                     <div>总成本</div>
 
-                                                    <div class="number visits" data-percent="85"><span>-50</span>%</div>
+                                                    <div class="number visits" data-percent="85"><span id="totalCostPercent">-50</span></div>
 
                                                 </div>
 
@@ -179,7 +179,7 @@
 
                                                     <div>毛利润</div>
 
-                                                    <div class="number bounce" data-percent="46"><span>+28.57</span>%</div>
+                                                    <div class="number bounce" data-percent="46"><span id="profitPrecent">+28.57</span></div>
 
                                                 </div>
 
@@ -214,5 +214,39 @@
         <@puj.publicJs></@puj.publicJs>
 
     </#if>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajax({
+                url: '/operation/operation_condition',
+                type: 'GET',
+                dataType: 'json',
+                timeout: 3000,
+                cache: false,
+                beforeSend: LoadFunction,
+                error: erryFunction,
+                success: succFunction
+            })
+            function LoadFunction() {
+                $("#list").html('加载中...');
+            }
+            function erryFunction() {
+                alert("维护中...请联系技术人员");
+            }
+            function succFunction(data) {
+                $("#currIncome").text(data.currIncomeAccount)
+                $("#yesterIncome").text(data.yesterIncomeAccount)
+                $("#currCost").text(data.currCostAccount)
+                $("#yesterCost").text(data.yesterCostAccount)
+                $("#currProfit").text(data.currProfit)
+                $("#yesterProfit").text(data.yesterProfit)
+                $("#profitPrecent").text(data.profitPercent)
+                $("#totalCostPercent").text(data.costPercent)
+                $("#totalIncomePercent").text(data.incomePercent)
+            }
+        });
+    </script>
+
 
 </@layout>

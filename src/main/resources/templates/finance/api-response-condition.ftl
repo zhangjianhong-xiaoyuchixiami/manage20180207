@@ -42,8 +42,8 @@
                                     <tr>
                                         <th>产品名称</th>
                                         <th>周期</th>
-                                        <th>总消费</th>
-                                        <th>总消费同比</th>
+                                        <th>总收入</th>
+                                        <th>总收入同比</th>
                                         <th>总成本</th>
                                         <th>总成本同比</th>
                                         <th>毛利润</th>
@@ -54,8 +54,8 @@
                                     <tr>
                                         <td data-title="产品名称" rowspan="2" style="text-align: center">银行卡三要素</td>
                                         <td data-title="周期">今天</td>
-                                        <td data-title="总消费"><a href="#form_modal_1" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看当天客户消费情况">1000</a></td>
-                                        <td data-title="总消费同比" rowspan="2" style="text-align: center">+5%</td>
+                                        <td data-title="总收入"><a href="#form_modal_1" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看当天客户消费情况">1000</a></td>
+                                        <td data-title="总收入同比" rowspan="2" style="text-align: center">+5%</td>
                                         <td data-title="总成本"><a href="#form_modal_3" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看当天供应商消费情况">1000</a></td>
                                         <td data-title="总成本同比" rowspan="2" style="text-align: center">-7%</td>
                                         <td data-title="毛利润">1000</td>
@@ -64,7 +64,7 @@
                                     <tr>
                                         <td class="table-td-none"></td>
                                         <td data-title="周期">昨天</td>
-                                        <td data-title="总消费"><a href="#form_modal_2" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看昨天客户消费情况">1000</a></td>
+                                        <td data-title="总收入"><a href="#form_modal_2" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看昨天客户消费情况">1000</a></td>
                                         <td class="table-td-none"></td>
                                         <td data-title="总成本"><a href="#form_modal_4" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看昨天供应商消费情况">1000</a></td>
                                         <td class="table-td-none"></td>

@@ -77,4 +77,9 @@ public class JsonUtils {
         return JSON.parseObject(json, Map.class);
     }
 
+
+    public static  String mapToJson(Map<String, Object>map){
+        String jsonString = JSON.toJSONString(map, true);
+        return jsonString;
+    }
 }
