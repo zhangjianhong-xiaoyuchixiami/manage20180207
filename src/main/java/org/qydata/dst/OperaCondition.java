@@ -13,10 +13,13 @@ public class OperaCondition {
     private Double incomeAccount;
     private Double currIncomeAccount;
     private Double yesterIncomeAccount;
+    private Double yesterTotalIncomeAccount;
     private Double costAccount;
     private Double currCostAccount;
     private Double yesterCostAccount;
+    private Double yesterTotalCostAccount;
     private Double currProfit;
     private Double yesterProfit;
+    private Double yesterTotalProfit;
 
 }

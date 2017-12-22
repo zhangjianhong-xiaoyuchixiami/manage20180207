@@ -83,7 +83,7 @@
 
                                         <div class="details">
 
-                                            <div class="desc">昨天总收入金额</div>
+                                            <div class="desc">昨天同时段总收入金额</div>
 
                                             <div class="number" id="yesterIncome">900</div>
 
@@ -99,7 +99,7 @@
 
                                         <div class="details">
 
-                                            <div class="desc">昨天总成本</div>
+                                            <div class="desc">昨天同时段总成本</div>
 
                                             <div class="number" id="yesterCost">200</div>
 
@@ -114,7 +114,7 @@
                                     <div class="dashboard-stat green">
 
                                         <div class="details">
-                                            <div class="desc">昨天毛利润</div>
+                                            <div class="desc">昨天同时段毛利润</div>
 
                                             <div class="number" id="yesterProfit">700</div>
 
@@ -127,6 +127,64 @@
                             </div>
 
                         </div>
+
+
+                        <div class="row-fluid">
+
+                            <div class="row-fluid" style="margin-top: 20px">
+
+                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3">
+
+                                    <div class="dashboard-stat blue">
+
+                                        <div class="details">
+
+                                            <div class="desc">昨天总收入金额</div>
+
+                                            <div class="number" id="yesterTotalIncome">900</div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3">
+
+                                    <div class="dashboard-stat yellow">
+
+                                        <div class="details">
+
+                                            <div class="desc">昨天总成本</div>
+
+                                            <div class="number" id="yesterTotalCost">200</div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3">
+
+                                    <div class="dashboard-stat green">
+
+                                        <div class="details">
+                                            <div class="desc">昨天毛利润</div>
+
+                                            <div class="number" id="yesterTotalProfit">700</div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
 
                         <div class="row-fluid">
 
@@ -237,10 +295,13 @@
             function succFunction(data) {
                 $("#currIncome").text(data.currIncomeAccount)
                 $("#yesterIncome").text(data.yesterIncomeAccount)
+                $("#yesterTotalIncome").text(data.yesterTotalIncomeAccount)
                 $("#currCost").text(data.currCostAccount)
                 $("#yesterCost").text(data.yesterCostAccount)
+                $("#yesterTotalCost").text(data.yesterTotalCostAccount)
                 $("#currProfit").text(data.currProfit)
                 $("#yesterProfit").text(data.yesterProfit)
+                $("#yesterTotalProfit").text(data.yesterTotalProfit)
                 $("#profitPrecent").text(data.profitPercent)
                 $("#totalCostPercent").text(data.costPercent)
                 $("#totalIncomePercent").text(data.incomePercent)
