@@ -78,7 +78,7 @@ public class JsonUtils {
     }
 
 
-    public static  String mapToJson(Map<String, Object>map){
+    public static  String mapToJson(Map<String, Object> map){
         String jsonString = JSON.toJSONString(map, true);
         return jsonString;
     }
