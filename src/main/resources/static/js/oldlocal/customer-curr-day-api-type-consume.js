@@ -10,7 +10,7 @@ function currentConsumerIncomeCondition(typeId, subTypeId) {
         dataType: "json",
         beforeSend:function () {
             var myContent = "<tr>" +
-                "<td rowspan='5'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "<td rowspan='4'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                 "</tr>";
             $("#currConsumerIncomeCondition tbody").append(myContent);
         },
@@ -68,7 +68,7 @@ function yesterdayConsumerIncomeCondition(typeId, subTypeId) {
         dataType: "json",
         beforeSend: function () {
             var myContent = "<tr>" +
-                "<td rowspan='5'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "<td rowspan='4'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                 "</tr>";
             $("#yestConsumerIncomeCondition tbody").append(myContent);
         },
@@ -128,7 +128,7 @@ function currentVendorCostCondition(typeId, subTypeId) {
         dataType: "json",
         beforeSend: function () {
             var myContent = "<tr>" +
-                "<td rowspan='5'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "<td rowspan='4'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                 "</tr>";
             $("#currVendorCostCondition tbody").append(myContent);
         },
@@ -188,7 +188,7 @@ function yesterdayVendorCostCondition(typeId, subTypeId) {
         dataType: "json",
         beforeSend: function () {
             var myContent = "<tr>" +
-                "<td rowspan='5'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "<td rowspan='4'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
                 "</tr>";
             $("#yestVendorCostCondition tbody").append(myContent);
         },

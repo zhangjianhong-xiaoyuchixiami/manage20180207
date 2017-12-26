@@ -60,8 +60,8 @@ public class OperaConditionController {
             map.put("subTypeId", subTypeId);
         }
         List<CustomerIncome> currCustomerIncomes = operaConditionServiceImpl.getCurrCustomerIncomeCondition(map);
-        OrderVendorAmount ova = new OrderVendorAmount();
-        Collections.sort(currCustomerIncomes, ova);
+        OrderCustomerAmount oca = new OrderCustomerAmount();
+        Collections.sort(currCustomerIncomes, oca);
         String json = JsonUtils.listToJson(currCustomerIncomes);
 
         return json;
@@ -80,8 +80,9 @@ public class OperaConditionController {
             map.put("subTypeId", subTypeId);
         }
         List<CustomerIncome> yestCustomerIncomes = operaConditionServiceImpl.getYesterCustomerIncomeCondition(map);
-        OrderVendorAmount ova = new OrderVendorAmount();
-        Collections.sort(yestCustomerIncomes, ova);
+
+        OrderCustomerAmount oca = new OrderCustomerAmount();
+        Collections.sort(yestCustomerIncomes, oca);
         String json = JsonUtils.listToJson(yestCustomerIncomes);
 
         return json;
@@ -100,8 +101,9 @@ public class OperaConditionController {
             map.put("subTypeId", subTypeId);
         }
         List<VendorCost> yestVendorCostCondition = operaConditionServiceImpl.getYesterVendorCostCondition(map);
-        OrderCustomerAmount oca = new OrderCustomerAmount();
-        Collections.sort(yestVendorCostCondition, oca);
+
+        OrderVendorAmount ova = new OrderVendorAmount();
+        Collections.sort(yestVendorCostCondition, ova);
         String json = JsonUtils.listToJson(yestVendorCostCondition);
 
         return json;
@@ -119,8 +121,8 @@ public class OperaConditionController {
             map.put("subTypeId", subTypeId);
         }
         List<VendorCost> currVendorCostCondition = operaConditionServiceImpl.getCurrVendorCostCondition(map);
-        OrderCustomerAmount oca = new OrderCustomerAmount();
-        Collections.sort(currVendorCostCondition, oca);
+        OrderVendorAmount ova = new OrderVendorAmount();
+        Collections.sort(currVendorCostCondition, ova);
         String json = JsonUtils.listToJson(currVendorCostCondition);
 
         return json;
