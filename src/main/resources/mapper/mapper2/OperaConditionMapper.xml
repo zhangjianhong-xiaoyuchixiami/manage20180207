@@ -235,7 +235,7 @@
         a.subTypeId,
         b. NAME customerName,
         b.companyId,
-        a.consumeCount consumeAccount
+        sum(a.consumeCount) consumeAccount
         FROM
         qyfinance.CustomerConsumeHourCount a
         LEFT JOIN qydata.Customer b ON a.customerId = b.id
@@ -251,6 +251,8 @@
         </if>
         AND a.apiTypeId = #{apiTypeId}
         AND a.subTypeId = #{subTypeId}
+        GROUP BY
+        a.customerId,a.apiTypeId,a.subTypeId
         ) a
         LEFT JOIN qydata.CompanyApi b ON a.companyId = b.companyId
         GROUP BY

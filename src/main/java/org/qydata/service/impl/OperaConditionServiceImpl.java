@@ -108,14 +108,19 @@ public class OperaConditionServiceImpl implements OperaConditionService {
 
         Map<String, Object>map1 = new HashMap<String, Object>();
         Map<String, Object>map2 = new HashMap<String, Object>();
+        Map<String, Object>map3 = new HashMap<String, Object>();
         map1.put("Dawn", currDawn);
         map1.put("currTime", currTime);
         map2.put("Dawn", yesterDawn);
         map2.put("currTime", yesterHour);
+        map3.put("Dawn", yesterDawn);
+        map3.put("currTime", currDawn);
         //今天产品消费状况
         List<OperaCondition> currConditionList = getConditionByType(map1);
         //昨天产品消费状况
         List<OperaCondition> yestConditionList = getConditionByType(map2);
+        //昨天全天的消费情况
+        List<OperaCondition> yesterdayConditionList = getConditionByType(map3);
 
 //        List<OperaCondition> OperaConditionList = new ArrayList<OperaCondition>();
         if (currConditionList != null){
@@ -170,6 +175,29 @@ public class OperaConditionServiceImpl implements OperaConditionService {
                     operaCondition.setYesterCostAccount(0.0);
                     operaCondition.setYesterProfit(0.0);
                 }
+
+                if (yesterdayConditionList != null){
+                    for (OperaCondition yestcondition : yesterdayConditionList) {
+                        Integer apiTypeId = yestcondition.getApiTypeId();
+                        Integer subTypeId = yestcondition.getSubTypeId();
+                        if (ati == apiTypeId && sti == subTypeId){
+                            if (yestcondition.getCostAccount() != null){
+                                operaCondition.setYesterCostAccount(yestcondition.getCostAccount());
+                            }else{
+                                operaCondition.setYesterCostAccount(0.0);
+                            }
+                            if (yestcondition.getIncomeAccount() != null){
+                                operaCondition.setYesterIncomeAccount(yestcondition.getIncomeAccount());
+                            }else{
+                                operaCondition.setYesterIncomeAccount(0.0);
+                            }
+                            operaCondition.setYesterProfit(operaCondition.getYesterIncomeAccount() - operaCondition.getYesterCostAccount());
+                        }
+                    }
+                }else{
+                    operaCondition.setYesterIncomeAccount(0.0);
+                    operaCondition.setYesterCostAccount(0.0);
+                }
             }
             return  currConditionList;
         }else{
@@ -200,6 +228,30 @@ public class OperaConditionServiceImpl implements OperaConditionService {
                         condition.setIncomePercent(PercentUtils.getPercent(condition.getCurrIncomeAccount(), condition.getYesterIncomeAccount()));
                     }
 
+
+                    if (yesterdayConditionList != null){
+                        for (OperaCondition yestcondition : yesterdayConditionList) {
+
+                            if (condition.getApiTypeId() == yestcondition.getApiTypeId() && condition.getSubTypeId() == yestcondition.getSubTypeId()){
+
+                                if (yestcondition.getCostAccount() != null){
+                                    condition.setYesterCostAccount(yestcondition.getCostAccount());
+                                }else{
+                                    condition.setYesterCostAccount(0.0);
+                                }
+                                if (yestcondition.getIncomeAccount() != null){
+                                    condition.setYesterIncomeAccount(yestcondition.getIncomeAccount());
+                                }else{
+                                    condition.setYesterIncomeAccount(0.0);
+                                }
+                                condition.setYesterProfit(condition.getYesterIncomeAccount() - condition.getYesterCostAccount());
+                            }
+                        }
+                        return yestConditionList;
+                    }else{
+                        condition.setYesterIncomeAccount(0.0);
+                        condition.setYesterCostAccount(0.0);
+                    }
                 }
                 return yestConditionList;
             }else{

@@ -56,9 +56,10 @@
                                                 <tr>
                                                     <td data-title="产品名称" rowspan="2" style="text-align: center" >
                                                         <#if condition.apiTypeName??>
-                                                        ${condition.apiTypeName!'未知'}
-                                                        <#if condition.apiTypeName??>--${condition.subTypeName!''}
-                                                        </#if>
+                                                            ${condition.apiTypeName!'未知'}
+                                                                <#if condition.subTypeName ??>
+                                                                    --${condition.subTypeName!''}
+                                                                </#if>
                                                         </#if>
                                                     </td>
                                                     <td data-title="周期">今天</td>
