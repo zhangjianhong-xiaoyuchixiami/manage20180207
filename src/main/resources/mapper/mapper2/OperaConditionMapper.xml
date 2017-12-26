@@ -307,7 +307,7 @@
         a.typeId = #{apiTypeId}
         AND
         a.subTypeId = #{subTypeId}
-        GROUP BY a.vendorId
+        GROUP BY a.vendorId,a.apiId,a.typeId,a.subTypeId
         )a
 
     </select>
