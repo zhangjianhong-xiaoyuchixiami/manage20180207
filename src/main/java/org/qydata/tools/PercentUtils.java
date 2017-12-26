@@ -20,11 +20,4 @@ public class PercentUtils {
         return round;
     }
 
-    public static void main(String[] args) {
-        String percent = PercentUtils.getPercent(100, 90);
-        System.out.println(percent);
-
-        double rount = PercentUtils.getRound(123.436344);
-        System.out.println(rount);
-    }
 }

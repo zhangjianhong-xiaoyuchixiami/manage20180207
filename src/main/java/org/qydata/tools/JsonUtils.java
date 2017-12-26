@@ -78,8 +78,13 @@ public class JsonUtils {
     }
 
 
-    public static  String mapToJson(Map<String, Object> map){
+    public static String mapToJson(Map<String, Object> map){
         String jsonString = JSON.toJSONString(map, true);
         return jsonString;
+    }
+
+    public static String listToJson(List list){
+        String jsonString = JSON.toJSONString(list);
+        return  jsonString;
     }
 }

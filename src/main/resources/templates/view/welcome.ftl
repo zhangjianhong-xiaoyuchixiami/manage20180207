@@ -288,13 +288,13 @@
             dataType: 'json',
             timeout: 30000,
             cache: false,
-            beforeSend: LoadFunction,
+//            beforeSend: LoadFunction,
             error: erryFunction,
             success: succFunction
         });
-        function LoadFunction() {
-            $("#list").html('加载中...');
-        }
+       /* function LoadFunction() {
+            $("#tabbable tabbable-custom tabbable-full-widt").html('加载中...');
+        }*/
         function erryFunction() {
             alert("维护中...请联系技术人员");
         }

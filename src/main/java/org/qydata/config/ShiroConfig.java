@@ -489,7 +489,7 @@ public class ShiroConfig {
 		chains.put("/data/mobile/operator", "authc,perms");
 
 
-		chains.put("/operation/api-consume-condition", "authc,perms");
+//		chains.put("/operation/api-consume-condition", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

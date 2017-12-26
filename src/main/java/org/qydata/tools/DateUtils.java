@@ -125,10 +125,5 @@ public class DateUtils {
         return yesterDawn;
     }
 
-    public static void main(String[] args) {
-        String s = yesterDawn();
-        String s1 = yesterHour();
-        System.out.println(s);
-        System.out.println(s1);
-    }
+
 }
