@@ -121,197 +121,159 @@ public class OperaConditionServiceImpl implements OperaConditionService {
         List<OperaCondition> yestConditionList = getConditionByType(map2);
         //昨天全天的消费情况
         List<OperaCondition> yesterdayConditionList = getConditionByType(map3);
+        //今天
+       if (currConditionList != null){
+           for (OperaCondition operaCondition : currConditionList) {
+               Integer ati = operaCondition.getApiTypeId();
+               Integer sti = operaCondition.getSubTypeId();
+               //成本
+               if (operaCondition.getCostAccount() != null){
+                   operaCondition.setCurrCostAccount(operaCondition.getCostAccount());
+               }else{
+                   operaCondition.setCurrCostAccount(0.0);
+               }
+               //收入
+               if (operaCondition.getIncomeAccount() != null){
+                   operaCondition.setCurrIncomeAccount(operaCondition.getIncomeAccount());
+               }else {
+                   operaCondition.setCurrIncomeAccount(0.0);
+               }
+               operaCondition.setCurrProfit(operaCondition.getCurrIncomeAccount() - operaCondition.getCurrCostAccount());
+                //请求上游的数量
+               if (operaCondition.getCostCount() != null){
+                   operaCondition.setCurrCostCount(operaCondition.getCostCount());
+               }else{
+                   operaCondition.setCurrCostCount(0);
+               }
+               //下游请求的数量
+               if(operaCondition.getIncomeCount() != null){
+                   operaCondition.setCurrIncomeCount(operaCondition.getIncomeCount());
+               }else {
+                   operaCondition.setCurrIncomeCount(0);
+               }
 
-//        List<OperaCondition> OperaConditionList = new ArrayList<OperaCondition>();
-        if (currConditionList != null){
-            for (OperaCondition operaCondition : currConditionList) {
-//                OperaCondition oc = new OperaCondition();
-                Integer ati = operaCondition.getApiTypeId();
-                Integer sti = operaCondition.getSubTypeId();
-                if (operaCondition.getCostAccount() != null){
-                    operaCondition.setCurrCostAccount(operaCondition.getCostAccount());
-                }else{
-                    operaCondition.setCurrCostAccount(0.0);
-                }
-                if (operaCondition.getIncomeAccount() != null){
-                    operaCondition.setCurrIncomeAccount(operaCondition.getIncomeAccount());
-                }else{
-                    operaCondition.setCurrIncomeAccount(0.0);
-                }
-                operaCondition.setCurrProfit(operaCondition.getCurrIncomeAccount() - operaCondition.getCurrCostAccount());
+               //昨天全天
+               if (yesterdayConditionList != null){
+                   for (OperaCondition condition : yesterdayConditionList) {
+                       if (ati == condition.getApiTypeId() && sti == condition.getSubTypeId()) {
+                           //成本
+                           if (condition.getCostAccount() != null) {
+                               operaCondition.setYesterTotalCostAccount(condition.getCostAccount());
+                           } else {
+                               operaCondition.setYesterTotalCostAccount(0.0);
+                           }
 
-                if (yestConditionList != null){
-                    for (OperaCondition condition : yestConditionList) {
-                        Integer apiTypeId = condition.getApiTypeId();
-                        Integer subTypeId = condition.getSubTypeId();
-                        if (ati == apiTypeId && sti == subTypeId){
-                            if (condition.getCostAccount() != null){
-                                operaCondition.setYesterCostAccount(condition.getCostAccount());
-                            }else{
-                                operaCondition.setYesterCostAccount(0.0);
-                            }
-                            if (condition.getIncomeAccount() != null){
-                                operaCondition.setYesterIncomeAccount(condition.getIncomeAccount());
-                            }else{
-                                operaCondition.setYesterIncomeAccount(0.0);
-                            }
-                            operaCondition.setYesterProfit(operaCondition.getYesterIncomeAccount() - operaCondition.getYesterCostAccount());
+                           //收入
+                           if (condition.getIncomeAccount() != null) {
+                               operaCondition.setYesterTotalIncomeAccount(condition.getIncomeAccount());
+                           } else {
+                               operaCondition.setYesterTotalIncomeAccount(0.0);
+                           }
+                           operaCondition.setYesterTotalProfit(operaCondition.getYesterTotalIncomeAccount() - operaCondition.getYesterTotalCostAccount());
+                           //请求上有的数量
+                           if (condition.getCostCount() != null){
+                               operaCondition.setYesterdayCostCount(condition.getCostCount());
+                           }else {
+                               operaCondition.setYesterdayCostCount(0);
+                           }
 
-                            if (operaCondition.getYesterProfit() != 0.0){
-                                operaCondition.setProfitPercent(PercentUtils.getPercent(operaCondition.getCurrProfit(), operaCondition.getYesterProfit()));
-                            }
-                            if (operaCondition.getYesterCostAccount() != 0.0){
-                                operaCondition.setCostPercent(PercentUtils.getPercent(operaCondition.getCurrCostAccount(), operaCondition.getYesterCostAccount()));
-                                System.out.println(operaCondition.getCostPercent());
-                            }
-                            if (operaCondition.getYesterIncomeAccount() != 0.0){
-                                operaCondition.setIncomePercent(PercentUtils.getPercent(operaCondition.getCurrIncomeAccount(), operaCondition.getYesterIncomeAccount()));
-                            }
+                           //下游请求的数量
+                           if (condition.getIncomeCount() != null){
+                               operaCondition.setYesterdayIncomeCount(condition.getIncomeCount());
+                           }else{
+                               operaCondition.setYesterdayIncomeCount(0);
+                           }
+                       }
+                   }
+               }
 
-                        }
-                    }
-                }else{
-                    operaCondition.setYesterIncomeAccount(0.0);
-                    operaCondition.setYesterCostAccount(0.0);
-                    operaCondition.setYesterProfit(0.0);
-                }
+               //昨天
+               if (yestConditionList != null){
+                   for (OperaCondition yestcondition : yestConditionList) {
+                       if (ati == yestcondition.getApiTypeId() && sti == yestcondition.getSubTypeId()){
+                           //成本
+                           if (yestcondition.getCostAccount() != null) {
+                               operaCondition.setYesterCostAccount(yestcondition.getCostAccount());
+                           }else {
+                               operaCondition.setYesterCostAccount(0.0);
+                           }
+                           //收入
+                           if (yestcondition.getIncomeAccount() != null){
+                               operaCondition.setYesterIncomeAccount(yestcondition.getIncomeAccount());
+                           }else {
+                               operaCondition.setYesterIncomeAccount(0.0);
+                           }
+                           operaCondition.setYesterProfit(operaCondition.getYesterIncomeAccount() - operaCondition.getYesterCostAccount());
 
-                if (yesterdayConditionList != null){
-                    for (OperaCondition yestcondition : yesterdayConditionList) {
-                        Integer apiTypeId = yestcondition.getApiTypeId();
-                        Integer subTypeId = yestcondition.getSubTypeId();
-                        if (ati == apiTypeId && sti == subTypeId){
-                            if (yestcondition.getCostAccount() != null){
-                                operaCondition.setYesterCostAccount(yestcondition.getCostAccount());
-                            }else{
-                                operaCondition.setYesterCostAccount(0.0);
-                            }
-                            if (yestcondition.getIncomeAccount() != null){
-                                operaCondition.setYesterIncomeAccount(yestcondition.getIncomeAccount());
-                            }else{
-                                operaCondition.setYesterIncomeAccount(0.0);
-                            }
-                            operaCondition.setYesterProfit(operaCondition.getYesterIncomeAccount() - operaCondition.getYesterCostAccount());
-                        }
-                    }
-                }else{
-                    operaCondition.setYesterIncomeAccount(0.0);
-                    operaCondition.setYesterCostAccount(0.0);
-                }
-            }
-            return  currConditionList;
-        }else{
+                           //成本同比
+                           if (operaCondition.getYesterCostAccount() != 0.0){
+                               operaCondition.setCostPercent(PercentUtils.getPercent(operaCondition.getCurrCostAccount(),operaCondition.getYesterCostAccount()));
+                           }
 
-            if (yestConditionList != null){
-                for (OperaCondition condition : yestConditionList) {
-                    condition.setCurrProfit(0.0);
-                    condition.setCurrIncomeAccount(0.0);
-                    condition.setCurrCostAccount(0.0);
-                    if (condition.getCostAccount() != null){
-                        condition.setYesterCostAccount(condition.getCostAccount());
-                    }else{
-                        condition.setYesterCostAccount(0.0);
-                    }
-                    if (condition.getIncomeAccount() != null){
-                        condition.setYesterIncomeAccount(condition.getIncomeAccount());
-                    }else{
-                        condition.setYesterIncomeAccount(0.0);
-                    }
-                    condition.setYesterProfit(condition.getYesterIncomeAccount() - condition.getYesterCostAccount());
-                    if (condition.getYesterProfit() != 0.0){
-                        condition.setProfitPercent(PercentUtils.getPercent(condition.getCurrProfit(), condition.getYesterProfit()));
-                    }
-                    if (condition.getYesterCostAccount() != 0.0){
-                        condition.setCostPercent(PercentUtils.getPercent(condition.getCurrCostAccount(), condition.getYesterCostAccount()));
-                    }
-                    if (condition.getYesterIncomeAccount() != 0.0){
-                        condition.setIncomePercent(PercentUtils.getPercent(condition.getCurrIncomeAccount(), condition.getYesterIncomeAccount()));
-                    }
+                           //收入同比
+                           if (operaCondition.getYesterIncomeAccount() != 0.0){
+                               operaCondition.setIncomePercent(PercentUtils.getPercent(operaCondition.getCurrIncomeAccount(),operaCondition.getYesterIncomeAccount()));
+                           }
 
+                           //利润同比
+                           if (operaCondition.getYesterProfit() != 0.0){
+                               operaCondition.setProfitPercent(PercentUtils.getPercent(operaCondition.getCurrProfit(),operaCondition.getYesterProfit()));
+                           }
 
-                    if (yesterdayConditionList != null){
-                        for (OperaCondition yestcondition : yesterdayConditionList) {
+                           //请求上游的数量
+                           if (yestcondition.getCostCount() != null){
+                               operaCondition.setYestCostCount(yestcondition.getCostCount());
+                           }else {
+                               operaCondition.setYestCostCount(0);
+                           }
 
-                            if (condition.getApiTypeId() == yestcondition.getApiTypeId() && condition.getSubTypeId() == yestcondition.getSubTypeId()){
+                           //下游请求的数量
+                           if (yestcondition.getIncomeCount() != null){
+                               operaCondition.setYestIncomeCount(yestcondition.getIncomeCount());
+                           }else{
+                               operaCondition.setYestIncomeCount(0);
+                           }
+                       }
+                   }
+               }
+           }
 
-                                if (yestcondition.getCostAccount() != null){
-                                    condition.setYesterCostAccount(yestcondition.getCostAccount());
-                                }else{
-                                    condition.setYesterCostAccount(0.0);
-                                }
-                                if (yestcondition.getIncomeAccount() != null){
-                                    condition.setYesterIncomeAccount(yestcondition.getIncomeAccount());
-                                }else{
-                                    condition.setYesterIncomeAccount(0.0);
-                                }
-                                condition.setYesterProfit(condition.getYesterIncomeAccount() - condition.getYesterCostAccount());
-                            }
-                        }
-                        return yestConditionList;
-                    }else{
-                        condition.setYesterIncomeAccount(0.0);
-                        condition.setYesterCostAccount(0.0);
-                    }
-                }
-                return yestConditionList;
-            }else{
-                return null;
-            }
-        }
+       }
+       return currConditionList;
     }
 
 
     /**
-     * 获取此时的收入
+     * 获取今天此时的收入
      * @return
      */
     @Override
     public List<CustomerIncome> getCurrCustomerIncomeCondition(Map<String, Object>map) {
-        String currTime = DateUtils.currHour();
-        String currDawn = DateUtils.currDawn();
-        map.put("Dawn", currDawn);
-        map.put("currTime", currTime);
-        List<CustomerIncome> customerIncomeCondition = operaConditionMapper.getCustomerIncomeCondition(map);
-        if (customerIncomeCondition != null && !customerIncomeCondition.contains(null)){
-            for (CustomerIncome customerIncome : customerIncomeCondition) {
-                if (customerIncome.getPrice() != null){
-                    customerIncome.setPrice(customerIncome.getPrice()/100);
-                }
-                if (customerIncome.getAmount() != null){
-                    customerIncome.setAmount(customerIncome.getAmount()/100);
-                }
-            }
-        }else{
-            return new ArrayList<>();
-        }
+        List<CustomerIncome> customerIncomeCondition = getCustomerIncomeCondition(map);
+
         return customerIncomeCondition;
     }
 
     /**
-     * 获取昨天此时的收入
+     * 获取昨天的收入
      * @return
      */
     @Override
     public List<CustomerIncome> getYesterCustomerIncomeCondition(Map<String, Object>map) {
-        String yesterDawn = DateUtils.yesterDawn();
-        String yesterHour = DateUtils.yesterHour();
-        map.put("Dawn", yesterDawn);
-        map.put("currTime", yesterHour);
-        List<CustomerIncome> customerIncomeCondition = operaConditionMapper.getCustomerIncomeCondition(map);
-        if (customerIncomeCondition != null && !customerIncomeCondition.contains(null)){
-            for (CustomerIncome customerIncome : customerIncomeCondition) {
-                if (customerIncome.getPrice() != null){
-                    customerIncome.setPrice(customerIncome.getPrice()/100);
-                }
-                if (customerIncome.getAmount() != null){
-                    customerIncome.setAmount(customerIncome.getAmount()/100);
-                }
-            }
-        }else{
-            return new ArrayList<>();
-        }
+        List<CustomerIncome> customerIncomeCondition = getCustomerIncomeCondition(map);
         return customerIncomeCondition;
 
+    }
+
+    /**
+     * 昨天同时段收入
+     * @param map
+     * @return
+     */
+    @Override
+    public List<CustomerIncome> getYesterHourCustomerIncomeCondition(Map<String, Object> map) {
+        List<CustomerIncome> customerIncomeCondition = getCustomerIncomeCondition(map);
+        return customerIncomeCondition;
     }
 
     /**
@@ -321,23 +283,20 @@ public class OperaConditionServiceImpl implements OperaConditionService {
      */
     @Override
     public List<VendorCost> getYesterVendorCostCondition(Map<String, Object> map) {
-        String yesterDawn = DateUtils.yesterDawn();
-        String yesterHour = DateUtils.yesterHour();
-        map.put("Dawn", yesterDawn);
-        map.put("currTime", yesterHour);
-        List<VendorCost> vendorCostCondition = operaConditionMapper.getVendorCostCondition(map);
-        if (vendorCostCondition != null && !vendorCostCondition.contains(null)){
-            for (VendorCost vendorCost : vendorCostCondition) {
-                if (vendorCost.getCost() != null){
-                    vendorCost.setCost(vendorCost.getCost()/100);
-                }
-                if (vendorCost.getAmount() != null){
-                    vendorCost.setAmount(vendorCost.getAmount()/100);
-                }
-            }
-        }else{
-            return new ArrayList<>();
-        }
+        List<VendorCost> vendorCostCondition = getVendorCostCondition(map);
+        return vendorCostCondition;
+    }
+
+
+    /**
+     * 昨天同时段的支出
+     * @param map
+     * @return
+     */
+    @Override
+    public List<VendorCost> getYesterHourVendorCostCondition(Map<String, Object> map) {
+
+        List<VendorCost> vendorCostCondition = getVendorCostCondition(map);
         return vendorCostCondition;
     }
 
@@ -348,29 +307,14 @@ public class OperaConditionServiceImpl implements OperaConditionService {
      */
     @Override
     public List<VendorCost> getCurrVendorCostCondition(Map<String, Object> map) {
-        String currTime = DateUtils.currHour();
-        String currDawn = DateUtils.currDawn();
-        map.put("Dawn", currDawn);
-        map.put("currTime", currTime);
-        List<VendorCost> vendorCostCondition = operaConditionMapper.getVendorCostCondition(map);
-        if (vendorCostCondition != null && !vendorCostCondition.contains(null)){
-            for (VendorCost vendorCost : vendorCostCondition) {
-                if (vendorCost.getCost() != null){
-                    vendorCost.setCost(vendorCost.getCost()/100);
-                }
-                if (vendorCost.getAmount() != null){
-                    vendorCost.setAmount(vendorCost.getAmount()/100);
-                }
-            }
-        }else{
-            return new ArrayList<>();
-        }
+
+        List<VendorCost> vendorCostCondition = getVendorCostCondition(map);
         return vendorCostCondition;
     }
 
 
     /**
-     * 收入
+     * 获取今天凌晨到现在前一小时的收入
      * @param map
      * @return
      */
@@ -389,7 +333,7 @@ public class OperaConditionServiceImpl implements OperaConditionService {
     }
 
     /**
-     * 消费
+     * 获取今天凌晨到当前前一小时的成本
      * @param map
      * @return
      */
@@ -405,6 +349,52 @@ public class OperaConditionServiceImpl implements OperaConditionService {
             return amount;
         }
         return amount;
+    }
+
+    /**
+     * 按时间和产品获取成本
+     * @param map
+     * @return
+     */
+    public List<VendorCost> getVendorCostCondition (Map<String, Object> map){
+        List<VendorCost> vendorCostCondition = operaConditionMapper.getVendorCostCondition(map);
+
+        if (vendorCostCondition != null && !vendorCostCondition.contains(null)){
+            for (VendorCost vendorCost : vendorCostCondition) {
+                if (vendorCost.getCost() != null){
+                    vendorCost.setCost(vendorCost.getCost()/100);
+                }
+                if (vendorCost.getAmount() != null){
+                    vendorCost.setAmount(vendorCost.getAmount()/100);
+                }
+            }
+        }else{
+            return new ArrayList<>();
+        }
+        return vendorCostCondition;
+    }
+
+    /**
+     * 按时间产品获取收入
+     * @param map
+     * @return
+     */
+    public  List<CustomerIncome> getCustomerIncomeCondition(Map<String, Object> map){
+        List<CustomerIncome> customerIncomeCondition = operaConditionMapper.getCustomerIncomeCondition(map);
+
+        if (customerIncomeCondition != null && !customerIncomeCondition.contains(null)){
+            for (CustomerIncome customerIncome : customerIncomeCondition) {
+                if (customerIncome.getPrice() != null){
+                    customerIncome.setPrice(customerIncome.getPrice()/100);
+                }
+                if (customerIncome.getAmount() != null){
+                    customerIncome.setAmount(customerIncome.getAmount()/100);
+                }
+            }
+        }else{
+            return new ArrayList<>();
+        }
+        return customerIncomeCondition;
     }
 
     /**
@@ -437,6 +427,9 @@ public class OperaConditionServiceImpl implements OperaConditionService {
                             if (ioc.getIncomeAccount() != null){
                                 operaCondition.setIncomeAccount(ioc.getIncomeAccount()/100.0);
                             }
+                            if (ioc.getIncomeCount() != null){
+                                operaCondition.setIncomeCount(ioc.getIncomeCount());
+                            }
                         }
                     }
                 }
@@ -446,6 +439,10 @@ public class OperaConditionServiceImpl implements OperaConditionService {
                         if (ati == ooc.getApiTypeId() && sti == ooc.getSubTypeId()) {
                             if (ooc.getCostAccount() != null) {
                                 operaCondition.setCostAccount(ooc.getCostAccount() / 100);
+                            }
+
+                            if (ooc.getCostCount() != null){
+                                operaCondition.setCostCount(ooc.getCostCount());
                             }
                         }
                     }

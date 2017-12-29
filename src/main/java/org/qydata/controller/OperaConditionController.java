@@ -4,6 +4,7 @@ import org.qydata.dst.CustomerIncome;
 import org.qydata.dst.OperaCondition;
 import org.qydata.dst.VendorCost;
 import org.qydata.service.OperaConditionService;
+import org.qydata.tools.DateUtils;
 import org.qydata.tools.JsonUtils;
 import org.qydata.tools.OrderUtils;
 import org.qydata.tools.OrderVendorAmount;
@@ -39,6 +40,11 @@ public class OperaConditionController {
         return json;
     }
 
+    /**
+     * 查询近两天消费的产品的情况
+     * @param model
+     * @return
+     */
     @RequestMapping("/api_operation_condition")
     public String getApiOperaCondition(Model model){
         List<OperaCondition> apiOperaConditionList = operaConditionServiceImpl.getApiOperaCondition();
@@ -48,6 +54,12 @@ public class OperaConditionController {
         return  "/finance/api-response-condition";
     }
 
+    /**
+     * 按产品查询当前收入情况
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/getCurrCustomerIncomeCondition")
     @ResponseBody
     public String getCurrCustomerIncomeCondition(HttpServletRequest request, HttpServletResponse response){
@@ -55,6 +67,10 @@ public class OperaConditionController {
         String subTypeId = request.getParameter("subTypeId");
 
         Map<String, Object>map = new HashMap<String, Object>();
+        String currTime = DateUtils.currHour();
+        String currDawn = DateUtils.currDawn();
+        map.put("Dawn", currDawn);
+        map.put("currTime", currTime);
         map.put("apiTypeId", apiTypeId);
         if (subTypeId != null){
             map.put("subTypeId", subTypeId);
@@ -67,7 +83,12 @@ public class OperaConditionController {
         return json;
     }
 
-
+    /**
+     * 按产品查昨天的收入情况
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/getYestCustomerIncomeCondition")
     @ResponseBody
     public String getYestCustomerIncomeCondition(HttpServletRequest request, HttpServletResponse response){
@@ -75,6 +96,10 @@ public class OperaConditionController {
         String subTypeId = request.getParameter("subTypeId");
 
         Map<String, Object>map = new HashMap<String, Object>();
+        String yesterDawn = DateUtils.yesterDawn();
+        String currDawn = DateUtils.currDawn();
+        map.put("Dawn", yesterDawn);
+        map.put("currTime", currDawn);
         map.put("apiTypeId", apiTypeId);
         if (subTypeId != null){
             map.put("subTypeId", subTypeId);
@@ -88,14 +113,53 @@ public class OperaConditionController {
         return json;
     }
 
+    /**
+     * 昨天同时段收入
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getYestHourCustomerIncomeCondition")
+    @ResponseBody
+    public String getYestHourCustomerIncomeCondition(HttpServletRequest request, HttpServletResponse response){
+        String apiTypeId = request.getParameter("typeId");
+        String subTypeId = request.getParameter("subTypeId");
+        String yesterDawn = DateUtils.yesterDawn();
+        String yesterHour = DateUtils.yesterHour();
 
+        Map<String, Object>map = new HashMap<String, Object>();
+        map.put("Dawn", yesterDawn);
+        map.put("currTime", yesterHour);
+        map.put("apiTypeId", apiTypeId);
+        if (subTypeId != null){
+            map.put("subTypeId", subTypeId);
+        }
+        List<CustomerIncome> yestCustomerIncomes = operaConditionServiceImpl.getYesterHourCustomerIncomeCondition(map);
+
+        OrderCustomerAmount oca = new OrderCustomerAmount();
+        Collections.sort(yestCustomerIncomes, oca);
+        String json = JsonUtils.listToJson(yestCustomerIncomes);
+
+        return json;
+    }
+
+    /**
+     * 按产品查询昨天的成本
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/getYestVendorCostCondition")
     @ResponseBody
     public String getYestVendorCostCondition(HttpServletRequest request, HttpServletResponse response){
         String apiTypeId = request.getParameter("typeId");
         String subTypeId = request.getParameter("subTypeId");
+        String yesterDawn = DateUtils.yesterDawn();
+        String currDawn = DateUtils.currDawn();
 
         Map<String, Object>map = new HashMap<String, Object>();
+        map.put("Dawn", yesterDawn);
+        map.put("currTime", currDawn);
         map.put("apiTypeId", apiTypeId);
         if (subTypeId != null){
             map.put("subTypeId", subTypeId);
@@ -109,13 +173,53 @@ public class OperaConditionController {
         return json;
     }
 
+    /**
+     * 按产品查询昨天同时段的成本
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getYestHourVendorCostCondition")
+    @ResponseBody
+    public String getYestHourVendorCostCondition(HttpServletRequest request, HttpServletResponse response){
+        String apiTypeId = request.getParameter("typeId");
+        String subTypeId = request.getParameter("subTypeId");
+        String yesterDawn = DateUtils.yesterDawn();
+        String yesterHour = DateUtils.yesterHour();
+
+        Map<String, Object>map = new HashMap<String, Object>();
+        map.put("Dawn", yesterDawn);
+        map.put("currTime", yesterHour);
+        map.put("apiTypeId", apiTypeId);
+        if (subTypeId != null){
+            map.put("subTypeId", subTypeId);
+        }
+        List<VendorCost> yestVendorCostCondition = operaConditionServiceImpl.getYesterHourVendorCostCondition(map);
+
+        OrderVendorAmount ova = new OrderVendorAmount();
+        Collections.sort(yestVendorCostCondition, ova);
+        String json = JsonUtils.listToJson(yestVendorCostCondition);
+
+        return json;
+    }
+
+    /**
+     * 按产品查询当天的成品
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/getCurrVendorCostCondition")
     @ResponseBody
     public String getCurrVendorCostCondition(HttpServletRequest request, HttpServletResponse response){
         String apiTypeId = request.getParameter("typeId");
         String subTypeId = request.getParameter("subTypeId");
+        String currTime = DateUtils.currHour();
+        String currDawn = DateUtils.currDawn();
 
         Map<String, Object>map = new HashMap<String, Object>();
+        map.put("Dawn", currDawn);
+        map.put("currTime", currTime);
         map.put("apiTypeId", apiTypeId);
         if (subTypeId != null){
             map.put("subTypeId", subTypeId);

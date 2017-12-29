@@ -18,7 +18,13 @@ public interface OperaConditionService {
 
     public List<CustomerIncome> getYesterCustomerIncomeCondition(Map<String, Object>map);
 
+    public List<CustomerIncome> getYesterHourCustomerIncomeCondition(Map<String, Object>map);
+
     public List<VendorCost> getYesterVendorCostCondition(Map<String, Object>map);
 
+    public List<VendorCost> getYesterHourVendorCostCondition(Map<String, Object>map);
+
     public List<VendorCost> getCurrVendorCostCondition(Map<String, Object>map);
+
+
 }

@@ -27,6 +27,13 @@ public class OperaCondition {
     private String profitPercent;
     private String incomePercent;
     private String costPercent;
-
+    private Integer incomeCount;
+    private Integer costCount;
+    private Integer currIncomeCount;
+    private Integer currCostCount;
+    private Integer yestIncomeCount;
+    private Integer yestCostCount;
+    private Integer yesterdayIncomeCount;
+    private Integer yesterdayCostCount;
 
 }

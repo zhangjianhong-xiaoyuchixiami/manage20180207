@@ -13,6 +13,8 @@
         <result property="subTypeName" column="subTypeName"/>
         <result property="incomeAccount" column="incomeAccount"/>
         <result property="costAccount" column="costAccount"/>
+        <result property="costCount" column="costCount"/>
+        <result property="incomeCount" column="incomeCount"/>
 
     </resultMap>
 
@@ -21,7 +23,7 @@
         a.customerId,
         a.apiTypeId,
         a.subTypeId,
-        IFNULL(sum(a.consumeCount * b.price),0) IncomeAccount
+        IFNULL(sum(a.consumeCount * b.price),0) incomeAccount
         FROM
         qyfinance.CustomerConsumeHourCount a
         LEFT JOIN
@@ -66,7 +68,8 @@
 
 <!--查询总成本-->
     <select id="getCostAccount" parameterType="map" resultMap="countMap">
-        SELECT IFNULL(a.consumeAccount * b.cost, 0) costAccount
+        SELECT
+        IFNULL(a.consumeAccount * b.cost, 0) costAccount
         FROM qyfinance.ApiConsumeHourCount a
         LEFT JOIN qydata.Api b ON a.apiId = b.id
         WHERE
@@ -135,14 +138,16 @@
         SELECT
         a.typeId apiTypeId,
         a.subTypeId,
-        IFNULL(SUM(a.costAccount), 0) costAccount
+        sum(a.consumeAccount) costCount,
+        SUM(a.costAccount) costAccount
         FROM
         (
         SELECT
         a.customerId,
         a.typeId,
         a.subTypeId,
-        IFNULL(a.consumeAccount * b.cost, 0) costAccount
+        a.consumeAccount,
+        a.consumeAccount * b.cost costAccount
         FROM
         qyfinance.ApiConsumeHourCount a
         LEFT JOIN qydata.Api b
@@ -166,7 +171,8 @@
         select
         a.apiTypeId,
         a.subTypeId,
-        IFNULL(sum(a.consumeCount * b.price),0) IncomeAccount
+        sum(a.consumeCount) incomeCount,
+        sum(a.consumeCount * b.price) incomeAccount
         FROM
         qyfinance.CustomerConsumeHourCount a
         LEFT JOIN
@@ -226,7 +232,7 @@
         a.subTypeId,
         a.consumeAccount,
         b.price,
-        a.consumeAccount * b.price amount
+        IFNULL(a.consumeAccount * b.price, 0) amount
         FROM
         (
         SELECT
@@ -255,6 +261,8 @@
         a.customerId,a.apiTypeId,a.subTypeId
         ) a
         LEFT JOIN qydata.CompanyApi b ON a.companyId = b.companyId
+        AND a.apiTypeId = b.apiTypeId
+        AND a.subTypeId = b.subTypeId
         GROUP BY
         a.customerId,
         a.apiTypeId,

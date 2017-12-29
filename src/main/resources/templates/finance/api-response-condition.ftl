@@ -42,44 +42,64 @@
                                     <tr>
                                         <th>产品名称</th>
                                         <th>周期</th>
+
                                         <th>总收入</th>
-                                        <th>总收入同比</th>
+                                        <th>下游请求数量</th>
                                         <th>总成本</th>
-                                        <th>总成本同比</th>
+                                        <th>请求上游数量</th>
                                         <th>毛利润</th>
-                                        <th>毛利润同比</th>
                                     </tr>
+
+
                                     </thead>
                                     <tbody>
                                         <#if apiOperaCondition??>
                                             <#list apiOperaCondition as condition>
                                                 <tr>
-                                                    <td data-title="产品名称" rowspan="2" style="text-align: center" >
+                                                    <td data-title="产品名称" rowspan="4" style="text-align: center" >
                                                         <#if condition.apiTypeName??>
-                                                            ${condition.apiTypeName!'未知'}
-                                                                <#if condition.subTypeName ??>
-                                                                    --${condition.subTypeName!''}
-                                                                </#if>
+                                                        ${condition.apiTypeName!'未知'}
+                                                            <#if condition.subTypeName ??>
+                                                                --${condition.subTypeName!''}
+                                                            </#if>
                                                         </#if>
                                                     </td>
                                                     <td data-title="周期">今天</td>
                                                     <td data-title="总收入"><a href="#curr_Customer_Income_Condition" onclick="currentConsumerIncomeCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看当天客户消费情况">${condition.currIncomeAccount}</a></td>
-                                                    <td data-title="总收入同比" rowspan="2" style="text-align: center" >${condition.incomePercent!"昨日同时段该产品无收入"}</td>
+                                                    <td data-title="下游请求数量">${condition.currIncomeCount}</td>
                                                     <td data-title="总成本" ><a href="#curr_vendor_cost_Condition" onclick="currentVendorCostCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看当天供应商消费情况">${condition.currCostAccount}</a></td>
-                                                    <td data-title="总成本同比" rowspan="2" style="text-align: center" >${condition.costPercent!"昨日同时段该产品无支出"}</td>
+                                                    <td data-title="请求上游数量">${condition.currCostCount}</td>
                                                     <td data-title="毛利润" >${condition.currProfit}</td>
-                                                    <td data-title="毛利润同比" rowspan="2" style="text-align: center" >${condition.profitPercent!"昨日同时段该产品无利润"}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-td-none"></td>
-                                                    <td data-title="周期">昨天</td>
-                                                    <td data-title="总收入" ><a href="#yest_Customer_Income_Condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayConsumerIncomeCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天客户消费情况">${condition.yesterIncomeAccount}</a></td>
-                                                    <td class="table-td-none"></td>
-                                                    <td data-title="总成本" ><a href="#yest_vendor_cost_condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayVendorCostCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天供应商消费情况">${condition.yesterCostAccount}</a></td>
-                                                    <td class="table-td-none"></td>
+                                                    <td data-title="周期">昨天同时段</td>
+                                                    <td data-title="总收入" ><a href="#yest_hour_Customer_Income_Condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayHourConsumerIncomeCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天客户消费情况">${condition.yesterIncomeAccount}</a></td>
+                                                    <td data-title="下游请求数量">${condition.yestIncomeCount}</td>
+                                                    <td data-title="总成本" ><a href="#yest_hour_vendor_cost_condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayHourVendorCostCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天供应商消费情况">${condition.yesterCostAccount}</a></td>
+                                                    <td data-title="请求上游数量">${condition.yestCostCount}</td>
                                                     <td data-title="毛利润" >${condition.yesterProfit}</td>
-                                                    <td class="table-td-none"></td>
                                                 </tr>
+                                                <tr>
+                                                    <td class="table-td-none"></td>
+                                                    <td data-title="周期">昨天全天</td>
+                                                    <td data-title="总收入" ><a href="#yest_Customer_Income_Condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayConsumerIncomeCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天客户消费情况">${condition.yesterTotalIncomeAccount}</a></td>
+                                                    <td data-title="下游请求数量">${condition.yesterdayIncomeCount}</td>
+                                                    <td data-title="总成本" ><a href="#yest_vendor_cost_condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayVendorCostCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天供应商消费情况">${condition.yesterTotalCostAccount}</a></td>
+                                                    <td data-title="下游请求数量">${condition.yesterdayCostCount}</td>
+                                                    <td data-title="毛利润" >${condition.yesterTotalProfit}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="table-td-none"></td>
+                                                    <td data-title="同比">今天与昨天同时段同比</td>
+                                                    <td data-title="总收入同比" rowspan="1" style="text-align: center" >${condition.incomePercent!"昨日同时段该产品无收入"}</td>
+                                                    <td class="table-td-none"></td>
+                                                    <td data-title="总成本同比" rowspan="1" style="text-align: center" >${condition.costPercent!"昨日同时段该产品无支出"}</td>
+                                                    <td class="table-td-none"></td>
+                                                    <td data-title="毛利润同比" rowspan="1" style="text-align: center" >${condition.profitPercent!"昨日同时段该产品无利润"}</td>
+                                                </tr>
+
                                             </#list>
                                         </#if>
                                     </tbody>
@@ -140,6 +160,33 @@
                         </div>
                     </div>
 
+
+
+
+                <#--客户昨天同时段消费弹框-->
+                    <div id="yest_hour_Customer_Income_Condition" class="modal hide fade myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_5" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 id="myModalLabel_5"></span>昨天客户消费情况</h4>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="yestHourConsumerIncomeCondition">
+                                <thead>
+                                <tr>
+                                    <th>客户名称</th>
+                                    <th>扣费条数</th>
+                                    <th>单价</th>
+                                    <th>总消费额（单位：元）</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 <#--供应商当天消费弹框-->
                     <div id="curr_vendor_cost_Condition" class="modal hide fade myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_3" aria-hidden="true">
                         <div class="modal-header">
@@ -164,7 +211,7 @@
                         </div>
                     </div>
 
-                <#--供应商昨天消费弹框-->
+                <#--供应商昨天同时段消费弹框-->
                     <div id="yest_vendor_cost_condition" class="modal hide fade myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_4" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -174,6 +221,33 @@
                         <div class="modal-body">
 
                             <table class="table table-striped table-hover table-bordered table-condensed" id="yestVendorCostCondition">
+                                <thead>
+                                <tr>
+                                    <th>供应商名称</th>
+                                    <th>扣费条数</th>
+                                    <th>单价</th>
+                                    <th>总成本额（单位：元）</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+
+                <#--供应商昨天消费弹框-->
+                    <div id="yest_hour_vendor_cost_condition" class="modal hide fade myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_6" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 id="myModalLabel_6">昨天供应商消费情况</h4>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="yestHourVendorCostCondition">
                                 <thead>
                                 <tr>
                                     <th>供应商名称</th>

@@ -15,16 +15,15 @@ var ApiConsumeCondition = function () {
                     {"bSortable": false},
                     {"bSortable": false},
                     {"bSortable": false},
-                    {"bSortable": false},
                     {"bSortable": false}
                 ],
                 "bSort": false,
                 "aLengthMenu": [
-                    [10, 15, 20, -1],
-                    [10, 15, 20, "全部"] // change per page values here
+                    [12,24, 36, -1],
+                    [12, 24, 36, "全部"] // change per page values here
                 ],
                 "bFilter" : false, //设置全文搜索框，默认true
-                "iDisplayLength": 15, //每页显示多少行
+                "iDisplayLength": 24, //每页显示多少行
                 "sDom": "t<'row-fluid'<'span6'il><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 "oLanguage" : {  //设置语言

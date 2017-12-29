@@ -23,6 +23,14 @@ function currentConsumerIncomeCondition(typeId, subTypeId) {
                     for (var i = 0; i < result.length; i++) {
                         var myContent;
 
+                        if (result[0].subTypeName != null){
+
+                            $('#myModalLabel_1').text(result[0].apiTypeName + "--" + result[0].subTypeName)
+                        }else{
+
+                            $('#myModalLabel_1').html(result[0].apiTypeName )
+                        }
+
                         if (result[i].price == null) {
                             myContent = "<tr>" +
                                 "<td>" + result[i].customerName+"</td>" +
@@ -115,8 +123,6 @@ function yesterdayConsumerIncomeCondition(typeId, subTypeId) {
         }
     });
 }
-
-
 function currentVendorCostCondition(typeId, subTypeId) {
 
     // $("#currVendorCostCondition").empty();
@@ -142,7 +148,7 @@ function currentVendorCostCondition(typeId, subTypeId) {
                     for (var i = 0; i < result.length; i++) {
                         var myContent;
 
-                        if (result[i].vendor.cost == null) {
+                        if (result[i].cost == null) {
                             myContent = "<tr>" +
                                 "<td>" + result[i].vendorName + "</td>" +
                                 "<td>" + result[i].consumeAccount + "</td>" +
@@ -175,7 +181,6 @@ function currentVendorCostCondition(typeId, subTypeId) {
         }
     });
 }
-
 
 function yesterdayVendorCostCondition(typeId, subTypeId) {
 
@@ -236,4 +241,128 @@ function yesterdayVendorCostCondition(typeId, subTypeId) {
     });
 }
 
+
+
+
+function yesterdayHourConsumerIncomeCondition(typeId, subTypeId) {
+
+    // $("#yestConsumerIncomeCondition").empty();
+    /*加载消费数据*/
+    $.ajax({
+        type: "post",
+        url: "/operation/getYestHourCustomerIncomeCondition",
+        data: {"typeId": typeId, "subTypeId": subTypeId},
+        dataType: "json",
+        beforeSend: function () {
+            var myContent = "<tr>" +
+                "<td rowspan='4'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "</tr>";
+            $("#yestHourConsumerIncomeCondition tbody").append(myContent);
+        },
+        success: function (result) {
+
+            $("#yestHourConsumerIncomeCondition tbody").empty();
+
+            if (result != null ) {
+
+                if (result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        var myContent;
+
+                        if (result[i].price == null) {
+                            myContent = "<tr>" +
+                                "<td>" + result[i].customerName + "</td>" +
+                                "<td>" + result[i].consumeAccount + "</td>" +
+                                "<td>" + '未知' + "</td>" +
+                                "<td>" + result[i].amount + "</td>" +
+                                "</tr>";
+                        } else {
+                            myContent = "<tr>" +
+                                "<td>" + result[i].customerName + "</td>" +
+                                "<td>" + result[i].consumeAccount + "</td>" +
+                                "<td>" + result[i].price + "</td>" +
+                                "<td>" + result[i].amount + "</td>" +
+                                "</tr>";
+                        }
+                        $("#yestHourConsumerIncomeCondition tbody").append(myContent);
+                    }
+                } else {
+                    var myContent = "<tr>" +
+                        "<td rowspan='4'>" + '无消费记录' + "</td>" +
+                        "</tr>";
+                    $("#yestHourConsumerIncomeCondition tbody").append(myContent);
+                }
+            } else {
+                var myContent = "<tr>" +
+                    "<td rowspan='4'colspan=\"4\">" + '无消费记录' + "</td>" +
+                    "</tr>";
+                $("#yestHourConsumerIncomeCondition tbody").append(myContent);
+            }
+
+        }
+    });
+}
+
+
+
+
+
+function yesterdayHourVendorCostCondition(typeId, subTypeId) {
+
+    // $("#yestConsumerIncomeCondition").empty();
+    /*加载消费数据*/
+    $.ajax({
+        type: "post",
+        url: "/operation/getYestHourVendorCostCondition",
+        data: {"typeId": typeId, "subTypeId": subTypeId},
+        dataType: "json",
+        beforeSend: function () {
+            var myContent = "<tr>" +
+                "<td rowspan='4'>" + '正在加载，请稍后' + "<span class='loading'></span></td>" +
+                "</tr>";
+            $("#yestHourVendorCostCondition tbody").append(myContent);
+        },
+        success: function (result) {
+
+            $("#yestHourVendorCostCondition tbody").empty();
+
+            if (result != null) {
+
+                if (result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        var myContent;
+
+                        if (result[i].cost == null) {
+                            myContent = "<tr>" +
+                                "<td>" + result[i].vendorName + "</td>" +
+                                "<td>" + result[i].consumeAccount + "</td>" +
+                                "<td>" + '未知' + "</td>" +
+                                "<td>" + result[i].amount + "</td>" +
+                                "</tr>";
+                        } else {
+                            myContent = "<tr>" +
+                                "<td>" + result[i].vendorName + "</td>" +
+                                "<td>" + result[i].consumeAccount + "</td>" +
+                                "<td>" + result[i].cost + "</td>" +
+                                "<td>" + result[i].amount + "</td>" +
+                                "</tr>";
+                        }
+                        $("#yestHourVendorCostCondition tbody").append(myContent);
+                    }
+                } else {
+                    var myContent = "<tr>" +
+                        "<td rowspan='4'>" + '无消费记录' + "</td>" +
+                        "</tr>";
+                    $("#yestHourVendorCostCondition tbody").append(myContent);
+                }
+            } else {
+                var myContent = "<tr>" +
+                    "<td rowspan='4'colspan=\"4\">" + '无消费记录' + "</td>" +
+                    "</tr>";
+                $("#yestHourVendorCostCondition tbody").append(myContent);
+            }
+
+        }
+    });
+}
 
