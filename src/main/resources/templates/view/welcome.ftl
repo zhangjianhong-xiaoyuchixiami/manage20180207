@@ -25,9 +25,9 @@
 
                         <ul class="nav nav-tabs">
 
-                            <li class="active"><a href="#tab_1" data-toggle="tab">近两日经营数据表格</a></li>
+                            <li ><a href="#tab_1" data-toggle="tab">近两日经营数据表格</a></li>
 
-                            <li><a class="" href="#tab_2" data-toggle="tab">近一周经营状况折线图</a></li>
+                            <li class="active"><a href="#tab_2" data-toggle="tab">近一周经营状况折线图</a></li>
 
                         </ul>
 
@@ -37,7 +37,7 @@
 
                                 <@shiro.hasAnyRoles name="backAdmin">
 
-                                <div class="tab-pane active" id="tab_1">
+                                <div class="tab-pane" id="tab_1">
 
                                     <div class="row-fluid">
 
@@ -274,7 +274,7 @@
                                 </div>
                                 </@shiro.hasAnyRoles>
 
-                                <div class="tab-pane " id="tab_2">
+                                <div class="tab-pane active" id="tab_2">
 
                                     <div class="row-fluid">
 
@@ -408,6 +408,9 @@
                         }]
                     },
 
+                    exporting:{
+                        enabled:false
+                    },
                     series: data.seriesData
 
                 });
