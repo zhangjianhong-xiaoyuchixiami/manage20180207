@@ -254,7 +254,7 @@ public class OperaConditionController {
         JSONObject getObj = new JSONObject();
         getObj.put("xList", jsonArrayX);
         getObj.put("seriesData", jsonArrayS);
-        System.out.println(getObj.toString());
+//        System.out.println(getObj.toString());
         return getObj.toString();
     }
 

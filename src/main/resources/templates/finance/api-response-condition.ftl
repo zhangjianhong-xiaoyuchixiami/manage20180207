@@ -40,14 +40,14 @@
                                 <table class="table table-bordered table-hover table-condensed" id="sample_2">
                                     <thead>
                                     <tr>
-                                        <th>产品名称</th>
-                                        <th>周期</th>
+                                        <th >产品名称</th>
+                                        <th width="130px">周期</th>
 
-                                        <th>总收入</th>
-                                        <th>下游请求数量</th>
-                                        <th>总成本</th>
-                                        <th>请求上游数量</th>
-                                        <th>毛利润</th>
+                                        <th width="118px">总收入</th>
+                                        <th width="118px">下游请求数量</th>
+                                        <th width="118px">总成本</th>
+                                        <th width="118px">请求上游数量</th>
+                                        <th width="118px">毛利润</th>
                                     </tr>
 
 
@@ -93,11 +93,11 @@
                                                 <tr>
                                                     <td class="table-td-none"></td>
                                                     <td data-title="同比">今日与昨日同时段同比</td>
-                                                    <td data-title="总收入同比" rowspan="1" style="text-align: center" >${condition.incomePercent!"昨日同时段该产品无收入"}</td>
+                                                    <td data-title="总收入同比" rowspan="1" style="text-align: left" >${condition.incomePercent!"昨日同时段该产品无收入"}</td>
                                                     <td class="table-td-none"></td>
-                                                    <td data-title="总成本同比" rowspan="1" style="text-align: center" >${condition.costPercent!"昨日同时段该产品无支出"}</td>
+                                                    <td data-title="总成本同比" rowspan="1" colspan="2" style="text-align: right" >${condition.costPercent!"昨日同时段该产品无支出"}</td>
                                                     <td class="table-td-none"></td>
-                                                    <td data-title="毛利润同比" rowspan="1" colspan="3" style="text-align: center" >${condition.profitPercent!"昨日同时段该产品无利润"}</td>
+                                                    <td data-title="毛利润同比" rowspan="1" colspan="2" style="text-align: right" >${condition.profitPercent!"昨日同时段该产品无利润"}</td>
                                                 </tr>
 
                                             </#list>

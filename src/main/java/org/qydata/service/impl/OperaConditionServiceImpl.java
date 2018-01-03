@@ -491,7 +491,7 @@ public class OperaConditionServiceImpl implements OperaConditionService {
             }
             Collections.reverse(costList);
             lineEntity.setData(costList);
-            lineEntity.setName("成本");
+            lineEntity.setName("支出");
             dataList.add(lineEntity);
         }
 
@@ -504,7 +504,7 @@ public class OperaConditionServiceImpl implements OperaConditionService {
             }
             Collections.reverse(costList1);
             lineEntity1.setData(costList1);
-            lineEntity1.setName("支出");
+            lineEntity1.setName("收入");
             dataList.add(lineEntity1);
         }
 
