@@ -64,7 +64,7 @@
                                                             </#if>
                                                         </#if>
                                                     </td>
-                                                    <td data-title="周期">今天</td>
+                                                    <td data-title="周期">今日</td>
                                                     <td data-title="总收入"><a href="#curr_Customer_Income_Condition" onclick="currentConsumerIncomeCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看当天客户消费情况">${condition.currIncomeAccount}</a></td>
                                                     <td data-title="下游请求数量">${condition.currIncomeCount}</td>
                                                     <td data-title="总成本" ><a href="#curr_vendor_cost_Condition" onclick="currentVendorCostCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="点击查看当天供应商消费情况">${condition.currCostAccount}</a></td>
@@ -73,7 +73,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="table-td-none"></td>
-                                                    <td data-title="周期">昨天同时段</td>
+                                                    <td data-title="周期">昨日同时段</td>
                                                     <td data-title="总收入" ><a href="#yest_hour_Customer_Income_Condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayHourConsumerIncomeCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天客户消费情况">${condition.yesterIncomeAccount}</a></td>
                                                     <td data-title="下游请求数量">${condition.yestIncomeCount}</td>
                                                     <td data-title="总成本" ><a href="#yest_hour_vendor_cost_condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayHourVendorCostCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天供应商消费情况">${condition.yesterCostAccount}</a></td>
@@ -82,7 +82,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="table-td-none"></td>
-                                                    <td data-title="周期">昨天全天</td>
+                                                    <td data-title="周期">昨日全天</td>
                                                     <td data-title="总收入" ><a href="#yest_Customer_Income_Condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayConsumerIncomeCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天客户消费情况">${condition.yesterTotalIncomeAccount}</a></td>
                                                     <td data-title="下游请求数量">${condition.yesterdayIncomeCount}</td>
                                                     <td data-title="总成本" ><a href="#yest_vendor_cost_condition" data-toggle="modal" data-toggle="tooltip" onclick="yesterdayVendorCostCondition(${condition.apiTypeId}, ${condition.subTypeId})" data-placement="bottom" title="点击查看昨天供应商消费情况">${condition.yesterTotalCostAccount}</a></td>
@@ -92,12 +92,12 @@
 
                                                 <tr>
                                                     <td class="table-td-none"></td>
-                                                    <td data-title="同比">今天与昨天同时段同比</td>
+                                                    <td data-title="同比">今日与昨日同时段同比</td>
                                                     <td data-title="总收入同比" rowspan="1" style="text-align: center" >${condition.incomePercent!"昨日同时段该产品无收入"}</td>
                                                     <td class="table-td-none"></td>
                                                     <td data-title="总成本同比" rowspan="1" style="text-align: center" >${condition.costPercent!"昨日同时段该产品无支出"}</td>
                                                     <td class="table-td-none"></td>
-                                                    <td data-title="毛利润同比" rowspan="1" style="text-align: center" >${condition.profitPercent!"昨日同时段该产品无利润"}</td>
+                                                    <td data-title="毛利润同比" rowspan="1" colspan="3" style="text-align: center" >${condition.profitPercent!"昨日同时段该产品无利润"}</td>
                                                 </tr>
 
                                             </#list>

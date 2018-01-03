@@ -21,9 +21,17 @@
 
                 <div class="span12">
 
+
+
                     <div class="tabbable tabbable-custom tabbable-full-width">
 
                         <@shiro.hasAnyRoles name="backAdmin">
+
+
+
+                            <div id="container" style="min-width: 100%; height: 400px; border: solid; margin: 0 auto"></div>
+
+
 
                             <div class="row-fluid">
 
@@ -35,7 +43,7 @@
 
                                             <div class="details">
 
-                                                <div class="desc">当天总收入金额</div>
+                                                <div class="desc">今日总收入金额</div>
 
                                                 <div class="number" id="currIncome"></div>
 
@@ -51,7 +59,7 @@
 
                                             <div class="details">
 
-                                                <div class="desc">当天总成本</div>
+                                                <div class="desc">今日总成本</div>
 
                                                 <div class="number" id="currCost"></div>
 
@@ -66,7 +74,7 @@
                                         <div class="dashboard-stat green">
 
                                             <div class="details">
-                                                <div class="desc">当天毛利润</div>
+                                                <div class="desc">今日毛利润</div>
 
                                                 <div class="number" id="currProfit"></div>
 
@@ -90,7 +98,7 @@
 
                                             <div class="details">
 
-                                                <div class="desc">昨天同时段总收入金额</div>
+                                                <div class="desc">昨日同时段总收入金额</div>
 
                                                 <div class="number" id="yesterIncome"></div>
 
@@ -106,7 +114,7 @@
 
                                             <div class="details">
 
-                                                <div class="desc">昨天同时段总成本</div>
+                                                <div class="desc">昨日同时段总成本</div>
 
                                                 <div class="number" id="yesterCost"></div>
 
@@ -121,7 +129,7 @@
                                         <div class="dashboard-stat green">
 
                                             <div class="details">
-                                                <div class="desc">昨天同时段毛利润</div>
+                                                <div class="desc">昨日同时段毛利润</div>
 
                                                 <div class="number" id="yesterProfit"></div>
 
@@ -145,7 +153,7 @@
 
                                             <div class="details">
 
-                                                <div class="desc">昨天总收入金额</div>
+                                                <div class="desc">昨日总收入金额</div>
 
                                                 <div class="number" id="yesterTotalIncome"></div>
 
@@ -161,7 +169,7 @@
 
                                             <div class="details">
 
-                                                <div class="desc">昨天总成本</div>
+                                                <div class="desc">昨日总成本</div>
 
                                                 <div class="number" id="yesterTotalCost"></div>
 
@@ -176,7 +184,7 @@
                                         <div class="dashboard-stat green">
 
                                             <div class="details">
-                                                <div class="desc">昨天毛利润</div>
+                                                <div class="desc">昨日毛利润</div>
 
                                                 <div class="number" id="yesterTotalProfit"></div>
 
@@ -198,7 +206,7 @@
 
                                         <div class="portlet-title">
 
-                                            <div class="caption">和昨天同比情况</div>
+                                            <div class="caption">和昨日同比情况</div>
 
                                         </div>
 
@@ -315,5 +323,76 @@
     });
 </script>
 
+<script src="../../js/highcharts/highcharts.js"></script>
+<script src="../../js/highcharts/series-label.js"></script>
+<script src="../../js/highcharts/exporting.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "/operation/operation-nearly-week-thread/data",
+            dataType: "json",
+            timeout: 30000,
+            cache: false,
+            success: succFunction
+        });
+        function succFunction (data) {
+            if (data != null) {
+
+                Highcharts.chart('container', {
+
+                    title: {
+                        text: '近一周公司经营状况'
+                    },
+
+                    yAxis: {
+                        title: {
+                            text: '金额(元)'
+                        }
+                    },
+
+                    xAxis : {
+                        categories : data.xList
+                    },
+
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle'
+                    },
+
+                    plotOptions: {
+                        series: {
+                            label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 0
+                        }
+                    },
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom'
+                                }
+                            }
+                        }]
+                    },
+
+                    series: data.seriesData
+
+                });
+            }
+        }
+    });
+</script>
 
 </@layout>

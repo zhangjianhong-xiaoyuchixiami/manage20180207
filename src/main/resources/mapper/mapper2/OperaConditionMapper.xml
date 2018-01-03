@@ -83,6 +83,7 @@
         </if>
 
     </select>
+
     <!--获取最近两天所有消费的产品类型-->
     <select id="getApiType" parameterType="map" resultMap="countMap">
         SELECT
@@ -223,6 +224,7 @@
         <result property="amount" column="amount"/>
     </resultMap>
 
+    <!--查看某产品的收入情况-->
     <select id="getCustomerIncomeCondition" parameterType="map" resultMap="customer_map">
 
         SELECT
@@ -278,6 +280,7 @@
         <result property="amount" column="amount"/>
     </resultMap>
 
+    <!--查看某产品的支出情况-->
     <select id="getVendorCostCondition" resultType="map" resultMap="vendor-map">
 
         SELECT
@@ -320,5 +323,85 @@
 
     </select>
 
+    <resultMap id="nearly-week-map" type="org.qydata.dst.NearlyWeekCondition">
+        <result property="totalIncome" column="totalIncome"/>
+        <result property="totalCost" column="totalCost"/>
+        <result property="cycle" column="cycle"/>
+        <result property="cost" column="cost"/>
+        <result property="amount" column="amount"/>
+    </resultMap>
+
+    <select id="queryIncomeNearlyWeekTrend" resultMap="nearly-week-map">
+
+        SELECT
+            DATE_FORMAT(a.cycle, '%Y-%c-%d') cycle,
+            SUM(a.incomeAccount) totalIncome
+        FROM
+            (
+                SELECT
+                    a.customerId,
+                    a.apiTypeId,
+                    a.subTypeId,
+                    IFNULL(
+                        sum(a.consumeCount * b.price),
+                        0
+                    ) incomeAccount,
+                    a.cycle
+                FROM
+                    qyfinance.CustomerConsumeHourCount a
+                LEFT JOIN (
+                    SELECT
+                        a.id customerId,
+                        b.apiTypeId,
+                        b.subTypeId,
+                        b.price
+                    FROM
+                        qydata.Customer a
+                    INNER JOIN qydata.CompanyApi b ON a.companyId = b.companyId
+                    WHERE
+                        a.typeId = 1
+                    GROUP BY
+                        a.Id,
+                        b.apiTypeId,
+                        b.subTypeId
+                ) b ON a.customerId = b.customerId
+                AND a.apiTypeId = b.apiTypeId
+                AND a.subTypeId = b.subTypeId
+                GROUP BY
+                    a.customerId,
+                    a.apiTypeId,
+                    a.subTypeId,
+                    DATE_FORMAT(a.cycle, '%Y-%c-%d')
+            ) a
+        GROUP BY
+            DATE_FORMAT(a.cycle, '%Y-%c-%d')
+        ORDER BY
+            DATE_FORMAT(a.cycle, '%Y-%c-%d') DESC
+        LIMIT 7
+
+    </select>
+
+
+
+    <select id="queryCostNearlyWeekTrend" resultMap="nearly-week-map">
+
+        SELECT
+        DATE_FORMAT(a.cycle, '%Y-%c-%d') cycle,
+        SUM(a.costAccount) totalCost
+        FROM
+        (
+        SELECT
+            IFNULL(a.consumeAccount * b.cost, 0) costAccount,
+            a.cycle
+        FROM
+            qyfinance.ApiConsumeHourCount a
+        LEFT JOIN qydata.Api b ON a.apiId = b.id
+
+        )a
+        GROUP BY DATE_FORMAT(a.cycle, '%Y-%c-%d')
+        ORDER BY DATE_FORMAT(a.cycle, '%Y-%c-%d') DESC
+        LIMIT 7
+
+    </select>
 
 </mapper>

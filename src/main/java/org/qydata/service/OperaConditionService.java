@@ -26,5 +26,6 @@ public interface OperaConditionService {
 
     public List<VendorCost> getCurrVendorCostCondition(Map<String, Object>map);
 
+    public Map<String, Object> queryOperationNearlyWeekTrend();
 
 }

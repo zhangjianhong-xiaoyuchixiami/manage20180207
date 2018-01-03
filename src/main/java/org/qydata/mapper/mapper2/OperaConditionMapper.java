@@ -1,6 +1,7 @@
 package org.qydata.mapper.mapper2;
 
 import org.qydata.dst.CustomerIncome;
+import org.qydata.dst.NearlyWeekCondition;
 import org.qydata.dst.OperaCondition;
 import org.qydata.dst.VendorCost;
 
@@ -22,4 +23,8 @@ public interface OperaConditionMapper {
     public List<CustomerIncome> getCustomerIncomeCondition(Map<String, Object> map);
 
     public List<VendorCost>getVendorCostCondition(Map<String, Object> map);
+
+    public List<NearlyWeekCondition>queryIncomeNearlyWeekTrend();
+
+    public List<NearlyWeekCondition>queryCostNearlyWeekTrend();
 }

@@ -293,4 +293,16 @@ public class CalendarTools {
         return firstDay;
     }
 
+
+    public static  String getSevenDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, - 7);
+        Date monday = c.getTime();
+        String preMonday = sdf.format(monday);
+        return preMonday;
+    }
+
+
 }

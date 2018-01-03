@@ -1,5 +1,7 @@
 package org.qydata.controller;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.qydata.dst.CustomerIncome;
 import org.qydata.dst.OperaCondition;
 import org.qydata.dst.VendorCost;
@@ -231,5 +233,31 @@ public class OperaConditionController {
 
         return json;
     }
+
+    @RequestMapping("/operation-nearly-week-thread/data")
+    @ResponseBody
+    public String getOperationNearlyWeekTrend(){
+        Map<String, Object> map = operaConditionServiceImpl.queryOperationNearlyWeekTrend();
+        JSONArray jsonArrayX = null;
+        JSONArray jsonArrayS = null;
+        if (map != null){
+            for (Map.Entry<String,Object> me : map.entrySet()){
+                if (me.getKey().equals("jsonArrayX")) {
+                    jsonArrayX = (JSONArray) me.getValue();
+                }
+                if (me.getKey().equals("jsonArrayS")) {
+                    jsonArrayS = (JSONArray) me.getValue();
+                    System.out.println((JSONArray) me.getValue());
+                }
+            }
+        }
+        JSONObject getObj = new JSONObject();
+        getObj.put("xList", jsonArrayX);
+        getObj.put("seriesData", jsonArrayS);
+        System.out.println(getObj.toString());
+        return getObj.toString();
+    }
+
+
 
 }
