@@ -103,7 +103,7 @@
                                 reflow: true
                             },
                             title: {
-                                text: '近期消费走势'
+                                text: '近一个月消费走势'
                             },
                             exporting: {
                                 enabled: false

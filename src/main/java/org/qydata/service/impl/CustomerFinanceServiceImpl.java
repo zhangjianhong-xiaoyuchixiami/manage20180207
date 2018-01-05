@@ -660,7 +660,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         }
 
         Map mapSeries = new HashedMap();
-        mapSeries.put("name","近期消费");
+        mapSeries.put("name","近一个月消费");
         mapSeries.put("data",yList);
         JSONArray jsonArrayX = JSONArray.fromObject(xList);
         JSONArray jsonArrayS = JSONArray.fromObject(mapSeries);
