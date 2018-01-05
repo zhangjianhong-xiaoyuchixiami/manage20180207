@@ -455,7 +455,7 @@ public class CompanyController {
      */
     @RequestMapping("/mid-company-api-price")
     @ResponseBody
-    public String midCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic){
+    public String midCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic,Integer aid){
         Gson gson = new Gson();
         Map<String,Object> map = new HashMap();
         if (!CheckNumberUtil.isStipulateNumeric(pic)){
@@ -464,7 +464,7 @@ public class CompanyController {
         }
         int code = 0;
         try {
-            code = companyService.updateCompanyApiPrice(companyId,tid,stid,pic);
+            code = companyService.updateCompanyApiPrice(companyId,tid,stid,pic,aid);
         } catch (Exception e) {
             e.printStackTrace();
         }

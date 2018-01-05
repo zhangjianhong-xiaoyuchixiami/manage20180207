@@ -74,13 +74,13 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
         //查询供应商本月消费金额（至昨天）
         List<VendorFinance> currMonthList = selectMapper.queryVendorCurrMonthConsume(param);
         //当天消费
-        List<VendorFinance> currDayList = selectMapper.queryVendorCurrDayConsume(param);
+        // List<VendorFinance> currDayList = selectMapper.queryVendorCurrDayConsume(param);
         //各类型消费
         List<VendorFinance> typeList = selectMapper.queryVendorTypeConsume(param);
         //查询供应商截至上月末消费总额
         List<VendorHistoryBill> billList = billSelectMapper.queryVendorStaticConsumeAmount();
          /*查询客户当天消费总额*/
-     //   List<VendorCurrDayConsume> vendorCurrDayConsumeList = selectMapper.queryVendorCurrDayAmount(param);
+        List<VendorCurrDayConsume> vendorCurrDayConsumeList = selectMapper.queryVendorCurrDayAmount(param);
 
         if (financeList == null){
             return null;
@@ -148,32 +148,32 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
                     }
                 }
             }
-            //封装当天消费
-            if (currDayList != null){
-                for (VendorFinance consume : currDayList) {
-                    if (finance.getVendorId() == consume.getVendorId()
-                            || finance.getVendorId().equals(consume.getVendorId()))
-                    {
-                        if (consume.getCurrDayConsume() != null){
-                            finance.setCurrDayConsume(consume.getCurrDayConsume()/100.0);
-                        }else {
-                            finance.setCurrDayConsume(0.0);
-                        }
-                    }
-                }
-            }
-
 //            //封装当天消费
-//            if (vendorCurrDayConsumeList != null){
-//                for (VendorCurrDayConsume vendorCurrDayConsume : vendorCurrDayConsumeList) {
-//                    if (finance.getVendorId() == vendorCurrDayConsume.getVendorId()
-//                            ||finance.getVendorId().equals(vendorCurrDayConsume.getVendorId())){
-//                        if (vendorCurrDayConsume.getTotal() != null){
-//                            finance.setCurrDayConsume(vendorCurrDayConsume.getTotal()/100.0);
+//            if (currDayList != null){
+//                for (VendorFinance consume : currDayList) {
+//                    if (finance.getVendorId() == consume.getVendorId()
+//                            || finance.getVendorId().equals(consume.getVendorId()))
+//                    {
+//                        if (consume.getCurrDayConsume() != null){
+//                            finance.setCurrDayConsume(consume.getCurrDayConsume()/100.0);
+//                        }else {
+//                            finance.setCurrDayConsume(0.0);
 //                        }
 //                    }
 //                }
 //            }
+
+            //封装当天消费
+            if (vendorCurrDayConsumeList != null){
+                for (VendorCurrDayConsume vendorCurrDayConsume : vendorCurrDayConsumeList) {
+                    if (finance.getVendorId() == vendorCurrDayConsume.getVendorId()
+                            ||finance.getVendorId().equals(vendorCurrDayConsume.getVendorId())){
+                        if (vendorCurrDayConsume.getTotal() != null){
+                            finance.setCurrDayConsume(vendorCurrDayConsume.getTotal()/100.0);
+                        }
+                    }
+                }
+            }
 
             /*封装当月消费总额（昨天 + 今天）*/
             if (finance.getCurrMonthConsume() != null){

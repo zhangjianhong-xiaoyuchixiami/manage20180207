@@ -156,7 +156,7 @@ public interface CompanyService {
      * @return
      */
     @SystemServiceLog(description = "修改客户产品价格")
-    public int updateCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic)throws Exception;
+    public int updateCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic,Integer aid)throws Exception;
 
     /**
      * 根据账号Id查找Ip

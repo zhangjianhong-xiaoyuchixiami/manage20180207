@@ -40,7 +40,7 @@ function findCompanyApi(companyId) {
                         myContent = "<tr>" +
                             "<td>" + data[i].type_stid_name + "</td>" +
                             "<td>" + data[i].minCost /100.0 + "</td>" +
-                            "<td><a href='javaScript:;' onclick='updatePrice("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +")'>"+ (data[i].price / 100.0) +"</a></td>" +
+                            "<td><a href='javaScript:;' onclick='updatePrice("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +','+ data[i].apiId +")'>"+ (data[i].price / 100.0) +"</a></td>" +
                             "<td>" + data[i].profit + "</td>" +
                             "<td><a href='javaScript:;' onclick='updateAppointApi("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +','+ data[i].apiId +")'>" + data[i].btypeName + "</a></td>" +
                             "<td>正在使用</td>" +
@@ -51,7 +51,7 @@ function findCompanyApi(companyId) {
                         myContent = "<tr>" +
                             "<td class='font-text-decoration'>" + data[i].type_stid_name + "</td>" +
                             "<td>" + data[i].minCost /100.0 + "</td>" +
-                            "<td><a href='javaScript:;' onclick='updatePrice("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +")'>"+ (data[i].price / 100.0) +"</a></td>" +
+                            "<td><a href='javaScript:;' onclick='updatePrice("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +','+ data[i].apiId + ")'>"+ (data[i].price / 100.0) +"</a></td>" +
                             "<td>" + data[i].profit + "</td>" +
                             "<td><a href='javaScript:;' onclick='updateAppointApi("+companyId+','+ data[i].apiTypeId +','+ data[i].subTypeId +','+ data[i].price +','+ data[i].apiId +")'>" + data[i].btypeName + "</a></td>" +
                             "<td>已禁用</td>" +
@@ -447,7 +447,7 @@ function unBanCompanyApi(id,companyId) {
 }
 
 /*修改价格*/
-function updatePrice(companyId,typeId,stid,price) {
+function updatePrice(companyId,typeId,stid,price,aid) {
     var pic = price/100.0 ;
     swal({
         title: '修改产品价格',
@@ -474,7 +474,7 @@ function updatePrice(companyId,typeId,stid,price) {
         $.ajax({
             type: "post",
             url: "/company/mid-company-api-price",
-            data: {"companyId": companyId,"tid": typeId,"stid": stid,"pic": value},
+            data: {"companyId": companyId,"tid": typeId,"stid": stid,"pic": value,"aid": aid},
             dataType: "json",
             beforeSend: function () {
                 openProgress();

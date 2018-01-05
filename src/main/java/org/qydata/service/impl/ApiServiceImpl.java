@@ -54,7 +54,7 @@ public class ApiServiceImpl implements ApiService {
                     ApiType apiType = api.getApiType();
                     if (apiType != null && apiType.getName() != null) {
                         String apiType_stidName = ApiTypeMobileOperatorNameUtils.apiTypeMobileOperatorName(apiType.getName(), api.getMobileOperatorList());
-                        apiType.setName(apiType_stidName);
+                        apiType.setName("（apiId："+ api.getId() +"）" + apiType_stidName);
                     }
                 }
             }

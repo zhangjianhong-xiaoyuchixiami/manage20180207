@@ -421,7 +421,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         List<String> yearMonthList = new ArrayList<>();
         for (int i = 0; i < 6 ; i++) {
-            String yearMonth = ChartCalendarUtil.getCurrentDateAssignYearMonth(-(5 - i));
+            String yearMonth = ChartCalendarUtil.getCurrentDateAssignYearMonth(i);
             yearMonthList.add(yearMonth);
         }
         map.put("yearMonthList",yearMonthList);
@@ -432,7 +432,7 @@ public class CustomerHistoryBillServiceImpl implements CustomerHistoryBillServic
         Map<Date,Object> proMap = new TreeMap<>();
         for (int i = 0; i < 6 ; i++) {
             try {
-                String yearMonth = ChartCalendarUtil.getCurrentDateAssignYearMonth(-(5-i));
+                String yearMonth = ChartCalendarUtil.getCurrentDateAssignYearMonth(i);
                 proMap.put(sdf.parse(yearMonth),0);
                 if (consumeList != null && consumeList.size() > 0){
                     for (int j = 0; j < consumeList.size(); j++) {

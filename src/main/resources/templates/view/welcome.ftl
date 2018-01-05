@@ -21,123 +21,70 @@
 
                 <div class="span12">
 
-                    <div class="tabbable tabbable-custom boxless">
+                    <@shiro.hasAnyRoles name="backAdmin">
 
-                        <ul class="nav nav-tabs">
+                        <div class="tabbable tabbable-custom boxless">
 
-                            <li ><a href="#tab_1" data-toggle="tab">近两日经营数据表格</a></li>
+                            <ul class="nav nav-tabs">
 
-                            <li class="active"><a href="#tab_2" data-toggle="tab">近一周经营状况折线图</a></li>
+                                <li ><a href="#tab_1" data-toggle="tab">近两日经营数据表格</a></li>
 
-                        </ul>
+                                <li class="active"><a href="#tab_2" data-toggle="tab">近一周经营状况折线图</a></li>
 
-                        <div class="tabbable tabbable-custom tabbable-full-width">
+                            </ul>
 
-                            <div class="tab-content">
+                            <div class="tabbable tabbable-custom tabbable-full-width">
 
-                                <@shiro.hasAnyRoles name="backAdmin">
+                                <div class="tab-content">
 
-                                <div class="tab-pane" id="tab_1">
+                                    <div class="tab-pane" id="tab_1">
 
-                                    <div class="row-fluid">
+                                        <div class="row-fluid">
 
-                                        <div class="row-fluid" style="margin-top: 0px" >
+                                            <div class="row-fluid" style="margin-top: 0px" >
 
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
 
-                                                <div class="dashboard-stat blue">
+                                                    <div class="dashboard-stat blue">
 
-                                                    <div class="details">
+                                                        <div class="details">
 
-                                                        <div class="desc">今日总收入金额</div>
+                                                            <div class="desc">今日总收入金额</div>
 
-                                                        <div class="number" id="currIncome"></div>
+                                                            <div class="number" id="currIncome"></div>
 
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
-
-                                                <div class="dashboard-stat yellow">
-
-                                                    <div class="details">
-
-                                                        <div class="desc">今日总成本</div>
-
-                                                        <div class="number" id="currCost"></div>
+                                                        </div>
 
                                                     </div>
 
                                                 </div>
 
-                                            </div>
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
 
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                    <div class="dashboard-stat yellow">
 
-                                                <div class="dashboard-stat green">
+                                                        <div class="details">
 
-                                                    <div class="details">
-                                                        <div class="desc">今日毛利润</div>
+                                                            <div class="desc">今日总成本</div>
 
-                                                        <div class="number" id="currProfit"></div>
+                                                            <div class="number" id="currCost"></div>
 
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row-fluid">
-
-                                        <div class="row-fluid" style="margin-top: 0px">
-
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
-
-                                                <div class="dashboard-stat blue">
-
-                                                    <div class="details">
-
-                                                        <div class="desc">昨日同时段总收入金额</div>
-
-                                                        <div class="number" id="yesterIncome"></div>
+                                                        </div>
 
                                                     </div>
 
                                                 </div>
 
-                                            </div>
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
 
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                    <div class="dashboard-stat green">
 
-                                                <div class="dashboard-stat yellow">
+                                                        <div class="details">
+                                                            <div class="desc">今日毛利润</div>
 
-                                                    <div class="details">
+                                                            <div class="number" id="currProfit"></div>
 
-                                                        <div class="desc">昨日同时段总成本</div>
-
-                                                        <div class="number" id="yesterCost"></div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
-
-                                                <div class="dashboard-stat green">
-
-                                                    <div class="details">
-                                                        <div class="desc">昨日同时段毛利润</div>
-
-                                                        <div class="number" id="yesterProfit"></div>
+                                                        </div>
 
                                                     </div>
 
@@ -147,52 +94,52 @@
 
                                         </div>
 
-                                    </div>
+                                        <div class="row-fluid">
 
-                                    <div class="row-fluid">
+                                            <div class="row-fluid" style="margin-top: 0px">
 
-                                        <div class="row-fluid" style="margin-top: 0px">
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
 
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                    <div class="dashboard-stat blue">
 
-                                                <div class="dashboard-stat blue">
+                                                        <div class="details">
 
-                                                    <div class="details">
+                                                            <div class="desc">昨日同时段总收入金额</div>
 
-                                                        <div class="desc">昨日总收入金额</div>
+                                                            <div class="number" id="yesterIncome"></div>
 
-                                                        <div class="number" id="yesterTotalIncome"></div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
-
-                                                <div class="dashboard-stat yellow">
-
-                                                    <div class="details">
-
-                                                        <div class="desc">昨日总成本</div>
-
-                                                        <div class="number" id="yesterTotalCost"></div>
+                                                        </div>
 
                                                     </div>
 
                                                 </div>
 
-                                            </div>
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
 
-                                            <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                    <div class="dashboard-stat yellow">
 
-                                                <div class="dashboard-stat green">
+                                                        <div class="details">
 
-                                                    <div class="details">
-                                                        <div class="desc">昨日毛利润</div>
+                                                            <div class="desc">昨日同时段总成本</div>
 
-                                                        <div class="number" id="yesterTotalProfit"></div>
+                                                            <div class="number" id="yesterCost"></div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+
+                                                    <div class="dashboard-stat green">
+
+                                                        <div class="details">
+                                                            <div class="desc">昨日同时段毛利润</div>
+
+                                                            <div class="number" id="yesterProfit"></div>
+
+                                                        </div>
 
                                                     </div>
 
@@ -202,65 +149,120 @@
 
                                         </div>
 
-                                    </div>
+                                        <div class="row-fluid">
 
-                                    <div class="row-fluid">
+                                            <div class="row-fluid" style="margin-top: 0px">
 
-                                        <div class="span3 responsive" data-tablet="span12  fix-offset" data-desktop="span3" style="width: 100%">
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
 
-                                            <div class="portlet box blue">
+                                                    <div class="dashboard-stat blue">
 
-                                                <div class="portlet-title">
+                                                        <div class="details">
 
-                                                    <div class="caption">和昨日同比情况</div>
+                                                            <div class="desc">昨日总收入金额</div>
+
+                                                            <div class="number" id="yesterTotalIncome"></div>
+
+                                                        </div>
+
+                                                    </div>
 
                                                 </div>
 
-                                                <div class="portlet-body" style="width: 100%">
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
 
-                                                    <div class="row-fluid">
+                                                    <div class="dashboard-stat yellow">
 
-                                                        <div class="span4" >
+                                                        <div class="details">
 
-                                                            <div class="easy-pie-chart" >
+                                                            <div class="desc">昨日总成本</div>
 
-                                                                <div>总收入</div>
+                                                            <div class="number" id="yesterTotalCost"></div>
 
-                                                                <div class="number transactions" data-percent="55"><span id="totalIncomePercent"></span>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+
+                                                    <div class="dashboard-stat green">
+
+                                                        <div class="details">
+                                                            <div class="desc">昨日毛利润</div>
+
+                                                            <div class="number" id="yesterTotalProfit"></div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row-fluid">
+
+                                            <div class="span3 responsive" data-tablet="span12  fix-offset" data-desktop="span3" style="width: 100%">
+
+                                                <div class="portlet box blue">
+
+                                                    <div class="portlet-title">
+
+                                                        <div class="caption">和昨日同比情况</div>
+
+                                                    </div>
+
+                                                    <div class="portlet-body" style="width: 100%">
+
+                                                        <div class="row-fluid">
+
+                                                            <div class="span4" >
+
+                                                                <div class="easy-pie-chart" >
+
+                                                                    <div>总收入</div>
+
+                                                                    <div class="number transactions" data-percent="55"><span id="totalIncomePercent"></span>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="margin-bottom-10 visible-phone"></div>
+
+                                                            <div class="span4">
+
+                                                                <div class="easy-pie-chart">
+
+                                                                    <div>总成本</div>
+
+                                                                    <div class="number visits" data-percent="85"><span id="totalCostPercent"></span></div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="margin-bottom-10 visible-phone"></div>
+
+                                                            <div class="span4">
+
+                                                                <div class="easy-pie-chart">
+
+                                                                    <div>毛利润</div>
+
+                                                                    <div class="number bounce" data-percent="46"><span id="profitPrecent"></span></div>
+
                                                                 </div>
 
                                                             </div>
 
                                                         </div>
 
-                                                        <div class="margin-bottom-10 visible-phone"></div>
-
-                                                        <div class="span4">
-
-                                                            <div class="easy-pie-chart">
-
-                                                                <div>总成本</div>
-
-                                                                <div class="number visits" data-percent="85"><span id="totalCostPercent"></span></div>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="margin-bottom-10 visible-phone"></div>
-
-                                                        <div class="span4">
-
-                                                            <div class="easy-pie-chart">
-
-                                                                <div>毛利润</div>
-
-                                                                <div class="number bounce" data-percent="46"><span id="profitPrecent"></span></div>
-
-                                                            </div>
-
-                                                        </div>
-
                                                     </div>
 
                                                 </div>
@@ -271,14 +273,13 @@
 
                                     </div>
 
-                                </div>
-                                </@shiro.hasAnyRoles>
+                                    <div class="tab-pane active" id="tab_2">
 
-                                <div class="tab-pane active" id="tab_2">
+                                        <div class="row-fluid">
 
-                                    <div class="row-fluid">
+                                            <div id="container" style="min-width: 100%; height: 400px; margin: 0 auto"></div>
 
-                                        <div id="container" style="min-width: 100%; height: 400px; margin: 0 auto"></div>
+                                        </div>
 
                                     </div>
 
@@ -288,7 +289,7 @@
 
                         </div>
 
-                    </div>
+                    </@shiro.hasAnyRoles>
 
                 </div>
 
@@ -321,9 +322,9 @@
             error: erryFunction,
             success: succFunction
         });
-       /* function LoadFunction() {
-            $("#tabbable tabbable-custom tabbable-full-widt").html('加载中...');
-        }*/
+        /* function LoadFunction() {
+             $("#tabbable tabbable-custom tabbable-full-widt").html('加载中...');
+         }*/
         function erryFunction() {
             alert("维护中...请联系技术人员");
         }

@@ -9,16 +9,23 @@ import java.util.Date;
  */
 public class ChartCalendarUtil {
 
+//    public static void main(String[] args) {
+//        for (int i = 0; i <= 5; i++){
+//            System.out.println(getCurrentDateAssignYearMonth(i));
+//        }
+//    }
+
     /**
      * 取得当前时间的指定月的时间，格式“yyyy-MM”
      * @return
      */
     public static String getCurrentDateAssignYearMonth(int amount) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        calendar.add(Calendar.MONTH,amount);
-        int month = calendar.get(Calendar.MONTH);
-        return year +"-"+ month ;
+        calendar.add(Calendar.MONTH,- amount-1);
+        Date monday = calendar.getTime();
+        String preMonday = sdf.format(monday);
+        return preMonday;
     }
 
     /**
@@ -36,9 +43,7 @@ public class ChartCalendarUtil {
     }
 
     public static String getStatetime(int i) {
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, - i);
         Date monday = c.getTime();

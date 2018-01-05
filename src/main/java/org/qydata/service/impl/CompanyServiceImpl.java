@@ -365,17 +365,21 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @SystemServiceLog(description = "修改客户产品价格")
-    public int updateCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic) throws Exception{
+    public int updateCompanyApiPrice(Integer companyId,Integer tid,Integer stid,String pic,Integer aid) throws Exception{
         System.out.println(companyId);
         System.out.println(tid);
         System.out.println(stid);
         System.out.println(pic);
+        System.out.println(aid);
         String uri = GlobalStaticConstants.COMPANY_API_PUT;
         Map<String,Object> map = new HashMap<>();
         map.put("k",companySelectMapper.queryAuthKey("admin.k"));
         map.put("cid",companyId);
         map.put("price",(int)(Double.parseDouble(pic)*100));
         map.put("tid",tid);
+        if (aid != null){
+            map.put("aid",aid);
+        }
         if (stid != null){
             map.put("stid",stid);
         }
