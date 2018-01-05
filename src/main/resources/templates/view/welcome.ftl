@@ -29,7 +29,7 @@
 
                                 <li ><a href="#tab_1" data-toggle="tab">近两日经营数据表格</a></li>
 
-                                <li class="active"><a href="#tab_2" data-toggle="tab">近一周经营状况折线图</a></li>
+                                <li class="active"><a href="#tab_2" data-toggle="tab">近期经营状况折线图</a></li>
 
                             </ul>
 
@@ -49,7 +49,7 @@
 
                                                         <div class="details">
 
-                                                            <div class="desc">今日总收入金额</div>
+                                                            <div class="desc">今日销售额</div>
 
                                                             <div class="number" id="currIncome"></div>
 
@@ -65,7 +65,7 @@
 
                                                         <div class="details">
 
-                                                            <div class="desc">今日总成本</div>
+                                                            <div class="desc">今日成本</div>
 
                                                             <div class="number" id="currCost"></div>
 
@@ -104,7 +104,7 @@
 
                                                         <div class="details">
 
-                                                            <div class="desc">昨日同时段总收入金额</div>
+                                                            <div class="desc">昨日同时段销售额</div>
 
                                                             <div class="number" id="yesterIncome"></div>
 
@@ -120,7 +120,7 @@
 
                                                         <div class="details">
 
-                                                            <div class="desc">昨日同时段总成本</div>
+                                                            <div class="desc">昨日同时段成本</div>
 
                                                             <div class="number" id="yesterCost"></div>
 
@@ -159,7 +159,7 @@
 
                                                         <div class="details">
 
-                                                            <div class="desc">昨日总收入金额</div>
+                                                            <div class="desc">昨日总销售额</div>
 
                                                             <div class="number" id="yesterTotalIncome"></div>
 
@@ -190,7 +190,7 @@
                                                     <div class="dashboard-stat green">
 
                                                         <div class="details">
-                                                            <div class="desc">昨日毛利润</div>
+                                                            <div class="desc">昨日总毛利润</div>
 
                                                             <div class="number" id="yesterTotalProfit"></div>
 
@@ -206,9 +206,9 @@
 
                                         <div class="row-fluid">
 
-                                            <div class="span3 responsive" data-tablet="span12  fix-offset" data-desktop="span3" style="width: 100%">
+                                            <div class="span3 responsive" data-tablet="span12  fix-offset" data-desktop="span3" style="width: 98%">
 
-                                                <div class="portlet box blue">
+                                                <div class="portlet box purple">
 
                                                     <div class="portlet-title">
 
@@ -216,7 +216,7 @@
 
                                                     </div>
 
-                                                    <div class="portlet-body" style="width: 100%">
+                                                    <div class="portlet-body">
 
                                                         <div class="row-fluid">
 
@@ -224,7 +224,7 @@
 
                                                                 <div class="easy-pie-chart" >
 
-                                                                    <div>总收入</div>
+                                                                    <div>销售额</div>
 
                                                                     <div class="number transactions" data-percent="55"><span id="totalIncomePercent"></span>
                                                                     </div>
@@ -367,7 +367,7 @@
                 Highcharts.chart('container', {
 
                     title: {
-                        text: '近一周公司经营状况'
+                        text: '公司经营状况折线图'
                     },
 
                     yAxis: {

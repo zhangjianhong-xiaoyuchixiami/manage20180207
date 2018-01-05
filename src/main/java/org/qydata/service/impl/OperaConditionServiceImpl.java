@@ -5,6 +5,7 @@ import org.qydata.dst.*;
 import org.qydata.dst.customer.CustomerConsume;
 import org.qydata.mapper.mapper2.OperaConditionMapper;
 import org.qydata.service.OperaConditionService;
+import org.qydata.tools.CalendarTools;
 import org.qydata.tools.DateUtils;
 import org.qydata.tools.PercentUtils;
 import org.qydata.tools.chartdate.ChartCalendarUtil;
@@ -471,7 +472,7 @@ public class OperaConditionServiceImpl implements OperaConditionService {
     }
 
     /**
-     * 近一周经营走势折线图
+     * 近期经营走势折线图
      * @return
      */
     @Override
@@ -527,9 +528,10 @@ public class OperaConditionServiceImpl implements OperaConditionService {
             dataList.add(lineEntity2);
         }
 
-        for (int i = 6; i >= 0 ; i--) {
+        for (int i = 14; i >= 0 ; i--) {
             String day = ChartCalendarUtil.getStatetime(i);
-            xList.add(day);
+            String weekOfDate = CalendarTools.getWeekOfDate(day);
+            xList.add(day + weekOfDate);
         }
 
         JSONArray jsonArrayX = JSONArray.fromObject(xList);

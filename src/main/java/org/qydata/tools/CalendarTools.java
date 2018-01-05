@@ -1,5 +1,7 @@
 package org.qydata.tools;
 
+import org.qydata.tools.chartdate.ChartCalendarUtil;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -304,5 +306,23 @@ public class CalendarTools {
         return preMonday;
     }
 
+    public static String getWeekOfDate(String dt) {
+        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = null;
+        try {
+            parse = sdf.parse(dt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(parse);
+
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+
+        return weekDays[w];
+    }
 
 }

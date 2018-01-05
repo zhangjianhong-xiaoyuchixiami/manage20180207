@@ -377,7 +377,7 @@
             DATE_FORMAT(a.cycle, '%Y-%c-%d')
         ORDER BY
             DATE_FORMAT(a.cycle, '%Y-%c-%d') DESC
-        LIMIT 7
+        LIMIT 15
 
     </select>
 
@@ -400,7 +400,7 @@
         )a
         GROUP BY DATE_FORMAT(a.cycle, '%Y-%c-%d')
         ORDER BY DATE_FORMAT(a.cycle, '%Y-%c-%d') DESC
-        LIMIT 7
+        LIMIT 15
 
     </select>
 
