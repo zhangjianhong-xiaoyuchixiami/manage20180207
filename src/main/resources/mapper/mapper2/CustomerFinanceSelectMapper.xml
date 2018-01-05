@@ -442,7 +442,7 @@
         WHERE a.customerId = #{param}
         GROUP BY a.consuTime
         ORDER BY a.consuTime DESC
-        LIMIT 7
+        LIMIT 30
     </select>
     
     <!--查询客户的财务结束-->

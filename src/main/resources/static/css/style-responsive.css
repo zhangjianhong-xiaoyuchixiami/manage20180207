@@ -70,15 +70,15 @@
   	.page-content { 
   		margin-left: 225px; 
 		margin-top: 0px;
-		min-height: 760px; 
+		min-height: 100%;
 	}
 
 	.page-sidebar-fixed .page-content {
-		min-height: 600px; 
+		min-height: 100%;
 	}
 
 	.page-content.no-min-height {
-		min-height: auto;
+		min-height: 100%;
 	}
 
 	/***
@@ -175,7 +175,7 @@ For tablets and phones
   	.page-content {
   		margin: 0px !important;
   		padding: 0px !important;  		
-		min-height: 280px; 
+		min-height: 100%;
   	}
 
 	/***
@@ -206,8 +206,8 @@ For tablets and phones
 
 	.page-sidebar .sidebar-search {
 	  width: 220px;
-	  margin-top: 20px;
-	  margin-bottom:20px;
+	  margin-top: 0px;
+	  margin-bottom:0px;
 	}
 
 	/***

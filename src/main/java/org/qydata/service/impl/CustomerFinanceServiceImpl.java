@@ -629,10 +629,11 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     public Map<String, Object> queryNearlyWeekTrend(Integer cid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<CustomerConsume> consumeList = customerFinanceSelectMapper.queryNearlyWeekTrend(cid);
+
         List<String> xList = new ArrayList<>();
         List<Double> yList = new ArrayList<>();
         Map<Date,Object> proMap = new TreeMap<>();
-        for (int i = 7; i > 0 ; i--) {
+        for (int i = 30; i > 0 ; i--) {
             try {
                 String yearMonth = ChartCalendarUtil.getStatetime(i);
                 proMap.put(sdf.parse(yearMonth),0.0);
@@ -653,13 +654,13 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         }
         if (proMap != null){
             for (Map.Entry<Date,Object> me : proMap.entrySet()) {
-                xList.add(sdf.format(me.getKey()));
+                xList.add(sdf.format(me.getKey()) + CalendarTools.getWeekOfDate(sdf.format(me.getKey())));
                 yList.add((Double) me.getValue());
             }
         }
 
         Map mapSeries = new HashedMap();
-        mapSeries.put("name","近一周消费");
+        mapSeries.put("name","近期消费");
         mapSeries.put("data",yList);
         JSONArray jsonArrayX = JSONArray.fromObject(xList);
         JSONArray jsonArrayS = JSONArray.fromObject(mapSeries);

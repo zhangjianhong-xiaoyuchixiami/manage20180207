@@ -13,7 +13,7 @@
 
     <div class="page-content">
 
-        <div class="container-fluid">
+        <div class="container-fluid" >
 
             <@c.navigationBars></@c.navigationBars>
 
@@ -277,7 +277,7 @@
 
                                         <div class="row-fluid">
 
-                                            <div id="container" style="min-width: 100%; height: 400px; margin: 0 auto"></div>
+                                            <div id="container" style="min-width: 100%; height: 100% margin: 0 auto"></div>
 
                                         </div>
 
@@ -348,6 +348,7 @@
 <script src="../../js/highcharts/highcharts.js"></script>
 <script src="../../js/highcharts/series-label.js"></script>
 <script src="../../js/highcharts/exporting.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
 
 <script type="text/javascript">
 
@@ -364,7 +365,11 @@
         function succFunction (data) {
             if (data != null) {
 
-                Highcharts.chart('container', {
+                var chart = new Highcharts.chart('container', {
+
+                    chart: {
+                        panning: false
+                    },
 
                     title: {
                         text: '公司经营状况折线图'
@@ -377,21 +382,32 @@
                     },
 
                     xAxis : {
-                        categories : data.xList
+                        categories : data.xList,
+                        min:09,
+                        max:15,
+                        labels:{
+                            rotation:-30
+                        }
+
+                    },
+
+                    scrollbar : {
+                        enabled:true
                     },
 
                     legend: {
                         layout: 'vertical',
                         align: 'right',
-                        verticalAlign: 'middle'
+                        verticalAlign: 'middle',
+                        borderWidth: 0
                     },
 
                     plotOptions: {
                         series: {
                             label: {
                                 connectorAllowed: false
-                            },
-                            pointStart: 0
+                            }
+
                         }
                     },
                     responsive: {
@@ -412,9 +428,26 @@
                     exporting:{
                         enabled:false
                     },
+
                     series: data.seriesData
 
                 });
+
+                var xAxis = chart.xAxis[0],
+                    xMin = xAxis.dataMin,
+                    xMax = xAxis.dataMax;
+                Highcharts.addEvent(document.getElementById('container'), document.onmousewheel === undefined ? 'DOMMouseScroll': 'mousewheel', function(e){
+                    var step = e.wheelDelta > 0 ? -2 : 2,
+                        min = xAxis.min + step,
+                        max = xAxis.max + step;
+                    if(min < xMin || max > xMax) {
+                        return false;
+                    }
+                    xAxis.setExtremes(min, max);
+                    e.preventDefault();
+                });
+
+
             }
         }
     });

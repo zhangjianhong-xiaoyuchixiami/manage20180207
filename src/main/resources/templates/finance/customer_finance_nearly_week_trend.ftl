@@ -96,14 +96,14 @@
                 success: function (data) {
                     if (data != null) {
 
-                        new Highcharts.Chart({
+                        var chart = new Highcharts.Chart({
                             chart: {
                                 renderTo: 'container',
                                 type: 'line',
                                 reflow: true
                             },
                             title: {
-                                text: '近一周消费走势'
+                                text: '近期消费走势'
                             },
                             exporting: {
                                 enabled: false
@@ -112,13 +112,20 @@
                                 enabled: false
                             },
                             xAxis: {
-                                categories: data.xList
+                                categories: data.xList,
+                                min:23,
+                                max:29
                             },
                             yAxis: {
                                 title: {
                                     text: '消费金额 (元)'
                                 }
                             },
+
+                            scrollbar : {
+                                enabled:true
+                            },
+
                             plotOptions: {
                                 line: {
                                     dataLabels: {
@@ -128,6 +135,20 @@
                                 }
                             },
                             series: data.seriesData
+                        });
+
+                        var xAxis = chart.xAxis[0],
+                            xMin = xAxis.dataMin,
+                            xMax = xAxis.dataMax;
+                        Highcharts.addEvent(document.getElementById('container'), document.onmousewheel === undefined ? 'DOMMouseScroll': 'mousewheel', function(e){
+                            var step = e.wheelDelta > 0 ? -2 : 2,
+                                min = xAxis.min + step,
+                                max = xAxis.max + step;
+                            if(min < xMin || max > xMax) {
+                                return false;
+                            }
+                            xAxis.setExtremes(min, max);
+                            e.preventDefault();
                         });
 
                     }

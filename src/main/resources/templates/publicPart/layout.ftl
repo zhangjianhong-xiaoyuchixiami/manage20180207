@@ -66,7 +66,7 @@
 
 </head>
 
-<body class="page-header-fixed">
+<body class="page-header-fixed" style="height: 100%">
 
 <div id="head"><#nested "head" />
 
