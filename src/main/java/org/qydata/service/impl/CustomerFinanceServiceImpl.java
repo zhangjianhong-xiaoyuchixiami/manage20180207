@@ -629,16 +629,27 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     public Map<String, Object> queryNearlyWeekTrend(Integer cid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<CustomerConsume> consumeList = customerFinanceSelectMapper.queryNearlyWeekTrend(cid);
+        Double currentDayTotalAmount = customerCurrendDayTotalAmountUtils.getCurrentDayTotalAmount(cid + "", DateUtils.formatCurrentDate() + "");
+        CustomerConsume customerConsume = new CustomerConsume();
+        customerConsume.setConsuTime(CalendarTools.getCurrentDate());
+        customerConsume.setConsume(currentDayTotalAmount * 100);
+        List<CustomerConsume> consumeList1 = new ArrayList<CustomerConsume>();
+        consumeList1.add(customerConsume);
+        if (consumeList != null && consumeList.size() > 0) {
+            for (CustomerConsume consume : consumeList) {
+                consumeList1.add(consume);
+            }
+        }
 
         List<String> xList = new ArrayList<>();
         List<Double> yList = new ArrayList<>();
         Map<Date,Object> proMap = new TreeMap<>();
-        for (int i = 30; i > 0 ; i--) {
+        for (int i = 29; i >= 0 ; i--) {
             try {
                 String yearMonth = ChartCalendarUtil.getStatetime(i);
                 proMap.put(sdf.parse(yearMonth),0.0);
-                if (consumeList != null && consumeList.size() > 0){
-                    for (CustomerConsume consume : consumeList) {
+                if (consumeList1 != null && consumeList1.size() > 0){
+                    for (CustomerConsume consume : consumeList1) {
                         if (yearMonth.equals(consume.getConsuTime())){
                             if (consume.getConsume() != null){
                                 proMap.put(sdf.parse(yearMonth),-consume.getConsume()/100.0);

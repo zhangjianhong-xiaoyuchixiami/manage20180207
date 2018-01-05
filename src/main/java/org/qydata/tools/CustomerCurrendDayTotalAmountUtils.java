@@ -72,8 +72,8 @@ public class CustomerCurrendDayTotalAmountUtils {
                 //计算客户所有服务消费金额
                 totalAmount = totalAmount + amount;
                 System.out.println("所有服务费用"+totalAmount);
-                return -totalAmount/100;
             }
+            return -totalAmount/100;
         }
         return 0.0;
     }
