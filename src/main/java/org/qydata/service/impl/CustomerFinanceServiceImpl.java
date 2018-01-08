@@ -621,7 +621,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     }
 
     /**
-     * 客户近一周消费情况折线图
+     * 客户近期消费情况折线图
      * @param cid
      * @return
      */

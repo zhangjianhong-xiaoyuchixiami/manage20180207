@@ -43,7 +43,7 @@
 
                                             <div class="row-fluid" style="margin-top: 0px" >
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat blue">
 
@@ -59,7 +59,7 @@
 
                                                 </div>
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat yellow">
 
@@ -75,7 +75,7 @@
 
                                                 </div>
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat green">
 
@@ -98,7 +98,7 @@
 
                                             <div class="row-fluid" style="margin-top: 0px">
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat blue">
 
@@ -114,7 +114,7 @@
 
                                                 </div>
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat yellow">
 
@@ -130,7 +130,7 @@
 
                                                 </div>
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat green">
 
@@ -153,7 +153,7 @@
 
                                             <div class="row-fluid" style="margin-top: 0px">
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat blue">
 
@@ -169,7 +169,7 @@
 
                                                 </div>
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat yellow">
 
@@ -185,7 +185,7 @@
 
                                                 </div>
 
-                                                <div class="span3 responsive" data-tablet="span4" data-desktop="span3" style="width: 31%">
+                                                <div class="span4 responsive" data-tablet="span4" data-desktop="span4">
 
                                                     <div class="dashboard-stat green">
 
@@ -206,56 +206,60 @@
 
                                         <div class="row-fluid">
 
-                                            <div class="span3 responsive" data-tablet="span12  fix-offset" data-desktop="span3" style="width: 98%">
+                                            <div class="span12">
 
-                                                <div class="portlet box purple">
+                                                <div class="span12 responsive" data-tablet="span12  fix-offset" data-desktop="span12">
 
-                                                    <div class="portlet-title">
+                                                    <div class="portlet box purple">
 
-                                                        <div class="caption">和昨日同比情况</div>
+                                                        <div class="portlet-title">
 
-                                                    </div>
+                                                            <div class="caption">和昨日同比情况</div>
 
-                                                    <div class="portlet-body">
+                                                        </div>
 
-                                                        <div class="row-fluid">
+                                                        <div class="portlet-body">
 
-                                                            <div class="span4" >
+                                                            <div class="row-fluid">
 
-                                                                <div class="easy-pie-chart" >
+                                                                <div class="span4" >
 
-                                                                    <div>销售额</div>
+                                                                    <div class="easy-pie-chart" >
 
-                                                                    <div class="number transactions" data-percent="55"><span id="totalIncomePercent"></span>
+                                                                        <div>销售额</div>
+
+                                                                        <div class="number transactions" data-percent="55"><span id="totalIncomePercent"></span>
+                                                                        </div>
+
                                                                     </div>
 
                                                                 </div>
 
-                                                            </div>
+                                                                <div class="margin-bottom-10 visible-phone"></div>
 
-                                                            <div class="margin-bottom-10 visible-phone"></div>
+                                                                <div class="span4">
 
-                                                            <div class="span4">
+                                                                    <div class="easy-pie-chart">
 
-                                                                <div class="easy-pie-chart">
+                                                                        <div>总成本</div>
 
-                                                                    <div>总成本</div>
+                                                                        <div class="number visits" data-percent="85"><span id="totalCostPercent"></span></div>
 
-                                                                    <div class="number visits" data-percent="85"><span id="totalCostPercent"></span></div>
+                                                                    </div>
 
                                                                 </div>
 
-                                                            </div>
+                                                                <div class="margin-bottom-10 visible-phone"></div>
 
-                                                            <div class="margin-bottom-10 visible-phone"></div>
+                                                                <div class="span4">
 
-                                                            <div class="span4">
+                                                                    <div class="easy-pie-chart">
 
-                                                                <div class="easy-pie-chart">
+                                                                        <div>毛利润</div>
 
-                                                                    <div>毛利润</div>
+                                                                        <div class="number bounce" data-percent="46"><span id="profitPrecent"></span></div>
 
-                                                                    <div class="number bounce" data-percent="46"><span id="profitPrecent"></span></div>
+                                                                    </div>
 
                                                                 </div>
 
@@ -365,10 +369,26 @@
         function succFunction (data) {
             if (data != null) {
 
+                Highcharts.setOptions({
+                    lang: {
+                    resetZoom: "重置",
+
+                }
+            });
                 var chart = new Highcharts.chart('container', {
 
                     chart: {
-                        panning: false
+                        zoomType: 'xy',
+                        panning: true,
+                        panKey: 'shift',
+                        resetZoom:'重置',
+                        resetZoomButton: {
+                            position: {
+                                x: 0,
+                                y: -50
+                            }
+                        }
+
                     },
 
                     title: {
@@ -381,15 +401,18 @@
                         }
                     },
 
-                    xAxis : {
+                    xAxis : [{
                         categories : data.xList,
-                        min:09,
+                        min:0,
                         max:15,
                         labels:{
                             rotation:-30
-                        }
-
-                    },
+                        },
+                        tickInterval:1,
+                        floor: 0,
+                        ceiling: 15,
+                        endOnTick:true
+                    }],
 
                     scrollbar : {
                         enabled:true
@@ -407,20 +430,12 @@
                             label: {
                                 connectorAllowed: false
                             }
-
                         }
                     },
                     responsive: {
                         rules: [{
                             condition: {
-                                maxWidth: 500
-                            },
-                            chartOptions: {
-                                legend: {
-                                    layout: 'horizontal',
-                                    align: 'center',
-                                    verticalAlign: 'bottom'
-                                }
+                                maxWidth:300
                             }
                         }]
                     },
@@ -433,10 +448,10 @@
 
                 });
 
-                var xAxis = chart.xAxis[0],
+              /* var xAxis = chart.xAxis[0],
                     xMin = xAxis.dataMin,
                     xMax = xAxis.dataMax;
-                Highcharts.addEvent(document.getElementById('container'), document.onmousewheel === undefined ? 'DOMMouseScroll': 'mousewheel', function(e){
+               Highcharts.addEvent(document.getElementById('container'), document.onmousewheel === undefined ? 'DOMMouseScroll': 'mousewheel', function(e){
                     var step = e.wheelDelta > 0 ? -2 : 2,
                         min = xAxis.min + step,
                         max = xAxis.max + step;
@@ -445,9 +460,7 @@
                     }
                     xAxis.setExtremes(min, max);
                     e.preventDefault();
-                });
-
-
+               });*/
             }
         }
     });

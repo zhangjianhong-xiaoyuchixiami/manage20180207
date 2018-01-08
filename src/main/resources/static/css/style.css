@@ -264,10 +264,6 @@ Misc tools
   margin-left: 0 !important;
 }
 
-.margin-bottom-5 {
-  margin-bottom: 5px !important;
-}
-
 .margin-bottom-10 {
   margin-bottom: 10px !important;
 }
@@ -1342,11 +1338,6 @@ Portlets
   margin-top: -13px;
 }
 
-.portlet-title .actions > .btn_1 {
-  padding: 4px 10px;
-  margin-top: -9px;
-}
-
 .portlet-title .actions > .btn-group > .btn {
   padding: 4px 10px;
   margin-top: -1px;
@@ -1598,7 +1589,7 @@ Box portlet
 
 .portlet.box.grey {  
    border: 1px solid #9d9c9c;
-   /*border-top: 0;*/
+   border-top: 0;
 }
 
 .portlet.box.light-grey .portlet-title {
@@ -2726,7 +2717,7 @@ Custom tabs
   -webkit-border-radius: 0; 
      -moz-border-radius: 0; 
           border-radius: 0; 
-   margin-bottom: 15px;
+   margin-bottom: 15px;       
 }
 
 .widget .row-fluid:last-child .tabbable-custom {
