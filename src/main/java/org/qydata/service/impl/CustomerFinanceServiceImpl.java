@@ -460,7 +460,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         } catch (Exception e) {
             return null;
         }
-        System.out.println(s);
+//        System.out.println(s);
         List<CustomerCurrDayConsume> consumeList = new ArrayList<CustomerCurrDayConsume>();
         //将json转换成map
         Map<String, String> jsonMap = JsonUtils.jsonToMap(s);
@@ -473,14 +473,14 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             String key = entry.getKey();
             String value = entry.getValue();
 
-            System.out.println(value);
+//            System.out.println(value);
 
             String[] split = key.split("-");
             Integer apiTypeId = Integer.valueOf(split[0]);
             Integer subTypeId = Integer.valueOf(split[1]);
             Integer custId = Integer.valueOf(customerId);
-            System.out.println(apiTypeId);
-            System.out.println(subTypeId);
+//            System.out.println(apiTypeId);
+//            System.out.println(subTypeId);
 
             //根据customerId、apiTypeId、subTypeId查询请求服务的compnyApi对象
             CustomerCurrDayConsume customerCurrDayConsume = customerCurrendDayTotalAmountUtils.getPriceByType(custId, apiTypeId, subTypeId);
@@ -491,12 +491,12 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
             //计算此服务总消费金额
             int count = Integer.valueOf(value);
             amount = count * price;
-            System.out.println("单项服务费用"+amount);
+//            System.out.println("单项服务费用"+amount);
             //封装客户此服务当天消费金额
             customerCurrDayConsume.setSumAmount(amount);
             //计算客户所有服务消费金额
             totalAmount = totalAmount + amount;
-            System.out.println("所有服务费用"+totalAmount);
+//            System.out.println("所有服务费用"+totalAmount);
             //封装客户当天服务消费次数
             customerCurrDayConsume.setCountSuccess(count);
             customerCurrDayConsume.setApiTypeId(apiTypeId);

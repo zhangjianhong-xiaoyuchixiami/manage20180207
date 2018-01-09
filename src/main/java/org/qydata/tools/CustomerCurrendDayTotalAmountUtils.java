@@ -56,8 +56,8 @@ public class CustomerCurrendDayTotalAmountUtils {
                 Integer apiTypeId = Integer.valueOf(split[0]);
                 Integer subTypeId = Integer.valueOf(split[1]);
                 Integer custId = Integer.valueOf(customerId);
-                System.out.println(apiTypeId);
-                System.out.println(subTypeId);
+//                System.out.println(apiTypeId);
+//                System.out.println(subTypeId);
 
                 //根据customerId、apiTypeId、subTypeId查询请求服务的customerCurrDayConsume对象
                 CustomerCurrDayConsume customerCurrDayConsume = getPriceByType(custId, apiTypeId, subTypeId);
@@ -68,10 +68,10 @@ public class CustomerCurrendDayTotalAmountUtils {
                 //计算此服务总消费金额
                 int count = Integer.valueOf(value);
                 amount = count * price;
-                System.out.println("单项服务费用"+amount);
+//                System.out.println("单项服务费用"+amount);
                 //计算客户所有服务消费金额
                 totalAmount = totalAmount + amount;
-                System.out.println("所有服务费用"+totalAmount);
+//                System.out.println("所有服务费用"+totalAmount);
             }
             return -totalAmount/100;
         }

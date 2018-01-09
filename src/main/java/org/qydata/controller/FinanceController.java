@@ -282,7 +282,7 @@ public class FinanceController {
                }
                if (me.getKey().equals("jsonArrayS")) {
                    jsonArrayS = (JSONArray) me.getValue();
-                   System.out.println((JSONArray) me.getValue());
+//                   System.out.println((JSONArray) me.getValue());
                }
            }
        }

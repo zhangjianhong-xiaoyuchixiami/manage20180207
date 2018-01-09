@@ -265,10 +265,6 @@
         LEFT JOIN qydata.CompanyApi b ON a.companyId = b.companyId
         AND a.apiTypeId = b.apiTypeId
         AND a.subTypeId = b.subTypeId
-        GROUP BY
-        a.customerId,
-        a.apiTypeId,
-        a.subTypeId
 
     </select>
 
@@ -334,49 +330,45 @@
     <select id="queryIncomeNearlyWeekTrend" resultMap="nearly-week-map">
 
         SELECT
-            DATE_FORMAT(a.cycle, '%Y-%c-%d') cycle,
-            SUM(a.incomeAccount) totalIncome
+	      DATE_FORMAT(a.cycle, '%Y-%c-%d') cycle,
+	    SUM(a.incomeAccount) totalIncome
         FROM
-            (
-                SELECT
-                    a.customerId,
-                    a.apiTypeId,
-                    a.subTypeId,
-                    IFNULL(
-                        sum(a.consumeCount * b.price),
-                        0
-                    ) incomeAccount,
-                    a.cycle
-                FROM
-                    qyfinance.CustomerConsumeHourCount a
-                LEFT JOIN (
-                    SELECT
-                        a.id customerId,
-                        b.apiTypeId,
-                        b.subTypeId,
-                        b.price
-                    FROM
-                        qydata.Customer a
-                    INNER JOIN qydata.CompanyApi b ON a.companyId = b.companyId
-                    WHERE
-                        a.typeId = 1
-                    GROUP BY
-                        a.Id,
-                        b.apiTypeId,
-                        b.subTypeId
-                ) b ON a.customerId = b.customerId
-                AND a.apiTypeId = b.apiTypeId
-                AND a.subTypeId = b.subTypeId
-                GROUP BY
-                    a.customerId,
-                    a.apiTypeId,
-                    a.subTypeId,
-                    DATE_FORMAT(a.cycle, '%Y-%c-%d')
-            ) a
+	        (
+		    SELECT
+			a.customerId,
+			a.apiTypeId,
+			a.subTypeId,
+			IFNULL(
+				sum(a.consumeCount * b.price),
+				0
+			) incomeAccount,
+			a.cycle
+		    FROM
+			qyfinance.CustomerConsumeHourCount a
+		    LEFT JOIN (
+			    SELECT
+				a.id customerId,
+				b.apiTypeId,
+				b.subTypeId,
+				b.price
+			    FROM
+				qydata.Customer a
+			    INNER JOIN qydata.CompanyApi b ON a.companyId = b.companyId
+			    WHERE
+				a.typeId = 1
+		    ) b ON a.customerId = b.customerId
+		        AND a.apiTypeId = b.apiTypeId
+		        AND a.subTypeId = b.subTypeId
+		        GROUP BY
+                a.customerId,
+                a.apiTypeId,
+                a.subTypeId,
+                DATE_FORMAT(a.cycle, '%Y-%c-%d')
+	        ) a
         GROUP BY
-            DATE_FORMAT(a.cycle, '%Y-%c-%d')
+	    DATE_FORMAT(a.cycle, '%Y-%c-%d')
         ORDER BY
-            DATE_FORMAT(a.cycle, '%Y-%c-%d') DESC
+	    DATE_FORMAT(a.cycle, '%Y-%c-%d') DESC
         LIMIT 16
 
     </select>
