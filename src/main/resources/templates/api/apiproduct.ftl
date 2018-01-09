@@ -191,7 +191,7 @@
                                                             <tr class="danger">
                                                             </#if>
                                                             <td data-title="选择"><input class="checkboxes" type="checkbox" id="checkBoxApiIdBan" name="checkBoxApiIdBan" value="${api.id}"/></td>
-                                                            <td data-title="产品类型">${api.apiType.name}
+                                                            <td data-title="产品类型">${(api.apiType.name)!''}
                                                                 <#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
                                                             </td>
                                                             <td data-title="合作公司">

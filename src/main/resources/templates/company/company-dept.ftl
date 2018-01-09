@@ -555,9 +555,9 @@
                                                                                 <#if apiTypeList??>
                                                                                     <#list apiTypeList as apiType>
                                                                                         <#if apiType.mobileOperatorName??>
-                                                                                            <option value="${apiType.apiTypeId}-${apiType.mobileOperatorId}">${apiType.apiTypeName}--${apiType.mobileOperatorName}</option>
+                                                                                            <option value="${apiType.apiTypeId!''}-${apiType.mobileOperatorId!''}">${apiType.apiTypeName!''}--${apiType.mobileOperatorName!''}</option>
                                                                                         <#else >
-                                                                                            <option value="${apiType.apiTypeId}">${apiType.apiTypeName}</option>
+                                                                                            <option value="${apiType.apiTypeId!''}">${apiType.apiTypeName!''}</option>
                                                                                         </#if>
                                                                                     </#list>
                                                                                 </#if>

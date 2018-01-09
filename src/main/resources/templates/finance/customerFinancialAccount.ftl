@@ -401,7 +401,7 @@
                                         <th>当月消费</th>
                                         <th>昨日消费</th>
                                         <th>当日消费</th>
-                                        <th>近一周消费走势</th>
+                                        <th>消费走势</th>
                                         <th class="table-td-none">产品类型</th>
                                         <th class="table-td-none">产品价格</th>
                                         <th class="table-td-none">总消费额</th>
@@ -445,7 +445,7 @@
                                                 <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
                                                     <td data-title="当日消费">${customer.currDayAmount!'0.0'}</td>
                                                 </@shiro.hasPermission>
-                                                <td data-title="近一周消费走势"><a href="/finance/customer-nearly-week-thread?cid=${customer.id}&name=${customer.companyName}">查看</a></td>
+                                                <td data-title="消费走势"><a href="/finance/customer-nearly-week-thread?cid=${customer.id}&name=${customer.companyName}">查看</a></td>
                                                 <td data-title="产品类型" class="table-td-none">
                                                     <#if customer.companyApiList?? && (customer.companyApiList?size>0)>
                                                         <#list customer.companyApiList as companyApi>

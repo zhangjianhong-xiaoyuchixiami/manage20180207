@@ -61,7 +61,7 @@
                                         <option value=""></option>
                                         <#if apiTypeList??>
                                             <#list apiTypeList as apiType>
-                                                <option <#if apiTypeId?? && apiTypeId==apiType.id>selected="selected"</#if> value="${apiType.id}">${apiType.name}</option>
+                                                <option <#if apiTypeId?? && apiTypeId==apiType.id>selected="selected"</#if> value="${apiType.id!''}">${apiType.name!''}</option>
                                             </#list>
                                         </#if>
                                     </select>

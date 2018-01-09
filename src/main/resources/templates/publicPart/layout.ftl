@@ -298,37 +298,37 @@
 
                 </@shiro.hasAnyRoles>
 
-            <#--&lt;#&ndash;运营管理&ndash;&gt;-->
-                <#--<@shiro.hasAnyRoles name="backAdmin">-->
+            <#--运营管理-->
+                <@shiro.hasAnyRoles name="backAdmin">
 
-                    <#--<li class="" id="operation_manage">-->
-                        <#--<a href="javascript:;">-->
+                    <li class="" id="operation_manage">
+                        <a href="javascript:;">
 
-                            <#--<i class="icon-bar-chart"></i>-->
+                            <i class="icon-bar-chart"></i>
 
-                            <#--<span class="title">运营管理</span>-->
+                            <span class="title">运营管理</span>
 
-                            <#--<span class="" id="operation_manage_select"></span>-->
+                            <span class="" id="operation_manage_select"></span>
 
-                            <#--<span class="arrow " id="operation_manage_arrow"></span>-->
+                            <span class="arrow " id="operation_manage_arrow"></span>
 
-                        <#--</a>-->
+                        </a>
 
-                        <#--<ul class="sub-menu">-->
+                        <ul class="sub-menu">
 
-                            <#--&lt;#&ndash;<@shiro.hasPermission name="operation:api-consume-condition">&ndash;&gt;-->
-                                <#--<li id="product_condition">-->
-                                    <#--<a href="/operation/api_operation_condition">-->
-                                        <#--产品消费状况-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--&lt;#&ndash;</@shiro.hasPermission>&ndash;&gt;-->
+                        <@shiro.hasPermission name="operation:api_operation_condition">
+                            <li id="product_condition">
+                                <a href="/operation/api_operation_condition">
+                                    产品消费状况
+                                </a>
+                            </li>
+                        </@shiro.hasPermission>
 
-                        <#--</ul>-->
+                        </ul>
 
-                    <#--</li>-->
+                    </li>
 
-                <#--</@shiro.hasAnyRoles>-->
+                </@shiro.hasAnyRoles>
 
             <#--产品核验-->
                 <@shiro.hasAnyRoles name="backAdmin,service">

@@ -103,7 +103,7 @@
                                 reflow: true
                             },
                             title: {
-                                text: '近一个月消费走势'
+                                text: '消费走势'
                             },
                             exporting: {
                                 enabled: false
@@ -113,7 +113,7 @@
                             },
                             xAxis: {
                                 categories: data.xList,
-                                min:23,
+                                min:15,
                                 max:29
                             },
                             yAxis: {

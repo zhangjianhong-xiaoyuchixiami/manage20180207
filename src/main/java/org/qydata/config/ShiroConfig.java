@@ -34,13 +34,13 @@ public class ShiroConfig {
 	@Bean
 	public FilterRegistrationBean filterRegistrationBean() {
 		FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
-        filterRegistration.setFilter(new DelegatingFilterProxy("shiroFilter"));
-        //该参数表示shiro的生命周期将交由Spring容器进行管理（默认情况下，取值为false）
+		filterRegistration.setFilter(new DelegatingFilterProxy("shiroFilter"));
+		//该参数表示shiro的生命周期将交由Spring容器进行管理（默认情况下，取值为false）
 		//如果将其内容设置为true，则表示由Servlet容器进行管理
-        filterRegistration.setEnabled(true);
-        filterRegistration.addUrlPatterns("/*");
-        filterRegistration.setDispatcherTypes(DispatcherType.REQUEST);
-        return filterRegistration;
+		filterRegistration.setEnabled(true);
+		filterRegistration.addUrlPatterns("/*");
+		filterRegistration.setDispatcherTypes(DispatcherType.REQUEST);
+		return filterRegistration;
 	}
 
 	/**自定义realm
@@ -488,8 +488,8 @@ public class ShiroConfig {
 		chains.put("/data/mobile/valid/result", "authc,perms");
 		chains.put("/data/mobile/operator", "authc,perms");
 
-
-//		chains.put("/operation/api-consume-condition", "authc,perms");
+		//运营管理
+		chains.put("/operation/api_operation_condition", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

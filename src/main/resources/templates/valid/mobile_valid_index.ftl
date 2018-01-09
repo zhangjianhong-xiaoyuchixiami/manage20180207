@@ -1,4 +1,3 @@
-
 <#include "../publicPart/layout.ftl">
 
 <#import "../publicPart/headNavigationBars.ftl" as c>

@@ -28,10 +28,13 @@ import java.util.Map;
 @Controller
 @RequestMapping("/operation")
 public class OperaConditionController {
+
+
     @Autowired
     private OperaConditionService operaConditionServiceImpl;
+
     /**
-     * 经营状况
+     * 首页近两日经营状况
      * @return
      */
     @RequestMapping("/operation_condition")

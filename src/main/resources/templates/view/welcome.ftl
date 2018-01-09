@@ -371,15 +371,14 @@
 
                 Highcharts.setOptions({
                     lang: {
-                    resetZoom: "重置",
-
+                    resetZoom: "重置"
                 }
             });
                 var chart = new Highcharts.chart('container', {
 
                     chart: {
-                        zoomType: 'xy',
-                        panning: true,
+                        zoomType: '',
+                        panning: false,
                         panKey: 'shift',
                         resetZoom:'重置',
                         resetZoomButton: {
@@ -448,7 +447,7 @@
 
                 });
 
-              /* var xAxis = chart.xAxis[0],
+               var xAxis = chart.xAxis[0],
                     xMin = xAxis.dataMin,
                     xMax = xAxis.dataMax;
                Highcharts.addEvent(document.getElementById('container'), document.onmousewheel === undefined ? 'DOMMouseScroll': 'mousewheel', function(e){
@@ -460,7 +459,7 @@
                     }
                     xAxis.setExtremes(min, max);
                     e.preventDefault();
-               });*/
+               });
             }
         }
     });

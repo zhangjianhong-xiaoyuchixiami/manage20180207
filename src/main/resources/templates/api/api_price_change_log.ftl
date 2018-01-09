@@ -228,7 +228,7 @@
                                             <option value=""></option>
                                             <#if apiList??>
                                                 <#list apiList as api>
-                                                    <option value="${api.id}">${api.name}</option>
+                                                    <option value="${api.id!''}">${api.name!''}</option>
                                                 </#list>
                                             </#if>
                                         </select>
