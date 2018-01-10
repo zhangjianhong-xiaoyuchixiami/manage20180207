@@ -100,7 +100,7 @@ public class DateUtils {
     }
 
     /**
-     * 获取昨天相同小时
+     * 获取昨天同时段的小时
      * @return
      */
     public static String yesterHour(){
@@ -124,6 +124,22 @@ public class DateUtils {
         String yesterDawn = sdf.format(time);
         return yesterDawn;
     }
+
+    /**
+     * 获取一个月前的时间
+     * @return
+     */
+    public static  String monthBeforeCurrent(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(cal.DATE, -30);
+        Date date = cal.getTime();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        String format = sdf.format(date);
+        return format;
+    }
+
 
 
 }

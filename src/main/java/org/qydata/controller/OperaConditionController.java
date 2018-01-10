@@ -56,7 +56,7 @@ public class OperaConditionController {
         OrderUtils orderUtils = new OrderUtils();
         Collections.sort(apiOperaConditionList, orderUtils);
         model.addAttribute("apiOperaCondition", apiOperaConditionList);
-        return  "/finance/api-response-condition";
+        return  "/finance/api-operate-condition";
     }
 
     /**

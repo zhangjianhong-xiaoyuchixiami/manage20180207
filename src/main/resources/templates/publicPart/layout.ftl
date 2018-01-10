@@ -324,6 +324,11 @@
                             </li>
                         </@shiro.hasPermission>
 
+                            <li id="product_condition">
+                                <a href="/apiResponseCondition/allApiResponse">
+                                    产品响应状况
+                                </a>
+                            </li>
                         </ul>
 
                     </li>

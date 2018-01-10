@@ -11,6 +11,7 @@ import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.*;
 import org.qydata.mapper.mapper1.CustomerFinanceMapper;
+import org.qydata.mapper.mapper2.CompanySelectMapper;
 import org.qydata.mapper.mapper2.CustomerFinanceSelectMapper;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.tools.CalendarTools;
@@ -41,6 +42,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
     @Autowired
     private CustomerFinanceSelectMapper customerFinanceSelectMapper;
 
+    @Autowired
+    private CompanySelectMapper companySelectMapper;
 //    @Autowired
 //    private RedisUtils redisUtils;
 
@@ -449,7 +452,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         //获取客户id
         String customerId = String.valueOf (map.get("customerId"));
         //调用接口获得客户请求的服务和对应的次数
-        String s = HttpClientUtil.httpRequest(customerId, currentDate);
+        String authKey = companySelectMapper.queryAuthKey("admin.k");
+        String s = HttpClientUtil.httpRequest(customerId, currentDate, authKey);
         //去掉接口返回值为null,""," ","{}","null","NULL"
         if (StringUtils.isBlank(s) || s.replace(" ","").length() == 2 || s.equalsIgnoreCase("null")){
             return null;

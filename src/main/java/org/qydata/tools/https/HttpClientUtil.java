@@ -6,6 +6,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 import org.qydata.constants.CustomerFinanceContants;
+import org.qydata.mapper.mapper2.CompanySelectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
@@ -67,11 +70,11 @@ public class HttpClientUtil {
      * @param date
      * @return
      */
-    public static String httpRequest(String customerId, String date) {
+    public static String httpRequest(String customerId, String date, String requestKey) {
         String s = null;
         try {
             HttpClient httpClient = new SSLClient();
-            HttpGet httpGet = new HttpGet(CustomerFinanceContants.REQUEST_PREFIX_API+"/"+customerId+"/"+date+CustomerFinanceContants.REQUEST_KEY);
+            HttpGet httpGet = new HttpGet(CustomerFinanceContants.REQUEST_PREFIX_API + "/" + customerId+"/" + date + "?k=" + requestKey);
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             s = EntityUtils.toString(entity);

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.mapper.mapper1.CustomerFinanceMapper;
+import org.qydata.mapper.mapper2.CompanySelectMapper;
 import org.qydata.mapper.mapper2.CustomerCacheFinanceSelectMapper;
 import org.qydata.mapper.mapper2.CustomerFinanceSelectMapper;
 import org.qydata.tools.https.HttpClientUtil;
@@ -23,11 +24,14 @@ public class CustomerCurrendDayTotalAmountUtils {
     private CustomerFinanceMapper customerFinanceMapper;
     @Autowired
     private CustomerFinanceSelectMapper customerFinanceSelectMapper;
+    @Autowired
+    private CompanySelectMapper companySelectMapper;
 
     public Double getCurrentDayTotalAmount(String customerId, String currentDate){
 
         //调用接口获得客户请求的服务和对应的扣费次数
-        String s = HttpClientUtil.httpRequest(customerId, currentDate);
+        String authKey = companySelectMapper.queryAuthKey("admin.k");
+        String s = HttpClientUtil.httpRequest(customerId, currentDate, authKey);
         System.out.println(s);
         //去掉接口返回值为null,""," ","{}","null","NULL"
         if (StringUtils.isNotBlank(s) && s.replace(" ","").length() != 2 && !s.equalsIgnoreCase("null")){

@@ -306,6 +306,11 @@ public class CalendarTools {
         return preMonday;
     }
 
+    /**
+     * 获取当天所属星期
+     * @param dt
+     * @return
+     */
     public static String getWeekOfDate(String dt) {
         String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
