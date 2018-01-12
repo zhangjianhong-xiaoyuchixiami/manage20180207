@@ -16,7 +16,6 @@ var ApiFinanceConditionLeftBar = function () {
 
                 $('#operation_manage_arrow').addClass('arrow open');
             });
-
         }
     };
 

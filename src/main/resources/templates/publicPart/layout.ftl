@@ -318,14 +318,14 @@
 
                         <@shiro.hasPermission name="operation:api_operation_condition">
                             <li id="product_condition">
-                                <a href="/operation/api_operation_condition">
+                                <a href="/operation/api-operation-condition">
                                     产品消费状况
                                 </a>
                             </li>
                         </@shiro.hasPermission>
 
                             <li id="product_condition">
-                                <a href="/apiResponseCondition/allApiResponse">
+                                <a href="/api-response-condition/all-api-response">
                                     产品响应状况
                                 </a>
                             </li>

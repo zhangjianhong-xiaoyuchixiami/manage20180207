@@ -18,6 +18,8 @@ public class ApiTypeMobileOperatorNameUtils {
                 MobileOperator mobileOperator = list.get(i);
                 if (mobileOperator != null && mobileOperator.getName() != null){
                     resuName = resuName + mobileOperator.getName() + "，";
+                }else {
+                    resuName = resuName.replace("--", "");
                 }
             }
             if (resuName.lastIndexOf("，") != -1) {

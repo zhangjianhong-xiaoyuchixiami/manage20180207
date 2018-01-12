@@ -21,21 +21,22 @@
         <result column="count6" property="count6"/>
         <result column="count7" property="count7"/>
         <result column="dateTime" property="dateTime"/>
+        <collection property="mobileList" ofType="org.qydata.entity.MobileOperator">
+            <result column="mobileOperatorId" property="id"/>
+            <result column="mobileOperatorName" property="name"/>
+        </collection>
     </resultMap>
 
 
-    <select id="queryApiResponseCondition" parameterType="map" resultMap="ApiResponseCondition_Map">
+    <select id="queryApiResponseCondition" parameterType="String" resultMap="ApiResponseCondition_Map">
 
         SELECT
             a.apiId,
             a.apiTypeId,
-            a.subTypeId,
+            a.subTypeId mobileOperatorId,
             b.apiTypeName,
-            b.mobileOperatorName subTypeName,
-            b.vendorName,
-            sum(totalCount) totalCount,
+            b.mobileOperatorName,
             sum(successCount) successCount,
-            sum(failCount) failCount,
             sum(count1) count1,
             sum(count2) count2,
             sum(count3) count3,
@@ -57,7 +58,7 @@
         WHERE
             a.apiId = #{apiId}
         GROUP BY
-            DATE_FORMAT(a.cycle,'%Y-%m-%d'),a.apiId,a.apiTypeId,a.subTypeId
+            DATE_FORMAT(a.cycle,'%Y-%m-%d'),a.apiTypeId,a.subTypeId
         ORDER BY
 			DATE_FORMAT(a.cycle,'%Y-%m-%d')DESC
 		LIMIT 10
@@ -68,32 +69,60 @@
     <select id="queryAllApiResponse" parameterType="map" resultMap="ApiResponseCondition_Map">
 
         SELECT
-        a.apiId,
-        a.apiTypeId,
-        a.subTypeId,
-        b.apiTypeName,
-        b.mobileOperatorName subTypeName,
-        b.vendorName,
-        sum(totalCount)
+        a.id apiId,
+        a.apiTypeId ,
+        IFNULL(c.mobileOperatorId,0) mobileOperatorId,
+        c.apiTypeName,
+        c.mobileOperatorName,
+        c.vendorName,
+        IFNULL(b.totalCount,0) totalCount,
+        IFNULL(b.successCount,0) successCount,
+        IFNULL(b.failCount,0) failCount,
+        IFNULL(b.count1,0) count1,
+        IFNULL(b.count2,0) count2,
+        IFNULL(b.count3,0) count3,
+        IFNULL(b.count4,0) count4,
+        IFNULL(b.count5,0) count5,
+        IFNULL(b.count6,0) count6,
+        IFNULL(b.count7,0) count7
         FROM
-        qyfinance.apiResponseConditionCountByHour a
-        LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner b ON a.apiId = b.apiId
-        LEFT JOIN qyfinance.bkvwMobileOperator c ON b.mobileOperatorId = c.id
+        qydata.Api a
+        LEFT JOIN
+        (SELECT
+        apiId,
+        totalCount,
+        successCount,
+        failCount,
+        count1,
+        count2,
+        count3,
+        count4,
+        count5,
+        count6,
+        count7
+        FROM
+        qyfinance.apiResponseConditionCountByHour
         WHERE
-        <if test="monthBeforeCurrent != null and monthBeforeCurrent != ''" >
-            a.cycle >= #{monthBeforeCurrent}
+        <if test="currDawn != null and currDawn != ''" >
+            cycle >= #{currDawn}
         </if>
         <if test="currTime != null and currTime != ''" >
             <![CDATA[
-                AND  a.cycle < #{currTime}
+                AND  cycle < #{currTime}
             ]]>
         </if>
+        )b
+        ON
+        a.id = b.apiId
+        LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner c ON a.id = c.apiId
+        LEFT JOIN qyfinance.bkvwMobileOperator d ON c.mobileOperatorId = d.id
+
         GROUP BY
-        a.apiId,
+        a.id,
         a.apiTypeId,
-        a.subTypeId
+        c.mobileOperatorId
         ORDER BY
-        sum(totalCount) DESC
+        sum(b.totalCount) DESC
 
     </select>
 

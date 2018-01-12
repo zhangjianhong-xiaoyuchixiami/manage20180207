@@ -317,7 +317,7 @@
 
     $(function () {
         $.ajax({
-            url: '/operation/operation_condition',
+            url: '/operation/operation-condition',
             type: 'GET',
             dataType: 'json',
             timeout: 30000,

@@ -535,9 +535,8 @@ public class OperaConditionServiceImpl implements OperaConditionService {
         }
 
         JSONArray jsonArrayX = JSONArray.fromObject(xList);
-//        System.out.println(jsonArrayX);
         JSONArray jsonArrayS = JSONArray.fromObject(dataList);
-        Map<String,Object> resu = new HashMap();
+        Map<String,Object> resu = new HashMap<String, Object>();
         resu.put("jsonArrayX",jsonArrayX);
         resu.put("jsonArrayS",jsonArrayS);
 

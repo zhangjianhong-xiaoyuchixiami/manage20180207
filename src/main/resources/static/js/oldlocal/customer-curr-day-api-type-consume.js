@@ -5,7 +5,7 @@ function currentConsumerIncomeCondition(typeId, subTypeId) {
     /*加载消费数据*/
     $.ajax({
         type: "post",
-        url: "/operation/getCurrCustomerIncomeCondition",
+        url: "/operation/get-curr-customer-income-condition",
         data:{"typeId":typeId,"subTypeId":subTypeId},
         dataType: "json",
         beforeSend:function () {
@@ -71,7 +71,7 @@ function yesterdayConsumerIncomeCondition(typeId, subTypeId) {
     /*加载消费数据*/
     $.ajax({
         type: "post",
-        url: "/operation/getYestCustomerIncomeCondition",
+        url: "/operation/get-yest-customer-income-condition",
         data: {"typeId": typeId, "subTypeId": subTypeId},
         dataType: "json",
         beforeSend: function () {
@@ -129,7 +129,7 @@ function currentVendorCostCondition(typeId, subTypeId) {
     /*加载消费数据*/
     $.ajax({
         type: "post",
-        url: "/operation/getCurrVendorCostCondition",
+        url: "/operation/get-curr-vendor-cost-condition",
         data: {"typeId": typeId, "subTypeId": subTypeId},
         dataType: "json",
         beforeSend: function () {
@@ -188,7 +188,7 @@ function yesterdayVendorCostCondition(typeId, subTypeId) {
     /*加载消费数据*/
     $.ajax({
         type: "post",
-        url: "/operation/getYestVendorCostCondition",
+        url: "/operation/get-yest-vendor-cost-condition",
         data: {"typeId": typeId, "subTypeId": subTypeId},
         dataType: "json",
         beforeSend: function () {
@@ -250,7 +250,7 @@ function yesterdayHourConsumerIncomeCondition(typeId, subTypeId) {
     /*加载消费数据*/
     $.ajax({
         type: "post",
-        url: "/operation/getYestHourCustomerIncomeCondition",
+        url: "/operation/get-yest-hour-customer-income-condition",
         data: {"typeId": typeId, "subTypeId": subTypeId},
         dataType: "json",
         beforeSend: function () {
@@ -313,7 +313,7 @@ function yesterdayHourVendorCostCondition(typeId, subTypeId) {
     /*加载消费数据*/
     $.ajax({
         type: "post",
-        url: "/operation/getYestHourVendorCostCondition",
+        url: "/operation/get-yest-hour-vendor-cost-condition",
         data: {"typeId": typeId, "subTypeId": subTypeId},
         dataType: "json",
         beforeSend: function () {

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface ApiResponseConditionMapper {
 
-    public List<ApiResponseCondition>queryApiResponseCondition(Map<String, Object>map);
+    public List<ApiResponseCondition>queryApiResponseCondition(String apiId);
 
     public List<ApiResponseCondition>queryAllApiResponse(Map<String, Object>map);
 }

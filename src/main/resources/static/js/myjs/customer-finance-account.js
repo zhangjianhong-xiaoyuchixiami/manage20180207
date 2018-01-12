@@ -19,12 +19,12 @@ var CustomerFinanceAccount = function () {
             if ($('#beginDate').val() != null && $('#beginDate').val() != ''){
                 beginDate = $('#beginDate').val();
             }else {
-                beginDate = '开通后'
+                beginDate = '今天凌晨'
             }
             if ($('#endDate').val() != null && $('#endDate').val() != ''){
                 endDate = $('#endDate').val();
             }else {
-                endDate = '至昨天'
+                endDate = '当前'
             }
 
             function fnFormatDetails ( oTable, nTr ,beginDate,endDate)

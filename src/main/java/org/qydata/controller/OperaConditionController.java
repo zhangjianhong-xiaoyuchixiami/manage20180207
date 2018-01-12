@@ -37,7 +37,7 @@ public class OperaConditionController {
      * 首页近两日经营状况
      * @return
      */
-    @RequestMapping("/operation_condition")
+    @RequestMapping("/operation-condition")
     @ResponseBody
     public String getOperaCondition(){
         Map<String, Object> consumeConditionAccount = operaConditionServiceImpl.getConsumeConditionAccount();
@@ -50,7 +50,7 @@ public class OperaConditionController {
      * @param model
      * @return
      */
-    @RequestMapping("/api_operation_condition")
+    @RequestMapping("/api-operation-condition")
     public String getApiOperaCondition(Model model){
         List<OperaCondition> apiOperaConditionList = operaConditionServiceImpl.getApiOperaCondition();
         OrderUtils orderUtils = new OrderUtils();
@@ -65,7 +65,7 @@ public class OperaConditionController {
      * @param response
      * @return
      */
-    @RequestMapping("/getCurrCustomerIncomeCondition")
+    @RequestMapping("/get-curr-customer-income-condition")
     @ResponseBody
     public String getCurrCustomerIncomeCondition(HttpServletRequest request, HttpServletResponse response){
         String apiTypeId = request.getParameter("typeId");
@@ -94,7 +94,7 @@ public class OperaConditionController {
      * @param response
      * @return
      */
-    @RequestMapping("/getYestCustomerIncomeCondition")
+    @RequestMapping("/get-yest-customer-income-condition")
     @ResponseBody
     public String getYestCustomerIncomeCondition(HttpServletRequest request, HttpServletResponse response){
         String apiTypeId = request.getParameter("typeId");
@@ -124,7 +124,7 @@ public class OperaConditionController {
      * @param response
      * @return
      */
-    @RequestMapping("/getYestHourCustomerIncomeCondition")
+    @RequestMapping("/get-yest-hour-customer-income-condition")
     @ResponseBody
     public String getYestHourCustomerIncomeCondition(HttpServletRequest request, HttpServletResponse response){
         String apiTypeId = request.getParameter("typeId");
@@ -154,7 +154,7 @@ public class OperaConditionController {
      * @param response
      * @return
      */
-    @RequestMapping("/getYestVendorCostCondition")
+    @RequestMapping("/get-yest-vendor-cost-condition")
     @ResponseBody
     public String getYestVendorCostCondition(HttpServletRequest request, HttpServletResponse response){
         String apiTypeId = request.getParameter("typeId");
@@ -184,7 +184,7 @@ public class OperaConditionController {
      * @param response
      * @return
      */
-    @RequestMapping("/getYestHourVendorCostCondition")
+    @RequestMapping("/get-yest-hour-vendor-cost-condition")
     @ResponseBody
     public String getYestHourVendorCostCondition(HttpServletRequest request, HttpServletResponse response){
         String apiTypeId = request.getParameter("typeId");
@@ -214,7 +214,7 @@ public class OperaConditionController {
      * @param response
      * @return
      */
-    @RequestMapping("/getCurrVendorCostCondition")
+    @RequestMapping("/get-curr-vendor-cost-condition")
     @ResponseBody
     public String getCurrVendorCostCondition(HttpServletRequest request, HttpServletResponse response){
         String apiTypeId = request.getParameter("typeId");
