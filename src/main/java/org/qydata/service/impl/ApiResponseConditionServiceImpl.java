@@ -1,15 +1,19 @@
 package org.qydata.service.impl;
 
 import net.sf.json.JSONArray;
+import org.qydata.constants.GlobalStaticConstants;
 import org.qydata.dst.ApiLineEntity;
 import org.qydata.dst.ApiResponseCondition;
+import org.qydata.dst.ApiTags;
 import org.qydata.dst.LineEntity;
+import org.qydata.mapper.mapper1.ApiTagsMapper;
 import org.qydata.mapper.mapper2.ApiResponseConditionMapper;
 import org.qydata.service.ApiResponseConditionService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.DateUtils;
 import org.qydata.tools.PercentUtils;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
+import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,8 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
 
     @Autowired
     private ApiResponseConditionMapper apiResponseConditionMapper;
+    @Autowired
+    private ApiTagsMapper apiTagsMapper;
 
     /**
      * 响应时间的走势
@@ -141,5 +147,53 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
         }
 
         return apiResponseConditions;
+    }
+
+    /**
+     * 查询产品标签
+     * @param apiId
+     * @return
+     */
+    @Override
+    public List<ApiTags> findApiTags(String apiId) {
+        List<ApiTags> list = apiResponseConditionMapper.queryApiTags(apiId);
+        return list;
+    }
+
+    /**
+     * 增加标签
+     * @param apiId
+     * @param apiTag
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer addApiTag(String apiId, String apiTag) throws Exception {
+        String uri = GlobalStaticConstants.CUSTOMER_ADD_IP;
+        Map<String,Object> map = new HashMap<>();
+        map.put("apiId", apiId);
+        map.put("apiTag", apiTag);
+        Integer integer = apiTagsMapper.addApiTag(map);
+        Integer code = null;
+        if (integer > 0 ){
+            return code = 200;
+        }
+        throw new Exception("保存失败");
+    }
+
+    /**
+     * 删除标签
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer deleteApiTag(String id) throws Exception {
+        Integer integer = apiTagsMapper.deleteApiTag(id);
+        Integer code = null;
+        if (integer > 0 ){
+            return code = 200;
+        }
+        throw new Exception("删除失败");
     }
 }

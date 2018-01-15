@@ -102,14 +102,14 @@
 
                         xAxis : [{
                             categories : data.xList,
-                            min:0,
-                            max:9,
+                            min:1,
+                            max:15,
                             labels:{
                                 rotation:-30
                             },
                             tickInterval:1,
-                            floor: 0,
-                            ceiling: 9,
+                            floor: 1,
+                            ceiling: 15,
                             endOnTick:true
                         }],
 

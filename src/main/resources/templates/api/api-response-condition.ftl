@@ -45,6 +45,7 @@
                                             <th hidden>响应时间小于500ms的数量</th>
                                             <th hidden>响应时间小于500ms的数量</th>
                                             <th hidden>响应时间小于500ms的数量</th>
+                                            <th hidden>响应时间小于500ms的数量</th>
                                             <th>响应时间走势</th>
                                             <th>给此产品添加标签</th>
                                         </tr>
@@ -66,6 +67,7 @@
                                                     <td data-title="响应时间小于500ms的数量">${condition.count1}</td>
                                                     <td data-title="请求成功条数" hidden>${condition.successCount}</td>
                                                     <td data-title="请求失败条数" hidden>${condition.failCount}</td>
+                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.count1}</td>
                                                     <td data-title="响应时间小于500ms的数量" hidden>${condition.count2}</td>
                                                     <td data-title="响应时间小于500ms的数量" hidden>${condition.count3}</td>
                                                     <td data-title="响应时间小于500ms的数量" hidden>${condition.count4}</td>
@@ -89,7 +91,7 @@
 
                     </div>
 
-                <#--产品添加标签-->
+                <#--&lt;#&ndash;产品添加标签&ndash;&gt;
                     <div id="api_tag" class="modal hide fade myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_5" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -105,8 +107,44 @@
 
                             </table>
                         </div>
-                    </div>
+                    </div>-->
 
+
+
+
+
+                    <div id="api_tag" class="modal hide fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_api_tags" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h3 id="add-api-tags">为该产品添加标签</h3>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="clearfix">
+                                    <div class="btn-group" style="margin-bottom: 10px;">
+                                        <a id="api_tags_new" class="btn black">
+                                            添加<i class="icon-plus"></i>
+                                        </a>
+                                    </div>
+                            </div>
+                            <span id="api_tags" style="display: none;">
+
+                            </span>
+                            <div id="error_alert_api_tags" style="margin-bottom: -15px;margin-top: 10px;">
+
+                            </div>
+                            <table class="table table-striped table-hover table-bordered table-condensed" id="api_tag_list">
+                                <thead>
+                                <tr>
+                                    <th>产品标签</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
                     <#--<div id="api-nearly-time-trends" class="modal hide fade myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_4" aria-hidden="true">
                         <div class="modal-header">
@@ -143,6 +181,8 @@
     <script src="/js/myjs/api-response-condition.js?v=${ver}"></script>
 
     <script src="/js/myjs/api_finance_condition_left_bar.js?v=${ver}"></script>
+
+    <script src="/js/oldlocal/api-tags-operation.js?v=${ver}"></script>
 
     <script>
         jQuery(document).ready(function() {

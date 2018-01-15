@@ -60,8 +60,8 @@
         GROUP BY
             DATE_FORMAT(a.cycle,'%Y-%m-%d'),a.apiTypeId,a.subTypeId
         ORDER BY
-			DATE_FORMAT(a.cycle,'%Y-%m-%d')DESC
-		LIMIT 10
+			DATE_FORMAT(a.cycle,'%Y-%m-%d')
+		LIMIT 16
 
     </select>
 
@@ -123,6 +123,23 @@
         c.mobileOperatorId
         ORDER BY
         sum(b.totalCount) DESC
+
+    </select>
+
+    <resultMap id="apiTagsMap" type="org.qydata.dst.ApiTags">
+        <result column="apiId" property="apiId"/>
+        <result column="id" property="id"/>
+        <result column="apiTag" property="apiTag"/>
+    </resultMap>
+
+    <select id="queryApiTags" parameterType="String" resultMap="apiTagsMap">
+        SELECT
+        id,
+        apiTag
+        FROM
+        qyfinance.ApiTags
+        WHERE
+        apiId = #{apiId}
 
     </select>
 

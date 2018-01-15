@@ -17,12 +17,13 @@ var ApiResponseCondition = function () {
                 sOut +=
                     '<tr><th width="10%">请求成功数量</th><td width="80%">'+aData[6]+'</td></tr>' +
                     '<tr><th width="10%">请求失败数量</th><td width="80%">'+aData[7]+'</td></tr>' +
-                    '<tr><th width="10%">500-1000ms</th><td width="80%">'+aData[8]+'</td></tr>' +
-                    '<tr><th width="10%">1000-1500ms</th><td width="80%">'+aData[9]+'</td></tr>' +
-                    '<tr><th width="10%">1500-2000ms</th><td width="80%">'+aData[10]+'</td></tr>' +
-                    '<tr><th width="10%">2000-2500ms</th><td width="80%">'+aData[11]+'</td></tr>' +
-                    '<tr><th width="10%">2500-3000ms</th><td width="80%">'+aData[12]+'</td></tr>' +
-                    '<tr><th width="10%">3000ms—+∞</th><td width="80%">'+aData[13]+'</td></tr>';
+                    '<tr><th width="10%">0-500ms</th><td width="80%">'+aData[8]+'</td></tr>' +
+                    '<tr><th width="10%">500-1000ms</th><td width="80%">'+aData[9]+'</td></tr>' +
+                    '<tr><th width="10%">1000-1500ms</th><td width="80%">'+aData[10]+'</td></tr>' +
+                    '<tr><th width="10%">1500-2000ms</th><td width="80%">'+aData[11]+'</td></tr>' +
+                    '<tr><th width="10%">2000-2500ms</th><td width="80%">'+aData[12]+'</td></tr>' +
+                    '<tr><th width="10%">2500-3000ms</th><td width="80%">'+aData[13]+'</td></tr>' +
+                    '<tr><th width="10%">3000ms—+∞</th><td width="80%">'+aData[14]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -71,8 +72,9 @@ var ApiResponseCondition = function () {
                     {"bVisible": false},  //0-500ms 11
                     {"bVisible": false},  //0-500ms 12
                     {"bVisible": false},  //0-500ms 13
-                    {"bSortable": false},  //走势 6
-                    {"bSortable": false}  //加标签 7
+                    {"bVisible": false},  //0-500ms 14
+                    {"bSortable": false},  //走势 15
+                    {"bSortable": false}  //加标签 16
 
                 ],
 

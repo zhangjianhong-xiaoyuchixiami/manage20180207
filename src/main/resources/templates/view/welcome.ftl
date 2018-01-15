@@ -5,6 +5,10 @@
 
 <#import "../publicPart/headNavigationBars.ftl" as c>
 
+<script src="../../js/highcharts/highcharts.js"></script>
+<script src="../../js/highcharts/series-label.js"></script>
+<script src="../../js/highcharts/exporting.js"></script>
+
 <@layout ; section>
 
     <#if section = "head">
@@ -281,9 +285,7 @@
 
                                         <div class="row-fluid">
 
-                                            <div id="container" style="min-width: 100%; height: 100% margin: 0 auto"></div>
-
-                                        </div>
+                                        <div id="container" style="min-width: 100%; height: 100% margin: 0 auto"></div>
 
                                     </div>
 
@@ -313,156 +315,154 @@
 
     </#if>
 
-<script type="text/javascript">
 
-    $(function () {
-        $.ajax({
-            url: '/operation/operation-condition',
-            type: 'GET',
-            dataType: 'json',
-            timeout: 30000,
-            cache: false,
-//            beforeSend: LoadFunction,
-            error: erryFunction,
-            success: succFunction
-        });
-        /* function LoadFunction() {
-             $("#tabbable tabbable-custom tabbable-full-widt").html('加载中...');
-         }*/
-        function erryFunction() {
-            alert("维护中...请联系技术人员");
-        }
-        function succFunction(data) {
-            $("#currIncome").text(data.currIncomeAccount);
-            $("#yesterIncome").text(data.yesterIncomeAccount);
-            $("#yesterTotalIncome").text(data.yesterTotalIncomeAccount);
-            $("#currCost").text(data.currCostAccount);
-            $("#yesterCost").text(data.yesterCostAccount);
-            $("#yesterTotalCost").text(data.yesterTotalCostAccount);
-            $("#currProfit").text(data.currProfit);
-            $("#yesterProfit").text(data.yesterProfit);
-            $("#yesterTotalProfit").text(data.yesterTotalProfit);
-            $("#profitPrecent").text(data.profitPercent);
-            $("#totalCostPercent").text(data.costPercent);
-            $("#totalIncomePercent").text(data.incomePercent)
-        }
-    });
-</script>
 
-<script src="../../js/highcharts/highcharts.js"></script>
-<script src="../../js/highcharts/series-label.js"></script>
-<script src="../../js/highcharts/exporting.js"></script>
-<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
-
-<script type="text/javascript">
-
-    $(function () {
-
-        $.ajax({
-            type: "GET",
-            url: "/operation/operation-nearly-week-thread/data",
-            dataType: "json",
-            timeout: 30000,
-            cache: false,
-            success: succFunction
-        });
-        function succFunction (data) {
-            if (data != null) {
-
-                Highcharts.setOptions({
-                    lang: {
-                    resetZoom: "重置"
-                }
-            });
-                var chart = new Highcharts.chart('container', {
-
-                    chart: {
-                        zoomType: '',
-                        panning: false,
-                        panKey: 'shift',
-                        resetZoom:'重置',
-                        resetZoomButton: {
-                            position: {
-                                x: 0,
-                                y: -50
-                            }
-                        }
-
-                    },
-
-                    title: {
-                        text: '公司经营状况折线图'
-                    },
-
-                    yAxis: {
-                        title: {
-                            text: '金额(元)'
-                        }
-                    },
-
-                    xAxis : [{
-                        categories : data.xList,
-                        min:0,
-                        max:15,
-                        labels:{
-                            rotation:-30
-                        },
-                        tickInterval:1,
-                        floor: 0,
-                        ceiling: 15,
-                        endOnTick:true
-                    }],
-
-                    scrollbar : {
-                        enabled:true
-                    },
-
-                    legend: {
-                        layout: 'vertical',
-                        align: 'right',
-                        verticalAlign: 'middle',
-                        borderWidth: 0
-                    },
-
-                    plotOptions: {
-                        series: {
-                            label: {
-                                connectorAllowed: false
-                            }
-                        }
-                    },
-                    responsive: {
-                        rules: [{
-                            condition: {
-                                maxWidth:300
-                            }
-                        }]
-                    },
-
-                    exporting:{
-                        enabled:false
-                    },
-
-                    series: data.seriesData
-
-                });
-
-               var xAxis = chart.xAxis[0],
-                    xMin = xAxis.dataMin,
-                    xMax = xAxis.dataMax;
-               Highcharts.addEvent(document.getElementById('container'), document.onmousewheel === undefined ? 'DOMMouseScroll': 'mousewheel', function(e){
-                    var step = e.wheelDelta > 0 ? -2 : 2,
-                        min = xAxis.min + step,
-                        max = xAxis.max + step;
-                    if(min < xMin || max > xMax) {
-                        return false;
-                    }
-                    xAxis.setExtremes(min, max);
-                    e.preventDefault();
-               });
-            }
-        }
-    });
-</script>
 
 </@layout>
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            $.ajax({
+                type: "GET",
+                url: "/operation/operation-nearly-week-thread/data",
+                dataType: "json",
+                timeout: 30000,
+                cache: false,
+                success: succFunction
+            });
+            function succFunction (data) {
+                if (data != null) {
+
+                    Highcharts.setOptions({
+                        lang: {
+                            resetZoom: "重置"
+                        }
+                    });
+                    var chart = new Highcharts.chart('container', {
+
+                        chart: {
+                            zoomType: '',
+                            panning: false,
+                            panKey: 'shift',
+                            resetZoom:'重置',
+                            resetZoomButton: {
+                                position: {
+                                    x: 0,
+                                    y: -50
+                                }
+                            }
+
+                        },
+
+                        title: {
+                            text: '公司经营状况折线图'
+                        },
+
+                        yAxis: {
+                            title: {
+                                text: '金额(元)'
+                            }
+                        },
+
+                        xAxis : [{
+                            categories : data.xList,
+                            min:11,
+                            max:25,
+                            labels:{
+                                rotation:-30
+                            },
+                            tickInterval:1,
+                            floor: 0,
+                            ceiling: 25,
+                            endOnTick:true
+                        }],
+
+                        scrollbar : {
+                            enabled:true
+                        },
+
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            borderWidth: 0
+                        },
+
+                        plotOptions: {
+                            series: {
+                                label: {
+                                    connectorAllowed: false
+                                }
+                            }
+                        },
+                        responsive: {
+                            rules: [{
+                                condition: {
+                                    maxWidth:300
+                                }
+                            }]
+                        },
+
+                        exporting:{
+                            enabled:false
+                        },
+
+                        series: data.seriesData
+
+                    });
+
+                    var xAxis = chart.xAxis[0],
+                            xMin = xAxis.dataMin,
+                            xMax = xAxis.dataMax;
+                    Highcharts.addEvent(document.getElementById('container'), document.onmousewheel === undefined ? 'DOMMouseScroll': 'mousewheel', function(e){
+                        var step = e.wheelDelta > 0 ? -2 : 2,
+                                min = xAxis.min + step,
+                                max = xAxis.max + step;
+                        if(min < xMin || max > xMax) {
+                            return false;
+                        }
+                        xAxis.setExtremes(min, max);
+                        e.preventDefault();
+                    });
+                }
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajax({
+                url: '/operation/operation-condition',
+                type: 'GET',
+                dataType: 'json',
+                timeout: 30000,
+                cache: false,
+//            beforeSend: LoadFunction,
+                error: erryFunction,
+                success: succFunction
+            });
+            /* function LoadFunction() {
+                 $("#tabbable tabbable-custom tabbable-full-widt").html('加载中...');
+             }*/
+            function erryFunction() {
+                alert("维护中...请联系技术人员");
+            }
+            function succFunction(data) {
+                $("#currIncome").text(data.currIncomeAccount);
+                $("#yesterIncome").text(data.yesterIncomeAccount);
+                $("#yesterTotalIncome").text(data.yesterTotalIncomeAccount);
+                $("#currCost").text(data.currCostAccount);
+                $("#yesterCost").text(data.yesterCostAccount);
+                $("#yesterTotalCost").text(data.yesterTotalCostAccount);
+                $("#currProfit").text(data.currProfit);
+                $("#yesterProfit").text(data.yesterProfit);
+                $("#yesterTotalProfit").text(data.yesterTotalProfit);
+                $("#profitPrecent").text(data.profitPercent);
+                $("#totalCostPercent").text(data.costPercent);
+                $("#totalIncomePercent").text(data.incomePercent)
+            }
+        });
+    </script>

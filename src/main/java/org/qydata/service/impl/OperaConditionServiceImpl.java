@@ -528,7 +528,7 @@ public class OperaConditionServiceImpl implements OperaConditionService {
             dataList.add(lineEntity2);
         }
 
-        for (int i = 15; i >= 0 ; i--) {
+        for (int i = 25; i >= 0 ; i--) {
             String day = ChartCalendarUtil.getStatetime(i);
             String weekOfDate = CalendarTools.getWeekOfDate(day);
             xList.add(day + weekOfDate);
