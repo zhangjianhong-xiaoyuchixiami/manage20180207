@@ -11,12 +11,11 @@ public class ApiTypeMobileOperatorNameUtils {
 
 
     public static String apiTypeMobileOperatorName(String name, List<MobileOperator> list){
+        String resuName = null;
         if (name == null){
             name = "未知";
-        }else{
-
         }
-        String resuName = name;
+        resuName = name;
         if (list != null && list.size() > 0){
             resuName = resuName + "--";
             for (int i = 0; i < list.size() ; i++) {
