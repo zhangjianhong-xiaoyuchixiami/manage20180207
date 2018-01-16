@@ -12,15 +12,13 @@ import org.qydata.service.ApiResponseConditionService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.DateUtils;
 import org.qydata.tools.PercentUtils;
+import org.qydata.tools.chartdate.ChartCalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ApiResponseConditionServiceImpl implements ApiResponseConditionService{
@@ -55,20 +53,39 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
         List<Double> list6 = new ArrayList<Double>();
         List<Double> list7 = new ArrayList<Double>();
         List<ApiResponseCondition> apiResponseConditions = apiResponseConditionMapper.queryApiResponseCondition(apiId);
-        if (apiResponseConditions != null && apiResponseConditions.size() > 0){
-            for (ApiResponseCondition apiResponseCondition : apiResponseConditions) {
-                String dateTime = apiResponseCondition.getDateTime();
-                String weekOfDate = CalendarTools.getWeekOfDate(dateTime);
-                xList.add(dateTime + weekOfDate);
-                if (apiResponseCondition.getSuccessCount() != 0) {
-                    list1.add(PercentUtils.getPercent2(apiResponseCondition.getCount1(), apiResponseCondition.getSuccessCount()));
-                    list2.add(PercentUtils.getPercent2(apiResponseCondition.getCount2(), apiResponseCondition.getSuccessCount()));
-                    list3.add(PercentUtils.getPercent2(apiResponseCondition.getCount3(), apiResponseCondition.getSuccessCount()));
-                    list4.add(PercentUtils.getPercent2(apiResponseCondition.getCount4(), apiResponseCondition.getSuccessCount()));
-                    list5.add(PercentUtils.getPercent2(apiResponseCondition.getCount5(), apiResponseCondition.getSuccessCount()));
-                    list6.add(PercentUtils.getPercent2(apiResponseCondition.getCount6(), apiResponseCondition.getSuccessCount()));
-                    list7.add(PercentUtils.getPercent2(apiResponseCondition.getCount7(), apiResponseCondition.getSuccessCount()));
-                }else {
+        Collections.reverse(apiResponseConditions);
+        int count = 1;
+        for (int i = 15; i >= 0; i --){
+
+            String day = ChartCalendarUtil.getStatetime(i);
+            String weekOfDate = CalendarTools.getWeekOfDate(day);
+            xList.add(day + weekOfDate);
+            if (apiResponseConditions != null && apiResponseConditions.size() > 0){
+                for (ApiResponseCondition apiResponseCondition : apiResponseConditions) {
+                    String dateTime = apiResponseCondition.getDateTime();
+
+                    if (day.equals(dateTime)){
+                        if (apiResponseCondition.getSuccessCount() != 0) {
+                            list1.add(PercentUtils.getPercent2(apiResponseCondition.getCount1(), apiResponseCondition.getSuccessCount()));
+                            list2.add(PercentUtils.getPercent2(apiResponseCondition.getCount2(), apiResponseCondition.getSuccessCount()));
+                            list3.add(PercentUtils.getPercent2(apiResponseCondition.getCount3(), apiResponseCondition.getSuccessCount()));
+                            list4.add(PercentUtils.getPercent2(apiResponseCondition.getCount4(), apiResponseCondition.getSuccessCount()));
+                            list5.add(PercentUtils.getPercent2(apiResponseCondition.getCount5(), apiResponseCondition.getSuccessCount()));
+                            list6.add(PercentUtils.getPercent2(apiResponseCondition.getCount6(), apiResponseCondition.getSuccessCount()));
+                            list7.add(PercentUtils.getPercent2(apiResponseCondition.getCount7(), apiResponseCondition.getSuccessCount()));
+                        }else {
+                            list1.add(0.0);
+                            list2.add(0.0);
+                            list3.add(0.0);
+                            list4.add(0.0);
+                            list5.add(0.0);
+                            list6.add(0.0);
+                            list7.add(0.0);
+                        }
+                    }
+                }
+
+                if (count != list1.size()){
                     list1.add(0.0);
                     list2.add(0.0);
                     list3.add(0.0);
@@ -77,36 +94,49 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
                     list6.add(0.0);
                     list7.add(0.0);
                 }
+                count ++;
+            }else {
+                list1.add(0.0);
+                list2.add(0.0);
+                list3.add(0.0);
+                list4.add(0.0);
+                list5.add(0.0);
+                list6.add(0.0);
+                list7.add(0.0);
             }
-            apilineEntity1.setName("0-500ms");
-            apilineEntity1.setData(list1);
 
-            apilineEntity2.setName("500-1000ms");
-            apilineEntity2.setData(list2);
 
-            apilineEntity3.setName("1000-1500ms");
-            apilineEntity3.setData(list3);
-
-            apilineEntity4.setName("1500-2000ms");
-            apilineEntity4.setData(list4);
-
-            apilineEntity5.setName("2000-2500ms");
-            apilineEntity5.setData(list5);
-
-            apilineEntity6.setName("2500-3000ms");
-            apilineEntity6.setData(list6);
-
-            apilineEntity7.setName("3000ms-+∞");
-            apilineEntity7.setData(list7);
-
-            dataList.add(apilineEntity1);
-            dataList.add(apilineEntity2);
-            dataList.add(apilineEntity3);
-            dataList.add(apilineEntity4);
-            dataList.add(apilineEntity5);
-            dataList.add(apilineEntity6);
-            dataList.add(apilineEntity7);
         }
+
+        apilineEntity1.setName("0-500ms");
+        apilineEntity1.setData(list1);
+
+        apilineEntity2.setName("500-1000ms");
+        apilineEntity2.setData(list2);
+
+        apilineEntity3.setName("1000-1500ms");
+        apilineEntity3.setData(list3);
+
+        apilineEntity4.setName("1500-2000ms");
+        apilineEntity4.setData(list4);
+
+        apilineEntity5.setName("2000-2500ms");
+        apilineEntity5.setData(list5);
+
+        apilineEntity6.setName("2500-3000ms");
+        apilineEntity6.setData(list6);
+
+        apilineEntity7.setName("3000ms-+∞");
+        apilineEntity7.setData(list7);
+
+        dataList.add(apilineEntity1);
+        dataList.add(apilineEntity2);
+        dataList.add(apilineEntity3);
+        dataList.add(apilineEntity4);
+        dataList.add(apilineEntity5);
+        dataList.add(apilineEntity6);
+        dataList.add(apilineEntity7);
+
         JSONArray jsonArrayX = JSONArray.fromObject(xList);
         JSONArray jsonArrayData = JSONArray.fromObject(dataList);
         Map<String,Object> resu = new HashMap();

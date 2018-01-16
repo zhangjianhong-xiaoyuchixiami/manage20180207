@@ -60,7 +60,7 @@
         GROUP BY
             DATE_FORMAT(a.cycle,'%Y-%m-%d'),a.apiTypeId,a.subTypeId
         ORDER BY
-			DATE_FORMAT(a.cycle,'%Y-%m-%d')
+			DATE_FORMAT(a.cycle,'%Y-%m-%d')DESC
 		LIMIT 16
 
     </select>

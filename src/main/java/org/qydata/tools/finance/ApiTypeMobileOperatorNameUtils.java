@@ -11,6 +11,11 @@ public class ApiTypeMobileOperatorNameUtils {
 
 
     public static String apiTypeMobileOperatorName(String name, List<MobileOperator> list){
+        if (name == null){
+            name = "未知";
+        }else{
+
+        }
         String resuName = name;
         if (list != null && list.size() > 0){
             resuName = resuName + "--";

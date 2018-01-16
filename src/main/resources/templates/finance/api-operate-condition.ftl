@@ -41,13 +41,13 @@
                                     <thead>
                                     <tr>
                                         <th >产品名称</th>
-                                        <th width="130px">周期</th>
+                                        <th width="15.1%">周期</th>
 
-                                        <th width="118px">总收入</th>
-                                        <th width="118px">下游请求数量</th>
-                                        <th width="118px">总成本</th>
-                                        <th width="118px">请求上游数量</th>
-                                        <th width="118px">毛利润</th>
+                                        <th width="13.4%">总收入</th>
+                                        <th width="13.4%">下游请求数量</th>
+                                        <th width="13.4%">总成本</th>
+                                        <th width="13.4%">请求上游数量</th>
+                                        <th width="13.4%">毛利润</th>
                                     </tr>
 
 
