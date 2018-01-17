@@ -12,7 +12,7 @@ public interface ApiResponseConditionMapper {
 
     public List<ApiResponseCondition>queryAllApiResponse(Map<String, Object>map);
 
-    public List<ApiTags>queryApiTags(String apiId);
+    public ApiTags queryApiTags(String apiId);
 
 
 }

@@ -23,7 +23,8 @@ var ApiResponseCondition = function () {
                     '<tr><th width="10%">1500-2000ms</th><td width="80%">'+aData[11]+'</td></tr>' +
                     '<tr><th width="10%">2000-2500ms</th><td width="80%">'+aData[12]+'</td></tr>' +
                     '<tr><th width="10%">2500-3000ms</th><td width="80%">'+aData[13]+'</td></tr>' +
-                    '<tr><th width="10%">3000ms—+∞</th><td width="80%">'+aData[14]+'</td></tr>';
+                    '<tr><th width="10%">3000ms—+∞</th><td width="80%">'+aData[14]+'</td></tr>' +
+                    '<tr><th width="10%">产品标签</th><td width="80%">'+aData[15]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
@@ -73,8 +74,9 @@ var ApiResponseCondition = function () {
                     {"bVisible": false},  //0-500ms 12
                     {"bVisible": false},  //0-500ms 13
                     {"bVisible": false},  //0-500ms 14
-                    {"bSortable": false},  //走势 15
-                    {"bSortable": false}  //加标签 16
+                    {"bVisible": false},  //0-500ms 15
+                    {"bSortable": false},  //走势 16
+                    {"bSortable": false} //加标签 17
 
                 ],
 

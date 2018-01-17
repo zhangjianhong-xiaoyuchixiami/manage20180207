@@ -26,6 +26,7 @@ public class ApiResponseCondition {
     private Integer count6;
     private Integer count7;
     private String dateTime;
+    private String apiTag;
     private List<MobileOperator>mobileList;
 
 }

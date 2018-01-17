@@ -34,7 +34,15 @@ public class ApiResponseConditionController {
         return  "/api/api-response-condition";
     }
 
-    @RequestMapping("/api-response-nearly-week-thread")
+    @RequestMapping("/api-response-time-trends")
+    public ModelAndView apiResponseChartName(String apiId, String vendorName, String apiName, Model model){
+        model.addAttribute("apiId",apiId);
+        model.addAttribute("vendorName",vendorName);
+        model.addAttribute("apiName",apiName);
+        return new ModelAndView("/api/api-response-trends");
+    }
+
+    @RequestMapping("/api-response-nearly-week-thread/data")
     @ResponseBody
     public String apiResponseNearlyTimeThread(HttpServletRequest request){
         String apiId = request.getParameter("apiId");
@@ -58,34 +66,33 @@ public class ApiResponseConditionController {
 
     }
 
-    @RequestMapping("/api-response-time-trends")
-    public ModelAndView turn(String apiId, Model model){
-        model.addAttribute("apiId",apiId);
-        return new ModelAndView("/api/api-response-trends");
-    }
-
     @RequestMapping("/show-api-tags")
     @ResponseBody
     public String findApiTags(HttpServletRequest request){
         String apiId = request.getParameter("apiId");
-        List<ApiTags> apiTags = apiResponseConditionServiceImpl.findApiTags(apiId);
-        return new Gson().toJson(apiTags);
+        ApiTags apiTags = apiResponseConditionServiceImpl.findApiTags(apiId);
+        String s = new Gson().toJson(apiTags).toString();
+        System.out.println(s);
+        return s;
     }
 
     /**
-     * 添加标签
+     * 提交修改的标签
      * @param apiTag
      * @param apiId
      * @return
      */
-    @RequestMapping("/addApiTag")
+    @RequestMapping("/submitApiTag")
     @ResponseBody
     public String addApiTag(String apiTag, String apiId){
         Map<String,Object> map = new HashMap<>();
         Gson gson = new Gson();
         int result = 0;
+        if (apiTag.length() == 0){
+            apiTag = null;
+        }
         try {
-            result = apiResponseConditionServiceImpl.addApiTag(apiId, apiTag);
+            result = apiResponseConditionServiceImpl.submitApiTag(apiId, apiTag);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +104,7 @@ public class ApiResponseConditionController {
         return gson.toJson(map);
     }
 
-    @RequestMapping("/deleteApiTag")
+   /* @RequestMapping("/deleteApiTag")
     @ResponseBody
     public String deleteApiTag(String id){
         Map<String,Object> map = new HashMap<>();
@@ -114,5 +121,5 @@ public class ApiResponseConditionController {
         }
         map.put("fail","添加失败，请检查你的操作");
         return gson.toJson(map);
-    }
+    }*/
 }

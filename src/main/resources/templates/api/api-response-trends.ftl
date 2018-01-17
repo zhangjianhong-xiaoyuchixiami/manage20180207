@@ -19,7 +19,39 @@
 
             <@c.navigationBars></@c.navigationBars>
 
-                <div class="table-responsive" id="container"></div>
+            <div id="dashboard">
+
+                <div class="clearfix"></div>
+
+                <div class="row-fluid">
+
+                    <div class="span12">
+
+                        <div class="portlet solid bordered light-grey">
+
+                            <div class="portlet-title">
+
+                                <div class="caption"><i class="icon-bar-chart"></i>(apiId = ${apiId})${apiName!'无'}(${vendorName})</div>
+
+                            </div>
+
+                            <div class="portlet-body">
+
+                                <div id="site_statistics_loading">
+
+                                    <div style="min-width:400px;height:400px" id="container"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -54,7 +86,7 @@
         var apiId = $.getUrlParam("apiId");
             $.ajax({
                 type: "GET",
-                url: "/api-response-condition/api-response-nearly-week-thread",
+                url: "/api-response-condition/api-response-nearly-week-thread/data",
                 data: {"apiId": apiId},
                 dataType: "json",
                 timeout: 30000,
@@ -62,6 +94,7 @@
                 success: succFunction
             });
             function succFunction (data) {
+
                 if (data != null) {
 
                     Highcharts.setOptions({
@@ -72,8 +105,8 @@
                     var chart = new Highcharts.chart('container', {
 
                         chart: {
-                            zoomType: 'xy',
-                            panning: true,
+                            zoomType: '',
+                            panning: false,
                             panKey: 'shift',
                             resetZoom:'重置',
                             resetZoomButton: {
@@ -92,8 +125,7 @@
                         yAxis: {
                             labels: {
                                 max: 100,
-                                format:"{value}%",
-                                tickAmount: 4
+                                format:"{value}%"
                                 },
                             title: {
                                 text: '百分比(%)'
@@ -102,19 +134,19 @@
 
                         xAxis : [{
                             categories : data.xList,
-                            min:1,
-                            max:15,
+                            min:3,
+                            max:17,
                             labels:{
                                 rotation:-30
                             },
                             tickInterval:1,
-                            floor: 1,
-                            ceiling: 15,
+                            floor: 0,
+                            ceiling: 17,
                             endOnTick:true
                         }],
 
                         scrollbar : {
-                            enabled:false
+                            enabled:true
                         },
 
                         legend: {
@@ -143,7 +175,7 @@
                         responsive: {
                             rules: [{
                                 condition: {
-                                    maxWidth:300
+                                    maxWidth:500
                                 }
                             }]
                         },

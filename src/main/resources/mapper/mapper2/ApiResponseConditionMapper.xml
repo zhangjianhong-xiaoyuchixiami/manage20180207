@@ -20,6 +20,7 @@
         <result column="count5" property="count5"/>
         <result column="count6" property="count6"/>
         <result column="count7" property="count7"/>
+        <result column="apiTag" property="apiTag"/>
         <result column="dateTime" property="dateTime"/>
         <collection property="mobileList" ofType="org.qydata.entity.MobileOperator">
             <result column="mobileOperatorId" property="id"/>
@@ -61,7 +62,7 @@
             DATE_FORMAT(a.cycle,'%Y-%m-%d'),a.apiTypeId,a.subTypeId
         ORDER BY
 			DATE_FORMAT(a.cycle,'%Y-%m-%d')DESC
-		LIMIT 16
+		LIMIT 18
 
     </select>
 
@@ -84,7 +85,8 @@
         IFNULL(b.count4,0) count4,
         IFNULL(b.count5,0) count5,
         IFNULL(b.count6,0) count6,
-        IFNULL(b.count7,0) count7
+        IFNULL(b.count7,0) count7,
+        e.apiTag
         FROM
         qydata.Api a
         LEFT JOIN
@@ -116,6 +118,7 @@
         a.id = b.apiId
         LEFT JOIN qyfinance.bkvw_api_ApiTypeVendorPartner c ON a.id = c.apiId
         LEFT JOIN qyfinance.bkvwMobileOperator d ON c.mobileOperatorId = d.id
+        LEFT JOIN qyfinance.ApiExt e ON a.id = e.apiId
 
         GROUP BY
         a.id,
@@ -126,18 +129,12 @@
 
     </select>
 
-    <resultMap id="apiTagsMap" type="org.qydata.dst.ApiTags">
-        <result column="apiId" property="apiId"/>
-        <result column="id" property="id"/>
-        <result column="apiTag" property="apiTag"/>
-    </resultMap>
-
-    <select id="queryApiTags" parameterType="String" resultMap="apiTagsMap">
+    <select id="queryApiTags" parameterType="String" resultType="org.qydata.dst.ApiTags">
         SELECT
-        id,
+        apiId,
         apiTag
         FROM
-        qyfinance.ApiTags
+        qyfinance.ApiExt
         WHERE
         apiId = #{apiId}
 

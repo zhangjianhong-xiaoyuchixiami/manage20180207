@@ -314,10 +314,6 @@
         <@puj.publicJs></@puj.publicJs>
 
     </#if>
-
-
-
-
 </@layout>
 
     <script type="text/javascript">

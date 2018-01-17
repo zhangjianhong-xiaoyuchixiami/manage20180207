@@ -55,7 +55,7 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
         List<ApiResponseCondition> apiResponseConditions = apiResponseConditionMapper.queryApiResponseCondition(apiId);
         Collections.reverse(apiResponseConditions);
         int count = 1;
-        for (int i = 15; i >= 0; i --){
+        for (int i = 17; i >= 0; i --){
 
             String day = ChartCalendarUtil.getStatetime(i);
             String weekOfDate = CalendarTools.getWeekOfDate(day);
@@ -147,7 +147,7 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
     }
 
     /**
-     * 请求详情
+     * 所有请求的详情
      * @return
      */
     @Override
@@ -185,25 +185,24 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
      * @return
      */
     @Override
-    public List<ApiTags> findApiTags(String apiId) {
-        List<ApiTags> list = apiResponseConditionMapper.queryApiTags(apiId);
-        return list;
+    public ApiTags findApiTags(String apiId) {
+        ApiTags apiTags = apiResponseConditionMapper.queryApiTags(apiId);
+        return apiTags;
     }
 
     /**
-     * 增加标签
+     * 提交修改的标签
      * @param apiId
      * @param apiTag
      * @return
      * @throws Exception
      */
     @Override
-    public Integer addApiTag(String apiId, String apiTag) throws Exception {
-        String uri = GlobalStaticConstants.CUSTOMER_ADD_IP;
+    public Integer submitApiTag(String apiId, String apiTag) throws Exception {
         Map<String,Object> map = new HashMap<>();
         map.put("apiId", apiId);
         map.put("apiTag", apiTag);
-        Integer integer = apiTagsMapper.addApiTag(map);
+        Integer integer = apiTagsMapper.submitApiTag(map);
         Integer code = null;
         if (integer > 0 ){
             return code = 200;
@@ -211,12 +210,12 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
         throw new Exception("保存失败");
     }
 
-    /**
+   /* *//**
      * 删除标签
      * @param id
      * @return
      * @throws Exception
-     */
+     *//*
     @Override
     public Integer deleteApiTag(String id) throws Exception {
         Integer integer = apiTagsMapper.deleteApiTag(id);
@@ -225,5 +224,5 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
             return code = 200;
         }
         throw new Exception("删除失败");
-    }
+    }*/
 }

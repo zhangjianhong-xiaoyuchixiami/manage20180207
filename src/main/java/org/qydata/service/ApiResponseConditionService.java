@@ -12,9 +12,8 @@ public interface ApiResponseConditionService {
 
     public List<ApiResponseCondition> queryAllApiResponse();
 
-    public List<ApiTags> findApiTags(String apiId);
+    public ApiTags findApiTags(String apiId);
 
-    public Integer addApiTag(String apiId, String apiTag) throws Exception;
+    public Integer submitApiTag(String apiId, String apiTag) throws Exception;
 
-    public Integer deleteApiTag(String id) throws Exception;
 }

@@ -8,7 +8,6 @@ import java.util.Map;
  */
 public interface ApiTagsMapper {
 
-    public Integer addApiTag(Map<String, Object> map);
+    public Integer submitApiTag(Map<String, Object> map);
 
-    public Integer deleteApiTag(String id);
 }
