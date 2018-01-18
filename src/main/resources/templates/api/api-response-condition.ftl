@@ -36,17 +36,17 @@
                                             <th>供应商名称</th>
                                             <th>今日请求数</th>
                                             <th>请求失败率</th>
-                                            <th>响应时间小于500ms</th>
+                                            <th>0—500ms</th>
                                             <th hidden>请求成功数</th>
                                             <th hidden>请求失败数</th>
-                                            <th hidden>响应时间小于500ms的数量</th>
-                                            <th hidden>响应时间小于500ms的数量</th>
-                                            <th hidden>响应时间小于500ms的数量</th>
-                                            <th hidden>响应时间小于500ms的数量</th>
-                                            <th hidden>响应时间小于500ms的数量</th>
-                                            <th hidden>响应时间小于500ms的数量</th>
-                                            <th hidden>响应时间小于500ms的数量</th>
-                                            <th hidden>响应时间小于500ms的数量</th>
+                                            <th hidden>0—500ms</th>
+                                            <th hidden>500—1000ms</th>
+                                            <th hidden>1000—1500ms</th>
+                                            <th hidden>1500—2000ms</th>
+                                            <th hidden>2000—2500ms</th>
+                                            <th hidden>2500—3000ms</th>
+                                            <th hidden>3000ms—+∞</th>
+                                            <th hidden>产品标签</th>
                                             <th>响应时间走势</th>
                                             <th>操作</th>
                                         </tr>
@@ -68,14 +68,14 @@
                                                     <td data-title="响应时间小于500ms">${condition.count1}</td>
                                                     <td data-title="请求成功数" hidden>${condition.successCount}</td>
                                                     <td data-title="请求失败数" hidden>${condition.failCount}</td>
-                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.count1}</td>
-                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.count2}</td>
-                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.count3}</td>
-                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.count4}</td>
-                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.count5}</td>
-                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.count6}</td>
-                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.count7}</td>
-                                                    <td data-title="响应时间小于500ms的数量" hidden>${condition.apiTag}</td>
+                                                    <td data-title="0—500ms" hidden>${condition.count1}</td>
+                                                    <td data-title="500—1000ms" hidden>${condition.count2}</td>
+                                                    <td data-title="1000—1500ms" hidden>${condition.count3}</td>
+                                                    <td data-title="1500—2000ms" hidden>${condition.count4}</td>
+                                                    <td data-title="2000—2500ms" hidden>${condition.count5}</td>
+                                                    <td data-title="2500—3000ms" hidden>${condition.count6}</td>
+                                                    <td data-title="3000ms—+∞" hidden>${condition.count7}</td>
+                                                    <td data-title="产品标签" hidden> ${condition.apiTag! '暂无标签'}</td>
                                                     <td data-title="响应时间走势"><a href="/api-response-condition/api-response-time-trends?apiId=${condition.apiId}&vendorName=${condition.vendorName}&apiName=${condition.apiName}"  data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="响应时间走势">查看</a></td>
                                                     <td data-title="操作" class="MHover" style=" width:10%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
                                                         <a href="#" onclick="showApiTags(${condition.apiId})" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="给此产品添加标签">
