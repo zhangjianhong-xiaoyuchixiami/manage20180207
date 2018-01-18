@@ -201,7 +201,7 @@
                                                                     无
                                                                 </#if>
                                                             </td>
-                                                            <td data-title="产品供应商">${api.apiVendor.name}<#if (api.apiVendor.partner)??>@${api.apiVendor.partner.name}</#if></td>
+                                                            <td data-title="产品供应商">${(api.apiVendor.name)!''}<#if (api.apiVendor.partner)??>@${(api.apiVendor.partner.name)!''}</#if></td>
                                                             <td data-title="价格（单位：元）"><a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改产品价格">${(api.cost/100.0)?c}</a></td>
                                                             <td data-title="当前配额"><a href="javaScript:;" onclick="updateApiCurrProb(${api.id},${(api.prob)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改当前配额">${api.prob!'0'}</a></td>
                                                             <#--<td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>-->

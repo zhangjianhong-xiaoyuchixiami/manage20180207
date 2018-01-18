@@ -7,8 +7,8 @@ import org.qydata.config.properties.UrlProperties;
  */
 public class ApiStaticConstants {
 
-    public static final String AUTHID_03 = UrlProperties.getAuthId();
-    public static final String PASSWORD_03 = UrlProperties.getAuthPass();
-    public static final String REQUEST_PREFIX_API = UrlProperties.getBurl();
+    public static final String AUTHID = UrlProperties.getAuthId();
+    public static final String PASSWORD = UrlProperties.getAuthPass();
+    //public static final String REQUEST_PREFIX_API = UrlProperties.getBurl();
 
 }

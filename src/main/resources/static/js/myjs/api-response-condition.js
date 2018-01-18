@@ -4,9 +4,13 @@ var ApiResponseCondition = function () {
 
         init: function () {
 
-            if (!jQuery().dataTable) {
-                return;
-            }
+            $('#operation_manage').addClass('active');
+
+            $('#product_condition_response').addClass('active');
+
+            $('#operation_manage_select').addClass('selected');
+
+            $('#operation_manage_arrow').addClass('arrow open');
 
 
             function fnFormatDetails ( oTable, nTr )
@@ -60,11 +64,11 @@ var ApiResponseCondition = function () {
             var oTable = $('#sample_2').dataTable({
                 "aoColumns": [
                     {"bSortable": false},  //展开符号 0
-                    {"bSortable": false},  //产品名1
-                    {"bSortable": false},  //供应商名 2
-                    {"bSortable": false},  //请求总数 3
-                    {"bSortable": false},  //失败率 4
-                    {"bSortable": false},  //0-500ms 5
+                    null,  //产品名1
+                    null,  //供应商名 2
+                    null,  //请求总数 3
+                    null,  //失败率 4
+                    null,  //0-500ms 5
                     {"bVisible": false},  //0-500ms 6
                     {"bVisible": false},  //0-500ms 7
                     {"bVisible": false},  //0-500ms 8
@@ -77,10 +81,22 @@ var ApiResponseCondition = function () {
                     {"bVisible": false},  //0-500ms 15
                     {"bSortable": false},  //走势 16
                     {"bSortable": false} //加标签 17
-
                 ],
-
-
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [ 3 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 4 ],
+                        "sType": "html-percent"
+                    },
+                    {
+                        "aTargets": [ 5 ],
+                        "sType": "html-percent"
+                    }
+                ],
+                "aaSorting": [[3, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here
@@ -106,13 +122,13 @@ var ApiResponseCondition = function () {
                 }
             });
 
-            /*表格显示列控制*/
-            $('#sample_2_column_toggler input[type="checkbox"]').change(function(){
-                /* Get the DataTables object again - this is not a recreation, just a get of the object */
-                var iCol = parseInt($(this).attr("data-column"));
-                var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
-                oTable.fnSetColumnVis(iCol, (bVis ? false : true));
-            });
+            // /*表格显示列控制*/
+            // $('#sample_2_column_toggler input[type="checkbox"]').change(function(){
+            //     /* Get the DataTables object again - this is not a recreation, just a get of the object */
+            //     var iCol = parseInt($(this).attr("data-column"));
+            //     var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+            //     oTable.fnSetColumnVis(iCol, (bVis ? false : true));
+            // });
 
         }
 

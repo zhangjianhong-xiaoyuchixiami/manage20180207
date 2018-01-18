@@ -5,7 +5,6 @@ import org.apache.commons.lang.StringUtils;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.mapper.mapper1.CustomerFinanceMapper;
 import org.qydata.mapper.mapper2.CompanySelectMapper;
-import org.qydata.mapper.mapper2.CustomerCacheFinanceSelectMapper;
 import org.qydata.mapper.mapper2.CustomerFinanceSelectMapper;
 import org.qydata.tools.https.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;

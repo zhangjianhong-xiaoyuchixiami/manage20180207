@@ -2,17 +2,20 @@ package org.qydata.controller;
 
 import com.google.gson.Gson;
 import org.qydata.dst.api.Aid;
+import org.qydata.dst.valid.ValidResult;
 import org.qydata.service.ValidService;
 import org.qydata.tools.RegexUtil;
 import org.qydata.tools.customer.IdcardValidator;
 import org.qydata.tools.customer.OperatorList;
 import org.qydata.tools.customer.RequestData;
+import org.qydata.tools.customer.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,99 +38,72 @@ public class ValidController {
 
     /*运营商核验结果页*/
     @RequestMapping("/mobile/valid/result")
-    public String validResult(String tid, String mobile, String realName, String idNo, Integer aid, String omit, String skip, Model model){
-        System.out.println(tid);
-        System.out.println(mobile);
-        System.out.println(realName);
-        System.out.println(idNo);
-        System.out.println(aid);
-        System.out.println(omit);
-        System.out.println(skip);
-        if (RegexUtil.isNull(tid)){
-            return "/valid/mobile_valid_result";
-        }
-        if (tid != null && tid != ""){
-            model.addAttribute("tid",tid);
-            List<Aid> aidList = service.queryAidByUrl(tid.trim());
-            model.addAttribute("aidList",aidList);
-        }
-        if (mobile != null && mobile != ""){
-            model.addAttribute("mobile",mobile);
-        }
-        if (realName != null && realName != ""){
-            model.addAttribute("realName",realName);
-        }
-        if (idNo != null && idNo != ""){
-            model.addAttribute("idNo",idNo);
-        }
-        if (aid != null){
-            model.addAttribute("aid",aid);
-        }
-        if (omit != null && omit != ""){
-            model.addAttribute("omit",omit);
-        }
-        if (skip != null && skip != ""){
-            model.addAttribute("skip",skip);
-        }
-        Map<String,Object> map = RequestData.result(tid,mobile,realName,idNo,aid,omit,skip);
-        if (map != null){
-            for (Map.Entry<String,Object> me : map.entrySet()) {
-                if (me.getKey().equals("result")){
-                    model.addAttribute("result",me.getValue());
-                }
-                if (me.getKey().equals("respResult")){
-                    model.addAttribute("respResult",me.getValue());
-                }
-                if (me.getKey().equals("photo")){
-                    model.addAttribute("photo",me.getValue());
-                }
-            }
-        }
-        return "/valid/mobile_valid_result";
-    }
-
-    /*运营商判断*/
-    @RequestMapping("/mobile/operator")
     @ResponseBody
-    public String validMobile(String mobile){
-        Map<String,Object> map = new HashMap<>();
-        int operator =  OperatorList.isOperator(mobile);
-        if (operator == 1){
-            map.put("operator","中国移动");
-            return new Gson().toJson(map);
-        }
-        if (operator == 2){
-            map.put("operator","中国联通");
-            return new Gson().toJson(map);
-        }
-        if (operator == 3){
-            map.put("operator","中国电信");
-            return new Gson().toJson(map);
-        }
-        map.put("operator","虚拟运营商或错误号段");
-        return new Gson().toJson(map);
+    public String validResult(HttpServletRequest request,String omit, String skip, String address){
+        String [] tid = request.getParameterValues("tid[]");
+        String [] aid = request.getParameterValues("aid[]");
+        String [] mobile = request.getParameterValues("mobile[]");
+        String [] idNo = request.getParameterValues("idNo[]");
+        String [] realName = request.getParameterValues("realName[]");
+        String [] bankcard = request.getParameterValues("bankcard[]");
+        List<ValidResult> resultList = service.queryValidResult(tid,aid,mobile,idNo,realName,bankcard,omit,skip,address);
+        System.out.println(new Gson().toJson(resultList));
+        return new Gson().toJson(resultList);
     }
 
-    /*身份证效验*/
-    @RequestMapping("/mobile/idCard")
-    @ResponseBody
-    public String validIdCard(String idCard){
-        Map<String,Object> map = new HashMap<>();
-        boolean flag =  IdcardValidator.isValidatedAllIdcard(idCard.trim());
-        if (flag){
-            map.put("flag","身份证效验通过");
-            return new Gson().toJson(map);
-        }
-        map.put("flag","身份证不合法");
-        return new Gson().toJson(map);
-    }
+//    /*运营商判断*/
+//    @RequestMapping("/mobile/operator")
+//    @ResponseBody
+//    public String validMobile(String mobile){
+//        Map<String,Object> map = new HashMap<>();
+//        int operator =  OperatorList.isOperator(mobile);
+//        if (operator == 1){
+//            map.put("operator","中国移动");
+//            return new Gson().toJson(map);
+//        }
+//        if (operator == 2){
+//            map.put("operator","中国联通");
+//            return new Gson().toJson(map);
+//        }
+//        if (operator == 3){
+//            map.put("operator","中国电信");
+//            return new Gson().toJson(map);
+//        }
+//        map.put("operator","虚拟运营商或错误号段");
+//        return new Gson().toJson(map);
+//    }
+//
+//    /*身份证效验*/
+//    @RequestMapping("/mobile/idCard")
+//    @ResponseBody
+//    public String validIdCard(String idCard){
+//        Map<String,Object> map = new HashMap<>();
+//        boolean flag =  IdcardValidator.isValidatedAllIdcard(idCard.trim());
+//        if (flag){
+//            map.put("flag","身份证效验通过");
+//            return new Gson().toJson(map);
+//        }
+//        map.put("flag","身份证不合法");
+//        return new Gson().toJson(map);
+//    }
 
-    /*指定产品级联*/
+    /*指定产品*/
     @RequestMapping("/mobile/aid")
     @ResponseBody
-    public String validAid(String tid){
-        List<Aid> aidList = service.queryAidByUrl(tid.trim());
+    public String validAid(HttpServletRequest request){
+        String [] tid = request.getParameterValues("tid[]");
+        List<Aid> aidList = service.queryAidByTid(tid);
         return new Gson().toJson(aidList);
+    }
+
+    /*分练输入参数*/
+    @RequestMapping("/mobile/valid_content")
+    @ResponseBody
+    public String validContent(String valid_content){
+        if (!RegexUtil.isNull(valid_content)){
+            return StringUtils.check(valid_content);
+        }
+      return "";
     }
 
 }

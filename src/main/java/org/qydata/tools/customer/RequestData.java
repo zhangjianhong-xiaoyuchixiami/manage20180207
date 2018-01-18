@@ -2,6 +2,7 @@ package org.qydata.tools.customer;
 
 import com.google.gson.Gson;
 import net.sf.json.JSONObject;
+import netscape.javascript.JSObject;
 import org.apache.commons.codec.Charsets;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpHeaders;
@@ -12,18 +13,128 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.qydata.constants.ApiStaticConstants;
+import org.qydata.dst.valid.ReqParam;
+import org.qydata.dst.valid.ValidResult;
+import org.qydata.service.ValidService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by jonhn on 2017/10/10.
  */
+@Component
 public class RequestData {
 
-    private static String authId = ApiStaticConstants.AUTHID_03;
-    private static String authPass = ApiStaticConstants.PASSWORD_03;
+    @Autowired private ValidService validService;
+
+    public static void main(String[] args) {
+        System.out.println(String.valueOf(null));
+    }
+
+
+    private static class ReqBody{
+
+        public String mobile;
+        public String realName;
+        public String idNo;
+        public String bankcard;
+
+    }
+
+    /**
+     * 核验结果
+     * @param paramList
+     * @return
+     */
+    public List<ValidResult> result(List<ReqParam> paramList){
+        List<ValidResult> resultList = new ArrayList<>();
+        if (paramList != null){
+            for (ReqParam param : paramList) {
+                if (param != null){
+                    ReqBody reqBody = new ReqBody();
+                    ValidResult validResult = new ValidResult();
+                    Map<String,String> map = matches(param);
+                    if (map != null){
+                        for (Map.Entry<String,String> me : map.entrySet()) {
+                            if ("result".equals(me.getKey())){
+                                validResult.setResult(me.getValue());
+                            }
+                            if ("responseBody".equals(me.getKey())){
+                                validResult.setResponseBody(CustomerDataParamUtil.deleteRespPhoto(me.getValue()));
+                                validResult.setPhoto(CustomerDataParamUtil.photoParam(me.getValue()));
+                            }
+                        }
+                    }
+                    reqBody.mobile = param.mob;
+                    reqBody.idNo = param.id;
+                    reqBody.realName = param.name;
+                    reqBody.bankcard = param.bankId;
+                    validResult.setRequestBody(new Gson().toJson(reqBody));
+                    validResult.setDataSource(validService.queryApiVendorByAid(param.aid));
+                    validResult.setApiType(validService.queryApiTypeByTypeIdAndStid(param.tid,param.stid));
+                    resultList.add(validResult);
+                }
+            }
+        }
+        return resultList;
+    }
+
+    /**
+     * 核验数据
+     * @param param
+     * @return
+     */
+    public static Map<String,String> matches(ReqParam param) {
+        Map<String,String> map = new HashMap<>();
+        for (int i = 0; i < 3 ; i++) {
+            JSONObject jsonObject = mobileProductApi(param.address,param.mob,param.name,param.id,param.bankId,param.aid,param.omit,param.skip);
+            String code = resultParam(jsonObject);
+            if (!CodeMessageList.isTry(code)){
+                map.put("result",CodeMessageList.message(code));
+                if (jsonObject != null){
+                    map.put("responseBody", String.valueOf(jsonObject));
+                }
+                return map;
+            }
+        }
+        map.put("result","未知错误发生");
+        return map;
+    }
+
+    /**
+     * 解析返回code
+     * @param jsonObject
+     * @return
+     */
+    public static String resultParam(JSONObject jsonObject){
+        if (jsonObject == null){
+            return null;
+        }
+        try{
+            if (jsonObject.containsKey("code")){
+                if (jsonObject.getInt("code") == 0){
+                    if (jsonObject.containsKey("result")){
+                        JSONObject result = jsonObject.getJSONObject("result");
+                        if (result.containsKey("resultCode")){
+                            return result.getString("resultCode");
+                        }
+                    }
+                }
+                return jsonObject.getString("code");
+            }
+            return null;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     private static class Req{
         public String authId;
@@ -37,77 +148,13 @@ public class RequestData {
         public String mobile;
         public String realName;
         public String idNo;
+        public String bankcard;
 
     }
 
-    public static Map<String,Object> result(String tid,String mob,String name,String idCard,Integer apiId,String omit,String skip){
-        try {
-            String url = null;
-            String mobile = null;
-            String realName = null;
-            String idNo = null;
-            Integer aid = null;
-            boolean skipSaveLd = false;
-            boolean omitLocal = false;
-            if (tid != null && tid != ""){
-                url = tid.trim();
-                if (tid.equals("/mobile/verify/3f")){
-                    if (mob != null && mob != ""){
-                        mobile = mob.trim();
-                    }
-                    if (name != null && name != ""){
-                        realName = name.trim();
-                    }
-                    if (idCard != null && idCard != ""){
-                        idNo = idCard.trim();
-                    }
-                }
-                if (tid.equals("/mobile/query/duration") || tid.equals("/mobile/query/status")){
-                    if (mob != null && mob != ""){
-                        mobile = mob.trim();
-                    }
-                }
-                if (tid.equals("/mobile/verify/2f-name")){
-                    if (mob != null && mob != ""){
-                        mobile = mob.trim();
-                    }
-                    if (name != null && name != ""){
-                        realName = name.trim();
-                    }
-                }
-                if (tid.equals("/id/verify/2f") || tid.equals("/id/query/photo")){
-                    if (name != null && name != ""){
-                        realName = name.trim();
-                    }
-                    if (idCard != null && idCard != ""){
-                        idNo = idCard.trim();
-                    }
-                }
-                if (apiId != null){
-                    aid = apiId;
-                }
-                if (omit.trim().equals("true")){
-                    omitLocal = true;
-                }
-                if (skip.trim().equals("true")){
-                    skipSaveLd = true;
-                }
-            }
-            String jsonObject = mobileProductApi(url,mobile,realName,idNo,aid,omitLocal,skipSaveLd);
-            String result = CustomerDataParamUtil.respParam(jsonObject);
-            Map<String,Object> map = new HashMap();
-            map.put("result",result);
-            map.put("photo",CustomerDataParamUtil.photoParam(jsonObject));
-            map.put("respResult",CustomerDataParamUtil.deleteRespPhoto(jsonObject));
-            return map;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     /**
-     * 手机产品Api
+     * 通用Api接口
      * @param mobile
      * @param realName
      * @param idNo
@@ -115,18 +162,26 @@ public class RequestData {
      * @return
      * @throws IOException
      */
-    public static String mobileProductApi(String url, String mobile, String realName, String idNo, Integer aid,boolean omitLocal,boolean skipSaveLd) {
+    public static JSONObject mobileProductApi(String url, String mobile, String realName, String idNo, String bankcard , Integer aid, String omitLocal, String skipSaveLd) {
         try {
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpPost request = new HttpPost(ApiStaticConstants.REQUEST_PREFIX_API + url);
+            HttpPost request = new HttpPost(url);
             request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
             Req req = new Req();
-            req.authId = authId;
+            req.authId = ApiStaticConstants.AUTHID;
             req.reqId = Long.toString(System.currentTimeMillis()).substring(1);
             req.ts = System.currentTimeMillis();
-            req.sign = DigestUtils.md5Hex(req.authId + authPass + req.reqId + Long.toString(req.ts)).toUpperCase();
-            req.omitLocal = omitLocal;
-            req.skipSaveLd = skipSaveLd;
+            req.sign = DigestUtils.md5Hex(req.authId + ApiStaticConstants.PASSWORD + req.reqId + Long.toString(req.ts)).toUpperCase();
+            if ("true".equals(omitLocal)){
+                req.omitLocal = true;
+            }else {
+                req.omitLocal = false;
+            }
+            if ("true".equals(skipSaveLd)){
+                req.skipSaveLd = true;
+            }else {
+                req.skipSaveLd = false;
+            }
             if (aid != null){
                 req.aid = aid;
             }
@@ -139,15 +194,20 @@ public class RequestData {
             if (idNo != null){
                 req.idNo = idNo;
             }
+            if (bankcard != null){
+                req.bankcard = bankcard;
+            }
+            System.out.println(new Gson().toJson(req).toString());
             request.setEntity(new StringEntity(new Gson().toJson(req), Charsets.UTF_8));
             CloseableHttpResponse execute = httpClient.execute(request);
             String result = EntityUtils.toString(execute.getEntity());
             JSONObject resultJo = JSONObject.fromObject(result);
-            return resultJo.toString();
+            return resultJo;
+            //return JSONObject.fromObject("\t{\"code\":0,\"message\":\"成功\",\"result\":{\"resultCode\":1,\"unmatched\":null},\"l\":null}");
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
 
 }

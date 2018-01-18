@@ -4,8 +4,8 @@
 <mapper namespace="org.qydata.mapper.mapper2.ValidSelectMapper">
 
 
-    <select id="queryAidByUrl" parameterType="map" resultType="org.qydata.dst.api.Aid">
-        SELECT DISTINCT a.apiId aid,CONCAT_WS('--',a.apiTypeName,a.mobileOperatorName,a.vendorName,a.apiName,a.apiId) name
+    <select id="queryAidByTid" parameterType="map" resultType="org.qydata.dst.api.Aid">
+        SELECT DISTINCT a.apiId aid,CONCAT_WS('-',a.apiTypeName,a.mobileOperatorName,a.vendorName) name
         FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
         <where>
             <if test="typeList!=null and typeList.size()!=0">
@@ -15,8 +15,37 @@
                 </foreach>
             </if>
         </where>
+        ORDER BY a.apiId ASC
     </select>
 
+    <select id="queryAidByTypeIdAndStidAndAid" parameterType="Integer" resultType="Integer">
+        SELECT a.apiId
+        FROM
+        (
+            SELECT a.apiId,a.apiTypeId tid,ifnull(a.mobileOperatorId,0) stid
+            FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+        ) a
+        WHERE a.apiId = #{param3}
+        AND a.tid = #{param1}
+        AND a.stid = #{param2}
+    </select>
+
+    <select id="queryApiTypeByTypeIdAndStid" parameterType="Integer" resultType="String">
+        SELECT DISTINCT CONCAT_WS('-',a.apiTypeName,a.mobileOperatorName) typeName
+        FROM
+        (
+            SELECT a.apiTypeId tid,ifnull(a.mobileOperatorId,0) stid,a.apiTypeName,a.mobileOperatorName
+            FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+        ) a
+        WHERE a.tid = #{param1}
+        AND a.stid = #{param2}
+    </select>
+
+    <select id="queryApiVendorByAid" parameterType="Integer" resultType="org.qydata.entity.ApiVendor">
+        SELECT DISTINCT a.apiId id,a.vendorName name
+        FROM qyfinance.bkvw_api_ApiTypeVendorPartner a
+        WHERE a.apiId = #{param}
+    </select>
 
 </mapper>
 

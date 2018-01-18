@@ -304,7 +304,7 @@
                     <li class="" id="operation_manage">
                         <a href="javascript:;">
 
-                            <i class="icon-bar-chart"></i>
+                            <i class="icon-cogs"></i>
 
                             <span class="title">运营管理</span>
 
@@ -324,7 +324,7 @@
                             </li>
                         </@shiro.hasPermission>
 
-                            <li id="product_condition">
+                            <li id="product_condition_response">
                                 <a href="/api-response-condition/all-api-response">
                                     产品响应状况
                                 </a>

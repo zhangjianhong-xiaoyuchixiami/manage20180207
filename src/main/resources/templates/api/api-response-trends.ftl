@@ -209,7 +209,6 @@
     <script>
         jQuery(document).ready(function() {
             ApiResponseCondition.init();
-            ApiFinanceConditionLeftBar.init();
         });
 
     </script>

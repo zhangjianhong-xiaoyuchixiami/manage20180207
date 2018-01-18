@@ -52,7 +52,6 @@ public class OperatorList {
         setChinaUnicom.add("145");
         setChinaUnicom.add("155");
         setChinaUnicom.add("156");
-        setChinaUnicom.add("171");
         setChinaUnicom.add("175");
         setChinaUnicom.add("176");
         setChinaUnicom.add("185");
@@ -69,6 +68,7 @@ public class OperatorList {
         setChinaTelecom.add("1700");
         setChinaTelecom.add("1701");
         setChinaTelecom.add("1702");
+        setChinaTelecom.add("199");
     }
 
     /**
