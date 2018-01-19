@@ -92,16 +92,16 @@
         LEFT JOIN
         (SELECT
         apiId,
-        totalCount,
-        successCount,
-        failCount,
-        count1,
-        count2,
-        count3,
-        count4,
-        count5,
-        count6,
-        count7
+        sum(totalCount) totalCount,
+        sum(successCount) successCount,
+        sum(failCount) failCount,
+        sum(count1) count1,
+        sum(count2) count2,
+        sum(count3) count3,
+        sum(count4) count4,
+        sum(count5) count5,
+        sum(count6) count6,
+        sum(count7) count7
         FROM
         qyfinance.apiResponseConditionCountByHour
         WHERE
@@ -113,6 +113,7 @@
                 AND  cycle < #{currTime}
             ]]>
         </if>
+        GROUP BY apiId
         )b
         ON
         a.id = b.apiId
