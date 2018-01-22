@@ -51,6 +51,12 @@
     margin-top: 40px;
 }
 
+.pl_b_over_manage{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;/*加宽度width属来兼容部分浏览*/
+}
+
 .table-layout-fixed{
     table-layout: fixed;
 }

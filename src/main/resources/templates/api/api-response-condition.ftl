@@ -25,28 +25,27 @@
 
                     <div class="portlet box grey">
 
-                        <div class="portlet-body">
+                        <div class="portlet-body no-more-tables">
 
-                            <div class="table-responsive">
+                            <#--<div class="table-responsive">-->
 
                                 <table class="table table-bordered table-hover table-condensed table-layout-fixed" id="sample_2">
                                     <thead>
                                         <tr>
-                                            <th>产品名称</th>
-                                            <th>供应商名称</th>
+                                            <th>通道</th>
+                                            <th>供应商</th>
                                             <th>今日请求数</th>
-                                            <th>请求失败率</th>
-                                            <th>0—500ms</th>
-                                            <th class="table-td-none">请求成功数</th>
-                                            <th class="table-td-none">请求失败数</th>
-                                            <th class="table-td-none">0—500ms</th>
-                                            <th class="table-td-none">500—1000ms</th>
-                                            <th class="table-td-none">1000—1500ms</th>
-                                            <th class="table-td-none">1500—2000ms</th>
-                                            <th class="table-td-none">2000—2500ms</th>
-                                            <th class="table-td-none">2500—3000ms</th>
-                                            <th class="table-td-none">3000ms—+∞</th>
-                                            <th class="table-td-none">产品标签</th>
+                                            <th>今日失败数</th>
+                                            <th>今日失败率</th>
+                                            <th class="table-td-none">今日成功数</th>
+                                            <th>[0～500)ms</th>
+                                            <th class="table-td-none">[500～1000)ms</th>
+                                            <th class="table-td-none">[1000～1500)ms</th>
+                                            <th class="table-td-none">[1500～2000)ms</th>
+                                            <th class="table-td-none">[2000～2500)ms</th>
+                                            <th class="table-td-none">[2500～3000)ms</th>
+                                            <th class="table-td-none">[3000～+∞)ms</th>
+                                            <th class="table-td-none">标签</th>
                                             <th>响应时间走势</th>
                                             <th>标签</th>
                                         </tr>
@@ -55,31 +54,29 @@
                                         <#if apiResponseConditions??>
                                             <#list apiResponseConditions as condition>
                                                 <tr>
-                                                    <td data-title="产品名称" >
+                                                    <td data-title="通道" >
                                                         <#if condition.apiName??>
                                                         (apiId:${condition.apiId})
                                                         ${condition.apiName!'未知'}
                                                         </#if>
                                                     </td>
-                                                    <td data-title="供应商名称">${condition.vendorName}</td>
+                                                    <td data-title="供应商">${condition.vendorName}</td>
                                                     <td data-title="今日请求数">${condition.totalCount}</td>
-                                                    <td data-title="请求失败率">${condition.failPercent}</td>
-                                                    <td data-title="0—500ms">${condition.count1}</td>
-                                                    <td data-title="请求成功数" class="table-td-none">${condition.successCount}</td>
-                                                    <td data-title="请求失败数" class="table-td-none">${condition.failCount}</td>
-                                                    <td data-title="0—500ms" class="table-td-none">${condition.count1}</td>
-                                                    <td data-title="500—1000ms" class="table-td-none">${condition.count2}</td>
-                                                    <td data-title="1000—1500ms" class="table-td-none">${condition.count3}</td>
-                                                    <td data-title="1500—2000ms" class="table-td-none">${condition.count4}</td>
-                                                    <td data-title="2000—2500ms" class="table-td-none">${condition.count5}</td>
-                                                    <td data-title="2500—3000ms" class="table-td-none">${condition.count6}</td>
-                                                    <td data-title="3000ms—+∞" class="table-td-none">${condition.count7}</td>
-                                                    <td data-title="产品标签" class="table-td-none"> ${condition.apiTag! '暂无标签'}</td>
+                                                    <td data-title="今日失败数">${condition.failCount}</td>
+                                                    <td data-title="今日失败率">${condition.failPercent}</td>
+                                                    <td data-title="今日成功数" class="table-td-none">${condition.successCount}</td>
+                                                    <td data-title="[0～500)ms">${condition.count1}</td>
+                                                    <td data-title="[500～1000)ms" class="table-td-none">${condition.count2}</td>
+                                                    <td data-title="[1000～1500)ms" class="table-td-none">${condition.count3}</td>
+                                                    <td data-title="[1500～2000)ms" class="table-td-none">${condition.count4}</td>
+                                                    <td data-title="[2000～2500)ms" class="table-td-none">${condition.count5}</td>
+                                                    <td data-title="[2500～3000)ms" class="table-td-none">${condition.count6}</td>
+                                                    <td data-title="[3000～+∞)ms" class="table-td-none">${condition.count7}</td>
+                                                    <td data-title="标签" class="table-td-none"> ${condition.apiTag! '暂无标签'}</td>
                                                     <td data-title="响应时间走势"><a href="/api-response-condition/api-response-time-trends?apiId=${condition.apiId}&vendorName=${condition.vendorName}&apiName=${condition.apiName}"  data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="响应时间走势">查看</a></td>
-                                                    <td data-title="操作" class="table-td-layout-fixed">
+                                                    <td class="pl_b_over_manage" data-title="标签">
                                                         <a href="#" onclick="showApiTags(${condition.apiId})" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="给此产品添加标签">
-                                                            ${condition.apiTag! '点击添加标签'}
-                                                        </a>
+                                                            ${condition.apiTag! '点击添加标签'}                                                      </a>
                                                     </td>
 
                                                 </tr>
@@ -90,7 +87,7 @@
 
                                 </table>
 
-                            </div>
+                            <#--</div>-->
 
                         </div>
 

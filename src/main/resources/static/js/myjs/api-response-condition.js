@@ -19,23 +19,27 @@ var ApiResponseCondition = function () {
                 var sOut = '<table style="width: 100%">';
                 sOut += '<tr><th colspan="2">时间范围：今日凌晨--当前</th></tr>';
                 sOut +=
-                    '<tr><th width="10%">请求成功数量</th><td width="80%">'+aData[6]+'</td></tr>' +
-                    '<tr><th width="10%">请求失败数量</th><td width="80%">'+aData[7]+'</td></tr>' +
-                    '<tr><th width="10%">0—500ms</th><td width="80%">'+aData[8]+'</td></tr>' +
-                    '<tr><th width="10%">500—1000ms</th><td width="80%">'+aData[9]+'</td></tr>' +
-                    '<tr><th width="10%">1000—1500ms</th><td width="80%">'+aData[10]+'</td></tr>' +
-                    '<tr><th width="10%">1500—2000ms</th><td width="80%">'+aData[11]+'</td></tr>' +
-                    '<tr><th width="10%">2000—2500ms</th><td width="80%">'+aData[12]+'</td></tr>' +
-                    '<tr><th width="10%">2500—3000ms</th><td width="80%">'+aData[13]+'</td></tr>' +
-                    '<tr><th width="10%">3000ms—+∞</th><td width="80%">'+aData[14]+'</td></tr>' +
-                    '<tr><th width="10%">产品标签</th><td width="80%">'+aData[15]+'</td></tr>';
+                    '<tr><th style="width: 15%">通道：</th><td >'+aData[1]+'</td></tr>' +
+                    '<tr><th >供应商：</th><td >'+aData[2]+'</td></tr>' +
+                    '<tr><th >今日请求数：</th><td >'+aData[3]+'</td></tr>' +
+                    '<tr><th >今日失败数</th><td >'+aData[4]+'</td></tr>' +
+                    '<tr><th >今日失败率：</th><td >'+aData[5]+'</td></tr>' +
+                    '<tr><th >今日成功数</th><td >'+aData[6]+'</td></tr>' +
+                    '<tr><th >[0～500)ms：</th><td >'+aData[7]+'</td></tr>' +
+                    '<tr><th >[500～1000)ms：</th><td >'+aData[8]+'</td></tr>' +
+                    '<tr><th >[1000～1500)ms：</th><td >'+aData[9]+'</td></tr>' +
+                    '<tr><th >[1500～2000)ms：</th><td >'+aData[10]+'</td></tr>' +
+                    '<tr><th >[2000～2500)ms：</th><td >'+aData[11]+'</td></tr>' +
+                    '<tr><th >[2500～3000)ms：</th><td >'+aData[12]+'</td></tr>' +
+                    '<tr><th >[3000～+∞)ms：</th><td >'+aData[13]+'</td></tr>' +
+                    '<tr><th >标签：</th><td >'+aData[14]+'</td></tr>';
                 sOut += '</table>';
                 return sOut;
             }
 
             var nCloneTh = document.createElement( 'th' );
             var nCloneTd = document.createElement( 'td' );
-            nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
+            nCloneTd.innerHTML = '<span class="row-details row-details-close" style="width: 2%"></span>';
             $('#sample_2 thead tr').each( function () {
                 this.insertBefore( nCloneTh, this.childNodes[0] );
             } );
@@ -63,14 +67,16 @@ var ApiResponseCondition = function () {
             //customerFinancialAccount表格配置
             var oTable = $('#sample_2').dataTable({
                 "aoColumns": [
-                    {"bSortable": false},  //展开符号 0
+                    {
+                        "bSortable": false
+                    },  //展开符号 0
                     null,  //产品名1
                     null,  //供应商名 2
                     null,  //请求总数 3
+                    null,  //失败数 6
                     null,  //失败率 4
+                    {"bVisible": false},  //成功数 7
                     null,  //0-500ms 5
-                    {"bVisible": false},  //0-500ms 6
-                    {"bVisible": false},  //0-500ms 7
                     {"bVisible": false},  //0-500ms 8
                     {"bVisible": false},  //0-500ms 9
                     {"bVisible": false},  //0-500ms 10
@@ -78,9 +84,10 @@ var ApiResponseCondition = function () {
                     {"bVisible": false},  //0-500ms 12
                     {"bVisible": false},  //0-500ms 13
                     {"bVisible": false},  //0-500ms 14
-                    {"bVisible": false},  //0-500ms 15
-                    {"bSortable": false},  //走势 16
-                    {"bSortable": false} //加标签 17
+                    {"bSortable": false},  //走势 15
+                    {
+                        "bSortable": false
+                    } //加标签 16
                 ],
                 "aoColumnDefs": [
                     {
