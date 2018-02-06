@@ -83,4 +83,17 @@ public interface VendorFinanceSelectMapper {
 
  public String queryVendorName(Integer vendorId);
 
+ /**
+  * 查询供应商比率
+  * @return
+  */
+ public List<VendorFinance> queryVendorRate();
+
+ /**
+  * 查找比率
+  * @param vid
+  * @return
+  */
+ public Integer queryRate(Integer vid) ;
+
 }

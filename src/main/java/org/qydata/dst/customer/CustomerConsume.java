@@ -19,5 +19,6 @@ public class CustomerConsume {
     private Double amount;
     private String consuTime;
     private Double consume;
+    private Integer rate;
 
 }

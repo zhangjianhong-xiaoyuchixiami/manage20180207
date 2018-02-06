@@ -29,11 +29,12 @@ public class SendEmail {
             attachment.setName(name+".xls");//自定义文件名，并且格式要一致，不然邮件收到的话，有可能读不出来
 
             HtmlEmail email = new HtmlEmail();
-            email.setTLS(true);
+            email.setSSL(true);
             //发送主机服务器
             email.setHostName("smtp.mxhichina.com");
+            email.setSslSmtpPort("465");
             //登陆邮件服务器的用户名和密码
-            email.setAuthentication("accounting@qianyandata.com", "1qaz@WSX");
+            email.setAuthentication("accounting@qianyandata.com", "jf2ieaDI0)!jn");
             //发送人
             email.setFrom("accounting@qianyandata.com");
             //接收人

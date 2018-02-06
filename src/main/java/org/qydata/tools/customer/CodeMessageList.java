@@ -15,10 +15,25 @@ public class CodeMessageList {
 
     static {
 
-        codeMap.put("0","成功");
-        codeMap.put("-1","无记录");
-        codeMap.put("1","匹配");
-        codeMap.put("4","不匹配");
+        codeMap.put("resultCode:0","成功");
+        codeMap.put("resultCode:-1","无记录");
+        codeMap.put("resultCode:1","匹配");
+        codeMap.put("resultCode:4","不匹配");
+
+        codeMap.put("status:-2","异常（号码状态非正常）");
+        codeMap.put("status:-1","不在网");
+        codeMap.put("status:0","未知");
+        codeMap.put("status:1","未启用");
+        codeMap.put("status:2","正常");
+        codeMap.put("status:3","欠费停机");
+        codeMap.put("status:4","其它停机");
+        codeMap.put("status:5","已销号");
+        codeMap.put("status:6","在网但不可用");
+        codeMap.put("status:7","停机（原因未知）");
+
+
+
+
         codeMap.put("-301","账号不存在或已停用");
         codeMap.put("-302","账号余额不足");
         codeMap.put("-303","IP不在许可范围内");

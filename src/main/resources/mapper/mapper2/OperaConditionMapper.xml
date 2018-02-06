@@ -369,7 +369,7 @@
 	    DATE_FORMAT(a.cycle, '%Y-%c-%d')
         ORDER BY
 	    DATE_FORMAT(a.cycle, '%Y-%c-%d') DESC
-        LIMIT 26
+        LIMIT 30
 
     </select>
 
@@ -392,7 +392,7 @@
         )a
         GROUP BY DATE_FORMAT(a.cycle, '%Y-%c-%d')
         ORDER BY DATE_FORMAT(a.cycle, '%Y-%c-%d') DESC
-        LIMIT 26
+        LIMIT 30
 
     </select>
 

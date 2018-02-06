@@ -11,5 +11,20 @@ import java.util.Map;
  */
 public interface VendorFinanceMapper {
 
+    /**
+     * 修改比率
+     * @param vid
+     * @param rate
+     * @return
+     */
+    public int updateRate(Integer vid, Integer rate) ;
+
+    /**
+     * 新增比率
+     * @param vid
+     * @param rate
+     * @return
+     */
+    public int insertRate(Integer vid, Integer rate) ;
 
 }

@@ -118,4 +118,20 @@ public interface ApiMapper {
     public int insertRecoverProbCheck(RecoverProbCheck recoverProbCheck);
 
 
+    /**
+     * 修改产品类型中文名称
+     * @param tid
+     * @param name
+     * @return
+     */
+    public int updateApiTypeChineseName(Integer tid, String name) ;
+
+    /**
+     * 插入产品类型中文名称
+     * @param tid
+     * @param name
+     * @return
+     */
+    public int insertApiTypeChineseName(Integer tid, String name) ;
+
 }

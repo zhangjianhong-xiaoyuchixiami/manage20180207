@@ -76,6 +76,7 @@ var ApiVendorRecord = function () {
                     { "bVisible": false },
                     // { "bVisible": false },
                     { "bVisible": false }
+                    // null
                 ],
                 "aoColumnDefs": [
                     {

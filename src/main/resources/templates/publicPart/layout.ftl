@@ -1,6 +1,6 @@
 <#macro layout>
 
-    <#assign ver='1.0.0.21'/>
+    <#assign ver='1.0.0.22'/>
 
 <!DOCTYPE html>
 
@@ -212,13 +212,13 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="cache:find-all-customer">
-                                <li id="customerListCache">
-                                    <a href="/cache/find-all-customer">
-                                        客户调用缓存情况
-                                    </a>
-                                </li>
-                            </@shiro.hasPermission>
+                            <#--<@shiro.hasPermission name="cache:find-all-customer">-->
+                                <#--<li id="customerListCache">-->
+                                    <#--<a href="/cache/find-all-customer">-->
+                                        <#--客户调用缓存情况-->
+                                    <#--</a>-->
+                                <#--</li>-->
+                            <#--</@shiro.hasPermission>-->
 
                             <@shiro.hasPermission name="excel:extra-account-customer">
                                 <li id="extra-account-customer">
@@ -276,21 +276,21 @@
                                 </li>
                             </@shiro.hasPermission>
 
-                            <#--<@shiro.hasPermission name="partner:find-all-partner-financial-account">-->
-                                <#--<li id="partnersFinancialAccount">-->
-                                    <#--<a href="/partner/find-all-partner-financial-account">-->
-                                        <#--合作公司来往账目-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--</@shiro.hasPermission>-->
+                        <#--<@shiro.hasPermission name="partner:find-all-partner-financial-account">-->
+                        <#--<li id="partnersFinancialAccount">-->
+                        <#--<a href="/partner/find-all-partner-financial-account">-->
+                        <#--合作公司来往账目-->
+                        <#--</a>-->
+                        <#--</li>-->
+                        <#--</@shiro.hasPermission>-->
 
-                            <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
-                                <#--<li id="extra-account-partner">-->
-                                    <#--<a href="/excel/extra-account-partner">-->
-                                        <#--合作公司财务对账-->
-                                    <#--</a>-->
-                                <#--</li>-->
-                            <#--</@shiro.hasPermission>-->
+                        <#--<@shiro.hasPermission name="excel:extra-account-partner">-->
+                        <#--<li id="extra-account-partner">-->
+                        <#--<a href="/excel/extra-account-partner">-->
+                        <#--合作公司财务对账-->
+                        <#--</a>-->
+                        <#--</li>-->
+                        <#--</@shiro.hasPermission>-->
 
                         </ul>
 
@@ -316,19 +316,22 @@
 
                         <ul class="sub-menu">
 
-                        <@shiro.hasPermission name="operation:api_operation_condition">
-                            <li id="product_condition">
-                                <a href="/operation/api-operation-condition">
-                                    产品消费状况
-                                </a>
-                            </li>
-                        </@shiro.hasPermission>
+                            <@shiro.hasPermission name="operation:api-operation-condition">
+                                <li id="product_condition">
+                                    <a href="/operation/api-operation-condition">
+                                        产品消费状况
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
-                            <li id="product_condition_response">
-                                <a href="/api-response-condition/all-api-response">
-                                    产品响应状况
-                                </a>
-                            </li>
+                            <@shiro.hasPermission name="api-response-condition:all-api-response">
+                                <li id="product_condition_response">
+                                    <a href="/api-response-condition/all-api-response">
+                                        产品响应状况
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
+
                         </ul>
 
                     </li>
@@ -385,13 +388,13 @@
 
                         <ul class="sub-menu">
 
-                        <@shiro.hasPermission name="search:customer-log">
-                            <li id="search_customer_log">
-                                <a href="/search/customer-log">
-                                    客户请求日志查询
-                                </a>
-                            </li>
-                        </@shiro.hasPermission>
+                            <@shiro.hasPermission name="search:customer-log">
+                                <li id="search_customer_log">
+                                    <a href="/search/customer-log">
+                                        客户请求日志查询
+                                    </a>
+                                </li>
+                            </@shiro.hasPermission>
 
                         </ul>
 
@@ -496,16 +499,16 @@
                 </@shiro.hasAnyRoles>
 
             <#--&lt;#&ndash;客户请求日志&ndash;&gt;-->
-                <#--<@shiro.hasAnyRoles name="backAdmin">-->
+            <#--<@shiro.hasAnyRoles name="backAdmin">-->
 
-                    <#--<li id="CustomerRequestLog">-->
-                        <#--<a href="/customer/find-all-customer-request-log">-->
-                            <#--<i class="icon-cloud"></i-->
-                            <#--<span class="title">客户请求日志</span>-->
-                        <#--</a>-->
-                    <#--</li>-->
+            <#--<li id="CustomerRequestLog">-->
+            <#--<a href="/customer/find-all-customer-request-log">-->
+            <#--<i class="icon-cloud"></i-->
+            <#--<span class="title">客户请求日志</span>-->
+            <#--</a>-->
+            <#--</li>-->
 
-                <#--</@shiro.hasAnyRoles>-->
+            <#--</@shiro.hasAnyRoles>-->
 
             <#--日志管理-->
                 <@shiro.hasAnyRoles name="backAdmin">

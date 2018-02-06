@@ -40,5 +40,6 @@ public class CustomerFinance implements Serializable {
     private Double yesterdayConsume;
     private Double lastMonthConsume;
     private List<CompanyApi> companyApiList;
+    private Integer rate;
 
 }

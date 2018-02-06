@@ -172,9 +172,9 @@
                                                 <th>产品供应商</th>
                                                 <th>价格（单位：元）</th>
                                                 <th>当前配额</th>
-                                                <#--<th>预设配额</th>-->
-                                                <#--<th>预设比例</th>-->
-                                                <#--<th>恢复详情</th>-->
+                                            <#--<th>预设配额</th>-->
+                                            <#--<th>预设比例</th>-->
+                                            <#--<th>恢复详情</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -191,8 +191,10 @@
                                                             <tr class="danger">
                                                             </#if>
                                                             <td data-title="选择"><input class="checkboxes" type="checkbox" id="checkBoxApiIdBan" name="checkBoxApiIdBan" value="${api.id}"/></td>
-                                                            <td data-title="产品类型">${(api.apiType.name)!''}
-                                                                <#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                            <td data-title="产品类型">
+                                                                <a href="javaScript:;" onclick="updateApiTypeChineseName(${(api.apiType.id)!''})">
+                                                                    ${(api.apiType.name)!''}<#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                                </a>
                                                             </td>
                                                             <td data-title="合作公司">
                                                                 <#if (api.apiVendor.partner.id)??>
@@ -204,9 +206,9 @@
                                                             <td data-title="产品供应商">${(api.apiVendor.name)!''}<#if (api.apiVendor.partner)??>@${(api.apiVendor.partner.name)!''}</#if></td>
                                                             <td data-title="价格（单位：元）"><a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改产品价格">${(api.cost/100.0)?c}</a></td>
                                                             <td data-title="当前配额"><a href="javaScript:;" onclick="updateApiCurrProb(${api.id},${(api.prob)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改当前配额">${api.prob!'0'}</a></td>
-                                                            <#--<td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>-->
-                                                            <#--<td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>-->
-                                                            <#--<td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>-->
+                                                        <#--<td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>-->
+                                                        <#--<td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>-->
+                                                        <#--<td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>-->
                                                         </tr>
                                                         </#if>
                                                     </#list>
@@ -233,11 +235,11 @@
                                                     <i class="icon-ok-sign"></i>启用
                                                 </button>
                                             </div>
-                                            <#--<div class="btn-group pull-left">-->
-                                                <#--<button class="btn-icon black" id="batchRecoverApi">-->
-                                                    <#--<i class="icon-refresh"></i>恢复配额-->
-                                                <#--</button>-->
-                                            <#--</div>-->
+                                        <#--<div class="btn-group pull-left">-->
+                                        <#--<button class="btn-icon black" id="batchRecoverApi">-->
+                                        <#--<i class="icon-refresh"></i>恢复配额-->
+                                        <#--</button>-->
+                                        <#--</div>-->
                                             <div class="pull-right tip-remark">
                                                 <span>注：红色标注的行是未修改初始价格的产品</span>
                                             </div>
@@ -252,9 +254,9 @@
                                                 <th>产品供应商</th>
                                                 <th>价格（单位：元）</th>
                                                 <th>当前配额</th>
-                                                <#--<th>预设配额</th>-->
-                                                <#--<th>预设比例</th>-->
-                                                <#--<th>恢复详情</th>-->
+                                            <#--<th>预设配额</th>-->
+                                            <#--<th>预设比例</th>-->
+                                            <#--<th>恢复详情</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -267,8 +269,10 @@
                                                             <tr class="danger">
                                                             </#if>
                                                             <td><input class="checkboxes" type="checkbox" id="checkBoxApiIdUnBan" name="checkBoxApiIdUnBan" value="${api.id}"/></td>
-                                                            <td data-title="产品类型" class="font-text-decoration">${api.apiType.name}
-                                                                <#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                            <td data-title="产品类型" class="font-text-decoration">
+                                                                <a href="javaScript:;" onclick="updateApiTypeChineseName(${(api.apiType.id)!''})">
+                                                                    ${(api.apiType.name)!}<#if (api.proxyApi.proxyApiTypeName)??>（调用：${api.proxyApi.proxyApiTypeName!''}）</#if>
+                                                                </a>
                                                             </td>
                                                             <td data-title="合作公司">
                                                                 <#if (api.apiVendor.partner.id)??>
@@ -277,12 +281,12 @@
                                                                     无
                                                                 </#if>
                                                             </td>
-                                                            <td data-title="产品供应商">${api.apiVendor.name}<#if (api.apiVendor.partner)??>@${api.apiVendor.partner.name}</#if></td>
+                                                            <td data-title="产品供应商">${(api.apiVendor.name)!''}<#if (api.apiVendor.partner)??>@${(api.apiVendor.partner.name)!''}</#if></td>
                                                             <td data-title="价格（单位：元）"><a href="javaScript:;" onclick="updateApiPrice(${api.id},${(api.cost)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改产品价格">${(api.cost/100.0)?c}</a></td>
                                                             <td data-title="当前配额"><a href="javaScript:;" onclick="updateApiCurrProb(${api.id},${(api.prob)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改当前配额">${api.prob!'0'}</a></td>
-                                                            <#--<td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>-->
-                                                            <#--<td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>-->
-                                                            <#--<td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>-->
+                                                        <#--<td data-title="预设配额"><a href="javaScript:;" onclick="updateApiDefProb(${api.id},${(api.defProb)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设配额">${api.defProb!'0'}</a></td>-->
+                                                        <#--<td data-title="预设比例"><a href="javaScript:;" onclick="updateApiDefProp(${api.id},${(api.defProp)?c})" data-toggle="tooltip" data-placement="bottom" title="点击修改预设比例">${api.defProp!'0'}%</a></td>-->
+                                                        <#--<td data-title="恢复详情"><a href="javaScript:;" onclick="lookDetailLog(${api.id})" >查看详情</a></td>-->
                                                         </tr>
                                                         </#if>
                                                     </#list>
@@ -331,6 +335,64 @@
             $("[data-toggle='tooltip']").tooltip();
 
         });
+
+        function updateApiTypeChineseName(tid) {
+
+            swal({
+                title: '修改产品类型中文名称',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "取消",
+                confirmButtonText: "确定修改",
+                allowOutsideClick: true,
+                inputValue: ""
+            }).then(function (value) {
+
+                $.ajax({
+                    type: "post",
+                    url: "/api/update-apiType-chinese-name",
+                    data: {"tid": tid, "name": value},
+                    dataType: "json",
+                    beforeSend: function () {
+                        openProgress();
+                    },
+                    success: function (data) {
+                        closeProgress();
+                        if (data != null) {
+                            if (data.success != null) {
+                                swal({
+                                    type: 'success',
+                                    title: '产品类型中文名称修改完成',
+                                    confirmButtonText: "确定",
+                                    html: '已将产品类型中文名称修改为：' + value
+                                }).then(function () {
+                                    window.location.href = window.location.href ;
+                                    return;
+                                });
+
+                            }
+                            if (data.fail != null) {
+
+                                swal({
+                                    type: 'error',
+                                    title: '失败',
+                                    text: data.fail,
+                                    confirmButtonText: "确定"
+
+                                })
+                            }
+                        }
+                    }
+                });
+
+            },function(dismiss) {
+                // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+                if (dismiss === 'cancel') {}
+            });
+
+        }
 
         function updateApiPrice(id,price) {
 
@@ -674,7 +736,7 @@
             });
 
         }
-        
+
         function lookDetailLog(id) {
             $.ajax({
                 type: "post",

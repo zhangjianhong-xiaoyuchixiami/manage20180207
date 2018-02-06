@@ -307,13 +307,28 @@
         GROUP BY customerId
     </select>
 
+    <!--&lt;!&ndash;查询当天消费总额&ndash;&gt;-->
+    <!--<select id="queryCustomerCurrDayTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">-->
+        <!--SELECT customerId id,sum(amount) currDayAmount-->
+        <!--FROM qyfinance.finance_CustomerBalanceLog-->
+        <!--WHERE reasonId = -1-->
+        <!--AND createTime >= #{currDayTime}-->
+        <!--GROUP BY customerId-->
+    <!--</select>-->
+
     <!--查询当天消费总额-->
     <select id="queryCustomerCurrDayTotle" parameterType="map" resultType="org.qydata.dst.CustomerFinance">
-        SELECT customerId id,sum(amount) currDayAmount
-        FROM qyfinance.finance_CustomerBalanceLog
-        WHERE reasonId = -1
-        AND createTime >= #{currDayTime}
-        GROUP BY customerId
+        SELECT a.customerId id,sum(-a.currDayAmount * ifnull(c.price,20)) currDayAmount
+        FROM
+        (
+            SELECT a.customerId,a.apiTypeId,a.subTypeId,sum(a.consumeCount) currDayAmount
+            FROM qyfinance.CustomerConsumeHourCount a
+            WHERE a.cycle >= #{currDayTime}
+            GROUP BY a.customerId,a.apiTypeId,a.subTypeId
+        ) a
+        LEFT JOIN qydata.Customer b ON a.customerId = b.id
+        LEFT JOIN qydata.CompanyApi c ON b.companyId = c.companyId AND a.apiTypeId = c.apiTypeId AND a.subTypeId = c.subTypeId
+        GROUP BY a.customerId
     </select>
 
 <!--  查询客户不同产品的单价 -->
@@ -372,6 +387,7 @@
         <result column="amount" property="amount"/>
         <result column="consuTime" property="consuTime"/>
         <result column="consume" property="consume"/>
+        <result column="rate" property="rate"/>
     </resultMap>
 
     <!--历史消费(至上月)-->
@@ -499,6 +515,19 @@
         ON c.apiTypeId = d.id
         LEFT JOIN qyfinance.bkvwMobileOperator e
         ON e.id =c.subTypeId
+    </select>
+
+    <!--查询客户比率-->
+    <select id="queryCustomerRate" resultMap="customerConsume_Map">
+        SELECT a.customerId,rate
+        FROM qyfinance.bkvw_customer_rate a
+    </select>
+
+    <!--查找比率-->
+    <select id="queryRate" parameterType="int" resultType="Integer">
+        SELECT rate
+        FROM qyfinance.CustomerExt a
+        WHERE a.customerId = #{param}
     </select>
 
 

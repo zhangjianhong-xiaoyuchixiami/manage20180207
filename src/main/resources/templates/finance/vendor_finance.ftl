@@ -227,6 +227,12 @@
                                         <th class="table-td-none">消费总额</th>
                                         <#--<th class="table-td-none">调用成功次数</th>-->
                                         <th class="table-td-none">扣费次数</th>
+                                        <#--<@shiro.hasPermission name="customer:findAllCustomer">-->
+                                            <#--<th>比率</th>-->
+                                        <#--</@shiro.hasPermission>-->
+                                        <#--<@shiro.hasPermission name="customer:findAllCustomerByDeptNo">-->
+                                            <#--<th style="display: none">比率</th>-->
+                                        <#--</@shiro.hasPermission>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -283,6 +289,12 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
+                                                <#--<@shiro.hasPermission name="customer:findAllCustomer">-->
+                                                    <#--<td data-title="比率"><a href="javaScript:;" onclick="updateVendorRate(${finance.vendorId},${finance.rate})">${finance.rate!''}%</a></td>-->
+                                                <#--</@shiro.hasPermission>-->
+                                                <#--<@shiro.hasPermission name="customer:findAllCustomerByDeptNo">-->
+                                                    <#--<td data-title="比率" style="display: none"></td>-->
+                                                <#--</@shiro.hasPermission>-->
                                             </tr>
                                             </#list>
                                         </#if>

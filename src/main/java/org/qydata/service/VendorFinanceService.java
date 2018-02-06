@@ -31,4 +31,12 @@ public interface VendorFinanceService {
 
 
     public String queryVendorName(Integer vendorId);
+
+    /**
+     * 修改比率
+     * @param vid
+     * @param rate
+     * @return
+     */
+    public boolean updateRate(Integer vid,Integer rate);
 }

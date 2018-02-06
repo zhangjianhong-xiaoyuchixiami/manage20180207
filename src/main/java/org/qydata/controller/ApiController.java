@@ -542,4 +542,27 @@ public class ApiController {
         return new Gson().toJson(recoverProbLog);
     }
 
+    /**
+     * 修改产品类型中文名称
+     * @param tid
+     * @param name
+     * @return
+     */
+    @RequestMapping("/update-apiType-chinese-name")
+    @ResponseBody
+    public String updateRate(Integer tid,String name){
+        System.out.println(tid);
+        System.out.println(name);
+        Map<String,Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        boolean flag = apiService.updateApiTypeChineseName(tid,name);
+        if (flag){
+            map.put("success","操作成功");
+            return gson.toJson(map);
+        }
+        map.put("fail","哎呦，修改失败了");
+        return gson.toJson(map);
+    }
+
+
 }

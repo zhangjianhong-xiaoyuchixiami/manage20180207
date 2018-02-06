@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
+import org.qydata.config.annotation.RolePermission;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
 import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.User;
@@ -34,6 +35,7 @@ import static java.lang.Integer.parseInt;
 public class FinanceController {
 
     @Autowired private CustomerFinanceService customerFinanceService;
+
     @Autowired private PowerUserService powerUserService;
     @Autowired
     private VendorHistoryBillService billService;
@@ -275,17 +277,17 @@ public class FinanceController {
         Map<String,Object> resu = customerFinanceService.queryNearlyWeekTrend(cid);
         JSONArray jsonArrayX = null;
         JSONArray jsonArrayS = null;
-       if (resu != null){
-           for (Map.Entry<String,Object> me : resu.entrySet()){
-               if (me.getKey().equals("jsonArrayX")) {
-                   jsonArrayX = (JSONArray) me.getValue();
-               }
-               if (me.getKey().equals("jsonArrayS")) {
-                   jsonArrayS = (JSONArray) me.getValue();
+        if (resu != null){
+            for (Map.Entry<String,Object> me : resu.entrySet()){
+                if (me.getKey().equals("jsonArrayX")) {
+                    jsonArrayX = (JSONArray) me.getValue();
+                }
+                if (me.getKey().equals("jsonArrayS")) {
+                    jsonArrayS = (JSONArray) me.getValue();
 //                   System.out.println((JSONArray) me.getValue());
-               }
-           }
-       }
+                }
+            }
+        }
         JSONObject getObj = new JSONObject();
         getObj.put("xList", jsonArrayX);
         getObj.put("seriesData", jsonArrayS);
@@ -335,6 +337,29 @@ public class FinanceController {
         model.addAttribute("reasonIdArray",reasonIdList);
         model.addAttribute("companyName",companyName);
         return new ModelAndView("/finance/customerBalanceLogRecord");
+    }
+
+    /**
+     * 修改比率
+     * @param cid
+     * @param rate
+     * @return
+     */
+    @RequestMapping("/update-rate")
+    @ResponseBody
+    @RolePermission
+    public String updateRate(Integer cid,Integer rate){
+        System.out.println(cid);
+        System.out.println(rate);
+        Map<String,Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        boolean flag = customerFinanceService.updateRate(cid,rate);
+        if (flag){
+            map.put("success","操作成功");
+            return gson.toJson(map);
+        }
+        map.put("fail","哎呦，修改失败了");
+        return gson.toJson(map);
     }
 
 //    /**

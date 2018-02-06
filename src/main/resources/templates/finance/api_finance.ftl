@@ -167,17 +167,17 @@
 
                                         <label><input type="checkbox" checked data-column="3">消费总额</label>
 
-                                        <label><input type="checkbox" checked data-column="4">调用成功次数</label>
+                                        <#--<label><input type="checkbox" checked data-column="4">调用成功次数</label>-->
 
-                                        <label><input type="checkbox" checked data-column="5">扣费次数</label>
+                                        <label><input type="checkbox" checked data-column="4">扣费次数</label>
 
-                                        <label><input type="checkbox" data-column="6">上周消费</label>
+                                        <label><input type="checkbox" data-column="5">上周消费</label>
 
-                                        <label><input type="checkbox" data-column="7">上月消费</label>
+                                        <label><input type="checkbox" data-column="6">上月消费</label>
 
-                                        <label><input type="checkbox" checked data-column="8">本月消费</label>
+                                        <label><input type="checkbox" checked data-column="7">本月消费</label>
 
-                                        <label><input type="checkbox" checked data-column="9">当天消费</label>
+                                        <label><input type="checkbox" checked data-column="8">当天消费</label>
 
                                     </div>
 
@@ -216,7 +216,7 @@
                                         <th>产品供应商</th>
                                         <th>产品名称</th>
                                         <th>消费总额（${beginDate!'开通后'}--${endDate!'至今'})</th>
-                                        <th>调用成功次数</th>
+                                        <#--<th>调用成功次数</th>-->
                                         <th>扣费次数</th>
                                         <th>上周消费</th>
                                         <th>上月消费</th>
@@ -234,7 +234,7 @@
                                                 <td data-title="产品供应商"><a href="/api/find-all-api-record<#if finance.vendorId??>?vendorId=${finance.vendorId}</#if>">${finance.vendorName!'无'}</a></td>
                                                 <td data-title="产品名称">${finance.apiName}</td>
                                                 <td data-title="消费总额">${finance.consume!'0'}</td>
-                                                <td data-title="调用成功次数">${finance.userCount!'0'}</td>
+                                                <#--<td data-title="调用成功次数">${finance.userCount!'0'}</td>-->
                                                 <td data-title="扣费次数">${finance.feeCount!'0'}</td>
                                                 <td data-title="上周消费">${finance.lastWeekConsume!'0'}</td>
                                                 <td data-title="上月消费">${finance.lastMonthConsume!'0'}</td>

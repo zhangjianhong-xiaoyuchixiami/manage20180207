@@ -22,5 +22,6 @@ public class VendorFinance {
     private Double currMonthConsume;
     private Double currDayConsume;
     private List<VendorTypeConsume> typeConsumeList;
+    private Integer rate;
 
 }

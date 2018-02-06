@@ -39,7 +39,7 @@ function showIp(companyId) {
                     var myContent = "<tr>" +
                         "<td>" + data[i].beginIpRaw + "</td>" +
                         "<td>" + data[i].endIpRaw + "</td>" +
-                        "</tr>"
+                        "</tr>";
                     $("#simple_customer_ip_1 tbody").append(myContent);
                 }
             }

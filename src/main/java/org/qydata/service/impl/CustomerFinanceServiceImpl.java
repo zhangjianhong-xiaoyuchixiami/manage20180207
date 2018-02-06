@@ -44,8 +44,6 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
 
     @Autowired
     private CompanySelectMapper companySelectMapper;
-//    @Autowired
-//    private RedisUtils redisUtils;
 
     @Autowired
     private CustomerCurrendDayTotalAmountUtils customerCurrendDayTotalAmountUtils;
@@ -129,6 +127,8 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         List<CustomerConsume> yesterdayConsumeList = customerFinanceSelectMapper.queryCustomerYesterdayConsume(CalendarUtil_3.getCurrentPreviousTime());
         // 历史总消费金额(至上月)
         List<CustomerConsume> historyConsumeList = customerFinanceSelectMapper.queryHistoryTotalAmount();
+        //查询客户比率
+        List<CustomerConsume> rateList = customerFinanceSelectMapper.queryCustomerRate();
 
         double lastWeekChargeTot = 0.0;
         double lastWeekConsumeTot = 0.0;
@@ -139,7 +139,7 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         double currMonthTotleConsumeAmount = 0.0;
         double currDayTotleConsumeAmount = 0.0;
         double kaolaTheoryBalance = 0.0;
-        //   List<CustomerFinance> customerFinanceList = new ArrayList<>();
+
         Iterator<CustomerFinance> it = list.iterator();
         while (it.hasNext()) {
 
@@ -280,6 +280,17 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
                     if (customerFinance.getId() == finance.getId() || customerFinance.getId().equals(finance.getId())){
                         if (finance.getCurrDayChargeAmount() != null){
                             customerFinance.setCurrDayChargeAmount(finance.getCurrDayChargeAmount()/100.0);
+                        }
+                    }
+                }
+            }
+
+            //封装比率
+            if (rateList != null){
+                for (CustomerConsume consume : rateList) {
+                    if (customerFinance.getId() == consume.getCustomerId() || customerFinance.getId().equals(consume.getCustomerId())){
+                        if (consume.getRate() != null){
+                            customerFinance.setRate(consume.getRate());
                         }
                     }
                 }
@@ -722,6 +733,18 @@ public class CustomerFinanceServiceImpl implements CustomerFinanceService {
         mapResult.put("logList",logList);
         mapResult.put("chargeTot",chargeTot);
         return mapResult;
+    }
+
+    @Override
+    public boolean updateRate(Integer cid, Integer rate) {
+        Integer rateResult = customerFinanceSelectMapper.queryRate(cid);
+        if (rateResult != null){
+            customerFinanceMapper.updateRate(cid,rate);
+            return true;
+        }else {
+            customerFinanceMapper.insertRate(cid,rate);
+            return true;
+        }
     }
 
 //    @Override

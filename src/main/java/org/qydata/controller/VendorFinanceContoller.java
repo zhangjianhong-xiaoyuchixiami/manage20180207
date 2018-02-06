@@ -1,6 +1,7 @@
 package org.qydata.controller;
 
 import com.google.gson.Gson;
+import org.qydata.config.annotation.RolePermission;
 import org.qydata.dst.ApiFinance;
 import org.qydata.dst.VendorHistoryBill;
 import org.qydata.dst.customer.CustomerCurrDayConsume;
@@ -123,6 +124,29 @@ public class VendorFinanceContoller {
         mapJson.put("vendorName",vendorName);
         System.out.println(mapJson.get("vendorName"));
         return new Gson().toJson(mapJson);
+    }
+
+    /**
+     * 修改比率
+     * @param vid
+     * @param rate
+     * @return
+     */
+    @RequestMapping("/update-rate")
+    @ResponseBody
+    @RolePermission
+    public String updateRate(Integer vid,Integer rate){
+        System.out.println(vid);
+        System.out.println(rate);
+        Map<String,Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        boolean flag = service.updateRate(vid,rate);
+        if (flag){
+            map.put("success","操作成功");
+            return gson.toJson(map);
+        }
+        map.put("fail","哎呦，修改失败了");
+        return gson.toJson(map);
     }
 
 }

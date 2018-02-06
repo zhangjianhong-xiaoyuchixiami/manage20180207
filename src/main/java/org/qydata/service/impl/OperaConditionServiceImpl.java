@@ -483,56 +483,121 @@ public class OperaConditionServiceImpl implements OperaConditionService {
         List<LineEntity> dataList = new ArrayList<>();
         List<String> xList = new ArrayList<>();
 
+        Collections.reverse(nearlyWeekCostConditions);
+        Collections.reverse(nearlyWeekIncomeConditions);
+
         LineEntity lineEntity = new LineEntity();
-
         List<Double> costList = new ArrayList<>();
-        if (nearlyWeekCostConditions != null && nearlyWeekCostConditions.size() > 0){
-            for (NearlyWeekCondition costCondition : nearlyWeekCostConditions) {
-                costList.add(costCondition.getTotalCost()/100);
-            }
-            Collections.reverse(costList);
-            lineEntity.setData(costList);
-            lineEntity.setName("总成本");
-            dataList.add(lineEntity);
-        }
-
         LineEntity lineEntity1 = new LineEntity();
-
         List<Double> costList1 = new ArrayList<>();
-        if (nearlyWeekIncomeConditions != null && nearlyWeekIncomeConditions.size() > 0){
-            for (NearlyWeekCondition incomeCondition : nearlyWeekIncomeConditions) {
-                costList1.add(incomeCondition.getTotalIncome()/100);
-            }
-            Collections.reverse(costList1);
-            lineEntity1.setData(costList1);
-            lineEntity1.setName("销售额");
-            dataList.add(lineEntity1);
-        }
-
         LineEntity lineEntity2 = new LineEntity();
-
         List<Double> costList2 = new ArrayList<>();
-        if (nearlyWeekCostConditions != null && nearlyWeekCostConditions.size() > 0){
-            for (NearlyWeekCondition costCondition : nearlyWeekCostConditions) {
-                if (nearlyWeekIncomeConditions != null && nearlyWeekIncomeConditions.size() > 0){
-                    for (NearlyWeekCondition incomeCondition : nearlyWeekIncomeConditions) {
-                        if (costCondition.getCycle() == incomeCondition.getCycle() || costCondition.getCycle().equals(incomeCondition.getCycle())){
-                            costList2.add(PercentUtils.getRound(incomeCondition.getTotalIncome()/100 - costCondition.getTotalCost()/100));
-                        }
-                    }
-                }
-            }
-            Collections.reverse(costList2);
-            lineEntity2.setData(costList2);
-            lineEntity2.setName("毛利润");
-            dataList.add(lineEntity2);
-        }
 
-        for (int i = 25; i >= 0 ; i--) {
-            String day = ChartCalendarUtil.getStatetime(i);
+        String day = null;
+        int count = 1;
+        int count1 = 1;
+        int count2 = 1;
+        for (int i = 29; i >= 0; i--) {
+            day = ChartCalendarUtil.getStatetime(i);
+            String s = DateUtils.parseDay(day);
             String weekOfDate = CalendarTools.getWeekOfDate(day);
             xList.add(day + weekOfDate);
+
+
+            if (nearlyWeekCostConditions != null && nearlyWeekCostConditions.size() > 0) {
+                for (NearlyWeekCondition costCondition : nearlyWeekCostConditions) {
+                    if (s.equals(costCondition.getCycle())) {
+                        if (costCondition.getTotalCost() != null) {
+                            costList.add(costCondition.getTotalCost() / 100);
+                            break;
+                        }else {
+                            costList.add(0.0);
+                            break;
+                        }
+
+                    }
+
+                }
+                if (costList.size() != count){
+                    costList.add(0.0);
+                }
+                count ++;
+//                Collections.reverse(costList);
+//                lineEntity.setData(costList);
+//                lineEntity.setName("总成本");
+//                dataList.add(lineEntity);
+            }
+
+//            LineEntity lineEntity1 = new LineEntity();
+//            List<Double> costList1 = new ArrayList<>();
+            if (nearlyWeekIncomeConditions != null && nearlyWeekIncomeConditions.size() > 0) {
+                for (NearlyWeekCondition incomeCondition : nearlyWeekIncomeConditions) {
+                    if (s.equals(incomeCondition.getCycle())) {
+                        if (incomeCondition.getTotalIncome() != null) {
+                            costList1.add(incomeCondition.getTotalIncome() / 100);
+                            break;
+                        }else {
+                            costList1.add(0.0);
+                            break;
+                        }
+
+                    }
+                }
+                if (costList1.size() != count1){
+                    costList1.add(0.0);
+                }
+                count1 ++;
+//                Collections.reverse(costList1);
+//                lineEntity1.setData(costList1);
+//                lineEntity1.setName("销售额");
+//                dataList.add(lineEntity1);
+            }
+
+//            LineEntity lineEntity2 = new LineEntity();
+//            List<Double> costList2 = new ArrayList<>();
+            if (nearlyWeekCostConditions != null && nearlyWeekCostConditions.size() > 0) {
+                for (NearlyWeekCondition costCondition : nearlyWeekCostConditions) {
+                    if (s.equals(costCondition.getCycle()) || s == costCondition.getCycle()) {
+                        if (nearlyWeekIncomeConditions != null && nearlyWeekIncomeConditions.size() > 0) {
+                            for (NearlyWeekCondition incomeCondition : nearlyWeekIncomeConditions) {
+                                if (s.equals(incomeCondition.getCycle()) || s == incomeCondition.getCycle()){
+                                    if (costCondition.getTotalCost() != null && incomeCondition.getTotalIncome() != null) {
+                                        costList2.add(PercentUtils.getRound(incomeCondition.getTotalIncome() / 100 - costCondition.getTotalCost() / 100));
+                                        break;
+                                    } else {
+                                        costList2.add(0.0);
+                                        break;
+                                    }
+
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                if (count2 != costList2.size()){
+                    costList2.add(0.0);
+                }
+                count2 ++;
+//                Collections.reverse(costList2);
+//                lineEntity2.setData(costList2);
+//                lineEntity2.setName("毛利润");
+//                dataList.add(lineEntity2);
+            }
         }
+
+        lineEntity.setData(costList);
+        lineEntity.setName("总成本");
+        dataList.add(lineEntity);
+
+        lineEntity1.setData(costList1);
+        lineEntity1.setName("销售额");
+        dataList.add(lineEntity1);
+
+        lineEntity2.setData(costList2);
+        lineEntity2.setName("毛利润");
+        dataList.add(lineEntity2);
 
         JSONArray jsonArrayX = JSONArray.fromObject(xList);
         JSONArray jsonArrayS = JSONArray.fromObject(dataList);

@@ -71,7 +71,7 @@
         (
             SELECT a.apiId,sum(a.totleCost) lastMonthConsume
             FROM qyfinance.ApiCostDayCount a
-            WHERE DATE_FORMAT(a.consuTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y-%m')
+            WHERE DATE_FORMAT(a.consuTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y-%m')
             GROUP BY a.apiId
         ) a
         LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
@@ -235,6 +235,19 @@
             qyfinance.finance_ApiVendor
         WHERE
             id = #{vendorId}
+    </select>
+
+    <!--查询供应商比率-->
+    <select id="queryVendorRate" resultType="org.qydata.dst.vendor.VendorFinance">
+        SELECT a.vendorId,a.rate
+        FROM qyfinance.bkvw_api_vendor_rate a
+    </select>
+
+    <!--查找比率-->
+    <select id="queryRate" parameterType="int" resultType="Integer">
+        SELECT rate
+        FROM qyfinance.ApiVendorExt a
+        WHERE a.vendorId = #{param}
     </select>
 
 </mapper>

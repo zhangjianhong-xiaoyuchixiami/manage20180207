@@ -14,7 +14,7 @@ var Api = function () {
                     null,
                     { "bVisible": false },
                     null,
-                    null,
+                    // null,
                     null,
                     { "bVisible": false },
                     { "bVisible": false },
@@ -22,7 +22,7 @@ var Api = function () {
                     null
                     // { "bSortable": false }
                 ],
-                "aaSorting": [[9, 'desc']],
+                "aaSorting": [[8, 'desc']],
                 "aLengthMenu": [
                     [10, 15, 20, -1],
                     [10, 15, 20, "全部"] // change per page values here

@@ -74,20 +74,11 @@
 
     <!--查询供应商消费金额（今天）-->
     <select id="queryVendorConsumeCurrDay" parameterType="map" resultMap="vendorMap">
-        SELECT b.vendorId,sum(a.currDayCost) currDayCost
-        FROM
-        (
-            SELECT a.apiId,sum(b.cost) currDayCost
-            FROM qyfinance.finance_ApiRequestLog a
-            LEFT JOIN qyfinance.finance_ApiResponseLog b ON a.id = b.requestLogId
-            WHERE b.ok = 1
-            AND b.cost > 0
-            AND b.isMock = 0
-            AND b.createTime >= #{currDayTime}
-            GROUP BY a.apiId
-        ) a
-        LEFT JOIN qyfinance.bkvwApi b ON a.apiId = b.id
-        GROUP BY b.vendorId
+        SELECT a.vendorId,sum(a.consumeAccount * b.cost) currDayCost
+        FROM qyfinance.ApiConsumeHourCount a
+        LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
+        WHERE a.cycle >=  #{currDayTime}
+        GROUP BY a.vendorId
     </select>
 
     <!--查询合作公司-->

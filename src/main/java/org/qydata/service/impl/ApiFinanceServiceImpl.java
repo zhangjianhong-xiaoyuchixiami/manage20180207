@@ -56,7 +56,7 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
         /*查询当月消费（至昨天）*/
         List<ApiFinance> currMonthList = selectMapper.queryApiCurrMonthConsume(param);
         /*查询当天使用量*/
-        List<ApiFinance> currDayUuserList = selectMapper.queryApiCurrDayUsage(param);
+       // List<ApiFinance> currDayUuserList = selectMapper.queryApiCurrDayUsage(param);
         /*查询当天扣费量*/
         List<ApiFinance> currDayFeeList = selectMapper.queryApiCurrDayFee(param);
         /*查询消费总额（至昨天）*/
@@ -84,17 +84,17 @@ public class ApiFinanceServiceImpl implements ApiFinanceService {
                 }
 
                      /*封装当天使用量*/
-                if (currDayUuserList != null){
-                    for (ApiFinance consume : currDayUuserList) {
-                        if (finance.getApiId() == consume.getApiId()
-                                || finance.getApiId().equals(consume.getApiId()))
-                        {
-                            if (consume.getCurrDayUserCount() != null){
-                                finance.setCurrDayUserCount(consume.getCurrDayUserCount());
-                            }
-                        }
-                    }
-                }
+//                if (currDayUuserList != null){
+//                    for (ApiFinance consume : currDayUuserList) {
+//                        if (finance.getApiId() == consume.getApiId()
+//                                || finance.getApiId().equals(consume.getApiId()))
+//                        {
+//                            if (consume.getCurrDayUserCount() != null){
+//                                finance.setCurrDayUserCount(consume.getCurrDayUserCount());
+//                            }
+//                        }
+//                    }
+//                }
 
                     /*封装当天扣费量和消费金额*/
                 if (currDayFeeList != null){

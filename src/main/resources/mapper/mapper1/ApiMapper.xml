@@ -88,6 +88,17 @@
         UPDATE qyfinance.RecoverProbCheck SET value = #{value}
         WHERE tid = #{tid}
     </update>
+
+    <!--修改产品类型中文名称-->
+    <update id="updateApiTypeChineseName" parameterType="Object">
+        UPDATE qyfinance.ApiTypeChinese SET chineseName = #{param2} WHERE apiTypeId = #{param1}
+    </update>
+
+    <!--插入产品类型中文名称-->
+    <insert id="insertApiTypeChineseName" parameterType="Object">
+        INSERT INTO qyfinance.ApiTypeChinese(apiTypeId,chineseName,createTime)
+        VALUES(#{param1},#{param2},now())
+    </insert>
     
 </mapper>
 

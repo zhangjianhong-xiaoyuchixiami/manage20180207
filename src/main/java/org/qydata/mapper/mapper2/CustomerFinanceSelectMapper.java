@@ -188,7 +188,18 @@ public interface CustomerFinanceSelectMapper {
 
     public List<CustomerConsume> queryHistoryTotalAmount();
 
+    /**
+     * 查询客户比率
+     * @return
+     */
+    public List<CustomerConsume> queryCustomerRate();
 
+    /**
+     * 查找比率
+     * @param cid
+     * @return
+     */
+    public Integer queryRate(Integer cid) ;
 //    /**
 //     * 查询客户的Api消费记录
 //     * @param map

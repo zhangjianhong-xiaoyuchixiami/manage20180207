@@ -142,3 +142,92 @@ function currDayDetail(cid,tid,stid){
     });
 }
 
+function updateRate(cid,rate) {
+
+    swal({
+        title: '修改比率',
+        input: 'number',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "取消",
+        confirmButtonText: "确定修改",
+        allowOutsideClick: true,
+        inputValue: rate,
+        inputValidator: function(value) {
+            return new Promise(function(resolve, reject) {
+                var re =new RegExp("^(\\d+)(\\.\\d+)?$");
+                if(!re.test(value)){
+                    reject('格式输入不正确！');
+                } else {
+                    resolve();
+                }
+            });
+        }
+    }).then(function (value) {
+
+        $.ajax({
+            type: "post",
+            url: "/finance/update-rate",
+            data: {"cid": cid, "rate": value},
+            dataType: "json",
+            beforeSend: function () {
+                openProgress();
+            },
+            success: function (data) {
+                closeProgress();
+                if (data != null) {
+                    if (data.success != null) {
+                        swal({
+                            type: 'success',
+                            title: '比率修改完成',
+                            confirmButtonText: "确定",
+                            html: '已将比率修改为：' + value + '%'
+                        }).then(function () {
+                            window.location.href = window.location.href ;
+                            return;
+                        });
+
+                    }
+                    if (data.fail != null) {
+
+                        swal({
+                            type: 'error',
+                            title: '失败',
+                            text: "哎呦，修改失败了",
+                            confirmButtonText: "确定"
+
+                        });
+                        return;
+                    }
+                    if (data.warning != null){
+                        swal({
+                            title: "操作提示",
+                            text: data.warning,
+                            type: "warning",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
+                        })
+                    }
+                    if (data.role_warning != null){
+                        swal({
+                            title: "操作提示",
+                            text: data.role_warning,
+                            type: "warning",
+                            showCancelButton: false, //是否显示取消按钮
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "确定"//确定按钮上面的文档
+                        })
+                    }
+                }
+            }
+        });
+
+    },function(dismiss) {
+        // dismiss的值可以是'cancel', 'overlay','close', 'timer'
+        if (dismiss === 'cancel') {}
+    });
+
+}
+

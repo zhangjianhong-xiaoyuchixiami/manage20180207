@@ -59,12 +59,20 @@ public interface CustomerFinanceService {
     public Map<String,Object> queryCompanyCustomerRechargeRecordByCustomerId(Map<String,Object> map);
 
     /**
-     *
-     * @param customerId
-     * @param apiTypeId
-     * @param subTypeId
+     * 修改比率
+     * @param cid
+     * @param rate
      * @return
      */
+    public boolean updateRate(Integer cid,Integer rate);
+
+//    /**
+//     *
+//     * @param customerId
+//     * @param apiTypeId
+//     * @param subTypeId
+//     * @return
+//     */
 //    public CustomerCurrDayConsume getPriceByType(Integer customerId, Integer apiTypeId, Integer subTypeId);
 
 //    /**

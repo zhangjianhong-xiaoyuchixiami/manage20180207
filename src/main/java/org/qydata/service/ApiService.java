@@ -222,5 +222,12 @@ public interface ApiService {
      */
     public List<RecoverProbCheck> queryAllRecoverProbCheck(Map<String,Object> map);
 
+    /**
+     * 修改产品类型中文名称
+     * @param tid
+     * @param name
+     * @return
+     */
+    public boolean updateApiTypeChineseName(Integer tid,String name);
 
 }

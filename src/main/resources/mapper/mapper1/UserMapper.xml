@@ -30,7 +30,7 @@
        where id=#{param1}
    </update>
 
-    <!--启动账号-->
+    <!--启用账号-->
     <update id="updateStatusStart" parameterType="int">
         update qyauth.User set status=0 where id=#{value}
     </update>

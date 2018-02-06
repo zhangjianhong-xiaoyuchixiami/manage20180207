@@ -407,6 +407,12 @@
                                         <th class="table-td-none">总消费额</th>
                                         <#--<th class="table-td-none">请求次数</th>-->
                                         <th class="table-td-none">扣费次数</th>
+                                        <#--<@shiro.hasPermission name="customer:findAllCustomer">-->
+                                            <#--<th>比率</th>-->
+                                        <#--</@shiro.hasPermission>-->
+                                        <#--<@shiro.hasPermission name="customer:findAllCustomerByDeptNo">-->
+                                            <#--<th style="display: none">比率</th>-->
+                                        <#--</@shiro.hasPermission>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -425,7 +431,7 @@
                                                     </td>
                                                 </@shiro.hasPermission>
                                                 <@shiro.hasPermission name="customer:findAllCustomerByDeptNo">
-                                                    <td data-title="合作公司" style="display: none"><a href="/finance/find-all-customer-by-dept-id<#if customer.partnerId??>?partnerId=${customer.partnerId?c}</#if>">${customer.partnerName!''}</td>
+                                                    <td data-title="合作公司" style="display: none"></td>
                                                 </@shiro.hasPermission>
                                                 <td data-title="信用额度">${customer.floor!'0.0'}</td>
                                                 <td data-title="可用额度">${customer.surplusFloor!'0.0'}</td>
@@ -530,6 +536,12 @@
                                                         </#list>
                                                     </#if>
                                                 </td>
+                                                <#--<@shiro.hasPermission name="customer:findAllCustomer">-->
+                                                    <#--<td data-title="比率"><a href="javaScript:;" onclick="updateRate(${customer.id},${customer.rate})">${customer.rate!''}%</a></td>-->
+                                                <#--</@shiro.hasPermission>-->
+                                                <#--<@shiro.hasPermission name="customer:findAllCustomerByDeptNo">-->
+                                                    <#--<td data-title="比率" style="display: none"></td>-->
+                                                <#--</@shiro.hasPermission>-->
                                             </tr>
                                             </#list>
                                         </#if>

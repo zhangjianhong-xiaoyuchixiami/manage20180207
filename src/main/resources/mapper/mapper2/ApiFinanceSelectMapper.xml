@@ -62,13 +62,10 @@
 
     <!--查询当天扣费量-->
     <select id="queryApiCurrDayFee" parameterType="map" resultType="org.qydata.dst.ApiFinance">
-        SELECT apiId,count(b.id) currDayFeeCount,sum(b.cost) currDayConsume
-        FROM qydata.ApiRequestLog a
-        LEFT JOIN qydata.ApiResponseLog b ON a.id = b.requestLogId
-        WHERE b.ok = 1
-        AND b.isMock = 0
-        AND b.cost > 0
-        AND b.createTime >= #{currDayTime}
+        SELECT a.apiId,sum(a.consumeAccount) currDayFeeCount,sum(a.consumeAccount * b.cost) currDayConsume
+        FROM qyfinance.ApiConsumeHourCount a
+        LEFT JOIN qyfinance.finance_Api b ON a.apiId = b.id
+        WHERE a.cycle >= #{currDayTime}
         GROUP BY a.apiId
     </select>
 
@@ -103,7 +100,7 @@
     <select id="queryApiLastMonthConsume" parameterType="map" resultType="org.qydata.dst.ApiFinance">
         SELECT a.apiId,sum(a.totleCost) lastMonthConsume
         FROM qyfinance.ApiCostDayCount a
-        WHERE DATE_FORMAT(a.consuTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 1 week),'%Y-%m')
+        WHERE DATE_FORMAT(a.consuTime,'%Y-%m')=DATE_FORMAT(date_sub(sysdate(),interval 1 month),'%Y-%m')
         GROUP BY a.apiId
     </select>
     <!--产品消费账单结束-->

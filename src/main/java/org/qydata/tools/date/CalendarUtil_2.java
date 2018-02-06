@@ -41,7 +41,7 @@ public class CalendarUtil_2 {
      * @return
      */
     public static String getCurrentLastMonth(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH,-1);
         calendar.set(Calendar.DAY_OF_MONTH,1);

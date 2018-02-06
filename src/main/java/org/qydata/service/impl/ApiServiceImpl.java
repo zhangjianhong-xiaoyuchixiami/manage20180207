@@ -492,6 +492,18 @@ public class ApiServiceImpl implements ApiService {
         return apiSelectMapper.queryAllRecoverProbCheck(map);
     }
 
+    @Override
+    public boolean updateApiTypeChineseName(Integer tid, String name) {
+        Integer rateResult = apiSelectMapper.queryApiTypeChineseName(tid);
+        if (rateResult != null){
+            apiMapper.updateApiTypeChineseName(tid,name);
+            return true;
+        }else {
+            apiMapper.insertApiTypeChineseName(tid,name);
+            return true;
+        }
+    }
+
 
 }
 

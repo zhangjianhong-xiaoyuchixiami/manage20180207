@@ -164,7 +164,7 @@
     <!--根据账号Id查找Ip-->
     <select id="queryCustomerIpById" parameterType="int" resultType="org.qydata.entity.CustomerIp">
         SELECT id,customerId,beginIpRaw,endIpRaw
-        FROM qyfinance.bkvwCustomerIp
+        FROM qydata.CustomerIp
         WHERE customerId=#{param}
     </select>
 
@@ -192,7 +192,7 @@
     <!--根据公司Id查找正式账号Id，用于修改信用额度，添加ip，删除ip，查找ip，充值-->
     <select id="queryOfficAuthIdByCompanyId" parameterType="int" resultType="org.qydata.entity.Customer">
         SELECT id,authId
-        FROM qyfinance.bkvwCustomer
+        FROM qydata.Customer
         WHERE companyId = #{param}
         AND typeId = 1
     </select>

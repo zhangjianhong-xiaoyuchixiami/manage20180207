@@ -47,7 +47,7 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
                     param.put("beginDate",me.getValue());
                 }
                 if("endDate".equals(me.getKey())){
-                    param.put("beginDate",me.getValue());
+                    param.put("endDate",me.getValue());
                 }
                 if("statusList".equals(me.getKey())){
                     param.put("statusList",me.getValue());
@@ -81,7 +81,8 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
         List<VendorHistoryBill> billList = billSelectMapper.queryVendorStaticConsumeAmount();
          /*查询客户当天消费总额*/
         List<VendorCurrDayConsume> vendorCurrDayConsumeList = selectMapper.queryVendorCurrDayAmount(param);
-
+        //查询供应商比率
+        List<VendorFinance> rateList = selectMapper.queryVendorRate();
         if (financeList == null){
             return null;
         }
@@ -145,6 +146,16 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
                         }else {
                             finance.setCurrMonthConsume(0.0);
                         }
+                    }
+                }
+            }
+
+            if (rateList != null){
+                for (VendorFinance consume : rateList) {
+                    if (finance.getVendorId() == consume.getVendorId()
+                            || finance.getVendorId().equals(consume.getVendorId()))
+                    {
+                        finance.setRate(consume.getRate());
                     }
                 }
             }
@@ -301,5 +312,17 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
     public String queryVendorName(Integer vendorId) {
         String vendorName = selectMapper.queryVendorName(vendorId);
         return vendorName;
+    }
+
+    @Override
+    public boolean updateRate(Integer vid, Integer rate) {
+        Integer rateResult = selectMapper.queryRate(vid);
+        if (rateResult != null){
+            mapper.updateRate(vid,rate);
+            return true;
+        }else {
+            mapper.insertRate(vid,rate);
+            return true;
+        }
     }
 }

@@ -489,7 +489,9 @@ public class ShiroConfig {
 		chains.put("/data/mobile/operator", "authc,perms");
 
 		//运营管理
-		chains.put("/operation/api_operation_condition", "authc,perms");
+		chains.put("/operation/api-operation-condition", "authc,perms");
+		chains.put("/api-response-condition/all-api-response", "authc,perms");
+		chains.put("/api-response-condition/api-response-time-trends", "authc,perms");
 
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;

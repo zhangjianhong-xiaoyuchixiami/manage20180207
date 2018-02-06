@@ -216,4 +216,11 @@ public interface ApiSelectMapper {
      */
     public RecoverProbCheck queryRecoverProbCheck(Integer tid);
 
+    /**
+     * 查找产品类型中文名称
+     * @param tid
+     * @return
+     */
+    public Integer queryApiTypeChineseName(Integer tid) ;
+
 }

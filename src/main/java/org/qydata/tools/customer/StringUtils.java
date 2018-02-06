@@ -12,11 +12,6 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
-    public static void main(String[] args){
-        //要提前号码的字符串
-        String str="15846585301";
-        System.out.println(check(str));
-    }
 
     private static class Param{
         public String mobile;

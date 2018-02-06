@@ -59,7 +59,7 @@
                                         <option value=""></option>
                                         <#if apiList??>
                                             <#list apiList as api>
-                                                <option <#if aid??><#list aid as aid><#if aid?? && aid == api.apiId> selected="selected"</#if></#list></#if> value="${api.apiId}">${api.apiTypeName}</option>
+                                                <option <#if aid??><#list aid as aid><#if aid?? && aid == api.apiId> selected="selected"</#if></#list></#if> value="${api.apiId!''}">${api.apiTypeName!''}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -187,7 +187,7 @@
                                             <option value=""></option>
                                             <#if apiList??>
                                                 <#list apiList as api>
-                                                    <option value="${api.apiId}">${api.apiTypeName}</option>
+                                                    <option value="${api.apiId}">${api.apiTypeName!''}</option>
                                                 </#list>
                                             </#if>
                                         </select>

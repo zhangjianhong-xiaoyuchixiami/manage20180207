@@ -29,7 +29,7 @@
 
                             <#--<div class="table-responsive">-->
 
-                                <table class="table table-bordered table-hover table-condensed table-layout-fixed" id="sample_2">
+                                <table class="table table-bordered table-hover table-condensed" id="sample_2">
                                     <thead>
                                         <tr>
                                             <th>通道</th>
@@ -74,9 +74,10 @@
                                                     <td data-title="[3000～+∞)ms" class="table-td-none">${condition.count7}</td>
                                                     <td data-title="标签" class="table-td-none"> ${condition.apiTag! '暂无标签'}</td>
                                                     <td data-title="响应时间走势"><a href="/api-response-condition/api-response-time-trends?apiId=${condition.apiId}&vendorName=${condition.vendorName}&apiName=${condition.apiName}"  data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="响应时间走势">查看</a></td>
-                                                    <td class="pl_b_over_manage" data-title="标签">
+                                                    <td data-title="标签">
                                                         <a href="#" onclick="showApiTags(${condition.apiId})" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="给此产品添加标签">
-                                                            ${condition.apiTag! '点击添加标签'}                                                      </a>
+                                                            ${condition.apiTag! '点击添加标签'}
+                                                        </a>
                                                     </td>
 
                                                 </tr>

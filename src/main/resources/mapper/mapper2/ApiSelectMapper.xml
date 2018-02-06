@@ -534,5 +534,12 @@
         WHERE tid = #{param}
     </select>
 
+    <!--查找产品类型中文名称-->
+    <select id="queryApiTypeChineseName" parameterType="int" resultType="String">
+        SELECT chineseName
+        FROM qyfinance.ApiTypeChinese a
+        WHERE a.apiTypeId = #{param}
+    </select>
+
 </mapper>
 

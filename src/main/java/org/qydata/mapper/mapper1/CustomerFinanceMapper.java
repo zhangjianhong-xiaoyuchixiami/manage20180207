@@ -18,5 +18,21 @@ import java.util.Map;
  */
 public interface CustomerFinanceMapper {
 
+    /**
+     * 修改比率
+     * @param cid
+     * @param rate
+     * @return
+     */
+    public int updateRate(Integer cid, Integer rate) ;
+
+    /**
+     * 新增比率
+     * @param cid
+     * @param rate
+     * @return
+     */
+    public int insertRate(Integer cid, Integer rate) ;
+
 }
 

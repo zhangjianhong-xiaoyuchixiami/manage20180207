@@ -33,11 +33,6 @@ public class RequestData {
 
     @Autowired private ValidService validService;
 
-    public static void main(String[] args) {
-        System.out.println(String.valueOf(null));
-    }
-
-
     private static class ReqBody{
 
         public String mobile;
@@ -95,6 +90,14 @@ public class RequestData {
         for (int i = 0; i < 3 ; i++) {
             JSONObject jsonObject = mobileProductApi(param.address,param.mob,param.name,param.id,param.bankId,param.aid,param.omit,param.skip);
             String code = resultParam(jsonObject);
+            if (code.contains("range")){
+                String codes [] = code.split(":");
+                map.put("result",codes[1]);
+                if (jsonObject != null){
+                    map.put("responseBody", String.valueOf(jsonObject));
+                }
+                return map;
+            }
             if (!CodeMessageList.isTry(code)){
                 map.put("result",CodeMessageList.message(code));
                 if (jsonObject != null){
@@ -122,7 +125,13 @@ public class RequestData {
                     if (jsonObject.containsKey("result")){
                         JSONObject result = jsonObject.getJSONObject("result");
                         if (result.containsKey("resultCode")){
-                            return result.getString("resultCode");
+                            return "resultCode:" + result.getString("resultCode");
+                        }
+                        if (result.containsKey("status")){
+                            return "status:" + result.getString("status");
+                        }
+                        if (result.containsKey("rangeStart") && result.containsKey("rangeEnd")){
+                            return "range:" + result.getString("rangeStart") + "," + result.getString("rangeEnd");
                         }
                     }
                 }

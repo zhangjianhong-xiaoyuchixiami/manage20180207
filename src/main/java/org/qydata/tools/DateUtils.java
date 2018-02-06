@@ -140,6 +140,18 @@ public class DateUtils {
         return format;
     }
 
-
+    public static String parseDay(String day){
+        String[] split = day.split("-");
+        if(Integer.valueOf(split[1]) < 10){
+            String s = split[1];
+//            System.out.println(s);
+            String replace = s.replace("0", "");
+//            String[] split1 = split[1].split("1", 1);
+            String date = split[0] + "-" +replace + "-" + split[2];
+            return date;
+        }else {
+            return day;
+        }
+    }
 
 }
