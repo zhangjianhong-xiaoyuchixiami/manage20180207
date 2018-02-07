@@ -6,6 +6,12 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         x = x.replace(/&amp;nbsp;/ig, "");                   //去除空格
         x = x.replace(/%/, "");
         x = x.replace(/,/, "");
+        x = x.replace(/,/, "");
+        x = x.replace(/,/, "");
+        x = x.replace(/,/, "");
+        x = x.replace(/,/, "");
+        x = x.replace(/,/, "");
+        x = x.replace(/,/, "");
         return parseFloat(x);
     },
 
