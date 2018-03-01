@@ -154,4 +154,27 @@ public class DateUtils {
         }
     }
 
+    /**
+     * 明天凌晨
+     * @return
+     */
+    public static String tomorrowDawn(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        Calendar cal = Calendar. getInstance ();
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+        Date time = cal.getTime();
+        String yesterDawn = sdf.format(time);
+        return yesterDawn;
+    }
+
+    public static  String monthAgo(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(cal.DATE, -29);
+        Date date = cal.getTime();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        String format = sdf.format(date);
+        return format;
+    }
 }

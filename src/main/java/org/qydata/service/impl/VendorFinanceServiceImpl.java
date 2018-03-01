@@ -1,6 +1,9 @@
 package org.qydata.service.impl;
 
+import net.sf.json.JSONArray;
+import org.qydata.dst.LineEntity;
 import org.qydata.dst.VendorHistoryBill;
+import org.qydata.dst.vendor.VendorConsume;
 import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.dst.vendor.VendorTypeConsume;
@@ -12,11 +15,13 @@ import org.qydata.mapper.mapper2.VendorHistoryBillSelectMapper;
 import org.qydata.service.VendorFinanceService;
 import org.qydata.tools.CalendarTools;
 import org.qydata.tools.DateUtils;
+import org.qydata.tools.chartdate.ChartCalendarUtil;
 import org.qydata.tools.date.CalendarUtil;
 import org.qydata.tools.finance.ApiTypeMobileOperatorNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -324,5 +329,58 @@ public class VendorFinanceServiceImpl implements VendorFinanceService {
             mapper.insertRate(vid,rate);
             return true;
         }
+    }
+
+    @Override
+    public Map<String, Object> queryVendorNearlyWeekTrend(Integer vid) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("vendorId", vid);
+        map.put("beginDate", DateUtils.monthAgo());
+        map.put("endDate", DateUtils.tomorrowDawn());
+
+        List<VendorConsume> vendorConsumeList = selectMapper.queryVendorNearlyWeekTrend(map);
+        List<Double>dataList = new ArrayList<>();
+        LineEntity lineEntity = new LineEntity();
+        List<LineEntity> lineEntityList = new ArrayList<>();
+        List<String> xList = new ArrayList<>();
+        int count = 1;
+        for (int i = 29; i >= 0; i --) {
+            String statetime = ChartCalendarUtil.getStatetime(i);
+            //转换时间格式去掉各位月份上的0
+//            String s = DateUtils.parseDay(statetime);
+            //时间后面加上星期
+            String weekOfDate = CalendarTools.getWeekOfDate(statetime);
+            xList.add(statetime + weekOfDate);
+
+            if (vendorConsumeList != null && vendorConsumeList.size() > 0) {
+                for (VendorConsume vendorConsume : vendorConsumeList) {
+                    if (vendorConsume.getConsumeTime() != null) {
+                        if (statetime.equals(vendorConsume.getConsumeTime())){
+                            if (vendorConsume.getTotalAmount() != null) {
+                                dataList.add(vendorConsume.getTotalAmount()/100);
+                            }
+
+                        }
+                    }
+                }
+                if (dataList.size() != count){
+                    dataList.add(0.0);
+                }
+                count++;
+            }
+
+        }
+        lineEntity.setData(dataList);
+        lineEntity.setName("走势");
+        lineEntityList.add(lineEntity);
+
+        JSONArray jsonArrayX = JSONArray.fromObject(xList);
+        JSONArray jsonArrayS = JSONArray.fromObject(lineEntityList);
+        Map<String,Object> resu = new HashMap<String, Object>();
+        resu.put("jsonArrayX",jsonArrayX);
+        resu.put("jsonArrayS",jsonArrayS);
+
+        return resu;
+
     }
 }

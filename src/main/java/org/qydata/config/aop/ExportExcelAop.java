@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.qydata.dst.vendor.VendorBill;
 import org.qydata.entity.Partner;
 import org.qydata.entity.excel.ExportExcel;
 import org.qydata.service.ExcelService;
@@ -125,4 +126,43 @@ public class ExportExcelAop {
         return point.proceed(args);
     }
 
+
+    @Around("execution(* org.qydata.controller.ExcelController.extraAccountVendor(..))")
+    public Object extraAccountVendor(ProceedingJoinPoint point) throws Throwable {
+        Object args [] = point.getArgs();
+        System.out.println("************* 判断是否是执行导出操作 *************");
+        if (args[0] != null && args[0].getClass() == String.class && args[0].equals("true")) {
+            System.out.println("************* 执行导出操作 *************");
+            Map<String,Object> map = new HashMap<>();
+            if(args[1] != null){
+                map.put("vid",args[1]);
+            }
+            if(args[2] != null){
+                map.put("wid",args[2]);
+            }
+            if(args[3] != null){
+                map.put("tid",args[3]);
+            }
+            if (args[4] != null && args[4] != "" ) {
+                map.put("beginDate",args[4] );
+            }
+            if(args[5] != null && args[5] != ""){
+                map.put("endDate", args[5]);
+            }
+            Map<String,Object> mapResu = excelService.queryExtraAccountVendor(map);
+            List<VendorBill> exportExcelList = (List<VendorBill>) mapResu.get("exportExcelList");
+            String companyName = (String) mapResu.get("companyName");
+            Map<String,Object> mapExcel = new HashMap<>();
+            mapExcel.put("exportExcelList",exportExcelList);
+            String fileName = "对账单";
+            if (companyName != null){
+                fileName = companyName + "对账单";
+            }
+            Workbook wb = ExportCustomerExcel.createExcel1(mapExcel);
+            ExportExcelIoUtils.exportExcelIo(wb,fileName,response);
+            return null;
+        }
+        System.out.println("************* 未执行导出操作 *************");
+        return point.proceed(args);
+    }
 }

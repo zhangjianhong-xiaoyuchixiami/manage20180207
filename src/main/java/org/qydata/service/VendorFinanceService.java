@@ -39,4 +39,11 @@ public interface VendorFinanceService {
      * @return
      */
     public boolean updateRate(Integer vid,Integer rate);
+
+    /**
+     * 供应商消费趋势数据
+     * @param vid
+     * @return
+     */
+    public Map<String,Object> queryVendorNearlyWeekTrend(Integer vid);
 }

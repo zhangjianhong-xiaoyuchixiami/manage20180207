@@ -1,5 +1,6 @@
 package org.qydata.mapper.mapper2;
 
+import org.qydata.dst.vendor.VendorConsume;
 import org.qydata.dst.vendor.VendorCurrDayConsume;
 import org.qydata.dst.vendor.VendorFinance;
 import org.qydata.entity.ApiVendor;
@@ -95,5 +96,12 @@ public interface VendorFinanceSelectMapper {
   * @return
   */
  public Integer queryRate(Integer vid) ;
+
+ /**
+  * 供应商消费趋势
+  * @param map
+  * @return
+  */
+ public List<VendorConsume> queryVendorNearlyWeekTrend(Map<String, Object> map);
 
 }

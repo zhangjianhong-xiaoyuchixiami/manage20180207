@@ -221,7 +221,7 @@
                 a.apiId,a.sumCount count
                 FROM qyfinance.PartnerOurDayCount a
                 WHERE a.typeId = 2 AND a.apiId IS NOT NULL
-                <if test="beginDate != null and beginDate != '' ">
+                <if test="beginDate != null and beginDate != ''">
                     AND a.consuTime >= #{beginDate}
                 </if>
                 <if test="endDate != null and endDate != '' ">
@@ -555,6 +555,171 @@
         SELECT DISTINCT apiTypeId id,apiTypeName name
         FROM qyfinance.bkvwCompanyApi
         WHERE companyId = #{param}
+    </select>
+    <!--供应商id查产品-->
+
+    <select id="queryApiByVid" parameterType="int" resultType="org.qydata.entity.ApiType">
+
+        SELECT DISTINCT
+        apiTypeId id,
+        apiTypeName name
+        FROM
+        qyfinance.bkvw_api_ApiTypeVendorPartner
+        WHERE
+        vendorId = #{nimeide}
+
+    </select>
+
+    <resultMap id="vendorBill-map" type="org.qydata.dst.vendor.VendorBill">
+
+        <result property="apiTypeId" column="apiTypeId"></result>
+        <result property="totalCount" column="totalCount"></result>
+        <result property="subTypeName" column="subTypeName"></result>
+        <result property="apiTypeName" column="apiTypeName"></result>
+        <result property="cost" column="cost"></result>
+        <result property="amount" column="amount"></result>
+        <result property="consuTime" column="consuTime"></result>
+        <collection property="mobileList" ofType="org.qydata.entity.MobileOperator">
+            <result column="subTypeId" property="id"/>
+            <result column="mobileOperatorName" property="name"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="queryVendorBill" parameterType="map" resultMap="vendorBill-map">
+
+        SELECT
+        a.apiId,
+        b.apiTypeId,
+        IFNULL(b.mobileOperatorId,0) subTypeId,
+        b.apiTypeName,
+        b.mobileOperatorName subTypeName,
+        sum(a.feeAmount) totalCount,
+        IFNULL(b.cost,0) cost,
+        sum(a.feeAmount) * b.cost amount,
+        a.consuTime
+        FROM
+        qyfinance.ApiCostDayCount a
+        LEFT JOIN
+        qyfinance.bkvw_api_ApiTypeVendorPartner b
+        ON
+        a.apiId = b.apiId
+        WHERE
+        b.vendorId = #{vid}
+
+        <if test="tidList!=null and tidList.size()!=0">
+            AND b.apiTypeId IN
+            <foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">
+                #{tid}
+            </foreach>
+        </if>
+
+        <if test="beginDate != null and beginDate != ''">
+            AND a.consuTime >= #{beginDate}
+        </if>
+
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND a.consuTime < #{endDate}
+            ]]>
+        </if>
+        GROUP BY a.apiId, b.apiTypeId,b.mobileOperatorId
+
+    </select>
+
+
+    <select id="queryVendorBillByMonth" parameterType="map" resultMap="vendorBill-map">
+
+        SELECT
+        a.apiId,
+        b.apiTypeId,
+        IFNULL(b.mobileOperatorId,0) subTypeId,
+        b.apiTypeName,
+        b.mobileOperatorName subTypeName,
+        sum(a.feeAmount) totalCount,
+        IFNULL(b.cost,0) cost,
+        sum(a.feeAmount) * b.cost amount,
+        DATE_FORMAT(a.consuTime,'%Y-%m') consuTime
+        FROM
+        qyfinance.ApiCostDayCount a
+        LEFT JOIN
+        qyfinance.bkvw_api_ApiTypeVendorPartner b
+        ON
+        a.apiId = b.apiId
+        WHERE
+        b.vendorId = #{vid}
+
+        <if test="tidList!=null and tidList.size()!=0">
+            AND b.apiTypeId IN
+            <foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">
+                #{tid}
+            </foreach>
+        </if>
+
+        <if test="beginDate != null and beginDate != ''">
+            AND a.consuTime >= #{beginDate}
+        </if>
+
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND a.consuTime < #{endDate}
+            ]]>
+        </if>
+        GROUP BY a.apiId, b.apiTypeId,b.mobileOperatorId,DATE_FORMAT(a.consuTime,'%Y-%m')
+
+    </select>
+
+    <select id="queryVendorBillByDay" parameterType="map" resultMap="vendorBill-map">
+
+        SELECT
+        a.apiId,
+        b.apiTypeId,
+        IFNULL(b.mobileOperatorId,0) subTypeId,
+        b.apiTypeName,
+        b.mobileOperatorName subTypeName,
+        sum(a.feeAmount) totalCount,
+        IFNULL(b.cost,0) cost,
+        sum(a.feeAmount) * b.cost amount,
+        DATE_FORMAT(a.consuTime,'%Y-%m-%d') consuTime
+        FROM
+        qyfinance.ApiCostDayCount a
+        LEFT JOIN
+        qyfinance.bkvw_api_ApiTypeVendorPartner b
+        ON
+        a.apiId = b.apiId
+        WHERE
+        b.vendorId = #{vid}
+
+        <if test="tidList!=null and tidList.size()!=0">
+            AND b.apiTypeId IN
+            <foreach collection="tidList" item="tid" index="index" open="(" close=")" separator=",">
+                #{tid}
+            </foreach>
+        </if>
+
+        <if test="beginDate != null and beginDate != ''">
+            AND a.consuTime >= #{beginDate}
+        </if>
+
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND a.consuTime < #{endDate}
+            ]]>
+        </if>
+        GROUP BY a.apiId, b.apiTypeId,b.mobileOperatorId,DATE_FORMAT(a.consuTime,'%Y-%m-%d')
+
+    </select>
+
+
+    <select id="queryCompanyNameByVid" parameterType="String" resultType="String">
+
+        SELECT
+        DISTINCT vendorName
+        FROM
+        qyfinance.bkvw_api_ApiTypeVendorPartner
+        WHERE
+        vendorId = #{vid}
+
     </select>
 
 </mapper>

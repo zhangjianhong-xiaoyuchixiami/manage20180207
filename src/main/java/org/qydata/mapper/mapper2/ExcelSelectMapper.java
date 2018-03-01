@@ -1,5 +1,6 @@
 package org.qydata.mapper.mapper2;
 
+import org.qydata.dst.vendor.VendorBill;
 import org.qydata.entity.ApiType;
 import org.qydata.entity.Company;
 import org.qydata.entity.Partner;
@@ -130,4 +131,39 @@ public interface ExcelSelectMapper {
      * @return
      */
     public List<ApiType> queryApiTypeByCid(Integer cid);
+
+    /**
+     * 供应商id查询产品
+     * @param vid
+     * @return
+     */
+    public List<ApiType> queryApiByVid(Integer vid);
+
+    /**
+     * 按条件查询供应商的账单
+     * @param map
+     * @return
+     */
+    public List<VendorBill> queryVendorBill(Map<String, Object> map);
+
+    /**
+     * 按条件按月查询供应商账单
+     * @param map
+     * @return
+     */
+    public List<VendorBill> queryVendorBillByMonth(Map<String, Object> map);
+
+    /**
+     * 按条件按天查询供应商账单
+     * @param map
+     * @return
+     */
+    public List<VendorBill> queryVendorBillByDay(Map<String, Object> map);
+
+    /**
+     * 根据vid查询供应商名字
+     * @param vid
+     * @return
+     */
+    public String queryCompanyNameByVid(String vid);
 }

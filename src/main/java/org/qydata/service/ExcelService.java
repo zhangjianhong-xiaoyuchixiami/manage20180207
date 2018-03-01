@@ -38,5 +38,18 @@ public interface ExcelService {
      */
     public List<ApiType> queryApiTypeByCid(Integer cid);
 
+    /**
+     * 供应商id查询产品
+     * @param vide
+     * @return
+     */
+    public List<ApiType> queryApiByVid(Integer vide);
+
+    /**
+     * 按条件查询供应商账单
+     * @param map
+     * @return
+     */
+    public Map<String,Object> queryExtraAccountVendor(Map<String, Object>map);
 
 }

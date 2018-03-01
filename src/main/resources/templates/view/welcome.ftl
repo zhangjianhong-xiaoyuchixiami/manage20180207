@@ -370,8 +370,7 @@
                                 rotation:-30
                             },
                             tickInterval:1,
-                            floor: 0,
-                            ceiling: 29,
+
                             endOnTick:true
                         }],
 

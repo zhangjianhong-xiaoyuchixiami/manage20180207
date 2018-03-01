@@ -23,9 +23,9 @@
         <result column="apiTag" property="apiTag"/>
         <result column="dateTime" property="dateTime"/>
         <collection property="mobileList" ofType="org.qydata.entity.MobileOperator">
-            <result column="mobileOperatorId" property="id"/>
-            <result column="mobileOperatorName" property="name"/>
-        </collection>
+        <result column="mobileOperatorId" property="id"/>
+        <result column="mobileOperatorName" property="name"/>
+    </collection>
     </resultMap>
 
 
@@ -37,7 +37,9 @@
             a.subTypeId mobileOperatorId,
             b.apiTypeName,
             b.mobileOperatorName,
+            sum(totalCount) totalCount,
             sum(successCount) successCount,
+            sum(failCount) failCount,
             sum(count1) count1,
             sum(count2) count2,
             sum(count3) count3,
@@ -62,7 +64,7 @@
             DATE_FORMAT(a.cycle,'%Y-%m-%d'),a.apiTypeId,a.subTypeId
         ORDER BY
 			DATE_FORMAT(a.cycle,'%Y-%m-%d')DESC
-		LIMIT 18
+		LIMIT 30
 
     </select>
 

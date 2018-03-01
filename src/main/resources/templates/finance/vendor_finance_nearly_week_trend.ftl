@@ -87,11 +87,11 @@
         })(jQuery);
 
         $(function () {
-            var cid = $.getUrlParam('cid');
+            var vid = $.getUrlParam('vid');
             $.ajax({
                 type: "post",
-                url: "/finance/customer-nearly-week-thread/data",
-                data: {"cid": cid},
+                url: "/finance/vendor-nearly-week-thread/data",
+                data: {"vid": vid},
                 dataType: "json",
                 success: function (data) {
                     if (data != null) {

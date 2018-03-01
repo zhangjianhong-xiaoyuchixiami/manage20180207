@@ -45,6 +45,10 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
         ApiLineEntity apilineEntity5 = new ApiLineEntity();
         ApiLineEntity apilineEntity6 = new ApiLineEntity();
         ApiLineEntity apilineEntity7 = new ApiLineEntity();
+        ApiLineEntity apilineEntity8 = new ApiLineEntity();
+        ApiLineEntity apilineEntity9 = new ApiLineEntity();
+
+
         List<Double> list1 = new ArrayList<Double>();
         List<Double> list2 = new ArrayList<Double>();
         List<Double> list3 = new ArrayList<Double>();
@@ -52,10 +56,12 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
         List<Double> list5 = new ArrayList<Double>();
         List<Double> list6 = new ArrayList<Double>();
         List<Double> list7 = new ArrayList<Double>();
+        List<Double> list8 = new ArrayList<Double>();
+        List<Double> list9 = new ArrayList<Double>();
         List<ApiResponseCondition> apiResponseConditions = apiResponseConditionMapper.queryApiResponseCondition(apiId);
         Collections.reverse(apiResponseConditions);
         int count = 1;
-        for (int i = 17; i >= 0; i --){
+        for (int i = 29; i >= 0; i --){
 
             String day = ChartCalendarUtil.getStatetime(i);
             String weekOfDate = CalendarTools.getWeekOfDate(day);
@@ -73,6 +79,8 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
                             list5.add(PercentUtils.getPercent2(apiResponseCondition.getCount5(), apiResponseCondition.getSuccessCount()));
                             list6.add(PercentUtils.getPercent2(apiResponseCondition.getCount6(), apiResponseCondition.getSuccessCount()));
                             list7.add(PercentUtils.getPercent2(apiResponseCondition.getCount7(), apiResponseCondition.getSuccessCount()));
+                            list8.add(PercentUtils.getPercent2(apiResponseCondition.getFailCount(), apiResponseCondition.getTotalCount()));
+                            list9.add(PercentUtils.getPercent2(apiResponseCondition.getSuccessCount(), apiResponseCondition.getTotalCount()));
                         }else {
                             list1.add(0.0);
                             list2.add(0.0);
@@ -81,6 +89,8 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
                             list5.add(0.0);
                             list6.add(0.0);
                             list7.add(0.0);
+                            list8.add(0.0);
+                            list9.add(0.0);
                         }
                     }
                 }
@@ -93,6 +103,8 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
                     list5.add(0.0);
                     list6.add(0.0);
                     list7.add(0.0);
+                    list8.add(0.0);
+                    list9.add(0.0);
                 }
                 count ++;
             }else {
@@ -103,6 +115,8 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
                 list5.add(0.0);
                 list6.add(0.0);
                 list7.add(0.0);
+                list8.add(0.0);
+                list9.add(0.0);
             }
 
 
@@ -129,6 +143,12 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
         apilineEntity7.setName("3000ms-+∞");
         apilineEntity7.setData(list7);
 
+        apilineEntity8.setName("失败率");
+        apilineEntity8.setData(list8);
+
+        apilineEntity9.setName("成功率");
+        apilineEntity9.setData(list9);
+
         dataList.add(apilineEntity1);
         dataList.add(apilineEntity2);
         dataList.add(apilineEntity3);
@@ -136,6 +156,8 @@ public class ApiResponseConditionServiceImpl implements ApiResponseConditionServ
         dataList.add(apilineEntity5);
         dataList.add(apilineEntity6);
         dataList.add(apilineEntity7);
+        dataList.add(apilineEntity8);
+        dataList.add(apilineEntity9);
 
         JSONArray jsonArrayX = JSONArray.fromObject(xList);
         JSONArray jsonArrayData = JSONArray.fromObject(dataList);

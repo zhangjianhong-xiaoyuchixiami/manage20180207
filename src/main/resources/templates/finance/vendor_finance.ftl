@@ -222,6 +222,7 @@
                                         <th>上月消费</th>
                                         <th>当月消费</th>
                                         <th>当天消费</th>
+                                        <th>消费走势</th>
                                         <th class="table-td-none">类型</th>
                                         <th class="table-td-none">当前价格</th>
                                         <th class="table-td-none">消费总额</th>
@@ -254,6 +255,7 @@
                                                 <td data-title="上月消费">${finance.lastMonthConsume!'0'}</td>
                                                 <td data-title="本月消费">${finance.currMonthConsume!'0'}</td>
                                                 <td data-title="当天消费"><a href="#form_modal_vendor_curr_day_api_type_consume" data-toggle="modal" onclick="currDayApiTypeConsume(${finance.vendorId!'0'})" data-toggle="tooltip" data-placement="bottom" title="点击查看当天消费情况">${finance.currDayConsume!'0'}</a></td>
+                                                <td data-title="消费走势"><a href="/finance/vendor-nearly-week-thread?vid=${finance.vendorId}&name=${finance.vendorName}">查看</a></td>
                                                 <td data-title="类型" class="table-td-none">
                                                     <#if finance.typeConsumeList??>
                                                         <#list finance.typeConsumeList as type>

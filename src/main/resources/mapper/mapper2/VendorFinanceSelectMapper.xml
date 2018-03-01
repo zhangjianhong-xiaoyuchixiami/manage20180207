@@ -250,5 +250,60 @@
         WHERE a.vendorId = #{param}
     </select>
 
+    <resultMap id="vendorConsumeMap" type="org.qydata.dst.vendor.VendorConsume">
+        <result column="totalAmount" property="totalAmount"></result>
+        <result column="consumeTime" property="consumeTime"></result>
+    </resultMap>
+
+    <!--供应商消费趋势-->
+    <select id="queryVendorNearlyWeekTrend" parameterType="map" resultMap="vendorConsumeMap">
+
+        SELECT
+        sum(a.aomunt) totalAmount,
+        a.consumeTime
+        FROM
+        (
+            SELECT
+            a.apiId,
+            a.typeId,
+            a.subTypeId,
+            a.total,
+            a.cost,
+            sum(a.total*a.cost) aomunt,
+            a.consumeTime
+            FROM
+            (
+                SELECT
+                a.apiId,
+                a.typeId,
+                a.subTypeId,
+                SUM(a.consumeAccount) total,
+                IFNULL(b.cost, 0) cost,
+                DATE_FORMAT(a.cycle,'%Y-%m-%d') consumeTime
+                FROM
+                qyfinance.ApiConsumeHourCount a
+                LEFT JOIN
+                qyfinance.bkvw_api_ApiTypeVendorPartner b
+                ON
+                a.apiId = b.apiId
+                WHERE
+                a.vendorId = #{vendorId}
+                <if test="beginDate != null and beginDate != ''" >
+                    AND a.cycle >= #{beginDate}
+                </if>
+                <if test="endDate != null and endDate != ''" >
+                    <![CDATA[
+                           AND a.cycle < #{endDate}
+                        ]]>
+                </if>
+                GROUP BY
+                a.apiId,a.typeId,a.subTypeId,DATE_FORMAT(a.cycle,'%Y-%m-%d')
+                )a
+            GROUP BY a.consumeTime,a.apiId
+        )a
+        GROUP BY a.consumeTime
+
+    </select>
+
 </mapper>
 

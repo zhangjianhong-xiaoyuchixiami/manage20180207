@@ -71,6 +71,7 @@ var ApiVendorRecord = function () {
                     { "bVisible": false },
                     null,
                     null,
+                    { "bSortable": false },
                     { "bVisible": false },
                     { "bVisible": false },
                     { "bVisible": false },

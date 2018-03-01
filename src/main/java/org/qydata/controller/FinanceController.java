@@ -10,6 +10,7 @@ import org.qydata.dst.customer.CustomerCurrDayConsumeDetail;
 import org.qydata.entity.User;
 import org.qydata.service.CustomerFinanceService;
 import org.qydata.service.PowerUserService;
+import org.qydata.service.VendorFinanceService;
 import org.qydata.service.VendorHistoryBillService;
 import org.qydata.tools.DateUtils;
 import org.qydata.tools.JsonUtils;
@@ -34,11 +35,17 @@ import static java.lang.Integer.parseInt;
 @RequestMapping("/finance")
 public class FinanceController {
 
-    @Autowired private CustomerFinanceService customerFinanceService;
+    @Autowired
+    private CustomerFinanceService customerFinanceService;
 
-    @Autowired private PowerUserService powerUserService;
+    @Autowired
+    private PowerUserService powerUserService;
+
     @Autowired
     private VendorHistoryBillService billService;
+
+    @Autowired
+    private VendorFinanceService vendorFinanceService;
     /**
      * 查找公司财务账单
      * @param model
@@ -360,6 +367,48 @@ public class FinanceController {
         }
         map.put("fail","哎呦，修改失败了");
         return gson.toJson(map);
+    }
+
+    /**
+     * 跳转供应商走视图
+     * @param vid
+     * @param name
+     * @param model
+     * @return
+     */
+    @RequestMapping("/vendor-nearly-week-thread")
+    public ModelAndView findVendorNearLyWeekTrend(Integer vid, String name, Model model){
+        model.addAttribute("vid",vid);
+        model.addAttribute("name",name);
+        return new ModelAndView("/finance/vendor_finance_nearly_week_trend");
+    }
+
+    /**
+     * 供应商走势数据
+     * @param vid
+     * @return
+     */
+    @RequestMapping("/vendor-nearly-week-thread/data")
+    @ResponseBody
+    public String findVendorNearLyWeekTrendData(Integer vid){
+        Map<String,Object> resu = vendorFinanceService.queryVendorNearlyWeekTrend(vid);
+        JSONArray jsonArrayX = null;
+        JSONArray jsonArrayS = null;
+        if (resu != null){
+            for (Map.Entry<String,Object> me : resu.entrySet()){
+                if (me.getKey().equals("jsonArrayX")) {
+                    jsonArrayX = (JSONArray) me.getValue();
+                }
+                if (me.getKey().equals("jsonArrayS")) {
+                    jsonArrayS = (JSONArray) me.getValue();
+//                   System.out.println((JSONArray) me.getValue());
+                }
+            }
+        }
+        JSONObject getObj = new JSONObject();
+        getObj.put("xList", jsonArrayX);
+        getObj.put("seriesData", jsonArrayS);
+        return getObj.toString();
     }
 
 //    /**
