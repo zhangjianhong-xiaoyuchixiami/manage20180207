@@ -493,6 +493,8 @@ public class ShiroConfig {
 		chains.put("/api-response-condition/all-api-response", "authc,perms");
 		chains.put("/api-response-condition/api-response-time-trends", "authc,perms");
 
+		//供应商历史走势
+		chains.put("/finance/vendor-nearly-week-thread/data", "authc,perms");
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}
